@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevOps &amp; SRE Learning Guide — Beginner to Intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">DevOps &amp; SRE<br>Learning Guide</div>
+      <div class="brand-sub">Linux · Docker · Kubernetes · Terraform · CI/CD · Prometheus</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-intermediate-track" class="nav-top">Beginner → Intermediate Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-foundations" class="nav-top nav-phase">Phase 1: Foundations</a>
+<div class="nav-children">
+<a href="#module-11-linux-command-line" class="nav-child">Module 1.1 — Linux &amp; the Command Line</a>
+<a href="#module-12-networking-fundamentals" class="nav-child">Module 1.2 — Networking Fundamentals</a>
+<a href="#module-13-git-version-control" class="nav-child">Module 1.3 — Git &amp; Version Control</a>
+<a href="#module-14-shell-scripting" class="nav-child">Module 1.4 — Shell Scripting</a>
+<a href="#phase-1-capstone-bootstrap-shopfast" class="nav-child">Phase 1 Capstone: Bootstrap ShopFast</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-containers-orchestration" class="nav-top nav-phase">Phase 2: Containers &amp; Orchestration</a>
+<div class="nav-children">
+<a href="#module-21-docker-containerization" class="nav-child">Module 2.1 — Docker &amp; Containerization</a>
+<a href="#module-22-kubernetes-fundamentals" class="nav-child">Module 2.2 — Kubernetes Fundamentals</a>
+<a href="#module-23-kubernetes-production" class="nav-child">Module 2.3 — Kubernetes in Production</a>
+<a href="#phase-2-capstone-containerize-deploy" class="nav-child">Phase 2 Capstone: Containerize &amp; Deploy</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-infrastructure-as-code" class="nav-top nav-phase">Phase 3: Infrastructure as Code</a>
+<div class="nav-children">
+<a href="#module-31-terraform" class="nav-child">Module 3.1 — Terraform &amp; IaC</a>
+<a href="#module-32-ansible-config-management" class="nav-child">Module 3.2 — Config Management (Ansible)</a>
+<a href="#module-33-cloud-fundamentals" class="nav-child">Module 3.3 — Cloud Fundamentals</a>
+<a href="#phase-3-capstone-provision-shopfast" class="nav-child">Phase 3 Capstone: Provision ShopFast</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-cicd-delivery" class="nav-top nav-phase">Phase 4: CI/CD &amp; Delivery</a>
+<div class="nav-children">
+<a href="#module-41-cicd-pipelines" class="nav-child">Module 4.1 — CI/CD Pipelines</a>
+<a href="#module-42-deployment-strategies-gitops" class="nav-child">Module 4.2 — Deployment &amp; GitOps</a>
+<a href="#phase-4-capstone-ship-it" class="nav-child">Phase 4 Capstone: Ship It</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-5-sre-reliability" class="nav-top nav-phase">Phase 5: SRE &amp; Reliability</a>
+<div class="nav-children">
+<a href="#module-51-observability" class="nav-child">Module 5.1 — Observability</a>
+<a href="#module-52-slos-error-budgets" class="nav-child">Module 5.2 — SLOs &amp; Error Budgets</a>
+<a href="#module-53-incident-response-oncall" class="nav-child">Module 5.3 — Incident Response</a>
+<a href="#phase-5-capstone-run-the-system" class="nav-child">Phase 5 Capstone: Run the System</a>
+</div></div>
+
+<a href="#final-capstone-operate-shopfast" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="devops-sre-learning-guide">DevOps &amp; SRE Learning Guide</h1>
+<h2 id="beginner-to-intermediate-track">Beginner → Intermediate Track</h2>
+<h3>Linux · Docker · Kubernetes · Terraform · CI/CD · Prometheus · Grafana</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="DevOps infinity loop" xmlns="http://www.w3.org/2000/svg">
+  <path d="M88 128c0-22 18-40 40-40s40 18 40 40-18 40-40 40-40-18-40-40z" fill="none" stroke="#0d7a6e" stroke-width="0"/>
+  <path d="M128 128c-14-26-34-46-62-46-30 0-54 21-54 46s24 46 54 46c28 0 48-20 62-46z" fill="none" stroke="#0d7a6e" stroke-width="16" stroke-linecap="round"/>
+  <path d="M128 128c14 26 34 46 62 46 30 0 54-21 54-46s-24-46-54-46c-28 0-48 20-62 46z" fill="none" stroke="#075249" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="66" cy="128" r="10" fill="#075249"/>
+  <circle cx="190" cy="128" r="10" fill="#0d7a6e"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone operates the same realistic system — <strong>ShopFast</strong>, a containerized e-commerce platform (Python/Flask API + PostgreSQL + Redis) that you deploy, automate, and keep running throughout the guide. There's no starter code to download — see the <a href="../datasets/shopfast/">ShopFast spec</a> in the shared datasets folder for the stack and phase-by-phase progression.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially. DevOps rewards foundations; skipping Linux to chase Kubernetes leaves you debugging symptoms you cannot read.</li>
+<li><strong>Some experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill or cert</strong> → Jump via the <strong>Module Index</strong> or pick a curated <strong>Learning Track</strong> (DevOps Engineer, SRE, Platform Engineer, or CKA prep).</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3 id="quiz-linux-foundations">Linux &amp; Foundations</h3>
+<ul>
+<li>[ ] I can navigate a filesystem, manage permissions (<code>chmod</code>/<code>chown</code>), and inspect processes from the terminal without a GUI.</li>
+<li>[ ] I can read a <code>tcpdump</code> or check why a port is unreachable using <code>ss</code>, <code>curl</code>, and <code>dig</code>.</li>
+<li>[ ] I can rebase a feature branch, resolve a merge conflict, and explain the difference between <code>merge</code> and <code>rebase</code>.</li>
+<li>[ ] I can write a Bash script with functions, argument parsing, and <code>set -euo pipefail</code> error handling.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.4</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3 id="quiz-containers">Containers &amp; Orchestration</h3>
+<ul>
+<li>[ ] I can write a multi-stage Dockerfile and explain why image layer order affects build cache.</li>
+<li>[ ] I understand the difference between a Pod, a Deployment, and a Service in Kubernetes.</li>
+<li>[ ] I can debug a <code>CrashLoopBackOff</code> using <code>kubectl logs</code>, <code>describe</code>, and <code>events</code>.</li>
+<li>[ ] I can configure resource requests/limits, liveness/readiness probes, and a horizontal pod autoscaler.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3 id="quiz-iac-cloud">Infrastructure as Code &amp; Cloud</h3>
+<ul>
+<li>[ ] I can write Terraform that provisions a VPC and compute, and I understand remote state and locking.</li>
+<li>[ ] I can explain idempotency and why it matters for configuration management.</li>
+<li>[ ] I understand the shared-responsibility model and core cloud primitives (compute, networking, IAM, storage).</li>
+<li>[ ] I can structure Terraform into reusable modules with separate environments (dev/staging/prod).</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3 id="quiz-cicd-sre">CI/CD &amp; SRE</h3>
+<ul>
+<li>[ ] I can build a CI pipeline that lints, tests, builds an image, and pushes it to a registry.</li>
+<li>[ ] I can explain blue-green vs. canary deployment and when to use each.</li>
+<li>[ ] I can define an SLI, an SLO, and an error budget, and explain how an error budget changes release behavior.</li>
+<li>[ ] I have written a runbook and participated in (or simulated) an incident with a blameless postmortem.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 5.2</strong> | <strong>4 yes</strong> → You are job-ready; use the <strong>Final Capstone</strong> as a portfolio piece</p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-linux-command-line"><td>1.1</td><td>Linux &amp; the Command Line</td><td>Beginner</td><td>None</td><td>8h</td></tr>
+<tr data-href="#module-12-networking-fundamentals"><td>1.2</td><td>Networking Fundamentals</td><td>Beginner</td><td>1.1</td><td>6h</td></tr>
+<tr data-href="#module-13-git-version-control"><td>1.3</td><td>Git &amp; Version Control</td><td>Beginner</td><td>1.1</td><td>5h</td></tr>
+<tr data-href="#module-14-shell-scripting"><td>1.4</td><td>Shell Scripting</td><td>Beginner–Intermediate</td><td>1.1</td><td>6h</td></tr>
+<tr data-href="#module-21-docker-containerization"><td>2.1</td><td>Docker &amp; Containerization</td><td>Beginner–Intermediate</td><td>1.1, 1.4</td><td>8h</td></tr>
+<tr data-href="#module-22-kubernetes-fundamentals"><td>2.2</td><td>Kubernetes Fundamentals</td><td>Intermediate</td><td>2.1, 1.2</td><td>10h</td></tr>
+<tr data-href="#module-23-kubernetes-production"><td>2.3</td><td>Kubernetes in Production</td><td>Intermediate</td><td>2.2</td><td>10h</td></tr>
+<tr data-href="#module-31-terraform"><td>3.1</td><td>Terraform &amp; IaC</td><td>Intermediate</td><td>1.4</td><td>9h</td></tr>
+<tr data-href="#module-32-ansible-config-management"><td>3.2</td><td>Config Management (Ansible)</td><td>Intermediate</td><td>1.1, 1.4</td><td>7h</td></tr>
+<tr data-href="#module-33-cloud-fundamentals"><td>3.3</td><td>Cloud Fundamentals</td><td>Beginner–Intermediate</td><td>1.2</td><td>8h</td></tr>
+<tr data-href="#module-41-cicd-pipelines"><td>4.1</td><td>CI/CD Pipelines</td><td>Intermediate</td><td>1.3, 2.1</td><td>8h</td></tr>
+<tr data-href="#module-42-deployment-strategies-gitops"><td>4.2</td><td>Deployment Strategies &amp; GitOps</td><td>Intermediate</td><td>2.3, 4.1</td><td>8h</td></tr>
+<tr data-href="#module-51-observability"><td>5.1</td><td>Observability: Metrics, Logs, Traces</td><td>Intermediate</td><td>2.2</td><td>9h</td></tr>
+<tr data-href="#module-52-slos-error-budgets"><td>5.2</td><td>SLOs, SLIs &amp; Error Budgets</td><td>Intermediate</td><td>5.1</td><td>6h</td></tr>
+<tr data-href="#module-53-incident-response-oncall"><td>5.3</td><td>Incident Response &amp; On-Call</td><td>Intermediate</td><td>5.1, 5.2</td><td>6h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1–2 are largely sequential (you cannot orchestrate containers you cannot build). Phases 3, 4, and 5 are <strong>parallel tracks</strong> that all depend on Phase 2 — once you can ship a container to Kubernetes, you can pursue IaC, delivery automation, and reliability in any order.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+<h3 id="track-1-devops-engineer">Track 1 — DevOps Engineer (build &amp; ship)</h3>
+<p><code>1.1 → 1.3 → 1.4 → 2.1 → 2.2 → 3.1 → 4.1 → 4.2 → Final Capstone</code><br>
+Target outcome: <strong>Junior/Mid DevOps Engineer</strong> — owns the pipeline from commit to production.</p>
+<h3 id="track-2-sre">Track 2 — Site Reliability Engineer (keep it up)</h3>
+<p><code>1.1 → 1.2 → 1.4 → 2.2 → 2.3 → 5.1 → 5.2 → 5.3 → Final Capstone</code><br>
+Target outcome: <strong>SRE</strong> — owns SLOs, observability, and incident response.</p>
+<h3 id="track-3-platform-cloud-engineer">Track 3 — Platform / Cloud Engineer (build the foundation)</h3>
+<p><code>1.1 → 1.2 → 3.3 → 3.1 → 3.2 → 2.2 → 2.3 → Final Capstone</code><br>
+Target cert: <strong>AWS Solutions Architect Associate</strong> + <strong>HashiCorp Terraform Associate</strong>.</p>
+<h3 id="track-4-kubernetes-specialist">Track 4 — Kubernetes Specialist (CKA prep)</h3>
+<p><code>1.1 → 1.2 → 1.4 → 2.1 → 2.2 → 2.3 → 5.1 → Final Capstone</code><br>
+Target cert: <strong>CKA (Certified Kubernetes Administrator)</strong>.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Foundations             (Weeks 1–4)
+Phase 2 — Containers &amp; Orchestration (Weeks 5–9)
+Phase 3 — Infrastructure as Code   (Weeks 10–13)
+Phase 4 — CI/CD &amp; Delivery         (Weeks 14–16)
+Phase 5 — SRE &amp; Reliability        (Weeks 17–20)
+Final Capstone — Operate ShopFast  (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ─┬─ 1.2 ─────────────────┐
+     ├─ 1.3 ── 4.1 ── 4.2    │
+     └─ 1.4 ─┬─ 2.1 ── 2.2 ──┼── 2.3 ──┐
+             ├─ 3.1 ── 3.2   │         ├─ Final
+             └─ 3.3 ─────────┘         │   Capstone
+                          5.1 ── 5.2 ── 5.3 ┘</code></pre>
+
+<h2 id="phase-1-foundations">Phase 1: Foundations</h2>
+<h3 id="weeks-1-4">Weeks 1–4 | Goal: operate Linux confidently, reason about the network, and version everything in Git</h3>
+<hr />
+
+<h3 id="module-11-linux-command-line">Module 1.1 — Linux &amp; the Command Line</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Given a misbehaving server, find which process is holding port 8080, inspect its open files, check its memory and CPU, and restart it under systemd — all from the shell.<br>
+<strong>Skip if:</strong> You administer Linux daily and are fluent with permissions, processes, systemd, and log inspection.<br>
+<strong>Unlocks:</strong> Every later module — Linux is the substrate of DevOps.</p>
+</blockquote>
+
+<h4>Why the shell is the job</h4>
+<p>Almost every production system you will operate runs on Linux, and you will reach it through a terminal over SSH — no GUI, often over a flaky connection. The shell is not a beginner's compromise you outgrow; it is the fastest, most scriptable, most universally available interface to a machine. If you cannot read a process table or follow a log without a dashboard, you cannot debug an outage when the dashboard is the thing that is down.</p>
+
+<h4>The filesystem, permissions, and processes</h4>
+<p>Everything in Linux is a file — including devices, sockets, and running process state under <code>/proc</code>. Permissions are the first security boundary: a world-writable secrets file is a breach waiting to happen, so <code>chmod 600</code> on a private key is not pedantry, it is the difference between a key and a leaked credential.</p>
+<pre><code class="language-bash"># Inspect, don't guess
+ls -la /etc/ssh                 # long listing with permissions, owner, size
+stat ~/.ssh/id_ed25519          # exact mode, uid/gid, timestamps
+chmod 600 ~/.ssh/id_ed25519     # owner read/write only — SSH refuses looser keys
+
+# Processes: who is doing what
+ps aux --sort=-%mem | head      # top memory consumers
+top -o %CPU                     # live view, sort by CPU
+pgrep -a gunicorn               # find ShopFast's app server processes
+
+# What is holding a port?
+sudo ss -ltnp | grep :8080      # listening TCP sockets + owning PID
+sudo lsof -i :8080              # open files/sockets on that port</code></pre>
+
+<h4>systemd, logs, and resource pressure</h4>
+<p>Modern Linux supervises long-running services with <strong>systemd</strong>. Knowing how to start, enable (start-on-boot), and inspect a unit is daily work — a service that runs but is not <code>enable</code>d silently disappears after the next reboot, which is a classic 3am surprise.</p>
+<pre><code class="language-bash"># Service lifecycle
+sudo systemctl status shopfast.service   # is it running? recent log tail?
+sudo systemctl restart shopfast.service
+sudo systemctl enable --now shopfast.service  # start now AND on boot
+
+# Logs are structured and queryable with journalctl
+journalctl -u shopfast.service -n 100 --no-pager   # last 100 lines
+journalctl -u shopfast.service --since "10 min ago" -f  # follow live
+
+# Resource pressure during an incident
+free -h          # memory; watch the 'available' column, not 'free'
+df -h            # disk — a full disk causes the weirdest failures
+vmstat 1 5       # CPU/IO/swap, 5 one-second samples</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Reading the <code>free</code> column in <code>free -h</code> and panicking that memory is "almost full." Linux deliberately uses spare RAM for the page cache; the number that matters is <strong>available</strong>, which counts reclaimable cache. Low <code>free</code> with healthy <code>available</code> is a well-tuned system, not a problem.</p></blockquote>
+
+<p><strong>Exercise 1.1 — Diagnose a Sick Server</strong></p>
+<p>Dataset: a single Linux VM (or container) running the ShopFast API under systemd.</p>
+<ol>
+<li>Create a <code>shopfast</code> system user with no login shell and a home under <code>/opt/shopfast</code>.</li>
+<li>Write a minimal <code>shopfast.service</code> unit that runs a placeholder process; <code>enable --now</code> it and confirm it survives a reboot.</li>
+<li>Find which PID owns port 8080 and trace it back to the systemd unit.</li>
+<li>Tail the last 50 journal lines for the service, then follow them live while you restart it.</li>
+<li>Simulate a full disk in a scratch directory (<code>fallocate</code>) and show how <code>df -h</code> reveals it.</li>
+<li>Set permissions on a fake private key to <code>600</code> and prove a looser mode is rejected by SSH semantics.</li>
+<li>Write a one-paragraph diagnosis as if reporting to a teammate: what you checked, in what order, and why.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-networking-fundamentals">Module 1.2 — Networking Fundamentals</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Given "the ShopFast API is unreachable," methodically isolate whether the problem is DNS, routing, the firewall, TLS, or the application — and name the exact command you'd run at each layer.<br>
+<strong>Skip if:</strong> You can explain the TCP handshake, CIDR notation, the OSI/TCP-IP layers, and how DNS resolution and TLS termination work.<br>
+<strong>Unlocks:</strong> Kubernetes networking (2.2), cloud VPC design (3.3).</p>
+</blockquote>
+
+<h4>Why DevOps is mostly a networking job in disguise</h4>
+<p>"It works on my machine" is almost always a networking statement: the difference between your laptop and production is which packets can reach which port. Most outages a DevOps/SRE engineer touches are a connectivity layer failing — a DNS record pointing at a dead host, a security group blocking a port, an expired certificate. If you cannot reason layer by layer, you debug by guessing.</p>
+
+<h4>The layers, top to bottom</h4>
+<p>Isolate failures by walking the stack: physical/link → IP (addressing, routing) → TCP/UDP (ports, handshake) → TLS (certificates) → application (HTTP). The discipline is to test one layer at a time so you never conflate "DNS is wrong" with "the app crashed."</p>
+<pre><code class="language-bash"># Layer 3/4 — can I reach the host and port at all?
+ping api.shopfast.local            # ICMP reachability (may be firewalled off)
+dig +short api.shopfast.local      # DNS: what IP does the name resolve to?
+ss -ltn                            # is anything LISTENing locally?
+nc -vz api.shopfast.local 443      # can I open a TCP connection to the port?
+
+# Layer 7 — is the application actually answering, and correctly?
+curl -v https://api.shopfast.local/healthz     # full request/response + TLS
+curl -so /dev/null -w '%{http_code} %{time_total}s\n' \
+     https://api.shopfast.local/healthz        # status code + latency only
+
+# TLS specifically
+openssl s_client -connect api.shopfast.local:443 -servername api.shopfast.local &lt;/dev/null \
+  | openssl x509 -noout -dates    # certificate validity window</code></pre>
+
+<h4>Addressing, CIDR, and ports</h4>
+<p>CIDR notation (<code>10.0.0.0/16</code>) defines how many addresses a network holds — getting subnet math wrong means your Kubernetes pods and your database collide on the same range and cannot route. A <code>/24</code> is 256 addresses; each step down the prefix doubles the host count.</p>
+<pre><code class="language-bash"># Subnet math you will actually use
+ipcalc 10.0.0.0/16        # network, broadcast, host range, count
+# /16 = 65,536 addrs  | /24 = 256 addrs  | /28 = 16 addrs
+
+# Well-known ports to memorize
+# 22 SSH · 80 HTTP · 443 HTTPS · 53 DNS · 5432 PostgreSQL · 6379 Redis</code></pre>
+
+<p><strong>Exercise 1.2 — The Unreachable Service Drill</strong></p>
+<p>Dataset: ShopFast API behind a reverse proxy, reachable by hostname inside a Docker network.</p>
+<ol>
+<li>Resolve the API hostname with <code>dig</code> and confirm the IP matches the running container.</li>
+<li>Use <code>nc -vz</code> to test the port, then <code>curl -v</code> to inspect the full HTTP exchange.</li>
+<li>Break DNS (point the name at the wrong IP) and document the exact symptom and the command that isolates it.</li>
+<li>Break the port (stop the proxy) and show how the symptom differs from the DNS failure.</li>
+<li>Inspect the TLS certificate's expiry with <code>openssl</code> and explain what an expired cert does to clients.</li>
+<li>Given <code>10.20.0.0/16</code>, carve out three non-overlapping <code>/24</code> subnets for app, data, and ingress tiers.</li>
+<li>Write a 5-step "is it down?" checklist ordered from cheapest to most expensive check.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-git-version-control">Module 1.3 — Git &amp; Version Control</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Take a messy 6-commit feature branch, interactively rebase it into 2 clean commits, rebase it onto an updated main, resolve a conflict, and push without force-pushing over a teammate's work.<br>
+<strong>Skip if:</strong> You use rebase, cherry-pick, and reflog comfortably and understand the difference between merge and rebase histories.<br>
+<strong>Unlocks:</strong> CI/CD (4.1), GitOps (4.2) — in GitOps, Git is the source of truth for infrastructure.</p>
+</blockquote>
+
+<h4>Why Git is the backbone of DevOps, not just code</h4>
+<p>In modern practice, <em>everything</em> lives in Git: application code, Dockerfiles, Kubernetes manifests, Terraform, pipeline definitions. This is the heart of GitOps — the desired state of your entire system is a commit, and deployment is "make reality match the repo." A clean, reviewable history is therefore operational hygiene: when production breaks, <code>git log</code> and <code>git revert</code> are your fastest path back to a known-good state.</p>
+
+<h4>Branching, rebasing, and a clean history</h4>
+<p>A merge preserves the literal timeline; a rebase rewrites your branch to look like it was built on the latest main. Rebase for a tidy, linear feature history before review; merge to integrate. Rewriting history that others have already pulled is the cardinal sin — it forces everyone else to untangle divergent histories.</p>
+<pre><code class="language-bash"># Feature workflow
+git switch -c feat/cart-redis-cache
+# ... commits ...
+git fetch origin
+git rebase origin/main            # replay my commits on top of latest main
+git rebase -i origin/main         # squash/reword into a clean story
+
+# Recover from mistakes — the reflog remembers everything
+git reflog                        # every HEAD position, even "lost" commits
+git reset --hard HEAD@{2}         # jump back to a known-good state
+
+# Safe sharing
+git push --force-with-lease       # refuse to clobber others' new commits</code></pre>
+
+<h4>Commit hygiene and the revert reflex</h4>
+<p>Atomic commits with conventional messages (<code>feat:</code>, <code>fix:</code>, <code>chore:</code>) let tooling generate changelogs and let humans bisect bugs. When a deploy goes wrong, <code>git revert</code> creates a new commit that undoes a bad one without rewriting history — the safe production rollback.</p>
+<pre><code class="language-bash">git commit -m "fix: cap Redis connection pool to prevent FD exhaustion"
+git bisect start HEAD v1.4.0      # binary-search for the commit that broke prod
+git revert a1b2c3d                # undo a bad commit with a new, auditable commit</code></pre>
+
+<p><strong>Exercise 1.3 — Tame the History</strong></p>
+<p>Dataset: the ShopFast repo with a deliberately messy feature branch (6 WIP commits, a typo, a debug print).</p>
+<ol>
+<li>Interactively rebase the 6 commits into 2 logical, well-messaged commits using conventional commit prefixes.</li>
+<li>Rebase the branch onto an updated <code>main</code> and resolve the induced merge conflict by hand.</li>
+<li>Push with <code>--force-with-lease</code> and explain why it is safer than <code>--force</code>.</li>
+<li>Use <code>git bisect</code> to locate which commit introduced a failing test.</li>
+<li>Revert a "bad deploy" commit and confirm the revert is itself an auditable commit.</li>
+<li>Add a <code>.gitignore</code> that excludes <code>.env</code>, <code>__pycache__</code>, and Terraform state; verify nothing secret is tracked.</li>
+</ol>
+<hr />
+
+<h3 id="module-14-shell-scripting">Module 1.4 — Shell Scripting</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Write a robust deploy/backup script with strict error handling, argument parsing, a usage message, and a trap that cleans up temp files even on failure.<br>
+<strong>Skip if:</strong> You write defensive Bash with <code>set -euo pipefail</code>, traps, and functions as second nature.<br>
+<strong>Unlocks:</strong> CI/CD glue (4.1), Ansible (3.2), Docker entrypoints (2.1).</p>
+</blockquote>
+
+<h4>Why "just a script" runs production</h4>
+<p>Glue scripts run more production infrastructure than anyone admits: backups, health checks, deploy wrappers, log rotation. The danger is that a naive script keeps going after a command fails — a backup script that ignores a failed <code>pg_dump</code> and then "succeeds" gives you a directory of empty files and a false sense of safety. Defensive Bash turns silent failure into loud, early failure.</p>
+
+<h4>The safety preamble and clean argument handling</h4>
+<p><code>set -euo pipefail</code> is non-negotiable: exit on any error (<code>-e</code>), treat unset variables as errors (<code>-u</code>), and fail a pipeline if any stage fails (<code>-o pipefail</code>). A <code>trap</code> guarantees cleanup runs even when the script aborts midway — without it, a crashed script leaves lockfiles and temp data behind that block the next run.</p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+set -euo pipefail
+
+usage() { echo "Usage: $0 -e &lt;env&gt; -t &lt;tag&gt;" &gt;&amp;2; exit 1; }
+
+ENV="" TAG=""
+while getopts "e:t:" opt; do
+  case "$opt" in
+    e) ENV="$OPTARG" ;;
+    t) TAG="$OPTARG" ;;
+    *) usage ;;
+  esac
+done
+[[ -z "$ENV" || -z "$TAG" ]] &amp;&amp; usage
+
+workdir="$(mktemp -d)"
+trap 'rm -rf "$workdir"' EXIT       # cleanup ALWAYS runs, even on error
+
+log() { printf '[%s] %s\n' "$(date +%H:%M:%S)" "$*"; }
+
+deploy() {
+  local env="$1" tag="$2"
+  log "Deploying ShopFast $tag to $env"
+  kubectl --context "$env" set image deploy/shopfast api="shopfast:$tag"
+  kubectl --context "$env" rollout status deploy/shopfast --timeout=120s
+}
+
+deploy "$ENV" "$TAG"
+log "Done."</code></pre>
+<p><em>Retrieval practice: before re-reading the snippet, write down from memory what each of the three flags in <code>set -euo pipefail</code> does and what <code>trap ... EXIT</code> guarantees. Then check — the gaps are exactly what bites you in production.</em></p>
+
+<p><strong>Exercise 1.4 — A Backup Script You Can Trust</strong></p>
+<p>Dataset: the ShopFast PostgreSQL database (use a local Postgres container).</p>
+<ol>
+<li>Write <code>backup.sh</code> with <code>set -euo pipefail</code>, a usage function, and <code>getopts</code> parsing for <code>-d</code> (database) and <code>-o</code> (output dir).</li>
+<li><code>pg_dump</code> the database to a timestamped, gzipped file; verify the dump is non-empty before declaring success.</li>
+<li>Add a <code>trap</code> that removes the partial file if the dump fails midway.</li>
+<li>Add a retention function that deletes backups older than 7 days.</li>
+<li>Make the script idempotent: running it twice in the same minute must not corrupt or duplicate state.</li>
+<li>Run it under <code>bash -x</code> and read the trace to confirm control flow.</li>
+<li>Wire it into a cron entry and confirm the schedule with <code>systemctl list-timers</code> or <code>crontab -l</code>.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-bootstrap-shopfast">Phase 1 Capstone: Bootstrap ShopFast</h3>
+<p><strong>Project: stand up ShopFast on a bare Linux host, by hand, scripted, and version-controlled.</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) how to find which process owns a port, (2) the order in which you'd isolate an unreachable service across the network layers, and (3) why <code>set -euo pipefail</code> matters? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> a fresh Linux VM (cloud instance or local VM) and the ShopFast repo (Flask API + Postgres).</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A Linux host where ShopFast's API runs under systemd, enabled on boot, with a dedicated non-login service user.</li>
+<li>A <code>provision.sh</code> script (defensive Bash) that installs dependencies, creates the user, lays down the unit file, and starts the service — idempotently.</li>
+<li>A documented network diagnosis: prove the API is reachable on its port and resolve its hostname.</li>
+<li>A <code>backup.sh</code> on a daily timer dumping Postgres with 7-day retention.</li>
+<li>The whole thing in a Git repo with a clean, conventional-commit history and a <code>.gitignore</code> that excludes secrets.</li>
+<li>A <code>README.md</code> runbook: how to deploy, restart, back up, and diagnose the host.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-containers-orchestration">Phase 2: Containers &amp; Orchestration</h2>
+<h3 id="weeks-5-9">Weeks 5–9 | Goal: package ShopFast as an image and run it reliably on Kubernetes</h3>
+<hr />
+
+<h3 id="module-21-docker-containerization">Module 2.1 — Docker &amp; Containerization</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.1, 1.4 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Write a multi-stage Dockerfile for the ShopFast API that produces an image under 150 MB, runs as a non-root user, and rebuilds in seconds when only app code (not dependencies) changes.<br>
+<strong>Skip if:</strong> You write multi-stage builds, understand layer caching, and know the difference between an image, a container, and a volume.<br>
+<strong>Unlocks:</strong> Kubernetes (2.2), CI image builds (4.1).</p>
+</blockquote>
+
+<h4>Why containers ended "works on my machine"</h4>
+<p>A container packages the application <em>and</em> its entire userspace — libraries, runtime, system tools — into one immutable artifact that runs identically on your laptop and in production. The whole class of "it worked in dev" bugs comes from environment drift; containers eliminate it by shipping the environment with the code. Unlike a VM, a container shares the host kernel, so it starts in milliseconds and costs almost nothing to run many of.</p>
+
+<h4>Layers, caching, and image size</h4>
+<p>A Docker image is a stack of read-only layers; each Dockerfile instruction adds one. Docker caches layers and rebuilds only from the first changed instruction downward — so ordering matters enormously. Copy and install dependencies <em>before</em> copying app code: dependencies change rarely, app code changes constantly, and putting them in the right order turns a 3-minute rebuild into a 3-second one.</p>
+<pre><code class="language-bash"># Multi-stage Dockerfile for ShopFast (Python/Flask)
+# ---- build stage: compile deps in a fat image ----
+FROM python:3.12-slim AS build
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --prefix=/install --no-cache-dir -r requirements.txt
+
+# ---- runtime stage: copy only what we need into a lean image ----
+FROM python:3.12-slim AS runtime
+RUN useradd --system --no-create-home shopfast   # never run as root
+WORKDIR /app
+COPY --from=build /install /usr/local
+COPY . .
+USER shopfast                                     # drop privileges
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD curl -f http://localhost:8080/healthz || exit 1
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "app:app"]</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Running the container as <code>root</code> (the default). If an attacker escapes the app into the container, root inside the container maps to a dangerous starting point for host escalation. A one-line <code>USER shopfast</code> closes the easiest path — and many clusters now <em>reject</em> root containers outright.</p></blockquote>
+
+<h4>Images vs. containers vs. volumes; networking and Compose</h4>
+<p>An <strong>image</strong> is the immutable template; a <strong>container</strong> is a running instance of it; a <strong>volume</strong> is persistent storage that outlives the container. Treat containers as disposable cattle — never store data you care about inside one. Docker Compose wires multiple containers (API, Postgres, Redis) into one declarative local environment.</p>
+<pre><code class="language-yaml"># docker-compose.yml — full local ShopFast stack
+services:
+  api:
+    build: .
+    ports: ["8080:8080"]
+    environment:
+      DATABASE_URL: postgresql://shop:shop@db:5432/shopfast
+      REDIS_URL: redis://cache:6379/0
+    depends_on: [db, cache]
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: shop
+      POSTGRES_PASSWORD: shop
+      POSTGRES_DB: shopfast
+    volumes: ["pgdata:/var/lib/postgresql/data"]   # data survives restarts
+  cache:
+    image: redis:7
+volumes:
+  pgdata:</code></pre>
+
+<p><strong>Exercise 2.1 — Containerize ShopFast</strong></p>
+<p>Dataset: the ShopFast API source plus its Postgres and Redis dependencies.</p>
+<ol>
+<li>Write a multi-stage Dockerfile producing a non-root image under 150 MB; verify size with <code>docker images</code>.</li>
+<li>Prove layer caching works: change one line of app code and confirm dependencies are not reinstalled.</li>
+<li>Add a <code>HEALTHCHECK</code> and confirm <code>docker ps</code> reports the container as healthy.</li>
+<li>Write a <code>docker-compose.yml</code> bringing up API + Postgres + Redis with a named volume for Postgres.</li>
+<li>Show that destroying and recreating the API container loses no database data (volume persistence).</li>
+<li>Use <code>docker exec</code> to open a shell in the running API and curl its own health endpoint from inside.</li>
+<li>Scan the image for vulnerabilities (<code>docker scout</code> or <code>trivy</code>) and fix one finding.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-kubernetes-fundamentals">Module 2.2 — Kubernetes Fundamentals</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1, 1.2 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Deploy ShopFast to a cluster with a Deployment, expose it with a Service, inject config via ConfigMap/Secret, then debug a deliberately broken Pod stuck in <code>CrashLoopBackOff</code> using only <code>kubectl</code>.<br>
+<strong>Skip if:</strong> You can explain the reconciliation loop and the Pod → ReplicaSet → Deployment → Service chain, and you debug pods fluently.<br>
+<strong>Unlocks:</strong> Production K8s (2.3), GitOps (4.2), observability (5.1).</p>
+</blockquote>
+
+<h4>Why orchestration, and what Kubernetes actually does</h4>
+<p>One container is easy; fifty across ten machines, self-healing, load-balanced, and rolling out updates with zero downtime is not. Kubernetes is a <strong>declarative control loop</strong>: you describe the desired state (10 replicas of ShopFast, this image, this much CPU), and the control plane continuously works to make reality match. If a node dies, the scheduler reschedules its pods elsewhere — you declared "10 replicas," and Kubernetes is responsible for keeping that true. This reconciliation model is the single most important mental shift in the whole guide.</p>
+
+<h4>The object hierarchy</h4>
+<p>A <strong>Pod</strong> is the smallest unit — one or more containers sharing a network namespace. You almost never create pods directly; a <strong>Deployment</strong> manages a <strong>ReplicaSet</strong> that keeps N identical pods running and handles rolling updates. A <strong>Service</strong> gives that ever-changing set of pods a stable virtual IP and DNS name, because pods are ephemeral and their IPs change on every restart.</p>
+<pre><code class="language-yaml"># shopfast-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shopfast
+spec:
+  replicas: 3
+  selector:
+    matchLabels: { app: shopfast }
+  template:
+    metadata:
+      labels: { app: shopfast }
+    spec:
+      containers:
+        - name: api
+          image: registry.example.com/shopfast:1.4.0
+          ports: [{ containerPort: 8080 }]
+          envFrom:
+            - configMapRef: { name: shopfast-config }
+            - secretRef: { name: shopfast-secrets }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shopfast
+spec:
+  selector: { app: shopfast }     # routes to any pod with this label
+  ports:
+    - port: 80
+      targetPort: 8080</code></pre>
+
+<h4>kubectl: the debugging loop</h4>
+<p>Ninety percent of Kubernetes operations is a tight loop of four commands. A pod in <code>CrashLoopBackOff</code> is restarting because its process keeps exiting — the cause is almost always in the logs or the events, never a mystery. The skill is reading them in order rather than randomly editing YAML.</p>
+<pre><code class="language-bash">kubectl apply -f shopfast-deployment.yaml   # declare desired state
+kubectl get pods -l app=shopfast -w         # watch them converge
+kubectl describe pod &lt;name&gt;                  # events: scheduling, pulls, probe fails
+kubectl logs &lt;name&gt; --previous              # logs from the crashed instance
+kubectl exec -it &lt;name&gt; -- sh                # shell inside for live inspection
+
+# Inject config without rebuilding the image
+kubectl create configmap shopfast-config --from-literal=LOG_LEVEL=info
+kubectl create secret generic shopfast-secrets \
+  --from-literal=DATABASE_URL='postgresql://...'</code></pre>
+
+<p><strong>Exercise 2.2 — Deploy and Debug on Kubernetes</strong></p>
+<p>Dataset: the ShopFast image from Module 2.1, deployed to a local cluster (kind, minikube, or k3d).</p>
+<ol>
+<li>Write a Deployment (3 replicas) and a Service for ShopFast; apply and watch the pods reach <code>Running</code>.</li>
+<li>Move all configuration into a ConfigMap and all secrets into a Secret; confirm the app reads them via <code>envFrom</code>.</li>
+<li>Port-forward the Service and curl the health endpoint through it.</li>
+<li>Introduce a typo in the image tag, observe <code>ImagePullBackOff</code>, and diagnose it with <code>describe</code>.</li>
+<li>Make the container crash on startup, observe <code>CrashLoopBackOff</code>, and find the root cause in <code>logs --previous</code>.</li>
+<li>Delete a pod and prove the ReplicaSet recreates it — explain what reconciliation just did.</li>
+<li>Scale to 5 replicas with <code>kubectl scale</code> and confirm the Service load-balances across all of them.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-kubernetes-production">Module 2.3 — Kubernetes in Production</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Configure ShopFast with resource requests/limits, liveness/readiness probes, a HorizontalPodAutoscaler, an Ingress with TLS, and a PodDisruptionBudget — then prove a rolling update causes zero dropped requests under load.<br>
+<strong>Skip if:</strong> You run production workloads with probes, autoscaling, ingress, and graceful rollouts already.<br>
+<strong>Unlocks:</strong> GitOps (4.2), SRE reliability work (5.x).</p>
+</blockquote>
+
+<h4>The gap between "it runs" and "it's reliable"</h4>
+<p>A bare Deployment runs your app; it does not make it reliable. Production Kubernetes is about the guardrails: telling the scheduler how much CPU/memory to reserve, telling it how to know your app is healthy, and telling it how to update without dropping traffic. Skipping these is the most common reason a cluster that "worked in the demo" falls over under real load.</p>
+
+<h4>Requests, limits, and the two probes</h4>
+<p><strong>Requests</strong> are what the scheduler reserves; <strong>limits</strong> are the hard ceiling. Set requests too low and pods get packed onto a node and starve each other; omit limits and one runaway pod can take down its neighbors. The two probes answer different questions: <strong>readiness</strong> = "should I receive traffic?" (fail it and the Service stops routing to the pod), <strong>liveness</strong> = "am I deadlocked and need a restart?". Confusing them is a classic outage — a too-aggressive liveness probe will kill a pod that is merely slow, turning a hiccup into a restart storm.</p>
+<pre><code class="language-yaml">resources:
+  requests: { cpu: 100m, memory: 128Mi }   # scheduler reserves this
+  limits:   { cpu: 500m, memory: 256Mi }   # hard ceiling; OOM-killed past it
+readinessProbe:                            # gate traffic until ready
+  httpGet: { path: /readyz, port: 8080 }
+  initialDelaySeconds: 5
+  periodSeconds: 10
+livenessProbe:                             # restart only if truly stuck
+  httpGet: { path: /healthz, port: 8080 }
+  initialDelaySeconds: 20
+  periodSeconds: 15
+  failureThreshold: 3</code></pre>
+
+<h4>Autoscaling, ingress, and graceful rollouts</h4>
+<p>A <strong>HorizontalPodAutoscaler</strong> adds/removes replicas based on observed load, so you pay for capacity you need and shed it when traffic drops. An <strong>Ingress</strong> terminates TLS and routes external HTTP to Services by host/path. A <strong>PodDisruptionBudget</strong> protects availability during voluntary disruptions (node drains, upgrades) by refusing to evict too many pods at once.</p>
+<pre><code class="language-yaml">apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata: { name: shopfast }
+spec:
+  scaleTargetRef: { apiVersion: apps/v1, kind: Deployment, name: shopfast }
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource: { name: cpu, target: { type: Utilization, averageUtilization: 70 } }
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata: { name: shopfast }
+spec:
+  minAvailable: 2                 # never drop below 2 during node drains
+  selector: { matchLabels: { app: shopfast } }</code></pre>
+
+<p><strong>Exercise 2.3 — Make ShopFast Production-Grade</strong></p>
+<p>Dataset: the ShopFast Deployment from Module 2.2, plus a load generator (<code>hey</code> or <code>k6</code>).</p>
+<ol>
+<li>Add tuned resource requests/limits; deliberately set limits too low and observe an OOMKill.</li>
+<li>Add distinct readiness and liveness probes; demonstrate readiness gating traffic during startup.</li>
+<li>Misconfigure liveness to be too aggressive, observe the restart storm, then fix it — and explain the failure.</li>
+<li>Add an HPA targeting 70% CPU; drive load and watch replicas scale up, then back down.</li>
+<li>Add an Ingress with a TLS certificate and route <code>shopfast.local</code> to the Service.</li>
+<li>Add a PodDisruptionBudget, drain a node, and confirm availability is preserved.</li>
+<li>Run a rolling update under sustained load and prove (via the load tool's error count) zero dropped requests.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-containerize-deploy">Phase 2 Capstone: Containerize &amp; Deploy ShopFast</h3>
+<p><strong>Project: take ShopFast from source to a self-healing, autoscaling Kubernetes deployment.</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) why dependency-before-code ordering in a Dockerfile matters, (2) what the reconciliation loop does when a pod dies, and (3) the difference between a readiness and a liveness probe? Re-read the relevant module for any blank.</p></blockquote>
+<p><strong>Dataset:</strong> the ShopFast API + Postgres + Redis, a container registry, and a local or cloud Kubernetes cluster.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A multi-stage, non-root ShopFast image pushed to a registry, scanned, and under 150 MB.</li>
+<li>Kubernetes manifests: Deployment (3+ replicas), Service, ConfigMap, Secret, Ingress with TLS.</li>
+<li>Production guardrails: resource requests/limits, readiness + liveness probes, HPA, PodDisruptionBudget.</li>
+<li>Stateful dependencies handled correctly (Postgres with persistent storage, Redis as cache).</li>
+<li>A demonstrated zero-downtime rolling update under load, with the error count as evidence.</li>
+<li>A failure drill writeup: how you diagnosed a <code>CrashLoopBackOff</code> and an <code>ImagePullBackOff</code>.</li>
+<li>All manifests in Git, ready to be driven by GitOps in Phase 4.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-infrastructure-as-code">Phase 3: Infrastructure as Code</h2>
+<h3 id="weeks-10-13">Weeks 10–13 | Goal: provision and configure all of ShopFast's infrastructure as version-controlled code</h3>
+<hr />
+
+<h3 id="module-31-terraform">Module 3.1 — Terraform &amp; IaC</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.4 · <strong>Time:</strong> ~9h<br>
+<strong>Skip-check (test-out):</strong> Write Terraform that provisions a VPC, subnets, and a Kubernetes cluster, using remote state with locking and a reusable module parameterized per environment — and explain what <code>terraform plan</code> shows before <code>apply</code>.<br>
+<strong>Skip if:</strong> You write modular Terraform with remote state, understand the state file's role, and use <code>plan</code>/<code>apply</code>/<code>import</code> confidently.<br>
+<strong>Unlocks:</strong> Cloud provisioning (3.3), reproducible environments for CI/CD (4.x).</p>
+</blockquote>
+
+<h4>Why click-ops does not scale</h4>
+<p>Clicking through a cloud console to create infrastructure is unrepeatable, undocumented, and undiffable — six months later nobody knows why a security group exists or whether deleting it is safe. <strong>Infrastructure as Code</strong> makes your infrastructure a reviewable, version-controlled artifact: the same Terraform that built staging builds production, and a code review catches a mistake before it reaches the cloud rather than after.</p>
+
+<h4>Declarative state and the plan/apply loop</h4>
+<p>Terraform is declarative: you describe the desired infrastructure, and Terraform computes the diff between that and a <strong>state file</strong> recording what it already created. <code>terraform plan</code> shows exactly what will be added, changed, or destroyed <em>before</em> anything happens — reading the plan is the single most important safety habit, because an unexpected "destroy" line in a plan is how you catch a config mistake before it deletes your database.</p>
+<pre><code class="language-bash"># versions + remote state with locking (so two engineers can't corrupt state)
+terraform {
+  required_version = "&gt;= 1.7"
+  backend "s3" {
+    bucket         = "shopfast-tfstate"
+    key            = "prod/terraform.tfstate"
+    region         = "ap-southeast-1"
+    dynamodb_table = "tf-locks"     # state lock prevents concurrent apply
+    encrypt        = true
+  }
+}
+
+variable "environment" { type = string }
+variable "vpc_cidr"    { type = string  default = "10.0.0.0/16" }
+
+resource "aws_vpc" "main" {
+  cidr_block           = var.vpc_cidr
+  enable_dns_hostnames = true
+  tags = { Name = "shopfast-${var.environment}", Env = var.environment }
+}</code></pre>
+
+<h4>Modules and per-environment composition</h4>
+<p>A module is reusable infrastructure with inputs and outputs — write the network once, instantiate it for dev, staging, and prod with different sizes. This is what stops staging and production from drifting apart, which is the root cause of "it passed in staging but broke in prod."</p>
+<pre><code class="language-bash"># environments/prod/main.tf
+module "network" {
+  source      = "../../modules/network"
+  environment = "prod"
+  vpc_cidr    = "10.0.0.0/16"
+  az_count    = 3
+}
+
+module "cluster" {
+  source       = "../../modules/eks"
+  environment  = "prod"
+  subnet_ids   = module.network.private_subnet_ids   # wire outputs to inputs
+  node_count   = 5
+  node_size    = "t3.large"
+}</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Committing <code>terraform.tfstate</code> to Git or keeping it only on a laptop. State holds resource IDs (and sometimes secrets) and must be the single source of truth — two people applying against separate local copies will fight over the same resources. Use a <em>remote</em> backend with locking from day one.</p></blockquote>
+
+<p><strong>Exercise 3.1 — Provision ShopFast's Foundation</strong></p>
+<p>Dataset: a cloud account (AWS free tier or LocalStack) to host ShopFast's infrastructure.</p>
+<ol>
+<li>Configure a remote backend (S3 + DynamoDB lock, or equivalent) and migrate state to it.</li>
+<li>Write a reusable <code>network</code> module: VPC, public/private subnets across AZs, routing.</li>
+<li>Instantiate the module for a <code>dev</code> and a <code>prod</code> environment with different CIDRs and sizes.</li>
+<li>Run <code>terraform plan</code> and annotate every line of the diff before applying.</li>
+<li>Make a change that would destroy a resource, catch it in the plan, and explain how you avoided the accident.</li>
+<li>Use <code>terraform import</code> to bring one manually-created resource under management.</li>
+<li>Tear down <code>dev</code> with <code>terraform destroy</code> and confirm <code>prod</code> is untouched.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-ansible-config-management">Module 3.2 — Config Management (Ansible)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.1, 1.4 · <strong>Time:</strong> ~7h<br>
+<strong>Skip-check (test-out):</strong> Write an idempotent Ansible playbook that configures a host (packages, users, a templated config file, a running service) and prove that a second run reports zero changes.<br>
+<strong>Skip if:</strong> You write idempotent roles, use handlers and templates, and understand inventory and variable precedence.<br>
+<strong>Unlocks:</strong> Hybrid setups where some infra is not containerized; bootstrapping hosts before Kubernetes.</p>
+</blockquote>
+
+<h4>Provisioning vs. configuration — two different jobs</h4>
+<p>Terraform <em>creates</em> resources (the VM exists); configuration management <em>shapes what is inside</em> them (the VM has the right packages, users, and config). On fully containerized stacks Kubernetes absorbs much of this, but real environments are hybrid — bastion hosts, database servers, legacy boxes — and Ansible is the standard for bringing them to a known state without writing fragile one-off scripts.</p>
+
+<h4>Idempotency is the whole point</h4>
+<p>An Ansible task describes a desired <em>end state</em>, not a command to run. "Ensure nginx is installed" does nothing if nginx is already there — so you can run the same playbook a hundred times and converge to the same state safely. This is what makes config management trustworthy: re-running after a partial failure finishes the job instead of doubling it.</p>
+<pre><code class="language-yaml"># playbook.yml — configure a ShopFast bastion/utility host
+- hosts: bastion
+  become: true
+  vars:
+    app_user: shopfast
+  tasks:
+    - name: Ensure base packages are present
+      ansible.builtin.apt:
+        name: [postgresql-client, redis-tools, curl, jq]
+        state: present
+        update_cache: true
+
+    - name: Create the application user
+      ansible.builtin.user:
+        name: "{{ app_user }}"
+        shell: /usr/sbin/nologin
+        system: true
+
+    - name: Template the app config
+      ansible.builtin.template:
+        src: shopfast.env.j2
+        dest: /etc/shopfast/shopfast.env
+        owner: "{{ app_user }}"
+        mode: "0640"
+      notify: restart shopfast            # handler runs ONLY if file changed
+
+  handlers:
+    - name: restart shopfast
+      ansible.builtin.systemd:
+        name: shopfast
+        state: restarted</code></pre>
+
+<p><strong>Exercise 3.2 — Configure a Host the Idempotent Way</strong></p>
+<p>Dataset: a Linux host (the VM from Phase 1, or a fresh one) to serve as ShopFast's bastion.</p>
+<ol>
+<li>Write an inventory file with the host and connection variables.</li>
+<li>Write a playbook that installs the Postgres/Redis client tooling, creates the <code>shopfast</code> user, and templates a config file.</li>
+<li>Use a Jinja2 template with variables for environment-specific values.</li>
+<li>Add a handler that restarts the service only when the config file actually changes.</li>
+<li>Run the playbook twice; prove the second run reports <code>changed=0</code> (true idempotency).</li>
+<li>Refactor the tasks into a reusable role with <code>defaults</code> and <code>tasks</code> directories.</li>
+<li>Run with <code>--check --diff</code> to preview changes without applying them.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-cloud-fundamentals">Module 3.3 — Cloud Fundamentals</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Design ShopFast's cloud footprint — VPC with public/private subnets, a managed Kubernetes cluster, a managed database, an IAM role with least privilege, and a load balancer — and explain the shared-responsibility boundary for each.<br>
+<strong>Skip if:</strong> You are fluent with core cloud primitives (compute, VPC networking, IAM, managed databases, object storage) on at least one provider.<br>
+<strong>Unlocks:</strong> Realistic Terraform targets (3.1), production deployment (Phase 4).</p>
+</blockquote>
+
+<h4>What the cloud actually sells you</h4>
+<p>The cloud is someone else's computers plus an API to rent capability on demand. The strategic value is <em>managed services</em>: instead of running and patching your own database, you rent a managed Postgres and the provider handles backups, failover, and security patches. The <strong>shared-responsibility model</strong> draws the line — the provider secures the infrastructure <em>of</em> the cloud; you secure what you put <em>in</em> it (your data, your IAM policies, your network rules). Misreading that line is the source of most cloud breaches.</p>
+
+<h4>The core primitives</h4>
+<p>Every provider sells the same building blocks under different names: <strong>compute</strong> (VMs / managed Kubernetes), <strong>networking</strong> (VPC, subnets, security groups, load balancers), <strong>identity</strong> (IAM roles and policies), <strong>storage</strong> (block volumes, object storage), and <strong>managed data</strong> (databases, caches, queues). Learn the concepts once and the provider-specific names are just translation.</p>
+<pre><code class="language-bash"># ShopFast on AWS, sketched with the CLI (do this in Terraform for real)
+# Networking: a VPC with a private subnet for the database tier
+aws ec2 describe-vpcs --query 'Vpcs[].{Id:VpcId,Cidr:CidrBlock}'
+
+# Identity: least-privilege — the app reads ONE bucket, nothing more
+aws iam create-role --role-name shopfast-app --assume-role-policy-document file://trust.json
+# attach a policy granting s3:GetObject on arn:aws:s3:::shopfast-assets/* only
+
+# Managed data: rent Postgres instead of running it yourself
+aws rds describe-db-instances --query 'DBInstances[].{Id:DBInstanceIdentifier,Status:DBInstanceStatus}'</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Attaching broad IAM policies like <code>AdministratorAccess</code> or <code>s3:*</code> "to make it work." Least privilege is not bureaucracy — a leaked credential with a scoped policy can touch one bucket; the same leak with admin owns your whole account. Grant the narrowest permission that makes the task succeed, then widen only if something breaks.</p></blockquote>
+
+<h4>Cost awareness as an engineering skill</h4>
+<p>In the cloud, an architectural decision is a billing decision. Leaving a load balancer or a large instance running idle, or egressing terabytes across regions, turns into real money. Treat cost as a first-class constraint: tag resources by environment, set budgets/alerts, and right-size from observed usage rather than guessing big.</p>
+
+<p><strong>Exercise 3.3 — Design ShopFast's Cloud Footprint</strong></p>
+<p>Dataset: a cloud account (free tier) and ShopFast's requirements (web API, Postgres, Redis, object storage for product images).</p>
+<ol>
+<li>Diagram the target architecture: VPC, public subnet (load balancer), private subnets (app + data tiers).</li>
+<li>Define an IAM role for the app with least-privilege access to exactly one storage bucket.</li>
+<li>Stand up a managed Postgres instance in a private subnet, reachable only from the app tier.</li>
+<li>Put a load balancer in front of the app and confirm the database is not publicly reachable.</li>
+<li>For each component, write one sentence on who owns security under the shared-responsibility model.</li>
+<li>Add cost tags (Env, Owner) and set a budget alert; estimate the monthly cost of the footprint.</li>
+<li>Identify the single biggest cost line and propose one change to cut it without hurting reliability.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-provision-shopfast">Phase 3 Capstone: Provision ShopFast with Code</h3>
+<p><strong>Project: reproduce ShopFast's entire infrastructure from code, in two environments, with zero console clicks.</strong></p>
+<p><strong>Dataset:</strong> a cloud account and the ShopFast requirements (Kubernetes cluster, managed Postgres, Redis, object storage, load balancer).</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A Terraform repo with reusable modules (network, cluster, data) and separate <code>dev</code>/<code>prod</code> environments.</li>
+<li>Remote state with locking; the state file is never committed to Git.</li>
+<li>A managed Kubernetes cluster and managed Postgres provisioned entirely by Terraform.</li>
+<li>Least-privilege IAM for the app, reviewed and documented.</li>
+<li>An Ansible playbook (idempotent) configuring any non-containerized host (e.g., a bastion).</li>
+<li>A clean <code>terraform plan</code> output for <code>prod</code>, annotated, proving no unintended destroys.</li>
+<li>A teardown of <code>dev</code> that leaves <code>prod</code> intact, plus a cost estimate for the running footprint.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-cicd-delivery">Phase 4: CI/CD &amp; Delivery</h2>
+<h3 id="weeks-14-16">Weeks 14–16 | Goal: every commit is automatically tested, built, and safely shipped to ShopFast</h3>
+<hr />
+
+<h3 id="module-41-cicd-pipelines">Module 4.1 — CI/CD Pipelines</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3, 2.1 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Build a pipeline that, on every push, lints and tests ShopFast, builds and scans a Docker image, pushes it to a registry on the main branch, and fails the build if any stage fails — with secrets injected safely, never hardcoded.<br>
+<strong>Skip if:</strong> You author multi-stage pipelines with caching, matrix builds, and secure secret handling already.<br>
+<strong>Unlocks:</strong> Deployment automation and GitOps (4.2).</p>
+</blockquote>
+
+<h4>Why automate the path from commit to artifact</h4>
+<p>Continuous Integration means every change is automatically merged, built, and tested so integration problems surface in minutes, not at a painful release weeks later. The deeper benefit is a <em>fast feedback loop</em>: a developer learns their change broke a test before they have moved on to the next task, while the context is still fresh. A pipeline that takes 40 minutes or is flaky destroys this benefit — speed and reliability of the pipeline are themselves engineering goals.</p>
+
+<h4>Stages, caching, and fail-fast</h4>
+<p>A good pipeline is ordered cheapest-and-fastest first: lint, then unit tests, then build, then image scan, then push. Put the fast checks first so a formatting error fails in 10 seconds instead of after a 5-minute build. Cache dependencies between runs or you pay the full install cost every time.</p>
+<pre><code class="language-yaml"># .github/workflows/ci.yml
+name: ShopFast CI
+on: { push: { branches: [main] }, pull_request: {} }
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }   # cache deps between runs
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - run: ruff check .                # lint first — fails in seconds
+      - run: pytest --cov=app --cov-fail-under=80
+
+  build:
+    needs: test                          # only build if tests pass (fail-fast)
+    runs-on: ubuntu-latest
+    permissions: { contents: read, packages: write }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/build-push-action@v6
+        with:
+          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          push: ${{ github.ref == 'refs/heads/main' }}   # push only on main
+      - name: Scan image
+        run: trivy image --exit-code 1 --severity HIGH,CRITICAL \
+             ghcr.io/${{ github.repository }}:${{ github.sha }}</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Pasting a registry token or cloud key directly into a workflow file or an <code>echo</code>. Anything in the repo is visible to everyone with read access and lives forever in history. Use the platform's encrypted secrets (<code>${{ secrets.X }}</code>) or, better, short-lived OIDC tokens — and never <code>echo</code> a secret, since logs are retained.</p></blockquote>
+
+<p><strong>Exercise 4.1 — Build ShopFast's Pipeline</strong></p>
+<p>Dataset: the ShopFast repo with its test suite and Dockerfile.</p>
+<ol>
+<li>Write a CI workflow that runs lint and tests on every pull request, with dependency caching.</li>
+<li>Add a coverage gate that fails the build below 80%.</li>
+<li>Add a build job that depends on tests and builds the Docker image.</li>
+<li>Scan the image and fail the build on any HIGH/CRITICAL vulnerability.</li>
+<li>Push the image to a registry <em>only</em> on the <code>main</code> branch, tagged with the commit SHA.</li>
+<li>Inject a registry credential via encrypted secrets; prove it never appears in logs.</li>
+<li>Deliberately break a test and confirm the build fails fast before the expensive build stage runs.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-deployment-strategies-gitops">Module 4.2 — Deployment Strategies &amp; GitOps</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.3, 4.1 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Deploy a new ShopFast version with a canary rollout, automatically roll back on elevated error rate, and run the whole thing via GitOps — where a Git commit, not a <code>kubectl apply</code>, is what changes production.<br>
+<strong>Skip if:</strong> You run progressive delivery (canary/blue-green) and operate a GitOps controller (Argo CD / Flux) already.<br>
+<strong>Unlocks:</strong> Safe, frequent releases — the prerequisite for error-budget-driven SRE (5.2).</p>
+</blockquote>
+
+<h4>Why how you deploy matters as much as what</h4>
+<p>A "big bang" deploy that replaces all instances at once means a bad release hits 100% of users instantly. Progressive delivery limits the blast radius: roll the change to a small slice, watch the metrics, and only proceed if it is healthy. The goal is to make deployment <em>boring</em> — frequent, small, reversible — because small reversible changes are the foundation of moving fast without breaking things.</p>
+
+<h4>Blue-green vs. canary</h4>
+<p><strong>Blue-green</strong> runs two full environments and flips traffic from old (blue) to new (green) at once — instant rollback (flip back) at the cost of double the resources. <strong>Canary</strong> shifts a small percentage of traffic to the new version, watches error rate and latency, and ramps up gradually — cheaper and more granular, but slower. Choose by how expensive a wrong release is and how much spare capacity you have.</p>
+
+<h4>GitOps: the repo is production</h4>
+<p>In GitOps, a controller running <em>in</em> the cluster (Argo CD or Flux) continuously reconciles the live state against manifests in a Git repo. You never <code>kubectl apply</code> by hand; you commit a change, and the controller pulls it. This gives you a complete audit trail (every change is a reviewed commit), trivial rollback (revert the commit), and drift detection (manual changes get reverted back to the declared state). The discipline that "the repo is the source of truth" is what makes a fleet of clusters manageable.</p>
+<pre><code class="language-yaml"># Argo CD Application — the repo path it watches IS production
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: { name: shopfast, namespace: argocd }
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/acme/shopfast-deploy
+    targetRevision: main
+    path: k8s/prod                # manifests here define prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: shopfast
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }   # revert manual drift
+    syncOptions: [CreateNamespace=true]</code></pre>
+
+<p><strong>Exercise 4.2 — Ship Safely with GitOps</strong></p>
+<p>Dataset: the ShopFast cluster from Phase 2, plus a GitOps controller (Argo CD or Flux) and the CI pipeline from 4.1.</p>
+<ol>
+<li>Install a GitOps controller and point it at a <code>shopfast-deploy</code> manifests repo.</li>
+<li>Change the image tag via a Git commit and watch the controller reconcile it into the cluster.</li>
+<li>Manually edit a live resource and prove <code>selfHeal</code> reverts it to the committed state.</li>
+<li>Configure a canary rollout (e.g., Argo Rollouts) shifting 10% → 50% → 100% with pauses.</li>
+<li>Deploy a deliberately broken version and confirm the canary auto-rolls-back on elevated error rate.</li>
+<li>Perform a rollback by reverting a Git commit and confirm production follows.</li>
+<li>Write a one-page comparison: when you'd choose blue-green over canary for ShopFast.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-ship-it">Phase 4 Capstone: Ship It</h3>
+<p><strong>Project: a fully automated path from a developer's commit to a safe, observable production release.</strong></p>
+<p><strong>Dataset:</strong> the ShopFast repo, registry, Kubernetes cluster, and GitOps controller from earlier phases.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A CI pipeline: lint, test (with coverage gate), build, scan, and push an immutable SHA-tagged image.</li>
+<li>A GitOps repo that is the single source of truth for production manifests.</li>
+<li>A canary (or blue-green) deployment strategy with automated analysis and rollback.</li>
+<li>A demonstrated good release (canary ramps to 100%) and a demonstrated bad release (auto-rollback).</li>
+<li>Secrets handled with encrypted store or OIDC — none in code or logs.</li>
+<li>A rollback executed purely by reverting a Git commit.</li>
+<li>A short runbook: "how a change reaches production at ShopFast," readable by a new hire.</li>
+</ol>
+<hr />
+
+<h2 id="phase-5-sre-reliability">Phase 5: SRE &amp; Reliability</h2>
+<h3 id="weeks-17-20">Weeks 17–20 | Goal: measure ShopFast's reliability, defend it with SLOs, and respond to incidents like an SRE</h3>
+<hr />
+
+<h3 id="module-51-observability">Module 5.1 — Observability: Metrics, Logs, Traces</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~9h<br>
+<strong>Skip-check (test-out):</strong> Instrument ShopFast to expose Prometheus metrics, build a Grafana dashboard showing the four golden signals, write a PromQL alert for elevated error rate, and use a trace to find which downstream call made a request slow.<br>
+<strong>Skip if:</strong> You instrument services, write PromQL, and correlate metrics, logs, and traces to diagnose latency already.<br>
+<strong>Unlocks:</strong> SLOs (5.2) and incident response (5.3) — you cannot set targets for what you cannot measure.</p>
+</blockquote>
+
+<h4>Monitoring vs. observability</h4>
+<p>Monitoring answers questions you knew to ask in advance ("is CPU high?"); observability is the property of being able to ask <em>new</em> questions about your system from its outputs — to debug a failure you have never seen before without shipping new code. The three pillars are <strong>metrics</strong> (cheap numeric time series — rates, errors, durations), <strong>logs</strong> (discrete events with detail), and <strong>traces</strong> (the path of one request across services). You need all three: metrics tell you <em>something</em> is wrong, traces tell you <em>where</em>, logs tell you <em>why</em>.</p>
+
+<h4>The four golden signals</h4>
+<p>Google's SRE practice distills what to watch into four signals: <strong>latency</strong> (how long requests take), <strong>traffic</strong> (demand), <strong>errors</strong> (rate of failed requests), and <strong>saturation</strong> (how full your resources are). Instrument these first — they catch the overwhelming majority of user-facing problems, and chasing exotic metrics before you have these is misplaced effort.</p>
+<pre><code class="language-py"># Instrument ShopFast (Flask) with prometheus_client
+from prometheus_client import Counter, Histogram, generate_latest
+import time
+
+REQUESTS = Counter("http_requests_total", "Total requests",
+                   ["method", "endpoint", "status"])
+LATENCY  = Histogram("http_request_duration_seconds", "Request latency",
+                     ["endpoint"])
+
+@app.before_request
+def _start(): request._t0 = time.perf_counter()
+
+@app.after_request
+def _record(resp):
+    dur = time.perf_counter() - request._t0
+    LATENCY.labels(request.path).observe(dur)
+    REQUESTS.labels(request.method, request.path, resp.status_code).inc()
+    return resp
+
+@app.route("/metrics")
+def metrics(): return generate_latest()    # Prometheus scrapes this</code></pre>
+
+<h4>PromQL: turning time series into answers</h4>
+<p>Prometheus scrapes the <code>/metrics</code> endpoint and stores time series; PromQL queries them. The fundamental pattern is <code>rate()</code> over a counter to get a per-second rate, then aggregate. Error rate as a fraction of total traffic — not a raw count — is what you actually alert on, because 100 errors means nothing without knowing the denominator.</p>
+<pre><code class="language-sql"># Error rate (5xx as a fraction of all requests) over 5 minutes
+sum(rate(http_requests_total{status=~"5.."}[5m]))
+  / sum(rate(http_requests_total[5m]))
+
+# p95 latency from the histogram
+histogram_quantile(0.95,
+  sum(rate(http_request_duration_seconds_bucket[5m])) by (le, endpoint))
+
+# Alert rule: page if error rate exceeds 2% for 5 minutes
+# (expr above) &gt; 0.02  for: 5m</code></pre>
+
+<p><strong>Exercise 5.1 — Make ShopFast Observable</strong></p>
+<p>Dataset: ShopFast on Kubernetes, plus Prometheus + Grafana (e.g., kube-prometheus-stack).</p>
+<ol>
+<li>Instrument the API to expose request count, error count, and latency histograms at <code>/metrics</code>.</li>
+<li>Deploy Prometheus and confirm it is scraping ShopFast.</li>
+<li>Build a Grafana dashboard showing all four golden signals.</li>
+<li>Write PromQL for error rate and p95 latency; verify the numbers move under load.</li>
+<li>Add structured (JSON) logging with a request ID and ship logs to a viewer (e.g., Loki).</li>
+<li>Add tracing and use a trace to identify which downstream call (Postgres vs. Redis) dominates a slow request.</li>
+<li>Write an alert rule that fires when error rate exceeds 2% for 5 minutes.</li>
+</ol>
+<hr />
+
+<h3 id="module-52-slos-error-budgets">Module 5.2 — SLOs, SLIs &amp; Error Budgets</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 5.1 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Define an SLI and a 99.9% availability SLO for ShopFast's checkout flow, compute the monthly error budget in minutes, and state the policy for what happens when the budget is exhausted.<br>
+<strong>Skip if:</strong> You define SLIs/SLOs from user journeys, compute error budgets, and use burn-rate alerts already.<br>
+<strong>Unlocks:</strong> Data-driven release decisions and on-call prioritization (5.3).</p>
+</blockquote>
+
+<h4>Why "100% reliable" is the wrong goal</h4>
+<p>Chasing 100% uptime is economically irrational — each extra nine costs exponentially more, and beyond a point users cannot even perceive the difference (their own network is less reliable than your service). SRE reframes reliability as a <em>target you deliberately choose</em>, balancing reliability against the speed of shipping features. The tool for that balance is the error budget.</p>
+
+<h4>SLI → SLO → error budget</h4>
+<p>An <strong>SLI</strong> (indicator) is a measurement of one aspect of service health, expressed as a ratio of good events to total — e.g., the fraction of checkout requests served under 300ms without error. An <strong>SLO</strong> (objective) is the target for that SLI over a window — e.g., 99.9% over 28 days. The <strong>error budget</strong> is the inverse: <code>100% − SLO</code> = how much unreliability you are <em>allowed</em>. It converts reliability from an argument into arithmetic.</p>
+<pre><code class="language-sql"># Error-budget math for a 99.9% SLO over 28 days
+# Allowed downtime = (1 - 0.999) * 28 days
+#                  = 0.001 * 28 * 24 * 60 minutes
+#                  = 40.32 minutes per 28 days
+
+# Availability SLI in PromQL: fraction of successful requests
+sum(rate(http_requests_total{status!~"5.."}[28d]))
+  / sum(rate(http_requests_total[28d]))    # must stay >= 0.999</code></pre>
+
+<h4>Error budgets change behavior</h4>
+<p>The budget is a shared currency between dev and ops. <strong>Budget remaining</strong> → ship features freely; you have room to absorb risk. <strong>Budget exhausted</strong> → the policy kicks in: freeze risky releases and spend engineering effort on reliability until the service is back within SLO. This replaces the endless dev-vs-ops tug of war with an agreed, automatic rule. A fast-<strong>burn</strong>-rate alert (burning a large fraction of the budget in an hour) pages immediately; a slow burn is a ticket.</p>
+<blockquote class="callout"><p><strong>Disambiguation:</strong> An <strong>SLA</strong> is not an SLO. An SLA is a <em>contract</em> with customers (with financial penalties); an SLO is your <em>internal</em> target, set deliberately stricter than the SLA so you discover trouble before you breach the contract. Conflating them leads teams to treat internal targets as legally binding, or worse, to set no internal margin at all.</p></blockquote>
+
+<p><strong>Exercise 5.2 — Set ShopFast's Reliability Targets</strong></p>
+<p>Dataset: the ShopFast metrics and dashboards from Module 5.1.</p>
+<ol>
+<li>Identify ShopFast's most critical user journey (checkout) and define an availability SLI and a latency SLI for it.</li>
+<li>Choose an SLO for each (justify the number — why 99.9% and not 99.99%).</li>
+<li>Compute the monthly error budget in minutes for your availability SLO.</li>
+<li>Write the SLI as PromQL and add an SLO line to your Grafana dashboard.</li>
+<li>Write an error-budget policy: exactly what the team does when the budget is half-spent, and when it is exhausted.</li>
+<li>Configure a multi-window burn-rate alert (fast burn pages, slow burn tickets).</li>
+<li>Run a load/chaos test that intentionally burns budget and watch the burn-rate alert fire.</li>
+</ol>
+<hr />
+
+<h3 id="module-53-incident-response-oncall">Module 5.3 — Incident Response &amp; On-Call</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 5.1, 5.2 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Run a simulated ShopFast outage end to end — detect via alert, declare and triage the incident with clear roles, mitigate, then write a blameless postmortem with concrete action items.<br>
+<strong>Skip if:</strong> You have led incidents, written runbooks, and run blameless postmortems in production.<br>
+<strong>Unlocks:</strong> Operating real systems on-call — the capstone of the SRE track.</p>
+</blockquote>
+
+<h4>Incidents are a process, not heroics</h4>
+<p>When ShopFast is down, the worst outcome is three engineers debugging in parallel with no coordination, stepping on each other and missing the obvious. Mature incident response is a defined process with roles — an <strong>Incident Commander</strong> who coordinates and decides (and does not also debug), responders who investigate, and a communications lead who keeps stakeholders informed. The goal during an incident is to <em>restore service</em>, not to find the root cause; understanding comes later, in the postmortem.</p>
+
+<h4>Runbooks and the mitigation-first mindset</h4>
+<p>A <strong>runbook</strong> is a step-by-step guide for a known failure mode, written calmly in advance so that at 3am you execute rather than improvise. The first move in most incidents is mitigation — roll back the recent deploy, fail over, scale up, shed load — to stop the bleeding before you understand exactly why it started. A deploy that correlates with the alert is guilty until proven innocent; revert first, investigate after.</p>
+<pre class="artifact" data-kind="RUNBOOK"><code>RUNBOOK — ShopFast: elevated 5xx error rate
+
+TRIGGER  Alert "ShopFastErrorRateHigh" (5xx > 2% for 5m)
+
+1. ACKNOWLEDGE the page; declare an incident if error rate > 5%
+   or checkout is affected. Assign an Incident Commander.
+
+2. ASSESS scope (2 min):
+   - Grafana "ShopFast Overview" -> golden signals
+   - Is it all endpoints or just /checkout?
+   - Did a deploy land in the last 30 min?  (check Argo CD / CI)
+
+3. MITIGATE first, diagnose later:
+   - If a recent deploy correlates -> roll back via Git revert
+     and let Argo CD reconcile.  Confirm error rate drops.
+   - If DB saturation -> check connection pool, failover replica.
+   - If traffic spike -> confirm HPA scaled; scale manually if not.
+
+4. COMMUNICATE: post status every 15 min to #incidents,
+   even if the update is "still investigating."
+
+5. RESOLVE: confirm golden signals back to baseline for 15 min.
+   Close the incident. Schedule the postmortem within 48h.</code></pre>
+
+<h4>Blameless postmortems</h4>
+<p>After service is restored, a <strong>blameless postmortem</strong> documents the timeline, impact, root cause, and — crucially — systemic action items, without assigning personal fault. The premise: people act reasonably given the information they had, so if a human "caused" the outage, the real fix is the system that let one mistake reach production. Blame drives problems underground; blamelessness surfaces them and is what lets an organization actually get more reliable over time.</p>
+
+<p><strong>Exercise 5.3 — Run an Incident</strong></p>
+<p>Dataset: the fully instrumented ShopFast (metrics, alerts, GitOps) from earlier modules.</p>
+<ol>
+<li>Write a runbook for one concrete ShopFast failure mode (e.g., elevated 5xx, or DB connection exhaustion).</li>
+<li>Inject the failure (deploy a bad version, or exhaust the connection pool) and let the alert fire.</li>
+<li>Run the incident with explicit roles: who is Incident Commander, who investigates, who communicates.</li>
+<li>Mitigate first (roll back / fail over) and record the time from alert to mitigation (your MTTR).</li>
+<li>Confirm recovery against the golden signals before declaring the incident resolved.</li>
+<li>Write a blameless postmortem: timeline, user impact, root cause, and 3 systemic action items.</li>
+<li>Turn one action item into a concrete change (a new alert, a probe tweak, a runbook update) and ship it.</li>
+</ol>
+<hr />
+
+<h3 id="phase-5-capstone-run-the-system">Phase 5 Capstone: Run the System</h3>
+<p><strong>Project: operate ShopFast as an SRE for a simulated week — measure it, defend it, and survive an outage.</strong></p>
+<p><strong>Dataset:</strong> the full ShopFast stack (Kubernetes, CI/CD, GitOps, Prometheus/Grafana) from all prior phases.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A Grafana dashboard covering the four golden signals, with SLO lines overlaid.</li>
+<li>Documented SLIs and SLOs for the checkout journey, with the computed error budget.</li>
+<li>Burn-rate alerts (fast and slow) wired to a notification channel.</li>
+<li>At least two runbooks for the most likely failure modes.</li>
+<li>A recorded incident drill: detection → mitigation → resolution, with MTTR measured.</li>
+<li>A blameless postmortem with at least three systemic action items, one of them implemented.</li>
+<li>A one-page reflection on what your error budget says about whether ShopFast should ship features or invest in reliability this month.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-operate-shopfast">Final Capstone: Operate ShopFast End to End</h2>
+<p><strong>Project: ShopFast, from empty cloud account to a self-healing, observable, continuously-delivered service you can defend with SLOs.</strong></p>
+<p>Integrates all tracks. Uses the ShopFast system carried through every phase.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li><strong>Infrastructure as code:</strong> a Terraform repo that provisions ShopFast's entire footprint (network, Kubernetes cluster, managed Postgres, storage, IAM) for <code>dev</code> and <code>prod</code>, with remote state.</li>
+<li><strong>Containerized app:</strong> a multi-stage, non-root, scanned ShopFast image in a registry.</li>
+<li><strong>Production Kubernetes:</strong> Deployment with probes, resource limits, HPA, Ingress+TLS, and a PodDisruptionBudget.</li>
+<li><strong>CI/CD:</strong> a pipeline that lints, tests (coverage-gated), builds, scans, and pushes an immutable image on every merge to main.</li>
+<li><strong>GitOps delivery:</strong> a controller reconciling production from a manifests repo, with canary rollout and automated rollback.</li>
+<li><strong>Observability:</strong> Prometheus metrics for the four golden signals, Grafana dashboards, structured logs, and tracing.</li>
+<li><strong>Reliability:</strong> documented SLIs/SLOs, a computed error budget, burn-rate alerts, and an error-budget policy.</li>
+<li><strong>Operations:</strong> runbooks, a recorded incident drill with measured MTTR, and a blameless postmortem.</li>
+<li><strong>Security &amp; cost:</strong> least-privilege IAM, no secrets in code, and a cost estimate with one optimization applied.</li>
+<li><strong>A capstone README</strong> that lets a stranger understand, deploy, operate, and roll back the whole system.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: DevOps &amp; SRE Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Command</th><th>Notes</th></tr>
+<tr><td>Find what owns a port</td><td><code>ss -ltnp</code> / <code>lsof -i :PORT</code></td><td>First move in any "unreachable" incident</td></tr>
+<tr><td>Inspect a service &amp; its logs</td><td><code>systemctl status</code> / <code>journalctl -u</code></td><td>systemd is the standard Linux supervisor</td></tr>
+<tr><td>Test connectivity by layer</td><td><code>dig</code> → <code>nc -vz</code> → <code>curl -v</code></td><td>DNS, then TCP, then HTTP/TLS</td></tr>
+<tr><td>Clean up branch history</td><td><code>git rebase -i</code></td><td>Never rewrite history others have pulled</td></tr>
+<tr><td>Safe production rollback (code)</td><td><code>git revert</code></td><td>Auditable; does not rewrite history</td></tr>
+<tr><td>Build a lean image</td><td>Multi-stage <code>Dockerfile</code> + <code>USER</code></td><td>Deps before code for cache; never run as root</td></tr>
+<tr><td>Local multi-service stack</td><td><code>docker compose up</code></td><td>API + Postgres + Redis in one file</td></tr>
+<tr><td>Deploy &amp; watch on K8s</td><td><code>kubectl apply</code> / <code>get -w</code></td><td>Declarative; the control loop converges</td></tr>
+<tr><td>Debug a broken pod</td><td><code>describe</code> → <code>logs --previous</code> → <code>exec</code></td><td>Read events and crash logs, don't guess</td></tr>
+<tr><td>Autoscale on load</td><td><code>HorizontalPodAutoscaler</code></td><td>Needs resource requests to compute utilization</td></tr>
+<tr><td>Preview infra changes</td><td><code>terraform plan</code></td><td>Always read the diff; watch for "destroy"</td></tr>
+<tr><td>Idempotent host config</td><td>Ansible playbook (<code>--check</code>)</td><td>Second run should report <code>changed=0</code></td></tr>
+<tr><td>CI on every commit</td><td>GitHub Actions workflow</td><td>Fast checks first; cache deps; fail fast</td></tr>
+<tr><td>Declarative deploys</td><td>Argo CD / Flux (GitOps)</td><td>The repo is the source of truth for prod</td></tr>
+<tr><td>Query metrics</td><td>PromQL <code>rate()</code> + <code>histogram_quantile()</code></td><td>Alert on error <em>rate</em>, not raw counts</td></tr>
+<tr><td>Set a reliability target</td><td>SLI → SLO → error budget</td><td>Budget = <code>100% − SLO</code>; it gates releases</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-foundations-containers">Foundations &amp; Containers</h3>
+<dl class="glossary">
+<dt>Idempotency</dt>
+<dd>A property of an operation where running it many times produces the same end state as running it once.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "repeatable", "re-runnable" — those imply you <em>can</em> re-run, not that the result is unchanged.</dd>
+<dt>Image</dt>
+<dd>An immutable, layered template containing an application and its full userspace, from which containers are instantiated.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "container", "build", "snapshot" — a container is a <em>running instance</em> of an image, not the image itself.</dd>
+<dt>Container</dt>
+<dd>A running, isolated process (or group) created from an image, sharing the host kernel rather than virtualizing hardware.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "VM", "virtual machine" — a VM virtualizes hardware and runs its own kernel; a container does not.</dd>
+<dt>Volume</dt>
+<dd>Persistent storage that exists independently of any container's lifecycle, so data survives container deletion.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "disk", "mount" loosely — a bind mount and a managed volume differ in ownership and portability.</dd>
+</dl>
+
+<h3 id="glossary-kubernetes-delivery">Kubernetes &amp; Delivery</h3>
+<dl class="glossary">
+<dt>Pod</dt>
+<dd>The smallest deployable unit in Kubernetes: one or more containers sharing a network namespace and lifecycle.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "container" as a synonym — a pod can hold several containers and is what Kubernetes schedules.</dd>
+<dt>Reconciliation loop</dt>
+<dd>The continuous control process by which Kubernetes drives the live cluster state toward the declared desired state.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "deployment process", "sync" — reconciliation is ongoing, not a one-time action.</dd>
+<dt>Readiness probe</dt>
+<dd>A health check that determines whether a pod should receive traffic; failing it removes the pod from the Service.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing with <em>liveness probe</em>, which decides whether to <em>restart</em> a stuck pod.</dd>
+<dt>GitOps</dt>
+<dd>An operating model where a Git repository is the single source of truth for desired infrastructure, reconciled into the cluster by a controller.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "CI/CD", "automated deploy" — GitOps is pull-based reconciliation, not a push pipeline.</dd>
+<dt>Canary deployment</dt>
+<dd>A progressive rollout that routes a small fraction of traffic to a new version, expanding only if its metrics stay healthy.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "blue-green" — blue-green flips all traffic at once between two full environments.</dd>
+</dl>
+
+<h3 id="glossary-sre-reliability">SRE &amp; Reliability</h3>
+<dl class="glossary">
+<dt>Observability</dt>
+<dd>The degree to which a system's internal state can be inferred from its external outputs (metrics, logs, traces), enough to answer new questions without new code.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "monitoring" — monitoring tracks known questions; observability enables novel ones.</dd>
+<dt>SLI (Service Level Indicator)</dt>
+<dd>A quantitative measure of one aspect of service health, expressed as the ratio of good events to total events.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "metric" loosely — an SLI is a specific user-centric ratio, not any time series.</dd>
+<dt>SLO (Service Level Objective)</dt>
+<dd>A target value or range for an SLI over a time window, chosen deliberately to balance reliability against feature velocity.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "SLA" — an SLA is an external contract with penalties; an SLO is an internal target.</dd>
+<dt>Error budget</dt>
+<dd>The permitted amount of unreliability over a window, equal to <code>100% − SLO</code>, spent by failures and used to gate releases.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "downtime allowance" only — it covers all SLI failures, not just hard downtime.</dd>
+<dt>Blameless postmortem</dt>
+<dd>A written incident analysis that identifies systemic causes and action items without attributing personal fault.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "root cause analysis" as a synonym — RCA can assign blame; blameless explicitly does not.</dd>
+<dt>MTTR (Mean Time To Recovery)</dt>
+<dd>The average time from the start of an incident to restored service; the primary speed metric of incident response.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "downtime", "MTBF" — MTBF measures time <em>between</em> failures, a different quantity.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td><em>The Phoenix Project</em> (Kim, Behr, Spafford)</td><td>Why DevOps exists — flow, feedback, and culture as a novel</td></tr>
+<tr><td><em>The DevOps Handbook</em> (Kim et al.)</td><td>The practices behind the principles; the canonical playbook</td></tr>
+<tr><td><em>Site Reliability Engineering</em> (Google, free online)</td><td>SLOs, error budgets, on-call — the foundational SRE text</td></tr>
+<tr><td><em>The Site Reliability Workbook</em> (Google, free online)</td><td>Practical, worked examples of applying SRE</td></tr>
+<tr><td><em>Kubernetes Up &amp; Running</em> (Burns, Beda, Hightower)</td><td>A solid, hands-on Kubernetes foundation</td></tr>
+<tr><td><em>Terraform: Up &amp; Running</em> (Brikman)</td><td>Modular Terraform and real-world IaC patterns</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>Kubernetes official docs &amp; tutorials</td><td>Kubernetes</td><td>The interactive "Kubernetes Basics" is the best free start</td></tr>
+<tr><td>KodeKloud / "Kubernetes the Hard Way"</td><td>K8s, certs</td><td>Hands-on labs; "Hard Way" demystifies the control plane</td></tr>
+<tr><td>HashiCorp Learn (Terraform tutorials)</td><td>Terraform</td><td>First-party, task-oriented, kept current</td></tr>
+<tr><td>roadmap.sh — DevOps &amp; SRE roadmaps</td><td>Whole field</td><td>A visual map of what to learn and in what order</td></tr>
+<tr><td>Prometheus &amp; Grafana official docs</td><td>Observability</td><td>PromQL reference and dashboard how-tos</td></tr>
+<tr><td>Google SRE resources (sre.google)</td><td>SRE</td><td>Both books plus articles, all free</td></tr>
+<tr><td>AWS Skill Builder / Well-Architected</td><td>Cloud</td><td>Free fundamentals; the framework shapes good design</td></tr>
+<tr><td>The Twelve-Factor App (12factor.net)</td><td>App design</td><td>Why ShopFast reads config from the environment</td></tr>
+</table>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>kind / minikube / k3d</td><td>A local Kubernetes cluster for every Phase 2+ exercise</td></tr>
+<tr><td>Docker / Docker Compose</td><td>Build images and run the local ShopFast stack</td></tr>
+<tr><td>kube-prometheus-stack (Helm)</td><td>Prometheus + Grafana + alerting in one install</td></tr>
+<tr><td>Terraform + LocalStack (or AWS free tier)</td><td>Practice IaC without a cloud bill</td></tr>
+<tr><td>k6 / hey</td><td>Generate load to test autoscaling, SLOs, and rollbacks</td></tr>
+<tr><td>Argo CD / Argo Rollouts</td><td>GitOps delivery and canary deployments</td></tr>
+</table>
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>r/devops</td><td>Reddit</td><td>Career questions, tooling debates, and "how do real teams do X"</td></tr>
+<tr><td>r/kubernetes</td><td>Reddit</td><td>Practical K8s troubleshooting and patterns</td></tr>
+<tr><td>CNCF Slack</td><td>Slack</td><td>Direct channels for Kubernetes, Prometheus, Argo, and most CNCF tools</td></tr>
+<tr><td>HashiCorp Discuss</td><td>Forum</td><td>Authoritative Terraform/Vault Q&amp;A, often from maintainers</td></tr>
+<tr><td>SREcon talks (USENIX, free)</td><td>Video</td><td>How top practitioners actually run reliability at scale</td></tr>
+<tr><td>DevOps Stack Exchange</td><td>Q&amp;A</td><td>Searchable, well-curated answers to concrete operational problems</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is session-only and resets on reload.</p></blockquote>
+<h4>Phase 1 — Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — Linux &amp; the Command Line</li>
+<li>[ ] Exercise 1.1 — Diagnose a Sick Server</li>
+<li>[ ] Module 1.2 — Networking Fundamentals</li>
+<li>[ ] Exercise 1.2 — The Unreachable Service Drill</li>
+<li>[ ] Module 1.3 — Git &amp; Version Control</li>
+<li>[ ] Exercise 1.3 — Tame the History</li>
+<li>[ ] Module 1.4 — Shell Scripting</li>
+<li>[ ] Exercise 1.4 — A Backup Script You Can Trust</li>
+<li>[ ] Capstone 1 — Bootstrap ShopFast</li>
+</ul>
+<h4>Phase 2 — Containers &amp; Orchestration</h4>
+<ul>
+<li>[ ] Module 2.1 — Docker &amp; Containerization</li>
+<li>[ ] Exercise 2.1 — Containerize ShopFast</li>
+<li>[ ] Module 2.2 — Kubernetes Fundamentals</li>
+<li>[ ] Exercise 2.2 — Deploy and Debug on Kubernetes</li>
+<li>[ ] Module 2.3 — Kubernetes in Production</li>
+<li>[ ] Exercise 2.3 — Make ShopFast Production-Grade</li>
+<li>[ ] Capstone 2 — Containerize &amp; Deploy ShopFast</li>
+</ul>
+<h4>Phase 3 — Infrastructure as Code</h4>
+<ul>
+<li>[ ] Module 3.1 — Terraform &amp; IaC</li>
+<li>[ ] Exercise 3.1 — Provision ShopFast's Foundation</li>
+<li>[ ] Module 3.2 — Config Management (Ansible)</li>
+<li>[ ] Exercise 3.2 — Configure a Host the Idempotent Way</li>
+<li>[ ] Module 3.3 — Cloud Fundamentals</li>
+<li>[ ] Exercise 3.3 — Design ShopFast's Cloud Footprint</li>
+<li>[ ] Capstone 3 — Provision ShopFast with Code</li>
+</ul>
+<h4>Phase 4 — CI/CD &amp; Delivery</h4>
+<ul>
+<li>[ ] Module 4.1 — CI/CD Pipelines</li>
+<li>[ ] Exercise 4.1 — Build ShopFast's Pipeline</li>
+<li>[ ] Module 4.2 — Deployment Strategies &amp; GitOps</li>
+<li>[ ] Exercise 4.2 — Ship Safely with GitOps</li>
+<li>[ ] Capstone 4 — Ship It</li>
+</ul>
+<h4>Phase 5 — SRE &amp; Reliability</h4>
+<ul>
+<li>[ ] Module 5.1 — Observability: Metrics, Logs, Traces</li>
+<li>[ ] Exercise 5.1 — Make ShopFast Observable</li>
+<li>[ ] Module 5.2 — SLOs, SLIs &amp; Error Budgets</li>
+<li>[ ] Exercise 5.2 — Set ShopFast's Reliability Targets</li>
+<li>[ ] Module 5.3 — Incident Response &amp; On-Call</li>
+<li>[ ] Exercise 5.3 — Run an Incident</li>
+<li>[ ] Capstone 5 — Run the System</li>
+</ul>
+<h4>Certifications / Outcomes</h4>
+<ul>
+<li>[ ] AWS Certified Solutions Architect – Associate</li>
+<li>[ ] HashiCorp Certified: Terraform Associate</li>
+<li>[ ] CKA — Certified Kubernetes Administrator</li>
+<li>[ ] Final Capstone project complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 — DevOps &amp; SRE Track: Beginner to Intermediate</em><br>
+<em>Non-linear modular design · Placement quiz · 14 modules · ~20 weeks part-time · hayah-ai</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

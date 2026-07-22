@@ -1,0 +1,2239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linux Systems &amp; Networking Learning Guide — Beginner to Production</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Linux Systems &amp; Networking<br>Learning Guide</div>
+      <div class="brand-sub">Bash · systemd · Caddy · WireGuard · Docker</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-production" class="nav-top">Beginner to Production Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+<div class="nav-group">
+<a href="#phase-1-foundations" class="nav-top nav-phase">Phase 1: Foundations</a>
+<div class="nav-children">
+<a href="#module-11-platform-environment-choice" class="nav-child">Module 1.1 — Platform &amp; Environment Choice</a>
+<a href="#module-12-filesystem-shell-basics" class="nav-child">Module 1.2 — Filesystem &amp; Shell Basics</a>
+<a href="#module-13-permissions-ownership" class="nav-child">Module 1.3 — Permissions &amp; Ownership</a>
+<a href="#module-14-users-groups-sudo" class="nav-child">Module 1.4 — Users, Groups &amp; sudo</a>
+<a href="#module-15-package-management" class="nav-child">Module 1.5 — Package Management</a>
+<a href="#phase-1-capstone-first-provision" class="nav-child">Phase 1 Capstone: First Provision</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-2-core-skills" class="nav-top nav-phase">Phase 2: Core Skills</a>
+<div class="nav-children">
+<a href="#module-21-process-management" class="nav-child">Module 2.1 — Process Management</a>
+<a href="#module-22-text-processing-pipes" class="nav-child">Module 2.2 — Text Processing &amp; Pipes</a>
+<a href="#module-23-i-o-redirection-streams" class="nav-child">Module 2.3 — I/O Redirection &amp; Streams</a>
+<a href="#module-24-archiving-compression" class="nav-child">Module 2.4 — Archiving &amp; Compression</a>
+<a href="#module-25-ssh-remote-access" class="nav-child">Module 2.5 — SSH &amp; Remote Access</a>
+<a href="#module-26-shell-environment" class="nav-child">Module 2.6 — Shell Environment</a>
+<a href="#phase-2-capstone-log-forensics" class="nav-child">Phase 2 Capstone: Log Forensics</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-3-intermediate-systems" class="nav-top nav-phase">Phase 3: Intermediate Systems</a>
+<div class="nav-children">
+<a href="#module-31-bash-scripting" class="nav-child">Module 3.1 — Bash Scripting</a>
+<a href="#module-32-systemd-services" class="nav-child">Module 3.2 — systemd &amp; Services</a>
+<a href="#module-33-cron-scheduled-tasks" class="nav-child">Module 3.3 — Cron &amp; Scheduled Tasks</a>
+<a href="#module-34-storage-mounts" class="nav-child">Module 3.4 — Storage &amp; Mounts</a>
+<a href="#module-35-logs-monitoring" class="nav-child">Module 3.5 — Logs &amp; Monitoring</a>
+<a href="#module-36-security-basics" class="nav-child">Module 3.6 — Security Basics</a>
+<a href="#phase-3-capstone-hardened-vps" class="nav-child">Phase 3 Capstone: Hardened VPS</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-4-networking" class="nav-top nav-phase">Phase 4: Networking</a>
+<div class="nav-children">
+<a href="#module-41-tcp-ip-addressing-fundamentals" class="nav-child">Module 4.1 — TCP/IP &amp; Addressing Fundamentals</a>
+<a href="#module-42-core-diagnostic-tools" class="nav-child">Module 4.2 — Core Diagnostic Tools</a>
+<a href="#module-43-dns-tls" class="nav-child">Module 4.3 — DNS &amp; TLS</a>
+<a href="#module-44-firewalls-access-control" class="nav-child">Module 4.4 — Firewalls &amp; Access Control</a>
+<a href="#module-45-reverse-proxy-load-balancing" class="nav-child">Module 4.5 — Reverse Proxy &amp; Load Balancing</a>
+<a href="#module-46-tunneling-remote-access" class="nav-child">Module 4.6 — Tunneling &amp; Remote Access</a>
+<a href="#module-47-container-networking" class="nav-child">Module 4.7 — Container Networking</a>
+<a href="#phase-4-capstone-network-stack" class="nav-child">Phase 4 Capstone: Network Stack</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-5-capstone-build" class="nav-top nav-phase">Phase 5: Capstone Build</a>
+<div class="nav-children">
+<a href="#module-51-base-os-setup" class="nav-child">Module 5.1 — Base OS Setup</a>
+<a href="#module-52-storage-layer" class="nav-child">Module 5.2 — Storage Layer</a>
+<a href="#module-53-hardware-transcode-validation" class="nav-child">Module 5.3 — Hardware Transcode Validation</a>
+<a href="#module-54-reverse-proxy-public-exposure" class="nav-child">Module 5.4 — Reverse Proxy &amp; Public Exposure</a>
+<a href="#module-55-systemd-service-wrapping" class="nav-child">Module 5.5 — systemd Service Wrapping</a>
+<a href="#module-56-backup-dr-drill" class="nav-child">Module 5.6 — Backup &amp; DR Drill</a>
+<a href="#module-57-security-hardening-pass" class="nav-child">Module 5.7 — Security Hardening Pass</a>
+</div></div>
+<a href="#final-capstone-validation-gate" class="nav-top">Final Capstone: Validation Gate</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="linux-learning-guide">Linux Systems &amp; Networking Learning Guide</h1>
+<h2 id="beginner-to-production">Beginner to Production Track</h2>
+<h3>Bash · systemd · Caddy · WireGuard · Docker</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Linux terminal and network" xmlns="http://www.w3.org/2000/svg">
+  <rect x="24" y="40" width="208" height="150" rx="16" fill="#075249"/>
+  <rect x="38" y="66" width="180" height="110" rx="8" fill="#0d7a6e"/>
+  <path d="M62 96 L94 118 L62 140 Z" fill="#e8f4f1"/>
+  <rect x="104" y="132" width="64" height="10" rx="5" fill="#e8f4f1"/>
+  <circle cx="76" cy="216" r="12" fill="#075249"/>
+  <circle cx="128" cy="216" r="12" fill="#0d7a6e"/>
+  <circle cx="180" cy="216" r="12" fill="#075249"/>
+  <rect x="88" y="212" width="28" height="8" fill="#0d7a6e"/>
+  <rect x="140" y="212" width="28" height="8" fill="#0d7a6e"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone builds toward the same real infrastructure: <strong>the Hayah homelab</strong> — a Synology DS3615xs NAS plus an Ubuntu Server 24.04 LTS mini-PC serving cloud backup, VOD streaming, and ISP RADIUS/DHCP/billing workloads.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Some experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3 id="quiz-shell-foundations">A. Shell Foundations</h3>
+<ul>
+<li>[ ] I can explain what lives in <code>/etc</code>, <code>/var</code>, <code>/usr</code>, and <code>/proc</code> without looking it up.</li>
+<li>[ ] I can read <code>rwxr-xr-x</code> and set it with both symbolic and octal <code>chmod</code>.</li>
+<li>[ ] I can create a non-root sudo user on a fresh install and explain <code>/etc/sudoers</code> vs <code>/etc/passwd</code>.</li>
+<li>[ ] I can install, remove, and resolve a dependency conflict with my distro's package manager.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3 id="quiz-systems-administration">B. Systems Administration</h3>
+<ul>
+<li>[ ] I can chain <code>grep</code>, <code>sed</code>, <code>awk</code>, <code>sort</code>, and <code>uniq</code> to reshape a raw log file in one pipeline.</li>
+<li>[ ] I can set up key-based SSH end-to-end, disable password login, and use <code>rsync</code> for transfers.</li>
+<li>[ ] I can write a Bash script with functions, exit codes, and <code>set -euo pipefail</code> without a reference.</li>
+<li>[ ] I can write a systemd unit file from scratch and debug a failed start with <code>journalctl -u</code>.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.1</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3 id="quiz-networking">C. Networking</h3>
+<ul>
+<li>[ ] I can subnet a <code>/24</code> into four <code>/26</code>s in my head.</li>
+<li>[ ] Given "site unreachable," I can isolate DNS vs routing vs app layer in under 5 minutes using <code>dig</code>, <code>curl -v</code>, <code>ss</code>, and <code>mtr</code>.</li>
+<li>[ ] I can stand up a reverse proxy with path-based routing to two backends, with correct header forwarding.</li>
+<li>[ ] I can configure a WireGuard tunnel between two hosts and route traffic through it.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 5</strong></p>
+
+<h3 id="quiz-production-readiness">D. Production Readiness</h3>
+<ul>
+<li>[ ] I can take a headless box from fresh install to key-only SSH, static IP, and a firewall in one sitting.</li>
+<li>[ ] I can mount NFS storage via <code>/etc/fstab</code> so it survives a power-cycle test.</li>
+<li>[ ] I can verify hardware video transcode is actually offloading (not silently falling back to CPU).</li>
+<li>[ ] I have performed — not just documented — a bare-metal restore from my own backups.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 5.1</strong> after clearing Phase 3/4 prereqs | <strong>2–3 yes</strong> → Start <strong>Module 5.2</strong> | <strong>4 yes</strong> → Go straight to the <strong>Final Capstone: Validation Gate</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-platform-environment-choice"><td>1.1</td><td>Platform &amp; Environment Choice</td><td>Beginner</td><td>None</td><td>0.5h</td></tr>
+<tr data-href="#module-12-filesystem-shell-basics"><td>1.2</td><td>Filesystem &amp; Shell Basics</td><td>Beginner</td><td>1.1</td><td>4h</td></tr>
+<tr data-href="#module-13-permissions-ownership"><td>1.3</td><td>Permissions &amp; Ownership</td><td>Beginner</td><td>1.2</td><td>3h</td></tr>
+<tr data-href="#module-14-users-groups-sudo"><td>1.4</td><td>Users, Groups &amp; sudo</td><td>Beginner</td><td>1.3</td><td>2h</td></tr>
+<tr data-href="#module-15-package-management"><td>1.5</td><td>Package Management</td><td>Beginner</td><td>1.2</td><td>2h</td></tr>
+<tr data-href="#module-21-process-management"><td>2.1</td><td>Process Management</td><td>Beginner–Intermediate</td><td>1.2</td><td>3h</td></tr>
+<tr data-href="#module-22-text-processing-pipes"><td>2.2</td><td>Text Processing &amp; Pipes</td><td>Beginner–Intermediate</td><td>1.2</td><td>6h</td></tr>
+<tr data-href="#module-23-i-o-redirection-streams"><td>2.3</td><td>I/O Redirection &amp; Streams</td><td>Beginner–Intermediate</td><td>2.2</td><td>2h</td></tr>
+<tr data-href="#module-24-archiving-compression"><td>2.4</td><td>Archiving &amp; Compression</td><td>Beginner</td><td>1.2</td><td>1h</td></tr>
+<tr data-href="#module-25-ssh-remote-access"><td>2.5</td><td>SSH &amp; Remote Access</td><td>Beginner–Intermediate</td><td>1.4</td><td>3h</td></tr>
+<tr data-href="#module-26-shell-environment"><td>2.6</td><td>Shell Environment</td><td>Beginner–Intermediate</td><td>1.2</td><td>2h</td></tr>
+<tr data-href="#module-31-bash-scripting"><td>3.1</td><td>Bash Scripting</td><td>Intermediate</td><td>2.2, 2.3</td><td>8h</td></tr>
+<tr data-href="#module-32-systemd-services"><td>3.2</td><td>systemd &amp; Services</td><td>Intermediate</td><td>2.1</td><td>5h</td></tr>
+<tr data-href="#module-33-cron-scheduled-tasks"><td>3.3</td><td>Cron &amp; Scheduled Tasks</td><td>Intermediate</td><td>3.1</td><td>2h</td></tr>
+<tr data-href="#module-34-storage-mounts"><td>3.4</td><td>Storage &amp; Mounts</td><td>Intermediate</td><td>1.3</td><td>4h</td></tr>
+<tr data-href="#module-35-logs-monitoring"><td>3.5</td><td>Logs &amp; Monitoring</td><td>Intermediate</td><td>3.2</td><td>2h</td></tr>
+<tr data-href="#module-36-security-basics"><td>3.6</td><td>Security Basics</td><td>Intermediate</td><td>2.5, 3.2</td><td>3h</td></tr>
+<tr data-href="#module-41-tcp-ip-addressing-fundamentals"><td>4.1</td><td>TCP/IP &amp; Addressing Fundamentals</td><td>Beginner–Intermediate</td><td>None</td><td>4h</td></tr>
+<tr data-href="#module-42-core-diagnostic-tools"><td>4.2</td><td>Core Diagnostic Tools</td><td>Intermediate</td><td>4.1</td><td>5h</td></tr>
+<tr data-href="#module-43-dns-tls"><td>4.3</td><td>DNS &amp; TLS</td><td>Intermediate</td><td>4.2</td><td>4h</td></tr>
+<tr data-href="#module-44-firewalls-access-control"><td>4.4</td><td>Firewalls &amp; Access Control</td><td>Intermediate</td><td>4.1, 1.4</td><td>4h</td></tr>
+<tr data-href="#module-45-reverse-proxy-load-balancing"><td>4.5</td><td>Reverse Proxy &amp; Load Balancing</td><td>Intermediate</td><td>4.3, 4.4</td><td>5h</td></tr>
+<tr data-href="#module-46-tunneling-remote-access"><td>4.6</td><td>Tunneling &amp; Remote Access</td><td>Intermediate</td><td>2.5</td><td>4h</td></tr>
+<tr data-href="#module-47-container-networking"><td>4.7</td><td>Container Networking</td><td>Intermediate</td><td>4.1</td><td>3h</td></tr>
+<tr data-href="#module-51-base-os-setup"><td>5.1</td><td>Capstone — Base OS Setup</td><td>Advanced</td><td>1.1, 1.4, 2.5, 4.4</td><td>4h</td></tr>
+<tr data-href="#module-52-storage-layer"><td>5.2</td><td>Capstone — Storage Layer</td><td>Advanced</td><td>3.4, 4.2, 5.1</td><td>4h</td></tr>
+<tr data-href="#module-53-hardware-transcode-validation"><td>5.3</td><td>Capstone — Hardware Transcode Validation</td><td>Advanced</td><td>5.2</td><td>3h</td></tr>
+<tr data-href="#module-54-reverse-proxy-public-exposure"><td>5.4</td><td>Capstone — Reverse Proxy &amp; Public Exposure</td><td>Advanced</td><td>4.5, 5.1</td><td>4h</td></tr>
+<tr data-href="#module-55-systemd-service-wrapping"><td>5.5</td><td>Capstone — systemd Service Wrapping</td><td>Advanced</td><td>3.2, 5.4</td><td>3h</td></tr>
+<tr data-href="#module-56-backup-dr-drill"><td>5.6</td><td>Capstone — Backup &amp; DR Drill</td><td>Advanced</td><td>3.3, 5.2</td><td>5h</td></tr>
+<tr data-href="#module-57-security-hardening-pass"><td>5.7</td><td>Capstone — Security Hardening Pass</td><td>Advanced</td><td>3.6, 4.4, 5.4</td><td>3h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 2–3 (systems) and Phase 4 (networking) run <strong>in parallel</strong>, not sequentially — you cannot write a meaningful systemd unit for a network-bound service without Modules 4.1–4.2 first. Phase 5 is the integration build on real hardware; its modules map to capstone stages CAP-1 through CAP-7 and gate on specific earlier modules, not whole phases.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+<h3 id="track-1-straight-to-the-capstone">Track 1 — Straight to the Capstone (I run this infra today)</h3>
+<p><code>1.1 → 1.4 → 2.5 → 3.2 → 3.4 → 4.4 → 4.5 → 5.1 → … → 5.7 → Validation Gate</code><br>
+Target outcome: <strong>Production NAS + compute-node deployment, validated end-to-end</strong>. Use each module's skip-check to test out of everything else.</p>
+<h3 id="track-2-complete-beginner">Track 2 — Complete Beginner (no shortcuts)</h3>
+<p><code>1.1 → 1.5 → 2.1 → 2.6 → 3.1 → 3.6 → 4.1 → 4.7 → Phase 5 → Validation Gate</code><br>
+Target cert: <strong>LFCS (Linux Foundation Certified System Administrator)</strong> — its 2026 domains (operations 25%, networking 25%, storage 20%, essential commands 20%, users/groups 10%) map almost 1:1 onto Phases 1–4.</p>
+<h3 id="track-3-networking-focused">Track 3 — Networking-Focused (already comfortable in a shell)</h3>
+<p><code>4.1 → 4.2 → 4.3 → 4.4 → 4.5 → 4.6 → 4.7, looping back to 3.2/3.3 only as Phase 5 prereqs surface them</code><br>
+Target cert: <strong>CompTIA Network+ (N10-009)</strong> for fundamentals; the hands-on modules go deeper than the exam on Linux tooling.</p>
+<h3 id="track-4-homelab-hobbyist">Track 4 — Homelab Hobbyist (no production stakes)</h3>
+<p><code>Same as Track 1, but treat 5.6 (Backup &amp; DR) and 5.7 (Hardening) as strongly recommended rather than gating</code><br>
+Target outcome: <strong>A self-hosted media + backup stack you actually understand</strong>.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Foundations              (Weeks 1–3)
+Phase 2 — Core Skills              (Weeks 3–6)
+Phase 3 — Intermediate Systems     (Weeks 6–9)   ─┐ run in
+Phase 4 — Networking               (Weeks 6–10)  ─┘ parallel
+Phase 5 — Capstone Build           (Weeks 10–13)
+Final Capstone — Validation Gate   (Week 13+)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ── 1.2 ─┬─ 1.3 ── 1.4 ─┬─ 2.5 ─┬─ 3.6 ──────────┐
+            ├─ 1.5         │       └─ 4.6           │
+            ├─ 2.1 ── 3.2 ─┼─ 3.5                   │
+            ├─ 2.2 ── 2.3 ─┴─ 3.1 ── 3.3            ├─ Phase 5 (5.1 → 5.7)
+            ├─ 2.4         ┌─ 3.4                   │      │
+            └─ 2.6         │                        │      ▼
+4.1 ─┬─ 4.2 ── 4.3 ─┐      │                        │  Validation Gate
+     ├─ 4.4 ────────┴─ 4.5 ┴────────────────────────┘  (Final Capstone)
+     └─ 4.7</code></pre>
+<h2 id="phase-1-foundations">Phase 1: Foundations</h2>
+<h3 id="weeks-1-3">Weeks 1–3 | Goal: A working practice environment and fluent, safe use of the shell, permissions, users, and packages</h3>
+<hr />
+
+<h3 id="module-11-platform-environment-choice">Module 1.1 — Platform &amp; Environment Choice</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~0.5h decision + setup<br>
+<strong>Skip-check (test-out):</strong> You already have a local Linux VM for Phase 1–2 practice AND a real public-IP box for Phase 3–4 work.<br>
+<strong>Skip if:</strong> Both environments exist and you can SSH into each right now.<br>
+<strong>Unlocks:</strong> Everything — this is where you decide where the work happens.</p>
+</blockquote>
+<h4>Where each phase runs</h4>
+<p>Practicing on the wrong platform teaches wrong muscle memory — macOS has no systemd (it uses <code>launchd</code>), ships BSD variants of core tools with different flags, and installs via <code>brew</code> not <code>apt</code>. Everything you learn about service management on a Mac terminal must be unlearned on a real server.</p>
+<table>
+<tr><th>Phase</th><th>Platform</th><th>Why</th></tr>
+<tr><td>Phase 1–2 (shell, permissions, text processing)</td><td>UTM VM on macOS (free, ARM64 Linux image)</td><td>Fast local iteration, zero cost, safe to break</td></tr>
+<tr><td>Phase 3 + full Phase 4</td><td>Cloud VPS (DigitalOcean / Linode / Hetzner, $4–6/mo)</td><td>Firewall, DNS, TLS, and fail2ban work requires a real public IP — a NAT'd local VM can't teach this meaningfully</td></tr>
+<tr><td>Module 4.7 (container networking)</td><td>Docker Desktop on macOS</td><td>Fine locally; no public exposure needed</td></tr>
+<tr><td>Phase 5</td><td>The real mini-PC + NAS</td><td>The capstone is a live deployment, not a simulation</td></tr>
+</table>
+<h4>Setting up the local VM</h4>
+<p>On Apple Silicon, always use an ARM64 Linux ISO — an x86 image runs under emulation and everything feels broken-slow. Ubuntu Server is the right image because Phase 5 targets Ubuntu Server 24.04 LTS; practicing on the same family removes translation friction. (Ubuntu 26.04 LTS shipped in April 2026 — fine for a fresh practice VM, but the capstone hardware stays on 24.04 LTS, supported into 2029; migrate deliberately once 26.04.1 has settled.)</p>
+<pre><code class="language-bash"># On the Mac: fetch the ARM64 server image, verify it, then boot it in UTM
+curl -LO https://cdimage.ubuntu.com/releases/24.04/release/ubuntu-24.04.3-live-server-arm64.iso
+shasum -a 256 ubuntu-24.04.3-live-server-arm64.iso
+# UTM: New VM -&gt; Virtualize -&gt; Linux -&gt; attach the ISO -&gt; 4 GB RAM, 32 GB disk
+# During install: enable the OpenSSH server option, note the VM's IP from `ip addr`</code></pre>
+<p><strong>Exercise 1.1 — Stand Up the Lab</strong></p>
+<p>Scenario: the Hayah homelab — this VM is your stand-in for the mini-PC until Phase 5.</p>
+<ol>
+<li>Install UTM and create an Ubuntu Server 24.04 ARM64 VM.</li>
+<li>During install, enable the OpenSSH server and create your named admin user.</li>
+<li>From the macOS terminal, SSH into the VM by IP.</li>
+<li>Take a UTM snapshot named <code>clean-install</code> — you will break this VM on purpose later.</li>
+<li>Decide (and write down) which VPS provider you will use when Phase 3 needs a public IP.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-filesystem-shell-basics">Module 1.2 — Filesystem &amp; Shell Basics</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Navigate to <code>/var/log</code>, list files by modification time, and copy the 3 most recent to <code>/tmp</code> — without looking anything up.<br>
+<strong>Skip if:</strong> You can explain what lives in <code>/etc</code>, <code>/var</code>, <code>/usr</code>, <code>/proc</code> and use wildcards fluently.<br>
+<strong>Unlocks:</strong> 1.3, 1.5, 2.1, 2.2, 2.4, 2.6</p>
+</blockquote>
+<h4>The filesystem hierarchy is a map, not trivia</h4>
+<p>Every troubleshooting session starts with knowing where to look: configs live in <code>/etc</code>, variable data (logs, spools, databases) in <code>/var</code>, installed software in <code>/usr</code>, runtime kernel state in <code>/proc</code> and <code>/sys</code>, and device files in <code>/dev</code>. When a service misbehaves in Phase 5, the difference between a 5-minute fix and an hour of flailing is knowing that its config is in <code>/etc/&lt;name&gt;/</code> and its log trail is in <code>/var/log/</code> before you even start.</p>
+<h4>Moving and manipulating</h4>
+<pre><code class="language-bash">pwd                        # where am I
+ls -lah                    # long list, hidden files, human sizes
+ls -lt /var/log            # sort by modification time, newest first
+cd /var/log ; cd -         # jump and jump back
+cp nginx/access.log /tmp/  # copy
+mv report.txt report.bak   # rename or move
+rm -i old.log              # -i prompts; build the habit before you need it
+mkdir -p demo/a/b/c        # create nested dirs in one shot
+ls *.log                   # glob: all .log files
+ls syslog.?                # ? matches exactly one character
+find /var/log -name "*.gz" -mtime -7   # .gz files modified in the last 7 days</code></pre>
+<p>Absolute paths start with <code>/</code> and always mean the same thing; relative paths depend on where you stand. Scripts that assume a working directory break the moment cron runs them from <code>/</code> — prefer absolute paths anywhere automation is involved (this bites for real in Module 3.3).</p>
+<p><strong>Exercise 1.2 — Filesystem Orientation</strong></p>
+<p>Scenario: the Hayah homelab practice VM.</p>
+<ol>
+<li>From <code>/</code>, list the top-level directories and write one line on what each of <code>/etc</code>, <code>/var</code>, <code>/usr</code>, <code>/proc</code>, <code>/home</code> holds.</li>
+<li>Navigate to <code>/var/log</code> and list files sorted by modification time.</li>
+<li>Copy the 3 most recently modified files to <code>/tmp</code> in a single command (hint: <code>ls -t | head</code> feeds a loop, or use <code>cp $(ls -t | head -3) /tmp/</code>).</li>
+<li>Use <code>find</code> to locate every <code>.conf</code> file under <code>/etc</code> modified in the last 30 days.</li>
+<li>Create the tree <code>~/lab/{configs,logs,scripts}</code> with one command — this becomes your working area for the rest of the guide.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-permissions-ownership">Module 1.3 — Permissions &amp; Ownership</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Create a shared directory where a group can read/write but members cannot delete each other's files.<br>
+<strong>Skip if:</strong> You can read <code>rwxr-xr-x</code>, set it with symbolic and octal <code>chmod</code>, explain the sticky bit, and predict the effect of <code>umask 022</code>.<br>
+<strong>Unlocks:</strong> 1.4, 3.4</p>
+</blockquote>
+<h4>Reading and setting permissions</h4>
+<p>Every file has three permission triads — owner, group, other — each holding read (4), write (2), execute (1). <code>rwxr-xr-x</code> is <code>755</code>: owner does everything, everyone else reads and executes. Permissions are the first thing to check when a service "mysteriously" can't read its own config: a root-owned <code>600</code> file is invisible to the service account, and the error message rarely says so plainly.</p>
+<pre><code class="language-bash">ls -l app.conf                 # -rw-r--r-- 1 root root ...
+chmod 640 app.conf             # octal: owner rw, group r, other nothing
+chmod u+x deploy.sh            # symbolic: add execute for owner
+chmod g-w,o-r shared.txt       # remove group write, other read
+chown appuser:appgroup app.conf  # change owner and group together
+umask                          # 022 -&gt; new files 644, new dirs 755
+stat -c "%a %U %G %n" app.conf # numeric mode, owner, group, name</code></pre>
+<h4>The special bits</h4>
+<p>The sticky bit on a directory (<code>chmod +t</code>, shown as <code>t</code> in <code>ls -l</code>) means only a file's owner can delete it — this is why <code>/tmp</code> is world-writable yet users can't delete each other's files. Setgid on a directory (<code>chmod g+s</code>) makes new files inherit the directory's group instead of the creator's primary group — essential for shared project directories, and exactly what NFS exports in Phase 5 rely on to keep group ownership consistent.</p>
+<p><strong>Exercise 1.3 — The Shared Drop Directory</strong></p>
+<p>Scenario: the Hayah homelab — a staging area where backup jobs from several service accounts will drop files.</p>
+<ol>
+<li>Create a group <code>dropbox</code> and add your user to it.</li>
+<li>Create <code>/srv/drop</code> owned by <code>root:dropbox</code>.</li>
+<li>Set permissions so group members can create and read files but cannot delete each other's files (mode <code>3770</code> — work out why each digit is what it is).</li>
+<li>Verify with two test users: user A creates a file, user B can read it but gets "Operation not permitted" on delete.</li>
+<li>Set the setgid bit and confirm new files inherit the <code>dropbox</code> group.</li>
+</ol>
+<hr />
+
+<h3 id="module-14-users-groups-sudo">Module 1.4 — Users, Groups &amp; sudo</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Provision a new sudo-capable user on a fresh install with no direct root login.<br>
+<strong>Skip if:</strong> You can explain what <code>/etc/sudoers</code> controls vs <code>/etc/passwd</code>, and why <code>visudo</code> exists.<br>
+<strong>Unlocks:</strong> 2.5, 4.4, 5.1</p>
+</blockquote>
+<h4>Accounts, groups, and where they live</h4>
+<p><code>/etc/passwd</code> defines who exists (username, UID, home, shell); <code>/etc/shadow</code> holds the password hashes; <code>/etc/group</code> defines group membership; <code>/etc/sudoers</code> defines who may act as root and how. Editing sudoers directly is how people lock themselves out of their own servers — <code>visudo</code> syntax-checks before saving, which is the entire reason it exists.</p>
+<pre><code class="language-bash">sudo adduser deploy                    # interactive: creates home, sets shell
+sudo usermod -aG sudo deploy           # -aG appends to group; forgetting -a REPLACES all groups
+groups deploy                          # verify membership
+id deploy                              # uid, gid, all groups
+sudo passwd -l root                    # lock direct root password login
+getent passwd | awk -F: '$3 &gt;= 1000 {print $1}'   # list human users</code></pre>
+<h4>Why services get their own users</h4>
+<p>Every service in Phase 5 (billing, RADIUS, VOD backend) runs as its own unprivileged user. If the VOD process is compromised, the blast radius is one account's files — not the RADIUS secrets sitting two directories away. Create service accounts with <code>--system --no-create-home --shell /usr/sbin/nologin</code>: they exist to own files and processes, never to log in.</p>
+<p><strong>Exercise 1.4 — Provision the Admin</strong></p>
+<p>Scenario: the Hayah homelab — the admin account pattern you will repeat verbatim on the real mini-PC in Module 5.1.</p>
+<ol>
+<li>Create user <code>hayah-admin</code> with a strong password and add it to <code>sudo</code>.</li>
+<li>Confirm <code>sudo whoami</code> returns <code>root</code> from that account.</li>
+<li>Create a system account <code>vodapp</code> with no login shell and no home directory.</li>
+<li>Use <code>visudo</code> to grant <code>hayah-admin</code> passwordless sudo for exactly one command: <code>systemctl restart vod.service</code> (syntax: <code>hayah-admin ALL=(root) NOPASSWD: /usr/bin/systemctl restart vod.service</code>).</li>
+<li>Lock the root account password and verify root can no longer log in directly on the console.</li>
+</ol>
+<hr />
+
+<h3 id="module-15-package-management">Module 1.5 — Package Management</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Install a package, inspect what files it placed where, remove it cleanly, and explain <code>apt upgrade</code> vs <code>apt full-upgrade</code>.<br>
+<strong>Skip if:</strong> You already resolve dependency conflicts on your distro without a search engine.<br>
+<strong>Unlocks:</strong> 3.2, 5.1</p>
+</blockquote>
+<h4>The apt workflow</h4>
+<p>Packages come from signed repositories listed under <code>/etc/apt/sources.list.d/</code>. <code>apt update</code> refreshes the index (it installs nothing); <code>apt upgrade</code> applies updates without removing anything; <code>apt full-upgrade</code> may remove packages to resolve changed dependencies — which is why unattended production boxes run plain <code>upgrade</code> semantics. Skipping <code>apt update</code> first is the classic reason a documented package "doesn't exist."</p>
+<pre><code class="language-bash">sudo apt update                    # refresh package index
+apt search fail2ban                # find it
+apt show fail2ban                  # version, deps, description
+sudo apt install fail2ban          # install with dependency resolution
+dpkg -L fail2ban | head            # what files did it place, where
+apt-cache rdepends fail2ban        # what depends ON it
+sudo apt remove fail2ban           # remove binaries, keep config
+sudo apt purge fail2ban            # remove config too
+sudo apt autoremove                # clean orphaned dependencies
+apt list --upgradable              # what's pending before you upgrade</code></pre>
+<h4>Beyond apt: snap and source</h4>
+<p>Some tools now ship primarily as snaps (certbot's official install method is <code>snap install certbot --classic</code>) or as vendor apt repos you add yourself (Caddy, Docker). Adding a vendor repo means trusting its signing key — always fetch keys over HTTPS from the vendor's own domain, and prefer the modern keyring pattern (<code>/etc/apt/keyrings/</code>) over the deprecated <code>apt-key</code>.</p>
+<p><strong>Exercise 1.5 — Package Forensics</strong></p>
+<p>Scenario: the Hayah homelab practice VM.</p>
+<ol>
+<li>Install <code>htop</code>, list every file it installed, then purge it and verify nothing remains.</li>
+<li>Add the official Caddy apt repository (per caddyserver.com docs, keyring pattern) and install Caddy — you will use it heavily from Module 4.5 on.</li>
+<li>Check which package owns <code>/etc/ssh/sshd_config</code> (<code>dpkg -S</code>).</li>
+<li>List all packages upgraded in the last month from <code>/var/log/apt/history.log</code>.</li>
+<li>Explain in two sentences (written down) when you would and would not run <code>apt full-upgrade</code> on the production mini-PC.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-first-provision">Phase 1 Capstone: First Provision</h3>
+<p><strong>Project: Clean-Slate Provisioning Drill</strong></p>
+<p><strong>Dataset:</strong> the Hayah homelab practice VM (restored from the <code>clean-install</code> snapshot).</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Restore the VM to its <code>clean-install</code> snapshot — you start from zero, on purpose.</li>
+<li>Provision <code>hayah-admin</code> (sudo, no direct root login) in under 10 minutes without notes.</li>
+<li>Create the <code>/srv/drop</code> shared directory with correct group, setgid, and sticky-bit semantics.</li>
+<li>Install and verify: <code>fail2ban</code>, <code>ufw</code>, <code>caddy</code>, <code>rsync</code> — list what files each placed in <code>/etc</code>.</li>
+<li>Produce a one-page provisioning checklist in <code>~/lab/configs/provision.md</code> — Module 5.1 will reuse it on real hardware.</li>
+<li>Snapshot the VM as <code>phase-1-done</code>.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-core-skills">Phase 2: Core Skills</h2>
+<h3 id="weeks-3-6">Weeks 3–6 | Goal: Fluency with processes, pipelines, redirection, and remote access — the daily working vocabulary of a Linux operator</h3>
+<hr />
+
+<h3 id="module-21-process-management">Module 2.1 — Process Management</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Find a runaway process by name, check its resource use, and kill it cleanly — without <code>-9</code> first.<br>
+<strong>Skip if:</strong> You use <code>ps</code>, <code>htop</code>, job control, and <code>nice</code> comfortably.<br>
+<strong>Unlocks:</strong> 3.2</p>
+</blockquote>
+<h4>Seeing what's running</h4>
+<pre><code class="language-bash">ps aux | grep nginx            # classic: every process, filtered
+pgrep -a nginx                 # cleaner: PIDs + command line by name
+htop                           # interactive: sort by CPU/mem, tree view (F5)
+top -o %MEM                    # plain top, sorted by memory
+kill 1234                      # send SIGTERM (15): "please shut down cleanly"
+kill -9 1234                   # SIGKILL: no cleanup, no flush, no goodbye
+pkill -f "node server.js"      # kill by full command-line match
+nice -n 10 ./batch-job.sh      # start at lower priority
+renice 5 -p 1234               # lower priority of a running process</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> reaching for <code>kill -9</code> first. SIGKILL cannot be caught, so the process gets no chance to flush buffers, release locks, or remove its PID file — which is how you corrupt a database or strand a stale lock that blocks the next start. Send SIGTERM, wait a few seconds, and escalate to <code>-9</code> only if the process ignores it.</p></blockquote>
+<h4>Job control</h4>
+<p>Inside one shell session: <code>command &amp;</code> starts in the background, <code>Ctrl-Z</code> suspends the foreground job, <code>bg</code> resumes it in the background, <code>fg</code> brings it back, <code>jobs</code> lists them. This is session-scoped convenience — anything that must survive your logout belongs in systemd (Module 3.2), not a backgrounded job. That rule becomes non-negotiable in Phase 5.</p>
+<p><strong>Exercise 2.1 — Runaway Hunt</strong></p>
+<p>Scenario: the Hayah homelab practice VM.</p>
+<ol>
+<li>Start a CPU burner: <code>yes &gt; /dev/null &amp;</code> — then find its PID three different ways (<code>ps</code>+<code>grep</code>, <code>pgrep</code>, <code>htop</code>).</li>
+<li>Check its CPU share in <code>htop</code>, renice it to 19, and observe the change.</li>
+<li>Kill it with SIGTERM and confirm it exited.</li>
+<li>Start <code>sleep 600</code>, suspend it, background it, list jobs, then foreground and Ctrl-C it.</li>
+<li>Start three <code>sleep</code> processes with distinguishable arguments and kill only the middle one using <code>pkill -f</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-text-processing-pipes">Module 2.2 — Text Processing &amp; Pipes</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~6h — the highest-leverage module in Phase 2<br>
+<strong>Skip-check (test-out):</strong> From an nginx access log, extract the top 10 IPs by request count using only pipes.<br>
+<strong>Skip if:</strong> You chain <code>grep</code>, <code>sed</code>, <code>awk</code>, <code>cut</code>, <code>sort</code>, <code>uniq</code> without a reference.<br>
+<strong>Unlocks:</strong> 2.3, 3.1</p>
+</blockquote>
+<h4>The pipeline mindset</h4>
+<p>Each tool does one thing to a stream of lines; the pipe hands one tool's output to the next. Mastering this is what makes logs, CSVs, and command output searchable in seconds instead of importable-into-a-spreadsheet in minutes — and every diagnostic one-liner in Phases 4–5 is built from exactly these parts.</p>
+<pre><code class="language-bash">grep " 404 " access.log                      # lines containing a 404 status
+grep -c " 500 " access.log                   # just count them
+grep -v "healthcheck" access.log             # everything EXCEPT healthchecks
+awk '{print $1}' access.log                  # first field (client IP)
+cut -d' ' -f1 access.log                     # same, with cut
+awk '$9 == 500 {print $7}' access.log        # URLs that returned 500
+sed 's/\.gz$//' filelist.txt                 # strip a suffix
+sort ips.txt | uniq -c | sort -rn | head     # the counting idiom: tally + rank
+wc -l access.log                             # how many requests total</code></pre>
+<h4>The counting idiom, dissected</h4>
+<p>The single most reused pipeline in operations: <code>awk '{print $1}' access.log | sort | uniq -c | sort -rn | head -10</code>. Extract the field, <code>sort</code> so duplicates are adjacent (<code>uniq</code> only collapses <em>adjacent</em> duplicates — skipping the first sort silently undercounts, and nothing warns you), count with <code>uniq -c</code>, rank numerically descending, take the top. Learn it as a template: swap the first stage to count anything — user agents, URLs, status codes, SSH usernames under attack.</p>
+<p><strong>Exercise 2.2 — Log Mining</strong></p>
+<p>Scenario: the Hayah homelab — nginx access log (grab any real sample, e.g. the public <code>NASA-HTTP</code> log, or generate traffic against a local nginx).</p>
+<p><em>Retrieval practice: write the top-10-IPs pipeline from memory first, then check it against the module. The gap between what you typed and what works is the lesson.</em></p>
+<ol>
+<li>Top 10 client IPs by request count.</li>
+<li>Count of each HTTP status code, ranked.</li>
+<li>Top 10 requested URLs, excluding static assets (<code>grep -v</code> on <code>.css|.js|.png</code> — hint: <code>grep -Ev</code>).</li>
+<li>All requests that returned 404, reduced to just the missing paths, deduplicated.</li>
+<li>Requests per hour (hint: <code>cut</code> the timestamp to the hour field before the counting idiom).</li>
+<li>One pipeline that answers: "which IP generated the most 404s?"</li>
+</ol>
+<hr />
+
+<h3 id="module-23-i-o-redirection-streams">Module 2.3 — I/O Redirection &amp; Streams</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Explain the difference between <code>cmd &gt; file 2&gt;&amp;1</code> and <code>cmd 2&gt;&amp;1 &gt; file</code>, and predict what each produces.<br>
+<strong>Skip if:</strong> stdin/stdout/stderr and redirection order hold no surprises for you.<br>
+<strong>Unlocks:</strong> 3.1</p>
+</blockquote>
+<h4>Three streams, two operators</h4>
+<p>Every process gets stdin (0), stdout (1), stderr (2). Pipes and <code>&gt;</code> only carry stdout — which is why error messages still hit your screen when you redirect "everything" to a file, and why a cron job's failure email is empty when the actual error went to an unredirected stderr.</p>
+<pre><code class="language-bash">command &gt; out.txt              # stdout to file (truncate)
+command &gt;&gt; out.txt             # stdout to file (append)
+command 2&gt; err.txt             # stderr to file
+command &gt; all.txt 2&gt;&amp;1         # both to one file: redirect stdout FIRST, then point stderr at it
+command &amp;&gt; all.txt             # bash shorthand for the same
+command 2&gt; /dev/null           # discard errors (use sparingly — errors are information)
+command &lt; input.txt            # stdin from file
+cmd1 | tee mid.txt | cmd2      # split the stream: save a copy AND keep piping</code></pre>
+<h4>Why order matters</h4>
+<p>Redirections apply left to right. <code>cmd &gt; file 2&gt;&amp;1</code> first points stdout at the file, then points stderr at wherever stdout currently points — the file. Reversed, <code>cmd 2&gt;&amp;1 &gt; file</code> points stderr at the terminal (stdout's current target), <em>then</em> moves stdout to the file — so errors still splash on screen. Getting this wrong in a backup script means the log you check after a silent 3 a.m. failure contains nothing useful.</p>
+<p><strong>Exercise 2.3 — Stream Plumbing</strong></p>
+<p>Scenario: the Hayah homelab practice VM.</p>
+<ol>
+<li>Run <code>ls /etc /nonexistent</code> and redirect stdout and stderr to two separate files; verify each got the right content.</li>
+<li>Repeat with both streams in one file, both operand orders — explain the difference you observe.</li>
+<li>Build a pipeline that counts lines in a directory listing while also saving the listing via <code>tee</code>.</li>
+<li>Use <code>find / -name "*.conf" 2&gt;/dev/null</code> and explain what the redirect suppresses and why that's acceptable here.</li>
+<li>Write one command whose stdout goes to a log, stderr goes to an error log, and confirm with a deliberate failure.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-archiving-compression">Module 2.4 — Archiving &amp; Compression</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~1h<br>
+<strong>Skip-check (test-out):</strong> Create and extract a <code>.tar.gz</code>, and explain when you'd reach for <code>zip</code> instead.<br>
+<strong>Skip if:</strong> <code>tar -czf</code> / <code>-xzf</code> are muscle memory.<br>
+<strong>Unlocks:</strong> 3.1 (backup scripting)</p>
+</blockquote>
+<h4>tar bundles, gzip squeezes</h4>
+<p><code>tar</code> packs a directory tree (preserving permissions and ownership — the reason it's the Unix default) into one file; gzip compresses that stream. <code>zip</code> does both at once but stores permissions poorly, so it's for sending files to Windows users, not for backups. A backup that loses its execute bits and owners restores into a broken system — this is why Phase 5's DR drill uses tar/rsync, never zip.</p>
+<pre><code class="language-bash">tar -czf backup-$(date +%F).tar.gz /srv/app   # create, gzip, file
+tar -tzf backup-2026-07-19.tar.gz | head      # list contents WITHOUT extracting
+tar -xzf backup-2026-07-19.tar.gz -C /tmp/restore   # extract to a target dir
+tar -cJf logs.tar.xz /var/log/app             # xz: slower, ~30% smaller
+gzip -k report.txt                            # compress single file, keep original
+gunzip report.txt.gz
+zcat access.log.gz | grep " 500 "             # search inside without extracting</code></pre>
+<h4>Choosing compression</h4>
+<p>gzip is the fast default; <code>xz</code> trades CPU time for the smallest archives (cold storage); <code>zstd</code> gives near-gzip speed with better ratios and is the modern choice where installed. For nightly backups over the LAN in Module 5.6, compression speed matters more than ratio — the NAS has terabytes, but your backup window has minutes.</p>
+<p><strong>Exercise 2.4 — Backup Bundle</strong></p>
+<p>Scenario: the Hayah homelab practice VM.</p>
+<ol>
+<li>Create a dated <code>.tar.gz</code> of <code>/etc</code> (run with sudo; note which files warn about permissions).</li>
+<li>List its contents without extracting; find <code>ssh/sshd_config</code> inside it.</li>
+<li>Extract only that one file to <code>/tmp</code> (<code>tar -xzf archive.tar.gz -C /tmp etc/ssh/sshd_config</code>).</li>
+<li>Compare the same archive as <code>.tar.gz</code> vs <code>.tar.xz</code> — record sizes and creation times.</li>
+<li>Search a gzipped log with <code>zcat | grep</code> without ever extracting it.</li>
+</ol>
+<hr />
+
+<h3 id="module-25-ssh-remote-access">Module 2.5 — SSH &amp; Remote Access</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.4 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> SSH into a remote box with zero password prompts, using a <code>~/.ssh/config</code> alias.<br>
+<strong>Skip if:</strong> Key-based auth, disabled password login, and <code>scp</code>/<code>rsync</code> are routine for you.<br>
+<strong>Unlocks:</strong> 3.6, 4.6, 5.1</p>
+</blockquote>
+<h4>Keys, not passwords</h4>
+<p>A password can be guessed at network speed forever; an Ed25519 key cannot. Key-only SSH is the single highest-value hardening step on any internet-facing box — Module 5.1 makes it mandatory before the mini-PC ever gets a public route.</p>
+<pre><code class="language-bash">ssh-keygen -t ed25519 -C "hayah-admin@macbook"   # generate keypair
+ssh-copy-id hayah-admin@192.168.64.5             # install pubkey on the VM
+ssh hayah-admin@192.168.64.5                     # now passwordless
+# On the server, then: sudo nano /etc/ssh/sshd_config
+#   PasswordAuthentication no
+#   PermitRootLogin no
+# sudo systemctl restart ssh   -- keep one session open while you verify!</code></pre>
+<h4>Config aliases and file transfer</h4>
+<pre><code class="language-bash"># ~/.ssh/config
+Host lab
+    HostName 192.168.64.5
+    User hayah-admin
+    IdentityFile ~/.ssh/id_ed25519
+
+# then simply:
+ssh lab
+scp report.pdf lab:/tmp/                     # one-shot copy
+rsync -avz --delete ~/lab/ lab:~/lab/        # sync: only transfers differences
+rsync -avzn --delete ~/lab/ lab:~/lab/       # -n = dry run FIRST when --delete is involved</code></pre>
+<p><code>rsync</code> beats <code>scp</code> for anything repeated: it transfers only changed blocks, preserves metadata with <code>-a</code>, and <code>--delete</code> makes the target mirror the source — which also means a mistyped source path can empty the target, hence the dry-run habit. Rsync is the engine of the nightly backups in Module 5.6.</p>
+<p><strong>Exercise 2.5 — Zero-Prompt Access</strong></p>
+<p>Scenario: the Hayah homelab practice VM (stand-in for the mini-PC).</p>
+<ol>
+<li>Generate an Ed25519 keypair and install the public key on the VM.</li>
+<li>Create the <code>~/.ssh/config</code> alias <code>lab</code> and verify <code>ssh lab</code> logs in with no prompts.</li>
+<li>Disable password authentication and root login on the VM; verify a password attempt now fails.</li>
+<li>Mirror <code>~/lab</code> to the VM with rsync; change one file, re-run, and confirm only the delta transferred (<code>-v</code> shows it).</li>
+<li>Deliberately test the lockout: try <code>ssh -o PubkeyAuthentication=no lab</code> and confirm the server refuses.</li>
+</ol>
+<hr />
+
+<h3 id="module-26-shell-environment">Module 2.6 — Shell Environment</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Explain what <code>PATH</code> is doing when you type a command, and the difference between <code>.bashrc</code> and <code>.bash_profile</code>.<br>
+<strong>Skip if:</strong> You maintain your own dotfiles and know why cron doesn't read them.<br>
+<strong>Unlocks:</strong> 3.1, 3.3</p>
+</blockquote>
+<h4>Variables and PATH</h4>
+<p>When you type <code>caddy</code>, the shell walks the colon-separated directories in <code>PATH</code> in order and runs the first match — <code>which caddy</code> shows the winner. A variable set with <code>=</code> lives only in the current shell; <code>export</code> passes it to child processes. This distinction is why a script can't see the variable you "set" a minute ago without exporting it.</p>
+<pre><code class="language-bash">echo $PATH
+which caddy ; type ll              # where does a command resolve from?
+MYVAR=hello ; echo $MYVAR          # shell-local
+export API_ENV=staging             # visible to child processes
+printenv | sort | head             # what the environment actually contains
+alias ll='ls -lah'                 # convenience alias
+echo 'alias ll="ls -lah"' &gt;&gt; ~/.bashrc ; source ~/.bashrc</code></pre>
+<h4>Login vs non-login shells</h4>
+<p>Login shells (SSH session, console) read <code>.bash_profile</code> / <code>.profile</code>; interactive non-login shells (a new terminal tab) read <code>.bashrc</code>. Debian/Ubuntu's default <code>.profile</code> sources <code>.bashrc</code>, so in practice: put everything in <code>.bashrc</code>. The trap that matters: <strong>cron and systemd read neither</strong> — a script that works in your terminal but dies at 3 a.m. is almost always missing an environment variable or a PATH entry it silently inherited from your dotfiles (Module 3.3 revisits this).</p>
+<p><strong>Exercise 2.6 — Own Your Environment</strong></p>
+<p>Scenario: the Hayah homelab practice VM.</p>
+<ol>
+<li>Print your PATH and annotate each entry with what lives there.</li>
+<li>Create <code>~/bin</code>, put a two-line script in it, and add it to PATH persistently.</li>
+<li>Add three aliases you'll actually use (suggestions: <code>ll</code>, <code>ports='ss -tulpn'</code>, <code>f2b='sudo fail2ban-client status'</code>).</li>
+<li>Demonstrate the export rule: set a variable without export, show a child <code>bash -c 'echo $VAR'</code> can't see it, then export and show it can.</li>
+<li>Run <code>env -i bash -c 'echo $PATH'</code> to see the stripped environment cron-like contexts get — note what's missing.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-log-forensics">Phase 2 Capstone: Log Forensics</h3>
+<p><strong>Project: Access-Log Investigation Over SSH</strong></p>
+<p><strong>Dataset:</strong> the Hayah homelab practice VM running nginx, plus a real access log (your own traffic or a public sample).</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Install nginx on the VM, generate 200+ requests against it (mix of real pages and 404s) with <code>curl</code> in a loop.</li>
+<li>Working only over your <code>ssh lab</code> alias: produce top-10 IPs, status-code distribution, and top missing paths — pipelines only, no editors.</li>
+<li>Save each pipeline and its output to <code>~/lab/logs/forensics.txt</code> using <code>tee</code>.</li>
+<li>Archive the evidence as a dated <code>.tar.gz</code> and rsync it back to your Mac.</li>
+<li>Write a 5-line incident summary: who hit the box hardest, what did they probe, what would you block.</li>
+</ol>
+<hr />
+<h2 id="phase-3-intermediate-systems">Phase 3: Intermediate Systems</h2>
+<h3 id="weeks-6-9">Weeks 6–9 | Goal: Automate, schedule, mount, monitor, and secure — the skills that turn a machine you use into a server you operate</h3>
+<hr />
+
+<h3 id="module-31-bash-scripting">Module 3.1 — Bash Scripting</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2, 2.3 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Write a backup script — compress a directory, timestamp it, rsync to a remote host, exit non-zero on any failure — without a reference.<br>
+<strong>Skip if:</strong> Variables, conditionals, loops, functions, exit codes, and <code>set -euo pipefail</code> are second nature.<br>
+<strong>Unlocks:</strong> 3.3, 5.6</p>
+</blockquote>
+<h4>Scripts that fail loudly</h4>
+<p>The default shell behavior — keep going after errors, treat unset variables as empty — is exactly wrong for automation. <code>set -euo pipefail</code> flips all three: exit on error (<code>-e</code>), error on unset variables (<code>-u</code>), and make a pipeline's exit code reflect any failing stage (<code>pipefail</code>). Without it, <code>rm -rf "$BACKUP_DIR/"*</code> with an unset <code>BACKUP_DIR</code> quietly becomes <code>rm -rf /*</code>. That is not a hypothetical; it is the canonical way people destroy servers.</p>
+<h4>The working template</h4>
+<pre><code class="language-bash">#!/usr/bin/env bash
+set -euo pipefail
+
+SRC="/srv/app"
+DEST="lab:/srv/backups"
+STAMP="$(date +%F-%H%M)"
+ARCHIVE="/tmp/app-${STAMP}.tar.gz"
+LOG="/var/log/backup-app.log"
+
+log() { printf '%s %s\n' "$(date '+%F %T')" "$*" &gt;&gt; "$LOG"; }
+
+main() {
+  log "backup start"
+  tar -czf "$ARCHIVE" -C "$(dirname "$SRC")" "$(basename "$SRC")"
+  rsync -az "$ARCHIVE" "$DEST/"
+  rm -f "$ARCHIVE"
+  log "backup ok: app-${STAMP}.tar.gz"
+}
+
+trap 'log "backup FAILED at line $LINENO"; exit 1' ERR
+main "$@"</code></pre>
+<p>Every technique in this template earns its place: quoted variables survive spaces in paths; the <code>log</code> function timestamps every line so 3 a.m. failures are reconstructable; <code>trap ... ERR</code> guarantees a failure is recorded even when <code>-e</code> aborts mid-script; <code>-C</code> keeps archive paths relative so restores don't recreate absolute trees. Conditionals (<code>if [[ -d "$SRC" ]]</code>), loops (<code>for f in "$dir"/*.log</code>), and argument checks (<code>[[ $# -ge 1 ]] || { echo "usage: $0 &lt;dir&gt;"; exit 64; }</code>) bolt onto this skeleton.</p>
+<p><strong>Exercise 3.1 — The Backup Script</strong></p>
+<p>Scenario: the Hayah homelab — this exact script, matured, becomes the nightly job in Module 5.6.</p>
+<p><em>Retrieval practice: build the script from a blank file before consulting the template. Compare afterward — every difference is a gap worth closing now, not at 3 a.m.</em></p>
+<ol>
+<li>Write <code>backup.sh</code> taking a source directory as <code>$1</code>: validate it exists, archive with timestamp, rsync to <code>lab:</code>, log every step.</li>
+<li>Make it exit non-zero — with a logged reason — on: missing argument, missing directory, failed tar, failed rsync.</li>
+<li>Test all four failure paths deliberately; check <code>echo $?</code> after each.</li>
+<li>Add a function that prunes remote archives older than 7 days (<code>ssh lab 'find ... -mtime +7 -delete'</code>).</li>
+<li>Run it under <code>bash -x</code> once and read the trace — this is your primary script-debugging tool.</li>
+<li>Run <code>shellcheck backup.sh</code> (install it) and fix every warning.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-systemd-services">Module 3.2 — systemd &amp; Services</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Write a unit file from scratch with <code>Restart=on-failure</code>, enable it, and debug a failed start using <code>journalctl -u</code>.<br>
+<strong>Skip if:</strong> Unit file anatomy and <code>systemctl</code>/<code>journalctl</code> workflows are familiar.<br>
+<strong>Unlocks:</strong> 3.3, 3.5, 3.6, 5.5</p>
+</blockquote>
+<h4>Unit file anatomy</h4>
+<p>systemd is PID 1 on every mainstream distro: it starts services at boot, restarts them on crash, and owns their logs. A process without a unit file — launched from <code>nohup</code> or a tmux pane — dies silently with your session and restarts never. That is the difference between a demo and a service.</p>
+<pre><code class="language-ini"># /etc/systemd/system/vod.service
+[Unit]
+Description=VOD streaming backend
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=vodapp
+WorkingDirectory=/srv/vod
+ExecStart=/usr/bin/node /srv/vod/server.js
+Restart=on-failure
+RestartSec=3
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+<p><code>After=</code> orders startup (start me after the network is up); <code>Wants=</code>/<code>Requires=</code> declare dependency (pull that target in, softly or hard). Ordering without dependency, or vice versa, is the classic boot-race bug — a service that works on manual start but fails at boot because the network wasn't there yet.</p>
+<h4>The operating loop</h4>
+<pre><code class="language-bash">sudo systemctl daemon-reload            # after ANY unit file edit
+sudo systemctl enable --now vod         # start now AND at every boot
+systemctl status vod                    # state, PID, last log lines
+journalctl -u vod -f                    # follow this service's log live
+journalctl -u vod --since "10 min ago"  # scoped history
+sudo systemctl restart vod
+systemctl list-units --failed           # anything red on this box?</code></pre>
+<p><strong>Exercise 3.2 — Wrap a Real App</strong></p>
+<p>Scenario: the Hayah homelab — a Node (or Python <code>http.server</code>) app standing in for the VOD backend.</p>
+<ol>
+<li>Create a minimal HTTP app in <code>/srv/vod</code> owned by the <code>vodapp</code> user from Exercise 1.4.</li>
+<li>Write <code>vod.service</code> as above; enable and start it; confirm it serves.</li>
+<li>Kill the process with <code>sudo pkill -f server.js</code> — verify systemd restarts it within seconds and <code>journalctl -u vod</code> shows both death and rebirth.</li>
+<li>Break it on purpose (typo the <code>ExecStart</code> path), attempt a start, and practice reading <code>systemctl status</code> + <code>journalctl -u</code> to find the failure line. Fix it.</li>
+<li>Reboot the VM and confirm the service came up on its own.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-cron-scheduled-tasks">Module 3.3 — Cron &amp; Scheduled Tasks</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Read and write crontab syntax cold, and explain when a systemd timer is the better choice.<br>
+<strong>Skip if:</strong> You've already debugged a "works in my shell, fails in cron" incident to root cause.<br>
+<strong>Unlocks:</strong> 5.6</p>
+</blockquote>
+<h4>Crontab syntax and its environment trap</h4>
+<pre><code class="language-cron"># m h dom mon dow  command
+30 2 * * *   /home/hayah-admin/bin/backup.sh /srv/app &gt;&gt; /var/log/backup-cron.log 2&gt;&amp;1
+0 */6 * * *  /usr/local/bin/health-probe.sh
+15 3 * * 0   /usr/sbin/logrotate -f /etc/logrotate.d/vod</code></pre>
+<p>Cron runs with a near-empty environment: minimal <code>PATH</code> (<code>/usr/bin:/bin</code>), no <code>.bashrc</code>, home not guaranteed. The fix is mechanical — absolute paths for every command and file, redirect both streams to a log (or errors vanish), and set <code>PATH=</code> at the top of the crontab if a script needs more. Edit with <code>crontab -e</code>, list with <code>crontab -l</code>; system-wide jobs live in <code>/etc/cron.d/</code>.</p>
+<h4>systemd timers — when cron isn't enough</h4>
+<p>A timer pairs with a service unit (<code>backup.timer</code> + <code>backup.service</code>). Choose timers when you need: <code>Persistent=true</code> (a missed run fires at next boot — cron just skips it, and a box that's off at 02:30 backs up never), logs in <code>journalctl</code>, or dependency ordering (don't back up before the NFS mount exists). <code>OnCalendar=*-*-* 02:30:00</code> replaces the cron field dance; <code>systemctl list-timers</code> shows the schedule with next/last run — something cron cannot tell you at all.</p>
+<p><strong>Exercise 3.3 — Schedule the Backup</strong></p>
+<p>Scenario: the Hayah homelab — scheduling Exercise 3.1's <code>backup.sh</code>.</p>
+<ol>
+<li>Schedule <code>backup.sh</code> via crontab for every 5 minutes (test cadence), with both streams logged.</li>
+<li>Break it the classic way: change the cron line to a relative script path — read the failure evidence, then fix it.</li>
+<li>Convert the job to a systemd <code>backup.service</code> + <code>backup.timer</code> with <code>Persistent=true</code>; verify with <code>systemctl list-timers</code>.</li>
+<li>Power the VM off across a scheduled run, boot it, and confirm the persistent timer fired the missed job.</li>
+<li>Write down the decision rule you'd give a colleague: when cron, when timer.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-storage-mounts">Module 3.4 — Storage &amp; Mounts</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Explain what <code>_netdev</code> does in <code>/etc/fstab</code> and why omitting it can hang a boot.<br>
+<strong>Skip if:</strong> Partitioning, <code>mount</code>, fstab syntax, and <code>df</code>/<code>du</code> triage are routine.<br>
+<strong>Unlocks:</strong> 5.2</p>
+</blockquote>
+<h4>Block devices, filesystems, mounts</h4>
+<pre><code class="language-bash">lsblk -f                        # devices, partitions, filesystems, mountpoints
+sudo fdisk -l /dev/vdb          # partition table detail
+sudo mkfs.ext4 /dev/vdb1        # create a filesystem (DESTROYS existing data)
+sudo mount /dev/vdb1 /mnt/data  # attach it to the tree
+findmnt /mnt/data               # verify what's mounted where, with options
+df -h                           # free space per filesystem (the "disk full?" tool)
+sudo du -xsh /var/* | sort -rh | head   # which directory is eating the disk
+sudo umount /mnt/data</code></pre>
+<p><code>df</code> answers "which filesystem is full"; <code>du</code> answers "what inside it is responsible." The pairing matters during incidents: a service crashing with "no space left on device" gets diagnosed in two commands, not twenty.</p>
+<h4>fstab and network mounts</h4>
+<pre><code class="language-bash"># /etc/fstab — one line per persistent mount
+UUID=3f1c...  /mnt/data  ext4  defaults  0 2
+nas.lan:/volume1/backups  /mnt/nas  nfs  defaults,_netdev,noatime  0 0
+
+sudo blkid /dev/vdb1        # get the UUID (device names shift; UUIDs don't)
+sudo mount -a               # test fstab WITHOUT rebooting — errors now, not at boot
+sudo systemctl daemon-reload  # systemd generates mount units from fstab</code></pre>
+<p><code>_netdev</code> tells systemd this mount needs the network, so it waits for <code>network-online</code> instead of trying at local-disk time. Omit it and the boot either hangs waiting for an unreachable server or drops to emergency mode — on a headless box with no monitor, that means a machine that never comes back from a power cut. Module 5.2 validates this with a deliberate power-cycle test.</p>
+<p><strong>Exercise 3.4 — Mount Discipline</strong></p>
+<p>Scenario: the Hayah homelab — a second virtual disk standing in for the NAS export.</p>
+<ol>
+<li>Add a 5 GB disk to the VM in UTM; partition, format ext4, and mount it at <code>/mnt/data</code>.</li>
+<li>Add it to fstab by UUID; validate with <code>mount -a</code>, then reboot to prove persistence.</li>
+<li>Fill it with a 1 GB test file (<code>dd if=/dev/zero of=/mnt/data/blob bs=1M count=1024</code>) and practice the <code>df</code> → <code>du</code> triage.</li>
+<li>Export a directory from a second VM (or the Mac) via NFS, mount it with <code>_netdev</code>, and reboot to verify clean ordering.</li>
+<li>Explain (written): why UUID instead of <code>/dev/vdb1</code>, and what each field in your fstab lines means.</li>
+</ol>
+<hr />
+
+<h3 id="module-35-logs-monitoring">Module 3.5 — Logs &amp; Monitoring</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.2 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Tail live logs across <code>/var/log</code> and <code>journalctl -f</code>, and pull kernel events with <code>dmesg</code> to diagnose a hardware issue.<br>
+<strong>Skip if:</strong> You already know which log answers which question on an Ubuntu box.<br>
+<strong>Unlocks:</strong> 5.5, 5.7 (fail2ban reads these logs)</p>
+</blockquote>
+<h4>Two logging worlds, one box</h4>
+<p>The journal (<code>journalctl</code>) captures everything systemd supervises — structured, queryable, per-unit. Classic files under <code>/var/log</code> still receive syslog traffic and app-specific logs (<code>auth.log</code> for logins and sudo, <code>nginx/access.log</code>, <code>apt/history.log</code>). Knowing which world a service logs to is the first step of every incident; guessing wrong wastes the first ten minutes.</p>
+<pre><code class="language-bash">journalctl -u vod -f                     # follow one service
+journalctl -p err --since today          # everything at error+ severity today
+journalctl -b -1                         # the PREVIOUS boot — post-crash forensics
+sudo tail -f /var/log/auth.log           # watch logins and sudo live
+sudo dmesg -T | tail -30                 # kernel ring buffer: disks, OOM-kills, USB
+last -20                                 # recent login history
+sudo journalctl --vacuum-size=500M       # cap journal disk usage</code></pre>
+<h4>Rotation — why logs don't eat the disk</h4>
+<p><code>logrotate</code> (config in <code>/etc/logrotate.d/</code>) rotates, compresses, and prunes file-based logs on schedule; the journal caps itself via <code>SystemMaxUse</code> in <code>/etc/systemd/journald.conf</code>. Any service you add that writes its own log file needs a logrotate stanza, or six months later the disk fills at 4 a.m. — a self-inflicted outage with your name in the commit history.</p>
+<p><strong>Exercise 3.5 — Incident Replay</strong></p>
+<p>Scenario: the Hayah homelab practice VM with the <code>vod</code> service running.</p>
+<ol>
+<li>Trigger 5 failed SSH logins, then find them in <code>auth.log</code> — extract the attacking IP with a Module 2.2 pipeline.</li>
+<li>Crash the vod service and reconstruct the timeline from <code>journalctl -u vod</code> alone: death time, restart time, restart count.</li>
+<li>Find your VM's last three boots with <code>journalctl --list-boots</code> and read the shutdown lines of the previous one.</li>
+<li>Write a logrotate stanza for <code>/var/log/backup-app.log</code>: weekly, keep 8, compress; force-run it with <code>logrotate -f</code> and verify.</li>
+<li>Check and cap current journal disk usage.</li>
+</ol>
+<hr />
+
+<h3 id="module-36-security-basics">Module 3.6 — Security Basics</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.5, 3.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Harden SSH (key-only, non-default port, no root login) and explain what fail2ban is actually doing at the firewall level.<br>
+<strong>Skip if:</strong> You've hardened an internet-facing box and watched fail2ban ban a real attacker.<br>
+<strong>Unlocks:</strong> 5.7</p>
+</blockquote>
+<h4>The hardening baseline</h4>
+<p>An internet-facing box gets its first SSH brute-force attempts within minutes of boot — not targeted, just constant automated scanning. The baseline that neutralizes almost all of it: key-only auth, no root login, fail2ban watching <code>auth.log</code>, a default-deny firewall, and automatic security patches. This module is a rehearsal on the VPS; Module 5.7 applies it to production with a validation scan.</p>
+<pre><code class="language-bash"># /etc/ssh/sshd_config.d/hardening.conf
+#   PasswordAuthentication no
+#   PermitRootLogin no
+#   Port 2222              # optional: cuts log noise, is NOT security by itself
+sudo systemctl restart ssh
+
+sudo apt install fail2ban unattended-upgrades
+sudo systemctl enable --now fail2ban
+sudo fail2ban-client status sshd          # jail state: currently/total banned
+sudo dpkg-reconfigure -plow unattended-upgrades   # enable auto security patches</code></pre>
+<h4>What fail2ban actually does</h4>
+<p>fail2ban tails log files against regex filters; when an IP crosses the threshold (default: 5 failures in 10 minutes), it inserts a temporary firewall drop rule via nftables — then removes it when the ban expires. Understanding this demystifies it: it's a log-to-firewall feedback loop, which is why a jail is only as good as the log it watches, and why Module 5.7 adds a second jail on Caddy's access log — SSH isn't the only door.</p>
+<p>SELinux/AppArmor, at this level, one concept: mandatory access control confines what a process may touch <em>even as root</em>. Ubuntu ships AppArmor enabled; <code>sudo aa-status</code> shows what's confined. Know it exists and how to read a denial in the journal — deep policy work is beyond this guide's scope.</p>
+<p><strong>Exercise 3.6 — Get Attacked (Safely)</strong></p>
+<p>Scenario: the $4–6/mo VPS from Module 1.1's decision — this needs a real public IP.</p>
+<ol>
+<li>Provision the VPS; apply the full baseline above within 15 minutes of first boot.</li>
+<li>Leave it running 24h, then count real brute-force attempts in <code>auth.log</code> — tally attacking IPs and attempted usernames with pipelines.</li>
+<li>Check <code>fail2ban-client status sshd</code> — how many bans did you get for free?</li>
+<li>From a phone hotspot (different IP), fail SSH auth 6 times and confirm you get banned; unban yourself with <code>fail2ban-client set sshd unbanip</code>.</li>
+<li>Verify unattended-upgrades ran (<code>/var/log/unattended-upgrades/</code>).</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-hardened-vps">Phase 3 Capstone: Hardened VPS</h3>
+<p><strong>Project: Deploy a Real App to a Hardened Public Box</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back — what does <code>set -euo pipefail</code> do, what's the difference between <code>After=</code> and <code>Requires=</code>, and why does cron break scripts that work in your shell? If any draws a blank, re-read that module first.</p></blockquote>
+<p><strong>Dataset:</strong> the Hayah homelab VPS + a minimal Node/Next.js app (any app you have serves; the point is the plumbing around it).</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>VPS hardened per Module 3.6: key-only SSH, no root, fail2ban, ufw default-deny, unattended-upgrades.</li>
+<li>App deployed under its own system user as a systemd service with <code>Restart=on-failure</code> — kill test passes.</li>
+<li><code>backup.sh</code> running nightly via a persistent systemd timer, shipping archives to your VM or the NAS.</li>
+<li>logrotate configured for the app's log file; force-run verified.</li>
+<li>A <code>runbook.md</code>: how to check service health, read its logs, restore a backup — written so a stranger could do it.</li>
+<li>Survive reboot: everything above comes back with zero manual intervention.</li>
+</ol>
+<hr />
+<h2 id="phase-4-networking">Phase 4: Networking</h2>
+<h3 id="weeks-6-10">Weeks 6–10 (in parallel with Phase 3) | Goal: Diagnose, route, secure, and expose networked services with confidence</h3>
+<hr />
+
+<h3 id="module-41-tcp-ip-addressing-fundamentals">Module 4.1 — TCP/IP &amp; Addressing Fundamentals</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Subnet a <code>/24</code> into four <code>/26</code>s in your head, and place HTTP/TCP/IP/Ethernet in a practical layer model.<br>
+<strong>Skip if:</strong> CIDR math, ARP, and well-known ports are already fluent.<br>
+<strong>Unlocks:</strong> 4.2, 4.4, 4.7</p>
+</blockquote>
+<h4>The practical layer model</h4>
+<p>Forget memorizing all seven OSI layers — operators think in four: <strong>Ethernet/Wi-Fi</strong> moves frames between adjacent machines using MAC addresses; <strong>IP</strong> routes packets between networks using IP addresses; <strong>TCP/UDP</strong> multiplexes them to processes using ports; <strong>the application</strong> (HTTP, DNS, SSH) speaks on top. Every diagnostic in Module 4.2 is really the question "which layer is broken?" — and ARP is the glue that maps IP to MAC on the local segment (<code>ip neigh</code> shows the table).</p>
+<h4>CIDR without tears</h4>
+<p>A <code>/26</code> means 26 prefix bits, leaving 6 host bits: 2⁶ = 64 addresses per block, so blocks start at 0, 64, 128, 192. <code>192.168.1.0/24</code> therefore splits into <code>.0/26</code>, <code>.64/26</code>, <code>.128/26</code>, <code>.192/26</code> — each with 62 usable hosts (network and broadcast addresses are reserved). The general rule: hosts = 2^(32−prefix) − 2. Subnetting matters practically the day you put NAS management on an isolated VLAN (a Phase 5 known-limit mitigation) and need to know which addresses are inside it.</p>
+<pre><code class="language-bash">ip addr                    # my interfaces and addresses (note the /24 on the address)
+ip route                   # routing table; 'default via' = my gateway
+ip neigh                   # ARP table: IP-to-MAC on the local segment
+# Well-known ports to know cold:
+#   22 SSH · 53 DNS · 80 HTTP · 443 HTTPS · 123 NTP
+#   1812/1813 RADIUS auth/accounting · 2049 NFS · 51820 WireGuard</code></pre>
+<p><strong>Exercise 4.1 — Address Audit</strong></p>
+<p>Scenario: the Hayah homelab LAN.</p>
+<ol>
+<li>Map your real LAN: your machine's IP/prefix, gateway, and the NAS and mini-PC addresses (from <code>ip addr</code>, <code>ip route</code>, router UI).</li>
+<li>On paper: split your LAN's <code>/24</code> into four <code>/26</code>s and assign one to "infrastructure management" — which existing devices would land inside it?</li>
+<li>Compute usable hosts for <code>/30</code>, <code>/28</code>, <code>/22</code> from the rule, then verify one with an online calculator.</li>
+<li><code>ping</code> the NAS, then read its MAC from <code>ip neigh</code> — explain what just happened at the Ethernet layer.</li>
+<li>From memory, list the ports for SSH, DNS, HTTP, HTTPS, NFS, RADIUS, WireGuard.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-core-diagnostic-tools">Module 4.2 — Core Diagnostic Tools</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Given "site unreachable," isolate DNS vs routing vs app layer in under 5 minutes using only <code>dig</code>, <code>curl -v</code>, <code>ss</code>, <code>ping</code>/<code>mtr</code>.<br>
+<strong>Skip if:</strong> You already run this triage sequence from muscle memory.<br>
+<strong>Unlocks:</strong> 4.3, 5.2</p>
+</blockquote>
+<h4>The triage ladder</h4>
+<p>Debug bottom-up, one layer per question, and you can't get lost:</p>
+<pre><code class="language-bash">ping -c3 1.1.1.1            # 1. Do I have IP connectivity at all?
+dig example.com +short      # 2. Does the name resolve? To what?
+ping -c3 example.com        # 3. Is the resolved host reachable?
+mtr -rw example.com         # 4. WHERE does the path degrade? (traceroute + loss stats)
+ss -tulpn | grep :443       # 5. (server side) Is anything listening on the port?
+curl -v https://example.com # 6. What does the app layer actually say?
+curl -I  https://example.com # headers only: status, redirects, cache</code></pre>
+<p>Each step eliminates a layer: step 1 failing is local network/gateway; step 2 failing is DNS; 3–4 failing is routing or firewall; 5 empty is a dead service; 6 erroring is the application. Skipping the ladder to "just check the app" is how people restart healthy services while a DNS record sits wrong for another hour.</p>
+<h4>ss and tcpdump — seeing the actual traffic</h4>
+<p><code>ss -tulpn</code> (tcp, udp, listening, processes, numeric) is the server-side truth: what is listening, on which address, owned by which PID. A service bound to <code>127.0.0.1:8080</code> instead of <code>0.0.0.0:8080</code> is invisible from the LAN — the single most common "it works locally but not remotely" cause. When ss and curl disagree with expectation, <code>tcpdump</code> shows the wire itself: <code>sudo tcpdump -ni eth0 port 443 -c 20</code> answers "are packets even arriving?" — which cleanly splits firewall problems from application problems.</p>
+<p><strong>Exercise 4.2 — Break It, Find It</strong></p>
+<p>Scenario: the Hayah homelab VPS running the Phase 3 capstone app. Do each break, then diagnose with tools only — no browser, no guessing.</p>
+<ol>
+<li>Baseline: run the full triage ladder against your app and record healthy output for each step.</li>
+<li>Break DNS: point a hosts-file entry at a wrong IP; find it with <code>dig</code> vs <code>ping</code> disagreement.</li>
+<li>Break the service: stop the app; find it via <code>ss</code> (nothing listening) after connectivity checks pass.</li>
+<li>Break the bind: make the app listen on 127.0.0.1 only; diagnose the local-vs-remote asymmetry.</li>
+<li>Break the firewall: <code>ufw deny</code> the app port; prove packets arrive (<code>tcpdump</code>) but nothing answers.</li>
+<li>Time yourself on a final mystery break (have a friend or a coin-flip pick one) — target: under 5 minutes.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-dns-tls">Module 4.3 — DNS &amp; TLS</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Explain the TLS handshake and SNI, and set up automated cert issuance/renewal.<br>
+<strong>Skip if:</strong> Record types, TTLs, and ACME automation are familiar.<br>
+<strong>Unlocks:</strong> 4.5</p>
+</blockquote>
+<h4>DNS records and resolution</h4>
+<p>The records that matter daily: <strong>A</strong> (name → IPv4), <strong>AAAA</strong> (→ IPv6), <strong>CNAME</strong> (name → another name), <strong>MX</strong> (mail), <strong>TXT</strong> (verification, SPF), <strong>NS</strong> (who's authoritative). Resolution order on the box: <code>/etc/hosts</code> first, then the resolver in <code>/etc/resolv.conf</code> (systemd-resolved on Ubuntu — <code>resolvectl status</code> shows the real upstream).</p>
+<pre><code class="language-bash">dig vod.hayah.example +short          # the answer, tersely
+dig vod.hayah.example                 # full response: TTL, authority, query time
+dig @1.1.1.1 vod.hayah.example        # ask a SPECIFIC resolver (bypass local cache)
+dig +trace vod.hayah.example          # walk root -&gt; TLD -&gt; authoritative
+dig -x 203.0.113.10                   # reverse: IP -&gt; name
+resolvectl status | head              # what resolver is this box actually using</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> "waiting for DNS propagation" as if it were weather. Records don't propagate — caches expire. A change is visible everywhere once every resolver's cached TTL runs out. Check the TTL <em>before</em> changing a record (drop it to 300 ahead of a migration), verify with <code>dig @authoritative-ns</code> immediately, and you never have to "wait and hope" again.</p></blockquote>
+<h4>TLS: handshake, SNI, and free automated certs</h4>
+<p>In one paragraph: the client sends ClientHello (including <strong>SNI</strong> — the hostname it wants, in clear text, which is how one IP serves many HTTPS sites); the server answers with its certificate chain; the client verifies the chain up to a trusted CA and checks the name matches; both sides derive session keys; encrypted traffic begins. When TLS fails, it's almost always one of: expired cert, wrong name, or incomplete chain — <code>curl -v</code> shows which.</p>
+<p>Let's Encrypt made certs free and 90-day-short on purpose: renewal must be automated or it isn't real. Caddy (Module 4.5) does ACME automatically with zero config. For nginx setups, <code>certbot</code> is the standard client — installed via snap per current official docs (<code>sudo snap install certbot --classic</code>), with <code>certbot renew --dry-run</code> to prove the automation works before the 90 days do.</p>
+<p><strong>Exercise 4.3 — Name and Certify</strong></p>
+<p>Scenario: the Hayah homelab VPS + a real domain (any cheap TLD works; you need one for Phase 5 anyway).</p>
+<ol>
+<li>Create an A record <code>lab.&lt;yourdomain&gt;</code> → VPS IP with TTL 300; verify with <code>dig @&lt;your-ns&gt;</code> immediately, then locally.</li>
+<li>Run <code>dig +trace</code> on it and annotate each delegation step in a sentence.</li>
+<li>Issue a cert for it (Caddy automatic, or certbot <code>--nginx</code>) and load the site over HTTPS.</li>
+<li>Inspect the served chain: <code>openssl s_client -connect lab.&lt;yourdomain&gt;:443 -servername lab.&lt;yourdomain&gt; | head -30</code> — identify leaf and issuer.</li>
+<li>Explain from the output where SNI appeared and why the flag matters when one IP hosts several names.</li>
+</ol>
+<hr />
+
+<h3 id="module-44-firewalls-access-control">Module 4.4 — Firewalls &amp; Access Control</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.1, 1.4 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Read a legacy iptables ruleset, manage day-to-day rules in ufw, and explain what fail2ban does at the firewall layer.<br>
+<strong>Skip if:</strong> Default-deny is already your reflex and you know what backend ufw drives.<br>
+<strong>Unlocks:</strong> 4.5, 5.1, 5.7</p>
+</blockquote>
+<h4>The stack: nftables under, ufw on top</h4>
+<p>Modern kernels filter packets with <strong>nftables</strong>; it replaced iptables as the default backend years ago (Ubuntu 20.10+, Debian 10+), though the <code>iptables</code> command survives as a compatibility shim and you will meet old rulesets written in it. <strong>ufw</strong> is Ubuntu's front-end that compiles simple intent into nftables rules — the right day-to-day tool for a single server. Cloud security groups are the same concept enforced outside the box; run both, because defense that depends on one layer being configured correctly isn't defense.</p>
+<pre><code class="language-bash">sudo ufw default deny incoming        # the posture that makes everything else work
+sudo ufw default allow outgoing
+sudo ufw allow 22/tcp comment 'SSH'
+sudo ufw allow 80,443/tcp comment 'web'
+sudo ufw limit 22/tcp                 # built-in rate limit on SSH
+sudo ufw enable
+sudo ufw status verbose               # ALWAYS verify what you think you configured
+sudo nft list ruleset | head -40      # the real rules ufw generated
+sudo iptables -L -n -v | head         # reading legacy rulesets (via the nft shim)</code></pre>
+<h4>Default-deny thinking</h4>
+<p>Allow-listing inverts the security question from "what should I block?" (unanswerable — attackers invent new things) to "what did I intend to expose?" (a list you can hold in your head: 22, 80, 443). Everything Phase 5 exposes publicly is exactly that list, and the Validation Gate's port scan is simply checking that reality matches intent. Order matters in rulesets: first match wins, so a broad early accept swallows the specific deny below it — the classic review mistake when reading legacy iptables files.</p>
+<p><strong>Exercise 4.4 — Lock the Doors</strong></p>
+<p>Scenario: the Hayah homelab VPS.</p>
+<ol>
+<li>Record what's currently listening (<code>ss -tulpn</code>) — anything there you didn't intend?</li>
+<li>Apply the default-deny baseline above; verify SSH still works BEFORE closing your session (open a second session as a seatbelt).</li>
+<li>From outside (phone hotspot), scan yourself: <code>nmap &lt;vps-ip&gt;</code> — confirm only 22/80/443 answer.</li>
+<li>Read the generated ruleset with <code>nft list ruleset</code> and find your three allow rules and fail2ban's chain.</li>
+<li>Trigger a fail2ban SSH ban (Exercise 3.6 method) and watch its rule appear and later expire in the ruleset.</li>
+<li>Add and then delete a rule allowing a made-up port 8443 — practice the full lifecycle including <code>ufw status numbered</code> / <code>delete</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-45-reverse-proxy-load-balancing">Module 4.5 — Reverse Proxy &amp; Load Balancing</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.3, 4.4 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Stand up a reverse proxy with path-based routing to two backend services, with correct header forwarding.<br>
+<strong>Skip if:</strong> <code>proxy_pass</code>/<code>reverse_proxy</code>, upstreams, and forwarded headers are familiar territory.<br>
+<strong>Unlocks:</strong> 5.4</p>
+</blockquote>
+<h4>One front door, many rooms</h4>
+<p>A reverse proxy is the single public entry point that terminates TLS and routes requests to backends that only listen on localhost. The payoff is architectural: backends never face the internet, certs live in one place, and adding a service is a routing line — not a new public port. This is exactly the pattern that keeps the NAS invisible in Phase 5. Caddy is this guide's default because TLS automation is built in (currently v2.11.x); nginx remains worth reading because you will encounter it everywhere.</p>
+<pre><code class="language-caddy"># /etc/caddy/Caddyfile
+vod.hayah.example {
+    reverse_proxy 127.0.0.1:8096
+}
+
+apps.hayah.example {
+    handle_path /billing/* {
+        reverse_proxy 127.0.0.1:3001
+    }
+    handle_path /radius/* {
+        reverse_proxy 127.0.0.1:3002
+    }
+    handle {
+        respond "Hayah apps gateway" 200
+    }
+}</code></pre>
+<p>That's a complete config including automatic HTTPS — Caddy fetches and renews certs for both names on first run. The nginx equivalent adds the header block you must know by heart, because without it backends see the proxy as the client — breaking logs, rate limits, and anything IP-based:</p>
+<pre><code class="language-nginx">location /billing/ {
+    proxy_pass http://127.0.0.1:3001/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}</code></pre>
+<h4>Load balancing, briefly</h4>
+<p>Point the proxy at multiple upstreams (<code>reverse_proxy 127.0.0.1:3001 127.0.0.1:3011</code>) and it distributes — round-robin by default, <code>lb_policy least_conn</code> when request costs vary. Health checks eject dead backends automatically. For the homelab's single node this stays conceptual; it becomes real the day one VOD backend can't hold the stream count.</p>
+<p><strong>Exercise 4.5 — Two Services, One Door</strong></p>
+<p>Scenario: the Hayah homelab VPS with two toy backends (billing on 3001, status on 3002 — a python <code>http.server</code> each is fine).</p>
+<ol>
+<li>Run both backends bound to 127.0.0.1 only; confirm they're unreachable from outside.</li>
+<li>Write the Caddyfile routing <code>/billing/*</code> and <code>/status/*</code> under one hostname; reload with <code>systemctl reload caddy</code>.</li>
+<li>Verify HTTPS works with a real cert and both paths route correctly via <code>curl</code>.</li>
+<li>Prove header forwarding: make a backend echo request headers and confirm <code>X-Forwarded-For</code> carries your real IP.</li>
+<li>Stop one backend and observe the proxy's error response and log line — know what "backend down" looks like from outside vs inside.</li>
+</ol>
+<hr />
+
+<h3 id="module-46-tunneling-remote-access">Module 4.6 — Tunneling &amp; Remote Access</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.5 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Set up local, remote, and dynamic SSH forwarding, and stand up a basic WireGuard tunnel between two boxes.<br>
+<strong>Skip if:</strong> <code>-L/-R/-D</code> and WireGuard peer configs need no reference.<br>
+<strong>Unlocks:</strong> Phase 5 admin access patterns</p>
+</blockquote>
+<h4>SSH tunnels — the three directions</h4>
+<pre><code class="language-bash">ssh -L 9000:localhost:8096 lab     # LOCAL: my :9000 -&gt; lab's :8096 (reach a private admin UI)
+ssh -R 8080:localhost:3000 vps     # REMOTE: vps's :8080 -&gt; my :3000 (demo a local dev app)
+ssh -D 1080 vps                    # DYNAMIC: SOCKS proxy through vps (whole-browser tunnel)
+# ~/.ssh/config multiplexing — instant subsequent connections:
+# Host *
+#     ControlMaster auto
+#     ControlPath ~/.ssh/cm-%r@%h:%p
+#     ControlPersist 10m</code></pre>
+<p>The mnemonic: <code>-L</code> brings a remote port <em>to you</em>; <code>-R</code> pushes a local port <em>to them</em>; <code>-D</code> proxies everything. Local forwarding is the professional pattern for admin interfaces — DSM, Metabase, anything with a login page — reachable without ever exposing them publicly. This is how you'll touch the NAS UI after Phase 5 locks the network down.</p>
+<h4>WireGuard — the persistent tunnel</h4>
+<p>SSH tunnels are per-session; WireGuard is a permanent encrypted interface (in the mainline kernel — no daemon, one config file). Each peer has a keypair; <code>AllowedIPs</code> is both routing and firewall: it declares which addresses live on the other end of the tunnel.</p>
+<pre><code class="language-ini"># /etc/wireguard/wg0.conf  (VPS side; mirror-image on the laptop)
+[Interface]
+PrivateKey = &lt;vps-private-key&gt;
+Address = 10.8.0.1/24
+ListenPort = 51820
+
+[Peer]
+PublicKey = &lt;laptop-public-key&gt;
+AllowedIPs = 10.8.0.2/32</code></pre>
+<pre><code class="language-bash">wg genkey | tee private.key | wg pubkey &gt; public.key
+sudo systemctl enable --now wg-quick@wg0
+sudo wg show          # handshake time + transfer counters = tunnel truth</code></pre>
+<p><strong>Exercise 4.6 — Private Roads</strong></p>
+<p>Scenario: the Hayah homelab — laptop, VPS, and (locally) the practice VM.</p>
+<ol>
+<li>Local-forward a backend from Exercise 4.5 to your laptop and open it in a browser — while the port stays closed publicly.</li>
+<li>Remote-forward a local dev server onto the VPS and fetch it from the VPS shell.</li>
+<li>Set up the ControlMaster config and measure the second-connection speedup.</li>
+<li>Build the WireGuard tunnel laptop↔VPS: generate keys, write both configs, open udp/51820 in ufw, bring it up.</li>
+<li>Verify with <code>wg show</code> and <code>ping 10.8.0.1</code>; then SSH to the VPS over the tunnel IP.</li>
+<li>Explain (written): when you'd reach for an SSH tunnel vs WireGuard for NAS admin access.</li>
+</ol>
+<hr />
+
+<h3 id="module-47-container-networking">Module 4.7 — Container Networking</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Explain why containers on the same Compose network resolve each other by service name, and what changes between the default bridge and a custom network.<br>
+<strong>Skip if:</strong> <code>docker network inspect</code> output reads like plain prose to you.<br>
+<strong>Unlocks:</strong> containerized services in Phase 5 (optional path)</p>
+</blockquote>
+<h4>Bridges, ports, and the DNS trick</h4>
+<p>Docker (Engine 29.x current) puts containers on a private bridge network; <code>-p 8080:80</code> punches a NAT hole from host port to container port. The detail that matters: on <strong>custom</strong> networks (which Compose creates per project automatically), Docker runs an embedded DNS server so containers resolve each other <em>by name</em> — the default <code>bridge</code> network doesn't do this. That's why Compose services talk via <code>db:5432</code> with no IPs anywhere, and why hardcoding a container IP is always wrong: they change on every recreate.</p>
+<pre><code class="language-yaml"># compose.yaml — app + Postgres, service-name DNS, no hardcoded IPs
+services:
+  app:
+    image: node:22-alpine
+    working_dir: /srv
+    volumes: [ "./app:/srv" ]
+    command: node server.js
+    environment:
+      DATABASE_URL: postgres://hayah:secret@db:5432/appdb
+    ports: [ "8080:3000" ]
+    depends_on: [ db ]
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: hayah
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: appdb
+    volumes: [ "dbdata:/var/lib/postgresql/data" ]
+volumes:
+  dbdata:</code></pre>
+<pre><code class="language-bash">docker compose up -d
+docker network ls                          # note the project network
+docker network inspect &lt;project&gt;_default   # subnet, connected containers, IPs
+docker compose exec app ping -c2 db        # service-name resolution, live
+ss -tlnp | grep 8080                       # the published port on the host</code></pre>
+<h4>Mapping to Kubernetes, in one breath</h4>
+<p>The same ideas wear bigger names in k8s: a <strong>Service</strong> is the stable DNS name in front of pods (like Compose service names), an <strong>Ingress</strong> is the reverse proxy layer (like your Caddyfile). Learn the pattern here and the k8s vocabulary attaches to concepts you already own.</p>
+<p><strong>Exercise 4.7 — Compose Stack</strong></p>
+<p>Scenario: the Hayah homelab — Docker Desktop locally, or Docker Engine on the VPS.</p>
+<ol>
+<li>Bring up the app+Postgres stack above (write a 10-line <code>server.js</code> that queries <code>SELECT now()</code> via the DATABASE_URL).</li>
+<li>Verify service-name DNS with <code>ping db</code> and by reading the app's successful DB response on :8080.</li>
+<li>Inspect the network: find the subnet and each container's address; recreate the db container and show its IP changed while <code>db:5432</code> kept working.</li>
+<li>Add a second app replica on a different host port and confirm both share the db.</li>
+<li>Tear down with <code>docker compose down</code> and explain what the named volume preserved.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-network-stack">Phase 4 Capstone: Network Stack</h3>
+<p><strong>Project: The Full Front Door</strong></p>
+<p><strong>Dataset:</strong> the Hayah homelab VPS + your real domain — this is the dress rehearsal for Phase 5's public exposure.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Caddy reverse-proxying two localhost-only services under your domain with automatic HTTPS, path-based routing, and verified header forwarding.</li>
+<li>ufw default-deny with exactly 22/80/443 (+ 51820/udp) open; external nmap scan output saved as proof.</li>
+<li>fail2ban active with a verified ban/unban cycle logged.</li>
+<li>WireGuard tunnel laptop↔VPS; one admin interface reachable <em>only</em> over the tunnel.</li>
+<li>A "site unreachable" drill: have someone break one layer (DNS, service, bind, firewall) — diagnose in under 5 minutes with the triage ladder, written timeline as proof.</li>
+<li>Architecture diagram (ASCII is fine) of the whole stack: DNS → firewall → Caddy → backends, tunnel on the side.</li>
+</ol>
+<hr />
+<h2 id="phase-5-capstone-build">Phase 5: Capstone Build — Live Production Deployment</h2>
+<h3 id="weeks-10-13">Weeks 10–13 | Goal: Deploy the real thing — NAS as pure storage appliance, mini-PC as the compute node for cloud backup, VOD streaming, and ISP RADIUS/DHCP/billing</h3>
+<blockquote class="callout"><p><strong>This phase runs on real hardware with real stakes.</strong> Architecture: storage/compute separation. The Synology DS3615xs reverts to a dedicated storage appliance and never faces the internet (its DSM 7.1 lifecycle cap makes that non-negotiable). The Ubuntu Server 24.04 LTS mini-PC (i3-12100 class) handles everything CPU-intensive and latency-sensitive. Each module below is a capstone stage with a hard checkpoint — do not proceed past a failed checkpoint.</p></blockquote>
+<hr />
+
+<h3 id="module-51-base-os-setup">Module 5.1 — Base OS Setup (CAP-1)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 1.1, 1.4, 2.5, 4.4 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> The mini-PC already runs headless with key-only SSH, static IP, and survives a cold reboot unattended.<br>
+<strong>Skip if:</strong> That checkpoint already passes today.<br>
+<strong>Unlocks:</strong> 5.2, 5.4</p>
+</blockquote>
+<h4>Headless install done right</h4>
+<p>Install Ubuntu Server 24.04 LTS with an HDMI dummy plug fitted — some boards misbehave or throttle display-dependent firmware paths when booting with no monitor attached, and a ₱200 dummy plug is cheaper than one debugging session at the shelf. During install: your named admin user (the Exercise 1.4 pattern), OpenSSH enabled, no snaps you didn't ask for. First boot, in order: keys on, passwords off, baseline packages, static IP.</p>
+<pre><code class="language-bash">ssh-copy-id hayah-admin@&lt;dhcp-ip&gt;         # keys first
+# then /etc/ssh/sshd_config.d/hardening.conf: PasswordAuthentication no, PermitRootLogin no
+sudo apt update &amp;&amp; sudo apt install -y unattended-upgrades fail2ban ufw rsync
+sudo dpkg-reconfigure -plow unattended-upgrades
+sudo ufw default deny incoming ; sudo ufw allow 22/tcp ; sudo ufw enable</code></pre>
+<h4>Static IP via netplan</h4>
+<p>A service host on DHCP is a time bomb: one lease change and every client, mount, and firewall scope pointing at it breaks at once. Netplan owns interface config on Ubuntu Server:</p>
+<pre><code class="language-yaml"># /etc/netplan/01-static.yaml
+network:
+  version: 2
+  ethernets:
+    enp1s0:
+      dhcp4: false
+      addresses: [192.168.1.10/24]
+      routes:
+        - to: default
+          via: 192.168.1.1
+      nameservers:
+        addresses: [192.168.1.1, 1.1.1.1]</code></pre>
+<p>Apply with <code>sudo netplan try</code> — it auto-reverts in 120 seconds unless you confirm, which is the difference between a typo and a drive to the machine. Reserve the same address in the router's DHCP config so nothing else ever claims it.</p>
+<p><strong>Exercise 5.1 — Checkpoint CAP-1</strong></p>
+<p>Scenario: the Hayah homelab mini-PC, for real now.</p>
+<ol>
+<li>Complete the install and baseline above; document every step in <code>runbook.md</code> as you go, not after.</li>
+<li>Verify key-only: password SSH attempt fails from another machine.</li>
+<li>Apply the static IP with <code>netplan try</code>, then reserve it in the router.</li>
+<li><strong>Checkpoint:</strong> cold power-cycle (pull the plug) — the box must return to SSH-reachable on its static IP with zero manual intervention. Fail → fix → repeat until it passes.</li>
+</ol>
+<hr />
+
+<h3 id="module-52-storage-layer">Module 5.2 — Storage Layer (CAP-2)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 3.4, 4.2, 5.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> NFS mount already survives reboot, and iperf3 confirms the link actually hits spec.<br>
+<strong>Skip if:</strong> Both halves of that checkpoint pass today.<br>
+<strong>Unlocks:</strong> 5.3, 5.6</p>
+</blockquote>
+<h4>Scoped NFS export, disciplined mount</h4>
+<p>NAS side (DSM): enable the NFS service and scope the export's permission to the mini-PC's static IP <em>only</em> — an export open to the subnet is an invitation you don't need to send. Mini-PC side, the Module 3.4 pattern with the flag that matters:</p>
+<pre><code class="language-bash"># /etc/fstab
+# 192.168.1.20:/volume1/media  /mnt/nas/media  nfs  defaults,_netdev,noatime  0 0
+sudo mkdir -p /mnt/nas/media
+sudo mount -a          # test now — errors here beat errors at boot
+findmnt /mnt/nas/media</code></pre>
+<p>Omitting <code>_netdev</code> causes a silent mount failure or a boot hang when the network isn't ready — on a headless box that means "NAS invisible after every power cut, nobody knows why." The power-cycle test below is the only proof that counts.</p>
+<h4>Measure the link before trusting it</h4>
+<p>Every downstream symptom — stuttering streams, slow backups — gets blamed on the wrong layer if the link itself was never verified. <code>iperf3</code> gives ground truth in 30 seconds:</p>
+<pre><code class="language-bash"># NAS side (or a container on it):  iperf3 -s
+iperf3 -c 192.168.1.20 -t 10           # mini-PC -&gt; NAS throughput
+iperf3 -c 192.168.1.20 -t 10 -R        # reverse direction
+# Targets: ≥9 Gbit/s on 10GbE · ≥2.3 Gbit/s on 2.5GbE
+# Miss the target -&gt; fix cable/NIC/switch NOW, before touching anything downstream</code></pre>
+<p><strong>Exercise 5.2 — Checkpoint CAP-2</strong></p>
+<p>Scenario: the Hayah homelab — NAS + mini-PC over the real switch.</p>
+<ol>
+<li>Configure the DSM NFS export scoped to the mini-PC's IP; confirm a different machine is refused.</li>
+<li>Mount via fstab with <code>_netdev,noatime</code>; validate with <code>mount -a</code> and <code>findmnt</code>.</li>
+<li>Run iperf3 both directions; record numbers in the runbook. Below spec → walk the physical path (cable category, NIC negotiation via <code>ethtool</code>, switch port) until it hits.</li>
+<li><strong>Checkpoint:</strong> power-cycle the mini-PC — the NFS mount must be present and readable post-boot with no intervention, and iperf3 must confirm link spec.</li>
+</ol>
+<hr />
+
+<h3 id="module-53-hardware-transcode-validation">Module 5.3 — Hardware Transcode Validation (CAP-3)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 5.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> <code>vainfo</code> already lists iHD H264/HEVC encode entrypoints and <code>intel_gpu_top</code> shows Video-engine activity under a real transcode.<br>
+<strong>Skip if:</strong> That evidence exists from the current OS install.<br>
+<strong>Unlocks:</strong> VOD service in 5.5</p>
+</blockquote>
+<h4>Quick Sync, and proving it's real</h4>
+<p>The i3-12100's iGPU transcodes video in dedicated silicon — dozens of streams at a few watts — but only if the stack actually engages it. The trap is <em>silent software fallback</em>: everything plays, CPU quietly does the work, and the box falls over at the third concurrent stream. Requirements: 12th-gen+ Intel with integrated graphics (non-F SKU) and the modern <strong>iHD</strong> VA-API driver, not the legacy i965.</p>
+<pre><code class="language-bash">sudo apt install -y intel-media-va-driver-non-free vainfo intel-gpu-tools
+vainfo | grep -E "Driver|Entrypoint" | head    # must say iHD; look for VAEntrypointEncSlice
+vainfo | grep -iE "h264|hevc"                  # encode+decode entrypoints for both codecs
+sudo usermod -aG render vodapp                 # the service user needs /dev/dri access
+ls -l /dev/dri/                                # renderD128 = the transcode device</code></pre>
+<h4>Load-testing the claim</h4>
+<pre><code class="language-bash"># Terminal 1 — watch the engines live:
+sudo intel_gpu_top
+# Terminal 2 — force a transcode with ffmpeg via VA-API:
+ffmpeg -hwaccel vaapi -hwaccel_device /dev/dri/renderD128 -hwaccel_output_format vaapi \
+  -i /mnt/nas/media/sample-4k.mkv -vf 'scale_vaapi=w=1920:h=1080' \
+  -c:v h264_vaapi -b:v 6M -c:a copy -f null -
+# PASS looks like: Video engine busy in intel_gpu_top, total CPU low and flat</code></pre>
+<p><strong>Exercise 5.3 — Checkpoint CAP-3</strong></p>
+<p>Scenario: the Hayah homelab mini-PC + sample media on the NFS mount.</p>
+<ol>
+<li>Install the driver stack; capture <code>vainfo</code> output into the runbook.</li>
+<li>Run the ffmpeg VA-API transcode; screenshot <code>intel_gpu_top</code> showing Video-engine load.</li>
+<li>Run the same transcode WITHOUT <code>-hwaccel vaapi</code> and compare CPU — feel the difference hardware offload makes.</li>
+<li><strong>Checkpoint:</strong> 3+ simultaneous stream playbacks plus 1 forced transcode — CPU stays under 40%, Video engine active. Record the numbers.</li>
+</ol>
+<hr />
+
+<h3 id="module-54-reverse-proxy-public-exposure">Module 5.4 — Reverse Proxy &amp; Public Exposure (CAP-4)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 4.5, 5.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> A WAN port scan already shows only 80/443 open, both answered by Caddy, NAS invisible.<br>
+<strong>Skip if:</strong> You have that scan output from the current network config.<br>
+<strong>Unlocks:</strong> 5.5, 5.7</p>
+</blockquote>
+<h4>The layer that keeps DSM off the internet</h4>
+<p>Only ports 80/443 route inward from the WAN, terminating at Caddy on the mini-PC. Every backend — VOD, the RADIUS-adjacent web UI, billing — binds to localhost or internal ports and is reachable only through the proxy's routing rules. The NAS gets <em>no</em> port-forward, ever: DSM 7.1's lifecycle cap means unpatched-forever, and unpatched appliances on the public internet are how homelabs end up in botnets. Admin access to DSM goes over the Module 4.6 tunnel instead.</p>
+<pre><code class="language-caddy"># /etc/caddy/Caddyfile — production shape
+vod.hayah.example {
+    reverse_proxy 127.0.0.1:8096
+    log {
+        output file /var/log/caddy/vod-access.log
+    }
+}
+
+billing.hayah.example {
+    reverse_proxy 127.0.0.1:3001
+    log {
+        output file /var/log/caddy/billing-access.log
+    }
+}</code></pre>
+<p><em>Retrieval practice: before opening the module 4.5 notes, write this Caddyfile from memory for your real hostnames. The parts you reach for and miss are the parts to drill.</em></p>
+<h4>Router + verification</h4>
+<p>Forward WAN 80→mini-PC:80 and 443→mini-PC:443 — nothing else. The access logs Caddy writes here are not optional bookkeeping: they are the input for the fail2ban jail in Module 5.7.</p>
+<p><strong>Exercise 5.4 — Checkpoint CAP-4</strong></p>
+<p>Scenario: the Hayah homelab, going public.</p>
+<ol>
+<li>Point real DNS A records at your WAN IP (dynamic DNS if the ISP address rotates).</li>
+<li>Deploy the Caddyfile; confirm automatic certs issued for every hostname.</li>
+<li>Verify each backend is unreachable directly from the LAN's guest segment but reachable through Caddy.</li>
+<li><strong>Checkpoint:</strong> from an outside network, <code>nmap</code> the WAN IP — only 80/443 open, both answered by Caddy (check response headers), NAS completely invisible. Save the scan output; 5.7 diffs against it.</li>
+</ol>
+<hr />
+
+<h3 id="module-55-systemd-service-wrapping">Module 5.5 — systemd Service Wrapping (CAP-5)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 3.2, 5.4 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Kill any app process manually — it self-restarts within seconds, with the event visible in <code>journalctl</code>.<br>
+<strong>Skip if:</strong> Every production process already runs under a unit file.<br>
+<strong>Unlocks:</strong> 5.6, Final Capstone</p>
+</blockquote>
+<h4>No nohup, no bare tmux</h4>
+<p>Every app process — billing service, RADIUS, VOD backend — gets a proper unit file. A process in a tmux pane is invisible to the init system: it doesn't start at boot, doesn't restart on crash, and its logs die with the scrollback. The unit pattern from Module 3.2, hardened for production:</p>
+<pre><code class="language-ini"># /etc/systemd/system/billing.service
+[Unit]
+Description=ISP billing service
+After=network-online.target mnt-nas-media.mount
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=billing
+WorkingDirectory=/srv/billing
+ExecStart=/usr/bin/node /srv/billing/server.js
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/srv/billing /var/log/billing
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+<p>The last four <code>[Service]</code> lines are systemd's built-in sandboxing: the process can't gain privileges, sees the OS read-only except its declared paths, and gets a private <code>/tmp</code>. Free defense-in-depth — a compromised billing process can't touch RADIUS files even before AppArmor enters the picture. Note the <code>After=mnt-nas-media.mount</code>: services that need the NFS mount must order after it, or they race it at boot.</p>
+<h4>The kill test is the checkpoint</h4>
+<pre><code class="language-bash">systemctl status billing radius vod --no-pager   # all green
+sudo pkill -f billing/server.js                  # murder
+sleep 5 ; systemctl status billing --no-pager    # resurrection
+journalctl -u billing --since "2 min ago"        # both events, logged</code></pre>
+<p><strong>Exercise 5.5 — Checkpoint CAP-5</strong></p>
+<p>Scenario: the Hayah homelab mini-PC, all services.</p>
+<ol>
+<li>Write unit files for every app process, each under its own system user, each with restart policy and sandboxing.</li>
+<li>Verify boot ordering: services needing NFS declare the mount unit; reboot and check nothing raced.</li>
+<li><strong>Checkpoint:</strong> kill each service process manually — each self-restarts within seconds, with death and restart in <code>journalctl -u</code>.</li>
+<li>Add the health-check commands for each service to the runbook.</li>
+</ol>
+<hr />
+
+<h3 id="module-56-backup-dr-drill">Module 5.6 — Backup &amp; DR Drill (CAP-6)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 3.3, 5.2 · <strong>Time:</strong> ~5h (including the drill)<br>
+<strong>Skip-check (test-out):</strong> You have performed — not documented, performed — a timed bare-metal restore from your backups within the last quarter.<br>
+<strong>Skip if:</strong> That drill is done and timed under 30 minutes.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+<h4>Nightly, automated, verified</h4>
+<p>The Module 3.1 backup script, grown up: nightly systemd timer (persistent — a missed night runs at next boot), rsync to the NAS, and a freshness marker that makes "did last night run?" a one-line check instead of an assumption.</p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+# /usr/local/bin/nightly-backup.sh
+set -euo pipefail
+DEST="/mnt/nas/backups/minipc"
+LOG="/var/log/nightly-backup.log"
+log(){ printf '%s %s\n' "$(date '+%F %T')" "$*" &gt;&gt; "$LOG"; }
+
+log "start"
+rsync -a --delete /etc/                 "$DEST/etc/"
+rsync -a --delete /srv/                 "$DEST/srv/"
+rsync -a /var/log/caddy/                "$DEST/logs/caddy/"
+systemctl list-unit-files --state=enabled --no-pager &gt; "$DEST/enabled-units.txt"
+dpkg --get-selections &gt; "$DEST/packages.txt"
+date '+%F %T' &gt; "$DEST/LAST_RUN"
+log "ok"</code></pre>
+<p>The <code>enabled-units.txt</code> and <code>packages.txt</code> exports are what turn a file backup into a <em>system</em> backup — restore is "install packages, copy configs, enable units," not archaeology.</p>
+<h4>A backup you haven't restored is a hope</h4>
+<p>The drill: take any spare x86 box, install Ubuntu Server, and rebuild the mini-PC's role from the NAS backup — timed. Running it once for real surfaces everything the SOP forgot (the render-group membership, the netplan file, the router reservation) while the stakes are zero. This is also the mitigation for the tracked SPOF risk: any x86 box is a valid cold spare only if the restore path is proven.</p>
+<p><strong>Exercise 5.6 — Checkpoint CAP-6</strong></p>
+<p>Scenario: the Hayah homelab + any spare x86 box.</p>
+<ol>
+<li>Deploy the nightly script with a persistent systemd timer; verify <code>LAST_RUN</code> updates on the NAS.</li>
+<li>Write the restore SOP as a numbered checklist in the runbook.</li>
+<li>Execute the bare-metal restore on the spare box, following only the SOP, with a stopwatch running.</li>
+<li>Fix every gap the drill exposed; update the SOP.</li>
+<li><strong>Checkpoint:</strong> restore completed, timed, under 30 minutes, services answering.</li>
+</ol>
+<hr />
+
+<h3 id="module-57-security-hardening-pass">Module 5.7 — Security Hardening Pass (CAP-7)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 3.6, 4.4, 5.4 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> An external port scan today matches the CAP-4 baseline exactly, and fail2ban jails are active on both SSH and Caddy logs.<br>
+<strong>Skip if:</strong> Both halves verified this week.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+<h4>Close every door you didn't mean to open</h4>
+<pre><code class="language-bash">sudo ufw status verbose        # intent: 22 (LAN-scoped if possible), 80, 443, 51820/udp
+sudo ss -tulpn                 # reality: every listener, and which are non-localhost
+# Any listener on 0.0.0.0 that isn't ssh/caddy/wireguard needs a reason or a rebind</code></pre>
+<p>SSH on the mini-PC ideally allows only LAN + WireGuard source ranges (<code>ufw allow from 192.168.1.0/24 to any port 22</code>) — the public internet never needs it when admin access rides the tunnel.</p>
+<h4>fail2ban on both doors</h4>
+<p>SSH isn't the only brute-forceable surface once web apps are public. A second jail watches Caddy's access logs for scanner behavior:</p>
+<pre><code class="language-ini"># /etc/fail2ban/jail.d/hayah.local
+[sshd]
+enabled = true
+
+[caddy-abuse]
+enabled  = true
+port     = http,https
+logpath  = /var/log/caddy/*-access.log
+maxretry = 20
+findtime = 60
+bantime  = 3600
+# pairs with a filter in /etc/fail2ban/filter.d/caddy-abuse.conf
+# matching repeated 401/403/404 bursts from one IP</code></pre>
+<p><strong>Exercise 5.7 — Checkpoint CAP-7</strong></p>
+<p>Scenario: the Hayah homelab, final lockdown.</p>
+<ol>
+<li>Audit listeners vs firewall intent; rebind or justify every 0.0.0.0 listener.</li>
+<li>Scope SSH to LAN + tunnel sources; verify public SSH now times out.</li>
+<li>Deploy the caddy-abuse jail (write the filter regex against your real log format); trigger it with a curl loop from an outside IP and confirm the ban.</li>
+<li><strong>Checkpoint:</strong> fresh external port scan diffs clean against the CAP-4 baseline — no drift. Save both scans side by side in the runbook.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-validation-gate">Final Capstone: Validation Gate (CAP-8)</h2>
+<p><strong>Project: Full Acceptance Run</strong></p>
+<p>Integrates every track. One sitting, every check, evidence recorded in the runbook. This checklist is the definition of "done" for the entire guide.</p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back — why does the NFS mount need <code>_netdev</code>, what proves a transcode is hardware-offloaded rather than silently on CPU, and what does the port-scan diff protect against? Blank on any → revisit 5.2 / 5.3 / 5.7 first.</p></blockquote>
+<p><strong>Dataset:</strong> the Hayah homelab — production NAS + mini-PC.</p>
+<p><strong>Deliverables (all must pass):</strong></p>
+<ol>
+<li>NAS checks: 32 GB RAM recognized, SSD cache bound, 10GbE (or 2.5GbE) link up.</li>
+<li><code>vainfo</code> lists the iHD driver with H264/HEVC encode entrypoints.</li>
+<li><code>iperf3</code> mini-PC ↔ NAS meets link spec: ≥9 Gbit/s on 10GbE / ≥2.3 Gbit/s on 2.5GbE.</li>
+<li>NFS mounts survive a power-cycle test (<code>_netdev</code> proven, not assumed).</li>
+<li>3+ simultaneous streams + 1 forced transcode: <code>intel_gpu_top</code> shows Video engine active, CPU under 40%.</li>
+<li>RADIUS auth completes in under 50 ms while a backup job runs concurrently.</li>
+<li>External port scan of the WAN IP: only 80/443 open, both answered by Caddy — NAS invisible.</li>
+<li>unattended-upgrades enabled; fail2ban active on both SSH and Caddy jails.</li>
+<li>Nightly rsync state visible on the NAS with a current <code>LAST_RUN</code> timestamp.</li>
+<li>Bare-metal restore drill performed on a spare box — timed under 30 minutes.</li>
+</ol>
+<p><strong>Known limits to carry forward</strong> (tracked risk, not failure):</p>
+<table>
+<tr><th>Limit</th><th>Implication</th><th>Review cadence</th></tr>
+<tr><td>DSM 7.1 lifecycle cap on the NAS</td><td>NAS never internet-facing; management on isolated VLAN</td><td>Q1 2027</td></tr>
+<tr><td>Mini-PC is a SPOF for VOD, auth, public entry</td><td>30-min documented restore; any x86 box is a valid cold spare</td><td>On growth</td></tr>
+<tr><td>Used SFF hardware (if applicable)</td><td>No warranty — keep a ₱3–5K spare PSU/fan budget line</td><td>Annual</td></tr>
+<tr><td>2.5GbE start (if not 10GbE)</td><td>NFS ceiling ~280 MB/s — fine for streaming; revisit if backup-to-mini flows appear</td><td>On demand</td></tr>
+</table>
+<hr />
+<h2 id="quick-reference">Quick Reference: Linux Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Command</th><th>Notes</th></tr>
+<tr><td>Find a process by name</td><td><code>pgrep -a name</code></td><td>Cleaner than <code>ps aux | grep</code></td></tr>
+<tr><td>What's listening on which port</td><td><code>ss -tulpn</code></td><td>Check bind address: 127.0.0.1 vs 0.0.0.0</td></tr>
+<tr><td>Count/rank anything in a log</td><td><code>awk '{print $1}' | sort | uniq -c | sort -rn</code></td><td>The counting idiom — sort before uniq</td></tr>
+<tr><td>Follow a service's log live</td><td><code>journalctl -u name -f</code></td><td><code>-b -1</code> for the previous boot</td></tr>
+<tr><td>Why is the disk full</td><td><code>df -h</code> then <code>du -xsh /path/* | sort -rh</code></td><td>df finds the filesystem, du finds the culprit</td></tr>
+<tr><td>Does the name resolve</td><td><code>dig name +short</code></td><td><code>@1.1.1.1</code> to bypass local cache</td></tr>
+<tr><td>Where does the route degrade</td><td><code>mtr -rw host</code></td><td>traceroute + loss statistics in one report</td></tr>
+<tr><td>What does the app layer say</td><td><code>curl -v https://host</code></td><td><code>-I</code> for headers only; shows TLS problems too</td></tr>
+<tr><td>Are packets even arriving</td><td><code>sudo tcpdump -ni eth0 port 443</code></td><td>Splits firewall issues from app issues</td></tr>
+<tr><td>Sync files, only differences</td><td><code>rsync -avz src/ host:dest/</code></td><td>Add <code>-n</code> dry run before any <code>--delete</code></td></tr>
+<tr><td>Edit sudo rights safely</td><td><code>sudo visudo</code></td><td>Syntax-checks before saving — never edit sudoers raw</td></tr>
+<tr><td>Test fstab without rebooting</td><td><code>sudo mount -a</code></td><td>Errors now beat a boot hang later</td></tr>
+<tr><td>Apply network config safely</td><td><code>sudo netplan try</code></td><td>Auto-reverts in 120 s unless confirmed</td></tr>
+<tr><td>Prove hardware transcode</td><td><code>vainfo</code> + <code>intel_gpu_top</code></td><td>iHD driver listed; Video engine busy under load</td></tr>
+<tr><td>Measure real link throughput</td><td><code>iperf3 -c host</code></td><td>Verify the link before debugging downstream</td></tr>
+<tr><td>Check ban status</td><td><code>sudo fail2ban-client status sshd</code></td><td>Per-jail: currently banned, total banned</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-systems">Systems</h3>
+<dl class="glossary">
+<dt>shell</dt>
+<dd>The interactive program (bash here) that reads your command lines, expands them, and launches processes.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "terminal", "console" — those are the window and the device; the shell is the interpreter running inside them.</dd>
+<dt>process</dt>
+<dd>A running instance of a program, with its own PID, memory, and three standard streams.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "program", "task" — a program is the file on disk; one program can run as many processes.</dd>
+<dt>service (unit)</dt>
+<dd>A process managed by systemd via a unit file: started at boot, restarted on failure, logged in the journal.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "daemon" as a synonym — a daemon is any background process; a service is one systemd supervises.</dd>
+<dt>exit code</dt>
+<dd>The integer a process returns on termination; 0 means success, anything else encodes a failure.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "error code" — success also returns one; the code is always there, not only on error.</dd>
+<dt>umask</dt>
+<dd>A per-process mask that removes permission bits from newly created files and directories.</dd>
+<dd class="avoid"><strong>Avoid:</strong> thinking of it as "default permissions" — it subtracts from the maximum; it never grants.</dd>
+<dt>sticky bit</dt>
+<dd>A directory mode bit restricting deletion to each file's owner, even in world-writable directories.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing with setgid — setgid controls group inheritance of new files; sticky controls deletion.</dd>
+<dt>journal</dt>
+<dd>systemd's structured, binary log store, queried through journalctl and scoped per unit and per boot.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "syslog" — syslog is the older text-file pipeline into /var/log; both coexist on Ubuntu.</dd>
+<dt>timer</dt>
+<dd>A systemd unit that triggers a paired service on a calendar or interval, with optional catch-up for missed runs.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "cron job" for these — cron is the separate legacy scheduler with its own syntax and stripped environment.</dd>
+</dl>
+
+<h3 id="glossary-networking">Networking</h3>
+<dl class="glossary">
+<dt>CIDR prefix</dt>
+<dd>The /N notation stating how many leading bits of an address identify the network; the rest identify hosts.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "subnet mask" interchangeably — the dotted mask (255.255.255.0) encodes the same fact in older clothing.</dd>
+<dt>port</dt>
+<dd>A 16-bit number that lets TCP/UDP deliver packets to a specific process on a host.</dd>
+<dd class="avoid"><strong>Avoid:</strong> conflating with a physical switch port — same word, entirely different layer.</dd>
+<dt>bind address</dt>
+<dd>The address a listening socket attaches to: 127.0.0.1 is reachable only locally, 0.0.0.0 from any interface.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "the server's IP" — one machine has many addresses; the bind choice decides visibility.</dd>
+<dt>DNS record TTL</dt>
+<dd>The seconds a resolver may cache a record before re-querying; it bounds how long a change takes to be seen.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "propagation time" — nothing propagates; caches expire.</dd>
+<dt>SNI</dt>
+<dd>The cleartext hostname in a TLS ClientHello that lets one IP serve certificates for many names.</dd>
+<dd class="avoid"><strong>Avoid:</strong> treating it as private — SNI is visible on the wire (ECH, its encrypted successor, is not yet universal).</dd>
+<dt>reverse proxy</dt>
+<dd>A server that terminates client connections and forwards requests to internal backends it chooses by hostname or path.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "proxy" alone — a forward proxy represents clients going out; a reverse proxy represents servers facing in.</dd>
+<dt>NAT</dt>
+<dd>Rewriting of packet addresses at a boundary so many private hosts share one public address.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "the firewall" — NAT hides; filtering blocks. Routers do both, which blurs the words.</dd>
+<dt>tunnel</dt>
+<dd>An encrypted channel (SSH forwarding, WireGuard) that carries traffic between networks as if directly connected.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "VPN" for single-port SSH forwards — a VPN routes whole networks; a forward carries one port.</dd>
+</dl>
+
+<h3 id="glossary-production-ops">Production Ops</h3>
+<dl class="glossary">
+<dt>headless</dt>
+<dd>A machine operated with no monitor or keyboard, administered entirely over the network.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "remote" — a headless box can sit on your desk; the word is about missing peripherals, not distance.</dd>
+<dt>static IP</dt>
+<dd>An address configured on the host (or reserved for it) so it never changes across reboots or lease renewals.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "DHCP reservation" as identical — a reservation is the router promising; static is the host asserting. Production uses both.</dd>
+<dt>NFS export</dt>
+<dd>A directory a file server publishes over the network, scoped by client address and permission flags.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "share" generically — SMB shares and NFS exports differ in auth model and mount semantics.</dd>
+<dt>hardware transcode</dt>
+<dd>Video encode/decode performed by dedicated GPU silicon (Quick Sync here) instead of CPU instructions.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming it from smooth playback — silent software fallback looks identical until concurrent load.</dd>
+<dt>SPOF</dt>
+<dd>Single point of failure: a component whose loss takes down the whole system, mitigated by spares and proven restores.</dd>
+<dd class="avoid"><strong>Avoid:</strong> using it only for hardware — an unrenewed cert or a single admin who knows the passwords is also one.</dd>
+<dt>DR drill</dt>
+<dd>A rehearsed, timed execution of the disaster-recovery procedure on real hardware, not a document review.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "we have backups" as equivalent — an untested restore is a hypothesis.</dd>
+<dt>default-deny</dt>
+<dd>A firewall posture that drops everything except explicitly allowed traffic.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "blocklist" thinking — enumerating badness always loses; enumerate intent instead.</dd>
+<dt>runbook</dt>
+<dd>The living operations document: provisioning steps, health checks, log locations, and restore procedure for a system.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "documentation" broadly — a runbook is executable by a stranger under stress, or it isn't one.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>How Linux Works, 3rd ed. (2021) — Brian Ward</td><td>What's actually happening under the hood: boot, devices, networking</td></tr>
+<tr><td>The Linux Command Line, 2nd ed. (2019) — William Shotts</td><td>Shell fluency from zero; free online at linuxcommand.org</td></tr>
+<tr><td>UNIX and Linux System Administration Handbook, 5th ed. (2017) — Nemeth et al.</td><td>The sysadmin reference; concepts age well (6th ed. announced for 2028)</td></tr>
+<tr><td>Networking for System Administrators (2015) — Michael W. Lucas</td><td>Exactly the operator's-eye networking this guide's Phase 4 teaches</td></tr>
+<tr><td>Efficient Linux at the Command Line (2022) — Daniel Barrett</td><td>Pipeline thinking and speed — pairs with Module 2.2</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>Ubuntu Server documentation (documentation.ubuntu.com/server)</td><td>The distro you're running</td><td>Official; matches 24.04/26.04 LTS behavior exactly</td></tr>
+<tr><td>Arch Wiki (wiki.archlinux.org)</td><td>Everything</td><td>Best technical wiki in Linux; concepts transfer across distros</td></tr>
+<tr><td>DigitalOcean Community Tutorials</td><td>Server recipes</td><td>Well-maintained step-by-steps; check the dated Ubuntu version</td></tr>
+<tr><td>OverTheWire: Bandit (overthewire.org)</td><td>Shell skills as a game</td><td>Levels 1–20 ≈ Phases 1–2 of this guide; addictive</td></tr>
+<tr><td>Caddy documentation (caddyserver.com/docs)</td><td>Reverse proxy</td><td>Official; v2.11 current — Caddyfile reference lives here</td></tr>
+<tr><td>WireGuard official site (wireguard.com)</td><td>Tunneling</td><td>Conceptual overview + quick start are canonical</td></tr>
+<tr><td>systemd docs (systemd.io + man systemd.unit)</td><td>Services</td><td>The man pages are genuinely the best reference</td></tr>
+<tr><td>Julia Evans' wizard zines (wizardzines.com)</td><td>Networking, debugging</td><td>Dense visual explanations of exactly this guide's tools</td></tr>
+<tr><td>explainshell.com</td><td>Command dissection</td><td>Paste any command line, get per-flag explanation</td></tr>
+</table>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>UTM (mac.getutm.app)</td><td>Free ARM64 Linux VMs on Apple Silicon — Phases 1–2 lab</td></tr>
+<tr><td>Hetzner / DigitalOcean / Linode ($4–6/mo VPS)</td><td>Real public IP for Phases 3–4</td></tr>
+<tr><td>NASA-HTTP access log (public dataset)</td><td>Real web-server log for Module 2.2 pipeline practice</td></tr>
+<tr><td>iperf3</td><td>Link-throughput ground truth (Modules 5.2, Validation Gate)</td></tr>
+<tr><td>shellcheck (shellcheck.net)</td><td>Static analysis for every script you write in Module 3.1+</td></tr>
+<tr><td>nmap</td><td>Port-scan verification for Modules 4.4, 5.4, 5.7</td></tr>
+</table>
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>r/homelab + r/selfhosted</td><td>Reddit</td><td>Architecture opinions, hardware picks, "is this sane?" checks for Phase 5-style builds</td></tr>
+<tr><td>r/linuxadmin</td><td>Reddit</td><td>Professional sysadmin practice; harder-nosed than r/linux</td></tr>
+<tr><td>Server Fault (serverfault.com)</td><td>Stack Exchange</td><td>Precise Q&amp;A when you have a specific, reproducible problem</td></tr>
+<tr><td>Level1Techs forum (forum.level1techs.com)</td><td>Discourse</td><td>Deep hardware + homelab threads; strong storage/NAS knowledge</td></tr>
+<tr><td>Ubuntu Discourse (discourse.ubuntu.com)</td><td>Discourse</td><td>Distro-specific behavior, release notes discussion, netplan quirks</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
+<h4>Phase 1 — Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — Platform &amp; Environment Choice</li>
+<li>[ ] Exercise 1.1 — Stand Up the Lab</li>
+<li>[ ] Module 1.2 — Filesystem &amp; Shell Basics</li>
+<li>[ ] Exercise 1.2 — Filesystem Orientation</li>
+<li>[ ] Module 1.3 — Permissions &amp; Ownership</li>
+<li>[ ] Exercise 1.3 — The Shared Drop Directory</li>
+<li>[ ] Module 1.4 — Users, Groups &amp; sudo</li>
+<li>[ ] Exercise 1.4 — Provision the Admin</li>
+<li>[ ] Module 1.5 — Package Management</li>
+<li>[ ] Exercise 1.5 — Package Forensics</li>
+<li>[ ] Capstone 1 — First Provision</li>
+</ul>
+<h4>Phase 2 — Core Skills</h4>
+<ul>
+<li>[ ] Module 2.1 — Process Management</li>
+<li>[ ] Exercise 2.1 — Runaway Hunt</li>
+<li>[ ] Module 2.2 — Text Processing &amp; Pipes</li>
+<li>[ ] Exercise 2.2 — Log Mining</li>
+<li>[ ] Module 2.3 — I/O Redirection &amp; Streams</li>
+<li>[ ] Exercise 2.3 — Stream Plumbing</li>
+<li>[ ] Module 2.4 — Archiving &amp; Compression</li>
+<li>[ ] Exercise 2.4 — Backup Bundle</li>
+<li>[ ] Module 2.5 — SSH &amp; Remote Access</li>
+<li>[ ] Exercise 2.5 — Zero-Prompt Access</li>
+<li>[ ] Module 2.6 — Shell Environment</li>
+<li>[ ] Exercise 2.6 — Own Your Environment</li>
+<li>[ ] Capstone 2 — Log Forensics</li>
+</ul>
+<h4>Phase 3 — Intermediate Systems</h4>
+<ul>
+<li>[ ] Module 3.1 — Bash Scripting</li>
+<li>[ ] Exercise 3.1 — The Backup Script</li>
+<li>[ ] Module 3.2 — systemd &amp; Services</li>
+<li>[ ] Exercise 3.2 — Wrap a Real App</li>
+<li>[ ] Module 3.3 — Cron &amp; Scheduled Tasks</li>
+<li>[ ] Exercise 3.3 — Schedule the Backup</li>
+<li>[ ] Module 3.4 — Storage &amp; Mounts</li>
+<li>[ ] Exercise 3.4 — Mount Discipline</li>
+<li>[ ] Module 3.5 — Logs &amp; Monitoring</li>
+<li>[ ] Exercise 3.5 — Incident Replay</li>
+<li>[ ] Module 3.6 — Security Basics</li>
+<li>[ ] Exercise 3.6 — Get Attacked (Safely)</li>
+<li>[ ] Capstone 3 — Hardened VPS</li>
+</ul>
+<h4>Phase 4 — Networking</h4>
+<ul>
+<li>[ ] Module 4.1 — TCP/IP &amp; Addressing Fundamentals</li>
+<li>[ ] Exercise 4.1 — Address Audit</li>
+<li>[ ] Module 4.2 — Core Diagnostic Tools</li>
+<li>[ ] Exercise 4.2 — Break It, Find It</li>
+<li>[ ] Module 4.3 — DNS &amp; TLS</li>
+<li>[ ] Exercise 4.3 — Name and Certify</li>
+<li>[ ] Module 4.4 — Firewalls &amp; Access Control</li>
+<li>[ ] Exercise 4.4 — Lock the Doors</li>
+<li>[ ] Module 4.5 — Reverse Proxy &amp; Load Balancing</li>
+<li>[ ] Exercise 4.5 — Two Services, One Door</li>
+<li>[ ] Module 4.6 — Tunneling &amp; Remote Access</li>
+<li>[ ] Exercise 4.6 — Private Roads</li>
+<li>[ ] Module 4.7 — Container Networking</li>
+<li>[ ] Exercise 4.7 — Compose Stack</li>
+<li>[ ] Capstone 4 — Network Stack</li>
+</ul>
+<h4>Phase 5 — Capstone Build</h4>
+<ul>
+<li>[ ] Module 5.1 — Base OS Setup + Checkpoint CAP-1</li>
+<li>[ ] Module 5.2 — Storage Layer + Checkpoint CAP-2</li>
+<li>[ ] Module 5.3 — Hardware Transcode Validation + Checkpoint CAP-3</li>
+<li>[ ] Module 5.4 — Reverse Proxy &amp; Public Exposure + Checkpoint CAP-4</li>
+<li>[ ] Module 5.5 — systemd Service Wrapping + Checkpoint CAP-5</li>
+<li>[ ] Module 5.6 — Backup &amp; DR Drill + Checkpoint CAP-6</li>
+<li>[ ] Module 5.7 — Security Hardening Pass + Checkpoint CAP-7</li>
+</ul>
+<h4>Certifications / Outcomes</h4>
+<ul>
+<li>[ ] LFCS — Linux Foundation Certified System Administrator</li>
+<li>[ ] CompTIA Network+ (N10-009) — optional networking credential</li>
+<li>[ ] Final Capstone — Validation Gate (CAP-8) passed, all 10 checks</li>
+</ul>
+
+<p><em>Guide Version 1.0 — Linux Systems &amp; Networking Track: Beginner to Production</em><br>
+<em>Non-linear modular design · Placement quiz · 31 modules · ~13 weeks part-time · hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-07-19</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               ini:"ini",caddy:"Caddyfile",nginx:"nginx",cron:"crontab",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

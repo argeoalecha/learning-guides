@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Ecosystem Mastery Guide — Intermediate to Advanced</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Claude Ecosystem<br>Mastery Guide</div>
+      <div class="brand-sub">CLI · Skills · MCP · Plugins</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#intermediate-to-advanced-track" class="nav-top">Intermediate to Advanced Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-cli-foundations" class="nav-top nav-phase">Phase 1: CLI Foundations</a>
+<div class="nav-children">
+<a href="#module-11-install-auth-and-your-first-session" class="nav-child">Module 1.1 — Install, Auth &amp; First Session</a>
+<a href="#module-12-headless-mode-and-scripting-the-cli" class="nav-child">Module 1.2 — Headless Mode &amp; Scripting</a>
+<a href="#module-13-sessions-background-agents-and-model-control" class="nav-child">Module 1.3 — Sessions &amp; Background Agents</a>
+<a href="#phase-1-capstone-a-ci-ready-triage-script" class="nav-child">Phase 1 Capstone: CI-Ready Triage Script</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-extending-claude-with-skills" class="nav-top nav-phase">Phase 2: Extending Claude with Skills</a>
+<div class="nav-children">
+<a href="#module-21-anatomy-of-a-skill" class="nav-child">Module 2.1 — Anatomy of a Skill</a>
+<a href="#module-22-where-skills-live-locations-precedence-and-discovery" class="nav-child">Module 2.2 — Locations &amp; Precedence</a>
+<a href="#module-23-advanced-skill-patterns" class="nav-child">Module 2.3 — Advanced Skill Patterns</a>
+<a href="#phase-2-capstone-the-leads-digest-skill" class="nav-child">Phase 2 Capstone: leads-digest Skill</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-connecting-tools-with-mcp-client-side" class="nav-top nav-phase">Phase 3: Connecting Tools with MCP</a>
+<div class="nav-children">
+<a href="#module-31-mcp-fundamentals-and-transports" class="nav-child">Module 3.1 — Fundamentals &amp; Transports</a>
+<a href="#module-32-scopes-configuration-and-authentication" class="nav-child">Module 3.2 — Scopes, Config &amp; Auth</a>
+<a href="#module-33-resources-prompts-and-scaling-with-tool-search" class="nav-child">Module 3.3 — Resources, Prompts &amp; Tool Search</a>
+<a href="#phase-3-capstone-wire-up-a-real-connector" class="nav-child">Phase 3 Capstone: Wire Up a Real Connector</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-building-your-own-mcp-servers" class="nav-top nav-phase">Phase 4: Building Your Own MCP Servers</a>
+<div class="nav-children">
+<a href="#module-41-mcp-server-concepts-and-choosing-your-sdk" class="nav-child">Module 4.1 — Server Concepts &amp; SDK Choice</a>
+<a href="#module-42-build-a-stdio-server-typescript-and-python" class="nav-child">Module 4.2 — Build a Stdio Server</a>
+<a href="#module-43-test-and-debug-with-mcp-inspector" class="nav-child">Module 4.3 — Test &amp; Debug with Inspector</a>
+<a href="#module-44-connect-harden-and-ship-your-server" class="nav-child">Module 4.4 — Connect, Harden &amp; Ship</a>
+<a href="#phase-4-capstone-the-leads-tracker-mcp-server" class="nav-child">Phase 4 Capstone: leads-tracker Server</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-5-packaging-and-distributing-with-plugins" class="nav-top nav-phase">Phase 5: Packaging with Plugins</a>
+<div class="nav-children">
+<a href="#module-51-plugin-anatomy" class="nav-child">Module 5.1 — Plugin Anatomy</a>
+<a href="#module-52-local-development-workflow" class="nav-child">Module 5.2 — Local Development Workflow</a>
+<a href="#module-53-marketplaces-and-distribution" class="nav-child">Module 5.3 — Marketplaces &amp; Distribution</a>
+<a href="#phase-5-capstone-the-hayah-ops-toolkit-plugin" class="nav-child">Phase 5 Capstone: hayah-ops-toolkit Plugin</a>
+</div></div>
+
+<a href="#final-capstone-ship-the-hayah-ai-ops-toolkit" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="claude-ecosystem-learning-guide">Claude Ecosystem Mastery Guide</h1>
+<h2 id="intermediate-to-advanced-track">Intermediate to Advanced Track</h2>
+<h3>CLI · Agent Skills · MCP (client &amp; server) · Plugins</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Claude ecosystem" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(128,128)">
+<path d="M0,-100 C14,-46 14,-14 0,0 C-14,-14 -14,-46 0,-100 Z" fill="#075249"/>
+<path d="M0,-100 C14,-46 14,-14 0,0 C-14,-14 -14,-46 0,-100 Z" fill="#0d7a6e" transform="rotate(45)"/>
+<path d="M0,-100 C14,-46 14,-14 0,0 C-14,-14 -14,-46 0,-100 Z" fill="#075249" transform="rotate(90)"/>
+<path d="M0,-100 C14,-46 14,-14 0,0 C-14,-14 -14,-46 0,-100 Z" fill="#0d7a6e" transform="rotate(135)"/>
+<path d="M0,-100 C14,-46 14,-14 0,0 C-14,-14 -14,-46 0,-100 Z" fill="#075249" transform="rotate(180)"/>
+<path d="M0,-100 C14,-46 14,-14 0,0 C-14,-14 -14,-46 0,-100 Z" fill="#0d7a6e" transform="rotate(225)"/>
+<path d="M0,-100 C14,-46 14,-14 0,0 C-14,-14 -14,-46 0,-100 Z" fill="#075249" transform="rotate(270)"/>
+<path d="M0,-100 C14,-46 14,-14 0,0 C-14,-14 -14,-46 0,-100 Z" fill="#0d7a6e" transform="rotate(315)"/>
+</g>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone builds one running project — a small <strong>SQLite database of Hayah-AI sales leads (<code>leads.db</code>)</strong> — that grows from a skill, into an MCP server, into a distributable plugin.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Already run Claude Code daily but never built a skill or MCP server</strong> → Take the <strong>Placement Quiz</strong> to confirm, then jump to Phase 2.</li>
+<li><strong>Comfortable with skills, new to MCP</strong> → Start at Module 3.1 and work through Phase 4 (server building) — that's the deepest, least-documented part of the ecosystem.</li>
+<li><strong>Want the whole stack, in order</strong> → Follow the <strong>Full Ecosystem Mastery</strong> track from Module 1.1 through the Final Capstone.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3>CLI</h3>
+<ul>
+<li>[ ] I have Claude Code installed and have run an interactive session.</li>
+<li>[ ] I've used <code>claude -p</code> to run a one-shot query and pipe data into it.</li>
+<li>[ ] I know the difference between <code>-c</code>, <code>-r</code>, and <code>--bg</code>.</li>
+<li>[ ] I've set <code>--model</code>, <code>--effort</code>, or a permission mode deliberately for a task.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3>Skills</h3>
+<ul>
+<li>[ ] I know what goes in a <code>SKILL.md</code> file's YAML frontmatter.</li>
+<li>[ ] I can explain why a personal skill overrides a project skill of the same name — and why enterprise beats both.</li>
+<li>[ ] I've used <code>$ARGUMENTS</code> or dynamic context injection (<code>!`command`</code>) in a skill.</li>
+<li>[ ] I've restricted a skill to manual invocation with <code>disable-model-invocation</code>.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3>MCP (Client &amp; Server)</h3>
+<ul>
+<li>[ ] I've connected at least one MCP server with <code>claude mcp add</code>.</li>
+<li>[ ] I know when to use stdio vs. HTTP, and why SSE is deprecated.</li>
+<li>[ ] I've written an MCP server that exposes at least one tool.</li>
+<li>[ ] I've tested a server with the MCP Inspector before connecting it to a real client.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.1</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 5</strong></p>
+
+<h3>Plugins</h3>
+<ul>
+<li>[ ] I know what goes in <code>.claude-plugin/plugin.json</code>.</li>
+<li>[ ] I've loaded a plugin locally with <code>--plugin-dir</code> instead of installing it.</li>
+<li>[ ] I understand why plugin skills are namespaced (<code>/plugin-name:skill-name</code>) and standalone ones aren't.</li>
+<li>[ ] I've created or added a <code>marketplace.json</code> to distribute a plugin.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 5.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 5.3</strong> | <strong>4 yes</strong> → You're ready for the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-install-auth-and-your-first-session"><td>1.1</td><td>Install, Auth &amp; Your First Session</td><td>Beginner</td><td>None</td><td>1.5h</td></tr>
+<tr data-href="#module-12-headless-mode-and-scripting-the-cli"><td>1.2</td><td>Headless Mode &amp; Scripting the CLI</td><td>Beginner–Intermediate</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-13-sessions-background-agents-and-model-control"><td>1.3</td><td>Sessions, Background Agents &amp; Model Control</td><td>Intermediate</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-21-anatomy-of-a-skill"><td>2.1</td><td>Anatomy of a Skill</td><td>Beginner–Intermediate</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-22-where-skills-live-locations-precedence-and-discovery"><td>2.2</td><td>Where Skills Live: Locations &amp; Precedence</td><td>Intermediate</td><td>2.1</td><td>1.5h</td></tr>
+<tr data-href="#module-23-advanced-skill-patterns"><td>2.3</td><td>Advanced Skill Patterns</td><td>Intermediate</td><td>2.1, 2.2</td><td>2.5h</td></tr>
+<tr data-href="#module-31-mcp-fundamentals-and-transports"><td>3.1</td><td>MCP Fundamentals &amp; Transports</td><td>Intermediate</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-32-scopes-configuration-and-authentication"><td>3.2</td><td>Scopes, Configuration &amp; Authentication</td><td>Intermediate</td><td>3.1</td><td>2h</td></tr>
+<tr data-href="#module-33-resources-prompts-and-scaling-with-tool-search"><td>3.3</td><td>Resources, Prompts &amp; Tool Search</td><td>Intermediate</td><td>3.1</td><td>1.5h</td></tr>
+<tr data-href="#module-41-mcp-server-concepts-and-choosing-your-sdk"><td>4.1</td><td>MCP Server Concepts &amp; Choosing Your SDK</td><td>Intermediate</td><td>3.1</td><td>1.5h</td></tr>
+<tr data-href="#module-42-build-a-stdio-server-typescript-and-python"><td>4.2</td><td>Build a Stdio Server (TypeScript &amp; Python)</td><td>Advanced</td><td>4.1</td><td>4h</td></tr>
+<tr data-href="#module-43-test-and-debug-with-mcp-inspector"><td>4.3</td><td>Test &amp; Debug with MCP Inspector</td><td>Intermediate</td><td>4.2</td><td>1.5h</td></tr>
+<tr data-href="#module-44-connect-harden-and-ship-your-server"><td>4.4</td><td>Connect, Harden &amp; Ship Your Server</td><td>Advanced</td><td>4.2, 4.3</td><td>2.5h</td></tr>
+<tr data-href="#module-51-plugin-anatomy"><td>5.1</td><td>Plugin Anatomy</td><td>Intermediate</td><td>2.1</td><td>1.5h</td></tr>
+<tr data-href="#module-52-local-development-workflow"><td>5.2</td><td>Local Development Workflow</td><td>Intermediate</td><td>5.1</td><td>1.5h</td></tr>
+<tr data-href="#module-53-marketplaces-and-distribution"><td>5.3</td><td>Marketplaces &amp; Distribution</td><td>Advanced</td><td>5.1, 5.2</td><td>2h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1–3 (CLI, Skills, MCP client) are largely independent of each other and can be taken in any order once you know the CLI basics in 1.1. Phase 4 (building servers) requires 3.1, and Phase 5 (plugins) requires 2.1 since plugins bundle skills. See <strong>Learning Tracks</strong> below for pre-built subsets.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+
+<h3 id="track-1-power-user">Track 1 — Power User (use the ecosystem, don't build it)</h3>
+<p><code>1.1 → 1.2 → 1.3 → 2.1 → 2.2 → 2.3 → 3.1 → 3.2 → 3.3</code><br>
+Target outcome: <strong>fluent daily driver</strong> — scripting the CLI, writing your own skills, connecting third-party MCP servers with confidence.</p>
+
+<h3 id="track-2-mcp-server-builder">Track 2 — MCP Server Builder</h3>
+<p><code>1.1 → 1.2 → 3.1 → 4.1 → 4.2 → 4.3 → 4.4</code><br>
+Target outcome: <strong>ship a working MCP server</strong> that exposes tools over your own data or API, tested and connected to Claude Code.</p>
+
+<h3 id="track-3-plugin-author">Track 3 — Plugin Author / Distributor</h3>
+<p><code>2.1 → 2.2 → 2.3 → 5.1 → 5.2 → 5.3</code><br>
+Target outcome: <strong>package and distribute</strong> your skills (and any MCP servers you already have) as a versioned, shareable plugin.</p>
+
+<h3 id="track-4-full-ecosystem-mastery">Track 4 — Full Ecosystem Mastery</h3>
+<p><code>1.1 → 1.2 → 1.3 → 2.1 → 2.2 → 2.3 → 3.1 → 3.2 → 3.3 → 4.1 → 4.2 → 4.3 → 4.4 → 5.1 → 5.2 → 5.3 → Final Capstone</code><br>
+Target outcome: <strong>everything</strong> — build a personal agent-tooling stack from install to a distributed plugin, the way this guide's running project does.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — CLI Foundations              (Week 1)
+Phase 2 — Extending with Skills        (Week 2)
+Phase 3 — Connecting Tools via MCP     (Week 3)
+Phase 4 — Building Your Own MCP Servers (Weeks 4-5)
+Phase 5 — Packaging with Plugins       (Week 6)
+Final Capstone                          (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ─┬─ 1.2 ── 1.3
+     ├─ 2.1 ── 2.2 ── 2.3 ─────────────┐
+     └─ 3.1 ─┬─ 3.2 ── 3.3             │
+             └─ 4.1 ── 4.2 ── 4.3 ── 4.4├─ 5.1 ── 5.2 ── 5.3 ── Final Capstone
+                                        └────────────────────────┘</code></pre>
+
+<h2 id="phase-1-cli-foundations">Phase 1: CLI Foundations</h2>
+<h3 id="weeks-1-1">Week 1 | Goal: run Claude Code confidently, interactively and headlessly, and control which model and session you're using</h3>
+<hr />
+
+<h3 id="module-11-install-auth-and-your-first-session">Module 1.1 — Install, Auth &amp; Your First Session</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Install Claude Code, run <code>claude doctor</code>, and get a clean report with no errors.<br>
+<strong>Skip if:</strong> You already run <code>claude</code> daily in at least one project.<br>
+<strong>Unlocks:</strong> All of Phase 1–5 — every later module assumes a working install.</p>
+</blockquote>
+
+<h4>Choosing an install method</h4>
+<p>Claude Code ships as a full-featured terminal CLI, a VS Code / JetBrains extension, a desktop app, and a web surface at claude.ai/code — all backed by the same engine, so your <code>CLAUDE.md</code> files, settings, and MCP servers work identically across them. This guide focuses on the terminal CLI, since it's the surface every other module builds on. The native installer is the right default for almost everyone: it updates itself in the background, so you're never stuck two months behind a security fix. Homebrew and WinGet are reasonable alternatives if you already manage your toolchain that way, but neither auto-updates — skipping <code>brew upgrade</code> for a few months is a common source of "why doesn't this flag exist yet" confusion.</p>
+<pre><code class="language-bash"># macOS / Linux / WSL — native installer (recommended)
+curl -fsSL https://claude.ai/install.sh | bash
+
+# Homebrew (does not auto-update — run `brew upgrade claude-code` periodically)
+brew install --cask claude-code
+
+# Windows PowerShell
+irm https://claude.ai/install.ps1 | iex</code></pre>
+
+<h4>First run &amp; authentication</h4>
+<p>Start Claude Code inside any project directory. The first run prompts you to log in — a Claude subscription or Anthropic Console account both work, and the Terminal CLI additionally supports third-party providers (Bedrock, Vertex, etc.) if your org routes billing that way.</p>
+<pre><code class="language-bash">cd your-project
+claude
+# first run: browser opens, log in, then you land in an interactive session
+
+claude doctor       # diagnostics: install health, config, auth status
+claude auth status  # confirm which account/method is active</code></pre>
+<p>Run <code>claude doctor</code> right after install and again any time something feels off — it's the fastest way to rule out a broken install before you start debugging a skill or MCP server that "isn't working." A stale native install or a half-migrated Homebrew cask is a more common root cause than people expect.</p>
+
+<h4>Interactive vs. everything else</h4>
+<p>Everything from here forward is a variation on one loop: you (or a script) send Claude a prompt, it uses tools, it responds. The <em>interactive</em> session you just started is one mode of driving that loop. Module 1.2 covers the headless mode you'll use for scripting and CI, and Module 1.3 covers keeping multiple loops going in parallel. Skills (Phase 2) and MCP servers (Phases 3–4) don't change the loop — they add what Claude can read and do inside it.</p>
+
+<p><strong>Exercise 1.1 — Install, verify, first task</strong></p>
+<p>Dataset: none yet — this exercise sets up the machine you'll use for the rest of the guide.</p>
+<ol>
+<li>Install Claude Code with the native installer.</li>
+<li>Run <code>claude doctor</code> and resolve any reported issues before continuing.</li>
+<li>Create a scratch folder <code>leads-tracker/</code> — this is the project the rest of the guide builds inside.</li>
+<li>Inside it, run <code>claude</code> and ask it to create a <code>README.md</code> describing a fictional "Hayah-AI leads tracker" project in two sentences.</li>
+<li>Exit and run <code>claude -c</code> to confirm it resumes the same conversation.</li>
+<li>Run <code>claude auth status</code> and note which authentication method is active — you'll need to recognize this later when a claude.ai MCP connector doesn't show up (Module 3.2).</li>
+</ol>
+<hr />
+
+<h3 id="module-12-headless-mode-and-scripting-the-cli">Module 1.2 — Headless Mode &amp; Scripting the CLI</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 1.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Write a one-line pipeline that feeds a file into <code>claude -p</code> and parses JSON output with <code>jq</code>.<br>
+<strong>Skip if:</strong> You already run <code>claude -p</code> in CI or cron jobs.<br>
+<strong>Unlocks:</strong> Module 1.3, Phase 1 Capstone, and every later "script this" exercise.</p>
+</blockquote>
+
+<h4>The <code>-p</code> flag and piping</h4>
+<p>Claude Code follows the Unix philosophy: composable, pipeable, scriptable. <code>-p</code> (<code>--print</code>) runs a query non-interactively and exits, which is what makes Claude usable inside a shell pipeline, a cron job, or a CI step rather than only a chat window. Without <code>-p</code>, Claude waits for more input forever — the single most common reason a "simple" CI script hangs is forgetting this flag.</p>
+<pre><code class="language-bash"># Analyze recent log output
+tail -200 app.log | claude -p "Slack me if you see any anomalies"
+
+# Bulk review across changed files
+git diff main --name-only | claude -p "review these changed files for security issues"</code></pre>
+
+<h4>Output formats for machine consumption</h4>
+<p>A CI step that parses free-text prose is a script waiting to break the first time Claude phrases something differently. <code>--output-format json</code> gives you a stable, parseable shape instead; <code>--json-schema</code> goes further and validates the response against a schema you supply, which matters when a downstream step (a Slack bot, a dashboard) depends on specific fields always being present.</p>
+<pre><code class="language-bash">claude -p --output-format json "list the 3 riskiest functions in src/auth.ts" > risk.json
+jq '.result' risk.json
+
+# Stream turn-by-turn events instead of waiting for the final answer
+claude -p --output-format stream-json "refactor src/utils/date.ts"</code></pre>
+
+<h4>Budgets, turns, and permission modes for unattended runs</h4>
+<p>An interactive session has you as a backstop — you can stop Claude if it goes somewhere unexpected. A headless script run from cron has no one watching, so the flags that bound its behavior aren't optional polish, they're the difference between a contained failure and an unattended agent burning through your API budget or touching files it shouldn't. <code>--max-turns</code> caps how many agentic steps a single <code>-p</code> call can take; <code>--max-budget-usd</code> stops the run once it hits a spending ceiling; <code>--permission-mode</code> decides whether tool calls need approval at all (in headless mode there's no one to approve them interactively, so most CI usage picks <code>acceptEdits</code> or scopes to a very narrow <code>allowed-tools</code> set rather than reaching for <code>--dangerously-skip-permissions</code>).</p>
+<pre><code class="language-bash">claude -p --max-turns 8 --max-budget-usd 2.00 \
+  --permission-mode acceptEdits \
+  "run the test suite and fix any failures"</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Reaching for <code>--dangerously-skip-permissions</code> to make a CI script "just work" is almost always the wrong fix — it removes every guardrail at once. A tighter <code>--allowed-tools</code> list or <code>--permission-mode acceptEdits</code> solves the same "it keeps asking me" problem without giving an unattended process free rein over your filesystem and shell.</p></blockquote>
+
+<p><strong>Exercise 1.2 — A headless review pipeline</strong></p>
+<p>Dataset: the <code>leads-tracker/</code> project from Exercise 1.1.</p>
+<ol>
+<li>Add a throwaway bug to a file in <code>leads-tracker/</code> (e.g. an off-by-one in a loop).</li>
+<li>Run <code>git diff | claude -p "review this diff for bugs" --output-format json</code> and confirm you get parseable JSON.</li>
+<li>Re-run with <code>--max-turns 3</code> and <code>--max-budget-usd 0.50</code>, and observe what happens if the budget is too low for the task.</li>
+<li>Write a two-line shell script, <code>review.sh</code>, that pipes <code>git diff</code> into <code>claude -p</code> with a JSON schema requiring a <code>risk_level</code> field, and prints just that field with <code>jq</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-sessions-background-agents-and-model-control">Module 1.3 — Sessions, Background Agents &amp; Model Control</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 1.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Kick off a background agent, check its logs, and resume a named session from two days ago (simulate with a fresh session name).<br>
+<strong>Skip if:</strong> You already use <code>--bg</code>/<code>claude agents</code> or resume sessions by name routinely.<br>
+<strong>Unlocks:</strong> Phase 1 Capstone.</p>
+</blockquote>
+
+<h4>Continuing and resuming sessions</h4>
+<p><code>-c</code> continues the most recent conversation in the current directory — the fast path when you just closed the terminal. <code>-r "&lt;name&gt;"</code> resumes a specific named session, which matters once you have more than one thread of work going in the same project; without a name, Claude Code has no way to know which of several past conversations you mean.</p>
+<pre><code class="language-bash">claude -c                                    # continue most recent
+claude -r "auth-refactor" "finish this PR"   # resume a named session with a new prompt
+claude --resume                              # interactive picker across sessions</code></pre>
+
+<h4>Running work in the background</h4>
+<p><code>--bg</code> starts a session as a background agent and returns your terminal immediately, so a long investigation doesn't block you from doing anything else. You check on it, not the other way around — forgetting this and leaving a terminal tab pinned to a running session is the most common way people accidentally block themselves for twenty minutes.</p>
+<pre><code class="language-bash">claude --bg "investigate the flaky test in leads_tracker.test.ts"
+claude agents           # list running/background sessions
+claude logs &lt;id&gt;        # tail recent output
+claude attach &lt;id&gt;      # switch into it interactively
+claude stop &lt;id&gt;        # stop it</code></pre>
+
+<h4>Choosing model and effort per task</h4>
+<p>Not every task needs your most capable (or most expensive) model at maximum reasoning effort. <code>--model</code> accepts an alias (<code>sonnet</code>, <code>opus</code>, <code>haiku</code>, <code>fable</code>) or a full model name; <code>--effort</code> trades latency and cost against reasoning depth (<code>low</code> through <code>max</code>). A quick lint-fix pass doesn't need <code>--effort max</code>; a gnarly race-condition investigation might be exactly where it pays for itself.</p>
+<pre><code class="language-bash">claude --model haiku -p "format this JSON file consistently"
+claude --model opus --effort high -p "find the root cause of the intermittent 500s in checkout"</code></pre>
+
+<p><strong>Exercise 1.3 — Parallel background investigation</strong></p>
+<p>Dataset: the <code>leads-tracker/</code> project.</p>
+<ol>
+<li>Start a background agent with <code>claude --bg</code> asking it to sketch a schema for a <code>leads</code> table (columns: id, name, company, email, status, notes, created_at) in <code>schema.sql</code>.</li>
+<li>While it runs, start a second, separate interactive session and ask a throwaway question — confirm the background job wasn't blocking you.</li>
+<li>Use <code>claude agents</code> and <code>claude logs &lt;id&gt;</code> to check progress, then <code>claude attach &lt;id&gt;</code> once it's done to review the result.</li>
+<li>Re-run the same request with <code>--model haiku --effort low</code> and compare speed and output quality against the default.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-a-ci-ready-triage-script">Phase 1 Capstone: A CI-Ready Triage Script</h3>
+<p><strong>Project: <code>triage.sh</code></strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain the difference between <code>-c</code> and <code>-r</code>, what <code>--max-budget-usd</code> protects against, and why <code>-p</code> is required for any non-interactive use? If any draws a blank, re-read Module 1.2 or 1.3 before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> the <code>leads-tracker/</code> project and its git history.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A <code>triage.sh</code> script that takes a git diff on stdin and runs it through <code>claude -p</code> headlessly.</li>
+<li>Output constrained to JSON via <code>--json-schema</code>, with fields <code>risk_level</code> (low/medium/high) and <code>summary</code> (one sentence).</li>
+<li>A hard budget cap (<code>--max-budget-usd</code>) and turn cap (<code>--max-turns</code>) appropriate for a single-diff review.</li>
+<li>A model/effort choice you can justify: cheap and fast for small diffs, escalated for large ones (a simple line-count branch is enough).</li>
+<li>A one-paragraph <code>README.md</code> section explaining how you'd wire this into a CI pre-merge check.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-extending-claude-with-skills">Phase 2: Extending Claude with Skills</h2>
+<h3 id="weeks-2-2">Week 2 | Goal: package repeatable workflows into skills, understand exactly where they live and why one wins over another, and use the advanced invocation controls</h3>
+<hr />
+
+<h3 id="module-21-anatomy-of-a-skill">Module 2.1 — Anatomy of a Skill</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 1.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Write a <code>SKILL.md</code> from scratch with frontmatter and a working <code>/name</code> invocation, no reference material.<br>
+<strong>Skip if:</strong> You've already written and used a custom skill.<br>
+<strong>Unlocks:</strong> Module 2.2, 2.3, all of Phase 5.</p>
+</blockquote>
+
+<h4>The <code>SKILL.md</code> file</h4>
+<p>A skill is a directory containing a <code>SKILL.md</code>: YAML frontmatter that tells Claude <em>when</em> to use it, and a markdown body with the instructions Claude follows once it does. Skills follow the open Agent Skills standard, so what you learn here transfers to other tools that support the same format. Unlike <code>CLAUDE.md</code>, which is loaded into every session's context whether you need it or not, a skill's body only loads when it's invoked — so a 400-line reference doc costs you nothing until the moment it's actually relevant. That's the real reason to reach for a skill instead of growing <code>CLAUDE.md</code> indefinitely: token cost that scales with usage, not with project size.</p>
+<pre><code class="language-bash">mkdir -p ~/.claude/skills/leads-status</code></pre>
+<pre><code class="language-yaml">---
+description: Reports lead counts by status from the leads-tracker database. Use when asked about lead pipeline, lead counts, or lead status breakdown.
+---
+
+## Current lead counts by status
+
+!`sqlite3 leads.db "SELECT status, COUNT(*) FROM leads GROUP BY status;"`
+
+## Instructions
+
+Summarize the counts above in one short paragraph. If the query returned nothing, say the leads database is empty or missing.</code></pre>
+<p>The <code>!`command`</code> line is <em>dynamic context injection</em> — Claude Code runs it and substitutes the output before Claude ever sees the skill, so the instructions arrive pre-loaded with live data instead of Claude having to guess or ask you to paste it. This one line is why a skill beats a saved prompt: a saved prompt is static text, a skill can pull the current state of the world into itself every time it runs.</p>
+
+<h4>Frontmatter that actually matters</h4>
+<p>Every field in frontmatter is optional, but <code>description</code> is the one field you should never skip — it's what Claude matches against your request to decide whether to load the skill automatically. A vague description ("helps with leads") means Claude either never finds it or finds it for the wrong requests; a specific one with the trigger phrasing spelled out ("Use when asked about lead pipeline, lead counts...") is what actually gets it invoked reliably.</p>
+
+<h4>Your first skill</h4>
+<p>Skill names come from where the file lives, not from frontmatter (with one exception covered in Module 5.1): a skill at <code>~/.claude/skills/leads-status/SKILL.md</code> is invoked as <code>/leads-status</code>, regardless of what <code>name:</code> says inside it.</p>
+
+<p><strong>Exercise 2.1 — Build and test <code>leads-status</code></strong></p>
+<p>Dataset: create <code>leads.db</code> now — you'll use it for the rest of this guide.</p>
+<ol>
+<li>Create a minimal SQLite database: <code>sqlite3 leads.db "CREATE TABLE leads (id INTEGER PRIMARY KEY, name TEXT, company TEXT, email TEXT, status TEXT, notes TEXT, created_at TEXT); INSERT INTO leads (name,company,status,created_at) VALUES ('A. Cruz','Manila Foods','new','2026-07-01'),('B. Reyes','Cebu Retail','contacted','2026-07-03'),('C. Santos','Davao Logistics','new','2026-07-05');"</code></li>
+<li>Write the <code>leads-status</code> skill exactly as shown above, saved at <code>~/.claude/skills/leads-status/SKILL.md</code>.</li>
+<li>From inside <code>leads-tracker/</code>, run <code>/leads-status</code> directly and confirm it reports the right counts.</li>
+<li>Ask "what's our lead pipeline look like?" in a fresh session and confirm Claude invokes the skill automatically, without you typing the slash command.</li>
+<li><em>Retrieval practice: before checking the docs, write down from memory what happens if you invoke a skill with a malformed YAML frontmatter block. Then verify your answer.</em></li>
+</ol>
+<hr />
+
+<h3 id="module-22-where-skills-live-locations-precedence-and-discovery">Module 2.2 — Where Skills Live: Locations, Precedence &amp; Discovery</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.1 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Predict, without testing, which of two same-named skills (one project-level, one personal) wins — then verify.<br>
+<strong>Skip if:</strong> You can already state the full precedence order from memory.<br>
+<strong>Unlocks:</strong> Module 2.3, Phase 5.</p>
+</blockquote>
+
+<h4>The four locations and who they reach</h4>
+<div class="table-scroll"><table>
+<tr><th>Location</th><th>Path</th><th>Applies to</th></tr>
+<tr><td>Enterprise</td><td>managed settings</td><td>All users in your organization</td></tr>
+<tr><td>Personal</td><td><code>~/.claude/skills/&lt;name&gt;/SKILL.md</code></td><td>All your projects</td></tr>
+<tr><td>Project</td><td><code>.claude/skills/&lt;name&gt;/SKILL.md</code></td><td>This project only</td></tr>
+<tr><td>Plugin</td><td><code>&lt;plugin&gt;/skills/&lt;name&gt;/SKILL.md</code></td><td>Wherever the plugin is enabled</td></tr>
+</table></div>
+
+<h4>Precedence when names collide</h4>
+<p>When two skills share a name, <strong>enterprise overrides personal, and personal overrides project</strong> — the opposite order from what many people guess, since "closest to the code wins" is the more familiar pattern from tools like <code>.eslintrc</code>. Getting this backwards matters in practice: if you've been quietly overriding a bundled skill (like <code>/code-review</code>) with a personal one, and a teammate adds a project-level skill of the same name expecting it to win for the whole team, it silently won't — your personal copy still wins for you. Plugin skills sidestep this entirely because they're always namespaced (<code>/plugin-name:skill-name</code>), so they can never collide with anything.</p>
+
+<h4>Nested skills in monorepos</h4>
+<p>Skills also load from nested <code>.claude/skills/</code> directories below your working directory — so a package inside a monorepo can ship its own skills that only apply when you're touching that package. If a nested skill shares a name with a root-level one, both survive: the nested one gets a directory-qualified name (<code>apps/web:deploy</code>), and typing the unqualified <code>/deploy</code> still runs the root one, but Claude Code appends a note pointing it at any directory-qualified variant relevant to the files you're actually working on.</p>
+
+<p><strong>Exercise 2.2 — Prove the precedence order</strong></p>
+<p>Dataset: the <code>leads-tracker/</code> project.</p>
+<ol>
+<li>Create a project-level skill at <code>leads-tracker/.claude/skills/leads-status/SKILL.md</code> with a visibly different message (e.g. add "[PROJECT VERSION]" to its output) than the personal one from Exercise 2.1.</li>
+<li>Run <code>/leads-status</code> from inside <code>leads-tracker/</code> — before running it, predict which version wins.</li>
+<li>Confirm your prediction against the documented order: personal beats project.</li>
+<li>Delete the personal copy and re-run — confirm the project version now takes over.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-advanced-skill-patterns">Module 2.3 — Advanced Skill Patterns</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Modules 2.1, 2.2 · <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Build a skill that takes a positional argument, only you can invoke it, and it's restricted to one allowed tool — without consulting reference material.<br>
+<strong>Skip if:</strong> You've already used <code>$ARGUMENTS</code>, <code>context: fork</code>, and <code>allowed-tools</code> together in one skill.<br>
+<strong>Unlocks:</strong> Phase 2 Capstone, Phase 5.</p>
+</blockquote>
+
+<h4>Passing arguments</h4>
+<p><code>$ARGUMENTS</code> captures everything typed after the skill name; <code>$N</code> (or <code>$ARGUMENTS[N]</code>) accesses a specific positional argument. Quote multi-word values, since arguments use shell-style splitting — <code>/leads-note 3 "called, no answer"</code> gives you <code>$0</code> = <code>3</code> and <code>$1</code> = <code>called, no answer</code> as two clean arguments rather than four.</p>
+
+<h4>Injecting dynamic context vs. running the task yourself</h4>
+<p>You already used <code>!`command`</code> in Module 2.1 to pull live data into a skill's prompt. The same mechanism works with any shell command, and for multi-line commands you can use a fenced code block opened with <code>```!</code> instead of the inline form. This runs once, before Claude ever sees the content — it's preprocessing, not something Claude decides to do, which is exactly why it's safe to rely on for grounding a skill in current state rather than trusting the model to remember or infer it.</p>
+
+<h4>Running a skill in a forked subagent</h4>
+<p><code>context: fork</code> runs the skill's content as the prompt for an isolated subagent instead of inline in your conversation — useful when a task shouldn't see (or pollute) your main thread's history, like a broad research pass. It only makes sense for skills with an actual task in them; a skill that's just reference guidance ("use these conventions") gives the subagent nothing to act on and it returns empty-handed.</p>
+
+<h4>Controlling who invokes it</h4>
+<p><code>disable-model-invocation: true</code> means only you can trigger the skill — the right choice for anything with a side effect you want to time deliberately, like writing to a database. <code>user-invocable: false</code> is the inverse: only Claude can invoke it, useful for background knowledge that isn't a meaningful command on its own. <code>allowed-tools</code> pre-approves specific tools while the skill is active, scoped tightly with pattern syntax like <code>Bash(sqlite3 *)</code> so the skill can only do the one narrow thing it's supposed to, not "anything in Bash."</p>
+<pre><code class="language-yaml">---
+name: leads-note
+description: Append a note to a lead's record by ID
+disable-model-invocation: true
+allowed-tools: Bash(sqlite3 *)
+---
+
+Append the note "$1" to the lead with id $0 in leads.db:
+
+!`sqlite3 leads.db "UPDATE leads SET notes = COALESCE(notes || ' | ', '') || '$1' WHERE id = $0;"`
+
+Confirm the update by showing the row for id $0.</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Writing a side-effecting skill (one that inserts, updates, or deletes data) without <code>disable-model-invocation: true</code> means Claude can decide on its own, mid-conversation, that now's a good time to run it. For anything you want to happen only when you explicitly ask, set this field — don't rely on the description alone to hold Claude back.</p></blockquote>
+
+<p><strong>Exercise 2.3 — Build <code>leads-note</code></strong></p>
+<p>Dataset: <code>leads.db</code> from Exercise 2.1.</p>
+<ol>
+<li>Write the <code>leads-note</code> skill exactly as shown above.</li>
+<li>Run <code>/leads-note 1 "followed up, interested in demo"</code> and confirm the note lands in the database.</li>
+<li>Ask Claude conversationally "add a note to lead 1 saying they want a demo" and confirm the skill is <em>not</em> invoked — with <code>disable-model-invocation</code>, it isn't even listed in Claude's available skills. Claude will likely offer to run the SQL itself via Bash (prompting you for permission), which is exactly the distinction: the skill's canned, pre-approved path is reserved for you to trigger deliberately.</li>
+<li>Temporarily remove <code>allowed-tools</code> and observe that Claude now prompts for permission on the <code>Bash</code> call instead of running it silently.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-the-leads-digest-skill">Phase 2 Capstone: The <code>leads-digest</code> Skill</h3>
+<p><strong>Project: A complete, arguments-aware, dynamically-grounded skill</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Can you explain, without looking back, the difference between <code>disable-model-invocation</code> and <code>user-invocable: false</code>? If not, revisit Module 2.3.</p></blockquote>
+<p><strong>Dataset:</strong> <code>leads.db</code>.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A <code>leads-digest</code> skill at <code>~/.claude/skills/leads-digest/SKILL.md</code> that accepts an optional status filter as <code>$0</code> (e.g. <code>/leads-digest new</code>) and defaults to all leads when no argument is given.</li>
+<li>Dynamic context injection pulling the filtered leads from <code>leads.db</code> via <code>sqlite3</code>.</li>
+<li>A description specific enough that asking "give me today's lead digest" triggers it automatically.</li>
+<li><code>allowed-tools</code> scoped to exactly the <code>sqlite3</code> command it needs — nothing broader.</li>
+<li>A short write-up (3–4 sentences) of why this skill is safe to auto-invoke while <code>leads-note</code> from Module 2.3 is not.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-connecting-tools-with-mcp-client-side">Phase 3: Connecting Tools with MCP (Client Side)</h2>
+<h3 id="weeks-3-3">Week 3 | Goal: connect Claude Code to external tools and data through MCP, understand transports and scopes well enough to debug connection issues, and use resources/prompts beyond plain tool calls</h3>
+<hr />
+
+<h3 id="module-31-mcp-fundamentals-and-transports">Module 3.1 — MCP Fundamentals &amp; Transports</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 1.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Explain, without notes, when you'd choose stdio over HTTP for a new server, and why SSE shouldn't be your choice for either.<br>
+<strong>Skip if:</strong> You've already connected an MCP server and can name all three transports and their status.<br>
+<strong>Unlocks:</strong> Module 3.2, 3.3, all of Phase 4.</p>
+</blockquote>
+
+<h4>What MCP actually gives Claude Code</h4>
+<p>The Model Context Protocol is an open standard for connecting AI tools to external systems — databases, issue trackers, design tools, your own scripts. Without it, "ask Claude about the ticket" means you copy-pasting the ticket into chat by hand, every time, and Claude working from whatever you thought to paste rather than the live source of truth. An MCP server closes that gap: Claude reads and acts on the system directly.</p>
+
+<h4>Three transports, one deprecated</h4>
+<p><strong>Stdio</strong> servers run as a local child process that Claude Code spawns and talks to over standard input/output — the simplest setup, ideal for tools needing direct filesystem or system access, and what you'll build in Phase 4. <strong>HTTP</strong> (Streamable HTTP) is the recommended transport for remote, cloud-hosted servers — a single endpoint, works with OAuth, and is the most widely supported transport for hosted services. <strong>SSE</strong> is deprecated — the MCP spec moved to Streamable HTTP, and most servers that used to support SSE now support HTTP on the same URL, so a new server should skip SSE entirely and an existing <code>--transport sse</code> connection error is usually fixed by switching to <code>--transport http</code>.</p>
+<pre><code class="language-bash"># Remote HTTP server (recommended default for hosted services)
+claude mcp add --transport http notion https://mcp.notion.com/mcp
+
+# Local stdio server — note the `--` separating Claude's flags from the server's
+claude mcp add --transport stdio everything -- npx -y @modelcontextprotocol/server-everything</code></pre>
+<p>That <code>--</code> matters more than it looks: everything after it is passed to the server untouched. Omit it and Claude Code tries to parse the server's own flags (like a hypothetical <code>--port 8080</code>) as its own options and rejects the command.</p>
+
+<h4>Managing what's connected</h4>
+<pre><code class="language-bash">claude mcp list             # all configured servers
+claude mcp get everything   # details for one server
+claude mcp remove everything</code></pre>
+
+<p><strong>Exercise 3.1 — Connect a zero-auth reference server</strong></p>
+<p>Dataset: none required — the reference server is self-contained.</p>
+<ol>
+<li>Run <code>claude mcp add --transport stdio everything -- npx -y @modelcontextprotocol/server-everything</code>.</li>
+<li>Inside a Claude Code session, run <code>/mcp</code> and confirm the server shows connected with a nonzero tool count.</li>
+<li>Ask Claude to list what tools the server exposes, then invoke one directly.</li>
+<li>Remove the server with <code>claude mcp remove everything</code> and confirm it no longer appears in <code>claude mcp list</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-scopes-configuration-and-authentication">Module 3.2 — Scopes, Configuration &amp; Authentication</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Explain why a project-scoped <code>.mcp.json</code> server shows as "Pending approval" for a teammate who just cloned the repo, and how to fix it.<br>
+<strong>Skip if:</strong> You've already shared a project-scoped MCP server with a team via version control.<br>
+<strong>Unlocks:</strong> Module 3.3, Phase 3 Capstone.</p>
+</blockquote>
+
+<h4>Local vs. project vs. user scope</h4>
+<div class="table-scroll"><table>
+<tr><th>Scope</th><th>Loads in</th><th>Shared with team</th><th>Stored in</th></tr>
+<tr><td>Local (default)</td><td>Current project only</td><td>No</td><td><code>~/.claude.json</code></td></tr>
+<tr><td>Project</td><td>Current project only</td><td>Yes, via version control</td><td><code>.mcp.json</code> in project root</td></tr>
+<tr><td>User</td><td>All your projects</td><td>No</td><td><code>~/.claude.json</code></td></tr>
+</table></div>
+<p>Local is the default and stays private to you and that one project — right for personal experiments or servers with credentials you don't want in git. Project scope is the one that actually reaches your team, because it writes to <code>.mcp.json</code> at the project root, meant to be committed. That's also why Claude Code prompts for approval before using a project-scoped server: it arrived via a file someone else wrote, potentially a cloned repo from someone you don't fully trust, and a server can run arbitrary commands.</p>
+<pre><code class="language-bash">claude mcp add --transport http paypal --scope project https://mcp.paypal.com/mcp
+# writes to .mcp.json — commit this file
+claude mcp reset-project-choices   # if you need to re-review approvals</code></pre>
+
+<h4><code>.mcp.json</code> and environment variable expansion</h4>
+<p>Committing <code>.mcp.json</code> means the API key can't live inside it in plaintext. Environment variable expansion (<code>${VAR}</code>, with an optional <code>${VAR:-default}</code>) solves this: the file is safe to commit, and each teammate supplies the secret through their own environment.</p>
+<pre><code class="language-json">{
+  "mcpServers": {
+    "internal-api": {
+      "type": "http",
+      "url": "${API_BASE_URL:-https://api.example.com}/mcp",
+      "headers": { "Authorization": "Bearer ${API_KEY}" }
+    }
+  }
+}</code></pre>
+
+<h4>OAuth and header-based auth</h4>
+<p>Claude Code marks a remote server as needing authentication when it responds with a 401 or 403, and flags it in <code>/mcp</code> so you can complete an OAuth flow in-browser. For servers that don't support automatic dynamic client registration, or for non-OAuth schemes (Kerberos, short-lived internal tokens), <code>headersHelper</code> runs a command at connect time and merges its JSON output into the request headers — the escape hatch for internal SSO that doesn't fit the standard flow.</p>
+
+<p><strong>Exercise 3.2 — A project-scoped, env-expanded server</strong></p>
+<p>Dataset: <code>leads-tracker/</code> (used as the project root for <code>.mcp.json</code>).</p>
+<ol>
+<li>Add a project-scoped server entry to <code>leads-tracker/.mcp.json</code> by hand, pointing at a placeholder URL with <code>${LEADS_API_KEY}</code> in the headers.</li>
+<li>Without setting the environment variable, run <code>claude</code> in that directory and observe the parse failure.</li>
+<li>Export <code>LEADS_API_KEY=test-value</code> and confirm the config now parses.</li>
+<li>Run <code>claude mcp list</code> and identify the "Pending approval" state, then approve it interactively.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-resources-prompts-and-scaling-with-tool-search">Module 3.3 — Resources, Prompts &amp; Scaling with Tool Search</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.1 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Explain what tool search defers and why adding a tenth MCP server barely affects your context window as a result.<br>
+<strong>Skip if:</strong> You already reference MCP resources with <code>@</code> and know how tool search works.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone, Module 4.1.</p>
+</blockquote>
+
+<h4>@-mentioning MCP resources</h4>
+<p>Resources are file-like data a server exposes — API responses, documents, records — referenced the same way you'd <code>@</code>-mention a local file: <code>@server:protocol://resource/path</code>. Unlike tools, which Claude decides to call, resources are things <em>you</em> pull in explicitly, which makes them the right choice when you already know exactly what data you want attached rather than trusting the model to go find it.</p>
+<pre><code class="language-text">Can you analyze @github:issue://123 and suggest a fix?
+Compare @postgres:schema://users with @docs:file://database/user-model</code></pre>
+
+<h4>MCP prompts as slash commands</h4>
+<p>A server can expose reusable prompt templates that show up as <code>/mcp__servername__promptname</code> — a way for a server author to standardize a common workflow (a bug-report template, a PR-review checklist) without you having to remember the exact phrasing every time.</p>
+
+<h4>How tool search keeps context cheap at scale</h4>
+<p>Tool search is on by default, and it's why you can connect a dozen MCP servers without your context window filling up with tool definitions you're not using this turn: only tool <em>names</em> and server instructions load at session start, and Claude searches for the relevant tool schema only when a task actually needs it. This is also why the server <em>instructions</em> field matters if you ever build your own server (Phase 4) — it's the first thing Claude sees when deciding whether to search your server's tools at all, functioning much like a skill's <code>description</code>.</p>
+
+<p><strong>Exercise 3.3 — Resources and prompts on the reference server</strong></p>
+<p>Dataset: the <code>everything</code> reference server from Module 3.1.</p>
+<ol>
+<li>Reconnect the <code>everything</code> server if you removed it.</li>
+<li>Type <code>@</code> in a prompt and confirm resources from the server appear in autocomplete.</li>
+<li>Reference one directly and ask Claude a question about it.</li>
+<li>Type <code>/</code> and find any prompts the server exposes; run one.</li>
+<li>Run <code>/context</code> and note how much space MCP tool definitions actually occupy — this is the number tool search is keeping small.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-wire-up-a-real-connector">Phase 3 Capstone: Wire Up a Real Connector</h3>
+<p><strong>Project: connect one real, authenticated MCP server end-to-end</strong></p>
+<p><strong>Dataset:</strong> your own account on a service with a hosted MCP server (GitHub, Notion, or Sentry all work — pick whichever you already use).</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Add the server at user scope with <code>claude mcp add --transport http</code>.</li>
+<li>Complete OAuth (or header-based) authentication via <code>/mcp</code>.</li>
+<li>Run three real, distinct tasks against it (e.g. for GitHub: list your open PRs, review one, create an issue).</li>
+<li>Document, in 3–4 sentences, what scope you chose and why it was the right one for this server given who else might use your machine.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-building-your-own-mcp-servers">Phase 4: Building Your Own MCP Servers</h2>
+<h3 id="weeks-4-5">Weeks 4–5 | Goal: go from MCP consumer to MCP author — design, build, test, and ship a working stdio server exposing your own tools</h3>
+<hr />
+
+<h3 id="module-41-mcp-server-concepts-and-choosing-your-sdk">Module 4.1 — MCP Server Concepts &amp; Choosing Your SDK</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.1 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Name the three MCP server primitives and correctly classify a "get user record" endpoint as a tool vs. a resource.<br>
+<strong>Skip if:</strong> You've already read the MCP server-concepts spec and picked an SDK for a project.<br>
+<strong>Unlocks:</strong> Module 4.2.</p>
+</blockquote>
+
+<h4>Tools, resources, and prompts — the three primitives</h4>
+<p>Every MCP server capability is one of three types. <strong>Tools</strong> are functions the model calls, with your approval, to take an action or fetch something dynamic — the primitive you'll use for almost everything. <strong>Resources</strong> are fetched by the client (not the model) and injected into context — background data like docs or config the user references explicitly, not something Claude decides on its own to go pull. <strong>Prompts</strong> are reusable templates a user selects to kick off a standardized workflow. Getting this classification right matters for more than vocabulary: a "read-only lookup" implemented as a tool costs a permission prompt and a model decision every time, where the same data as a resource is just referenced directly — cheaper and more predictable when the caller already knows what they want.</p>
+
+<h4>SDK tiers and picking TypeScript vs. Python</h4>
+<div class="table-scroll"><table>
+<tr><th>SDK</th><th>Tier</th><th>Pick it when…</th></tr>
+<tr><td>TypeScript</td><td>1</td><td>You want the largest ecosystem and reference examples, or you're already in a Node toolchain.</td></tr>
+<tr><td>Python</td><td>1</td><td>Your data/logic already lives in Python (pandas, existing scripts, ML tooling).</td></tr>
+<tr><td>C#, Go</td><td>1</td><td>You're building inside a .NET or Go codebase already.</td></tr>
+<tr><td>Java, Rust</td><td>2</td><td>Feature-complete, actively maintained, smaller ecosystem than Tier 1.</td></tr>
+<tr><td>Swift, Ruby, PHP, Kotlin</td><td>3</td><td>Community-maintained — check activity before depending on it for anything production-critical.</td></tr>
+</table></div>
+<p>Both Tier 1 SDKs implement the full spec, so the honest answer to "which one" is usually "whichever language your data already lives in" — for the <code>leads-tracker</code> project, either is equally valid, which is why Module 4.2 builds both.</p>
+
+<h4>Planning the leads-tracker server</h4>
+<p>Two tools, mirroring what you already built as skills: <code>query_leads(status?)</code> — read-only, returns matching rows — and <code>add_lead_note(id, note)</code> — a write, so it needs a clear description telling Claude it's a mutating action.</p>
+
+<p><strong>Exercise 4.1 — Design before you code</strong></p>
+<p>Dataset: <code>leads.db</code>.</p>
+<ol>
+<li>Write the JSON Schema (by hand, on paper or in a text file) for <code>query_leads</code>'s input: an optional <code>status</code> string.</li>
+<li>Do the same for <code>add_lead_note</code>: required <code>id</code> (integer) and <code>note</code> (string).</li>
+<li>Decide, and write down why, whether either tool should instead have been a resource.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-build-a-stdio-server-typescript-and-python">Module 4.2 — Build a Stdio Server (TypeScript &amp; Python)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> Module 4.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Ship a stdio server with one tool, in either language, that starts without errors when run directly.<br>
+<strong>Skip if:</strong> You've already built and run an MCP stdio server in TypeScript or Python.<br>
+<strong>Unlocks:</strong> Module 4.3, 4.4, Phase 4 Capstone.</p>
+</blockquote>
+
+<h4>The stdout rule</h4>
+<p>A stdio server talks to its client over standard input/output using JSON-RPC. Any stray write to stdout — a leftover <code>console.log</code>, a bare <code>print()</code> — corrupts that stream and silently breaks the server. This is the single most common first bug when building an MCP server, and it's why every official quickstart leads with it: log to stderr (<code>console.error</code> in Node, <code>print(..., file=sys.stderr)</code> or the <code>logging</code> module in Python), never stdout.</p>
+
+<h4>Project setup (TypeScript)</h4>
+<pre><code class="language-bash">mkdir leads-tracker-mcp &amp;&amp; cd leads-tracker-mcp
+npm init -y
+npm install @modelcontextprotocol/sdk zod@3 better-sqlite3
+npm install -D @types/node @types/better-sqlite3 typescript
+mkdir src</code></pre>
+<pre><code class="language-typescript">// src/index.ts
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+import Database from "better-sqlite3";
+
+const db = new Database("leads.db");
+
+const server = new McpServer({ name: "leads-tracker", version: "1.0.0" });
+
+server.registerTool(
+  "query_leads",
+  {
+    description: "List leads, optionally filtered by status (new, contacted, closed)",
+    inputSchema: {
+      status: z.string().optional().describe("Filter by lead status"),
+    },
+  },
+  async ({ status }) => {
+    const rows = status
+      ? db.prepare("SELECT id, name, company, status FROM leads WHERE status = ?").all(status)
+      : db.prepare("SELECT id, name, company, status FROM leads").all();
+    return { content: [{ type: "text", text: JSON.stringify(rows, null, 2) }] };
+  },
+);
+
+server.registerTool(
+  "add_lead_note",
+  {
+    description: "Append a note to a lead's record by ID. This is a write operation.",
+    inputSchema: {
+      id: z.number().describe("Lead ID"),
+      note: z.string().describe("Note text to append"),
+    },
+  },
+  async ({ id, note }) => {
+    db.prepare(
+      "UPDATE leads SET notes = COALESCE(notes || ' | ', '') || ? WHERE id = ?",
+    ).run(note, id);
+    const row = db.prepare("SELECT * FROM leads WHERE id = ?").get(id);
+    return { content: [{ type: "text", text: JSON.stringify(row, null, 2) }] };
+  },
+);
+
+async function main() {
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+  console.error("leads-tracker MCP server running on stdio");
+}
+
+main().catch((error) => {
+  console.error("Fatal error in main():", error);
+  process.exit(1);
+});</code></pre>
+
+<h4>The same server in Python with FastMCP</h4>
+<p><code>FastMCP</code> reads your type hints and docstring to generate the tool schema automatically, which is why the Python version below needs no explicit JSON Schema — it's inferred instead of hand-written like the Zod version above.</p>
+<pre><code class="language-bash">uv init leads-tracker-mcp &amp;&amp; cd leads-tracker-mcp
+uv add "mcp[cli]"</code></pre>
+<pre><code class="language-python">import sqlite3
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("leads-tracker")
+
+def get_db():
+    return sqlite3.connect("leads.db")
+
+@mcp.tool()
+def query_leads(status: str | None = None) -> str:
+    """List leads, optionally filtered by status (new, contacted, closed).
+
+    Args:
+        status: Filter by lead status. Omit to list all leads.
+    """
+    conn = get_db()
+    if status:
+        rows = conn.execute(
+            "SELECT id, name, company, status FROM leads WHERE status = ?", (status,)
+        ).fetchall()
+    else:
+        rows = conn.execute("SELECT id, name, company, status FROM leads").fetchall()
+    conn.close()
+    return str(rows)
+
+@mcp.tool()
+def add_lead_note(id: int, note: str) -> str:
+    """Append a note to a lead's record by ID. This is a write operation.
+
+    Args:
+        id: Lead ID
+        note: Note text to append
+    """
+    conn = get_db()
+    conn.execute(
+        "UPDATE leads SET notes = COALESCE(notes || ' | ', '') || ? WHERE id = ?", (note, id)
+    )
+    conn.commit()
+    row = conn.execute("SELECT * FROM leads WHERE id = ?", (id,)).fetchone()
+    conn.close()
+    return str(row)
+
+if __name__ == "__main__":
+    mcp.run(transport="stdio")</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Both versions open <code>leads.db</code> with a relative path, which resolves against the server process's working directory — not where the file lives. When Claude Code spawns the server from <code>leads-tracker/</code> it happens to work, but run it under the Inspector from <code>leads-tracker-mcp/</code> and you'll query an empty, freshly-created database and wonder where your leads went. Harden it with an absolute path, or read <code>CLAUDE_PROJECT_DIR</code> (which Claude Code sets in the spawned server's environment: <code>process.env.CLAUDE_PROJECT_DIR</code> in Node, <code>os.environ["CLAUDE_PROJECT_DIR"]</code> in Python) with a fallback for non-Claude clients.</p></blockquote>
+
+<p><strong>Exercise 4.2 — Build one, understand both</strong></p>
+<p>Dataset: <code>leads.db</code>.</p>
+<ol>
+<li>Pick one language and fully implement the server shown above.</li>
+<li>Run it directly (<code>node build/index.js</code> or <code>uv run server.py</code>) and confirm it starts without printing anything to stdout.</li>
+<li>Deliberately add a stray <code>console.log</code> / <code>print()</code> statement, run it again through a client (Module 4.3 covers this), and observe the failure — then remove it.</li>
+<li>Read the other language's version above and write two sentences on the one real structural difference between them (schema declared explicitly with Zod vs. inferred from type hints and docstring).</li>
+</ol>
+<hr />
+
+<h3 id="module-43-test-and-debug-with-mcp-inspector">Module 4.3 — Test &amp; Debug with MCP Inspector</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 4.2 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Call a tool on your server through the Inspector UI and get a correct result, without connecting it to Claude Code first.<br>
+<strong>Skip if:</strong> You already test new MCP servers with the Inspector before wiring them into any client.<br>
+<strong>Unlocks:</strong> Module 4.4.</p>
+</blockquote>
+
+<h4>Launching the Inspector against your server</h4>
+<p>Debugging a half-working MCP server through a full LLM client adds a layer of uncertainty: is the tool broken, or did the model just phrase the call wrong? The MCP Inspector removes that variable — a browser UI (default <code>localhost:6274</code>) plus a local proxy that connects directly to your server over stdio, SSE, or HTTP, lets you list its tools, and call them with exact inputs, no natural-language prompting required.</p>
+<pre><code class="language-bash"># TypeScript server
+npx @modelcontextprotocol/inspector node build/index.js
+
+# Python server
+npx @modelcontextprotocol/inspector uv run server.py</code></pre>
+
+<h4>Calling tools without an LLM in the loop</h4>
+<p>Once the UI opens, you'll see every tool your server registered, its schema, and a form to fill in arguments directly. Run <code>query_leads</code> with no status, then with <code>status: "new"</code>, and confirm the JSON that comes back matches what's actually in <code>leads.db</code> — this is the fastest way to catch a schema/implementation mismatch before it ever reaches a real conversation.</p>
+
+<h4>CLI mode for scripted checks</h4>
+<p>For a check you want to repeat (in a pre-commit hook, say) rather than click through, <code>--cli</code> mode runs a single method call and exits, which fits into a script the same way <code>claude -p</code> does from Module 1.2.</p>
+<pre><code class="language-bash">npx @modelcontextprotocol/inspector --cli node build/index.js --method tools/list</code></pre>
+
+<p><strong>Exercise 4.3 — Debug a deliberately broken tool</strong></p>
+<p>Dataset: your Module 4.2 server and <code>leads.db</code>.</p>
+<ol>
+<li>Launch the Inspector against your server.</li>
+<li>Call <code>query_leads</code> with a nonexistent status value and confirm it returns an empty result rather than erroring.</li>
+<li>Call <code>add_lead_note</code> on a lead ID that doesn't exist and observe what actually comes back — then decide whether that's the behavior you want, and fix the tool if not (a mutating tool that silently no-ops on a bad ID is a common source of confusing downstream bugs).</li>
+<li>Run <code>--cli ... --method tools/list</code> and confirm both tools appear with the schema you expect.</li>
+</ol>
+<hr />
+
+<h3 id="module-44-connect-harden-and-ship-your-server">Module 4.4 — Connect, Harden &amp; Ship Your Server</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> Modules 4.2, 4.3 · <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Connect your own stdio server to Claude Code with <code>claude mcp add</code> and successfully call a tool from a real conversation.<br>
+<strong>Skip if:</strong> You've already shipped an MCP server that a real client connects to.<br>
+<strong>Unlocks:</strong> Phase 4 Capstone, Phase 5.</p>
+</blockquote>
+
+<h4>Adding it to Claude Code</h4>
+<p>Once the Inspector confirms the server behaves correctly in isolation, connect it the same way you connected the reference server in Module 3.1 — the only difference is your server is a local build instead of an <code>npx</code> package.</p>
+<pre><code class="language-bash">claude mcp add --transport stdio leads-tracker -- node /absolute/path/to/leads-tracker-mcp/build/index.js
+# or, for the Python version:
+claude mcp add --transport stdio leads-tracker -- uv --directory /absolute/path/to/leads-tracker-mcp run server.py</code></pre>
+
+<h4>Logging, error handling, and output-size limits</h4>
+<p>A tool that throws an unhandled exception on bad input takes down the whole server connection, not just that one call — wrap tool logic so a bad argument returns a clear error message in the tool result instead. If a tool can legitimately return a very large result (a full schema dump, say), the default 25,000-token output limit will truncate it to a file reference; set <code>_meta["anthropic/maxResultSizeChars"]</code> in that tool's definition to raise its own threshold rather than asking every caller to raise <code>MAX_MCP_OUTPUT_TOKENS</code> globally.</p>
+
+<h4>Publishing to the Anthropic Directory</h4>
+<p>A server built for personal use stays a local stdio process pointed at with an absolute path. Sharing it more broadly means deploying it as a remote HTTP server (so others don't need your source tree locally) and following the Claude connector building docs for authentication and Directory submission — the same review path Anthropic's own listed connectors go through.</p>
+
+<p><strong>Exercise 4.4 — Ship and verify</strong></p>
+<p>Dataset: <code>leads.db</code> and your Module 4.2 server.</p>
+<ol>
+<li>Connect your server with <code>claude mcp add --transport stdio</code>.</li>
+<li>Run <code>/mcp</code> and confirm it shows connected with 2 tools.</li>
+<li>In a real conversation, ask "what leads are new?" and confirm Claude calls <code>query_leads</code> (not the <code>leads-status</code> skill from Phase 2 — note that you now have two ways to get the same information, and think about when you'd reach for each).</li>
+<li>Add basic error handling to <code>add_lead_note</code> so an invalid ID returns a clear message instead of a raw exception, then verify with the Inspector.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-the-leads-tracker-mcp-server">Phase 4 Capstone: The <code>leads-tracker</code> MCP Server</h3>
+<p><strong>Project: a hardened, tested, connected MCP server</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Can you explain why the stdout rule exists and what breaks if you violate it? Can you name the difference between debugging with the Inspector and debugging through a live Claude Code conversation? If either draws a blank, revisit Module 4.2 or 4.3.</p></blockquote>
+<p><strong>Dataset:</strong> <code>leads.db</code>.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A complete, working stdio server (TypeScript or Python) with <code>query_leads</code> and <code>add_lead_note</code>.</li>
+<li>Clean stderr-only logging — verified by grepping your source for any stray <code>console.log</code>/<code>print</code>.</li>
+<li>Error handling on <code>add_lead_note</code> for a nonexistent ID.</li>
+<li>A passing Inspector session covering both tools, screenshotted or noted.</li>
+<li>The server connected to Claude Code via <code>claude mcp add</code> and confirmed working in a real conversation.</li>
+</ol>
+<hr />
+
+<h2 id="phase-5-packaging-and-distributing-with-plugins">Phase 5: Packaging &amp; Distributing with Plugins</h2>
+<h3 id="week-6">Week 6 | Goal: bundle a skill and an MCP server into a single, versioned, shareable plugin, and distribute it through a marketplace</h3>
+<hr />
+
+<h3 id="module-51-plugin-anatomy">Module 5.1 — Plugin Anatomy</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.1 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Sketch a plugin directory layout with a skill and an MCP server from memory, correctly placing <code>plugin.json</code>.<br>
+<strong>Skip if:</strong> You've already authored a plugin manifest.<br>
+<strong>Unlocks:</strong> Module 5.2, 5.3.</p>
+</blockquote>
+
+<h4>The <code>plugin.json</code> manifest</h4>
+<p>A plugin is a directory containing skills, agents, hooks, or MCP servers, optionally alongside a <code>.claude-plugin/plugin.json</code> manifest declaring its identity. The manifest is what turns a folder of loose configuration into something with a name, a version, and a namespace — the difference between "files in <code>.claude/</code>" and "a thing you can hand to someone else."</p>
+<pre><code class="language-json">{
+  "name": "hayah-ops-toolkit",
+  "description": "Lead-tracking skill and MCP server for the Hayah-AI leads database",
+  "version": "1.0.0",
+  "author": { "name": "Your Name" }
+}</code></pre>
+<p><code>name</code> becomes the skill namespace — a skill at <code>skills/leads-digest/SKILL.md</code> inside this plugin is invoked as <code>/hayah-ops-toolkit:leads-digest</code>, never the bare <code>/leads-digest</code>. This namespacing is deliberate: it's what lets two different plugins each ship a skill called <code>deploy</code> without ever conflicting, unlike standalone project or personal skills which collide by name (Module 2.2).</p>
+
+<h4>What a plugin can bundle</h4>
+<div class="table-scroll"><table>
+<tr><th>Directory / file</th><th>Location</th><th>Purpose</th></tr>
+<tr><td><code>.claude-plugin/</code></td><td>Plugin root</td><td>Contains <code>plugin.json</code> only — never put <code>skills/</code>, <code>agents/</code>, or <code>hooks/</code> here.</td></tr>
+<tr><td><code>skills/</code></td><td>Plugin root</td><td>Skills as <code>&lt;name&gt;/SKILL.md</code> directories.</td></tr>
+<tr><td><code>agents/</code></td><td>Plugin root</td><td>Custom subagent definitions.</td></tr>
+<tr><td><code>hooks/hooks.json</code></td><td>Plugin root</td><td>Event handlers (PostToolUse, etc).</td></tr>
+<tr><td><code>.mcp.json</code></td><td>Plugin root</td><td>MCP server configuration.</td></tr>
+<tr><td><code>bin/</code></td><td>Plugin root</td><td>Executables added to the Bash tool's PATH while enabled.</td></tr>
+</table></div>
+<p>The most common structural mistake, called out explicitly in the docs, is nesting <code>skills/</code> or <code>hooks/</code> inside <code>.claude-plugin/</code> — that folder holds exactly one file, the manifest, and nothing else.</p>
+
+<h4>Skills-directory plugins</h4>
+<p>For a plugin you only use yourself, <code>claude plugin init my-tool</code> scaffolds one directly inside your skills directory (<code>~/.claude/skills/my-tool/</code>) — it loads automatically on the next session with no marketplace or install step, useful when a skill has grown complex enough to want its own MCP server or agent but doesn't need to be shared yet.</p>
+
+<p><strong>Exercise 5.1 — Sketch the toolkit layout</strong></p>
+<p>Dataset: your Module 2.1 skill and Module 4.2 MCP server.</p>
+<ol>
+<li>On paper or in a scratch file, sketch the directory tree for a <code>hayah-ops-toolkit</code> plugin containing both the <code>leads-digest</code> skill and the <code>leads-tracker</code> MCP server.</li>
+<li>Write the <code>plugin.json</code> for it.</li>
+<li>Identify, before building it, what the skill's invocation name will become once it's inside the plugin.</li>
+</ol>
+<hr />
+
+<h3 id="module-52-local-development-workflow">Module 5.2 — Local Development Workflow</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 5.1 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Load a plugin with <code>--plugin-dir</code>, edit its skill, and pick up the change with <code>/reload-plugins</code> without restarting.<br>
+<strong>Skip if:</strong> You already iterate on plugins with <code>--plugin-dir</code>.<br>
+<strong>Unlocks:</strong> Module 5.3, Phase 5 Capstone.</p>
+</blockquote>
+
+<h4><code>--plugin-dir</code> for fast iteration</h4>
+<p><code>--plugin-dir</code> loads a plugin directly from a local folder for the current session, with no install or marketplace step — the right tool for every stage of building a plugin before it's ready to share. It even takes precedence over an already-installed marketplace plugin of the same name for that session, so you can test changes to something you use daily without uninstalling it first.</p>
+<pre><code class="language-bash">claude --plugin-dir ./hayah-ops-toolkit
+# load two at once while comparing versions:
+claude --plugin-dir ./hayah-ops-toolkit --plugin-dir ./hayah-ops-toolkit-v2</code></pre>
+
+<h4><code>/reload-plugins</code> and live testing</h4>
+<p>Editing a plugin's <code>SKILL.md</code> text is picked up live in most standalone cases, but a plugin's other components — hooks, its <code>.mcp.json</code>, agents — need an explicit <code>/reload-plugins</code> to take effect, since those involve process restarts (an MCP server subprocess, for instance) that can't happen silently mid-session. Run it after every change to a plugin's non-skill files, and test each component individually: skills with <code>/plugin-name:skill-name</code>, agents by checking <code>/context</code>, hooks by triggering the event they match.</p>
+
+<h4>Converting your standalone skill + MCP server into a plugin</h4>
+<p>Nothing about the skill or server content changes — only where the files live and how the server is declared. A plugin's <code>.mcp.json</code> uses <code>${CLAUDE_PLUGIN_ROOT}</code> instead of a hardcoded absolute path, so the plugin works on any machine it's installed on, not just yours.</p>
+<pre><code class="language-json">{
+  "mcpServers": {
+    "leads-tracker": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/servers/leads-tracker/build/index.js"]
+    }
+  }
+}</code></pre>
+
+<p><strong>Exercise 5.2 — Assemble and iterate on the toolkit</strong></p>
+<p>Dataset: <code>leads.db</code>, plus your Module 2.1 skill and Module 4.2 server.</p>
+<ol>
+<li>Create the <code>hayah-ops-toolkit/</code> directory matching your Exercise 5.1 sketch, with <code>.claude-plugin/plugin.json</code>, <code>skills/leads-digest/SKILL.md</code>, and <code>.mcp.json</code> pointing at your built server via <code>${CLAUDE_PLUGIN_ROOT}</code>.</li>
+<li>Load it with <code>claude --plugin-dir ./hayah-ops-toolkit</code> and confirm <code>/hayah-ops-toolkit:leads-digest</code> works.</li>
+<li>Run <code>/mcp</code> and confirm the plugin-provided <code>leads-tracker</code> server is connected.</li>
+<li>Edit the skill's description, save, and run <code>/reload-plugins</code> — confirm the change is live without restarting the session.</li>
+</ol>
+<hr />
+
+<h3 id="module-53-marketplaces-and-distribution">Module 5.3 — Marketplaces &amp; Distribution</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> Modules 5.1, 5.2 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Write a <code>marketplace.json</code> from memory that lists at least one plugin by git source, and explain how a user installs from it.<br>
+<strong>Skip if:</strong> You've already created and shared a plugin marketplace.<br>
+<strong>Unlocks:</strong> Phase 5 Capstone, Final Capstone.</p>
+</blockquote>
+
+<h4><code>marketplace.json</code> and hosting on git</h4>
+<p>A marketplace is a catalog file, <code>.claude-plugin/marketplace.json</code>, that lists plugins and where to fetch them from — the mechanism that turns "here's a zip file, unpack it and point <code>--plugin-dir</code> at it" into "add this URL, then install by name." Hosting it in a normal git repository is enough; there's no special infrastructure requirement.</p>
+<pre><code class="language-json">{
+  "name": "hayah-ai-tools",
+  "owner": { "name": "Your Name" },
+  "plugins": [
+    {
+      "name": "hayah-ops-toolkit",
+      "source": "./hayah-ops-toolkit",
+      "description": "Lead-tracking skill and MCP server for the Hayah-AI leads database"
+    }
+  ]
+}</code></pre>
+
+<h4>Installing from a marketplace</h4>
+<pre><code class="language-bash"># team member adds your marketplace once
+claude plugin marketplace add your-org/hayah-ai-tools
+
+# then installs the plugin from it
+/plugin install hayah-ops-toolkit@hayah-ai-tools
+
+# you push an update; they refresh with:
+/plugin marketplace update hayah-ai-tools</code></pre>
+<p>This is the meaningful upgrade over <code>--plugin-dir</code>: a marketplace gives you centralized discovery, a name people can install by, and a clear update path — push to the repo, teammates run one command to pick it up, instead of everyone re-pulling a folder and re-pointing a flag by hand.</p>
+
+<h4>Official vs. community marketplace, and private ones</h4>
+<p><code>claude-plugins-official</code> is Anthropic-curated and registers automatically on first interactive launch; <code>claude-community</code> is the public catalog third-party plugins land in after automated review (<code>claude plugin validate</code> runs the same check locally before you submit). Neither is what you want for something internal to Hayah-AI — for that, host your own marketplace in a private git repository, which keeps it invisible to anyone without repo access while still giving your own tooling the same install/update ergonomics as a public one.</p>
+
+<p><strong>Exercise 5.3 — Stand up a private marketplace</strong></p>
+<p>Dataset: your <code>hayah-ops-toolkit/</code> plugin from Exercise 5.2.</p>
+<ol>
+<li>Create a new local git repository, <code>hayah-ai-tools/</code>, with a <code>.claude-plugin/marketplace.json</code> listing <code>hayah-ops-toolkit</code> by relative path.</li>
+<li>Move (or copy) <code>hayah-ops-toolkit/</code> into that repository.</li>
+<li>Add the marketplace locally with <code>claude plugin marketplace add /absolute/path/to/hayah-ai-tools</code> and install the plugin by name from it.</li>
+<li>Bump <code>version</code> in <code>plugin.json</code>, commit, and run <code>/plugin marketplace update</code> to confirm the update path works.</li>
+</ol>
+<hr />
+
+<h3 id="phase-5-capstone-the-hayah-ops-toolkit-plugin">Phase 5 Capstone: The <code>hayah-ops-toolkit</code> Plugin</h3>
+<p><strong>Project: a fully packaged, versioned, marketplace-installable plugin</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Can you explain why plugin skill names are always namespaced while standalone project/personal skills aren't? Can you name what <code>--plugin-dir</code> is for versus what a marketplace is for? Revisit Module 5.1 or 5.3 if either is shaky.</p></blockquote>
+<p><strong>Dataset:</strong> <code>leads.db</code>, your skill from Phase 2, and your MCP server from Phase 4.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A complete <code>hayah-ops-toolkit</code> plugin bundling the <code>leads-digest</code> skill and the <code>leads-tracker</code> MCP server, with a correct <code>.claude-plugin/plugin.json</code>.</li>
+<li>A private git-hosted marketplace listing it.</li>
+<li>Verified install from that marketplace (not <code>--plugin-dir</code>) on your machine.</li>
+<li>A version bump pushed and picked up via <code>/plugin marketplace update</code>.</li>
+<li>A short <code>README.md</code> inside the plugin explaining what it does and how to install it.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-ship-the-hayah-ai-ops-toolkit">Final Capstone: Ship the Hayah-AI Ops Toolkit</h2>
+<p><strong>Project: the complete ecosystem stack, integrated end-to-end</strong></p>
+<p>Integrates all five phases. Uses <code>leads.db</code> throughout — the same database your Phase 2 skill queried by hand, your Phase 4 server exposed as tools, and your Phase 5 plugin now packages as one installable unit.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A one-line install path for a new machine: add your marketplace, install the plugin, done — no manual <code>.mcp.json</code> editing or absolute paths.</li>
+<li>The <code>leads-digest</code> skill (Phase 2), namespaced correctly inside the plugin.</li>
+<li>The <code>leads-tracker</code> MCP server (Phase 4), connecting automatically when the plugin is enabled — verified with <code>/mcp</code>.</li>
+<li>A headless script (Phase 1 pattern) that uses <code>claude -p</code> with the plugin's tools enabled to generate a daily lead-status summary, suitable for a cron job.</li>
+<li>A <code>marketplace.json</code> (Phase 5) hosted in a private repository, with at least one version bump demonstrated.</li>
+<li>A short retrospective (5–6 sentences): which phase's concepts turned out to matter most once everything was wired together, and what you'd build next on top of this toolkit (a second data source? a hook that runs the digest automatically on session start?).</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Claude Ecosystem Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Command</th><th>Notes</th></tr>
+<tr><td>Install Claude Code</td><td><code>curl -fsSL https://claude.ai/install.sh | bash</code></td><td>Native installer auto-updates; Homebrew/WinGet don't.</td></tr>
+<tr><td>Run one-shot, non-interactive</td><td><code>claude -p "..."</code></td><td>Required for any piping, CI, or cron usage.</td></tr>
+<tr><td>Resume most recent session</td><td><code>claude -c</code></td><td>Current directory only.</td></tr>
+<tr><td>Resume a named session</td><td><code>claude -r "name"</code></td><td>Use when more than one thread exists.</td></tr>
+<tr><td>Run work in the background</td><td><code>claude --bg "..."</code></td><td>Check with <code>claude agents</code> / <code>claude logs &lt;id&gt;</code>.</td></tr>
+<tr><td>Pick model / reasoning depth</td><td><code>--model sonnet --effort high</code></td><td>Aliases: sonnet, opus, haiku, fable.</td></tr>
+<tr><td>Create a skill</td><td><code>.claude/skills/&lt;name&gt;/SKILL.md</code></td><td>Directory name = invocation name (mostly).</td></tr>
+<tr><td>Restrict a skill to manual invocation</td><td><code>disable-model-invocation: true</code></td><td>Use for anything with side effects.</td></tr>
+<tr><td>Pull live data into a skill</td><td><code>!`command`</code></td><td>Runs once, before Claude sees the content.</td></tr>
+<tr><td>Add a remote MCP server</td><td><code>claude mcp add --transport http name url</code></td><td>SSE is deprecated — use HTTP.</td></tr>
+<tr><td>Add a local MCP server</td><td><code>claude mcp add --transport stdio name -- cmd args</code></td><td>Don't forget the <code>--</code> separator.</td></tr>
+<tr><td>Debug a server without a client</td><td><code>npx @modelcontextprotocol/inspector cmd</code></td><td>UI at localhost:6274.</td></tr>
+<tr><td>Test a plugin locally</td><td><code>claude --plugin-dir ./path</code></td><td>Takes precedence over an installed copy for the session.</td></tr>
+<tr><td>Pick up plugin changes live</td><td><code>/reload-plugins</code></td><td>Required for hooks, MCP, agents — not always for skill text.</td></tr>
+<tr><td>Install from a marketplace</td><td><code>/plugin install name@marketplace</code></td><td>Add the marketplace first with <code>claude plugin marketplace add</code>.</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-cli-sessions">CLI &amp; Sessions</h3>
+<dl class="glossary">
+<dt>Headless mode</dt>
+<dd>Running Claude Code non-interactively via <code>-p</code>/<code>--print</code>, for scripting, CI, or piping.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "print mode" alone — fine informally, but "headless" is the term used for the broader scripting context (budgets, output formats, permission modes).</dd>
+<dt>Session</dt>
+<dd>A single conversation thread with Claude Code, identifiable by ID or name, resumable with <code>-c</code> or <code>-r</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "chat" — the docs and CLI consistently say "session."</dd>
+<dt>Background agent</dt>
+<dd>A session started with <code>--bg</code> that runs without occupying your terminal, managed via <code>claude agents</code>/<code>logs</code>/<code>attach</code>/<code>stop</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing this with a "subagent" (a Task-tool delegate within one session) — a background agent is a whole separate top-level session.</dd>
+<dt>Effort level</dt>
+<dd>A per-request reasoning-depth setting (<code>low</code> through <code>max</code>) that trades latency and cost against how much the model reasons before answering.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "temperature" or "creativity" — effort controls reasoning depth, not randomness.</dd>
+<dt>Permission mode</dt>
+<dd>The policy governing whether tool calls need your approval (<code>default</code>, <code>acceptEdits</code>, <code>plan</code>, <code>bypassPermissions</code>, etc.), settable per-run with <code>--permission-mode</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> treating <code>--dangerously-skip-permissions</code> as a normal permission mode — it's an escape hatch, not a default choice.</dd>
+<dt>Native installer</dt>
+<dd>The <code>curl | bash</code> / <code>irm | iex</code> install method that self-updates in the background.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming Homebrew or WinGet installs also auto-update — they don't.</dd>
+<dt>CLAUDE.md</dt>
+<dd>A project-root markdown file loaded into every session's context at startup, for standing instructions and conventions.</dd>
+<dd class="avoid"><strong>Avoid:</strong> growing it into a procedure library — that's what a skill is for (loads on demand, not every session).</dd>
+<dt>Auto memory</dt>
+<dd>Learnings (build commands, debugging insights) Claude Code saves across sessions on its own, without explicit authoring.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing this with a skill — auto memory is discovered by Claude, a skill is authored by you.</dd>
+</dl>
+
+<h3 id="glossary-skills">Skills</h3>
+<dl class="glossary">
+<dt>SKILL.md</dt>
+<dd>The entrypoint file of a skill: YAML frontmatter plus a markdown instruction body.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "custom command" — that's the older, still-supported <code>.claude/commands/</code> format; skills are the superset with more features.</dd>
+<dt>Frontmatter</dt>
+<dd>The YAML block between <code>---</code> markers at the top of <code>SKILL.md</code> that configures invocation, tool access, and behavior.</dd>
+<dd class="avoid"></dd>
+<dt>disable-model-invocation</dt>
+<dd>A frontmatter field that restricts a skill so only you (not Claude) can trigger it.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing with <code>user-invocable: false</code>, which is the opposite restriction (only Claude can trigger it).</dd>
+<dt>Dynamic context injection</dt>
+<dd>The <code>!`command`</code> syntax that runs a shell command and substitutes its output into a skill's content before Claude reads it.</dd>
+<dd class="avoid"><strong>Avoid:</strong> thinking Claude executes this — it runs as preprocessing, before the model ever sees the skill.</dd>
+<dt>context: fork</dt>
+<dd>A frontmatter field that runs a skill's content as the prompt for an isolated subagent instead of inline in the current conversation.</dd>
+<dd class="avoid"></dd>
+<dt>allowed-tools</dt>
+<dd>A frontmatter field pre-approving specific tools (often scoped with a pattern like <code>Bash(git *)</code>) while a skill is active, so Claude doesn't prompt for them.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming it restricts tool access — it only grants pre-approval; every tool remains callable subject to your normal permission settings.</dd>
+<dt>Skill precedence</dt>
+<dd>The resolution order when two skills share a name: enterprise, then personal, then project; plugin skills never collide because they're namespaced.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming "closest to the code wins" — it's the opposite of many linter/config precedence patterns.</dd>
+<dt>Nested skill</dt>
+<dd>A skill in a <code>.claude/skills/</code> directory below the session's starting directory, auto-discovered when working on files in that subtree.</dd>
+<dd class="avoid"></dd>
+<dt>Skill listing budget</dt>
+<dd>The context-window fraction reserved for skill names/descriptions shown to Claude; descriptions get shortened or dropped once it's exceeded.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming every skill's full description is always in context — only up to the budget.</dd>
+</dl>
+
+<h3 id="glossary-mcp">MCP</h3>
+<dl class="glossary">
+<dt>MCP (Model Context Protocol)</dt>
+<dd>An open standard for connecting AI applications to external tools, data sources, and systems.</dd>
+<dd class="avoid"></dd>
+<dt>Transport</dt>
+<dd>The connection mechanism between an MCP client and server: stdio (local process), HTTP/Streamable HTTP (remote, recommended), or SSE (remote, deprecated).</dd>
+<dd class="avoid"><strong>Avoid:</strong> starting a new remote server on SSE — the spec has moved to Streamable HTTP.</dd>
+<dt>Tool (MCP)</dt>
+<dd>A function an MCP server exposes that the model can call, with user approval, to take an action or fetch dynamic data.</dd>
+<dd class="avoid"></dd>
+<dt>Resource (MCP)</dt>
+<dd>File-like data an MCP server exposes that the client (not the model) fetches and injects into context, typically via an <code>@</code> mention.</dd>
+<dd class="avoid"><strong>Avoid:</strong> implementing something the user should explicitly reference as a tool instead — that costs an extra model decision and permission prompt for no benefit.</dd>
+<dt>Prompt (MCP)</dt>
+<dd>A reusable template an MCP server exposes, surfaced as a slash command (<code>/mcp__server__prompt</code>).</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing with a "system prompt" — an MCP prompt is a user-invoked template, unrelated to model configuration.</dd>
+<dt>Scope (MCP)</dt>
+<dd>Where an MCP server's configuration is stored and who it's visible to: local (private, this project), project (shared via <code>.mcp.json</code>), or user (private, all projects).</dd>
+<dd class="avoid"></dd>
+<dt>Tool search</dt>
+<dd>The default behavior of deferring MCP tool schemas out of context until a task actually needs them, keeping context cost roughly flat as you add servers.</dd>
+<dd class="avoid"></dd>
+<dt>Elicitation</dt>
+<dd>A mechanism letting an MCP server request structured input (a form, or a browser-based auth flow) mid-task from the user.</dd>
+<dd class="avoid"></dd>
+<dt>Dynamic Client Registration (DCR)</dt>
+<dd>The OAuth mechanism that lets Claude Code register itself with an MCP server's authorization server automatically, without pre-shared credentials.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming every server supports it — servers that don't require pre-configured <code>--client-id</code>/<code>--client-secret</code> instead.</dd>
+</dl>
+
+<h3 id="glossary-plugins">Plugins</h3>
+<dl class="glossary">
+<dt>Plugin</dt>
+<dd>A directory bundling skills, agents, hooks, or MCP servers, optionally with a <code>.claude-plugin/plugin.json</code> manifest, distributable as one unit.</dd>
+<dd class="avoid"></dd>
+<dt>plugin.json</dt>
+<dd>The manifest file at <code>.claude-plugin/plugin.json</code> declaring a plugin's name, version, description, and author.</dd>
+<dd class="avoid"><strong>Avoid:</strong> placing anything besides this one file inside <code>.claude-plugin/</code> — components live at the plugin root.</dd>
+<dt>Marketplace</dt>
+<dd>A catalog (defined by a <code>marketplace.json</code>) that lists plugins and where to fetch them, enabling discovery and one-command install/update.</dd>
+<dd class="avoid"></dd>
+<dt>marketplace.json</dt>
+<dd>The catalog file at <code>.claude-plugin/marketplace.json</code> in a marketplace repository, listing plugin names and sources.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing with <code>plugin.json</code> — one describes a marketplace (many plugins), the other describes a single plugin.</dd>
+<dt>Namespace (plugin)</dt>
+<dd>The <code>plugin-name:</code> prefix automatically applied to every skill and agent a plugin provides, preventing name collisions across plugins.</dd>
+<dd class="avoid"></dd>
+<dt>--plugin-dir</dt>
+<dd>A CLI flag that loads a plugin directly from a local folder for the current session only, with no install step.</dd>
+<dd class="avoid"><strong>Avoid:</strong> treating it as a distribution mechanism — it's for local development and testing, not sharing with others.</dd>
+<dt>Skills-directory plugin</dt>
+<dd>A plugin created with <code>claude plugin init</code> that lives inside <code>~/.claude/skills/</code> and loads automatically every session, no marketplace required.</dd>
+<dd class="avoid"></dd>
+<dt>/reload-plugins</dt>
+<dd>The command that picks up changes to a plugin's hooks, MCP servers, or agents without restarting the session.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming it's needed for every skill text edit — plain skill content is often picked up live already.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<h3 id="books">Books</h3>
+<p style="font-size:.86rem;color:var(--ink-soft)">This ecosystem moves too fast for a traditional book to stay current — there is no dedicated, actively-updated book as of this guide's verification date. The closest official long-form reference is listed below; treat the live docs as the primary source for anything version-specific.</p>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>The Complete Guide to Building Skills for Claude (Anthropic, official whitepaper)</td><td>Deep dive on skill authoring patterns beyond the docs — evaluation, description tuning, progressive disclosure.</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>code.claude.com/docs</td><td>Claude Code CLI, Skills, MCP, Plugins</td><td>The canonical, actively-updated reference — start here for anything version-specific.</td></tr>
+<tr><td>modelcontextprotocol.io/docs</td><td>MCP specification &amp; SDK guides</td><td>Protocol fundamentals independent of any one client; TypeScript and Python quickstarts.</td></tr>
+<tr><td>agentskills.io</td><td>Agent Skills open standard</td><td>The cross-tool spec Claude Code skills implement; also hosts the skill-evaluation guide.</td></tr>
+<tr><td>github.com/modelcontextprotocol/servers</td><td>Reference &amp; community MCP servers</td><td>Includes the zero-auth "everything" test server used in Module 3.1.</td></tr>
+<tr><td>claude.ai/directory</td><td>Reviewed MCP connectors</td><td>Where to find (and eventually submit) hosted MCP servers.</td></tr>
+<tr><td>github.com/anthropics/claude-plugins-official</td><td>Official plugin marketplace</td><td>Includes <code>mcp-server-dev</code> and <code>skill-creator</code>, both referenced in this guide.</td></tr>
+</table>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td><code>leads.db</code> (SQLite)</td><td>The running dataset built and reused across every phase of this guide.</td></tr>
+<tr><td>MCP Inspector (<code>@modelcontextprotocol/inspector</code>)</td><td>Test and debug an MCP server without a full LLM client in the loop.</td></tr>
+<tr><td><code>mcp-server-dev</code> plugin</td><td>Scaffolds a new MCP server (stdio or HTTP) interactively from inside Claude Code.</td></tr>
+<tr><td><code>skill-creator</code> plugin</td><td>Automates skill evaluation: test cases, benchmarking, description tuning.</td></tr>
+<tr><td>Zod (TypeScript) / Pydantic-style type hints (Python)</td><td>Input schema definition for MCP tools.</td></tr>
+<tr><td><code>@modelcontextprotocol/server-everything</code></td><td>Zero-auth reference server exposing tools, resources, and prompts for practice.</td></tr>
+</table>
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>modelcontextprotocol GitHub Discussions</td><td>GitHub</td><td>Protocol- and SDK-level questions, straight from maintainers.</td></tr>
+<tr><td>anthropics/claude-code GitHub Issues &amp; Discussions</td><td>GitHub</td><td>CLI bugs, feature requests, and community-shared skills/plugins.</td></tr>
+<tr><td>r/ClaudeAI</td><td>Reddit</td><td>Practical day-to-day tips and real-world workflow examples.</td></tr>
+<tr><td>Anthropic Discord</td><td>Discord</td><td>Real-time chat with other builders in the ecosystem.</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
+
+<h4>Phase 1 — CLI Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — Install, Auth &amp; Your First Session</li>
+<li>[ ] Exercise 1.1 — Install, verify, first task</li>
+<li>[ ] Module 1.2 — Headless Mode &amp; Scripting the CLI</li>
+<li>[ ] Exercise 1.2 — A headless review pipeline</li>
+<li>[ ] Module 1.3 — Sessions, Background Agents &amp; Model Control</li>
+<li>[ ] Exercise 1.3 — Parallel background investigation</li>
+<li>[ ] Capstone 1 — CI-Ready Triage Script</li>
+</ul>
+
+<h4>Phase 2 — Extending Claude with Skills</h4>
+<ul>
+<li>[ ] Module 2.1 — Anatomy of a Skill</li>
+<li>[ ] Exercise 2.1 — Build and test leads-status</li>
+<li>[ ] Module 2.2 — Where Skills Live: Locations &amp; Precedence</li>
+<li>[ ] Exercise 2.2 — Prove the precedence order</li>
+<li>[ ] Module 2.3 — Advanced Skill Patterns</li>
+<li>[ ] Exercise 2.3 — Build leads-note</li>
+<li>[ ] Capstone 2 — leads-digest Skill</li>
+</ul>
+
+<h4>Phase 3 — Connecting Tools with MCP</h4>
+<ul>
+<li>[ ] Module 3.1 — MCP Fundamentals &amp; Transports</li>
+<li>[ ] Exercise 3.1 — Connect a zero-auth reference server</li>
+<li>[ ] Module 3.2 — Scopes, Configuration &amp; Authentication</li>
+<li>[ ] Exercise 3.2 — A project-scoped, env-expanded server</li>
+<li>[ ] Module 3.3 — Resources, Prompts &amp; Tool Search</li>
+<li>[ ] Exercise 3.3 — Resources and prompts on the reference server</li>
+<li>[ ] Capstone 3 — Wire Up a Real Connector</li>
+</ul>
+
+<h4>Phase 4 — Building Your Own MCP Servers</h4>
+<ul>
+<li>[ ] Module 4.1 — MCP Server Concepts &amp; Choosing Your SDK</li>
+<li>[ ] Exercise 4.1 — Design before you code</li>
+<li>[ ] Module 4.2 — Build a Stdio Server (TypeScript &amp; Python)</li>
+<li>[ ] Exercise 4.2 — Build one, understand both</li>
+<li>[ ] Module 4.3 — Test &amp; Debug with MCP Inspector</li>
+<li>[ ] Exercise 4.3 — Debug a deliberately broken tool</li>
+<li>[ ] Module 4.4 — Connect, Harden &amp; Ship Your Server</li>
+<li>[ ] Exercise 4.4 — Ship and verify</li>
+<li>[ ] Capstone 4 — leads-tracker MCP Server</li>
+</ul>
+
+<h4>Phase 5 — Packaging &amp; Distributing with Plugins</h4>
+<ul>
+<li>[ ] Module 5.1 — Plugin Anatomy</li>
+<li>[ ] Exercise 5.1 — Sketch the toolkit layout</li>
+<li>[ ] Module 5.2 — Local Development Workflow</li>
+<li>[ ] Exercise 5.2 — Assemble and iterate on the toolkit</li>
+<li>[ ] Module 5.3 — Marketplaces &amp; Distribution</li>
+<li>[ ] Exercise 5.3 — Stand up a private marketplace</li>
+<li>[ ] Capstone 5 — hayah-ops-toolkit Plugin</li>
+</ul>
+
+<h4>Outcomes</h4>
+<ul>
+<li>[ ] Final Capstone — Hayah-AI Ops Toolkit shipped end-to-end</li>
+<li>[ ] Can script Claude Code headlessly with budget/turn caps in CI</li>
+<li>[ ] Can author, scope, and restrict a skill correctly</li>
+<li>[ ] Can connect, scope, and authenticate an MCP server</li>
+<li>[ ] Can build, test, and ship an original MCP server in TypeScript or Python</li>
+<li>[ ] Can package and distribute tooling as a versioned, marketplace-installable plugin</li>
+</ul>
+<hr />
+
+<p><em>Guide Version 1.0 — Claude Ecosystem Track: Intermediate to Advanced</em><br>
+<em>Non-linear modular design · Placement quiz · 16 modules · ~30h estimated study time · hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-07-10</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

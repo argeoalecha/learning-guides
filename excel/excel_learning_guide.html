@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excel Learning Guide — Beginner to Advanced</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Excel<br>Learning Guide</div>
+      <div class="brand-sub">Formulas · Dynamic Arrays · PivotTables · Charts · Power Query</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-advanced" class="nav-top">Beginner to Advanced Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+<div class="nav-group">
+<a href="#phase-1-foundations" class="nav-top nav-phase">Phase 1: Foundations</a>
+<div class="nav-children">
+<a href="#module-11-interface-navigation-shortcuts" class="nav-child">Module 1.1 — Interface, Navigation &amp; Shortcuts</a>
+<a href="#module-12-cell-references-formula-fundamentals" class="nav-child">Module 1.2 — Cell References &amp; Formula Fundamentals</a>
+<a href="#module-13-excel-tables-structured-references" class="nav-child">Module 1.3 — Excel Tables &amp; Structured References</a>
+<a href="#module-14-number-formats-conditional-formatting" class="nav-child">Module 1.4 — Number Formats &amp; Conditional Formatting</a>
+<a href="#phase-1-capstone-order-register-workbook" class="nav-child">Phase 1 Capstone: Order Register Workbook</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-2-formula-mastery" class="nav-top nav-phase">Phase 2: Formula Mastery</a>
+<div class="nav-children">
+<a href="#module-21-logical-lookup-functions" class="nav-child">Module 2.1 — Logical &amp; Lookup Functions</a>
+<a href="#module-22-text-date-time-functions" class="nav-child">Module 2.2 — Text, Date &amp; Time Functions</a>
+<a href="#module-23-conditional-aggregation" class="nav-child">Module 2.3 — Conditional Aggregation</a>
+<a href="#module-24-dynamic-arrays-spilling" class="nav-child">Module 2.4 — Dynamic Arrays &amp; Spilling</a>
+<a href="#module-25-let-lambda-modern-aggregation" class="nav-child">Module 2.5 — LET, LAMBDA &amp; Modern Aggregation</a>
+<a href="#phase-2-capstone-formula-driven-sales-report" class="nav-child">Phase 2 Capstone: Formula-Driven Sales Report</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-3-pivottables-charts" class="nav-top nav-phase">Phase 3: PivotTables &amp; Charts</a>
+<div class="nav-children">
+<a href="#module-31-pivottable-fundamentals" class="nav-child">Module 3.1 — PivotTable Fundamentals</a>
+<a href="#module-32-advanced-pivottables" class="nav-child">Module 3.2 — Advanced PivotTables</a>
+<a href="#module-33-charts-dashboard-design" class="nav-child">Module 3.3 — Charts &amp; Dashboard Design</a>
+<a href="#phase-3-capstone-interactive-pivot-dashboard" class="nav-child">Phase 3 Capstone: Interactive Pivot Dashboard</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-4-data-cleaning-power-query" class="nav-top nav-phase">Phase 4: Data Cleaning &amp; Power Query</a>
+<div class="nav-children">
+<a href="#module-41-data-cleaning-validation" class="nav-child">Module 4.1 — Data Cleaning &amp; Validation</a>
+<a href="#module-42-power-query-basics" class="nav-child">Module 4.2 — Power Query Basics</a>
+<a href="#module-43-auditing-protection-workbook-hygiene" class="nav-child">Module 4.3 — Auditing, Protection &amp; Workbook Hygiene</a>
+<a href="#phase-4-capstone-refreshable-import-pipeline" class="nav-child">Phase 4 Capstone: Refreshable Import Pipeline</a>
+</div></div>
+<a href="#final-capstone-tindahub-executive-sales-dashboard" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="excel-learning-guide">Excel Learning Guide</h1>
+<h2 id="beginner-to-advanced">Beginner to Advanced Track</h2>
+<h3>Formulas · Dynamic Arrays · PivotTables · Charts · Power Query</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Excel" xmlns="http://www.w3.org/2000/svg">
+  <rect x="88" y="24" width="144" height="208" rx="16" fill="#0d7a6e"/>
+  <line x1="88" y1="76" x2="232" y2="76" stroke="#e8f4f1" stroke-width="6"/>
+  <line x1="88" y1="128" x2="232" y2="128" stroke="#e8f4f1" stroke-width="6"/>
+  <line x1="88" y1="180" x2="232" y2="180" stroke="#e8f4f1" stroke-width="6"/>
+  <line x1="160" y1="24" x2="160" y2="232" stroke="#e8f4f1" stroke-width="6"/>
+  <rect x="24" y="64" width="128" height="128" rx="16" fill="#075249"/>
+  <path d="M56 96 L120 160 M120 96 L56 160" stroke="#faf7f5" stroke-width="18" stroke-linecap="round"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same realistic <strong>TindaHub Orders</strong> workbook — 5,000 orders from a Philippine sari-sari store distribution business.</p>
+</blockquote>
+<blockquote class="callout">
+<p><strong>How this relates to the Data Analyst guide:</strong> the Data Analyst Learning Guide in this folder covers Excel as one tool inside an analyst career path — survey-level, then moves to Power Pivot, DAX, SQL, and Python. This guide is the <strong>deep Excel-mastery companion</strong>: formulas, dynamic arrays, PivotTables, charts, and cleaning in real depth. Power Query is covered here at working-basics level only; for Power Pivot, DAX data modeling, and the full ETL toolchain, continue in the Data Analyst guide (its Modules 2.1–2.2).</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Some experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3 id="quiz-a-foundations">Section A — Foundations</h3>
+<ul>
+<li>[ ] I can move around a large sheet with keyboard shortcuts (Ctrl+Arrow, Ctrl+Shift+Arrow) without touching the mouse.</li>
+<li>[ ] I can explain when to use <code>$A$1</code> vs <code>A$1</code> vs <code>$A1</code> and predict what happens when each is copied.</li>
+<li>[ ] I format data as an Excel Table (Ctrl+T) by default and can write a structured reference like <code>=SUM(Orders[Amount])</code>.</li>
+<li>[ ] I can build a conditional-formatting rule driven by a formula, not just the built-in presets.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3 id="quiz-b-formulas">Section B — Formulas</h3>
+<ul>
+<li>[ ] I use XLOOKUP (not VLOOKUP) as my default lookup, including approximate-match and two-way lookups.</li>
+<li>[ ] I can combine SUMIFS/COUNTIFS with date boundaries and wildcards in one formula.</li>
+<li>[ ] I can write a spilling formula with FILTER, SORT, or UNIQUE and reference its spill range with <code>#</code>.</li>
+<li>[ ] I have written a reusable LAMBDA or used LET to name intermediate steps in a long formula.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.4</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3 id="quiz-c-pivottables-charts">Section C — PivotTables &amp; Charts</h3>
+<ul>
+<li>[ ] I can build a PivotTable with rows, columns, values, and a report filter in under two minutes.</li>
+<li>[ ] I use "Show Values As" (% of total, running total, difference from) rather than helper columns.</li>
+<li>[ ] I can wire slicers and a timeline to control several PivotTables at once.</li>
+<li>[ ] I can pick the right chart type for a comparison, a trend, and a composition — and say why pie charts usually lose.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3 id="quiz-d-cleaning-power-query">Section D — Data Cleaning &amp; Power Query</h3>
+<ul>
+<li>[ ] I can find and remove duplicates, fix trailing spaces, and convert text-numbers to real numbers without retyping data.</li>
+<li>[ ] I can set up Data Validation dropdowns and use it to block bad entries at the source.</li>
+<li>[ ] I have imported a CSV through Power Query and applied transform steps that survive a refresh.</li>
+<li>[ ] I can append two files and merge (join) two tables in Power Query.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.2</strong> | <strong>4 yes</strong> → You may only need the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-interface-navigation-shortcuts"><td>1.1</td><td>Interface, Navigation &amp; Shortcuts</td><td>Beginner</td><td>None</td><td>3h</td></tr>
+<tr data-href="#module-12-cell-references-formula-fundamentals"><td>1.2</td><td>Cell References &amp; Formula Fundamentals</td><td>Beginner</td><td>1.1</td><td>4h</td></tr>
+<tr data-href="#module-13-excel-tables-structured-references"><td>1.3</td><td>Excel Tables &amp; Structured References</td><td>Beginner</td><td>1.2</td><td>3h</td></tr>
+<tr data-href="#module-14-number-formats-conditional-formatting"><td>1.4</td><td>Number Formats &amp; Conditional Formatting</td><td>Beginner</td><td>1.2</td><td>3h</td></tr>
+<tr data-href="#module-21-logical-lookup-functions"><td>2.1</td><td>Logical &amp; Lookup Functions</td><td>Beginner–Intermediate</td><td>1.3</td><td>5h</td></tr>
+<tr data-href="#module-22-text-date-time-functions"><td>2.2</td><td>Text, Date &amp; Time Functions</td><td>Beginner–Intermediate</td><td>1.3</td><td>4h</td></tr>
+<tr data-href="#module-23-conditional-aggregation"><td>2.3</td><td>Conditional Aggregation</td><td>2.1</td><td>2.1</td><td>4h</td></tr>
+<tr data-href="#module-24-dynamic-arrays-spilling"><td>2.4</td><td>Dynamic Arrays &amp; Spilling</td><td>Intermediate</td><td>2.1</td><td>5h</td></tr>
+<tr data-href="#module-25-let-lambda-modern-aggregation"><td>2.5</td><td>LET, LAMBDA &amp; Modern Aggregation</td><td>Intermediate</td><td>2.4</td><td>5h</td></tr>
+<tr data-href="#module-31-pivottable-fundamentals"><td>3.1</td><td>PivotTable Fundamentals</td><td>Beginner–Intermediate</td><td>1.3</td><td>4h</td></tr>
+<tr data-href="#module-32-advanced-pivottables"><td>3.2</td><td>Advanced PivotTables</td><td>Intermediate</td><td>3.1</td><td>5h</td></tr>
+<tr data-href="#module-33-charts-dashboard-design"><td>3.3</td><td>Charts &amp; Dashboard Design</td><td>Intermediate</td><td>3.1</td><td>5h</td></tr>
+<tr data-href="#module-41-data-cleaning-validation"><td>4.1</td><td>Data Cleaning &amp; Validation</td><td>Beginner–Intermediate</td><td>1.3</td><td>4h</td></tr>
+<tr data-href="#module-42-power-query-basics"><td>4.2</td><td>Power Query Basics</td><td>Intermediate</td><td>4.1</td><td>5h</td></tr>
+<tr data-href="#module-43-auditing-protection-workbook-hygiene"><td>4.3</td><td>Auditing, Protection &amp; Workbook Hygiene</td><td>Intermediate</td><td>2.1</td><td>3h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 3 and 4 are <strong>independent of each other</strong> — both need only Phase 1 plus Module 2.1. You can learn PivotTables before or after data cleaning. Phase 2 modules 2.4–2.5 are the "modern Excel" layer and can be deferred if your priority is reporting.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+<h3 id="track-1-office-power-user">Track 1 — Office Power User (fastest to useful)</h3>
+<p><code>1.1 → 1.2 → 1.3 → 1.4 → 2.1 → 2.3 → 3.1 → Capstone 3</code><br>
+Target cert/outcome: <strong>MO-210 Microsoft Office Specialist: Excel Associate (Microsoft 365 Apps)</strong></p>
+<h3 id="track-2-reporting-dashboards">Track 2 — Reporting &amp; Dashboards</h3>
+<p><code>1.3 → 2.1 → 2.3 → 3.1 → 3.2 → 3.3 → Final Capstone</code><br>
+Target cert/outcome: <strong>A recruiter-ready interactive dashboard portfolio piece</strong></p>
+<h3 id="track-3-modern-formula-expert">Track 3 — Modern Formula Expert</h3>
+<p><code>2.1 → 2.2 → 2.3 → 2.4 → 2.5 → Capstone 2</code><br>
+Target cert/outcome: <strong>MO-211 Microsoft Office Specialist: Excel Expert (Microsoft 365 Apps)</strong></p>
+<h3 id="track-4-data-wrangler">Track 4 — Data Wrangler (bridge to analytics)</h3>
+<p><code>1.3 → 2.2 → 4.1 → 4.2 → 4.3 → Capstone 4</code><br>
+Target cert/outcome: <strong>Continue into the Data Analyst guide (Power Pivot, SQL, Python)</strong></p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Foundations                 (Weeks 1–3)
+Phase 2 — Formula Mastery             (Weeks 4–8)
+Phase 3 — PivotTables &amp; Charts        (Weeks 9–12)
+Phase 4 — Data Cleaning &amp; Power Query (Weeks 13–16)
+Capstone Projects                     (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ── 1.2 ─┬─ 1.3 ─┬─ 2.1 ── 2.3 ── 2.4 ── 2.5 ─┐
+            │       ├─ 2.2                        │
+            └─ 1.4  ├─ 3.1 ── 3.2 ── 3.3 ─────────┼─ Final Capstone
+                    └─ 4.1 ── 4.2 ── 4.3 ─────────┘</code></pre>
+<h2 id="phase-1-foundations">Phase 1: Foundations</h2>
+<h3 id="weeks-1-3">Weeks 1–3 | Goal: Move fast, reference correctly, and structure data as Tables from day one</h3>
+<hr />
+
+<h3 id="module-11-interface-navigation-shortcuts">Module 1.1 — Interface, Navigation &amp; Shortcuts</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> In the TindaHub Orders sheet, jump to the last row of 5,000 orders, select the whole Amount column, and freeze the header row — all without the mouse.<br>
+<strong>Skip if:</strong> You already navigate large sheets with Ctrl+Arrow / Ctrl+Shift+Arrow and know Freeze Panes, Name Box, and multi-sheet selection.<br>
+<strong>Unlocks:</strong> 1.2</p>
+</blockquote>
+<h4>The grid, the ribbon, and where things actually live</h4>
+<p>Excel in Microsoft 365 updates monthly — the ribbon you see today includes Copilot and (on eligible plans) Python, but the core geography is stable: the <strong>Name Box</strong> (top-left) shows the active cell and accepts jump targets, the <strong>formula bar</strong> shows what a cell <em>contains</em> as opposed to what it <em>displays</em>, and the <strong>status bar</strong> gives instant Sum/Average/Count of any selection. That contains-vs-displays distinction is the single most important beginner idea: a cell showing <code>₱1,250.00</code> may contain the number 1250, a formula, or text that merely looks like a number — and each behaves differently in every later module.</p>
+<h4>Navigation shortcuts that pay for themselves forever</h4>
+<p>On a 5,000-row sheet, scrolling is a tax you pay on every task. Learn these once; they compound across every remaining module — slow navigation is why beginners avoid large datasets, and avoiding large datasets is why they stay beginners.</p>
+<pre><code class="language-excel">Ctrl+Arrow          Jump to the edge of the data block
+Ctrl+Shift+Arrow    Select from here to the edge
+Ctrl+Home / End     First cell / last used cell
+Ctrl+T              Format the current region as a Table
+Ctrl+Shift+L        Toggle filters on the header row
+Ctrl+PgUp / PgDn    Previous / next worksheet
+F2                  Edit the active cell (see the formula)
+Ctrl+`              Show all formulas instead of results
+Alt+= (Option+=)    AutoSum the obvious range
+Ctrl+Z / Ctrl+Y     Undo / redo — Excel keeps ~100 steps</code></pre>
+<p>macOS: Cmd replaces Ctrl for most of these; Ctrl+Arrow becomes Cmd+Arrow.</p>
+<h4>Freeze Panes, split, and window discipline</h4>
+<p>View → Freeze Panes → "Freeze Top Row" keeps headers visible; "Freeze Panes" at B2 locks both the header row and an ID column. Without frozen headers you will misread which column you are in around row 800 — a classic source of silently wrong analysis, not just annoyance.</p>
+<p><strong>Exercise 1.1 — Learn the terrain</strong></p>
+<p>Dataset: TindaHub Orders workbook (5,000 orders: OrderID, OrderDate, Customer, Barangay, City, Province, Region, Product, Category, Qty, UnitPrice, Amount, PaymentMethod, Status)</p>
+<ol>
+<li>Open the Orders sheet and use Ctrl+Arrow to find the exact last row and last column — write both down.</li>
+<li>Select the entire Amount column of data (not the whole sheet column) with Ctrl+Shift+Down and read Sum, Average, and Count off the status bar.</li>
+<li>Freeze the header row, then also freeze column A, and confirm both stay put while scrolling to row 4,000.</li>
+<li>Use the Name Box to jump directly to cell M2500.</li>
+<li>Toggle formula view with Ctrl+` and identify which columns contain formulas vs typed values.</li>
+<li>Rename the sheet tab to <code>Orders</code>, duplicate it as a scratch copy, and delete the copy.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-cell-references-formula-fundamentals">Module 1.2 — Cell References &amp; Formula Fundamentals</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Build a peso price list where one VAT-rate cell drives a whole column via an absolute reference, then copy the formula both down and across without breaking it.<br>
+<strong>Skip if:</strong> You can predict, before copying, how <code>$A$1</code>, <code>A$1</code>, and <code>$A1</code> each shift.<br>
+<strong>Unlocks:</strong> 1.3, 1.4</p>
+</blockquote>
+<h4>Formulas are copies waiting to happen</h4>
+<p>Every formula you write will almost certainly be copied to other cells — that is Excel's whole economy. <strong>Relative references</strong> (<code>A2</code>) shift as the formula moves; <strong>absolute references</strong> (<code>$A$2</code>) stay pinned; <strong>mixed references</strong> pin only the column (<code>$A2</code>) or only the row (<code>A$2</code>). Press <strong>F4</strong> while editing to cycle the four forms. Get this wrong and a copied formula silently reads the wrong cells — the workbook still shows numbers, just not the right ones, which is far worse than an error message.</p>
+<pre><code class="language-excel">=B2*C2          relative: each row multiplies its own Qty × UnitPrice
+=B2*$F$1        absolute: every copy reads the VAT rate pinned in F1
+=$A2*B$1        mixed: a multiplication grid — column A × row 1
+</code></pre>
+<h4>Order of operations and the arithmetic operators</h4>
+<p>Excel follows standard precedence: parentheses, then <code>^</code>, then <code>*</code> <code>/</code>, then <code>+</code> <code>-</code>, with comparison operators (<code>=</code> <code>&lt;&gt;</code> <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code>) last and <code>&amp;</code> for text joining. <code>=100+50*2</code> is 200, not 300. When in doubt, add parentheses — they cost nothing and every reader (including you in three months) parses the formula correctly on the first read.</p>
+<h4>The starter function set</h4>
+<pre><code class="language-excel">=SUM(D2:D5001)                 total of a range
+=AVERAGE(D2:D5001)             mean
+=MIN(D2:D5001)  =MAX(D2:D5001) extremes
+=COUNT(D2:D5001)               numeric cells only
+=COUNTA(A2:A5001)              non-empty cells (any type)
+=ROUND(D2*0.12, 2)             12% VAT, rounded to centavos
+=TODAY()   =NOW()              current date / date-time (volatile)</code></pre>
+<p>COUNT vs COUNTA matters on real data: a column of order IDs stored as text gives COUNT = 0 and COUNTA = 5,000 — the mismatch itself is a data-quality signal you will exploit in Module 4.1.</p>
+<h4>Reading error values instead of fearing them</h4>
+<p>Errors are diagnostic messages, not failures. <code>#DIV/0!</code> — you divided by an empty or zero cell; <code>#VALUE!</code> — a text cell fell into arithmetic; <code>#REF!</code> — the formula points at cells that were deleted; <code>#NAME?</code> — a misspelled function or an unquoted text string; <code>#SPILL!</code> — a dynamic array (Module 2.4) has no room to expand. An error that shows up early is a gift; the expensive bugs are formulas that return plausible wrong numbers silently.</p>
+<p><strong>Exercise 1.2 — Peso price mechanics</strong></p>
+<p>Dataset: TindaHub Orders workbook</p>
+<ol>
+<li>On a new sheet, list 10 TindaHub products with UnitPrice, and put a single VAT rate (12%) in one cell at the top.</li>
+<li>Add columns for VAT amount and VAT-inclusive price using an absolute reference to the rate cell; copy down all 10 rows.</li>
+<li>Change the rate cell to 10% and confirm all 20 formula cells update instantly.</li>
+<li>Build a 5×5 multiplication grid (Qty 1–5 across, five prices down) using one mixed-reference formula copied to all 25 cells.</li>
+<li>Deliberately trigger #DIV/0!, #VALUE!, and #REF! in three scratch cells, then write next to each one one sentence on what caused it.</li>
+<li>On the Orders sheet, compute total revenue, average order value, and order count with SUM/AVERAGE/COUNT.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-excel-tables-structured-references">Module 1.3 — Excel Tables &amp; Structured References</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Convert the Orders range to a Table named <code>Orders</code>, add a calculated column, and write <code>=SUM(Orders[Amount])</code> on another sheet.<br>
+<strong>Skip if:</strong> Ctrl+T is already a reflex and you prefer <code>Orders[Amount]</code> over <code>D2:D5001</code>.<br>
+<strong>Unlocks:</strong> 2.1, 2.2, 3.1, 4.1</p>
+</blockquote>
+<h4>Why Tables are the single highest-leverage habit</h4>
+<p>An Excel Table (Ctrl+T) is a range that knows its own boundaries. Formulas referencing <code>Orders[Amount]</code> automatically include rows added tomorrow; a plain <code>D2:D5001</code> silently ignores row 5,002 forever. Most "the report missed last week's orders" incidents in real offices trace back to exactly this — a range reference that stopped growing. Tables also give you banded rows, always-on filters, a Total Row, and one-click column naming.</p>
+<pre><code class="language-excel">=SUM(Orders[Amount])                    whole column, auto-expanding
+=Orders[@Qty]*Orders[@UnitPrice]        this-row reference (calculated column)
+=SUM(Orders[[Qty]:[Amount]])            multi-column span
+=SUBTOTAL(109, Orders[Amount])          sum of VISIBLE rows only (respects filters)</code></pre>
+<h4>Calculated columns: one formula, every row, forever</h4>
+<p>Type a formula in the first cell of a new Table column and Excel fills the entire column and maintains it for every future row. This is the difference between a worksheet and a system: the Table enforces that every row is computed the same way, which is precisely what hand-copied formulas fail to guarantee.</p>
+<h4>Naming, Total Row, and Table hygiene</h4>
+<p>Name every Table immediately (Table Design → Table Name): <code>Orders</code>, <code>Products</code>, <code>Customers</code> — never <code>Table1</code>. The Total Row dropdown writes SUBTOTAL for you, which respects filters; a plain SUM in a total row double-counts hidden rows and no one notices until the numbers disagree with the boss's own filter. One rule: one Table per dataset, headers in row 1 of the Table, no merged cells, no blank "spacer" columns — every later tool (PivotTables, Power Query, XLOOKUP) assumes this shape.</p>
+<p><strong>Exercise 1.3 — Table up the workbook</strong></p>
+<p>Dataset: TindaHub Orders workbook</p>
+<ol>
+<li>Convert the Orders range to a Table named <code>Orders</code>; do the same for the Products and Customers sheets (<code>Products</code>, <code>Customers</code>).</li>
+<li>Add a calculated column <code>LineCheck</code> = Qty × UnitPrice and verify it equals the existing Amount column (flag any row where it doesn't — you'll find three seeded mismatches).</li>
+<li>Turn on the Total Row and show Sum of Amount and Count of OrderID.</li>
+<li>Filter to Region = "NCR" only, and confirm the Total Row shrinks with the filter while a scratch <code>=SUM(Orders[Amount])</code> elsewhere does not — explain the difference in a cell comment.</li>
+<li>On a new sheet named <code>Summary</code>, write formulas for total revenue, order count, and average order value using only structured references.</li>
+<li>Add 3 fake new orders at the bottom of the Table and confirm every formula picks them up without editing.</li>
+</ol>
+<hr />
+
+<h3 id="module-14-number-formats-conditional-formatting">Module 1.4 — Number Formats &amp; Conditional Formatting</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Build a custom format that shows <code>₱1,234.00</code> for positives, red parentheses for negatives — then a formula-driven rule that highlights whole rows where Status = "Cancelled".<br>
+<strong>Skip if:</strong> You write custom format codes and formula-based conditional formatting rules comfortably.<br>
+<strong>Unlocks:</strong> 3.3</p>
+</blockquote>
+<h4>Formatting changes the display, never the value</h4>
+<p>A cell containing 1250.5 can display <code>₱1,250.50</code>, <code>1.25K</code>, or <code>13-Jun</code> — the stored value is identical, and every formula sees the stored value. This is why "my VLOOKUP can't find the date I'm looking at" happens: the eye compares displays, formulas compare values. When numbers look right but formulas disagree, check the format first.</p>
+<h4>Custom number format codes</h4>
+<p>A custom format has up to four sections separated by semicolons: positive; negative; zero; text.</p>
+<pre><code class="language-excel">₱#,##0.00                       ₱1,234.00  — standard peso
+₱#,##0.00;[Red](₱#,##0.00)      negatives in red parentheses
+#,##0,," M"                     12,400,000 → 12 M  (each comma drops 3 zeros)
+0.0%                            0.1234 → 12.3%
+yyyy-mm-dd                      ISO dates — sort-safe and unambiguous
+[&gt;=1000]#,##0,"K";0             1000+ shown as 1K, small numbers as-is</code></pre>
+<p>Use the ₱ symbol via a custom format, not by typing it into cells — <code>₱1,250</code> typed as text is a string, and your revenue column stops summing.</p>
+<h4>Conditional formatting: presets, then formulas</h4>
+<p>The presets (color scales, data bars, top 10%) cover quick looks. The real tool is <strong>"Use a formula to determine which cells to format"</strong> — the formula is written for the top-left cell of the applied range and copied conceptually across it, so reference discipline from Module 1.2 applies directly:</p>
+<pre><code class="language-excel">=$M2="Cancelled"        highlight the whole row when Status is Cancelled
+                        ($ pins the column, row stays relative)
+=D2&gt;AVERAGE($D$2:$D$5001)   flag above-average order amounts
+=COUNTIF($A$2:$A2,$A2)&gt;1    flag the 2nd+ occurrence of a duplicate OrderID</code></pre>
+<p>Formula rules make the sheet self-monitoring: bad data lights up as it is typed, which is vastly cheaper than finding it at report time.</p>
+<p><strong>Exercise 1.4 — Make the register readable</strong></p>
+<p>Dataset: TindaHub Orders workbook</p>
+<ol>
+<li>Apply the peso format <code>₱#,##0.00</code> to Amount and UnitPrice across all 5,000 rows.</li>
+<li>Create a custom format showing negatives (refunds) in red parentheses and apply it to a scratch column of net adjustments.</li>
+<li>Format OrderDate as <code>yyyy-mm-dd</code> and confirm sorting is now unambiguous.</li>
+<li>Add data bars to Qty, and a top-10% highlight to Amount.</li>
+<li>Write a formula rule that shades entire rows red where Status = "Cancelled" and yellow where PaymentMethod = "COD" and Amount &gt; ₱5,000 (COD risk flag).</li>
+<li>Add the duplicate-OrderID rule from the lesson and note how many rows light up.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-order-register-workbook">Phase 1 Capstone: Order Register Workbook</h3>
+<p><strong>Project: TindaHub Clean Order Register</strong></p>
+<p><strong>Dataset:</strong> TindaHub Orders workbook</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>All three datasets (Orders, Products, Customers) converted to named Tables with no merged cells, correct headers, and frozen top rows.</li>
+<li>A calculated <code>LineCheck</code> column proving Amount = Qty × UnitPrice, with the three seeded mismatches found and corrected.</li>
+<li>Peso and ISO-date formatting applied consistently across all sheets.</li>
+<li>A formula-driven conditional-formatting layer: cancelled rows, high-value COD flags, and duplicate OrderIDs.</li>
+<li>A <code>Summary</code> sheet with total revenue, order count, average order value, and max single order — structured references only.</li>
+<li>A short <code>ReadMe</code> sheet documenting each sheet's purpose and the formatting rules in force (your future self is the audience).</li>
+</ol>
+<hr />
+<h2 id="phase-2-formula-mastery">Phase 2: Formula Mastery</h2>
+<h3 id="weeks-4-8">Weeks 4–8 | Goal: Lookups, text/date wrangling, conditional aggregation, and the modern dynamic-array toolkit</h3>
+<hr />
+
+<h3 id="module-21-logical-lookup-functions">Module 2.1 — Logical &amp; Lookup Functions</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Pull each order's product category from the Products table with XLOOKUP, then band order amounts into Small/Medium/Large with a single approximate-match XLOOKUP — no nested IFs.<br>
+<strong>Skip if:</strong> XLOOKUP (exact, approximate, two-way, with if_not_found) is already your default and IFS/AND/OR hold no surprises.<br>
+<strong>Unlocks:</strong> 2.3, 2.4, 3.1, 4.3</p>
+</blockquote>
+<h4>IF, IFS, AND, OR — decisions in cells</h4>
+<pre><code class="language-excel">=IF(Orders[@Amount]&gt;=5000, "High", "Normal")
+=IFS(Orders[@Amount]&gt;=10000,"Large", Orders[@Amount]&gt;=3000,"Medium", TRUE,"Small")
+=IF(AND(Orders[@PaymentMethod]="COD", Orders[@Amount]&gt;5000), "Verify", "OK")
+=IF(OR(Orders[@Status]="Cancelled", Orders[@Status]="Returned"), 0, Orders[@Amount])</code></pre>
+<p>IFS replaces the unreadable nested-IF ladder; the final <code>TRUE</code> arm is its "else". Deep nesting isn't just ugly — every extra level is another place a misplaced parenthesis produces a plausible wrong answer that no error flag will catch.</p>
+<h4>XLOOKUP — the default lookup (VLOOKUP is legacy)</h4>
+<p>XLOOKUP replaced VLOOKUP as the standard in Microsoft 365. You will still <em>read</em> VLOOKUP in old workbooks, but write XLOOKUP: it looks in any direction, doesn't break when columns are inserted (no fragile column-number argument), and has a built-in not-found result — the three exact failure modes that made VLOOKUP infamous.</p>
+<pre><code class="language-excel">=XLOOKUP(Orders[@Product], Products[Product], Products[Category], "Unknown")
+   lookup_value, lookup_array, return_array, [if_not_found]
+
+Approximate match (banding — match_mode -1 = next smaller):
+=XLOOKUP(Orders[@Amount], {0;3000;10000}, {"Small";"Medium";"Large"}, , -1)
+
+Two-way lookup (row AND column):
+=XLOOKUP($B3, Products[Product], XLOOKUP(C$2, {"Cost","Price"}, ...))
+  — or simpler with INDEX/MATCH:
+=INDEX(RateGrid, MATCH($B3, ProductList, 0), MATCH(C$2, HeaderRow, 0))</code></pre>
+<p>Always supply <code>if_not_found</code>. Without it a missing product returns #N/A, which then poisons every SUM downstream — one unmatched row can blank an entire report total.</p>
+<h4>INDEX and MATCH — still worth knowing</h4>
+<p>INDEX/MATCH predates XLOOKUP and remains everywhere in inherited workbooks; MATCH also feeds other functions (like picking a column dynamically). <code>=INDEX(return_range, MATCH(value, lookup_range, 0))</code> is the exact-match idiom; the 0 is mandatory — omit it and MATCH silently does an approximate match on unsorted data, returning confidently wrong rows.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> VLOOKUP's fourth argument defaults to <em>approximate</em> match (TRUE). Every legacy VLOOKUP without an explicit FALSE is a latent bug on unsorted data — it returns a nearby value, not an error, so the report looks fine and is wrong. When auditing an inherited workbook, search for <code>VLOOKUP(</code> and check every fourth argument first.</p></blockquote>
+<p><strong>Exercise 2.1 — Enrich the orders</strong></p>
+<p>Dataset: TindaHub Orders workbook</p>
+<ol>
+<li>Add a <code>Category</code> column to Orders via XLOOKUP against the Products table, with "Unknown" for misses — count the misses.</li>
+<li>Add a <code>CustomerCity</code> column from the Customers table the same way.</li>
+<li>Band every order Small/Medium/Large with one approximate-match XLOOKUP (no IFs).</li>
+<li>Add a <code>CODRisk</code> flag: "Verify" when PaymentMethod = COD AND Amount &gt; ₱5,000, else "OK".</li>
+<li>Rebuild the Category lookup once with INDEX/MATCH to prove the equivalence.</li>
+<li>Break it on purpose: misspell one product name in Orders and watch where "Unknown" surfaces — then fix it.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-text-date-time-functions">Module 2.2 — Text, Date &amp; Time Functions</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Split "Lopez, Maria | Quezon City" into clean name and city columns with TEXTSPLIT/TEXTBEFORE, and compute each order's fulfilment age in days excluding Sundays.<br>
+<strong>Skip if:</strong> TEXTSPLIT/TEXTBEFORE/TEXTAFTER, TEXT(), EOMONTH, NETWORKDAYS.INTL, and the serial-date model are all familiar.<br>
+<strong>Unlocks:</strong> 4.1</p>
+</blockquote>
+<h4>Dates are numbers wearing costumes</h4>
+<p>Excel stores dates as serial numbers (day 1 = 1900-01-01) and times as day-fractions — noon is 0.5. That's why dates subtract cleanly (<code>=B2-A2</code> gives days) and why a "date" that won't subtract is actually text: imported CSVs are the usual culprit, and a column that is half real dates, half text-dates will sort into two separate blocks and split your monthly totals in ways that look like a business trend.</p>
+<pre><code class="language-excel">=DATE(2026,7,17)        build a date from parts
+=YEAR(A2) =MONTH(A2) =DAY(A2) =WEEKDAY(A2,2)   decompose (WEEKDAY 2: Mon=1)
+=EOMONTH(A2,0)          month-end of A2   (EOMONTH(A2,-1)+1 = month start)
+=EDATE(A2,3)            same day 3 months later
+=NETWORKDAYS.INTL(A2,B2,11)   working days, 11 = Sunday-only weekend (PH retail)
+=TEXT(A2,"yyyy-mm")     month key for grouping — returns TEXT, fine for labels</code></pre>
+<h4>Modern text functions</h4>
+<p>Microsoft 365 replaced most LEFT/MID/FIND gymnastics with direct tools:</p>
+<pre><code class="language-excel">=TEXTBEFORE(A2,",")               "Lopez, Maria" → Lopez
+=TEXTAFTER(A2,", ")               "Lopez, Maria" → Maria
+=TEXTSPLIT(A2," | ")              one cell → several spilled columns
+=TEXTJOIN(", ",TRUE,B2:D2)        join with delimiter, skip blanks
+=TRIM(A2)  =CLEAN(A2)             kill stray spaces / non-printing chars
+=UPPER(A2) =LOWER(A2) =PROPER(A2) case repair
+=SUBSTITUTE(A2,"₱","")           strip a character everywhere
+=VALUE(A2)                        text-number → real number</code></pre>
+<p>Legacy LEFT/RIGHT/MID/FIND/LEN still matter for reading old workbooks, but write the modern forms — they say what they mean.</p>
+<h4>Pattern matching with the REGEX functions</h4>
+<p>Excel now ships regular expressions natively (generally available in Microsoft 365) — no VBA required:</p>
+<pre><code class="language-excel">=REGEXTEST(A2,"^09\d{9}$")            valid PH mobile number? (09XXXXXXXXX)
+=REGEXEXTRACT(A2,"\d{4}-\d{4}")       pull an order ref like 2026-0417
+=REGEXREPLACE(A2,"\s+"," ")           collapse repeated spaces to one</code></pre>
+<p>Validating phone formats at entry beats discovering at campaign time that a fifth of your Viber list is undeliverable.</p>
+<p><strong>Exercise 2.2 — Wrangle the messy import</strong></p>
+<p>Dataset: TindaHub Orders workbook (use the seeded <code>RawContacts</code> sheet — names and cities jammed into one column, mixed-case, stray spaces)</p>
+<ol>
+<li>Split <code>"Surname, FirstName | City"</code> into three clean columns with TEXTSPLIT; repair case with PROPER and spaces with TRIM.</li>
+<li>Validate the Mobile column with REGEXTEST against the PH pattern <code>^09\d{9}$</code>; count the failures.</li>
+<li>Add a <code>MonthKey</code> column (<code>yyyy-mm</code> via TEXT) and a <code>MonthEnd</code> column (EOMONTH) to Orders.</li>
+<li>Compute fulfilment days between OrderDate and DeliveredDate using NETWORKDAYS.INTL with Sunday-only weekends.</li>
+<li>Find orders delivered in more than 5 working days and flag them.</li>
+<li>Convert the seeded text-dates in the ImportedDates column to real dates and prove it by subtracting them.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-conditional-aggregation">Module 2.3 — Conditional Aggregation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> One formula: June 2026 revenue for Region "NCR", GCash payments only, products starting with "Lucky". If SUMIFS with date bounds and a wildcard is routine, skip.<br>
+<strong>Skip if:</strong> SUMIFS/COUNTIFS/AVERAGEIFS with multiple criteria, date boundaries, and wildcards are muscle memory.<br>
+<strong>Unlocks:</strong> 2.4, Capstone 2</p>
+</blockquote>
+<h4>The IFS family — filters built into the math</h4>
+<pre><code class="language-excel">=SUMIFS(Orders[Amount], Orders[Region],"NCR")
+=SUMIFS(Orders[Amount], Orders[Region],"NCR", Orders[PaymentMethod],"GCash")
+=COUNTIFS(Orders[Status],"Cancelled", Orders[Amount],"&gt;5000")
+=AVERAGEIFS(Orders[Amount], Orders[Category],"Beverages")</code></pre>
+<p>Criteria pairs are AND-ed: every pair must hold for a row to count. Ranges must be the same height — a mismatched range doesn't error, it misaligns rows against criteria and quietly produces garbage, which is why building these from Table columns (always equal height) is safer than hand-picked ranges.</p>
+<h4>Date-bounded sums — the month-report idiom</h4>
+<pre><code class="language-excel">=SUMIFS(Orders[Amount],
+        Orders[OrderDate], "&gt;=" &amp; DATE(2026,6,1),
+        Orders[OrderDate], "&lt;"  &amp; DATE(2026,7,1))</code></pre>
+<p>Two criteria on the same date column bracket the month. Prefer <code>&gt;= first-day AND &lt; next-month-first-day</code> over <code>&lt;= month-end</code>: it's immune to stray time-of-day fractions in the data (an order stamped June 30 14:32 is <em>after</em> June 30 00:00 and falls out of a <code>&lt;=EOMONTH</code> bracket).</p>
+<h4>Wildcards and criteria cells</h4>
+<pre><code class="language-excel">"Lucky*"     starts with Lucky      "*Noodles"   ends with
+"*Corned*"   contains               "&gt;="&amp;$B$1    operator joined to a cell</code></pre>
+<p>Concatenating operators to cell references (<code>"&gt;="&amp;$B$1</code>) turns a hard-coded report into a parameterized one — change the threshold cell, the whole report follows. Hard-coded criteria scattered through formulas are the reason month-end updates take hours instead of seconds.</p>
+<h4>SUBTOTAL and AGGREGATE — math that respects filters</h4>
+<p><code>=SUBTOTAL(109, Orders[Amount])</code> sums only visible rows; function 9 vs 109 differs in whether manually hidden rows count. <code>=AGGREGATE(9, 6, range)</code> adds the superpower of ignoring error values — a single #N/A in 5,000 rows kills SUM but not AGGREGATE with option 6.</p>
+<p><strong>Exercise 2.3 — The monthly numbers</strong></p>
+<p>Dataset: TindaHub Orders workbook</p>
+<p><em>Retrieval practice: write the June-NCR-GCash formula from memory first, then compare with the lesson's date-bracket idiom. The gap you find is the part you hadn't internalized.</em></p>
+<ol>
+<li>Build a Region × Month revenue grid (regions down, Jan–Jun 2026 across) with one SUMIFS using mixed references, copied to all cells.</li>
+<li>Count cancelled orders per region with COUNTIFS.</li>
+<li>Compute June 2026 GCash revenue for NCR products starting with "Lucky" in a single formula.</li>
+<li>Parameterize: move region, month, and threshold into input cells and make three report formulas read them.</li>
+<li>Average order value per category with AVERAGEIFS; compare Beverages vs Snacks.</li>
+<li>Add a filtered-view total with SUBTOTAL and demonstrate it tracking a Province filter.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-dynamic-arrays-spilling">Module 2.4 — Dynamic Arrays &amp; Spilling</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> One formula that returns all NCR orders above ₱3,000 sorted by amount descending, and a second cell that counts them via the <code>#</code> spill reference.<br>
+<strong>Skip if:</strong> FILTER/SORT/UNIQUE/SEQUENCE, spill ranges, <code>#</code> references, and #SPILL! debugging are all routine.<br>
+<strong>Unlocks:</strong> 2.5</p>
+</blockquote>
+<h4>One formula, many answers</h4>
+<p>Dynamic arrays changed Excel's grammar: a formula can now return a whole block of results that <strong>spills</strong> into neighboring cells. The formula lives only in the top-left cell; the rest is ghost output you cannot edit. This eliminates the copy-down step — and the entire class of bugs where someone copied a formula down 4,998 rows instead of 5,000.</p>
+<pre><code class="language-excel">=UNIQUE(Orders[Region])                          distinct regions, spilled
+=SORT(UNIQUE(Orders[Category]))                  distinct + alphabetical
+=FILTER(Orders, Orders[Region]="NCR", "none")    all NCR rows
+=SORT(FILTER(Orders[Amount], Orders[Amount]&gt;3000), 1, -1)   big orders, desc
+=SEQUENCE(12,1,DATE(2026,1,1),31)                quick 12-month scaffold (approx)
+=SUMIFS(Orders[Amount], Orders[Region], E2#)     criteria = a whole spill range</code></pre>
+<h4>The # operator — reports that grow themselves</h4>
+<p><code>E2#</code> means "E2's entire spill, however big it is today." Put <code>=UNIQUE(Orders[Region])</code> in E2 and <code>=SUMIFS(Orders[Amount], Orders[Region], E2#)</code> beside it, and you have a region report that automatically gains a row the day a new region appears in the data — no maintenance, ever. This UNIQUE-plus-SUMIFS pair is the modern replacement for hand-built summary tables.</p>
+<h4>#SPILL! and the blocked-range rule</h4>
+<p>#SPILL! means the output needs room that something occupies — often a stray value cells away, or the formula sits inside an Excel Table (Tables can't hold spills; put spill formulas on report sheets, Tables hold source data). Click the error's dashed outline to see exactly what's in the way.</p>
+<blockquote class="callout"><p><strong>Disambiguation:</strong> "Array formula" historically meant the legacy Ctrl+Shift+Enter (CSE) <code>{...}</code> formulas. Dynamic arrays replace those — never write CSE in Microsoft 365. If you see braces in an inherited workbook, that's the old dialect; rewriting it as a spilling formula is usually shorter and faster.</p></blockquote>
+<p><strong>Exercise 2.4 — The self-maintaining report</strong></p>
+<p>Dataset: TindaHub Orders workbook</p>
+<ol>
+<li>Spill a sorted distinct list of Regions; beside it, SUMIFS revenue per region via the <code>#</code> reference.</li>
+<li>Extend the block with order counts and average order value — three live columns off one UNIQUE.</li>
+<li>FILTER all orders above ₱10,000 with Status "Delivered", sorted descending — on its own sheet.</li>
+<li>Add a new region ("BARMM") to five source rows and watch the report grow a row on its own.</li>
+<li>Trigger #SPILL! two ways (blocking cell; formula inside a Table), fix both, and note the fix in a comment.</li>
+<li>Build a top-10 products leaderboard with SORT + FILTER (or SORTBY) — no PivotTable allowed yet.</li>
+</ol>
+<hr />
+
+<h3 id="module-25-let-lambda-modern-aggregation">Module 2.5 — LET, LAMBDA &amp; Modern Aggregation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.4 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Refactor a three-times-repeated SUMIFS into a LET, define a named LAMBDA <code>PesoBand</code>, and reproduce a Region × PaymentMethod revenue matrix with one PIVOTBY.<br>
+<strong>Skip if:</strong> You already ship named LAMBDAs to teammates and reach for GROUPBY/PIVOTBY before helper tables.<br>
+<strong>Unlocks:</strong> Capstone 2, Final Capstone</p>
+</blockquote>
+<h4>LET — name your steps</h4>
+<pre><code class="language-excel">=LET(
+   ncr,    FILTER(Orders[Amount], Orders[Region]="NCR"),
+   total,  SUM(ncr),
+   cnt,    ROWS(ncr),
+   TEXT(total,"₱#,##0") &amp; " across " &amp; cnt &amp; " orders"
+ )</code></pre>
+<p>LET binds names to intermediate results, so a sub-expression is computed once and read many times. Beyond speed, it makes formulas reviewable — a colleague (or an auditor) can read <code>ncr</code>, <code>total</code>, <code>cnt</code> as a story instead of re-parsing a nested one-liner three times.</p>
+<h4>LAMBDA — your own functions, no VBA</h4>
+<pre><code class="language-excel">Name Manager → New:  PesoBand
+=LAMBDA(amt, IFS(amt&gt;=10000,"Large", amt&gt;=3000,"Medium", TRUE,"Small"))
+
+Then anywhere in the workbook:
+=PesoBand(Orders[@Amount])</code></pre>
+<p>Business logic defined once in Name Manager instead of pasted into 5,000 cells: when the banding thresholds change (they will), you edit one definition and the whole workbook follows. Copy-pasted logic drifts — two "identical" formulas that were edited separately is a classic month-end reconciliation nightmare.</p>
+<h4>GROUPBY and PIVOTBY — pivot-shaped answers as formulas</h4>
+<p>These aggregation functions (now generally available in Microsoft 365) produce grouped summaries that spill and refresh instantly with the data — no "Refresh" click, which is the operational difference from PivotTables (Module 3.1 covers when each wins):</p>
+<pre><code class="language-excel">=GROUPBY(Orders[Region], Orders[Amount], SUM)
+   one row per region with total — like a mini pivot, always live
+
+=PIVOTBY(Orders[Region], Orders[PaymentMethod], Orders[Amount], SUM)
+   regions down, payment methods across, sums in the grid</code></pre>
+<p>The third argument takes any aggregation eta-lambda (SUM, AVERAGE, COUNT, or a custom LAMBDA). Use GROUPBY/PIVOTBY for live in-sheet summaries; use PivotTables when you need interactive exploration, slicers, or drill-down.</p>
+<p><strong>Exercise 2.5 — Refactor like an engineer</strong></p>
+<p>Dataset: TindaHub Orders workbook</p>
+<ol>
+<li>Take your Module 2.3 region grid and rebuild one row of it inside a LET with named steps.</li>
+<li>Define <code>PesoBand</code> as a named LAMBDA and replace the Module 2.1 banding column with it.</li>
+<li>Define a second LAMBDA <code>CODRisk(amt, method)</code> returning "Verify"/"OK" and apply it.</li>
+<li>Reproduce the Region × PaymentMethod revenue matrix with one PIVOTBY; cross-check three cells against SUMIFS.</li>
+<li>GROUPBY category revenue with a custom LAMBDA aggregation that returns the average of the top half of amounts (hint: combine SORT and TAKE inside the LAMBDA).</li>
+<li>Change the Medium threshold from ₱3,000 to ₱2,500 in the LAMBDA and confirm every dependent cell updates.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-formula-driven-sales-report">Phase 2 Capstone: Formula-Driven Sales Report</h3>
+<p><strong>Project: TindaHub Monthly Sales Report — zero PivotTables, zero manual steps</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (a) why XLOOKUP needs <code>if_not_found</code>, (b) the <code>&gt;= start / &lt; next-month</code> date bracket, and (c) what <code>E2#</code> means? If any draws a blank, re-read that module first.</p></blockquote>
+<p><strong>Dataset:</strong> TindaHub Orders workbook</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A <code>Report</code> sheet with a month selector cell (data-validation dropdown of MonthKeys) driving every number on the page.</li>
+<li>KPI row: revenue, orders, average order value, cancellation rate — all SUMIFS/COUNTIFS reading the selector.</li>
+<li>A self-growing region block: UNIQUE spill + SUMIFS via <code>#</code>, with month filtering.</li>
+<li>Top-10 products for the selected month via FILTER/SORT (or SORTBY + TAKE).</li>
+<li>A Region × PaymentMethod PIVOTBY matrix for the selected month.</li>
+<li>All business rules (banding, COD risk) expressed as named LAMBDAs — no logic pasted into columns.</li>
+<li>Formal check cells: report total vs <code>SUM(Orders[Amount])</code> for the month, flagged red on mismatch.</li>
+<li>A one-paragraph methodology note on the sheet explaining the date-bracket convention used.</li>
+</ol>
+<hr />
+<h2 id="phase-3-pivottables-charts">Phase 3: PivotTables &amp; Charts</h2>
+<h3 id="weeks-9-12">Weeks 9–12 | Goal: Interactive analysis and dashboards that answer the next question, not just the first one</h3>
+<hr />
+
+<h3 id="module-31-pivottable-fundamentals">Module 3.1 — PivotTable Fundamentals</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> From the Orders Table, build revenue by Region and Month with Category as a report filter, grouped by month, values as ₱ — in under five minutes.<br>
+<strong>Skip if:</strong> Rows/Columns/Values/Filters placement, date grouping, refresh behavior, and value-field settings are all second nature.<br>
+<strong>Unlocks:</strong> 3.2, 3.3</p>
+</blockquote>
+<h4>What a PivotTable actually is</h4>
+<p>A PivotTable is a summarization engine over a snapshot of your source: drag fields into <strong>Rows</strong>, <strong>Columns</strong>, <strong>Values</strong>, and <strong>Filters</strong>, and it groups and aggregates without a single formula. The snapshot part is the operational catch — a pivot reads a cached copy, so new source rows do <em>not</em> appear until you <strong>Refresh</strong> (right-click → Refresh, or Data → Refresh All). Presenting an unrefreshed pivot is the most common way a correct workbook produces a wrong meeting.</p>
+<p>Always build pivots from a named Table (Module 1.3), never a raw range: the Table's auto-expansion is what guarantees Refresh actually sees new rows.</p>
+<h4>Building the canonical revenue pivot</h4>
+<pre><code class="language-excel">Insert → PivotTable → from Table: Orders → New Worksheet
+
+Rows:    Region
+Columns: OrderDate  (Excel auto-groups → keep Months, remove Quarters)
+Values:  Amount     (Sum)
+Filters: Category
+
+Value Field Settings → Number Format → ₱#,##0
+  — format the FIELD, not the cells: it survives every layout change</code></pre>
+<h4>Sorting, grouping, and layout</h4>
+<p>Right-click any value → Sort → Largest to Smallest reorders the whole row axis by the numbers. Date grouping (Years/Quarters/Months) is automatic on real dates — if grouping is greyed out, the column contains text-dates, and you have a Module 4.1 problem, not a pivot problem. Under Design, prefer <strong>Tabular layout</strong> with "Repeat All Item Labels" when anyone will copy the pivot's output elsewhere; the default Compact layout reads well but exports badly.</p>
+<h4>Count, average, and the drilldown</h4>
+<p>Drag Amount into Values a second time and set it to Average — one pivot, two lenses. Double-click any value cell to <strong>drill through</strong>: Excel spills the underlying source rows onto a new sheet, which is both the fastest audit tool in Excel and the fastest way to answer "which orders make up this number?"</p>
+<p><strong>Exercise 3.1 — First pivots</strong></p>
+<p>Dataset: TindaHub Orders workbook</p>
+<ol>
+<li>Build the canonical pivot: Region rows, Month columns, Sum of Amount, Category filter, peso field format.</li>
+<li>Add Average of Amount as a second value field and identify the region with the highest average order value.</li>
+<li>Sort regions by June revenue descending.</li>
+<li>Filter to Beverages only and note how the totals recompute.</li>
+<li>Add five new orders to the source Table, observe the pivot NOT changing, then Refresh and watch them land.</li>
+<li>Double-click the NCR ÷ June cell and verify the drillthrough row count matches a COUNTIFS check.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-advanced-pivottables">Module 3.2 — Advanced PivotTables</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Wire one Region slicer and one OrderDate timeline to two different pivots at once, show revenue as % of column total, and add a running-total view — no helper columns.<br>
+<strong>Skip if:</strong> Slicers across multiple pivots, Show Values As, calculated fields (and their limits), and GETPIVOTDATA are all familiar tools.<br>
+<strong>Unlocks:</strong> 3.3, Capstone 3</p>
+</blockquote>
+<h4>Slicers and timelines — filters you can hand to a manager</h4>
+<p>Insert → Slicer creates clickable filter buttons; Insert → Timeline does the same for date ranges. Their superpower is <strong>Report Connections</strong> (right-click the slicer): one slicer can drive every pivot on a dashboard simultaneously, which is what turns three separate pivots into one coherent, explorable page. A dashboard whose charts filter independently is worse than no dashboard — two charts silently showing different slices is how wrong conclusions get projected on meeting-room walls.</p>
+<h4>Show Values As — the analysis layer</h4>
+<p>Right-click a value → Show Values As transforms the same Sum into a different question, with zero helper columns:</p>
+<pre><code class="language-excel">% of Grand Total       each region's share of the business
+% of Column Total      composition within each month
+Running Total In       cumulative revenue across OrderDate
+Difference From        month-over-month change (Base: previous)
+% Difference From      month-over-month growth rate</code></pre>
+<p>Drag Amount into Values twice — raw Sum beside % of Column Total — and one pivot answers "how much and what share" at once.</p>
+<h4>Calculated fields, and when to walk away</h4>
+<p>PivotTable Analyze → Fields, Items &amp; Sets → Calculated Field lets you define e.g. <code>= Amount / Qty</code> inside the pivot. Know the limit: calculated fields operate on <em>sums</em> of fields (SUM(Amount)/SUM(Qty) — a weighted average, often what you want, sometimes not) and cannot reference individual rows. When a calculation needs row-level logic, add it as a Table calculated column (Module 1.3) or move to Power Pivot measures — that road continues in the <strong>Data Analyst guide, Module 2.2</strong>, and is deliberately not duplicated here.</p>
+<h4>GETPIVOTDATA — stable cell references into a pivot</h4>
+<p>Typing <code>=</code> and clicking a pivot cell writes <code>=GETPIVOTDATA("Amount", $A$3, "Region", "NCR", ...)</code>. Reflex is to hate it; the reflex is wrong for report sheets. A plain <code>=B7</code> into a pivot breaks the moment the layout shifts one row; GETPIVOTDATA keeps pointing at "NCR revenue" by <em>name</em>, whatever the layout. Use it to feed stable KPI cells from a living pivot.</p>
+<p><strong>Exercise 3.2 — The explorable pivot</strong></p>
+<p>Dataset: TindaHub Orders workbook</p>
+<ol>
+<li>Build two pivots: revenue by Region×Month, and order count by Category — then connect one Region slicer and one Timeline to both.</li>
+<li>Show revenue as % of Column Total beside the raw sums; find the region gaining share fastest.</li>
+<li>Add a running-total view across months and a % Difference From (previous month) view.</li>
+<li>Create a calculated field for average unit price (Amount/Qty) and explain in a cell note why it differs from AVERAGEIFS of UnitPrice.</li>
+<li>Feed four KPI cells on a separate sheet from the pivot via GETPIVOTDATA, then rearrange the pivot and confirm nothing breaks.</li>
+<li>Break one KPI on purpose by filtering NCR out with the slicer — observe the GETPIVOTDATA #REF!, then wrap it in IFERROR with a "—" fallback.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-charts-dashboard-design">Module 3.3 — Charts &amp; Dashboard Design</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Given monthly revenue by region, produce (a) the right chart for the trend, (b) the right chart for the June comparison, and (c) defend both choices in one sentence each.<br>
+<strong>Skip if:</strong> Chart-type selection is principled (not habitual), and you can assemble a one-screen slicer-driven dashboard with clean formatting.<br>
+<strong>Unlocks:</strong> Capstone 3, Final Capstone</p>
+</blockquote>
+<h4>Chart choice is a sentence, not a decoration</h4>
+<p>Decide what the chart must say, then pick the form that says it:</p>
+<pre><code class="language-excel">Comparison across categories   → bar (horizontal if labels are long)
+Trend over time                → line
+Composition (few parts)        → stacked bar / 100% stacked
+Relationship of two measures   → scatter
+Distribution                   → histogram / box &amp; whisker
+Single KPI vs target           → simple number + delta, not a gauge</code></pre>
+<p>Pie charts survive only with 2–3 slices; human eyes rank angles poorly, which is why a sorted bar chart beats a 7-slice pie every time it is tried. A chart that needs its legend studied has already failed its ten-second test — the audience decides in that window whether the dashboard is trustworthy.</p>
+<h4>PivotCharts — charts that obey slicers</h4>
+<p>A PivotChart is bound to its PivotTable, so the slicers and timeline from Module 3.2 drive it automatically — that combination (pivots + slicers + pivot charts) is the entire mechanical basis of an interactive Excel dashboard. Field buttons on the chart are for building, not presenting: right-click → Hide All Field Buttons before anyone sees it.</p>
+<h4>Declutter, then emphasize</h4>
+<p>Delete gridlines, borders, and the legend where a direct label works; start bar axes at zero (a truncated axis manufactures drama the data doesn't contain); use one emphasis color against grey rather than a color per series. Formatting is information triage — every pixel that isn't the message is competing with it.</p>
+<h4>Dashboard assembly</h4>
+<p>One screen, no scrolling: KPI row on top (GETPIVOTDATA-fed cells), one trend chart, one comparison chart, one composition view, slicers along an edge, all pivots hidden on a back sheet. Lock the layout mentally to a grid; snap objects with Alt-drag. The test of a good dashboard is that the manager finds next month's answer without asking you.</p>
+<p><strong>Exercise 3.3 — Chart the story</strong></p>
+<p>Dataset: TindaHub Orders workbook</p>
+<ol>
+<li>Chart monthly revenue as a line; add a 3-month moving average series and mark the best month with a data label.</li>
+<li>Chart June revenue by region as a sorted horizontal bar with one emphasis color on NCR.</li>
+<li>Build a 100% stacked bar of payment-method mix per region; write the one-sentence takeaway under it.</li>
+<li>Make a deliberately bad chart (truncated axis, 8-slice pie, rainbow colors), then fix it — keep both as a before/after pair.</li>
+<li>Convert your Module 3.2 pivots to PivotCharts and confirm the shared slicer drives both.</li>
+<li>Assemble the one-screen layout: KPI row, trend, comparison, composition, slicers — pivots on a hidden back sheet.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-interactive-pivot-dashboard">Phase 3 Capstone: Interactive Pivot Dashboard</h3>
+<p><strong>Project: TindaHub Regional Performance Dashboard</strong></p>
+<p><strong>Dataset:</strong> TindaHub Orders workbook</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A single-screen dashboard sheet: KPI row (revenue, orders, AOV, cancellation rate), monthly trend line, sorted regional bar, payment-mix composition.</li>
+<li>One Region slicer and one date Timeline driving every visual simultaneously (verified — no independently filtered chart).</li>
+<li>All source pivots on a hidden back sheet, built from the Orders Table, tabular layout, peso field formats.</li>
+<li>KPI cells fed by GETPIVOTDATA with IFERROR fallbacks.</li>
+<li>Show-Values-As layer: region share of total and month-over-month growth surfaced somewhere on the page.</li>
+<li>A refresh note ("data through: [date], right-click any chart → Refresh") — because a pivot dashboard is a snapshot until refreshed.</li>
+<li>Ten-second test passed by someone else: hand it over cold and record what they could answer unaided.</li>
+</ol>
+<hr />
+<h2 id="phase-4-data-cleaning-power-query">Phase 4: Data Cleaning &amp; Power Query</h2>
+<h3 id="weeks-13-16">Weeks 13–16 | Goal: Clean data at the source, import it repeatably, and keep workbooks auditable</h3>
+<hr />
+
+<h3 id="module-41-data-cleaning-validation">Module 4.1 — Data Cleaning &amp; Validation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Given the seeded messy sheet, fix text-numbers, trailing spaces, duplicate OrderIDs, and inconsistent city spellings — then lock the Status column behind a validation dropdown.<br>
+<strong>Skip if:</strong> TRIM/VALUE/Remove Duplicates/Data Validation and the "find it before it multiplies" mindset are already yours.<br>
+<strong>Unlocks:</strong> 4.2</p>
+</blockquote>
+<h4>The four horsemen of dirty spreadsheet data</h4>
+<p><strong>Text-numbers</strong> (left-aligned, excluded from SUM — fix with VALUE or multiply-by-1), <strong>stray spaces</strong> (<code>"NCR "</code> ≠ <code>"NCR"</code> to every lookup and SUMIFS — fix with TRIM), <strong>duplicates</strong> (Data → Remove Duplicates, but <em>count first</em> with COUNTIF so you know what you deleted), and <strong>inconsistent categories</strong> ("QC", "Quezon City", "quezon city" are three cities to a PivotTable). Each is invisible in a casual scroll and each silently corrupts every aggregate downstream — cleaning is not preparation for analysis, it <em>is</em> analysis of what can go wrong.</p>
+<pre><code class="language-excel">=ISNUMBER(D2)                          FALSE = text-number lurking
+=LEN(C2)-LEN(TRIM(C2))                 &gt;0 = stray spaces
+=COUNTIF(Orders[OrderID],[@OrderID])   &gt;1 = duplicate
+=SORT(UNIQUE(Orders[City]))            eyeball the spelling variants in one list</code></pre>
+<h4>Find &amp; Replace, Flash Fill, and text-to-columns</h4>
+<p>Ctrl+H with "Match entire cell contents" standardizes category variants safely. <strong>Flash Fill</strong> (Ctrl+E) learns a pattern from one or two examples — type <code>Maria Lopez</code> beside <code>LOPEZ, MARIA | QC</code>, press Ctrl+E, and it rewrites the column. Flash Fill output is static values (it will not update with new data) — perfect for one-off repairs, wrong for recurring imports, which is exactly the line where Power Query (Module 4.2) takes over.</p>
+<h4>Data Validation — stop bad data at the door</h4>
+<pre><code class="language-excel">Data → Data Validation:
+  List      =StatusList           dropdown: Delivered/Pending/Cancelled/Returned
+  Date      between 1/1/2024 and =TODAY()      no future orders
+  Custom    =COUNTIF(Orders[OrderID],A2)=1     reject duplicate IDs at entry
+  Custom    =REGEXTEST(B2,"^09\d{9}$")         PH mobile format only</code></pre>
+<p>Source the dropdown list from a small Table so new statuses are one row away. Every validation rule is a cleaning task you never do again: the economics of prevention over repair is the entire lesson of this module.</p>
+<p><strong>Exercise 4.1 — Clean the seeded mess</strong></p>
+<p>Dataset: TindaHub Orders workbook (<code>MessyImport</code> sheet — 500 rows with seeded defects)</p>
+<ol>
+<li>Audit first, fix second: count text-numbers, spaced strings, duplicate OrderIDs, and city variants with formulas before touching anything.</li>
+<li>Convert all text-numbers in Amount to real numbers; prove it with a before/after SUM.</li>
+<li>TRIM and PROPER the Customer and City columns; consolidate city variants with Find &amp; Replace (record each mapping).</li>
+<li>Remove duplicate orders — but write down the expected removal count from your COUNTIF audit first and confirm they match.</li>
+<li>Use Flash Fill to extract first names into a greeting column.</li>
+<li>Install validation: Status dropdown, no-future-dates rule, duplicate-ID rejection, and PH-mobile REGEXTEST — then try to violate each one.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-power-query-basics">Module 4.2 — Power Query Basics</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Import a folder of three monthly CSVs, clean and append them in one query, merge product categories in, load to a Table, then drop in a fourth CSV and refresh.<br>
+<strong>Skip if:</strong> Get Data, applied steps, append/merge, and load-to-Table are routine — you may still skim the M-code subsection.<br>
+<strong>Unlocks:</strong> Capstone 4, Final Capstone</p>
+</blockquote>
+<h4>Recorded cleaning that replays forever</h4>
+<p>Power Query (Data → Get Data) is a step recorder for data preparation: every transform you click becomes a named step in <strong>Applied Steps</strong>, and the whole recipe replays on Refresh. This flips the cleaning economics of Module 4.1 — instead of repairing March's file and repairing April's file again, you repair the <em>pipeline</em> once. If you clean the same shape of file twice, you were supposed to use Power Query the first time.</p>
+<pre><code class="language-excel">Data → Get Data → From File → From Text/CSV → Transform Data
+
+Typical applied steps for a TindaHub monthly CSV:
+  Promoted Headers        first row → column names
+  Changed Type            OrderDate → Date, Amount → Currency
+  Trimmed Text            City, Customer
+  Replaced Values         "QC" → "Quezon City"
+  Filtered Rows           remove Status = "Test"
+  Removed Duplicates      on OrderID</code></pre>
+<p>Set data types deliberately — with a PH-format file, use "Changed Type with Locale" when dates arrive as <code>dd/mm/yyyy</code>; letting the type guesser misread day-month order is the classic silent import bug.</p>
+<h4>Append and merge — the two joins that matter</h4>
+<p><strong>Append</strong> stacks same-shaped tables (Jan + Feb + Mar orders → one table). <strong>Merge</strong> joins on a key (Orders + Products on Product → categories flow in), with join kinds mirroring SQL: Left Outer keeps all orders and blanks the misses — and expanding only the columns you need keeps the result lean. Better still, <strong>From Folder</strong> appends every file in a directory automatically: drop <code>2026-07.csv</code> in, press Refresh, done — that single pattern replaces hours of monthly copy-paste in most small businesses.</p>
+<h4>A first look at M (and where this road leads)</h4>
+<p>Every query is M code under Advanced Editor — readable, worth skimming so applied steps stop being magic:</p>
+<pre><code class="language-excel">let
+    Source = Csv.Document(File.Contents("C:\TindaHub\2026-06.csv")),
+    Headers = Table.PromoteHeaders(Source),
+    Typed = Table.TransformColumnTypes(Headers,
+              {{"OrderDate", type date}, {"Amount", Currency.Type}}),
+    Clean = Table.TransformColumns(Typed, {{"City", Text.Trim}})
+in
+    Clean</code></pre>
+<p>This guide deliberately stops at working basics. Query folding, parameters, custom M functions, and the Power Pivot/DAX layer that consumes these queries are covered in the <strong>Data Analyst guide (Modules 2.1–2.2)</strong> — go there when a merge-and-append pipeline stops being enough.</p>
+<p><strong>Exercise 4.2 — The monthly pipeline</strong></p>
+<p>Dataset: TindaHub Orders workbook + the three monthly CSV extracts (Apr/May/Jun 2026)</p>
+<ol>
+<li>Import one CSV via Transform Data and build the six-step cleaning recipe from the lesson.</li>
+<li>Convert it to a From Folder query appending all three months; verify row counts equal the sum of the files.</li>
+<li>Merge product Category in from the Products table (Left Outer) and expand only Category.</li>
+<li>Load to a Table named <code>MonthlyOrders</code> and build a quick pivot on it.</li>
+<li>Drop a fourth CSV (Jul) into the folder, Refresh, and watch table and pivot grow with zero editing.</li>
+<li>Open Advanced Editor, read the M top to bottom, and rename two steps to something meaningful.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-auditing-protection-workbook-hygiene">Module 4.3 — Auditing, Protection &amp; Workbook Hygiene</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Trace a wrong KPI back to its source with Trace Precedents, wrap the fragile lookups in IFERROR with visible fallbacks, and ship a copy where only input cells are editable.<br>
+<strong>Skip if:</strong> Formula auditing, error handling policy, sheet protection, and named ranges are already part of how you ship workbooks.<br>
+<strong>Unlocks:</strong> Capstone 4, Final Capstone</p>
+</blockquote>
+<h4>Auditing: follow the dependency chain</h4>
+<p>Formulas → <strong>Trace Precedents</strong> draws arrows from a cell to everything it reads; <strong>Trace Dependents</strong> shows what would break if you changed it — check dependents <em>before</em> editing any cell in a workbook you didn't build. <strong>Evaluate Formula</strong> steps through a calculation one operation at a time, which is how you find the exact point a nested formula goes wrong instead of staring at it. Ctrl+` (formula view) plus Find can locate every hard-coded constant hiding where a reference should be — the archaeology of inherited workbooks.</p>
+<h4>Error handling as policy, not decoration</h4>
+<pre><code class="language-excel">=IFERROR(XLOOKUP(...), "—")     display fallback for report cells
+=IFNA(XLOOKUP(...), 0)          catches ONLY #N/A — a typo still errors loudly
+=ISBLANK(A2)  =ISNUMBER(A2)     test before you compute</code></pre>
+<p>Prefer IFNA for lookups: it absorbs the expected miss (#N/A) while letting genuine formula bugs (#VALUE!, #REF!) stay visible. A blanket IFERROR over everything is how workbooks hide their own defects — you are choosing which errors deserve silence, and that choice should be narrow.</p>
+<h4>Protection and the input/logic/output contract</h4>
+<p>Structure every shipped workbook in three layers: <strong>input cells</strong> (unlocked, visibly styled), <strong>logic</strong> (locked, often on hidden sheets), <strong>outputs</strong> (locked). Then Review → Protect Sheet. All cells are locked by default, so the workflow is: select input cells → Format Cells → uncheck Locked → protect the sheet. This isn't security (Excel sheet passwords are trivially stripped) — it's a guardrail against the accidental Tuesday keystroke that overwrites a formula, which is a far more common cause of workbook death than malice.</p>
+<h4>Named ranges and the ReadMe habit</h4>
+<p>Name Manager (Ctrl+F3) turns <code>$F$1</code> into <code>VATRate</code> — formulas become sentences (<code>=Amount*VATRate</code>) and the definition is documented in one place. Pair it with a ReadMe sheet: data sources, refresh steps, owner, and the date convention (Module 2.3's bracket rule). The workbook that only its author can operate dies with its author's job change.</p>
+<p><strong>Exercise 4.3 — Harden the report</strong></p>
+<p>Dataset: TindaHub Orders workbook (your Phase 2 capstone report)</p>
+<ol>
+<li>Trace Precedents on every KPI cell; sketch the dependency chain on the ReadMe sheet.</li>
+<li>Replace bare lookups with IFNA + visible "—" fallbacks; leave one deliberate #VALUE! and confirm it still shows through.</li>
+<li>Use Evaluate Formula on your longest formula and screenshot the step where the key value appears.</li>
+<li>Name the VAT rate, month selector, and threshold cells; rewrite their dependent formulas with the names.</li>
+<li>Apply the input/logic/output layout: style and unlock input cells, protect all sheets.</li>
+<li>Hand the protected file to someone else (or your future self, tomorrow): can they run month-end from the ReadMe alone?</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-refreshable-import-pipeline">Phase 4 Capstone: Refreshable Import Pipeline</h3>
+<p><strong>Project: TindaHub Month-End in One Click</strong></p>
+<p><strong>Dataset:</strong> TindaHub monthly CSV extracts + Orders workbook</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A From Folder Power Query pipeline ingesting all monthly CSVs with a documented six-step cleaning recipe.</li>
+<li>Category and customer-city merges from the Products and Customers tables.</li>
+<li>Validation rules on every manual-entry column of the live Orders Table (status list, date bounds, duplicate-ID rejection, PH-mobile pattern).</li>
+<li>An exceptions sheet: spilled FILTER formulas surfacing unmatched products, validation-violating legacy rows, and outlier amounts.</li>
+<li>IFNA policy applied across all lookups; zero blanket IFERRORs.</li>
+<li>Input/logic/output protection layout with named ranges for every parameter.</li>
+<li>The one-click test: add a new month's CSV, Refresh All, and demonstrate that data, exceptions, and pivots all update with no other action.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-tindahub-executive-sales-dashboard">Final Capstone: TindaHub Executive Sales Dashboard</h2>
+<p><strong>Project: One workbook, source to story</strong></p>
+<p>Integrates all tracks. Uses the TindaHub Orders workbook and monthly CSV extracts from all phases.</p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back — when does a PivotTable beat GROUPBY/PIVOTBY, and when the reverse? Why IFNA over IFERROR for lookups? What makes a From Folder query "one-click"? Blank on any of these → revisit 3.1, 4.3, 4.2 respectively.</p></blockquote>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Power Query pipeline (From Folder) feeding a clean, validated Orders Table — the single source of truth.</li>
+<li>A formula layer: named LAMBDAs for banding and COD risk, LET-structured KPI formulas, UNIQUE/# self-growing region block.</li>
+<li>A live PIVOTBY matrix (Region × PaymentMethod) beside a PivotTable answering the same question — with a written note on when you'd use each.</li>
+<li>The interactive dashboard: KPI row, trend, sorted comparison, composition, one slicer + one timeline driving everything.</li>
+<li>Peso formatting, ISO dates, and conditional-formatting exception flags applied consistently.</li>
+<li>Auditing pass: traced dependencies, IFNA policy, check cells reconciling dashboard totals to <code>SUM(Orders[Amount])</code>.</li>
+<li>Protection: only input cells editable; ReadMe sheet with refresh runbook, data dictionary, and date-bracket convention.</li>
+<li>The handover test: someone who has never seen the file runs month-end (drop CSV → Refresh All → read dashboard) using only the ReadMe.</li>
+<li>Stretch: rebuild one dashboard visual's numbers with GROUPBY and compare maintenance effort in three sentences.</li>
+<li>Stretch: sit the MO-210 practice test; score 80%+ before booking the exam.</li>
+</ol>
+<hr />
+<h2 id="quick-reference">Quick Reference: Excel Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Look up a value by key</td><td><code>XLOOKUP</code></td><td>Always pass <code>if_not_found</code>; VLOOKUP is legacy-read-only</td></tr>
+<tr><td>Band numbers into tiers</td><td><code>XLOOKUP</code> match_mode -1 or <code>IFS</code></td><td>Approximate match beats nested IFs</td></tr>
+<tr><td>Sum with conditions</td><td><code>SUMIFS</code> / <code>COUNTIFS</code></td><td>Date brackets: <code>&gt;=</code> start, <code>&lt;</code> next period</td></tr>
+<tr><td>Distinct list that grows</td><td><code>UNIQUE</code> + <code>#</code> reference</td><td>Pair with SUMIFS for self-maintaining reports</td></tr>
+<tr><td>Extract matching rows</td><td><code>FILTER</code> (+ <code>SORT</code>/<code>TAKE</code>)</td><td>Third argument handles the no-match case</td></tr>
+<tr><td>Reusable business logic</td><td><code>LAMBDA</code> in Name Manager</td><td>Define once, call everywhere; edit in one place</td></tr>
+<tr><td>Readable long formulas</td><td><code>LET</code></td><td>Name intermediate steps; compute once</td></tr>
+<tr><td>Live grouped summary</td><td><code>GROUPBY</code> / <code>PIVOTBY</code></td><td>No refresh needed — recalcs with the data</td></tr>
+<tr><td>Interactive exploration</td><td>PivotTable + slicers</td><td>Snapshot — needs Refresh; drill with double-click</td></tr>
+<tr><td>Split / join text</td><td><code>TEXTSPLIT</code> / <code>TEXTJOIN</code></td><td>TEXTBEFORE/TEXTAFTER for single cuts</td></tr>
+<tr><td>Pattern validation</td><td><code>REGEXTEST</code> family</td><td>e.g. PH mobile <code>^09\d{9}$</code></td></tr>
+<tr><td>Month boundaries</td><td><code>EOMONTH</code> / <code>EDATE</code></td><td><code>EOMONTH(d,-1)+1</code> = month start</td></tr>
+<tr><td>Repeatable import + clean</td><td>Power Query (From Folder)</td><td>Applied steps replay on every Refresh</td></tr>
+<tr><td>Block bad entries</td><td>Data Validation</td><td>List, date bounds, custom formulas</td></tr>
+<tr><td>Find why a number is wrong</td><td>Trace Precedents / Evaluate Formula</td><td>Check dependents before editing</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-grid-references">Grid &amp; References</h3>
+<dl class="glossary">
+<dt>Cell reference</dt>
+<dd>The address of a cell (<code>B2</code>) or range (<code>B2:D10</code>) as used inside a formula.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "cell name" — a <em>name</em> is a Name Manager label; a reference is an address.</dd>
+<dt>Absolute / relative reference</dt>
+<dd>Whether a reference stays pinned (<code>$B$2</code>) or shifts (<code>B2</code>) when its formula is copied to another cell.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "locked cell" — locking is a protection feature, unrelated to <code>$</code>.</dd>
+<dt>Excel Table</dt>
+<dd>A structured range (Ctrl+T) with a name, auto-expanding boundaries, and column-name references.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "table" for any rectangle of cells — a formatted range without Ctrl+T has none of the Table behaviors.</dd>
+<dt>Structured reference</dt>
+<dd>A formula reference by Table and column name, e.g. <code>Orders[Amount]</code> or this-row <code>[@Qty]</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "named range" — names are defined in Name Manager; structured references come free with Tables.</dd>
+<dt>Named range / defined name</dt>
+<dd>A label defined in Name Manager that stands for a cell, range, constant, or LAMBDA.</dd>
+<dd class="avoid"><strong>Avoid:</strong> conflating with Table names — Tables appear in Name Manager but behave differently.</dd>
+<dt>Serial date</dt>
+<dd>Excel's internal storage of a date as a number of days since 1900-01-01, with times as day-fractions.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "timestamp" for the display format — the format is costume; the serial is the value.</dd>
+<dt>Number format</dt>
+<dd>A display rule (e.g. <code>₱#,##0.00</code>) that changes how a value looks without changing the value.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "formatting the data" — formats never alter stored values; VALUE/TEXT conversions do.</dd>
+<dt>Volatile function</dt>
+<dd>A function (TODAY, NOW, RAND, OFFSET, INDIRECT) that recalculates on every workbook change.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "dynamic function" — dynamic arrays are a different, unrelated concept.</dd>
+</dl>
+
+<h3 id="glossary-formulas-arrays">Formulas &amp; Arrays</h3>
+<dl class="glossary">
+<dt>Spill / spill range</dt>
+<dd>The block of cells a dynamic-array formula fills below and beside its home cell; referenced whole via <code>#</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "overflow" — #SPILL! is blocked spilling, not numeric overflow.</dd>
+<dt>Dynamic array formula</dt>
+<dd>A formula (FILTER, SORT, UNIQUE, SEQUENCE, GROUPBY…) whose result is a spilling array rather than one value.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "array formula" alone — that historically means legacy Ctrl+Shift+Enter formulas, now obsolete.</dd>
+<dt>Criteria pair</dt>
+<dd>A range-plus-condition argument couple in the IFS aggregation family (<code>Orders[Region],"NCR"</code>); pairs are AND-ed.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "filter" — worksheet filters hide rows; criteria pairs select rows inside one calculation.</dd>
+<dt>LAMBDA</dt>
+<dd>A user-defined function written in formula language and (usually) registered under a name in Name Manager.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "macro" — macros are VBA procedures; LAMBDAs are pure formulas with no security prompts.</dd>
+<dt>LET binding</dt>
+<dd>A name-value assignment inside a LET formula, computed once and reused within that formula only.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "variable" without qualification — LET names are per-formula, not workbook-wide.</dd>
+<dt>Lookup</dt>
+<dd>Retrieving a value from one table by matching a key against another column (XLOOKUP, INDEX/MATCH).</dd>
+<dd class="avoid"><strong>Avoid:</strong> "vlookup" as a generic verb — say lookup; VLOOKUP is one legacy implementation.</dd>
+<dt>Approximate match</dt>
+<dd>A lookup mode returning the nearest value at-or-below (or above) the key — the mechanism behind banding tables.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "fuzzy match" — fuzzy matching (typo-tolerant text) is a Power Query feature, entirely different.</dd>
+<dt>Wildcard</dt>
+<dd>The <code>*</code> (any characters) and <code>?</code> (one character) placeholders accepted by criteria and some match modes.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "regex" — wildcards are far weaker; REGEXTEST is the real pattern engine.</dd>
+</dl>
+
+<h3 id="glossary-pivots-cleaning">Pivots, Charts &amp; Cleaning</h3>
+<dl class="glossary">
+<dt>PivotTable</dt>
+<dd>An interactive summarization object that groups and aggregates a cached snapshot of a source table.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "pivot" for PIVOTBY — the function is live and formula-based; the PivotTable is cached and interactive.</dd>
+<dt>Pivot cache</dt>
+<dd>The stored copy of source data a PivotTable actually reads; stale until Refresh.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming "live" — every pivot number is as old as its last refresh.</dd>
+<dt>Slicer / timeline</dt>
+<dd>On-sheet filter controls (buttons / date band) that can drive one or many PivotTables via Report Connections.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "filter dropdown" — the header dropdown filters one pivot only and hides its state.</dd>
+<dt>Show Values As</dt>
+<dd>A value-field display transform (% of total, running total, difference from) computed inside the pivot.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "calculated field" — that is a different feature defining new formulas over summed fields.</dd>
+<dt>Drillthrough</dt>
+<dd>Double-clicking a pivot value to spill its underlying source rows onto a new sheet.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "drill down" — drill down expands a hierarchy level in place; drillthrough extracts rows.</dd>
+<dt>Query (Power Query)</dt>
+<dd>A recorded sequence of applied transform steps, written in M, that replays against sources on Refresh.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "macro" — no VBA involved; and "SQL query" — M is a different language and model.</dd>
+<dt>Append vs Merge</dt>
+<dd>Append stacks same-shaped tables vertically; Merge joins two tables sideways on a key column.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "combine" unqualified — the two operations answer different questions and are not interchangeable.</dd>
+<dt>Data Validation</dt>
+<dd>Cell-entry rules (lists, bounds, custom formulas) that reject invalid input at typing time.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "conditional formatting" — CF colors what already got in; validation stops it getting in.</dd>
+<dt>Refresh</dt>
+<dd>The command that re-reads sources: replays Power Query steps and rebuilds pivot caches.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "recalculate" (F9) — recalculation reruns formulas; Refresh re-reads external/cached data.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<h3 id="books">Books</h3>
+<table><tr><th>Title</th><th>Focus</th></tr>
+<tr><td>Microsoft Excel Pivot Table Data Crunching — Including Dynamic Arrays, Power Query, and Copilot, Bill Jelen (2025)</td><td>PivotTables in depth, updated for modern Excel</td></tr>
+<tr><td>MrExcel 2025: Navigating Excel, Bill Jelen (2025)</td><td>Broad modern-Excel techniques incl. Copilot and Python in Excel</td></tr>
+<tr><td>M Is for (Data) Monkey, Ken Puls &amp; Miguel Escobar (2015 — still the canonical M intro)</td><td>Power Query and the M language beyond this guide's basics</td></tr>
+<tr><td>Storytelling with Data, Cole Nussbaumer Knaflic (2015)</td><td>Chart choice and dashboard communication (tool-agnostic, ages well)</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table><tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>Microsoft Excel help &amp; function reference (support.microsoft.com)</td><td>Every function, official</td><td>Canonical syntax and availability notes</td></tr>
+<tr><td>Excel Blog — techcommunity.microsoft.com</td><td>New features (GROUPBY, Copilot, Python)</td><td>Where monthly M365 changes are announced</td></tr>
+<tr><td>ExcelJet (exceljet.net)</td><td>Formula patterns &amp; shortcuts</td><td>Best terse formula-example library</td></tr>
+<tr><td>Chandoo.org</td><td>Dashboards, formulas</td><td>Long-running, project-driven tutorials</td></tr>
+<tr><td>MrExcel.com forum + YouTube</td><td>Q&amp;A and technique videos</td><td>Bill Jelen's daily-tip archive</td></tr>
+<tr><td>Leila Gharani — YouTube</td><td>Modern Excel (arrays, LAMBDA, PQ)</td><td>Clear, current, well-produced walkthroughs</td></tr>
+<tr><td>Microsoft Learn — MO-210 / MO-211 prep</td><td>Certification study paths</td><td>Official exam objectives and practice materials</td></tr>
+</table>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table><tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>TindaHub Orders workbook (this guide's benchmark — build it from the Phase 1 spec or generate 5,000 rows with any tool)</td><td>Every exercise and capstone</td></tr>
+<tr><td>Superstore Sales sample (public)</td><td>Second practice dataset once TindaHub feels memorized</td></tr>
+<tr><td>data.gov.ph open datasets</td><td>Real Philippine data for self-directed practice</td></tr>
+<tr><td>Kaggle datasets (retail/sales tags)</td><td>Messy real-world CSVs for Power Query reps</td></tr>
+<tr><td>Excel for the web (free)</td><td>Practice without a license — most functions, no Power Query</td></tr>
+</table>
+<h3 id="communities">Communities</h3>
+<table><tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>r/excel</td><td>Reddit</td><td>Fast answers; reading solved threads is a curriculum in itself</td></tr>
+<tr><td>MrExcel Message Board</td><td>Forum</td><td>Deep formula and VBA archaeology; decades of searchable solutions</td></tr>
+<tr><td>Microsoft Excel Tech Community</td><td>techcommunity.microsoft.com</td><td>Feature discussions with Microsoft program managers present</td></tr>
+<tr><td>Excel subforum, Stack Overflow (excel-formula tag)</td><td>Stack Overflow</td><td>Precise, tested answers to well-specified formula questions</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
+<h4>Phase 1 — Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — Interface, Navigation &amp; Shortcuts</li>
+<li>[ ] Exercise 1.1 — Learn the terrain</li>
+<li>[ ] Module 1.2 — Cell References &amp; Formula Fundamentals</li>
+<li>[ ] Exercise 1.2 — Peso price mechanics</li>
+<li>[ ] Module 1.3 — Excel Tables &amp; Structured References</li>
+<li>[ ] Exercise 1.3 — Table up the workbook</li>
+<li>[ ] Module 1.4 — Number Formats &amp; Conditional Formatting</li>
+<li>[ ] Exercise 1.4 — Make the register readable</li>
+<li>[ ] Capstone 1 — Order Register Workbook</li>
+</ul>
+<h4>Phase 2 — Formula Mastery</h4>
+<ul>
+<li>[ ] Module 2.1 — Logical &amp; Lookup Functions</li>
+<li>[ ] Exercise 2.1 — Enrich the orders</li>
+<li>[ ] Module 2.2 — Text, Date &amp; Time Functions</li>
+<li>[ ] Exercise 2.2 — Wrangle the messy import</li>
+<li>[ ] Module 2.3 — Conditional Aggregation</li>
+<li>[ ] Exercise 2.3 — The monthly numbers</li>
+<li>[ ] Module 2.4 — Dynamic Arrays &amp; Spilling</li>
+<li>[ ] Exercise 2.4 — The self-maintaining report</li>
+<li>[ ] Module 2.5 — LET, LAMBDA &amp; Modern Aggregation</li>
+<li>[ ] Exercise 2.5 — Refactor like an engineer</li>
+<li>[ ] Capstone 2 — Formula-Driven Sales Report</li>
+</ul>
+<h4>Phase 3 — PivotTables &amp; Charts</h4>
+<ul>
+<li>[ ] Module 3.1 — PivotTable Fundamentals</li>
+<li>[ ] Exercise 3.1 — First pivots</li>
+<li>[ ] Module 3.2 — Advanced PivotTables</li>
+<li>[ ] Exercise 3.2 — The explorable pivot</li>
+<li>[ ] Module 3.3 — Charts &amp; Dashboard Design</li>
+<li>[ ] Exercise 3.3 — Chart the story</li>
+<li>[ ] Capstone 3 — Interactive Pivot Dashboard</li>
+</ul>
+<h4>Phase 4 — Data Cleaning &amp; Power Query</h4>
+<ul>
+<li>[ ] Module 4.1 — Data Cleaning &amp; Validation</li>
+<li>[ ] Exercise 4.1 — Clean the seeded mess</li>
+<li>[ ] Module 4.2 — Power Query Basics</li>
+<li>[ ] Exercise 4.2 — The monthly pipeline</li>
+<li>[ ] Module 4.3 — Auditing, Protection &amp; Workbook Hygiene</li>
+<li>[ ] Exercise 4.3 — Harden the report</li>
+<li>[ ] Capstone 4 — Refreshable Import Pipeline</li>
+</ul>
+<h4>Certifications / Outcomes</h4>
+<ul>
+<li>[ ] MO-210 Microsoft Office Specialist: Excel Associate (Microsoft 365 Apps)</li>
+<li>[ ] MO-211 Microsoft Office Specialist: Excel Expert (Microsoft 365 Apps)</li>
+<li>[ ] Final Capstone — TindaHub Executive Sales Dashboard complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 — Excel Track: Beginner to Advanced</em><br>
+<em>Non-linear modular design · Placement quiz · 15 modules · ~16 weeks part-time · hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-07-17</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

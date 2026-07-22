@@ -1,0 +1,1501 @@
+order_id,customer_email,product_sku,quantity,unit_price,discount_pct,order_date,ship_date,region,status
+ORD-20000,user_at_example.com,SKU-1045,7,1775.87,0.06,2025-03-06,,Region IV-A,delivered
+ORD-20001,user1@example.com,SKU-1039,9,1304.84,0.32,2025-12-08,2025-12-10,Region VII,shipped
+ORD-20002,user2@example.com,SKU-1055,7,2156.9,0.39,2025-04-15,,NCR,cancelled
+ORD-20003,user3@example.com,SKU-1047,4,2243.89,0.2,2025-08-15,2025-08-16,NCR,PROCESSING
+ORD-20004,user4@example.com,SKU-1059,3,283.0,0.0,2025-05-03,,Region III,cancelled
+ORD-20005,user5@example.com,SKU-1009,3,1796.55,1.1,2025-12-05,2025-12-11,Region XI,cancelled
+ORD-20006,user6@example.com,SKU-1002,1,1545.48,0.18,2025-10-22,2025-10-26,CAR,delivered
+ORD-20007,user7@example.com,SKU-1024,7,276.24,0.26,2025-11-11,2025-11-16,Region IV-A,cancelled
+ORD-20008,,SKU-1030,9,1590.27,0.17,2025-06-29,2025-07-04,Region XI,processing
+ORD-20009,user9@example.com,SKU-1047,8,1454.77,0.17,2025-07-30,2025-08-01,Region IV-A,cancelled
+ORD-20010,user10@example.com,SKU-1022,9,2189.87,0.36,2025-04-02,2025-04-08,Region VII,shipped
+ORD-20011,user11@example.com,SKU-1056,1,2191.45,0.13,2025-07-03,,Region XI,pending
+ORD-20012,not-an-email,SKU-1049,1,808.0,0.14,2025-10-07,2025-10-15,Region XI,shipped
+ORD-20013,user13@example.com,SKU-1030,8,1192.05,0.24,2025-04-28,2025-04-30,Region IV-A,pending
+ORD-20014,user14@example.com,SKU-1002,8,1502.41,0.01,2025-07-18,2025-07-21,CAR,shipped
+ORD-20015,user15@example.com,SKU-1018,5,2773.41,0.19,2025-12-13,2025-12-15,Region VII,processing
+ORD-20016,user16@example.com,SKU-1033,7,1194.88,0.07,2025-08-02,2025-08-04,Region III,PROCESSING
+ORD-20017,user17@example.com,SKU-1053,9,2681.8,0.13,2025-12-23,2025-12-31,Region XI,shipped
+ORD-20018,user18@example.com,SKU-1027,1,1130.79,,2025-11-05,,Region III,cancelled
+ORD-20019,user19@example.com,SKU-1024,4,2394.0,0.35,2025-08-26,2025-09-04,Region IV-A,shipped
+ORD-20020,user20@example.com,SKU-1027,1,562.24,0.21,2025-10-16,2025-10-23,Region III,pending
+ORD-20021,user21@example.com,SKU-1001,3,2216.6,0.21,2025-02-05,2025-02-11,Region III,cancelled
+ORD-20022,user22@example.com,SKU-1014,2,184.66,0.31,2025-01-11,2025-01-18,CAR,delivered
+ORD-20023,user23@example.com,SKU-1009,4,2303.27,0.06,2025-03-06,2025-03-08,Region XI,shipped
+ORD-20024,user24@example.com,SKU-1009,8,-99.0,0.24,2025-03-02,2025-03-08,CAR,pending
+ORD-20025,user25@example.com,SKU-1019,1,113.23,,2025-12-15,2025-12-21,Region XI,cancelled
+ORD-20026,user26@example.com,SKU-1022,8,886.87,0.12,2025-06-11,,Region XI,processing
+ORD-20027,user27@example.com,SKU-1047,6,299.55,,2025-12-14,,NCR,cancelled
+ORD-20028,user28@example.com,SKU-1020,five,2257.53,0.3,2025-06-21,,NCR,delivered
+ORD-20029,user29@example.com,SKU-1026,8,246.72,0.09,2025-04-29,2025-05-07,Region XI,cancelled
+ORD-20030,user30@example.com,SKU-1034,9,772.51,0.04,2025-08-14,2025-08-23,Region VII,processing
+ORD-20031,user31@example.com,SKU-1028,5,2605.06,,2025-04-18,2025-04-22,Region III,delivered
+ORD-20032,user32@example.com,SKU-1023,5,1166.22,0.02,2025-05-13,,Region XI,processing
+ORD-20033,user33@example.com,SKU-1058,9,134.59,,2025-08-04,2025-08-05,Region IV-A,shipped
+ORD-20034,user34@example.com,SKU-1056,8,2165.36,0.08,2025-02-17,2025-02-18,Region VII,processing
+ORD-20035,user_at_example.com,SKU-1027,9,1842.44,0.38,2025-03-07,2025-03-10,CAR,processing
+ORD-20036,,SKU-1052,2,1902.64,0.14,2025-10-04,,Region XI,cancelled
+ORD-20037,user37@example.com,SKU-1004,five,2894.82,0.16,2025-07-15,,Region IV-A,cancelled
+ORD-20038,user38@example.com,SKU-1017,5,209.35,1.71,2025-02-26,2025-02-28,Region XI,delivered
+ORD-20039,user39@example.com,SKU-1024,8,-99.0,0.02,2025-11-05,2025-11-08,Region III,pending
+ORD-20040,user40@example.com,SKU-1017,7,868.79,0.38,2025-09-08,2025-09-10,CAR,pending
+  ORD-20041,user41@example.com,SKU-1023,7,935.9,0.38,2025-09-05,,NCR,pending
+  ORD-20042,user42@example.com,SKU-1004,6,0.0,0.3,2025-11-19,2025-11-24,Region III,shipped
+ORD-20043,user43@example.com,SKU-1052,5,1781.9,0.22,2025-01-26,2025-02-01,Region VII,shipped
+ORD-20044,user44@example.com,SKU-1051,2,225.17,0.36,2025-03-03,2025-03-10,NCR,processing
+ORD-20045,,SKU-1049,8,533.41,0.06,2025-07-14,2025-07-15,Region VII,shipped
+ORD-20046,user_at_example.com,SKU-1027,6,1489.78,,2025-01-11,2025-01-14,,shipped
+  ORD-20047,user47@example.com,SKU-1010,3,2626.3,,2025-04-20,2025-04-21,NCR,delivered
+ORD-20048,user48@example.com,SKU-1029,8,-99.0,0.32,2025-06-17,2025-06-24,Region VII,pending
+ORD-20049,user49@example.com,SKU-1017,6,2327.61,0.14,2025-03-05,2025-03-08,CAR,pending
+ORD-20050,,SKU-1059,6,960.24,1.22,2025-07-03,2025-07-05,Region XI,shipped
+ORD-20051,user51@example.com,SKU-1039,7,2219.93,,2025-03-02,2025-03-11,Region VII,processing
+ORD-20052,user52@example.com,SKU-1048,1,212.8,0.22,2025-04-07,2025-04-15,Region XI,delivered
+ORD-20053,user53@example.com,SKU-1046,2,966.29,0.39,2025-08-05,,Region XI,PENDING
+ORD-20054,user54@example.com,SKU-1007,1,1959.48,1.39,2025-06-23,2025-06-27,Region IV-A,delivered
+ORD-20055,user55@example.com,SKU-1020,8,2551.97,,2025-07-27,2025-07-30,Region VII,PROCESSING
+ORD-20056,user56@example.com,SKU-1041,6,1718.94,0.38,2025-08-20,2025-08-21,CAR,processing
+ORD-20057,user57@example.com,SKU-1002,9,2478.14,,2025-05-09,2025-05-11,Region III,shipped
+ORD-20058,user58@example.com,SKU-1020,6,2276.24,0.23,2025-10-10,2025-10-15,NCR,cancelled
+ORD-20059,user59@example.com,SKU-1032,8,2856.41,0.26,2025-03-31,2025-04-09,Region XI,pending
+ORD-20060,user60@example.com,SKU-1029,7,423.06,0.0,2025-04-20,2025-04-22,Region IV-A,pending
+ORD-20061,user61@example.com,SKU-1047,1,2497.62,0.35,2025-11-07,2025-11-08,Region VII,processing
+ORD-20062,user62@example.com,SKU-1028,5,1669.71,0.31,2025-12-10,,Region XI,processing
+ORD-20063,user63@example.com,SKU-1010,4,2455.3,0.18,2025-07-02,2025-07-06,Region IV-A,processing
+ORD-20064,user64@example.com,SKU-1033,9,1778.19,0.01,2025-07-14,2025-07-15,Region VII,pending
+ORD-20065,user65@example.com,SKU-1057,7,1335.63,0.01,2025-10-28,2025-11-01,Region VII,cancelled
+ORD-20066,user66@example.com,SKU-1036,3,2105.54,,2025-06-07,2025-06-14,CAR,pending
+ORD-20067,user67@example.com,SKU-1030,5,2764.25,0.19,2025-05-30,2025-06-08,Region VII,DELIVERED
+ORD-20068,user68@example.com,SKU-1009,5,2263.53,0.29,2025-07-25,2025-07-30,CAR,pending
+ORD-20069,user69@example.com,SKU-1025,2,1030.48,0.08,2025-12-30,2026-01-06,Region III,delivered
+ORD-20070,user70@example.com,SKU-1005,9,1122.23,0.28,2025-01-19,2025-01-21,CAR,shipped
+ORD-20071,user_at_example.com,SKU-1031,,1759.78,1.72,2025-12-18,,CAR,processing
+ORD-20072,user72@example.com,SKU-1018,6,1247.48,0.02,2025-01-04,2025-01-12,Region VII,shipped
+ORD-20073,user73@example.com,SKU-1040,2,1175.81,0.05,2025-10-17,2025-10-25,Region III,pending
+  ORD-20074,user74@example.com,SKU-1026,4,2414.14,1.49,2025-10-11,2025-10-12,NCR,pending
+ORD-20075,user75@example.com,SKU-1052,3,2413.67,0.35,2025-01-25,2025-01-29,CAR,cancelled
+  ORD-20076,user76@example.com,SKU-1013,2,2555.31,0.39,2025-04-05,2025-04-12,Region IV-A,shipped
+ORD-20077,user77@example.com,SKU-1027,,2234.56,0.26,2025-05-16,2025-05-19,Region III,shipped
+ORD-20078,user78@example.com,SKU-1053,5,1721.33,,2025-07-17,2025-07-26,NCR,pending
+ORD-20079,user79@example.com,SKU-1006,6,896.41,0.13,2025-01-20,,Region IV-A,shipped
+ORD-20080,user80@example.com,SKU-1021,1,2421.85,0.39,2025-01-08,2025-01-10,Region IV-A,shipped
+ORD-20081,user81@example.com,SKU-1006,1,1605.75,,2025-04-08,2025-04-13,Region XI,shipped
+ORD-20082,user82@example.com,SKU-1027,9,2206.86,,2025-06-03,2025-06-11,NCR,delivered
+ORD-20083,user83@example.com,SKU-1033,3,1532.46,0.33,2025-09-30,2025-10-04,Region III,shipped
+ORD-20084,user84@example.com,SKU-1013,2,1687.85,0.26,2025-12-16,2025-12-21,Region III,shipped
+ORD-20085,user_at_example.com,SKU-1055,2,302.68,0.25,2025-02-02,2025-02-08,Region IV-A,delivered
+ORD-20086,user86@example.com,SKU-1050,1,2667.19,,2025-08-19,,Region XI,delivered
+ORD-20087,user87@example.com,SKU-1013,8,2393.57,0.33,2025-01-19,2025-01-25,Region III,processing
+ORD-20088,user88@example.com,SKU-1054,7,639.56,,2025-12-16,2025-12-12,CAR,pending
+ORD-20089,user89@example.com,SKU-1023,6,1079.65,0.38,2025-12-20,2025-12-28,CAR,delivered
+ORD-20090,not-an-email,SKU-1039,5,2029.4,0.08,2025-06-10,2025-06-17,NCR,shipped
+ORD-20091,user91@example.com,SKU-1000,8,187.94,0.38,2025-03-14,2025-03-19,CAR,processing
+ORD-20092,user92@example.com,SKU-1046,2,287.27,0.35,2025-11-29,2025-12-06,Region IV-A,shipped
+ORD-20093,user93@example.com,SKU-1001,7,2512.24,,2025-07-14,2025-07-23,NCR,cancelled
+ORD-20094,user94@example.com,SKU-1050,1,1184.23,0.07,2025-07-13,2025-07-19,Region III,shipped
+ORD-20095,user95@example.com,SKU-1030,3,2269.33,0.32,2025-02-20,2025-02-27,Region VII,cancelled
+ORD-20096,user96@example.com,SKU-1010,1,2088.53,1.84,2025-01-16,,NCR,shipped
+ORD-20097,user97@example.com,SKU-1055,3,426.76,0.0,2025-04-24,,CAR,processing
+ORD-20098,user98@example.com,SKU-1012,9,844.35,0.08,2025-03-04,2025-03-06,Region IV-A,cancelled
+ORD-20099,user99@example.com,SKU-1038,2,1111.48,0.23,2025-11-21,2025-11-24,CAR,processing
+ORD-20100,user100@example.com,SKU-1043,7,2810.39,0.17,2025-03-29,2025-04-07,Region III,delivered
+ORD-20101,user101@example.com,SKU-1059,2,1694.82,0.29,2025-06-04,2025-06-11,Region XI,processing
+ORD-20102,user102@example.com,SKU-1046,5,2593.26,0.18,2025-09-20,2025-09-26,Region IV-A,PENDING
+  ORD-20103,user103@example.com,SKU-1029,9,2586.22,0.25,2025-12-17,2025-12-18,Region III,shipped
+  ORD-20104,user104@example.com,SKU-1046,8,2369.17,,2025-01-31,2025-02-08,Region III,delivered
+ORD-20105,user105@example.com,SKU-1045,4,1440.74,,2025-05-22,2025-05-27,Region XI,pending
+ORD-20106,user106@example.com,SKU-1044,4,233.98,0.24,2025-01-13,2025-01-17,CAR,pending
+ORD-20107,user107@example.com,SKU-1034,2,101.98,0.03,2025-01-28,2025-02-03,Region IV-A,delivered
+ORD-20108,user_at_example.com,SKU-1057,1,2518.95,1.72,2025-10-11,2025-10-19,Region VII,pending
+ORD-20109,user109@example.com,SKU-1057,2,1775.07,1.25,2025-11-13,2025-11-15,NCR,shipped
+ORD-20110,user110@example.com,SKU-1040,5,1716.53,0.3,2025-04-02,2025-04-03,Region XI,pending
+ORD-20111,user111@example.com,SKU-1026,6,373.97,0.15,2025-07-16,2025-07-19,Region VII,cancelled
+  ORD-20112,user112@example.com,SKU-1059,9,2914.06,0.25,2025-11-19,2025-11-24,Region IV-A,delivered
+ORD-20113,user113@example.com,SKU-1039,-2,818.77,0.18,2025-06-19,2025-06-27,Region XI,cancelled
+ORD-20114,user114@example.com,SKU-1048,2,1391.88,,2025-07-02,2025-07-06,NCR,CANCELLED
+ORD-20115,user115@example.com,SKU-1042,4,1768.21,0.26,2025-07-22,2025-07-24,Region VII,cancelled
+ORD-20116,user116@example.com,SKU-1044,1,2071.11,0.24,2025-08-25,2025-09-03,Region XI,pending
+ORD-20117,user117@example.com,SKU-1020,5,-99.0,0.17,2025-04-29,2025-05-01,Region XI,cancelled
+  ORD-20118,user118@example.com,SKU-1021,2,604.49,0.3,2025-10-16,2025-10-25,Region IV-A,processing
+  ORD-20119,user119@example.com,SKU-1055,4,705.62,0.08,2025-07-17,2025-07-19,Region VII,pending
+ORD-20120,user120@example.com,SKU-1000,1,2879.09,0.05,2025-04-25,2025-05-02,Region III,shipped
+ORD-20121,user121@example.com,SKU-1053,6,1153.77,0.06,2025-09-15,2025-09-16,Region XI,shipped
+ORD-20122,user122@example.com,SKU-1018,6,1672.1,0.11,2025-05-30,2025-06-04,NCR,processing
+ORD-20123,user123@example.com,SKU-1012,8,1824.35,0.29,2025-10-15,2025-10-20,Region IV-A,cancelled
+ORD-20124,user124@example.com,SKU-1022,5,2361.29,0.32,2025-02-25,2025-02-28,CAR,processing
+ORD-20125,user125@example.com,SKU-1034,five,1272.4,0.29,2025-11-25,2025-12-02,Region XI,processing
+  ORD-20126,user126@example.com,SKU-1049,1,1851.29,0.13,2025-01-15,2025-01-24,Region III,processing
+ORD-20127,user127@example.com,SKU-1006,9,2844.6,0.03,2025-10-23,2025-10-30,NCR,cancelled
+ORD-20128,user128@example.com,SKU-1019,9,2676.04,0.37,2025-06-13,2025-06-19,Region IV-A,cancelled
+ORD-20129,user129@example.com,SKU-1027,3,1524.57,0.01,2025-10-13,,Region III,cancelled
+ORD-20130,user130@example.com,SKU-1054,4,1578.06,0.21,2025-10-28,2025-10-30,Region XI,DELIVERED
+ORD-20131,user131@example.com,SKU-1039,6,2547.25,1.79,2025-04-10,,NCR,delivered
+ORD-20132,user132@example.com,SKU-1001,8,2471.02,0.13,2025-02-16,2025-02-25,Region XI,shipped
+ORD-20133,user133@example.com,SKU-1020,3,1801.47,0.12,2025-06-14,2025-06-18,Region IV-A,shipped
+ORD-20134,user134@example.com,SKU-1011,4,320.39,0.33,2025-11-16,,Region IV-A,shipped
+ORD-20135,user135@example.com,SKU-1039,2,1793.43,0.29,2025-01-01,2024-12-28,Region III,CANCELLED
+ORD-20136,user136@example.com,SKU-1053,9,2995.91,0.34,2025-12-11,2025-12-19,Region III,processing
+ORD-20137,user137@example.com,SKU-1045,2,468.86,0.21,2025-07-08,2025-07-05,Region III,processing
+ORD-20138,user138@example.com,SKU-1045,1,788.18,0.17,2025-01-13,2025-01-18,Region IV-A,cancelled
+ORD-20139,user139@example.com,SKU-1041,5,2386.35,,2025-09-25,2025-09-26,Region IV-A,processing
+ORD-20140,user140@example.com,SKU-1035,3,961.35,0.14,2025-03-26,2025-04-04,NCR,processing
+ORD-20141,user141@example.com,SKU-1008,5,287.62,0.27,2025-09-03,2025-09-01,Region VII,cancelled
+ORD-20142,user142@example.com,SKU-1008,2,325.63,1.11,2025-05-17,2025-05-22,NCR,processing
+ORD-20143,user143@example.com,SKU-1055,4,1898.48,0.36,2025-08-03,2025-08-10,Region IV-A,pending
+ORD-20144,user144@example.com,SKU-1001,8,730.53,0.09,2025-06-01,2025-06-02,NCR,cancelled
+ORD-20145,user145@example.com,SKU-1040,4,1652.74,0.38,2025-02-09,2025-02-10,Region IV-A,SHIPPED
+ORD-20146,user146@example.com,SKU-1018,4,2387.28,1.64,2025-12-07,,Region VII,PENDING
+ORD-20147,user147@example.com,SKU-1034,8,1429.96,0.21,2025-03-02,2025-03-05,CAR,pending
+ORD-20148,,SKU-1003,3,404.97,0.35,2025-11-19,2025-11-26,Region XI,delivered
+ORD-20149,user149@example.com,SKU-1028,4,1415.85,0.29,2025-08-14,2025-08-21,NCR,delivered
+ORD-20150,user_at_example.com,SKU-1042,4,1445.7,0.09,2025-12-23,2025-12-24,NCR,CANCELLED
+ORD-20151,user151@example.com,SKU-1056,8,2808.91,0.35,2025-11-02,2025-11-05,Region III,cancelled
+ORD-20152,user_at_example.com,SKU-1040,5,2938.24,0.19,2025-03-03,2025-03-06,Region III,pending
+ORD-20153,user153@example.com,SKU-1042,3,789.4,0.36,2025-12-02,,,processing
+ORD-20154,user154@example.com,SKU-1046,9,2655.4,,2025-01-23,2025-01-20,NCR,shipped
+ORD-20155,user155@example.com,SKU-1010,7,565.21,0.2,2025-01-22,2025-01-28,CAR,processing
+ORD-20156,user156@example.com,SKU-1046,7,1538.99,0.14,2025-04-25,2025-05-03,Region III,cancelled
+ORD-20157,user157@example.com,SKU-1002,2,2733.1,0.34,2025-01-02,2025-01-04,Region VII,pending
+ORD-20158,user_at_example.com,SKU-1044,4,2123.12,0.3,2025-08-10,2025-08-11,Region XI,delivered
+ORD-20159,user159@example.com,SKU-1032,6,2534.13,0.36,2025-08-18,2025-08-19,Region VII,cancelled
+ORD-20160,user160@example.com,SKU-1030,7,608.05,0.17,2025-12-17,2025-12-18,Region III,shipped
+ORD-20161,user161@example.com,SKU-1021,7,1135.32,0.03,2025-01-04,2025-01-08,CAR,pending
+ORD-20162,user162@example.com,SKU-1055,2,0.0,0.31,2025-05-19,2025-05-27,Region VII,processing
+ORD-20163,user163@example.com,SKU-1019,5,470.63,0.27,2025-03-18,2025-03-16,Region III,delivered
+ORD-20164,user164@example.com,SKU-1058,1,425.46,0.34,2025-12-15,2025-12-21,NCR,cancelled
+ORD-20165,user165@example.com,SKU-1049,4,1054.13,0.23,2025-09-14,2025-09-21,,delivered
+ORD-20166,user166@example.com,SKU-1046,2,285.29,0.1,2025-05-06,2025-05-09,NCR,processing
+ORD-20167,user167@example.com,SKU-1007,3,437.76,0.25,2025-02-12,2025-02-13,NCR,shipped
+ORD-20168,user168@example.com,SKU-1023,6,1017.29,0.08,2025-06-07,2025-06-08,,delivered
+ORD-20169,user169@example.com,SKU-1015,1,1747.94,0.05,2025-08-08,2025-08-09,CAR,delivered
+ORD-20170,user170@example.com,SKU-1009,4,1214.3,0.26,2025-07-28,2025-08-02,Region VII,pending
+ORD-20171,user171@example.com,SKU-1044,9,1467.21,0.34,2025-03-19,2025-03-20,CAR,delivered
+ORD-20172,user172@example.com,SKU-1002,2,2156.57,,2025-07-28,2025-07-30,Region XI,processing
+ORD-20173,user173@example.com,SKU-1006,8,2130.6,0.28,2025-09-02,2025-09-05,Region III,cancelled
+ORD-20174,user174@example.com,SKU-1056,2,916.99,0.24,2025-08-25,2025-08-27,Region VII,pending
+ORD-20175,user175@example.com,SKU-1026,6,56.82,0.02,2025-10-28,2025-11-06,Region IV-A,processing
+ORD-20176,user176@example.com,SKU-1023,8,2556.06,0.36,2025-12-12,2025-12-13,Region VII,shipped
+ORD-20177,user177@example.com,SKU-1018,8,438.36,0.19,2025-10-16,,CAR,cancelled
+ORD-20178,user178@example.com,SKU-1021,8,2377.96,0.25,2025-01-24,,CAR,shipped
+ORD-20179,user179@example.com,SKU-1056,2,1397.27,0.3,2025-08-05,2025-08-07,Region III,processing
+ORD-20180,user180@example.com,SKU-1046,9,2410.09,0.38,2025-04-26,2025-04-28,Region XI,pending
+ORD-20181,user181@example.com,SKU-1027,6,1884.61,0.13,2025-01-11,2025-01-15,NCR,pending
+ORD-20182,user182@example.com,SKU-1036,8,1613.35,0.28,2025-07-08,2025-07-12,Region XI,processing
+ORD-20183,user183@example.com,SKU-1019,5,2707.48,0.33,2025-10-08,2025-10-16,Region VII,shipped
+ORD-20184,user184@example.com,SKU-1059,3,2108.74,0.13,2025-01-24,2025-02-02,Region IV-A,shipped
+ORD-20185,user185@example.com,SKU-1023,five,287.68,0.03,2025-03-16,2025-03-21,NCR,delivered
+ORD-20186,user186@example.com,SKU-1036,5,-99.0,0.18,2025-09-02,2025-09-03,CAR,processing
+ORD-20187,user187@example.com,SKU-1053,9,2630.75,0.15,2025-03-09,2025-03-13,Region III,shipped
+ORD-20188,user188@example.com,SKU-1052,3,1956.79,0.13,2025-07-12,,Region VII,processing
+ORD-20189,user189@example.com,SKU-1024,6,1403.9,0.34,2025-03-29,2025-04-07,Region IV-A,processing
+ORD-20190,user190@example.com,SKU-1037,2,337.64,0.26,2025-10-29,2025-11-06,Region XI,pending
+ORD-20191,user191@example.com,SKU-1050,9,-99.0,0.23,2025-06-25,2025-07-04,Region VII,pending
+ORD-20192,user_at_example.com,SKU-1006,1,1492.14,0.14,2025-02-02,2025-02-03,Region III,cancelled
+ORD-20193,user193@example.com,SKU-1024,1,1234.58,1.79,2025-06-25,2025-07-04,CAR,pending
+ORD-20194,user194@example.com,SKU-1003,4,1934.98,0.04,2025-09-06,2025-09-13,Region IV-A,delivered
+ORD-20195,user195@example.com,SKU-1049,2,1029.29,0.12,2025-08-17,2025-08-21,Region III,shipped
+ORD-20196,user196@example.com,SKU-1052,8,2577.44,,2025-09-29,2025-10-06,Region XI,DELIVERED
+ORD-20197,user197@example.com,SKU-1050,3,706.79,0.39,2025-08-12,2025-08-21,NCR,processing
+ORD-20198,user198@example.com,SKU-1025,5,2758.36,1.66,2025-04-06,2025-04-09,Region VII,cancelled
+ORD-20199,user199@example.com,SKU-1036,6,186.79,0.12,2025-07-17,2025-07-26,CAR,delivered
+ORD-20200,user200@example.com,SKU-1002,7,1109.85,0.22,2025-05-16,2025-05-20,CAR,CANCELLED
+ORD-20201,user201@example.com,SKU-1000,4,1304.57,0.09,2025-03-20,2025-03-22,Region XI,cancelled
+ORD-20202,user202@example.com,SKU-1029,1,2970.3,0.38,2025-06-14,2025-06-17,Region IV-A,shipped
+ORD-20203,user203@example.com,SKU-1051,7,290.87,0.1,2025-06-15,2025-06-20,NCR,processing
+ORD-20204,user204@example.com,SKU-1014,4,628.21,0.21,2025-07-10,2025-07-14,Region XI,PENDING
+ORD-20205,user205@example.com,SKU-1054,1,2963.6,0.32,2025-12-14,2025-12-19,NCR,processing
+ORD-20206,user206@example.com,SKU-1006,3,1570.52,0.29,2025-12-02,2025-12-09,NCR,processing
+ORD-20207,user207@example.com,SKU-1044,9,2094.8,0.02,2025-11-22,2025-11-27,NCR,cancelled
+ORD-20208,user208@example.com,SKU-1018,6,2858.89,0.02,2025-11-29,2025-12-05,Region XI,processing
+ORD-20209,user209@example.com,SKU-1022,5,1983.62,0.37,2025-04-14,2025-04-13,Region IV-A,delivered
+ORD-20210,user210@example.com,SKU-1041,6,2938.99,0.19,2025-08-22,2025-08-26,NCR,processing
+ORD-20211,user211@example.com,SKU-1015,9,1924.26,0.29,2025-11-14,2025-11-21,Region III,delivered
+ORD-20212,user212@example.com,SKU-1044,4,65.95,,2025-07-09,2025-07-11,Region VII,cancelled
+ORD-20213,user213@example.com,SKU-1002,7,2573.64,0.39,2025-06-05,,Region IV-A,cancelled
+ORD-20214,user214@example.com,SKU-1032,3,142.22,0.07,2025-07-30,2025-08-04,Region XI,pending
+ORD-20215,user215@example.com,SKU-1037,4,939.47,0.39,2025-03-25,2025-04-02,Region XI,cancelled
+ORD-20216,user216@example.com,SKU-1016,7,852.08,0.27,2025-02-07,2025-02-10,Region VII,pending
+ORD-20217,user217@example.com,SKU-1026,7,1640.03,1.22,2025-07-26,2025-08-02,NCR,cancelled
+ORD-20218,user218@example.com,SKU-1003,1,1800.35,,2025-11-08,2025-11-09,Region IV-A,shipped
+ORD-20219,user_at_example.com,SKU-1021,6,1967.04,0.23,2025-08-21,2025-08-27,Region VII,shipped
+ORD-20220,user220@example.com,SKU-1011,7,2612.65,0.26,2025-07-14,2025-07-18,Region VII,delivered
+ORD-20221,user_at_example.com,SKU-1031,2,2823.38,0.17,2025-12-04,2025-12-06,Region XI,pending
+ORD-20222,user222@example.com,SKU-1022,1,488.3,0.23,2025-03-31,2025-04-06,Region III,pending
+ORD-20223,user223@example.com,SKU-1025,9,1343.31,0.33,2025-02-24,2025-03-03,NCR,pending
+ORD-20224,user224@example.com,SKU-1005,3,2313.07,0.17,2025-01-16,2025-01-22,Region III,shipped
+ORD-20225,user225@example.com,SKU-1042,6,969.71,0.1,2025-05-14,2025-05-23,Region IV-A,delivered
+ORD-20226,,SKU-1018,7,2289.13,0.06,2025-08-06,2025-08-11,Region III,processing
+ORD-20227,user227@example.com,SKU-1051,9,1960.99,0.09,2025-07-09,2025-07-12,Region VII,cancelled
+  ORD-20228,user228@example.com,SKU-1033,2,906.98,0.37,2025-02-19,2025-02-25,CAR,PROCESSING
+ORD-20229,user229@example.com,SKU-1051,9,953.2,0.02,2025-06-16,2025-06-18,NCR,shipped
+ORD-20230,user230@example.com,SKU-1034,2,943.15,0.19,2025-01-21,2025-01-27,Region III,delivered
+ORD-20231,user231@example.com,SKU-1011,7,1151.26,0.37,2025-08-26,2025-09-04,Region IV-A,cancelled
+ORD-20232,user232@example.com,SKU-1003,8,1342.26,0.26,2025-06-28,2025-07-07,Region XI,DELIVERED
+ORD-20233,user233@example.com,SKU-1058,6,-99.0,0.06,2025-09-30,2025-10-09,Region XI,cancelled
+ORD-20234,user234@example.com,SKU-1058,1,1829.34,0.07,2025-10-07,2025-10-14,Region XI,processing
+ORD-20235,user235@example.com,SKU-1023,2,2111.66,0.31,2025-03-18,2025-03-27,Region XI,cancelled
+ORD-20236,user236@example.com,SKU-1013,9,814.4,0.26,2025-05-21,2025-05-26,CAR,delivered
+ORD-20237,user237@example.com,SKU-1030,1,2545.26,0.27,2025-03-12,,Region XI,shipped
+ORD-20238,user238@example.com,SKU-1003,2,2736.13,0.29,2025-10-13,,Region III,processing
+ORD-20239,user239@example.com,SKU-1052,2,1458.55,0.2,2025-05-30,2025-06-06,NCR,delivered
+  ORD-20240,user240@example.com,SKU-1001,9,1020.13,0.25,2025-05-26,2025-05-23,Region VII,cancelled
+ORD-20241,user241@example.com,SKU-1041,2,2383.86,0.06,2025-07-16,,CAR,processing
+ORD-20242,user242@example.com,SKU-1028,-2,2008.74,0.36,2025-10-07,2025-10-13,Region IV-A,delivered
+ORD-20243,user243@example.com,SKU-1057,6,2027.45,0.28,2025-06-21,2025-06-30,Region IV-A,cancelled
+ORD-20244,user244@example.com,SKU-1057,6,2107.35,0.11,2025-11-29,2025-12-05,CAR,pending
+ORD-20245,user245@example.com,SKU-1024,6,2985.6,0.35,2025-04-25,2025-04-29,Region III,delivered
+ORD-20246,user246@example.com,SKU-1026,8,394.03,,2025-10-17,2025-10-23,Region XI,shipped
+ORD-20247,user247@example.com,SKU-1001,1,2711.95,0.14,2025-05-12,2025-05-19,Region IV-A,delivered
+ORD-20248,,SKU-1022,4,546.42,,2025-05-18,2025-05-25,CAR,processing
+ORD-20249,user249@example.com,SKU-1012,2,2116.49,0.14,2025-10-03,2025-10-10,,processing
+ORD-20250,user250@example.com,SKU-1050,3,1284.3,0.03,2025-09-07,2025-09-14,NCR,SHIPPED
+ORD-20251,user251@example.com,SKU-1055,3,2488.05,0.4,2025-05-20,2025-05-16,Region XI,pending
+ORD-20252,user252@example.com,SKU-1013,2,1719.2,0.23,2025-05-06,,CAR,delivered
+ORD-20253,user253@example.com,SKU-1020,5,366.05,0.14,2025-03-07,2025-03-13,Region VII,shipped
+  ORD-20254,user254@example.com,SKU-1026,2,140.5,,2025-01-07,2025-01-16,NCR,delivered
+ORD-20255,user255@example.com,SKU-1040,8,541.46,0.29,2025-08-28,,CAR,processing
+ORD-20256,user256@example.com,SKU-1053,8,1193.71,0.36,2025-05-13,2025-05-14,Region XI,processing
+ORD-20257,user257@example.com,SKU-1035,-2,835.91,0.28,2025-02-02,2025-02-05,Region III,delivered
+ORD-20258,user258@example.com,SKU-1034,5,1677.93,0.37,2025-01-27,,Region VII,delivered
+ORD-20259,user259@example.com,SKU-1043,9,2733.7,,2025-08-05,2025-08-13,Region XI,processing
+ORD-20260,user260@example.com,SKU-1021,9,2513.05,0.06,2025-09-24,2025-10-02,CAR,SHIPPED
+ORD-20261,user261@example.com,SKU-1039,6,395.79,0.25,2025-01-10,2025-01-17,CAR,DELIVERED
+ORD-20262,user262@example.com,SKU-1015,1,191.46,0.27,2025-08-01,2025-08-04,Region XI,cancelled
+ORD-20263,user263@example.com,SKU-1034,2,2290.27,0.03,2025-09-10,2025-09-16,NCR,cancelled
+ORD-20264,user264@example.com,SKU-1054,2,683.31,,2025-01-21,2025-01-24,Region III,processing
+ORD-20265,user265@example.com,SKU-1052,6,2224.01,0.03,2025-07-02,2025-07-05,Region VII,processing
+ORD-20266,user_at_example.com,SKU-1009,,108.62,0.38,2025-07-05,2025-07-09,NCR,pending
+ORD-20267,user267@example.com,SKU-1027,7,754.72,1.68,2025-09-06,2025-09-03,Region VII,processing
+ORD-20268,user268@example.com,SKU-1002,2,2039.24,0.37,2025-12-23,,Region VII,pending
+ORD-20269,user269@example.com,SKU-1026,2,2962.05,0.15,2025-10-24,2025-11-01,Region IV-A,PENDING
+ORD-20270,user270@example.com,SKU-1041,5,2176.64,0.09,2025-07-23,,Region VII,cancelled
+ORD-20271,user271@example.com,SKU-1046,3,1652.81,0.36,2025-03-04,,CAR,cancelled
+ORD-20272,user272@example.com,SKU-1047,9,169.65,0.31,2025-11-05,,NCR,processing
+ORD-20273,user273@example.com,SKU-1022,8,193.51,0.2,2025-08-31,,Region III,pending
+ORD-20274,user274@example.com,SKU-1019,5,1243.96,0.25,2025-09-22,,CAR,shipped
+ORD-20275,user275@example.com,SKU-1059,5,1435.66,0.19,2025-06-01,2025-06-09,CAR,processing
+ORD-20276,user276@example.com,SKU-1052,4,396.85,0.04,2025-11-06,2025-11-10,Region IV-A,pending
+ORD-20277,user277@example.com,SKU-1021,5,1820.23,0.19,2025-10-17,,NCR,processing
+ORD-20278,user278@example.com,SKU-1044,2,1753.8,,2025-06-16,2025-06-22,NCR,processing
+ORD-20279,user279@example.com,SKU-1037,8,1110.14,0.28,2025-05-02,2025-05-08,Region IV-A,shipped
+ORD-20280,user280@example.com,SKU-1055,6,619.13,0.0,2025-07-30,2025-08-07,Region VII,cancelled
+ORD-20281,user281@example.com,SKU-1009,2,971.47,0.38,2025-09-21,2025-09-26,NCR,delivered
+ORD-20282,user282@example.com,SKU-1058,2,2182.04,0.21,2025-08-06,,CAR,pending
+ORD-20283,user283@example.com,SKU-1013,2,698.47,0.36,2025-09-08,2025-09-14,CAR,delivered
+ORD-20284,user284@example.com,SKU-1034,6,908.13,0.08,2025-08-10,2025-08-08,CAR,delivered
+ORD-20285,user285@example.com,SKU-1039,4,90.65,0.38,2025-07-23,2025-07-31,Region III,pending
+ORD-20286,user286@example.com,SKU-1053,5,107.41,,2025-03-03,2025-03-10,CAR,delivered
+ORD-20287,user287@example.com,SKU-1026,2,114.62,0.09,2025-01-18,2025-01-22,Region IV-A,cancelled
+ORD-20288,user288@example.com,SKU-1022,7,2212.98,0.01,2025-11-26,2025-11-25,Region VII,cancelled
+ORD-20289,user289@example.com,SKU-1042,2,2813.13,1.78,2025-01-04,,CAR,shipped
+ORD-20290,user290@example.com,SKU-1011,7,1428.95,,2025-01-15,2025-01-21,Region VII,cancelled
+ORD-20291,user291@example.com,SKU-1008,4,904.32,0.12,2025-06-03,2025-06-10,Region III,processing
+ORD-20292,user292@example.com,SKU-1056,8,1366.47,0.16,2025-04-18,2025-04-24,Region XI,cancelled
+ORD-20293,user293@example.com,SKU-1025,9,318.13,0.03,2025-01-28,2025-01-31,Region III,pending
+ORD-20294,user294@example.com,SKU-1024,3,2368.31,1.42,2025-08-21,2025-08-26,Region XI,shipped
+ORD-20295,user295@example.com,SKU-1038,8,2889.49,,2025-06-11,2025-06-17,NCR,pending
+ORD-20296,user296@example.com,SKU-1021,3,782.6,0.27,2025-11-30,2025-12-08,NCR,pending
+ORD-20297,user297@example.com,SKU-1057,2,2268.01,0.2,2025-02-26,2025-03-03,Region XI,pending
+ORD-20298,user298@example.com,SKU-1056,3,1953.29,0.05,2025-04-28,2025-05-04,Region III,pending
+ORD-20299,user299@example.com,SKU-1009,8,531.72,,2025-05-02,,Region IV-A,pending
+ORD-20300,user_at_example.com,SKU-1018,five,1143.62,0.34,2025-11-11,2025-11-15,Region IV-A,delivered
+ORD-20301,user301@example.com,SKU-1040,4,2236.91,0.38,2025-07-19,2025-07-28,Region IV-A,cancelled
+ORD-20302,user302@example.com,SKU-1016,8,2379.99,0.21,2025-07-22,2025-07-23,Region III,shipped
+ORD-20303,user303@example.com,SKU-1016,9,2718.08,0.11,2025-08-09,2025-08-14,NCR,shipped
+ORD-20304,user304@example.com,SKU-1056,8,1308.41,0.08,2025-03-29,2025-04-07,Region VII,pending
+ORD-20305,user305@example.com,SKU-1028,8,2083.31,0.09,2025-02-28,2025-03-06,NCR,shipped
+ORD-20306,user306@example.com,SKU-1034,6,2091.68,0.05,2025-09-08,,Region III,delivered
+ORD-20307,user307@example.com,SKU-1046,4,1761.7,0.33,2025-03-10,2025-03-13,Region XI,CANCELLED
+ORD-20308,user_at_example.com,SKU-1011,8,1195.89,0.1,2025-01-26,2025-02-03,CAR,pending
+ORD-20309,user309@example.com,SKU-1030,7,394.74,0.08,2025-07-01,2025-07-02,Region XI,delivered
+ORD-20310,user_at_example.com,SKU-1000,2,944.27,0.04,2025-11-29,2025-12-08,NCR,cancelled
+ORD-20311,user311@example.com,SKU-1047,,1437.62,,2025-01-14,2025-01-15,NCR,pending
+ORD-20312,user312@example.com,SKU-1013,3,1191.53,0.24,2025-11-02,2025-11-04,Region III,pending
+ORD-20313,user313@example.com,SKU-1042,3,1219.63,,2025-10-26,2025-10-31,NCR,pending
+  ORD-20314,user314@example.com,SKU-1036,3,2859.36,0.0,2025-02-11,2025-02-20,Region XI,cancelled
+ORD-20315,user315@example.com,SKU-1030,5,834.76,0.13,2025-09-02,2025-09-08,Region VII,delivered
+  ORD-20316,user316@example.com,SKU-1004,4,2242.98,0.35,2025-10-01,2025-10-09,Region XI,processing
+  ORD-20317,user317@example.com,SKU-1013,2,2882.12,0.14,2025-12-23,2025-12-24,Region III,shipped
+  ORD-20318,user_at_example.com,SKU-1024,1,1577.26,0.11,2025-12-15,2025-12-23,CAR,shipped
+ORD-20319,user319@example.com,SKU-1000,4,-99.0,0.05,2025-02-01,2025-02-07,Region IV-A,delivered
+ORD-20320,user320@example.com,SKU-1009,8,768.58,0.17,2025-07-24,2025-07-30,Region IV-A,delivered
+ORD-20321,user321@example.com,SKU-1044,5,1616.89,0.34,2025-06-30,,Region III,pending
+ORD-20322,user322@example.com,SKU-1006,9,2837.78,0.23,2025-09-06,,CAR,shipped
+ORD-20323,user323@example.com,SKU-1045,9,1724.81,,2025-11-19,2025-11-25,CAR,processing
+ORD-20324,,SKU-1041,7,1001.31,0.27,2025-08-23,2025-08-28,Region III,delivered
+ORD-20325,user325@example.com,SKU-1039,6,1145.55,0.28,2025-09-22,2025-09-19,Region XI,delivered
+ORD-20326,user326@example.com,SKU-1027,2,-99.0,0.27,2025-04-19,2025-04-23,Region III,shipped
+ORD-20327,user327@example.com,SKU-1011,3,2442.36,0.39,2025-04-09,,Region XI,SHIPPED
+ORD-20328,user328@example.com,SKU-1020,5,94.54,1.46,2025-05-14,2025-05-21,Region IV-A,pending
+ORD-20329,user329@example.com,SKU-1053,7,-99.0,0.13,2025-09-24,2025-09-27,Region XI,PROCESSING
+ORD-20330,user330@example.com,SKU-1051,9,2415.61,1.14,2025-01-17,,Region IV-A,shipped
+ORD-20331,user331@example.com,SKU-1009,6,1223.01,0.39,2025-03-02,2025-03-05,Region XI,cancelled
+ORD-20332,user332@example.com,SKU-1040,6,597.8,0.15,2025-07-22,2025-07-24,Region III,delivered
+ORD-20333,user333@example.com,SKU-1039,9,2974.91,0.1,2025-08-11,2025-08-18,CAR,shipped
+ORD-20334,user334@example.com,SKU-1026,8,1295.76,0.38,2025-04-07,,Region III,pending
+ORD-20335,user335@example.com,SKU-1026,6,-99.0,0.35,2025-10-22,2025-10-29,Region IV-A,processing
+ORD-20336,user336@example.com,SKU-1010,7,0.0,0.26,2025-01-04,2025-01-09,NCR,CANCELLED
+ORD-20337,user337@example.com,SKU-1010,6,1024.96,0.01,2025-04-03,2025-04-08,Region XI,cancelled
+  ORD-20338,user338@example.com,SKU-1028,9,1009.37,1.61,2025-03-31,2025-04-08,Region VII,pending
+ORD-20339,user339@example.com,SKU-1024,3,1358.25,,2025-01-31,2025-02-01,,delivered
+ORD-20340,user340@example.com,SKU-1044,8,2538.85,1.22,2025-03-03,2025-03-04,CAR,delivered
+ORD-20341,user341@example.com,SKU-1045,5,792.91,0.09,2025-03-18,2025-03-19,Region XI,shipped
+ORD-20342,user342@example.com,SKU-1040,3,-99.0,0.23,2025-10-05,,Region VII,cancelled
+ORD-20343,user343@example.com,SKU-1008,-2,1614.92,0.34,2025-04-15,2025-04-22,CAR,shipped
+  ORD-20344,user344@example.com,SKU-1033,8,181.96,0.02,2025-08-04,2025-08-09,Region III,cancelled
+ORD-20345,user345@example.com,SKU-1046,1,1911.48,0.23,2025-02-02,2025-02-05,Region XI,delivered
+ORD-20346,user346@example.com,SKU-1047,4,496.56,0.32,2025-02-15,2025-02-21,Region VII,delivered
+ORD-20347,user347@example.com,SKU-1042,1,1157.11,0.14,2025-03-06,,Region III,shipped
+ORD-20348,user348@example.com,SKU-1044,7,1011.95,,2025-04-07,2025-04-08,Region XI,pending
+ORD-20349,user349@example.com,SKU-1049,five,1843.96,0.38,2025-11-27,2025-12-01,,delivered
+  ORD-20350,user350@example.com,SKU-1031,1,599.07,,2025-07-25,2025-07-30,CAR,pending
+ORD-20351,not-an-email,SKU-1015,2,1995.53,,2025-01-21,,Region IV-A,delivered
+ORD-20352,user352@example.com,SKU-1000,6,660.94,0.27,2025-04-07,2025-04-11,Region XI,SHIPPED
+ORD-20353,user353@example.com,SKU-1026,8,2757.93,0.07,2025-01-06,2025-01-10,Region VII,processing
+ORD-20354,not-an-email,SKU-1008,1,2889.87,0.33,2025-03-12,2025-03-18,Region III,pending
+ORD-20355,user355@example.com,SKU-1045,1,868.11,0.17,2025-10-30,2025-11-06,Region VII,CANCELLED
+ORD-20356,user356@example.com,SKU-1048,2,0.0,0.35,2025-01-31,,Region XI,SHIPPED
+ORD-20357,user357@example.com,SKU-1017,2,819.53,0.21,2025-05-21,2025-05-25,Region III,shipped
+ORD-20358,user358@example.com,SKU-1026,2,1418.86,0.35,2025-01-06,2025-01-10,Region VII,cancelled
+ORD-20359,user359@example.com,SKU-1049,1,2876.75,0.11,2025-11-26,2025-12-03,NCR,shipped
+ORD-20360,user360@example.com,SKU-1030,3,1996.96,,2025-04-19,2025-04-24,Region VII,shipped
+ORD-20361,,SKU-1059,2,921.01,0.03,2025-03-10,2025-03-13,,shipped
+ORD-20362,user362@example.com,SKU-1007,8,1433.36,0.35,2025-10-10,2025-10-19,,delivered
+ORD-20363,user363@example.com,SKU-1058,8,953.28,0.31,2025-04-07,2025-04-15,Region XI,SHIPPED
+ORD-20364,user364@example.com,SKU-1025,6,1326.91,1.41,2025-02-28,2025-03-04,NCR,pending
+ORD-20365,user365@example.com,SKU-1009,3,2180.82,0.34,2025-02-26,2025-03-06,Region IV-A,delivered
+ORD-20366,user366@example.com,SKU-1015,3,103.8,0.39,2025-08-20,2025-08-18,CAR,shipped
+ORD-20367,user367@example.com,SKU-1012,3,555.75,0.16,2025-02-26,2025-03-02,CAR,pending
+ORD-20368,user368@example.com,SKU-1041,5,2142.1,,2025-05-12,2025-05-16,CAR,delivered
+ORD-20369,user369@example.com,SKU-1039,2,2383.62,0.28,2025-01-06,2025-01-14,Region XI,DELIVERED
+ORD-20370,user370@example.com,SKU-1058,2,476.0,0.16,2025-02-20,2025-02-25,Region XI,delivered
+ORD-20371,user371@example.com,SKU-1054,4,1508.72,,2025-03-02,2025-03-05,NCR,pending
+  ORD-20372,user372@example.com,SKU-1003,5,-99.0,1.91,2025-05-11,2025-05-12,Region XI,delivered
+ORD-20373,user373@example.com,SKU-1050,9,2553.58,0.36,2025-05-21,2025-05-29,Region IV-A,processing
+ORD-20374,user374@example.com,SKU-1007,1,2053.78,0.33,2025-04-12,2025-04-14,NCR,delivered
+ORD-20375,user375@example.com,SKU-1053,9,2414.16,0.25,2025-11-23,2025-12-01,Region XI,shipped
+ORD-20376,user376@example.com,SKU-1032,5,-99.0,0.19,2025-06-10,2025-06-12,NCR,delivered
+ORD-20377,user377@example.com,SKU-1003,7,614.38,0.27,2025-11-11,2025-11-12,Region III,processing
+ORD-20378,user378@example.com,SKU-1036,1,916.59,0.07,2025-01-21,2025-01-26,Region VII,processing
+ORD-20379,user379@example.com,SKU-1037,6,2283.39,0.13,2025-10-22,2025-10-31,Region VII,CANCELLED
+ORD-20380,user380@example.com,SKU-1002,8,206.55,0.3,2025-01-15,2025-01-19,Region XI,shipped
+  ORD-20381,user381@example.com,SKU-1006,6,881.12,0.06,2025-01-28,2025-02-02,Region XI,delivered
+ORD-20382,user382@example.com,SKU-1051,3,2656.03,0.24,2025-07-30,2025-07-31,Region VII,processing
+ORD-20383,user383@example.com,SKU-1052,8,2570.01,0.13,2025-05-12,2025-05-15,Region III,processing
+ORD-20384,user384@example.com,SKU-1045,5,2573.36,1.2,2025-05-04,2025-05-13,Region XI,shipped
+ORD-20385,user385@example.com,SKU-1031,7,1307.64,0.2,2025-06-09,2025-06-11,CAR,delivered
+ORD-20386,user386@example.com,SKU-1023,2,2729.85,0.23,2025-02-27,2025-03-03,Region III,processing
+ORD-20387,user387@example.com,SKU-1013,1,1241.66,0.29,2025-04-21,,CAR,cancelled
+ORD-20388,user388@example.com,SKU-1012,3,325.95,,2025-12-22,2025-12-30,NCR,cancelled
+ORD-20389,user389@example.com,SKU-1044,5,830.11,,2025-12-19,2025-12-20,CAR,processing
+ORD-20390,user390@example.com,SKU-1016,5,1373.67,0.04,2025-03-23,2025-04-01,Region XI,shipped
+ORD-20391,user391@example.com,SKU-1006,5,866.48,0.2,2025-01-04,2025-01-11,NCR,processing
+ORD-20392,user392@example.com,SKU-1032,2,-99.0,0.05,2025-10-19,2025-10-27,Region IV-A,pending
+ORD-20393,user393@example.com,SKU-1033,7,725.4,0.32,2025-07-26,2025-08-01,Region III,delivered
+ORD-20394,user394@example.com,SKU-1057,7,1503.24,0.31,2025-06-30,2025-07-02,Region III,cancelled
+ORD-20395,user395@example.com,SKU-1040,8,902.53,0.17,2025-07-22,2025-07-25,Region IV-A,cancelled
+ORD-20396,user396@example.com,SKU-1055,4,1984.14,0.08,2025-04-11,2025-04-13,Region XI,cancelled
+ORD-20397,user397@example.com,SKU-1004,8,2422.29,0.18,2025-08-26,2025-09-04,Region VII,delivered
+ORD-20398,user398@example.com,SKU-1008,7,714.19,0.22,2025-06-21,2025-06-30,CAR,delivered
+ORD-20399,user399@example.com,SKU-1033,5,2193.26,0.38,2025-01-21,2025-01-23,Region III,pending
+ORD-20400,user400@example.com,SKU-1028,2,2036.45,0.08,2025-05-19,2025-05-25,NCR,pending
+ORD-20401,user401@example.com,SKU-1037,5,1262.93,0.25,2025-10-06,2025-10-10,Region VII,cancelled
+ORD-20402,user402@example.com,SKU-1050,5,916.31,0.01,2025-02-27,,CAR,processing
+ORD-20403,user403@example.com,SKU-1004,3,1540.09,0.06,2025-05-16,2025-05-17,Region VII,delivered
+ORD-20404,user404@example.com,SKU-1000,6,2059.42,0.2,2025-09-01,2025-09-02,Region III,processing
+ORD-20405,user405@example.com,SKU-1037,6,2623.9,0.13,2025-01-23,2025-01-27,NCR,processing
+ORD-20406,user406@example.com,SKU-1042,9,2432.33,0.13,2025-09-18,2025-09-21,Region XI,shipped
+ORD-20407,user407@example.com,SKU-1027,1,1454.81,0.32,2025-12-13,2025-12-16,Region III,pending
+ORD-20408,user408@example.com,SKU-1053,2,2871.95,0.23,2025-10-01,,Region III,processing
+ORD-20409,user409@example.com,SKU-1020,8,2455.79,0.05,2025-02-25,2025-03-05,NCR,pending
+ORD-20410,user410@example.com,SKU-1004,1,1504.95,0.24,2025-05-29,2025-05-30,,delivered
+ORD-20411,user411@example.com,SKU-1021,1,840.93,0.38,2025-08-12,2025-08-18,Region XI,processing
+ORD-20412,user412@example.com,SKU-1022,1,1225.69,0.11,2025-11-05,2025-11-12,Region IV-A,processing
+ORD-20413,user413@example.com,SKU-1019,7,1897.03,0.16,2025-07-01,2025-07-05,CAR,processing
+ORD-20414,user414@example.com,SKU-1017,4,0.0,0.28,2025-06-10,,Region XI,CANCELLED
+ORD-20415,user415@example.com,SKU-1008,five,264.95,0.38,2025-08-02,2025-08-09,Region XI,delivered
+ORD-20416,,SKU-1030,3,2186.81,0.32,2025-09-02,2025-09-04,CAR,delivered
+ORD-20417,user417@example.com,SKU-1056,,2951.75,0.3,2025-10-13,2025-10-18,Region IV-A,processing
+ORD-20418,user_at_example.com,SKU-1009,2,1429.49,0.38,2025-08-08,2025-08-12,Region IV-A,processing
+ORD-20419,user419@example.com,SKU-1036,9,1128.81,0.05,2025-02-14,2025-02-19,Region III,cancelled
+ORD-20420,user420@example.com,SKU-1037,6,1711.06,0.3,2025-11-24,2025-12-01,Region III,shipped
+ORD-20421,user421@example.com,SKU-1022,4,1457.52,0.15,2025-03-05,2025-03-14,Region XI,processing
+  ORD-20422,user422@example.com,SKU-1009,8,1461.12,0.29,2025-01-29,2025-01-30,CAR,shipped
+ORD-20423,user423@example.com,SKU-1002,2,2832.57,0.03,2025-09-27,2025-09-25,Region VII,delivered
+ORD-20424,user424@example.com,SKU-1008,3,906.82,0.09,2025-06-22,2025-06-24,CAR,cancelled
+ORD-20425,user425@example.com,SKU-1030,3,1581.87,0.16,2025-06-28,2025-07-06,Region IV-A,processing
+  ORD-20426,user426@example.com,SKU-1024,5,193.77,0.23,2025-12-06,2025-12-09,Region VII,delivered
+ORD-20427,user427@example.com,SKU-1001,5,2026.44,0.1,2025-06-12,2025-06-18,Region IV-A,shipped
+ORD-20428,user428@example.com,SKU-1014,6,2781.23,0.2,2025-06-07,,Region VII,shipped
+ORD-20429,user429@example.com,SKU-1028,3,2470.74,0.36,2025-11-28,,Region XI,delivered
+ORD-20430,user430@example.com,SKU-1019,2,565.14,,2025-01-10,2025-01-18,Region IV-A,shipped
+ORD-20431,user431@example.com,SKU-1022,5,1818.31,0.0,2025-11-09,2025-11-13,Region IV-A,cancelled
+ORD-20432,user432@example.com,SKU-1007,4,0.0,0.31,2025-07-01,2025-07-08,Region VII,pending
+ORD-20433,user433@example.com,SKU-1044,4,2932.53,,2025-03-30,2025-04-03,NCR,shipped
+ORD-20434,,SKU-1031,5,289.44,0.03,2025-01-10,2025-01-16,Region IV-A,cancelled
+ORD-20435,user435@example.com,SKU-1017,5,2371.89,0.1,2025-06-02,2025-06-04,Region XI,pending
+ORD-20436,user436@example.com,SKU-1005,9,2526.07,,2025-03-05,2025-03-06,CAR,cancelled
+ORD-20437,user437@example.com,SKU-1043,9,2325.15,0.29,2025-06-02,2025-06-06,NCR,pending
+ORD-20438,user438@example.com,SKU-1052,2,108.02,0.05,2025-06-22,,Region XI,PROCESSING
+ORD-20439,,SKU-1007,4,875.87,0.1,2025-09-13,2025-09-20,Region VII,delivered
+ORD-20440,user440@example.com,SKU-1055,1,2404.68,0.26,2025-04-21,2025-04-22,Region XI,cancelled
+ORD-20441,user441@example.com,SKU-1024,9,2491.71,0.07,2025-09-10,2025-09-12,Region III,pending
+ORD-20442,,SKU-1008,4,693.55,0.03,2025-04-06,,NCR,pending
+  ORD-20443,user443@example.com,SKU-1059,2,1746.05,0.05,2025-05-12,2025-05-16,,pending
+ORD-20444,user444@example.com,SKU-1007,4,305.6,0.38,2025-10-01,,Region III,cancelled
+ORD-20445,user445@example.com,SKU-1052,9,74.63,0.03,2025-06-13,2025-06-20,Region III,pending
+ORD-20446,user446@example.com,SKU-1026,2,2247.05,0.06,2025-12-23,2025-12-26,Region VII,pending
+ORD-20447,user447@example.com,SKU-1034,1,500.84,,2025-05-22,2025-05-31,Region XI,processing
+ORD-20448,user448@example.com,SKU-1056,2,1986.72,0.26,2025-08-30,2025-08-31,CAR,cancelled
+ORD-20449,user449@example.com,SKU-1025,3,-99.0,0.15,2025-04-07,,Region III,delivered
+  ORD-20450,user450@example.com,SKU-1006,4,1005.61,0.14,2025-08-28,2025-09-03,CAR,processing
+ORD-20451,user451@example.com,SKU-1040,7,555.67,0.32,2025-10-01,2025-10-07,NCR,delivered
+ORD-20452,user452@example.com,SKU-1027,5,2761.76,0.4,2025-10-26,,Region XI,shipped
+ORD-20453,user453@example.com,SKU-1045,,2627.66,0.32,2025-03-03,2025-03-10,Region IV-A,processing
+ORD-20454,user454@example.com,SKU-1029,8,-99.0,0.3,2025-03-02,2025-03-11,,PROCESSING
+ORD-20455,user455@example.com,SKU-1026,8,2098.23,0.29,2025-08-05,2025-08-13,Region XI,shipped
+ORD-20456,user456@example.com,SKU-1042,4,2212.63,1.6,2025-05-28,,Region III,delivered
+ORD-20457,user457@example.com,SKU-1058,2,2303.13,0.07,2025-04-23,,Region XI,cancelled
+ORD-20458,user458@example.com,SKU-1054,3,2262.79,0.24,2025-12-03,2025-12-09,Region IV-A,shipped
+ORD-20459,user459@example.com,SKU-1043,3,2499.36,0.19,2025-05-23,2025-05-25,CAR,processing
+ORD-20460,user460@example.com,SKU-1045,7,2937.03,0.38,2025-09-26,2025-09-28,Region III,cancelled
+ORD-20461,user461@example.com,SKU-1031,2,2604.83,0.15,2025-11-01,2025-11-07,Region III,shipped
+ORD-20462,user462@example.com,SKU-1042,6,188.46,0.0,2025-12-10,2025-12-15,Region IV-A,shipped
+ORD-20463,,SKU-1004,4,2313.11,1.14,2025-10-02,2025-10-08,Region IV-A,pending
+ORD-20464,user464@example.com,SKU-1054,3,56.05,0.29,2025-05-06,2025-05-11,Region III,shipped
+ORD-20465,user465@example.com,SKU-1047,3,1476.38,0.07,2025-05-05,2025-05-08,CAR,processing
+ORD-20466,,SKU-1044,1,929.1,0.19,2025-07-24,2025-07-30,CAR,delivered
+ORD-20467,user467@example.com,SKU-1057,7,1490.0,0.04,2025-02-21,2025-02-22,Region III,shipped
+ORD-20468,user468@example.com,SKU-1010,9,2004.37,0.26,2025-07-01,,CAR,pending
+  ORD-20469,user469@example.com,SKU-1019,5,2312.31,0.38,2025-07-17,,Region VII,pending
+ORD-20470,user470@example.com,SKU-1035,7,2044.89,0.26,2025-01-29,2025-01-31,NCR,shipped
+ORD-20471,user471@example.com,SKU-1007,5,1146.72,0.12,2025-07-31,,Region III,delivered
+ORD-20472,user472@example.com,SKU-1000,7,1079.12,0.05,2025-07-03,2025-07-04,Region XI,processing
+ORD-20473,user473@example.com,SKU-1009,8,1329.33,0.24,2025-01-13,2025-01-16,NCR,pending
+ORD-20474,user474@example.com,SKU-1055,2,2995.51,0.05,2025-08-02,2025-08-09,NCR,shipped
+  ORD-20475,user475@example.com,SKU-1006,7,1385.5,0.1,2025-11-21,2025-11-25,Region VII,pending
+ORD-20476,user476@example.com,SKU-1022,3,484.22,0.36,2025-08-17,2025-08-21,NCR,pending
+ORD-20477,user477@example.com,SKU-1009,2,2751.59,0.02,2025-10-27,2025-10-25,CAR,shipped
+ORD-20478,user478@example.com,SKU-1004,6,1610.69,2.0,2025-07-05,2025-07-08,Region XI,DELIVERED
+ORD-20479,user479@example.com,SKU-1050,4,1174.1,0.03,2025-05-25,2025-06-03,CAR,processing
+ORD-20480,user480@example.com,SKU-1048,1,156.81,0.06,2025-01-26,2025-01-24,NCR,cancelled
+ORD-20481,user481@example.com,SKU-1025,1,1704.03,0.32,2025-04-18,2025-04-19,Region VII,shipped
+  ORD-20482,user482@example.com,SKU-1010,5,271.83,0.17,2025-02-03,2025-02-08,,cancelled
+ORD-20483,user483@example.com,SKU-1014,3,1823.85,0.0,2025-06-14,2025-06-18,Region XI,cancelled
+ORD-20484,user484@example.com,SKU-1014,8,992.95,0.11,2025-06-09,2025-06-13,Region III,delivered
+ORD-20485,user485@example.com,SKU-1024,1,1265.62,0.12,2025-08-15,2025-08-24,Region VII,delivered
+ORD-20486,user486@example.com,SKU-1020,8,2558.98,0.09,2025-06-16,,CAR,cancelled
+ORD-20487,,SKU-1041,4,2376.73,0.25,2025-07-08,,Region III,delivered
+ORD-20488,user488@example.com,SKU-1044,6,1370.69,0.07,2025-12-31,2026-01-05,CAR,pending
+ORD-20489,user489@example.com,SKU-1050,9,2134.57,0.05,2025-02-27,2025-03-07,Region IV-A,shipped
+ORD-20490,user490@example.com,SKU-1033,1,910.09,0.1,2025-08-25,2025-08-29,NCR,shipped
+ORD-20491,user491@example.com,SKU-1022,1,2363.18,,2025-05-14,2025-05-19,Region XI,delivered
+ORD-20492,user492@example.com,SKU-1051,6,1311.4,0.38,2025-11-15,2025-11-19,Region VII,shipped
+ORD-20493,user493@example.com,SKU-1031,3,474.98,0.38,2025-05-07,2025-05-09,NCR,pending
+ORD-20494,user494@example.com,SKU-1038,1,202.43,0.09,2025-07-02,2025-07-08,CAR,delivered
+ORD-20495,,SKU-1008,2,0.0,0.18,2025-11-12,2025-11-13,NCR,delivered
+ORD-20496,user496@example.com,SKU-1013,6,1732.31,0.35,2025-07-28,2025-07-29,Region VII,shipped
+ORD-20497,user497@example.com,SKU-1059,9,997.3,0.11,2025-01-13,2025-01-21,Region III,cancelled
+ORD-20498,user498@example.com,SKU-1052,8,2555.06,0.19,2025-03-05,2025-03-12,Region III,delivered
+ORD-20499,not-an-email,SKU-1025,3,1729.29,0.09,2025-11-12,2025-11-14,Region XI,delivered
+ORD-20500,user500@example.com,SKU-1012,7,258.08,0.37,2025-09-01,2025-09-07,Region IV-A,delivered
+ORD-20501,user501@example.com,SKU-1029,5,1889.87,0.18,2025-08-03,2025-08-05,CAR,cancelled
+ORD-20502,user502@example.com,SKU-1047,2,0.0,0.09,2025-11-11,2025-11-14,NCR,shipped
+ORD-20503,user503@example.com,SKU-1053,8,423.18,0.35,2025-08-01,2025-08-06,Region III,shipped
+ORD-20504,user504@example.com,SKU-1048,5,484.68,0.37,2025-02-28,,Region VII,cancelled
+ORD-20505,user505@example.com,SKU-1032,,2022.43,0.28,2025-01-09,,Region XI,delivered
+ORD-20506,user_at_example.com,SKU-1006,2,135.99,0.29,2025-04-11,2025-04-18,Region IV-A,shipped
+ORD-20507,user507@example.com,SKU-1007,5,757.51,0.36,2025-01-06,2025-01-15,Region VII,delivered
+ORD-20508,user508@example.com,SKU-1014,2,1939.3,0.1,2025-12-26,2025-12-28,Region XI,processing
+ORD-20509,user509@example.com,SKU-1001,4,332.58,0.07,2025-01-14,2025-01-15,Region VII,cancelled
+ORD-20510,user_at_example.com,SKU-1022,9,2849.11,0.24,2025-06-21,2025-06-29,Region IV-A,cancelled
+ORD-20511,user511@example.com,SKU-1037,4,1293.59,0.01,2025-05-13,2025-05-18,NCR,pending
+ORD-20512,user512@example.com,SKU-1035,2,1149.47,0.34,2025-11-02,2025-11-08,CAR,processing
+ORD-20513,not-an-email,SKU-1015,5,2238.89,0.32,2025-06-27,,Region VII,cancelled
+ORD-20514,user514@example.com,SKU-1002,7,2436.7,0.01,2025-12-31,2026-01-01,Region XI,cancelled
+ORD-20515,user515@example.com,SKU-1031,4,106.6,0.06,2025-01-17,,Region VII,processing
+ORD-20516,user516@example.com,SKU-1033,3,1375.58,0.25,2025-12-18,2025-12-26,Region VII,processing
+ORD-20517,user517@example.com,SKU-1005,4,1245.7,0.28,2025-06-22,2025-06-23,CAR,cancelled
+ORD-20518,user518@example.com,SKU-1047,7,224.83,,2025-01-12,2025-01-17,CAR,delivered
+ORD-20519,user519@example.com,SKU-1002,1,365.81,0.38,2025-12-03,,Region XI,delivered
+ORD-20520,user520@example.com,SKU-1058,1,883.44,0.12,2025-09-02,,CAR,processing
+ORD-20521,user521@example.com,SKU-1021,4,1504.26,,2025-03-04,2025-03-09,Region III,shipped
+ORD-20522,not-an-email,SKU-1047,3,948.85,0.26,2025-11-08,2025-11-15,Region IV-A,shipped
+ORD-20523,user523@example.com,SKU-1041,5,64.93,0.38,2025-09-12,2025-09-14,Region XI,shipped
+ORD-20524,user_at_example.com,SKU-1042,-2,1357.52,0.22,2025-12-10,2025-12-16,Region IV-A,PROCESSING
+  ORD-20525,user525@example.com,SKU-1034,1,0.0,0.2,2025-09-12,2025-09-14,NCR,cancelled
+ORD-20526,user526@example.com,SKU-1045,5,1088.82,0.21,2025-05-26,2025-06-01,Region XI,cancelled
+ORD-20527,user527@example.com,SKU-1021,3,765.02,1.12,2025-12-23,2026-01-01,CAR,delivered
+ORD-20528,user528@example.com,SKU-1011,-2,923.47,,2025-09-13,2025-09-15,Region XI,pending
+ORD-20529,user529@example.com,SKU-1027,3,379.51,0.05,2025-05-08,,Region XI,cancelled
+ORD-20530,user530@example.com,SKU-1021,5,2323.81,,2025-03-08,2025-03-12,Region XI,delivered
+ORD-20531,not-an-email,SKU-1029,7,2922.42,0.23,2025-05-28,2025-06-02,NCR,cancelled
+ORD-20532,user532@example.com,SKU-1056,5,1225.15,0.11,2025-02-14,2025-02-19,NCR,pending
+ORD-20533,user533@example.com,SKU-1003,9,1341.96,0.2,2025-11-12,2025-11-18,NCR,processing
+ORD-20534,user534@example.com,SKU-1022,8,2157.33,0.09,2025-01-16,2025-01-21,Region IV-A,processing
+ORD-20535,,SKU-1052,6,2174.52,0.23,2025-12-26,2025-12-30,Region III,processing
+ORD-20536,user536@example.com,SKU-1012,4,441.63,0.12,2025-05-22,2025-05-31,Region XI,processing
+ORD-20537,user537@example.com,SKU-1050,7,2931.72,0.19,2025-04-23,2025-04-24,Region IV-A,pending
+ORD-20538,not-an-email,SKU-1024,9,130.69,0.33,2025-07-06,2025-07-09,NCR,delivered
+ORD-20539,user539@example.com,SKU-1015,9,1434.46,0.13,2025-04-12,2025-04-21,NCR,pending
+ORD-20540,user540@example.com,SKU-1019,1,2927.58,0.01,2025-11-06,2025-11-13,Region VII,pending
+ORD-20541,user541@example.com,SKU-1037,5,2673.78,0.11,2025-10-10,2025-10-13,NCR,PENDING
+ORD-20542,user542@example.com,SKU-1017,7,2049.51,0.05,2025-06-04,2025-06-09,CAR,shipped
+ORD-20543,user543@example.com,SKU-1054,1,199.55,0.13,2025-04-07,,NCR,CANCELLED
+ORD-20544,user544@example.com,SKU-1040,7,1860.75,,2025-10-03,2025-10-08,Region XI,processing
+  ORD-20545,user545@example.com,SKU-1014,five,2530.78,1.11,2025-12-06,2025-12-13,Region IV-A,processing
+ORD-20546,user546@example.com,SKU-1026,6,503.27,0.02,2025-09-19,2025-09-28,CAR,processing
+ORD-20547,user547@example.com,SKU-1046,7,717.22,0.3,2025-06-11,2025-06-13,Region IV-A,delivered
+ORD-20548,user548@example.com,SKU-1051,8,1111.39,0.23,2025-03-11,2025-03-19,Region IV-A,cancelled
+ORD-20549,user549@example.com,SKU-1045,3,1941.14,,2025-09-23,2025-10-01,Region III,pending
+ORD-20550,user550@example.com,SKU-1036,6,2121.73,0.17,2025-05-16,2025-05-15,Region VII,processing
+  ORD-20551,user551@example.com,SKU-1035,6,1638.36,0.04,2025-05-28,2025-06-04,Region IV-A,delivered
+ORD-20552,user552@example.com,SKU-1048,6,1212.28,0.35,2025-07-01,2025-07-04,NCR,cancelled
+ORD-20553,user553@example.com,SKU-1000,6,1014.74,0.3,2025-03-03,2025-02-28,NCR,shipped
+ORD-20554,user554@example.com,SKU-1031,4,1717.94,0.13,2025-09-14,2025-09-20,Region VII,processing
+ORD-20555,user555@example.com,SKU-1015,3,2524.65,0.13,2025-12-10,2025-12-12,Region XI,processing
+ORD-20556,user556@example.com,SKU-1012,6,2646.3,,2025-09-26,2025-09-27,Region XI,shipped
+ORD-20557,user557@example.com,SKU-1039,7,1176.17,0.13,2025-01-31,2025-02-06,Region III,pending
+ORD-20558,user558@example.com,SKU-1023,3,543.51,0.31,2025-01-03,2025-01-04,Region III,processing
+ORD-20559,user559@example.com,SKU-1021,4,151.93,0.18,2025-02-09,2025-02-10,Region III,processing
+ORD-20560,user560@example.com,SKU-1005,4,1841.83,1.81,2025-02-06,2025-02-12,Region XI,processing
+  ORD-20561,user561@example.com,SKU-1052,2,1703.63,0.37,2025-11-05,2025-11-09,Region XI,delivered
+ORD-20562,user562@example.com,SKU-1028,4,519.73,0.2,2025-09-21,,CAR,delivered
+ORD-20563,user563@example.com,SKU-1000,1,2840.84,0.0,2025-10-23,2025-10-27,Region XI,processing
+ORD-20564,user564@example.com,SKU-1039,1,524.0,0.35,2025-01-29,,Region III,cancelled
+ORD-20565,user565@example.com,SKU-1040,3,1025.86,0.2,2025-09-08,2025-09-15,CAR,CANCELLED
+ORD-20566,user566@example.com,SKU-1010,7,2212.29,0.23,2025-05-18,2025-05-20,Region XI,pending
+ORD-20567,user567@example.com,SKU-1037,9,1623.06,0.17,2025-05-13,2025-05-18,Region XI,delivered
+ORD-20568,user568@example.com,SKU-1005,7,1356.19,0.33,2025-07-20,2025-07-21,NCR,delivered
+ORD-20569,user569@example.com,SKU-1014,2,1581.74,1.84,2025-02-02,2025-02-10,Region III,cancelled
+ORD-20570,user570@example.com,SKU-1049,3,2080.79,0.03,2025-04-13,2025-04-18,Region XI,pending
+ORD-20571,user571@example.com,SKU-1046,3,860.36,1.22,2025-06-07,2025-06-10,,shipped
+ORD-20572,user572@example.com,SKU-1028,7,2103.09,0.03,2025-01-09,2025-01-18,Region XI,pending
+ORD-20573,user573@example.com,SKU-1039,3,1040.24,,2025-07-11,2025-07-16,Region VII,pending
+ORD-20574,user574@example.com,SKU-1009,8,655.48,0.19,2025-11-15,2025-11-24,Region IV-A,processing
+ORD-20575,user575@example.com,SKU-1044,1,2735.0,0.03,2025-08-15,2025-08-17,Region IV-A,delivered
+ORD-20576,user576@example.com,SKU-1013,3,1919.27,0.34,2025-10-15,2025-10-16,NCR,processing
+ORD-20577,user577@example.com,SKU-1040,8,2763.54,,2025-10-12,2025-10-13,Region IV-A,processing
+ORD-20578,user578@example.com,SKU-1035,2,2645.04,0.17,2025-09-22,,Region VII,pending
+ORD-20579,user579@example.com,SKU-1014,6,1507.09,0.4,2025-04-24,2025-04-28,Region VII,pending
+ORD-20580,user580@example.com,SKU-1032,7,2109.98,0.07,2025-03-22,2025-03-30,NCR,cancelled
+ORD-20581,,SKU-1002,9,2278.57,0.24,2025-08-23,2025-08-26,NCR,SHIPPED
+ORD-20582,user582@example.com,SKU-1008,1,1111.79,0.27,2025-08-07,2025-08-16,NCR,delivered
+ORD-20583,user583@example.com,SKU-1050,five,2737.68,0.23,2025-03-08,,,shipped
+ORD-20584,user584@example.com,SKU-1048,6,619.16,0.19,2025-06-03,2025-06-08,Region III,processing
+ORD-20585,user585@example.com,SKU-1024,2,1934.9,0.16,2025-12-31,2026-01-08,Region VII,delivered
+ORD-20586,user586@example.com,SKU-1057,5,770.89,0.38,2025-06-14,2025-06-22,Region III,shipped
+ORD-20587,user587@example.com,SKU-1021,6,2414.2,0.37,2025-11-01,2025-11-10,NCR,processing
+ORD-20588,user588@example.com,SKU-1001,7,2100.43,0.33,2025-07-19,2025-07-26,Region XI,cancelled
+  ORD-20589,user589@example.com,SKU-1045,1,614.59,1.71,2025-11-11,2025-11-16,,processing
+ORD-20590,user590@example.com,SKU-1052,2,2168.44,0.35,2025-12-03,,CAR,pending
+ORD-20591,user591@example.com,SKU-1019,1,2782.74,,2025-10-25,2025-11-03,Region III,shipped
+ORD-20592,user592@example.com,SKU-1017,9,1342.98,0.32,2025-08-16,,NCR,shipped
+ORD-20593,user593@example.com,SKU-1026,6,2524.71,0.35,2025-11-29,2025-12-08,Region XI,pending
+ORD-20594,user594@example.com,SKU-1058,1,1874.09,0.13,2025-02-01,2025-02-10,Region XI,shipped
+ORD-20595,user595@example.com,SKU-1023,1,1297.97,0.24,2025-10-30,,Region VII,pending
+ORD-20596,user596@example.com,SKU-1000,1,1014.18,0.29,2025-01-17,2025-01-13,Region XI,shipped
+ORD-20597,user597@example.com,SKU-1054,2,1915.97,1.1,2025-06-12,2025-06-18,CAR,shipped
+ORD-20598,user598@example.com,SKU-1001,2,2727.55,0.16,2025-01-28,2025-02-01,NCR,cancelled
+ORD-20599,user599@example.com,SKU-1049,8,2150.64,0.33,2025-01-24,,Region XI,pending
+ORD-20600,user600@example.com,SKU-1043,8,194.93,0.0,2025-11-01,2025-11-10,NCR,processing
+ORD-20601,user601@example.com,SKU-1023,2,913.45,,2025-07-10,2025-07-14,Region XI,shipped
+ORD-20602,user602@example.com,SKU-1022,1,2914.95,0.01,2025-05-04,2025-05-07,Region III,delivered
+ORD-20603,user603@example.com,SKU-1044,8,2821.33,0.05,2025-10-25,2025-10-29,Region XI,shipped
+ORD-20604,user604@example.com,SKU-1028,1,57.3,0.4,2025-12-12,,Region IV-A,pending
+ORD-20605,user605@example.com,SKU-1015,6,1624.2,0.13,2025-07-12,2025-07-20,NCR,cancelled
+ORD-20606,user606@example.com,SKU-1029,3,1900.95,0.4,2025-10-21,2025-10-23,NCR,cancelled
+ORD-20607,user607@example.com,SKU-1057,1,1942.07,0.08,2025-03-04,,NCR,delivered
+ORD-20608,user608@example.com,SKU-1032,2,647.45,,2025-05-08,2025-05-17,NCR,delivered
+  ORD-20609,user609@example.com,SKU-1032,2,431.59,0.25,2025-11-21,2025-11-23,NCR,shipped
+ORD-20610,user610@example.com,SKU-1017,9,136.44,0.31,2025-06-06,2025-06-10,NCR,shipped
+ORD-20611,user611@example.com,SKU-1050,6,1992.47,0.13,2025-06-20,2025-06-27,Region IV-A,cancelled
+ORD-20612,user_at_example.com,SKU-1006,8,2935.92,0.16,2025-07-31,2025-08-04,CAR,delivered
+ORD-20613,user613@example.com,SKU-1030,2,2450.51,0.12,2025-12-18,2025-12-20,Region III,pending
+ORD-20614,user614@example.com,SKU-1030,2,1583.31,0.22,2025-12-14,,Region VII,processing
+ORD-20615,user615@example.com,SKU-1003,8,1484.15,0.17,2025-05-13,,NCR,pending
+ORD-20616,user616@example.com,SKU-1005,7,1969.32,0.37,2025-03-24,2025-04-01,,shipped
+ORD-20617,user617@example.com,SKU-1038,6,1735.55,0.16,2025-11-04,,Region XI,shipped
+ORD-20618,user618@example.com,SKU-1044,8,1723.69,0.34,2025-05-18,2025-05-20,Region XI,shipped
+ORD-20619,user619@example.com,SKU-1022,9,2476.3,0.27,2025-11-09,2025-11-12,Region VII,cancelled
+ORD-20620,user620@example.com,SKU-1055,4,1191.59,0.23,2025-11-18,,NCR,shipped
+ORD-20621,user621@example.com,SKU-1001,3,2711.12,0.3,2025-11-22,,CAR,shipped
+ORD-20622,user622@example.com,SKU-1029,1,2412.8,0.29,2025-08-15,,CAR,processing
+ORD-20623,user623@example.com,SKU-1030,4,1197.69,0.36,2025-05-14,2025-05-20,Region XI,pending
+ORD-20624,user624@example.com,SKU-1003,4,376.39,0.21,2025-02-18,2025-02-19,CAR,DELIVERED
+ORD-20625,user625@example.com,SKU-1041,8,2955.54,0.06,2025-08-16,2025-08-17,Region III,cancelled
+ORD-20626,user626@example.com,SKU-1015,8,2597.92,,2025-03-06,2025-03-07,Region IV-A,processing
+ORD-20627,user627@example.com,SKU-1012,7,2662.63,0.3,2025-11-22,2025-11-28,Region III,delivered
+ORD-20628,not-an-email,SKU-1038,9,2813.39,0.15,2025-02-03,2025-02-05,Region XI,PENDING
+ORD-20629,user629@example.com,SKU-1059,2,2777.43,0.02,2025-07-05,2025-07-07,CAR,processing
+ORD-20630,user630@example.com,SKU-1003,7,2189.28,0.08,2025-01-31,2025-02-09,Region VII,shipped
+ORD-20631,user631@example.com,SKU-1026,4,315.0,0.06,2025-08-05,,NCR,cancelled
+ORD-20632,user632@example.com,SKU-1004,7,1627.49,0.06,2025-05-30,2025-06-05,Region VII,pending
+ORD-20633,user633@example.com,SKU-1017,2,505.6,0.01,2025-03-05,2025-03-06,Region XI,delivered
+ORD-20634,user634@example.com,SKU-1029,1,2389.2,0.19,2025-06-26,2025-07-01,Region VII,delivered
+ORD-20635,user635@example.com,SKU-1011,2,2456.31,0.33,2025-11-23,2025-11-30,Region XI,processing
+ORD-20636,user636@example.com,SKU-1014,9,-99.0,0.05,2025-08-22,2025-08-27,Region VII,pending
+ORD-20637,user637@example.com,SKU-1028,6,552.3,0.36,2025-11-26,2025-11-30,Region IV-A,pending
+ORD-20638,user638@example.com,SKU-1000,4,1647.38,1.91,2025-01-12,2025-01-16,CAR,processing
+  ORD-20639,user639@example.com,SKU-1028,4,2043.14,0.37,2025-12-05,2025-12-07,Region VII,delivered
+ORD-20640,user640@example.com,SKU-1023,6,809.51,0.17,2025-09-08,2025-09-14,CAR,shipped
+ORD-20641,user641@example.com,SKU-1012,7,1811.87,0.03,2025-05-20,2025-05-19,Region XI,delivered
+ORD-20642,user642@example.com,SKU-1012,6,1985.91,0.06,2025-11-06,2025-11-15,Region XI,cancelled
+ORD-20643,user643@example.com,SKU-1045,3,588.1,0.26,2025-02-28,2025-03-04,Region XI,processing
+ORD-20644,user644@example.com,SKU-1008,4,1782.79,0.32,2025-10-04,,Region III,processing
+ORD-20645,user645@example.com,SKU-1051,1,1443.05,0.2,2025-11-10,,Region III,pending
+ORD-20646,,SKU-1034,8,2178.41,0.2,2025-06-18,2025-06-26,Region XI,PROCESSING
+ORD-20647,user647@example.com,SKU-1004,9,852.19,0.15,2025-12-20,,Region III,shipped
+ORD-20648,user648@example.com,SKU-1057,7,1168.07,,2025-07-06,,CAR,delivered
+ORD-20649,user649@example.com,SKU-1043,5,1701.6,0.27,2025-03-03,,Region XI,delivered
+ORD-20650,user650@example.com,SKU-1010,2,2649.0,0.31,2025-10-18,2025-10-24,Region VII,shipped
+ORD-20651,user651@example.com,SKU-1057,8,300.7,0.12,2025-12-15,2025-12-21,NCR,cancelled
+ORD-20652,user652@example.com,SKU-1030,4,2255.78,,2025-12-16,2025-12-24,Region IV-A,pending
+ORD-20653,user653@example.com,SKU-1051,9,255.41,0.29,2025-03-06,2025-03-12,NCR,shipped
+ORD-20654,user654@example.com,SKU-1043,2,2534.97,0.11,2025-12-30,2026-01-02,Region IV-A,DELIVERED
+ORD-20655,user655@example.com,SKU-1057,4,697.29,0.21,2025-09-29,2025-10-07,Region IV-A,processing
+ORD-20656,user656@example.com,SKU-1017,3,2159.3,0.29,2025-06-30,2025-07-05,Region XI,CANCELLED
+  ORD-20657,user657@example.com,SKU-1020,4,1816.56,0.16,2025-08-09,,CAR,delivered
+ORD-20658,user658@example.com,SKU-1021,7,2134.01,0.16,2025-09-23,2025-09-24,Region XI,pending
+ORD-20659,user659@example.com,SKU-1008,2,2014.31,0.23,2025-06-17,,NCR,pending
+ORD-20660,user660@example.com,SKU-1059,1,1938.78,0.15,2025-08-11,2025-08-12,Region VII,pending
+ORD-20661,user661@example.com,SKU-1020,4,2305.63,0.22,2025-08-26,,Region XI,delivered
+ORD-20662,user662@example.com,SKU-1040,3,1198.08,0.07,2025-12-12,2025-12-19,CAR,shipped
+ORD-20663,user663@example.com,SKU-1008,2,1237.72,0.21,2025-01-19,2025-01-20,Region XI,pending
+ORD-20664,user664@example.com,SKU-1031,2,1007.89,,2025-06-09,2025-06-13,Region IV-A,pending
+  ORD-20665,user665@example.com,SKU-1010,7,841.23,0.23,2025-07-08,2025-07-16,Region III,shipped
+ORD-20666,user666@example.com,SKU-1028,4,851.7,1.37,2025-10-24,2025-10-28,CAR,shipped
+ORD-20667,user667@example.com,SKU-1025,4,1463.47,0.08,2025-05-26,2025-06-02,CAR,cancelled
+ORD-20668,user668@example.com,SKU-1058,1,1009.84,0.39,2025-07-31,2025-08-01,NCR,cancelled
+ORD-20669,user669@example.com,SKU-1042,6,2515.16,,2025-07-26,2025-08-01,Region XI,delivered
+ORD-20670,user670@example.com,SKU-1033,9,2797.63,0.04,2025-04-11,2025-04-16,CAR,pending
+ORD-20671,user_at_example.com,SKU-1038,7,2697.13,0.14,2025-06-10,2025-06-18,Region VII,processing
+ORD-20672,user672@example.com,SKU-1000,1,707.52,0.15,2025-05-11,2025-05-16,NCR,pending
+ORD-20673,user673@example.com,SKU-1057,3,2962.9,0.22,2025-09-28,2025-10-03,CAR,processing
+ORD-20674,,SKU-1029,3,1924.43,0.19,2025-11-27,,Region XI,delivered
+ORD-20675,user675@example.com,SKU-1043,1,451.36,0.2,2025-11-11,2025-11-14,Region VII,cancelled
+ORD-20676,user676@example.com,SKU-1018,3,1965.81,0.33,2025-03-04,2025-03-13,Region IV-A,delivered
+ORD-20677,user677@example.com,SKU-1058,3,1371.74,0.36,2025-11-18,2025-11-25,Region VII,CANCELLED
+ORD-20678,user678@example.com,SKU-1039,3,2601.1,0.3,2025-07-20,2025-07-29,CAR,delivered
+ORD-20679,user679@example.com,SKU-1037,9,805.93,0.04,2025-11-07,2025-11-09,CAR,pending
+ORD-20680,user680@example.com,SKU-1000,8,1724.25,1.63,2025-03-20,2025-03-18,Region VII,shipped
+ORD-20681,user_at_example.com,SKU-1014,1,607.57,0.19,2025-09-25,2025-09-30,Region VII,shipped
+ORD-20682,user682@example.com,SKU-1037,9,2181.62,0.2,2025-01-28,2025-02-05,Region VII,shipped
+ORD-20683,user683@example.com,SKU-1024,3,2763.0,0.03,2025-10-17,2025-10-21,Region IV-A,delivered
+ORD-20684,user684@example.com,SKU-1044,3,2410.79,0.27,2025-02-28,2025-02-24,CAR,processing
+ORD-20685,user685@example.com,SKU-1046,5,1469.37,0.01,2025-11-26,2025-12-03,Region VII,cancelled
+ORD-20686,user686@example.com,SKU-1000,3,780.97,0.12,2025-10-12,2025-10-19,Region III,PENDING
+ORD-20687,user687@example.com,SKU-1020,4,408.07,1.87,2025-06-25,2025-07-01,CAR,delivered
+ORD-20688,user688@example.com,SKU-1000,4,447.3,0.35,2025-07-30,2025-08-07,Region XI,cancelled
+ORD-20689,user689@example.com,SKU-1012,2,2569.41,0.38,2025-04-14,,Region IV-A,shipped
+ORD-20690,user690@example.com,SKU-1038,3,123.64,0.15,2025-04-13,2025-04-17,CAR,processing
+ORD-20691,user691@example.com,SKU-1046,4,486.26,0.38,2025-10-07,2025-10-13,Region III,processing
+ORD-20692,user692@example.com,SKU-1026,-2,694.07,0.29,2025-10-08,2025-10-07,Region VII,pending
+ORD-20693,user693@example.com,SKU-1030,2,2740.09,1.83,2025-01-04,2025-01-07,Region III,delivered
+ORD-20694,user694@example.com,SKU-1009,five,1737.11,0.01,2025-09-27,2025-10-04,Region VII,cancelled
+ORD-20695,user695@example.com,SKU-1031,9,448.42,0.32,2025-04-14,,Region IV-A,cancelled
+ORD-20696,user696@example.com,SKU-1025,2,676.35,0.06,2025-06-08,2025-06-17,CAR,pending
+ORD-20697,user697@example.com,SKU-1023,5,1356.67,0.29,2025-05-15,,Region IV-A,delivered
+ORD-20698,user698@example.com,SKU-1027,5,367.26,0.14,2025-02-12,2025-02-16,Region III,processing
+ORD-20699,user699@example.com,SKU-1017,7,151.93,0.02,2025-12-06,2025-12-09,NCR,pending
+ORD-20700,user700@example.com,SKU-1034,8,528.76,0.31,2025-05-02,,CAR,pending
+ORD-20701,user701@example.com,SKU-1050,8,1802.95,0.22,2025-12-05,2025-12-02,Region XI,delivered
+ORD-20702,user702@example.com,SKU-1039,6,1513.71,0.14,2025-05-07,2025-05-08,NCR,cancelled
+ORD-20703,user703@example.com,SKU-1021,4,1303.2,0.33,2025-10-07,,Region III,delivered
+ORD-20704,user704@example.com,SKU-1018,7,2945.66,0.02,2025-12-17,2025-12-24,Region XI,cancelled
+ORD-20705,user705@example.com,SKU-1010,7,2520.32,,2025-08-07,,Region III,delivered
+ORD-20706,user706@example.com,SKU-1004,-2,1251.69,0.16,2025-12-28,2026-01-03,NCR,CANCELLED
+ORD-20707,user707@example.com,SKU-1022,5,65.6,0.21,2025-11-08,2025-11-11,Region VII,pending
+  ORD-20708,not-an-email,SKU-1054,9,1074.26,0.15,2025-10-07,2025-10-10,CAR,pending
+ORD-20709,user709@example.com,SKU-1055,2,1823.51,0.26,2025-06-01,2025-06-10,Region XI,cancelled
+ORD-20710,user710@example.com,SKU-1005,8,734.92,0.38,2025-06-08,2025-06-16,Region XI,shipped
+ORD-20711,user711@example.com,SKU-1028,3,2774.18,0.3,2025-07-11,2025-07-13,Region III,processing
+ORD-20712,user712@example.com,SKU-1043,2,-99.0,0.38,2025-03-09,2025-03-10,Region III,cancelled
+ORD-20713,user713@example.com,SKU-1013,2,1504.56,0.15,2025-12-07,2025-12-08,NCR,cancelled
+ORD-20714,user714@example.com,SKU-1009,4,1042.99,0.35,2025-08-13,2025-08-20,Region III,shipped
+ORD-20715,user_at_example.com,SKU-1049,6,1600.67,0.08,2025-12-17,2025-12-24,Region III,delivered
+ORD-20716,user_at_example.com,SKU-1006,6,223.3,0.13,2025-10-05,2025-10-11,CAR,shipped
+ORD-20717,user717@example.com,SKU-1033,5,289.15,1.12,2025-01-07,2025-01-09,NCR,shipped
+ORD-20718,user718@example.com,SKU-1056,4,2588.78,0.17,2025-03-27,2025-03-30,Region VII,shipped
+ORD-20719,user719@example.com,SKU-1033,2,2609.64,0.34,2025-05-29,2025-06-03,Region VII,processing
+  ORD-20720,user720@example.com,SKU-1024,6,1242.7,,2025-10-10,2025-10-17,Region XI,shipped
+ORD-20721,user721@example.com,SKU-1013,2,2218.17,0.32,2025-11-29,2025-12-07,Region XI,pending
+ORD-20722,user722@example.com,SKU-1000,1,1321.7,0.32,2025-10-30,2025-11-01,CAR,cancelled
+ORD-20723,user723@example.com,SKU-1044,1,1826.88,0.2,2025-01-22,2025-01-25,Region IV-A,pending
+ORD-20724,user724@example.com,SKU-1038,5,1125.74,0.35,2025-08-05,2025-08-08,NCR,delivered
+ORD-20725,user725@example.com,SKU-1017,4,1565.46,0.1,2025-04-05,,Region III,pending
+ORD-20726,,SKU-1021,7,2353.39,0.09,2025-07-05,2025-07-11,CAR,cancelled
+ORD-20727,user727@example.com,SKU-1047,5,2842.54,0.12,2025-12-16,,Region XI,processing
+ORD-20728,user728@example.com,SKU-1023,1,-99.0,1.2,2025-09-22,2025-09-28,Region IV-A,delivered
+ORD-20729,user729@example.com,SKU-1056,1,1493.58,0.38,2025-03-19,2025-03-27,Region VII,processing
+ORD-20730,user730@example.com,SKU-1042,1,2585.81,0.19,2025-09-10,2025-09-13,NCR,shipped
+  ORD-20731,user731@example.com,SKU-1009,3,173.25,0.18,2025-07-20,2025-07-21,Region XI,shipped
+ORD-20732,user732@example.com,SKU-1042,8,1313.39,0.21,2025-09-16,2025-09-17,Region IV-A,shipped
+ORD-20733,user733@example.com,SKU-1022,9,62.59,0.16,2025-05-27,2025-06-05,NCR,processing
+ORD-20734,user734@example.com,SKU-1058,4,2921.0,0.36,2025-06-25,2025-07-03,Region III,SHIPPED
+ORD-20735,user735@example.com,SKU-1029,9,1351.56,0.24,2025-08-27,2025-09-05,Region IV-A,processing
+  ORD-20736,user736@example.com,SKU-1047,3,841.06,0.27,2025-02-13,2025-02-21,Region III,shipped
+ORD-20737,user737@example.com,SKU-1015,3,2888.72,0.36,2025-02-18,2025-02-23,Region XI,shipped
+ORD-20738,user738@example.com,SKU-1014,1,968.81,0.06,2025-03-17,2025-03-20,Region IV-A,delivered
+ORD-20739,user739@example.com,SKU-1029,9,807.36,0.19,2025-07-13,2025-07-12,Region III,pending
+ORD-20740,user740@example.com,SKU-1021,3,1217.32,0.4,2025-10-21,2025-10-27,Region VII,shipped
+ORD-20741,user741@example.com,SKU-1045,1,1683.89,0.14,2025-04-17,2025-04-22,NCR,cancelled
+ORD-20742,user742@example.com,SKU-1053,7,2369.06,0.03,2025-05-12,2025-05-21,Region III,shipped
+ORD-20743,user743@example.com,SKU-1025,5,1085.23,0.3,2025-02-20,2025-02-23,Region VII,shipped
+ORD-20744,user744@example.com,SKU-1009,8,731.13,,2025-04-25,2025-05-01,Region III,cancelled
+ORD-20745,user745@example.com,SKU-1052,5,2948.15,0.3,2025-08-09,2025-08-15,CAR,shipped
+ORD-20746,user_at_example.com,SKU-1022,8,906.05,,2025-11-23,2025-11-24,Region IV-A,delivered
+ORD-20747,user747@example.com,SKU-1000,5,2473.33,,2025-10-12,2025-10-14,Region XI,shipped
+ORD-20748,user748@example.com,SKU-1025,6,2834.54,,2025-01-31,2025-02-03,Region XI,pending
+ORD-20749,user749@example.com,SKU-1050,8,1837.81,0.13,2025-08-23,2025-08-28,Region III,delivered
+ORD-20750,user750@example.com,SKU-1017,1,1462.87,0.21,2025-08-31,2025-09-01,Region IV-A,cancelled
+ORD-20751,user751@example.com,SKU-1009,7,561.33,,2025-03-30,2025-04-01,Region IV-A,pending
+ORD-20752,user752@example.com,SKU-1051,5,2958.95,,2025-07-12,2025-07-08,Region III,shipped
+ORD-20753,user753@example.com,SKU-1050,2,1133.15,0.39,2025-10-07,2025-10-11,Region IV-A,delivered
+ORD-20754,user754@example.com,SKU-1057,4,2369.6,0.16,2025-05-23,2025-05-27,Region VII,processing
+ORD-20755,user_at_example.com,SKU-1036,5,0.0,0.08,2025-02-08,2025-02-10,Region IV-A,processing
+ORD-20756,user756@example.com,SKU-1022,4,2936.55,0.02,2025-08-22,2025-08-23,,delivered
+ORD-20757,user757@example.com,SKU-1014,5,2767.98,1.24,2025-07-15,2025-07-17,,DELIVERED
+ORD-20758,user758@example.com,SKU-1030,1,2933.98,0.11,2025-08-23,2025-08-26,Region III,cancelled
+ORD-20759,user759@example.com,SKU-1056,4,-99.0,0.23,2025-08-05,2025-08-10,Region VII,delivered
+ORD-20760,user760@example.com,SKU-1008,4,2262.2,1.51,2025-06-06,2025-06-07,Region IV-A,cancelled
+ORD-20761,user_at_example.com,SKU-1033,9,1723.03,0.18,2025-11-09,2025-11-11,NCR,processing
+ORD-20762,user762@example.com,SKU-1022,-2,2790.16,0.36,2025-10-29,2025-11-02,Region III,processing
+ORD-20763,user763@example.com,SKU-1044,9,345.84,0.19,2025-02-23,2025-03-03,Region VII,processing
+ORD-20764,not-an-email,SKU-1059,1,2699.35,0.27,2025-09-09,2025-09-17,CAR,PENDING
+ORD-20765,user765@example.com,SKU-1014,2,382.17,0.01,2025-07-22,2025-07-29,Region III,shipped
+ORD-20766,user766@example.com,SKU-1053,6,2816.87,0.07,2025-09-10,2025-09-07,Region III,cancelled
+ORD-20767,user767@example.com,SKU-1025,7,515.79,0.01,2025-07-13,2025-07-21,Region III,shipped
+ORD-20768,user768@example.com,SKU-1004,6,1008.57,0.12,2025-02-12,,NCR,cancelled
+ORD-20769,user769@example.com,SKU-1020,9,2650.86,0.4,2025-04-10,2025-04-16,Region IV-A,shipped
+  ORD-20770,user770@example.com,SKU-1008,1,2644.31,0.03,2025-10-24,2025-11-02,CAR,pending
+ORD-20771,user771@example.com,SKU-1047,4,615.35,0.08,2025-01-16,2025-01-21,Region III,processing
+ORD-20772,not-an-email,SKU-1003,9,1619.01,0.23,2025-02-11,2025-02-15,CAR,cancelled
+ORD-20773,user773@example.com,SKU-1029,5,2795.1,,2025-07-31,,Region XI,delivered
+ORD-20774,user774@example.com,SKU-1032,7,850.28,0.32,2025-05-01,2025-05-07,Region VII,pending
+ORD-20775,user775@example.com,SKU-1047,1,1407.76,0.24,2025-08-17,2025-08-21,NCR,cancelled
+ORD-20776,user776@example.com,SKU-1052,9,2910.77,0.38,2025-06-18,2025-06-27,Region III,cancelled
+ORD-20777,user777@example.com,SKU-1030,2,-99.0,,2025-01-03,2025-01-05,Region VII,delivered
+ORD-20778,user778@example.com,SKU-1005,1,262.11,0.03,2025-10-23,2025-10-26,Region III,shipped
+ORD-20779,user779@example.com,SKU-1017,5,141.75,0.24,2025-02-08,2025-02-10,Region VII,shipped
+ORD-20780,user780@example.com,SKU-1009,8,1086.5,,2025-01-13,2025-01-17,Region IV-A,cancelled
+ORD-20781,user781@example.com,SKU-1017,8,1697.39,0.25,2025-11-17,2025-11-18,Region IV-A,processing
+ORD-20782,user782@example.com,SKU-1006,five,1349.16,0.12,2025-04-10,2025-04-12,CAR,delivered
+ORD-20783,user783@example.com,SKU-1025,8,426.67,0.2,2025-10-25,2025-10-30,Region XI,pending
+ORD-20784,user784@example.com,SKU-1047,9,2814.72,0.29,2025-06-17,,Region VII,pending
+ORD-20785,user785@example.com,SKU-1037,9,1248.57,0.12,2025-03-15,2025-03-18,Region III,cancelled
+ORD-20786,user786@example.com,SKU-1039,2,2295.44,0.09,2025-04-27,2025-05-05,Region III,shipped
+ORD-20787,user787@example.com,SKU-1042,2,1365.94,0.09,2025-07-09,2025-07-15,CAR,cancelled
+ORD-20788,user788@example.com,SKU-1058,4,732.75,0.09,2025-04-23,2025-05-02,Region VII,DELIVERED
+ORD-20789,user789@example.com,SKU-1057,6,2448.64,0.38,2025-01-01,2025-01-10,NCR,delivered
+ORD-20790,user790@example.com,SKU-1051,2,2611.15,0.3,2025-05-02,2025-04-28,Region VII,SHIPPED
+ORD-20791,user791@example.com,SKU-1018,9,231.27,0.16,2025-02-26,2025-03-04,NCR,DELIVERED
+ORD-20792,user792@example.com,SKU-1002,5,951.7,,2025-11-06,2025-11-14,NCR,pending
+ORD-20793,user793@example.com,SKU-1012,3,765.25,0.02,2025-01-29,2025-02-07,Region XI,delivered
+ORD-20794,user794@example.com,SKU-1009,5,169.82,0.13,2025-06-30,2025-07-06,Region IV-A,PROCESSING
+ORD-20795,user795@example.com,SKU-1052,7,2461.43,0.39,2025-03-26,,Region XI,processing
+ORD-20796,user796@example.com,SKU-1020,7,212.83,0.04,2025-05-26,2025-06-03,,delivered
+ORD-20797,user797@example.com,SKU-1055,8,1654.27,0.02,2025-11-08,2025-11-13,NCR,pending
+ORD-20798,user798@example.com,SKU-1000,9,1928.4,,2025-03-30,2025-04-06,Region VII,delivered
+ORD-20799,user799@example.com,SKU-1003,6,945.31,0.35,2025-09-25,2025-10-04,Region XI,shipped
+ORD-20800,user800@example.com,SKU-1040,2,2559.82,,2025-07-20,2025-07-28,Region IV-A,pending
+ORD-20801,user801@example.com,SKU-1009,4,-99.0,0.32,2025-06-03,2025-06-09,Region IV-A,delivered
+ORD-20802,user802@example.com,SKU-1058,2,947.13,0.21,2025-07-28,2025-07-29,Region VII,shipped
+ORD-20803,user803@example.com,SKU-1012,1,405.38,1.69,2025-08-21,2025-08-28,Region III,shipped
+ORD-20804,user804@example.com,SKU-1047,1,253.05,,2025-07-07,2025-07-10,Region VII,shipped
+ORD-20805,user805@example.com,SKU-1059,5,1623.76,0.01,2025-07-17,2025-07-24,NCR,cancelled
+ORD-20806,user806@example.com,SKU-1009,-2,260.32,0.13,2025-12-10,2025-12-18,Region VII,shipped
+ORD-20807,not-an-email,SKU-1030,5,2325.81,,2025-02-01,,NCR,pending
+ORD-20808,user808@example.com,SKU-1055,1,480.36,0.36,2025-02-12,2025-02-19,NCR,processing
+ORD-20809,user809@example.com,SKU-1013,9,1540.91,0.29,2025-11-24,2025-11-29,Region VII,shipped
+ORD-20810,user810@example.com,SKU-1029,3,2994.01,0.35,2025-02-13,2025-02-21,Region VII,shipped
+ORD-20811,user811@example.com,SKU-1026,6,1974.14,0.27,2025-06-06,2025-06-14,Region IV-A,processing
+ORD-20812,user812@example.com,SKU-1040,5,1494.29,0.29,2025-10-10,2025-10-08,Region VII,cancelled
+  ORD-20813,user813@example.com,SKU-1002,6,488.8,0.3,2025-06-02,2025-06-07,Region VII,cancelled
+ORD-20814,user814@example.com,SKU-1004,5,1739.82,0.34,2025-07-24,,NCR,pending
+ORD-20815,user815@example.com,SKU-1042,5,218.43,0.26,2025-07-31,2025-08-05,CAR,PROCESSING
+ORD-20816,user816@example.com,SKU-1008,4,2752.95,,2025-10-27,2025-10-29,Region IV-A,cancelled
+ORD-20817,user817@example.com,SKU-1045,five,819.31,0.15,2025-09-03,2025-09-08,Region XI,pending
+ORD-20818,user818@example.com,SKU-1032,2,1707.3,0.09,2025-12-14,,Region VII,delivered
+ORD-20819,user819@example.com,SKU-1002,5,433.52,0.22,2025-09-09,2025-09-18,Region III,shipped
+ORD-20820,user820@example.com,SKU-1023,6,1349.97,0.21,2025-11-20,2025-11-26,Region XI,delivered
+ORD-20821,not-an-email,SKU-1002,6,118.33,,2025-11-24,2025-12-03,Region VII,delivered
+ORD-20822,user822@example.com,SKU-1009,2,1459.8,0.03,2025-09-28,,Region VII,delivered
+ORD-20823,user823@example.com,SKU-1049,9,728.15,0.17,2025-04-22,2025-04-27,Region IV-A,pending
+ORD-20824,user824@example.com,SKU-1050,3,2194.28,0.04,2025-11-07,2025-11-08,CAR,cancelled
+ORD-20825,user825@example.com,SKU-1050,five,2096.72,1.85,2025-01-01,2025-01-03,Region VII,PROCESSING
+ORD-20826,user826@example.com,SKU-1045,2,673.79,0.01,2025-09-03,2025-09-04,Region IV-A,processing
+ORD-20827,user827@example.com,SKU-1023,4,2638.2,0.16,2025-02-19,2025-02-20,CAR,cancelled
+ORD-20828,user828@example.com,SKU-1025,7,576.78,,2025-07-04,2025-07-09,CAR,pending
+  ORD-20829,user829@example.com,SKU-1026,6,997.26,0.34,2025-03-21,2025-03-29,NCR,cancelled
+ORD-20830,user830@example.com,SKU-1050,7,761.34,0.29,2025-12-28,2025-12-29,CAR,shipped
+ORD-20831,user831@example.com,SKU-1058,5,609.36,0.03,2025-11-26,2025-12-01,Region VII,processing
+ORD-20832,user832@example.com,SKU-1012,8,1220.47,0.04,2025-11-28,2025-12-01,Region XI,PENDING
+ORD-20833,user833@example.com,SKU-1005,1,624.06,0.23,2025-04-24,2025-04-29,Region IV-A,cancelled
+ORD-20834,user834@example.com,SKU-1010,5,1115.14,0.34,2025-06-23,2025-06-29,NCR,processing
+ORD-20835,user835@example.com,SKU-1000,9,662.9,,2025-10-08,2025-10-11,Region IV-A,processing
+ORD-20836,user836@example.com,SKU-1035,9,2317.44,0.31,2025-05-08,2025-05-17,,processing
+ORD-20837,user_at_example.com,SKU-1005,2,2285.6,0.04,2025-11-25,2025-11-29,Region III,pending
+ORD-20838,user838@example.com,SKU-1020,2,1033.59,0.29,2025-07-21,2025-07-25,Region VII,shipped
+ORD-20839,user_at_example.com,SKU-1021,7,1355.77,0.25,2025-09-27,2025-10-03,Region XI,shipped
+ORD-20840,user840@example.com,SKU-1056,8,2521.6,0.02,2025-01-28,2025-02-02,Region III,DELIVERED
+ORD-20841,user841@example.com,SKU-1015,5,2931.23,0.07,2025-06-18,2025-06-22,Region III,pending
+ORD-20842,user842@example.com,SKU-1001,7,1891.94,0.13,2025-09-28,2025-09-29,CAR,DELIVERED
+ORD-20843,user843@example.com,SKU-1006,9,2472.19,0.33,2025-09-19,2025-09-27,Region XI,processing
+ORD-20844,user844@example.com,SKU-1055,4,2569.28,0.25,2025-05-12,2025-05-16,Region VII,processing
+ORD-20845,,SKU-1000,8,607.04,0.22,2025-08-15,2025-08-20,NCR,cancelled
+ORD-20846,user846@example.com,SKU-1043,,2905.63,0.26,2025-11-05,2025-11-13,Region IV-A,delivered
+ORD-20847,user847@example.com,SKU-1035,4,999.37,0.34,2025-03-28,,Region VII,processing
+ORD-20848,user848@example.com,SKU-1055,3,1107.7,0.01,2025-03-12,2025-03-15,Region VII,delivered
+ORD-20849,user849@example.com,SKU-1021,7,0.0,0.12,2025-02-13,2025-02-21,Region IV-A,processing
+ORD-20850,user850@example.com,SKU-1029,9,921.44,0.15,2025-04-19,,NCR,processing
+ORD-20851,user851@example.com,SKU-1036,4,2409.39,1.57,2025-08-02,2025-08-06,Region III,SHIPPED
+ORD-20852,user852@example.com,SKU-1018,3,501.17,0.32,2025-03-08,,Region IV-A,shipped
+ORD-20853,user853@example.com,SKU-1037,7,885.98,0.2,2025-10-09,2025-10-11,CAR,pending
+ORD-20854,user854@example.com,SKU-1005,1,2503.77,0.2,2025-02-13,2025-02-20,Region VII,processing
+ORD-20855,user855@example.com,SKU-1028,3,242.96,0.38,2025-11-28,2025-12-02,NCR,shipped
+ORD-20856,user856@example.com,SKU-1014,2,2940.95,0.14,2025-08-03,2025-08-10,Region XI,processing
+ORD-20857,user857@example.com,SKU-1015,9,1698.37,0.09,2025-07-18,2025-07-25,Region VII,processing
+ORD-20858,user858@example.com,SKU-1047,-2,2048.28,,2025-11-09,2025-11-17,CAR,pending
+ORD-20859,not-an-email,SKU-1056,3,391.06,0.39,2025-12-21,,NCR,pending
+ORD-20860,user860@example.com,SKU-1017,4,1354.58,0.26,2025-02-22,2025-03-01,NCR,processing
+ORD-20861,user861@example.com,SKU-1013,9,1309.17,0.17,2025-06-04,2025-05-31,NCR,shipped
+ORD-20862,user862@example.com,SKU-1024,9,2036.99,0.17,2025-04-17,2025-04-23,Region IV-A,delivered
+ORD-20863,user863@example.com,SKU-1056,8,2552.93,0.26,2025-04-22,2025-04-29,NCR,pending
+ORD-20864,user864@example.com,SKU-1026,2,2400.94,,2025-09-16,,Region XI,SHIPPED
+ORD-20865,user865@example.com,SKU-1036,4,1383.93,0.34,2025-04-22,2025-04-30,Region IV-A,cancelled
+ORD-20866,user866@example.com,SKU-1045,6,2940.93,0.37,2025-01-20,,Region IV-A,processing
+ORD-20867,user867@example.com,SKU-1019,1,2473.24,0.38,2025-07-26,2025-08-02,Region III,cancelled
+ORD-20868,user868@example.com,SKU-1046,1,2274.43,0.0,2025-05-10,2025-05-14,Region VII,pending
+ORD-20869,user869@example.com,SKU-1006,8,1082.02,0.08,2025-06-08,2025-06-14,Region VII,cancelled
+ORD-20870,user870@example.com,SKU-1040,3,0.0,0.07,2025-06-01,2025-06-03,NCR,shipped
+ORD-20871,user871@example.com,SKU-1041,7,1123.06,0.23,2025-07-11,2025-07-20,CAR,shipped
+ORD-20872,user872@example.com,SKU-1049,1,435.43,0.08,2025-08-12,2025-08-20,NCR,cancelled
+ORD-20873,user873@example.com,SKU-1033,9,1239.12,0.11,2025-01-18,2025-01-22,NCR,delivered
+ORD-20874,user874@example.com,SKU-1049,7,130.16,0.05,2025-11-14,2025-11-19,NCR,DELIVERED
+ORD-20875,user875@example.com,SKU-1057,7,2029.94,0.23,2025-09-09,2025-09-18,Region XI,delivered
+ORD-20876,user876@example.com,SKU-1018,5,746.63,0.4,2025-03-19,2025-03-20,Region III,PROCESSING
+  ORD-20877,user877@example.com,SKU-1022,6,2238.35,0.07,2025-09-13,2025-09-18,Region IV-A,cancelled
+ORD-20878,user878@example.com,SKU-1041,2,352.37,0.19,2025-09-29,,NCR,processing
+ORD-20879,user879@example.com,SKU-1001,8,636.01,0.04,2025-08-04,2025-08-11,Region VII,cancelled
+ORD-20880,user880@example.com,SKU-1047,1,820.69,0.08,2025-04-12,2025-04-17,,SHIPPED
+ORD-20881,user881@example.com,SKU-1043,5,2276.77,0.29,2025-08-15,2025-08-17,Region XI,processing
+ORD-20882,user882@example.com,SKU-1035,8,366.53,0.25,2025-11-06,2025-11-13,Region IV-A,processing
+ORD-20883,user883@example.com,SKU-1058,3,73.17,0.29,2025-04-01,2025-04-05,Region IV-A,cancelled
+ORD-20884,user884@example.com,SKU-1018,5,508.91,0.29,2025-01-17,2025-01-21,Region III,pending
+ORD-20885,user885@example.com,SKU-1014,6,2264.29,0.15,2025-01-28,2025-02-05,CAR,cancelled
+ORD-20886,user886@example.com,SKU-1025,5,659.98,0.25,2025-07-28,2025-07-30,NCR,shipped
+ORD-20887,user887@example.com,SKU-1035,9,2051.79,0.07,2025-02-12,2025-02-15,Region IV-A,cancelled
+ORD-20888,user888@example.com,SKU-1022,7,1055.45,0.03,2025-11-14,2025-11-18,CAR,processing
+ORD-20889,user889@example.com,SKU-1041,5,1691.11,0.36,2025-08-08,2025-08-10,,pending
+ORD-20890,user890@example.com,SKU-1016,5,1291.13,0.18,2025-11-14,2025-11-18,Region XI,delivered
+ORD-20891,user891@example.com,SKU-1005,6,1993.69,0.11,2025-05-06,2025-05-11,Region III,processing
+ORD-20892,user892@example.com,SKU-1044,9,156.28,0.04,2025-08-19,2025-08-26,Region III,processing
+ORD-20893,user893@example.com,SKU-1013,7,2704.04,0.2,2025-07-09,,Region VII,delivered
+ORD-20894,user894@example.com,SKU-1041,1,2873.45,0.25,2025-09-27,,Region XI,pending
+ORD-20895,user895@example.com,SKU-1020,9,1394.44,1.11,2025-04-18,2025-04-27,Region IV-A,processing
+ORD-20896,user896@example.com,SKU-1036,3,1137.8,0.31,2025-01-21,2025-01-30,Region VII,pending
+ORD-20897,user897@example.com,SKU-1011,5,2809.63,,2025-05-29,2025-06-02,NCR,cancelled
+  ORD-20898,user898@example.com,SKU-1046,3,108.9,0.1,2025-06-12,2025-06-15,Region VII,shipped
+ORD-20899,user899@example.com,SKU-1012,2,1166.64,0.07,2025-06-11,2025-06-18,Region VII,pending
+ORD-20900,user900@example.com,SKU-1027,4,175.35,0.31,2025-10-04,2025-10-05,NCR,cancelled
+ORD-20901,user901@example.com,SKU-1045,4,837.0,0.38,2025-10-27,,Region XI,pending
+ORD-20902,user902@example.com,SKU-1009,7,1641.48,0.37,2025-07-22,2025-07-24,Region VII,shipped
+ORD-20903,user903@example.com,SKU-1058,5,386.75,0.11,2025-02-01,2025-02-07,Region IV-A,shipped
+ORD-20904,user904@example.com,SKU-1035,1,1491.94,,2025-12-30,2026-01-06,CAR,shipped
+ORD-20905,user905@example.com,SKU-1042,8,2504.09,0.26,2025-01-02,,Region VII,processing
+ORD-20906,user906@example.com,SKU-1016,9,890.52,0.26,2025-05-07,2025-05-16,NCR,processing
+ORD-20907,user907@example.com,SKU-1051,6,2164.42,0.23,2025-09-16,,Region VII,pending
+ORD-20908,user908@example.com,SKU-1012,9,1628.29,0.11,2025-05-27,2025-06-01,Region III,shipped
+ORD-20909,user909@example.com,SKU-1027,4,844.18,0.21,2025-08-02,2025-08-04,Region IV-A,shipped
+ORD-20910,user910@example.com,SKU-1037,3,0.0,0.24,2025-02-16,2025-02-23,Region IV-A,delivered
+ORD-20911,user911@example.com,SKU-1041,8,889.1,0.23,2025-02-27,2025-03-07,Region XI,delivered
+ORD-20912,user912@example.com,SKU-1045,5,2938.85,0.13,2025-11-13,2025-11-17,NCR,processing
+ORD-20913,user913@example.com,SKU-1036,2,807.66,0.22,2025-06-17,2025-06-25,Region IV-A,shipped
+ORD-20914,user914@example.com,SKU-1057,9,2733.33,,2025-02-13,2025-02-12,Region XI,pending
+ORD-20915,user915@example.com,SKU-1055,4,1194.98,0.12,2025-03-22,2025-03-30,NCR,shipped
+ORD-20916,user916@example.com,SKU-1000,9,1257.95,1.77,2025-02-14,,CAR,processing
+ORD-20917,user917@example.com,SKU-1046,6,2489.0,,2025-10-23,2025-10-29,NCR,processing
+ORD-20918,user918@example.com,SKU-1038,8,323.82,0.1,2025-12-22,2025-12-27,NCR,SHIPPED
+ORD-20919,user919@example.com,SKU-1007,8,2656.47,0.34,2025-08-12,2025-08-15,Region VII,CANCELLED
+ORD-20920,user920@example.com,SKU-1054,1,2291.48,0.33,2025-07-23,2025-07-29,NCR,processing
+ORD-20921,user921@example.com,SKU-1037,9,2394.15,0.22,2025-08-29,2025-08-30,Region XI,processing
+ORD-20922,user922@example.com,SKU-1056,2,0.0,0.03,2025-07-22,2025-07-28,NCR,PROCESSING
+ORD-20923,user923@example.com,SKU-1054,7,962.26,,2025-12-31,2026-01-05,Region VII,delivered
+ORD-20924,user924@example.com,SKU-1018,3,333.22,0.35,2025-05-07,2025-05-12,CAR,cancelled
+ORD-20925,user925@example.com,SKU-1036,6,365.69,0.02,2025-05-31,,Region XI,delivered
+ORD-20926,user926@example.com,SKU-1038,3,1342.49,0.01,2025-03-23,2025-03-28,Region III,shipped
+  ORD-20927,user927@example.com,SKU-1049,1,1497.52,0.07,2025-03-02,2025-03-01,NCR,processing
+ORD-20928,user928@example.com,SKU-1012,2,1625.26,0.16,2025-01-04,2025-01-12,Region IV-A,shipped
+ORD-20929,user929@example.com,SKU-1049,6,204.44,0.0,2025-10-20,2025-10-25,Region XI,pending
+ORD-20930,user930@example.com,SKU-1015,8,2775.62,,2025-03-15,2025-03-23,Region XI,pending
+ORD-20931,user931@example.com,SKU-1051,7,2605.17,0.11,2025-01-02,2025-01-05,Region XI,delivered
+ORD-20932,user932@example.com,SKU-1038,9,2923.33,0.21,2025-10-02,2025-10-10,,processing
+ORD-20933,user933@example.com,SKU-1016,5,2480.56,0.17,2025-12-31,2026-01-02,Region VII,shipped
+ORD-20934,user934@example.com,SKU-1034,3,1975.84,,2025-01-05,2025-01-12,NCR,shipped
+ORD-20935,user935@example.com,SKU-1010,9,355.89,,2025-02-23,2025-03-04,Region IV-A,cancelled
+ORD-20936,user936@example.com,SKU-1023,3,0.0,0.15,2025-08-12,2025-08-18,CAR,processing
+ORD-20937,user937@example.com,SKU-1012,2,51.78,1.94,2025-04-02,2025-04-10,Region III,cancelled
+  ORD-20938,user938@example.com,SKU-1007,5,2677.78,,2025-10-13,2025-10-22,CAR,pending
+ORD-20939,user939@example.com,SKU-1017,1,1854.44,0.4,2025-07-21,2025-07-22,Region III,delivered
+ORD-20940,user940@example.com,SKU-1029,five,1221.17,0.36,2025-04-04,2025-04-08,CAR,delivered
+ORD-20941,user941@example.com,SKU-1057,5,1026.11,0.26,2025-07-04,2025-07-07,Region VII,shipped
+ORD-20942,user942@example.com,SKU-1052,3,2564.22,,2025-10-13,,Region IV-A,processing
+ORD-20943,user943@example.com,SKU-1058,6,212.39,0.34,2025-07-07,,Region XI,processing
+ORD-20944,user944@example.com,SKU-1053,5,2067.19,0.36,2025-02-01,,Region III,DELIVERED
+  ORD-20945,user945@example.com,SKU-1036,7,1098.43,0.24,2025-03-26,2025-03-27,Region III,pending
+ORD-20946,user946@example.com,SKU-1040,7,2632.64,0.29,2025-07-23,2025-07-22,Region IV-A,shipped
+ORD-20947,user947@example.com,SKU-1009,4,1942.97,,2025-01-18,2025-01-20,CAR,cancelled
+ORD-20948,user948@example.com,SKU-1003,3,2387.59,0.22,2025-12-01,2025-12-09,Region VII,processing
+ORD-20949,user949@example.com,SKU-1007,4,249.19,1.28,2025-06-23,2025-06-30,NCR,delivered
+ORD-20950,user950@example.com,SKU-1030,1,297.79,,2025-09-14,2025-09-18,CAR,processing
+ORD-20951,user951@example.com,SKU-1030,1,2000.08,0.22,2025-09-13,2025-09-16,Region IV-A,cancelled
+ORD-20952,user952@example.com,SKU-1025,4,337.75,0.21,2025-08-26,2025-08-27,Region III,delivered
+ORD-20953,not-an-email,SKU-1023,6,437.19,0.33,2025-06-16,2025-06-23,Region III,pending
+ORD-20954,user954@example.com,SKU-1032,2,1947.06,0.22,2025-10-13,2025-10-17,Region XI,shipped
+ORD-20955,user955@example.com,SKU-1028,3,1544.37,0.26,2025-10-24,2025-11-01,Region VII,CANCELLED
+ORD-20956,user956@example.com,SKU-1015,2,254.39,0.31,2025-03-28,2025-04-01,NCR,shipped
+ORD-20957,user957@example.com,SKU-1035,7,988.76,0.12,2025-06-15,,Region VII,processing
+ORD-20958,user958@example.com,SKU-1011,6,2444.5,0.39,2025-05-24,2025-05-30,CAR,processing
+ORD-20959,user959@example.com,SKU-1015,2,1332.56,0.26,2025-12-23,2025-12-29,Region VII,shipped
+ORD-20960,user960@example.com,SKU-1013,9,1004.05,0.09,2025-07-19,2025-07-22,Region III,PENDING
+ORD-20961,user961@example.com,SKU-1016,five,2010.23,0.29,2025-11-14,2025-11-20,Region IV-A,pending
+ORD-20962,user962@example.com,SKU-1048,9,1382.8,0.11,2025-07-18,2025-07-27,CAR,cancelled
+ORD-20963,user963@example.com,SKU-1035,7,2298.45,0.33,2025-01-23,2025-01-28,Region VII,pending
+ORD-20964,user964@example.com,SKU-1025,2,2964.85,0.23,2025-11-10,,Region IV-A,shipped
+ORD-20965,user965@example.com,SKU-1028,2,1585.04,0.06,2025-03-14,,CAR,CANCELLED
+ORD-20966,user966@example.com,SKU-1053,6,835.93,0.18,2025-03-22,2025-03-31,Region IV-A,shipped
+ORD-20967,user967@example.com,SKU-1015,8,0.0,0.27,2025-01-17,2025-01-23,Region III,cancelled
+ORD-20968,user_at_example.com,SKU-1037,7,1541.49,0.25,2025-11-10,2025-11-19,Region XI,shipped
+ORD-20969,user969@example.com,SKU-1023,4,1080.74,0.38,2025-02-27,2025-03-04,CAR,processing
+ORD-20970,user970@example.com,SKU-1006,4,2476.09,0.2,2025-05-27,2025-06-05,CAR,delivered
+ORD-20971,user971@example.com,SKU-1031,5,1957.15,0.39,2025-10-27,2025-11-02,Region XI,pending
+ORD-20972,user972@example.com,SKU-1022,3,1961.34,0.02,2025-12-02,2025-12-08,Region VII,cancelled
+ORD-20973,user973@example.com,SKU-1059,3,2174.8,0.21,2025-08-15,2025-08-17,Region XI,cancelled
+ORD-20974,user974@example.com,SKU-1037,2,1182.75,0.1,2025-09-19,,Region XI,processing
+ORD-20975,user975@example.com,SKU-1025,6,2079.33,0.25,2025-06-15,2025-06-17,Region VII,cancelled
+ORD-20976,user976@example.com,SKU-1044,6,2859.21,0.01,2025-09-19,,NCR,processing
+ORD-20977,user977@example.com,SKU-1027,,1350.58,0.16,2025-02-11,2025-02-17,CAR,pending
+ORD-20978,user978@example.com,SKU-1043,6,421.22,0.28,2025-09-06,2025-09-08,,pending
+ORD-20979,user979@example.com,SKU-1017,6,1669.01,0.33,2025-09-29,,Region XI,shipped
+ORD-20980,user980@example.com,SKU-1011,4,2992.96,0.29,2025-04-08,2025-04-10,CAR,shipped
+ORD-20981,user981@example.com,SKU-1005,7,2107.59,1.82,2025-12-16,2025-12-18,Region IV-A,PENDING
+ORD-20982,user982@example.com,SKU-1001,8,423.98,0.06,2025-09-02,2025-09-05,Region VII,delivered
+ORD-20983,user983@example.com,SKU-1032,8,2711.57,0.3,2025-02-08,,NCR,PENDING
+ORD-20984,user_at_example.com,SKU-1051,3,1372.89,0.26,2025-02-20,2025-02-27,Region IV-A,delivered
+ORD-20985,user985@example.com,SKU-1014,3,2028.04,0.23,2025-03-31,2025-04-06,Region VII,shipped
+ORD-20986,user986@example.com,SKU-1018,5,1809.53,0.06,2025-10-26,2025-11-04,Region XI,processing
+ORD-20987,user987@example.com,SKU-1035,7,1762.52,0.23,2025-12-29,,CAR,shipped
+ORD-20988,user988@example.com,SKU-1017,8,2882.27,0.11,2025-12-03,2025-12-06,Region XI,pending
+ORD-20989,user989@example.com,SKU-1057,6,937.19,0.29,2025-09-11,2025-09-13,Region III,delivered
+ORD-20990,user990@example.com,SKU-1014,8,1815.79,0.38,2025-07-08,,Region VII,cancelled
+ORD-20991,user991@example.com,SKU-1006,3,1544.35,1.92,2025-11-10,2025-11-11,Region VII,cancelled
+ORD-20992,user992@example.com,SKU-1006,4,816.94,0.18,2025-04-05,2025-04-08,CAR,processing
+  ORD-20993,user993@example.com,SKU-1008,,1181.22,0.15,2025-12-09,,NCR,processing
+ORD-20994,user994@example.com,SKU-1028,9,2179.94,0.02,2025-06-06,2025-06-10,Region VII,pending
+ORD-20995,user995@example.com,SKU-1017,9,2348.0,0.27,2025-03-07,2025-03-12,Region III,shipped
+ORD-20996,user996@example.com,SKU-1014,9,2066.39,0.31,2025-12-28,,CAR,cancelled
+ORD-20997,user997@example.com,SKU-1048,1,181.18,0.39,2025-02-13,2025-02-18,Region IV-A,delivered
+ORD-20998,user998@example.com,SKU-1044,1,1681.29,0.29,2025-09-29,2025-10-04,Region VII,cancelled
+ORD-20999,user999@example.com,SKU-1048,5,1309.33,0.06,2025-07-03,2025-07-09,Region III,SHIPPED
+ORD-21000,user1000@example.com,SKU-1006,7,2876.15,,2025-10-08,2025-10-10,,processing
+ORD-21001,user1001@example.com,SKU-1032,6,2396.83,0.01,2025-03-21,2025-03-25,NCR,pending
+ORD-21002,user1002@example.com,SKU-1029,5,158.31,0.16,2025-05-27,,Region VII,pending
+ORD-21003,user1003@example.com,SKU-1059,2,1049.68,0.39,2025-05-16,2025-05-25,NCR,SHIPPED
+ORD-21004,user1004@example.com,SKU-1046,3,73.83,0.32,2025-11-01,,Region XI,processing
+ORD-21005,user1005@example.com,SKU-1002,7,180.91,,2025-03-10,2025-03-12,NCR,PROCESSING
+ORD-21006,user1006@example.com,SKU-1037,9,122.28,0.39,2025-12-11,2025-12-14,Region VII,delivered
+ORD-21007,user1007@example.com,SKU-1021,7,2415.33,0.21,2025-06-03,2025-06-09,Region VII,delivered
+ORD-21008,user1008@example.com,SKU-1009,2,2317.95,0.12,2025-04-23,2025-04-24,CAR,pending
+ORD-21009,user1009@example.com,SKU-1032,1,281.36,1.77,2025-04-27,2025-04-28,Region XI,PENDING
+ORD-21010,user1010@example.com,SKU-1026,8,1159.39,,2025-03-28,2025-03-31,Region III,cancelled
+ORD-21011,user1011@example.com,SKU-1031,3,2012.7,0.34,2025-04-26,2025-04-27,Region VII,pending
+ORD-21012,user1012@example.com,SKU-1033,7,1809.29,0.31,2025-08-13,2025-08-19,Region VII,cancelled
+ORD-21013,user1013@example.com,SKU-1040,1,2929.73,1.88,2025-08-19,2025-08-28,CAR,pending
+ORD-21014,user1014@example.com,SKU-1004,2,464.69,0.18,2025-03-14,2025-03-20,Region VII,PENDING
+ORD-21015,user1015@example.com,SKU-1003,8,1751.9,,2025-01-03,2025-01-05,CAR,pending
+ORD-21016,user1016@example.com,SKU-1007,7,1387.18,0.13,2025-11-13,2025-11-22,Region III,pending
+ORD-21017,user1017@example.com,SKU-1048,2,1022.42,0.26,2025-11-24,2025-12-01,CAR,cancelled
+ORD-21018,user1018@example.com,SKU-1057,4,2901.03,,2025-02-06,2025-02-14,Region VII,delivered
+ORD-21019,user1019@example.com,SKU-1028,9,858.31,0.38,2025-10-27,2025-10-28,NCR,pending
+ORD-21020,user1020@example.com,SKU-1005,1,1533.57,,2025-03-20,2025-03-28,CAR,delivered
+ORD-21021,user1021@example.com,SKU-1043,8,952.72,0.29,2025-04-30,2025-05-05,Region VII,processing
+ORD-21022,user1022@example.com,SKU-1056,9,2337.73,0.06,2025-02-16,,Region XI,processing
+ORD-21023,user1023@example.com,SKU-1016,3,2296.96,0.19,2025-02-13,2025-02-17,Region XI,processing
+ORD-21024,not-an-email,SKU-1027,4,383.12,0.27,2025-12-09,2025-12-10,CAR,shipped
+ORD-21025,user1025@example.com,SKU-1017,2,2953.49,0.04,2025-06-04,2025-06-07,Region XI,shipped
+ORD-21026,user1026@example.com,SKU-1035,4,634.11,0.38,2025-09-23,2025-09-25,NCR,pending
+ORD-21027,user1027@example.com,SKU-1050,3,2976.19,0.39,2025-10-25,2025-11-02,Region VII,processing
+ORD-21028,user1028@example.com,SKU-1055,6,345.69,0.13,2025-02-01,2025-02-08,Region XI,processing
+ORD-21029,user1029@example.com,SKU-1052,6,340.23,0.18,2025-08-07,2025-08-12,CAR,pending
+ORD-21030,user1030@example.com,SKU-1030,3,2558.08,,2025-06-13,2025-06-19,Region III,DELIVERED
+ORD-21031,user1031@example.com,SKU-1003,7,1123.21,,2025-08-05,,NCR,shipped
+  ORD-21032,user1032@example.com,SKU-1024,5,2511.43,0.14,2025-01-01,2025-01-04,,processing
+ORD-21033,user1033@example.com,SKU-1023,7,1668.89,0.35,2025-04-09,2025-04-10,,delivered
+ORD-21034,,SKU-1044,6,2604.6,0.04,2025-05-09,2025-05-17,Region III,CANCELLED
+ORD-21035,user1035@example.com,SKU-1052,1,2141.19,0.24,2025-01-02,2025-01-07,Region III,processing
+ORD-21036,user1036@example.com,SKU-1023,8,1471.44,0.33,2025-12-08,2025-12-11,Region XI,pending
+  ORD-21037,user1037@example.com,SKU-1031,5,1794.82,,2025-11-19,2025-11-25,Region VII,pending
+ORD-21038,user1038@example.com,SKU-1000,8,1275.95,,2025-06-01,2025-06-03,CAR,delivered
+ORD-21039,user1039@example.com,SKU-1051,4,2496.18,0.14,2025-08-14,2025-08-20,CAR,processing
+ORD-21040,user1040@example.com,SKU-1002,4,1132.98,0.04,2025-11-13,,Region IV-A,cancelled
+ORD-21041,user1041@example.com,SKU-1046,7,1196.54,0.09,2025-03-29,2025-04-02,NCR,shipped
+  ORD-21042,user1042@example.com,SKU-1047,4,1683.03,0.04,2025-10-23,2025-10-26,Region IV-A,cancelled
+ORD-21043,user_at_example.com,SKU-1038,5,178.41,0.27,2025-11-23,2025-11-26,Region XI,delivered
+ORD-21044,user1044@example.com,SKU-1023,2,829.33,0.28,2025-11-10,2025-11-16,CAR,processing
+ORD-21045,user1045@example.com,SKU-1058,6,641.32,0.32,2025-10-30,2025-11-03,NCR,processing
+ORD-21046,user1046@example.com,SKU-1025,7,1660.44,0.17,2025-03-31,2025-04-07,CAR,pending
+  ORD-21047,user1047@example.com,SKU-1011,7,1917.62,0.17,2025-08-08,2025-08-11,Region IV-A,shipped
+ORD-21048,user1048@example.com,SKU-1007,7,2383.12,0.09,2025-11-18,2025-11-23,CAR,processing
+ORD-21049,user1049@example.com,SKU-1033,5,2242.08,0.12,2025-02-06,2025-02-07,Region XI,processing
+ORD-21050,user1050@example.com,SKU-1028,2,-99.0,0.03,2025-05-17,2025-05-19,Region XI,pending
+ORD-21051,user1051@example.com,SKU-1056,5,2563.51,0.03,2025-01-07,2025-01-13,CAR,delivered
+ORD-21052,user1052@example.com,SKU-1020,6,1423.98,0.17,2025-06-07,2025-06-08,Region VII,cancelled
+ORD-21053,user1053@example.com,SKU-1059,9,267.44,0.01,2025-10-27,,Region III,shipped
+ORD-21054,not-an-email,SKU-1059,5,556.88,0.39,2025-10-25,2025-10-31,CAR,shipped
+ORD-21055,user1055@example.com,SKU-1032,8,1879.55,0.3,2025-12-10,,CAR,cancelled
+ORD-21056,user1056@example.com,SKU-1036,6,0.0,0.32,2025-01-22,2025-01-27,CAR,PENDING
+ORD-21057,user1057@example.com,SKU-1026,3,137.24,0.17,2025-12-12,2025-12-18,Region III,shipped
+ORD-21058,user1058@example.com,SKU-1025,6,149.43,0.27,2025-09-01,,Region XI,pending
+ORD-21059,user1059@example.com,SKU-1028,9,2016.77,0.13,2025-09-30,2025-10-02,Region XI,delivered
+ORD-21060,user1060@example.com,SKU-1015,9,990.05,0.39,2025-08-11,,Region IV-A,delivered
+  ORD-21061,user1061@example.com,SKU-1037,9,2988.19,,2025-04-21,2025-04-29,NCR,pending
+ORD-21062,user1062@example.com,SKU-1039,5,790.9,0.37,2025-09-19,2025-09-23,Region III,processing
+ORD-21063,user1063@example.com,SKU-1057,7,2731.67,0.32,2025-04-10,2025-04-11,Region IV-A,pending
+ORD-21064,,SKU-1015,3,1426.61,0.16,2025-02-05,2025-02-06,Region XI,cancelled
+ORD-21065,user1065@example.com,SKU-1058,9,1038.69,0.06,2025-12-17,2025-12-26,NCR,delivered
+ORD-21066,user1066@example.com,SKU-1047,1,1650.09,0.29,2025-04-04,2025-04-07,CAR,cancelled
+ORD-21067,user1067@example.com,SKU-1048,2,1351.04,0.18,2025-10-01,2025-10-08,CAR,processing
+ORD-21068,user1068@example.com,SKU-1018,5,2609.76,0.29,2025-06-05,2025-06-04,Region IV-A,shipped
+ORD-21069,user1069@example.com,SKU-1031,1,0.0,0.3,2025-01-15,2025-01-24,CAR,pending
+ORD-21070,user1070@example.com,SKU-1026,6,1729.09,0.05,2025-04-16,2025-04-25,Region III,delivered
+ORD-21071,user1071@example.com,SKU-1030,9,913.47,0.3,2025-08-15,2025-08-22,CAR,processing
+ORD-21072,user1072@example.com,SKU-1046,7,211.18,,2025-08-24,2025-08-28,Region IV-A,pending
+ORD-21073,user1073@example.com,SKU-1050,-2,2151.7,0.12,2025-04-15,,CAR,shipped
+ORD-21074,user1074@example.com,SKU-1057,9,2027.54,0.29,2025-12-29,2026-01-06,Region III,shipped
+ORD-21075,user1075@example.com,SKU-1048,5,2120.63,,2025-10-31,2025-11-04,NCR,processing
+ORD-21076,user1076@example.com,SKU-1042,1,2154.78,1.31,2025-09-25,,CAR,processing
+ORD-21077,user1077@example.com,SKU-1033,3,2156.07,0.3,2025-08-19,2025-08-17,Region IV-A,cancelled
+ORD-21078,user1078@example.com,SKU-1055,8,472.29,0.24,2025-09-15,2025-09-20,NCR,pending
+ORD-21079,user1079@example.com,SKU-1053,2,2805.09,0.08,2025-06-01,2025-06-04,Region VII,DELIVERED
+ORD-21080,user1080@example.com,SKU-1036,8,2085.58,0.22,2025-06-27,2025-06-28,Region IV-A,shipped
+ORD-21081,user1081@example.com,SKU-1003,-2,379.05,0.4,2025-03-05,2025-03-08,Region VII,delivered
+ORD-21082,user1082@example.com,SKU-1007,9,-99.0,0.2,2025-07-09,2025-07-15,Region VII,pending
+ORD-21083,user1083@example.com,SKU-1027,5,2156.11,,2025-02-02,2025-02-10,Region XI,processing
+  ORD-21084,user1084@example.com,SKU-1056,2,2711.85,0.29,2025-05-30,2025-06-05,CAR,processing
+ORD-21085,user1085@example.com,SKU-1050,3,2769.3,0.35,2025-08-09,2025-08-13,Region IV-A,processing
+ORD-21086,user1086@example.com,SKU-1031,5,2335.44,0.07,2025-02-22,2025-03-01,Region XI,shipped
+ORD-21087,user_at_example.com,SKU-1057,9,1241.36,0.06,2025-07-18,2025-07-27,Region III,processing
+ORD-21088,user1088@example.com,SKU-1014,9,2658.56,0.2,2025-10-22,,Region III,processing
+ORD-21089,user1089@example.com,SKU-1044,8,2756.06,0.24,2025-08-15,2025-08-21,NCR,cancelled
+ORD-21090,user1090@example.com,SKU-1028,2,1622.04,0.12,2025-02-07,2025-02-13,Region XI,delivered
+ORD-21091,user1091@example.com,SKU-1047,9,2655.18,0.29,2025-03-08,2025-03-17,Region IV-A,pending
+ORD-21092,user1092@example.com,SKU-1024,6,2388.12,0.13,2025-05-02,2025-05-06,Region III,processing
+ORD-21093,user1093@example.com,SKU-1004,2,2741.13,0.32,2025-06-08,,CAR,delivered
+ORD-21094,user1094@example.com,SKU-1006,9,1044.56,0.19,2025-07-29,2025-07-31,CAR,delivered
+ORD-21095,user1095@example.com,SKU-1037,9,2035.21,0.29,2025-10-09,2025-10-14,NCR,processing
+ORD-21096,user1096@example.com,SKU-1029,5,2784.38,0.11,2025-05-05,2025-05-13,,cancelled
+ORD-21097,user1097@example.com,SKU-1018,7,540.5,0.31,2025-04-27,2025-05-02,CAR,cancelled
+ORD-21098,user1098@example.com,SKU-1052,8,362.42,0.11,2025-03-24,2025-03-30,Region III,cancelled
+ORD-21099,user1099@example.com,SKU-1027,2,1948.03,1.5,2025-05-05,2025-05-13,Region IV-A,shipped
+ORD-21100,user1100@example.com,SKU-1017,9,433.67,0.01,2025-12-03,2025-12-01,Region XI,shipped
+ORD-21101,user1101@example.com,SKU-1045,1,260.95,0.36,2025-05-17,2025-05-23,,delivered
+ORD-21102,user1102@example.com,SKU-1055,8,1989.37,1.16,2025-01-01,,Region III,cancelled
+ORD-21103,user1103@example.com,SKU-1045,2,1802.12,0.39,2025-11-23,2025-12-01,,shipped
+  ORD-21104,user1104@example.com,SKU-1051,7,2007.61,0.37,2025-12-20,2025-12-24,Region IV-A,pending
+ORD-21105,user1105@example.com,SKU-1055,1,1014.56,0.03,2025-03-19,2025-03-28,Region IV-A,pending
+ORD-21106,user1106@example.com,SKU-1039,4,518.49,0.23,2025-07-06,2025-07-09,Region VII,processing
+ORD-21107,user1107@example.com,SKU-1002,1,2054.25,0.01,2025-10-07,2025-10-13,CAR,processing
+ORD-21108,user1108@example.com,SKU-1006,1,1806.3,0.17,2025-03-04,2025-03-10,Region VII,delivered
+ORD-21109,user1109@example.com,SKU-1041,8,83.12,0.11,2025-04-11,2025-04-16,Region VII,delivered
+ORD-21110,user1110@example.com,SKU-1010,7,1995.77,0.05,2025-02-14,2025-02-13,NCR,delivered
+ORD-21111,user1111@example.com,SKU-1028,7,430.19,0.39,2025-03-29,2025-03-30,Region III,processing
+ORD-21112,user1112@example.com,SKU-1015,5,2346.31,0.07,2025-05-29,2025-06-06,NCR,delivered
+ORD-21113,user1113@example.com,SKU-1032,3,2063.92,0.29,2025-10-22,2025-10-29,NCR,processing
+ORD-21114,user1114@example.com,SKU-1014,9,2942.34,0.03,2025-12-24,2026-01-02,Region IV-A,shipped
+ORD-21115,user1115@example.com,SKU-1050,8,2877.64,0.13,2025-03-07,2025-03-13,CAR,cancelled
+ORD-21116,user1116@example.com,SKU-1041,2,2139.57,0.31,2025-12-22,2025-12-18,Region XI,PROCESSING
+ORD-21117,user1117@example.com,SKU-1051,7,816.39,,2025-12-24,2025-12-31,,pending
+ORD-21118,user1118@example.com,SKU-1043,2,2085.07,1.4,2025-01-11,2025-01-18,NCR,cancelled
+ORD-21119,user1119@example.com,SKU-1024,3,0.0,0.03,2025-10-13,2025-10-21,Region IV-A,pending
+ORD-21120,user1120@example.com,SKU-1039,8,2681.15,0.06,2025-06-04,,Region XI,cancelled
+ORD-21121,user1121@example.com,SKU-1032,9,2581.81,0.31,2025-12-29,2026-01-07,Region XI,processing
+ORD-21122,user1122@example.com,SKU-1022,4,226.39,0.05,2025-10-28,,CAR,PROCESSING
+ORD-21123,user1123@example.com,SKU-1027,4,588.3,0.39,2025-03-03,2025-03-11,Region XI,pending
+ORD-21124,user1124@example.com,SKU-1055,6,1487.93,1.2,2025-10-10,2025-10-16,Region IV-A,pending
+ORD-21125,user1125@example.com,SKU-1039,5,1879.18,0.07,2025-09-27,2025-09-29,NCR,processing
+ORD-21126,not-an-email,SKU-1005,6,2856.33,0.22,2025-07-30,,Region IV-A,pending
+ORD-21127,user1127@example.com,SKU-1009,1,2490.53,0.15,2025-04-22,2025-05-01,Region III,pending
+ORD-21128,user1128@example.com,SKU-1029,6,1056.02,0.24,2025-08-18,,NCR,shipped
+ORD-21129,user1129@example.com,SKU-1021,7,1127.89,0.36,2025-01-14,2025-01-15,NCR,delivered
+ORD-21130,user1130@example.com,SKU-1048,9,2049.47,,2025-07-25,2025-08-03,Region XI,PENDING
+ORD-21131,user1131@example.com,SKU-1036,5,2516.97,0.17,2025-05-13,2025-05-21,Region IV-A,cancelled
+ORD-21132,user1132@example.com,SKU-1035,1,383.3,1.13,2025-08-14,2025-08-20,Region IV-A,pending
+  ORD-21133,user1133@example.com,SKU-1028,,146.91,0.31,2025-12-27,2026-01-03,Region XI,processing
+ORD-21134,user1134@example.com,SKU-1018,3,365.99,0.27,2025-05-12,2025-05-16,Region XI,processing
+ORD-21135,user1135@example.com,SKU-1058,5,2189.04,0.31,2025-03-19,2025-03-26,CAR,shipped
+ORD-21136,user1136@example.com,SKU-1046,8,2372.57,0.1,2025-06-15,2025-06-21,NCR,cancelled
+ORD-21137,user1137@example.com,SKU-1001,4,981.32,1.44,2025-10-15,2025-10-16,Region XI,cancelled
+ORD-21138,user1138@example.com,SKU-1038,8,474.23,0.1,2025-12-15,2025-12-18,Region VII,shipped
+ORD-21139,user1139@example.com,SKU-1048,3,1699.71,0.32,2025-05-16,2025-05-22,Region VII,delivered
+ORD-21140,user1140@example.com,SKU-1058,3,2988.66,0.29,2025-02-16,2025-02-12,Region VII,CANCELLED
+ORD-21141,user1141@example.com,SKU-1023,7,2247.01,0.21,2025-01-25,2025-01-26,Region XI,processing
+ORD-21142,user1142@example.com,SKU-1035,9,2513.9,0.08,2025-05-23,2025-05-31,Region VII,delivered
+ORD-21143,user1143@example.com,SKU-1008,2,1243.03,0.34,2025-10-10,2025-10-16,Region VII,SHIPPED
+ORD-21144,user1144@example.com,SKU-1051,1,2626.1,1.57,2025-03-24,2025-03-26,Region III,cancelled
+ORD-21145,user1145@example.com,SKU-1031,3,1826.12,0.04,2025-08-02,,CAR,pending
+ORD-21146,user1146@example.com,SKU-1024,9,402.31,0.29,2025-03-16,2025-03-23,NCR,pending
+ORD-21147,user1147@example.com,SKU-1006,6,1230.83,0.24,2025-12-27,2025-12-24,NCR,processing
+ORD-21148,user1148@example.com,SKU-1011,2,337.08,0.01,2025-11-02,2025-11-03,Region VII,pending
+ORD-21149,user1149@example.com,SKU-1006,3,2872.57,0.1,2025-01-01,2025-01-09,Region III,pending
+ORD-21150,user1150@example.com,SKU-1009,9,2611.92,0.03,2025-07-30,2025-08-04,Region XI,processing
+  ORD-21151,user1151@example.com,SKU-1055,3,1979.67,0.15,2025-06-10,2025-06-17,Region VII,processing
+ORD-21152,,SKU-1032,2,1627.6,0.02,2025-04-27,,Region XI,pending
+  ORD-21153,user1153@example.com,SKU-1030,2,1331.64,,2025-05-30,2025-06-01,,pending
+ORD-21154,user1154@example.com,SKU-1058,5,1607.31,0.02,2025-02-02,2025-01-31,CAR,shipped
+ORD-21155,user1155@example.com,SKU-1034,1,1479.63,0.33,2025-04-04,2025-04-13,CAR,processing
+ORD-21156,user1156@example.com,SKU-1007,2,1820.81,0.02,2025-07-17,2025-07-22,Region IV-A,shipped
+ORD-21157,user1157@example.com,SKU-1012,2,2855.09,0.12,2025-05-28,2025-05-31,Region VII,delivered
+ORD-21158,user1158@example.com,SKU-1007,8,1782.23,,2025-06-18,2025-06-25,Region III,processing
+ORD-21159,user1159@example.com,SKU-1034,1,288.7,0.31,2025-07-27,,Region XI,delivered
+ORD-21160,user1160@example.com,SKU-1005,2,1123.52,,2025-01-31,2025-02-09,Region VII,pending
+ORD-21161,user1161@example.com,SKU-1023,4,879.65,,2025-07-07,2025-07-15,Region III,processing
+ORD-21162,user1162@example.com,SKU-1047,8,1584.92,,2025-03-20,2025-03-25,Region IV-A,pending
+ORD-21163,user1163@example.com,SKU-1050,4,958.55,0.06,2025-03-12,2025-03-16,Region IV-A,shipped
+ORD-21164,user1164@example.com,SKU-1050,3,869.5,0.3,2025-10-06,2025-10-15,,shipped
+ORD-21165,user1165@example.com,SKU-1042,6,1923.66,,2025-08-29,2025-09-01,Region VII,shipped
+ORD-21166,user1166@example.com,SKU-1031,8,596.55,0.34,2025-06-23,2025-06-28,Region VII,cancelled
+ORD-21167,user1167@example.com,SKU-1055,7,527.26,0.2,2025-11-11,2025-11-20,Region IV-A,delivered
+ORD-21168,not-an-email,SKU-1050,4,937.84,0.39,2025-08-08,2025-08-14,,SHIPPED
+ORD-21169,user1169@example.com,SKU-1045,2,2788.25,,2025-09-07,2025-09-12,CAR,pending
+ORD-21170,user1170@example.com,SKU-1042,1,1814.03,0.05,2025-06-10,2025-06-11,CAR,shipped
+ORD-21171,user1171@example.com,SKU-1046,1,1792.37,0.15,2025-09-11,2025-09-14,Region IV-A,delivered
+ORD-21172,user1172@example.com,SKU-1034,7,2887.31,0.13,2025-06-24,2025-07-01,CAR,cancelled
+ORD-21173,user1173@example.com,SKU-1043,2,2096.07,0.23,2025-09-09,2025-09-11,Region XI,cancelled
+ORD-21174,user1174@example.com,SKU-1044,1,921.53,0.12,2025-01-11,2025-01-08,CAR,processing
+ORD-21175,user1175@example.com,SKU-1030,3,2172.66,0.27,2025-03-31,2025-04-05,CAR,delivered
+ORD-21176,user1176@example.com,SKU-1013,8,628.88,0.05,2025-04-20,2025-04-22,Region VII,shipped
+  ORD-21177,user1177@example.com,SKU-1006,3,468.64,0.38,2025-12-06,2025-12-07,Region III,processing
+ORD-21178,user1178@example.com,SKU-1035,3,1770.35,0.19,2025-07-21,2025-07-23,NCR,shipped
+ORD-21179,user1179@example.com,SKU-1016,2,1350.91,0.16,2025-12-18,2025-12-22,Region III,processing
+ORD-21180,user1180@example.com,SKU-1011,3,301.92,,2025-11-15,2025-11-24,Region III,PENDING
+ORD-21181,user1181@example.com,SKU-1036,7,1586.36,0.25,2025-02-01,2025-02-09,Region III,shipped
+ORD-21182,user1182@example.com,SKU-1009,5,2912.57,0.14,2025-10-03,2025-10-05,Region VII,processing
+ORD-21183,user1183@example.com,SKU-1003,5,869.21,0.21,2025-03-21,2025-03-25,CAR,DELIVERED
+ORD-21184,user1184@example.com,SKU-1003,4,1584.76,,2025-12-17,2025-12-21,NCR,pending
+ORD-21185,user1185@example.com,SKU-1053,1,-99.0,,2025-07-17,2025-07-23,Region III,CANCELLED
+ORD-21186,user1186@example.com,SKU-1017,2,928.97,0.16,2025-12-06,2025-12-09,CAR,cancelled
+ORD-21187,user1187@example.com,SKU-1014,7,884.55,0.37,2025-09-30,,Region VII,CANCELLED
+ORD-21188,user1188@example.com,SKU-1053,1,874.05,0.28,2025-11-10,2025-11-14,Region VII,delivered
+ORD-21189,user1189@example.com,SKU-1029,five,497.74,0.36,2025-11-29,2025-12-02,NCR,delivered
+ORD-21190,user1190@example.com,SKU-1002,2,1948.17,0.23,2025-05-31,2025-06-06,Region III,delivered
+ORD-21191,not-an-email,SKU-1051,,1397.99,0.31,2025-03-12,2025-03-13,Region VII,delivered
+ORD-21192,user1192@example.com,SKU-1026,8,2503.94,0.1,2025-03-25,2025-03-26,CAR,cancelled
+ORD-21193,user1193@example.com,SKU-1016,2,2821.28,0.32,2025-09-26,2025-10-04,Region VII,processing
+ORD-21194,user1194@example.com,SKU-1020,4,287.49,1.25,2025-12-06,2025-12-08,Region XI,pending
+ORD-21195,user1195@example.com,SKU-1016,8,1233.71,0.23,2025-06-17,2025-06-22,Region VII,PENDING
+ORD-21196,user1196@example.com,SKU-1038,1,1191.67,0.04,2025-08-13,2025-08-19,Region IV-A,pending
+ORD-21197,user1197@example.com,SKU-1051,8,1576.88,0.3,2025-11-26,2025-11-29,NCR,delivered
+ORD-21198,user1198@example.com,SKU-1041,1,2668.22,0.26,2025-12-30,2026-01-03,Region XI,cancelled
+ORD-21199,user1199@example.com,SKU-1041,1,2982.67,0.34,2025-04-21,,CAR,shipped
+ORD-21200,user1200@example.com,SKU-1008,8,2388.31,0.03,2025-01-31,2025-02-04,Region VII,delivered
+ORD-21201,user1201@example.com,SKU-1004,2,359.58,1.69,2025-12-01,2025-11-28,Region XI,shipped
+ORD-21202,user1202@example.com,SKU-1009,2,1383.49,,2025-02-01,2025-02-02,Region VII,delivered
+ORD-21203,user1203@example.com,SKU-1008,8,110.62,0.03,2025-05-10,2025-05-15,Region III,DELIVERED
+ORD-21204,user1204@example.com,SKU-1059,8,2520.67,0.3,2025-01-29,2025-01-31,Region III,shipped
+ORD-21205,user1205@example.com,SKU-1023,4,2532.45,0.38,2025-10-19,2025-10-26,CAR,pending
+ORD-21206,user1206@example.com,SKU-1054,3,2491.61,0.29,2025-01-18,2025-01-19,Region VII,delivered
+ORD-21207,user1207@example.com,SKU-1020,3,2404.49,0.02,2025-09-10,2025-09-14,CAR,cancelled
+ORD-21208,user1208@example.com,SKU-1007,8,297.14,0.39,2025-04-06,2025-04-07,NCR,cancelled
+ORD-21209,user1209@example.com,SKU-1016,7,1053.82,,2025-01-04,2025-01-05,Region III,pending
+  ORD-21210,user1210@example.com,SKU-1053,7,1567.26,0.29,2025-01-05,2025-01-08,Region IV-A,processing
+ORD-21211,user1211@example.com,SKU-1031,5,1305.07,0.4,2025-10-16,2025-10-18,Region XI,processing
+ORD-21212,user1212@example.com,SKU-1012,5,1482.61,0.12,2025-04-15,2025-04-24,Region IV-A,shipped
+ORD-21213,user1213@example.com,SKU-1040,6,2137.07,0.03,2025-10-24,2025-10-29,Region III,shipped
+ORD-21214,user1214@example.com,SKU-1046,7,847.56,0.01,2025-05-14,,NCR,cancelled
+ORD-21215,user1215@example.com,SKU-1020,5,312.11,0.19,2025-05-18,2025-05-24,Region III,processing
+ORD-21216,user1216@example.com,SKU-1053,6,1982.95,0.18,2025-07-20,2025-07-26,CAR,pending
+ORD-21217,user1217@example.com,SKU-1021,9,1446.35,0.03,2025-09-19,2025-09-27,CAR,shipped
+ORD-21218,user_at_example.com,SKU-1037,3,2509.88,0.13,2025-11-06,2025-11-12,NCR,delivered
+ORD-21219,user1219@example.com,SKU-1025,2,716.8,0.21,2025-04-28,2025-05-04,Region III,processing
+ORD-21220,user1220@example.com,SKU-1008,5,437.11,0.28,2025-08-24,,CAR,cancelled
+ORD-21221,user1221@example.com,SKU-1025,7,1573.67,0.08,2025-08-09,2025-08-14,NCR,pending
+ORD-21222,user1222@example.com,SKU-1004,five,2388.16,0.29,2025-01-23,2025-01-28,Region VII,CANCELLED
+ORD-21223,user1223@example.com,SKU-1011,1,2210.05,0.06,2025-08-03,2025-08-10,NCR,pending
+ORD-21224,user1224@example.com,SKU-1016,4,1145.31,0.36,2025-11-16,2025-11-18,CAR,delivered
+ORD-21225,user1225@example.com,SKU-1057,6,430.92,1.64,2025-03-27,,Region XI,shipped
+ORD-21226,,SKU-1040,1,320.18,1.97,2025-01-05,,NCR,pending
+ORD-21227,user1227@example.com,SKU-1056,8,1309.63,0.0,2025-09-10,2025-09-14,,shipped
+ORD-21228,user1228@example.com,SKU-1042,4,1538.36,0.34,2025-08-09,2025-08-12,Region XI,shipped
+ORD-21229,user1229@example.com,SKU-1008,2,922.52,0.38,2025-12-16,2025-12-20,Region XI,pending
+ORD-21230,,SKU-1035,4,279.4,0.22,2025-08-02,2025-08-05,Region III,shipped
+ORD-21231,user1231@example.com,SKU-1037,5,1360.13,0.03,2025-04-24,2025-04-26,CAR,cancelled
+ORD-21232,user1232@example.com,SKU-1018,1,1463.67,,2025-11-21,2025-11-29,Region III,processing
+ORD-21233,user1233@example.com,SKU-1016,8,411.46,0.34,2025-09-26,2025-09-27,CAR,processing
+ORD-21234,user1234@example.com,SKU-1004,6,2414.92,0.02,2025-07-25,2025-08-03,Region VII,PENDING
+ORD-21235,user1235@example.com,SKU-1039,9,1769.33,0.29,2025-03-27,2025-04-02,Region IV-A,PENDING
+ORD-21236,user1236@example.com,SKU-1028,4,2646.35,1.61,2025-01-06,2025-01-14,CAR,pending
+ORD-21237,user1237@example.com,SKU-1014,2,2957.05,0.18,2025-07-18,2025-07-26,NCR,SHIPPED
+ORD-21238,user1238@example.com,SKU-1030,2,131.78,0.16,2025-01-02,2025-01-09,Region IV-A,processing
+  ORD-21239,user1239@example.com,SKU-1027,8,2570.02,0.27,2025-10-20,2025-10-22,CAR,pending
+ORD-21240,,SKU-1027,4,2055.54,0.08,2025-01-01,2025-01-04,Region III,pending
+ORD-21241,user1241@example.com,SKU-1025,9,344.94,0.35,2025-11-03,2025-11-06,Region III,pending
+ORD-21242,user1242@example.com,SKU-1016,2,304.7,0.16,2025-05-03,,Region III,shipped
+ORD-21243,user1243@example.com,SKU-1052,5,1813.38,0.34,2025-03-19,,CAR,processing
+ORD-21244,not-an-email,SKU-1042,4,2130.79,0.02,2025-07-05,2025-07-14,,cancelled
+ORD-21245,user1245@example.com,SKU-1012,6,2608.03,0.25,2025-12-12,,NCR,processing
+ORD-21246,user1246@example.com,SKU-1021,9,2918.33,0.36,2025-12-16,2025-12-23,NCR,pending
+ORD-21247,user1247@example.com,SKU-1034,8,1614.29,0.24,2025-01-21,2025-01-30,Region XI,delivered
+ORD-21248,user1248@example.com,SKU-1046,3,2596.97,0.19,2025-02-06,2025-02-09,Region IV-A,shipped
+ORD-21249,user1249@example.com,SKU-1032,2,51.82,0.03,2025-03-31,2025-03-28,NCR,processing
+ORD-21250,user1250@example.com,SKU-1019,2,2809.11,0.4,2025-05-24,2025-05-30,Region IV-A,cancelled
+ORD-21251,user1251@example.com,SKU-1025,9,2289.86,0.32,2025-09-17,2025-09-22,Region VII,cancelled
+ORD-21252,user1252@example.com,SKU-1042,2,1868.22,0.16,2025-06-08,2025-06-10,Region III,processing
+ORD-21253,user1253@example.com,SKU-1050,6,2728.95,,2025-06-12,2025-06-21,NCR,cancelled
+ORD-21254,user1254@example.com,SKU-1026,5,571.92,0.0,2025-04-08,2025-04-09,CAR,cancelled
+ORD-21255,user1255@example.com,SKU-1046,3,2603.42,0.02,2025-07-08,2025-07-14,NCR,pending
+ORD-21256,user1256@example.com,SKU-1032,5,526.92,1.18,2025-03-17,2025-03-22,Region III,shipped
+ORD-21257,user1257@example.com,SKU-1020,1,751.31,0.25,2025-12-10,2025-12-19,NCR,delivered
+ORD-21258,user1258@example.com,SKU-1053,1,353.42,0.39,2025-04-09,2025-04-10,NCR,processing
+ORD-21259,user1259@example.com,SKU-1050,6,1268.77,0.15,2025-10-10,2025-10-11,CAR,processing
+ORD-21260,user1260@example.com,SKU-1013,2,1133.61,0.1,2025-07-04,,Region III,cancelled
+ORD-21261,user1261@example.com,SKU-1039,4,327.99,,2025-08-15,,Region VII,processing
+ORD-21262,user1262@example.com,SKU-1058,2,2352.13,,2025-08-18,,Region XI,processing
+ORD-21263,user1263@example.com,SKU-1029,6,2595.2,0.04,2025-04-08,2025-04-10,Region III,pending
+ORD-21264,user1264@example.com,SKU-1032,8,809.83,,2025-04-04,2025-04-01,CAR,cancelled
+ORD-21265,user1265@example.com,SKU-1023,5,2556.72,0.11,2025-09-26,2025-10-04,NCR,pending
+  ORD-21266,user1266@example.com,SKU-1050,1,1126.47,0.33,2025-12-23,2025-12-24,NCR,pending
+ORD-21267,user1267@example.com,SKU-1023,1,2078.46,0.32,2025-10-06,2025-10-09,Region VII,processing
+  ORD-21268,user1268@example.com,SKU-1010,2,295.59,0.32,2025-03-10,2025-03-14,Region XI,SHIPPED
+ORD-21269,user_at_example.com,SKU-1035,4,1973.49,0.18,2025-05-13,,Region VII,processing
+ORD-21270,user1270@example.com,SKU-1038,3,578.03,1.98,2025-04-04,2025-04-05,NCR,processing
+ORD-21271,user1271@example.com,SKU-1037,6,2153.37,0.28,2025-01-08,2025-01-15,NCR,cancelled
+ORD-21272,user1272@example.com,SKU-1012,4,787.01,0.19,2025-11-28,2025-12-02,Region III,shipped
+ORD-21273,user1273@example.com,SKU-1022,6,619.09,0.27,2025-05-20,2025-05-21,NCR,shipped
+ORD-21274,user1274@example.com,SKU-1009,9,1285.14,0.14,2025-08-13,2025-08-14,,processing
+ORD-21275,user1275@example.com,SKU-1012,8,528.43,0.01,2025-08-02,2025-08-11,Region III,delivered
+ORD-21276,user1276@example.com,SKU-1052,3,329.58,0.35,2025-11-14,2025-11-17,,delivered
+ORD-21277,user1277@example.com,SKU-1057,5,499.5,0.23,2025-07-15,2025-07-21,Region IV-A,PROCESSING
+ORD-21278,user1278@example.com,SKU-1036,3,99.54,0.35,2025-02-02,2025-02-10,NCR,pending
+ORD-21279,user1279@example.com,SKU-1055,7,1319.62,0.37,2025-04-10,2025-04-17,NCR,shipped
+ORD-21280,user1280@example.com,SKU-1007,4,88.79,0.17,2025-04-04,2025-04-05,NCR,shipped
+ORD-21281,user1281@example.com,SKU-1038,5,100.97,0.18,2025-07-10,2025-07-18,Region XI,cancelled
+ORD-21282,user1282@example.com,SKU-1050,1,587.32,0.29,2025-10-13,2025-10-21,Region III,shipped
+ORD-21283,user1283@example.com,SKU-1047,1,2220.69,0.01,2025-08-01,2025-08-06,CAR,cancelled
+ORD-21284,user1284@example.com,SKU-1023,9,1346.39,0.26,2025-06-23,2025-06-27,Region IV-A,cancelled
+ORD-21285,user1285@example.com,SKU-1026,9,1853.87,0.3,2025-08-28,2025-09-03,Region IV-A,processing
+ORD-21286,user1286@example.com,SKU-1011,2,2615.57,0.19,2025-03-09,2025-03-14,Region III,shipped
+ORD-21287,user1287@example.com,SKU-1017,3,0.0,0.38,2025-07-21,2025-07-23,Region IV-A,shipped
+ORD-21288,user1288@example.com,SKU-1052,2,2148.05,0.39,2025-10-08,2025-10-10,Region VII,pending
+ORD-21289,user1289@example.com,SKU-1057,3,1271.41,0.33,2025-03-22,,Region IV-A,processing
+ORD-21290,user1290@example.com,SKU-1009,1,1905.94,0.13,2025-06-08,2025-06-12,Region XI,pending
+ORD-21291,user1291@example.com,SKU-1017,9,1589.89,,2025-03-26,2025-03-29,Region XI,pending
+ORD-21292,user1292@example.com,SKU-1041,5,2467.64,0.08,2025-04-24,,Region VII,cancelled
+ORD-21293,user1293@example.com,SKU-1018,5,2536.05,0.24,2025-10-06,2025-10-08,CAR,cancelled
+ORD-21294,user1294@example.com,SKU-1057,8,1051.19,0.18,2025-09-02,,Region IV-A,processing
+ORD-21295,user1295@example.com,SKU-1027,2,2494.25,,2025-08-03,,NCR,shipped
+ORD-21296,user1296@example.com,SKU-1002,1,2272.26,0.35,2025-02-08,2025-02-17,Region XI,delivered
+ORD-21297,user1297@example.com,SKU-1019,1,2891.95,0.14,2025-05-11,2025-05-13,NCR,processing
+ORD-21298,user1298@example.com,SKU-1036,,2352.84,0.15,2025-10-04,2025-10-06,Region IV-A,delivered
+ORD-21299,user1299@example.com,SKU-1037,4,2829.85,0.36,2025-09-27,2025-10-05,Region III,processing
+ORD-21300,user1300@example.com,SKU-1022,5,380.21,0.25,2025-09-29,2025-10-05,NCR,delivered
+ORD-21301,user1301@example.com,SKU-1026,9,1109.35,0.31,2025-09-09,,CAR,processing
+ORD-21302,user1302@example.com,SKU-1012,4,2281.83,0.22,2025-11-23,2025-12-02,Region XI,shipped
+ORD-21303,user1303@example.com,SKU-1031,2,683.87,0.36,2025-11-24,2025-11-25,Region III,shipped
+ORD-21304,user1304@example.com,SKU-1022,3,2973.67,,2025-07-14,2025-07-18,Region XI,cancelled
+ORD-21305,user1305@example.com,SKU-1034,7,1713.79,0.36,2025-10-07,,Region III,cancelled
+ORD-21306,user1306@example.com,SKU-1050,3,2471.39,0.31,2025-10-27,2025-11-02,CAR,pending
+ORD-21307,user1307@example.com,SKU-1028,8,772.31,0.1,2025-05-16,2025-05-25,CAR,delivered
+ORD-21308,user1308@example.com,SKU-1035,7,1077.95,0.25,2025-08-25,2025-08-30,Region VII,shipped
+ORD-21309,user1309@example.com,SKU-1053,1,249.07,0.13,2025-01-30,,CAR,pending
+ORD-21310,user1310@example.com,SKU-1016,2,1280.06,,2025-12-14,2025-12-16,,processing
+ORD-21311,user1311@example.com,SKU-1004,5,1223.33,0.09,2025-08-07,2025-08-03,Region III,processing
+ORD-21312,user1312@example.com,SKU-1026,4,1069.25,0.21,2025-03-03,2025-03-06,Region III,pending
+ORD-21313,user1313@example.com,SKU-1010,7,1327.5,0.17,2025-07-11,2025-07-14,CAR,shipped
+ORD-21314,user1314@example.com,SKU-1058,2,896.66,,2025-03-31,,Region XI,delivered
+ORD-21315,user1315@example.com,SKU-1011,3,65.03,0.36,2025-05-09,,Region XI,shipped
+ORD-21316,user1316@example.com,SKU-1032,7,270.97,,2025-01-12,2025-01-13,CAR,delivered
+ORD-21317,user1317@example.com,SKU-1036,6,330.41,0.27,2025-06-17,2025-06-20,Region IV-A,processing
+ORD-21318,user1318@example.com,SKU-1031,3,2710.54,0.34,2025-08-27,2025-08-29,CAR,shipped
+ORD-21319,user1319@example.com,SKU-1019,6,277.92,0.18,2025-02-13,2025-02-15,NCR,delivered
+ORD-21320,user1320@example.com,SKU-1016,1,1364.57,0.13,2025-09-27,2025-10-05,Region VII,pending
+ORD-21321,user1321@example.com,SKU-1002,2,1426.92,0.13,2025-10-15,2025-10-20,NCR,processing
+  ORD-21322,user1322@example.com,SKU-1052,9,1414.4,0.2,2025-09-26,2025-10-04,Region III,cancelled
+ORD-21323,user1323@example.com,SKU-1059,8,1496.21,0.14,2025-02-10,2025-02-11,Region III,delivered
+ORD-21324,user1324@example.com,SKU-1038,3,2018.96,0.24,2025-02-11,,CAR,cancelled
+ORD-21325,user1325@example.com,SKU-1056,4,2159.52,0.23,2025-01-04,,Region XI,pending
+ORD-21326,user1326@example.com,SKU-1034,5,0.0,0.33,2025-10-26,2025-11-03,Region VII,PROCESSING
+ORD-21327,user1327@example.com,SKU-1046,4,695.6,0.02,2025-12-30,2026-01-02,Region XI,processing
+  ORD-21328,user1328@example.com,SKU-1016,2,2034.85,0.3,2025-09-19,2025-09-28,NCR,pending
+ORD-21329,not-an-email,SKU-1019,3,1254.09,0.22,2025-07-27,2025-07-26,Region III,pending
+ORD-21330,user1330@example.com,SKU-1049,8,2859.18,0.31,2025-01-14,2025-01-16,Region XI,SHIPPED
+ORD-21331,user1331@example.com,SKU-1051,9,1953.2,0.18,2025-02-27,2025-03-08,CAR,processing
+ORD-21332,user1332@example.com,SKU-1011,3,540.74,0.1,2025-12-28,2025-12-31,CAR,pending
+ORD-21333,user1333@example.com,SKU-1009,3,908.38,0.07,2025-03-08,2025-03-11,CAR,cancelled
+ORD-21334,user1334@example.com,SKU-1002,9,1671.15,0.14,2025-10-07,2025-10-08,CAR,cancelled
+ORD-21335,not-an-email,SKU-1040,3,2865.52,0.0,2025-05-03,2025-05-07,NCR,shipped
+ORD-21336,user1336@example.com,SKU-1036,1,502.52,0.26,2025-01-01,2025-01-10,NCR,pending
+ORD-21337,user1337@example.com,SKU-1030,6,484.21,0.28,2025-10-15,,Region XI,delivered
+ORD-21338,user1338@example.com,SKU-1052,6,75.24,,2025-10-10,2025-10-18,Region VII,shipped
+ORD-21339,user1339@example.com,SKU-1026,7,1312.01,0.06,2025-02-07,2025-02-14,,processing
+ORD-21340,user1340@example.com,SKU-1055,5,2234.1,0.13,2025-08-24,,Region III,processing
+ORD-21341,user1341@example.com,SKU-1050,9,-99.0,,2025-10-26,2025-11-03,CAR,delivered
+ORD-21342,user1342@example.com,SKU-1037,3,1256.36,0.33,2025-11-21,2025-11-30,Region III,shipped
+ORD-21343,user1343@example.com,SKU-1008,9,314.61,0.15,2025-08-08,2025-08-10,Region IV-A,shipped
+ORD-21344,user1344@example.com,SKU-1057,1,2791.67,0.27,2025-03-31,2025-04-08,Region III,delivered
+ORD-21345,user1345@example.com,SKU-1027,1,150.75,0.4,2025-06-16,,CAR,pending
+ORD-21346,user1346@example.com,SKU-1040,9,521.89,0.17,2025-03-29,2025-04-01,,processing
+  ORD-21347,user1347@example.com,SKU-1002,4,2503.24,0.39,2025-03-29,2025-03-31,Region III,PROCESSING
+ORD-21348,user1348@example.com,SKU-1003,1,2069.89,0.03,2025-09-07,2025-09-15,NCR,cancelled
+ORD-21349,user1349@example.com,SKU-1058,5,714.73,0.19,2025-01-07,2025-01-15,Region III,shipped
+ORD-21350,user1350@example.com,SKU-1035,4,2836.79,0.37,2025-05-23,2025-05-27,Region XI,delivered
+ORD-21351,user1351@example.com,SKU-1030,6,2102.96,0.21,2025-05-26,2025-06-03,Region IV-A,processing
+ORD-21352,user1352@example.com,SKU-1053,6,2618.13,0.02,2025-10-23,2025-10-31,CAR,pending
+ORD-21353,user1353@example.com,SKU-1020,5,986.05,0.03,2025-12-14,2025-12-18,Region IV-A,delivered
+ORD-21354,user1354@example.com,SKU-1003,9,1046.82,0.13,2025-08-09,2025-08-14,NCR,delivered
+ORD-21355,user1355@example.com,SKU-1059,2,1679.43,0.36,2025-11-17,2025-11-23,NCR,shipped
+ORD-21356,user1356@example.com,SKU-1046,9,2940.82,0.29,2025-02-14,2025-02-22,Region IV-A,cancelled
+ORD-21357,user1357@example.com,SKU-1034,8,508.22,0.22,2025-07-06,2025-07-10,Region IV-A,delivered
+ORD-21358,user1358@example.com,SKU-1029,7,736.4,0.05,2025-07-29,2025-08-02,Region VII,delivered
+ORD-21359,user1359@example.com,SKU-1041,6,2311.52,0.04,2025-10-16,2025-10-23,NCR,processing
+ORD-21360,,SKU-1035,5,210.2,0.38,2025-06-14,2025-06-16,CAR,pending
+ORD-21361,user1361@example.com,SKU-1048,3,2656.58,0.14,2025-09-24,2025-09-25,NCR,delivered
+ORD-21362,user1362@example.com,SKU-1032,2,527.55,0.28,2025-11-20,2025-11-23,Region VII,pending
+ORD-21363,user1363@example.com,SKU-1049,4,552.63,0.15,2025-10-17,2025-10-24,Region VII,delivered
+ORD-21364,user1364@example.com,SKU-1012,4,299.1,0.18,2025-03-15,2025-03-16,Region XI,processing
+ORD-21365,user1365@example.com,SKU-1030,7,70.47,0.37,2025-12-20,2025-12-29,Region IV-A,processing
+ORD-21366,user1366@example.com,SKU-1016,8,494.18,0.09,2025-05-06,2025-05-07,CAR,cancelled
+ORD-21367,user1367@example.com,SKU-1029,8,1918.18,0.06,2025-09-06,2025-09-11,CAR,cancelled
+ORD-21368,user1368@example.com,SKU-1028,9,1068.9,0.35,2025-08-09,2025-08-14,Region III,delivered
+ORD-21369,user1369@example.com,SKU-1015,3,1842.99,0.25,2025-01-13,2025-01-14,Region VII,pending
+ORD-21370,user1370@example.com,SKU-1043,9,1661.79,0.39,2025-08-06,,Region VII,delivered
+ORD-21371,user1371@example.com,SKU-1009,4,0.0,1.16,2025-12-22,2025-12-27,,shipped
+ORD-21372,user1372@example.com,SKU-1020,4,631.02,0.24,2025-06-28,2025-06-30,Region IV-A,processing
+ORD-21373,user1373@example.com,SKU-1026,8,463.0,0.37,2025-02-17,2025-02-23,Region III,DELIVERED
+ORD-21374,user1374@example.com,SKU-1034,7,2384.59,0.09,2025-11-10,2025-11-18,,shipped
+ORD-21375,user1375@example.com,SKU-1035,9,2554.42,0.33,2025-12-10,2025-12-15,NCR,processing
+ORD-21376,user1376@example.com,SKU-1033,9,597.23,0.28,2025-07-29,2025-08-01,Region III,delivered
+ORD-21377,user1377@example.com,SKU-1056,4,1500.59,0.38,2025-06-05,2025-06-09,CAR,shipped
+ORD-21378,user1378@example.com,SKU-1048,3,957.0,0.12,2025-11-29,2025-12-03,Region IV-A,processing
+ORD-21379,user1379@example.com,SKU-1014,6,1013.0,0.03,2025-08-09,2025-08-17,Region III,delivered
+ORD-21380,user1380@example.com,SKU-1042,6,1548.59,0.33,2025-12-04,2025-12-12,NCR,delivered
+ORD-21381,user1381@example.com,SKU-1044,4,2570.54,0.18,2025-09-21,2025-09-25,Region XI,pending
+ORD-21382,user1382@example.com,SKU-1042,five,91.72,1.47,2025-09-16,2025-09-21,Region III,shipped
+  ORD-21383,user1383@example.com,SKU-1003,7,614.65,0.21,2025-09-30,2025-10-09,NCR,DELIVERED
+ORD-21384,user1384@example.com,SKU-1056,2,942.28,0.27,2025-10-26,2025-11-02,Region III,pending
+ORD-21385,user1385@example.com,SKU-1030,5,511.67,0.16,2025-11-19,2025-11-26,Region IV-A,DELIVERED
+ORD-21386,user1386@example.com,SKU-1029,3,949.65,0.19,2025-06-27,2025-07-06,Region IV-A,delivered
+ORD-21387,user1387@example.com,SKU-1027,6,2861.8,0.13,2025-03-22,2025-03-19,Region VII,shipped
+ORD-21388,user1388@example.com,SKU-1035,8,1648.59,0.22,2025-05-20,2025-05-21,NCR,SHIPPED
+ORD-21389,user1389@example.com,SKU-1056,1,2462.01,0.23,2025-07-17,2025-07-22,Region VII,cancelled
+ORD-21390,user1390@example.com,SKU-1029,1,837.09,0.2,2025-06-23,2025-06-29,NCR,processing
+ORD-21391,user1391@example.com,SKU-1025,8,588.33,0.39,2025-01-30,2025-02-01,NCR,pending
+ORD-21392,user1392@example.com,SKU-1004,6,2362.03,,2025-04-04,2025-04-07,NCR,shipped
+ORD-21393,user1393@example.com,SKU-1047,4,1715.47,0.33,2025-11-12,2025-11-14,,shipped
+ORD-21394,user1394@example.com,SKU-1058,7,482.61,0.21,2025-12-06,2025-12-13,NCR,delivered
+ORD-21395,user1395@example.com,SKU-1059,7,2444.27,0.05,2025-01-28,2025-01-24,CAR,PROCESSING
+ORD-21396,user1396@example.com,SKU-1027,7,2339.31,0.07,2025-09-07,2025-09-13,Region III,processing
+ORD-21397,user1397@example.com,SKU-1039,7,80.04,0.4,2025-03-18,,Region XI,shipped
+ORD-21398,user1398@example.com,SKU-1007,8,2571.89,1.67,2025-08-16,2025-08-24,Region VII,CANCELLED
+ORD-21399,user1399@example.com,SKU-1007,2,453.52,0.22,2025-12-28,2026-01-03,Region XI,cancelled
+ORD-21400,user1400@example.com,SKU-1045,1,2758.94,0.26,2025-04-05,2025-04-12,NCR,pending
+ORD-21401,user1401@example.com,SKU-1035,2,1657.23,0.02,2025-05-01,2025-05-04,NCR,processing
+ORD-21402,user1402@example.com,SKU-1004,5,373.48,1.43,2025-10-02,,Region VII,cancelled
+ORD-21403,user1403@example.com,SKU-1003,7,2858.5,0.1,2025-06-10,,Region IV-A,cancelled
+ORD-21404,user1404@example.com,SKU-1053,5,1046.87,0.28,2025-05-01,2025-05-10,CAR,PENDING
+ORD-21405,user1405@example.com,SKU-1007,1,2859.03,0.03,2025-06-18,2025-06-23,NCR,processing
+ORD-21406,user1406@example.com,SKU-1007,4,1883.44,0.08,2025-03-17,,Region XI,pending
+ORD-21407,user1407@example.com,SKU-1010,8,673.68,0.37,2025-02-05,2025-02-10,Region III,pending
+ORD-21408,user1408@example.com,SKU-1052,8,716.59,0.05,2025-11-17,2025-11-23,NCR,delivered
+ORD-21409,user1409@example.com,SKU-1047,1,1945.38,0.17,2025-06-17,2025-06-18,NCR,shipped
+ORD-21410,user1410@example.com,SKU-1030,9,1865.97,0.31,2025-01-11,2025-01-12,Region XI,shipped
+ORD-21411,user1411@example.com,SKU-1017,7,987.63,,2025-07-11,2025-07-18,Region VII,delivered
+ORD-21412,not-an-email,SKU-1025,8,2118.73,0.08,2025-08-28,,Region VII,delivered
+ORD-21413,user1413@example.com,SKU-1011,3,2314.95,1.99,2025-07-01,2025-07-06,Region VII,delivered
+ORD-21414,user1414@example.com,SKU-1017,5,1763.43,0.21,2025-10-29,2025-11-02,Region IV-A,processing
+ORD-21415,user1415@example.com,SKU-1017,4,741.72,0.4,2025-08-27,2025-08-29,CAR,shipped
+ORD-21416,user1416@example.com,SKU-1027,2,2331.19,0.31,2025-06-26,2025-07-05,,shipped
+ORD-21417,user1417@example.com,SKU-1031,1,2067.67,0.36,2025-10-11,2025-10-12,Region XI,cancelled
+ORD-21418,user1418@example.com,SKU-1011,8,2290.91,0.02,2025-03-25,,Region XI,delivered
+ORD-21419,user1419@example.com,SKU-1047,1,2019.85,0.39,2025-07-10,2025-07-13,CAR,cancelled
+  ORD-21420,user1420@example.com,SKU-1012,7,690.71,0.28,2025-03-15,,NCR,delivered
+ORD-21421,user1421@example.com,SKU-1021,1,2740.33,0.05,2025-07-30,2025-08-04,CAR,shipped
+ORD-21422,user1422@example.com,SKU-1027,6,2448.67,0.32,2025-10-09,2025-10-11,CAR,cancelled
+ORD-21423,user1423@example.com,SKU-1046,7,1977.64,0.07,2025-05-28,2025-05-27,CAR,processing
+ORD-21424,user1424@example.com,SKU-1054,1,557.04,0.25,2025-05-04,2025-05-06,Region IV-A,delivered
+ORD-21425,user1425@example.com,SKU-1057,8,731.14,0.01,2025-12-05,2025-12-10,Region IV-A,pending
+ORD-21426,user1426@example.com,SKU-1057,5,600.03,0.27,2025-08-10,2025-08-16,CAR,delivered
+ORD-21427,user1427@example.com,SKU-1059,1,477.15,0.22,2025-10-17,,CAR,cancelled
+ORD-21428,user1428@example.com,SKU-1022,9,416.56,0.3,2025-10-16,2025-10-18,Region XI,pending
+ORD-21429,user1429@example.com,SKU-1056,3,96.23,0.12,2025-05-02,2025-05-06,Region VII,pending
+ORD-21430,user1430@example.com,SKU-1023,6,991.12,0.3,2025-11-04,2025-11-05,,delivered
+ORD-21431,user1431@example.com,SKU-1010,9,0.0,0.2,2025-08-13,2025-08-18,Region III,shipped
+ORD-21432,user1432@example.com,SKU-1028,9,836.74,0.31,2025-12-26,2025-12-31,Region III,pending
+ORD-21433,user1433@example.com,SKU-1027,8,714.22,0.13,2025-08-28,2025-09-01,Region IV-A,shipped
+ORD-21434,user1434@example.com,SKU-1016,5,2246.75,,2025-10-31,2025-11-02,Region VII,delivered
+ORD-21435,user1435@example.com,SKU-1010,2,1009.2,0.35,2025-04-27,,Region XI,delivered
+ORD-21436,,SKU-1013,7,368.02,,2025-07-02,2025-07-08,Region VII,delivered
+ORD-21437,user1437@example.com,SKU-1045,4,590.73,0.12,2025-09-24,2025-09-26,Region VII,delivered
+ORD-21438,user1438@example.com,SKU-1024,7,1503.13,0.23,2025-08-28,2025-08-30,Region XI,shipped
+ORD-21439,user1439@example.com,SKU-1014,3,851.48,0.04,2025-09-25,2025-10-02,Region VII,pending
+ORD-21440,user1440@example.com,SKU-1050,3,1404.91,0.34,2025-02-05,,Region VII,delivered
+ORD-21441,user1441@example.com,SKU-1054,7,607.42,0.4,2025-09-26,2025-10-04,Region IV-A,shipped
+ORD-21442,user1442@example.com,SKU-1033,4,2115.37,0.13,2025-09-04,2025-09-05,CAR,cancelled
+ORD-21443,user1443@example.com,SKU-1033,7,423.89,0.07,2025-03-03,2025-03-10,Region III,pending
+ORD-21444,user1444@example.com,SKU-1054,7,2075.99,0.2,2025-07-09,2025-07-11,Region VII,shipped
+  ORD-21445,user1445@example.com,SKU-1046,3,1796.37,0.21,2025-05-30,2025-06-06,CAR,shipped
+ORD-21446,user1446@example.com,SKU-1018,6,2941.5,,2025-12-11,2025-12-10,NCR,CANCELLED
+ORD-21447,user1447@example.com,SKU-1034,7,1647.31,0.06,2025-06-03,2025-06-09,Region III,cancelled
+ORD-21448,user1448@example.com,SKU-1041,6,-99.0,0.29,2025-10-11,,Region XI,processing
+ORD-21449,user1449@example.com,SKU-1052,2,114.7,0.27,2025-04-28,2025-05-05,Region XI,cancelled
+ORD-21450,user1450@example.com,SKU-1044,9,569.29,0.0,2025-07-02,2025-07-09,Region IV-A,cancelled
+ORD-21451,user1451@example.com,SKU-1052,7,1260.41,1.28,2025-04-02,2025-03-31,Region VII,delivered
+ORD-21452,user1452@example.com,SKU-1010,5,1875.57,0.33,2025-04-24,2025-04-28,Region XI,processing
+ORD-21453,user1453@example.com,SKU-1011,5,591.26,0.35,2025-06-08,2025-06-15,Region XI,PENDING
+ORD-21454,user1454@example.com,SKU-1054,5,87.4,0.11,2025-01-01,2025-01-05,Region VII,shipped
+ORD-21455,user1455@example.com,SKU-1040,1,141.05,0.31,2025-06-25,,Region VII,shipped
+ORD-21456,user1456@example.com,SKU-1029,7,671.27,0.29,2025-04-02,2025-04-04,Region XI,cancelled
+ORD-21457,not-an-email,SKU-1051,5,780.87,0.27,2025-11-16,2025-11-13,Region III,pending
+ORD-21458,user1458@example.com,SKU-1003,6,1596.23,1.66,2025-06-06,2025-06-07,Region III,processing
+ORD-21459,user1459@example.com,SKU-1039,9,141.11,0.3,2025-08-25,2025-09-03,Region IV-A,delivered
+ORD-21460,,SKU-1033,1,1722.66,0.13,2025-02-10,,CAR,delivered
+ORD-21461,user1461@example.com,SKU-1009,1,1759.19,0.08,2025-10-22,2025-10-29,Region IV-A,delivered
+ORD-21462,user1462@example.com,SKU-1058,2,2701.87,0.25,2025-08-13,2025-08-18,CAR,processing
+ORD-21463,user1463@example.com,SKU-1055,9,2739.33,0.31,2025-09-13,2025-09-16,Region XI,delivered
+ORD-21464,user1464@example.com,SKU-1028,2,485.4,0.35,2025-07-27,2025-07-30,Region VII,processing
+ORD-21465,user1465@example.com,SKU-1034,4,1586.6,0.24,2025-02-11,,Region VII,shipped
+ORD-21466,user1466@example.com,SKU-1039,9,0.0,0.19,2025-05-20,,NCR,DELIVERED
+ORD-21467,user1467@example.com,SKU-1046,6,1463.11,0.38,2025-02-21,2025-02-24,Region III,PENDING
+ORD-21468,user1468@example.com,SKU-1014,6,2849.58,0.23,2025-01-06,2025-01-11,Region IV-A,CANCELLED
+ORD-21469,user1469@example.com,SKU-1033,5,993.67,0.35,2025-12-22,,Region XI,processing
+  ORD-21470,user1470@example.com,SKU-1014,6,2405.68,0.08,2025-06-23,2025-06-29,Region XI,pending
+ORD-21471,user1471@example.com,SKU-1057,9,1153.73,0.14,2025-12-10,,Region IV-A,processing
+ORD-21472,user1472@example.com,SKU-1052,2,2960.63,0.18,2025-02-02,,Region XI,processing
+ORD-21473,user1473@example.com,SKU-1038,6,2198.78,,2025-12-08,2025-12-17,Region VII,delivered
+ORD-21474,user1474@example.com,SKU-1021,6,436.68,0.2,2025-08-13,2025-08-18,Region III,PENDING
+ORD-21475,,SKU-1002,4,1684.71,0.23,2025-11-11,2025-11-12,Region VII,shipped
+ORD-21476,user_at_example.com,SKU-1001,1,540.29,0.16,2025-07-12,2025-07-18,Region III,processing
+ORD-21477,user1477@example.com,SKU-1003,8,1556.13,0.27,2025-07-30,2025-08-07,Region VII,processing
+  ORD-21478,user1478@example.com,SKU-1019,6,2062.13,0.05,2025-10-20,2025-10-21,Region IV-A,pending
+ORD-21479,user1479@example.com,SKU-1015,3,2026.3,0.07,2025-10-12,2025-10-21,Region III,pending
+ORD-21480,user1480@example.com,SKU-1034,8,2518.66,,2025-04-22,2025-04-26,Region IV-A,shipped
+ORD-21481,user1481@example.com,SKU-1040,7,0.0,,2025-10-28,2025-10-30,Region III,shipped
+ORD-21482,user1482@example.com,SKU-1038,8,1159.21,0.03,2025-07-11,2025-07-18,Region IV-A,processing
+ORD-21483,user1483@example.com,SKU-1020,7,1668.95,0.33,2025-10-21,2025-10-23,Region XI,processing
+ORD-21484,user1484@example.com,SKU-1023,3,2907.84,1.45,2025-03-29,2025-04-04,Region XI,shipped
+ORD-21485,user1485@example.com,SKU-1058,6,1618.73,0.38,2025-05-30,2025-05-31,CAR,processing
+ORD-21486,user1486@example.com,SKU-1059,8,152.87,0.38,2025-03-14,2025-03-21,NCR,cancelled
+ORD-21487,user1487@example.com,SKU-1051,6,287.69,,2025-12-14,2025-12-23,CAR,delivered
+  ORD-21488,user1488@example.com,SKU-1032,3,2782.83,0.3,2025-07-13,2025-07-14,NCR,pending
+ORD-21489,user1489@example.com,SKU-1019,4,2754.62,0.16,2025-01-29,2025-02-05,Region III,pending
+ORD-21490,user1490@example.com,SKU-1018,7,761.08,0.4,2025-12-18,2025-12-24,NCR,processing
+ORD-21491,user1491@example.com,SKU-1020,3,0.0,0.2,2025-06-03,2025-06-04,Region III,processing
+ORD-21492,user_at_example.com,SKU-1043,1,2929.18,0.32,2025-10-29,2025-11-01,Region XI,shipped
+ORD-21493,user1493@example.com,SKU-1055,7,1675.06,0.03,2025-10-29,,CAR,cancelled
+ORD-21494,user1494@example.com,SKU-1040,5,2404.49,0.23,2025-04-12,2025-04-17,Region III,pending
+ORD-21495,user1495@example.com,SKU-1029,7,2679.09,0.29,2025-03-20,2025-03-26,Region XI,cancelled
+ORD-21496,user1496@example.com,SKU-1023,9,526.93,0.38,2025-08-26,2025-08-31,Region IV-A,pending
+ORD-21497,user1497@example.com,SKU-1040,9,2712.32,0.35,2025-09-23,,CAR,processing
+ORD-21498,user1498@example.com,SKU-1046,3,1765.18,0.19,2025-07-22,2025-07-26,Region VII,processing
+ORD-21499,user1499@example.com,SKU-1001,7,754.43,0.27,2025-12-12,2025-12-17,Region IV-A,delivered

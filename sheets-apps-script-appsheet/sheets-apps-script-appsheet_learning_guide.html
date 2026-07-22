@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Sheets, Apps Script &amp; AppSheet Learning Guide — Beginner to Intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Sheets &amp; Apps Script<br>Learning Guide</div>
+      <div class="brand-sub">Google Sheets · Apps Script · AppSheet · Sheets API</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-intermediate-track" class="nav-top">Beginner to Intermediate Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+<div class="nav-group">
+<a href="#phase-1-sheets-power-foundations" class="nav-top nav-phase">Phase 1: Sheets Power Foundations</a>
+<div class="nav-children">
+<a href="#module-11-spreadsheet-fundamentals-data-hygiene" class="nav-child">Module 1.1 — Spreadsheet Fundamentals &amp; Data Hygiene</a>
+<a href="#module-12-formulas-that-do-the-work" class="nav-child">Module 1.2 — Formulas That Do the Work</a>
+<a href="#module-13-query-filter-cross-file-data" class="nav-child">Module 1.3 — QUERY, FILTER &amp; Cross-File Data</a>
+<a href="#phase-1-capstone-store-operations-workbook" class="nav-child">Phase 1 Capstone: Store Operations Workbook</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-2-apps-script-automation" class="nav-top nav-phase">Phase 2: Apps Script Automation</a>
+<div class="nav-children">
+<a href="#module-21-javascript-the-v8-runtime" class="nav-child">Module 2.1 — JavaScript &amp; the V8 Runtime</a>
+<a href="#module-22-spreadsheetapp-crud" class="nav-child">Module 2.2 — SpreadsheetApp CRUD</a>
+<a href="#module-23-custom-functions-menus-sidebars" class="nav-child">Module 2.3 — Custom Functions, Menus &amp; Sidebars</a>
+<a href="#module-24-triggers-automation-professional-workflow" class="nav-child">Module 2.4 — Triggers, Automation &amp; Professional Workflow</a>
+<a href="#phase-2-capstone-auto-invoicing-engine" class="nav-child">Phase 2 Capstone: Auto-Invoicing Engine</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-3-sheets-as-a-web-app-backend" class="nav-top nav-phase">Phase 3: Sheets as a Web-App Backend</a>
+<div class="nav-children">
+<a href="#module-31-schema-design-data-layer-patterns" class="nav-child">Module 3.1 — Schema Design &amp; Data-Layer Patterns</a>
+<a href="#module-32-apps-script-web-apps-json-api" class="nav-child">Module 3.2 — Apps Script Web Apps: JSON API</a>
+<a href="#module-33-frontend-to-sheets" class="nav-child">Module 3.3 — Frontend to Sheets</a>
+<a href="#module-34-concurrency-quotas-scaling-limits" class="nav-child">Module 3.4 — Concurrency, Quotas &amp; Scaling Limits</a>
+<a href="#phase-3-capstone-tindatrack-web-console" class="nav-child">Phase 3 Capstone: TindaTrack Web Console</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-4-appsheet-the-extension-ecosystem" class="nav-top nav-phase">Phase 4: AppSheet &amp; the Extension Ecosystem</a>
+<div class="nav-children">
+<a href="#module-41-appsheet-fundamentals" class="nav-child">Module 4.1 — AppSheet Fundamentals</a>
+<a href="#module-42-appsheet-logic-automation" class="nav-child">Module 4.2 — AppSheet Logic &amp; Automation</a>
+<a href="#module-43-forms-looker-studio-add-ons" class="nav-child">Module 4.3 — Forms, Looker Studio &amp; Add-ons</a>
+<a href="#phase-4-capstone-field-ordering-app" class="nav-child">Phase 4 Capstone: Field Ordering App</a>
+</div></div>
+<a href="#final-capstone-tindatrack-suite" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="google-sheets-apps-script-appsheet-learning-guide">Google Sheets, Apps Script &amp; AppSheet Learning Guide</h1>
+<h2 id="beginner-to-intermediate-track">Beginner to Intermediate Track</h2>
+<h3>Google Sheets · Apps Script (V8) · Sheets API v4 · AppSheet · clasp 3 · Google Forms · Looker Studio</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Google Sheets and Apps Script" xmlns="http://www.w3.org/2000/svg">
+  <rect x="32" y="36" width="168" height="184" rx="20" fill="none" stroke="#075249" stroke-width="14"/>
+  <line x1="32" y1="98" x2="200" y2="98" stroke="#075249" stroke-width="12"/>
+  <line x1="32" y1="158" x2="200" y2="158" stroke="#075249" stroke-width="12"/>
+  <line x1="116" y1="36" x2="116" y2="220" stroke="#075249" stroke-width="12"/>
+  <polygon points="196,118 150,190 178,190 166,244 226,166 192,166 214,118" fill="#0d7a6e"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same realistic <strong>TindaTrack</strong> dataset — an order-and-inventory workbook for a small distribution business supplying 40 sari-sari stores, with four sheets: <code>Products</code>, <code>Customers</code>, <code>Orders</code>, and <code>Payments</code>.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Some experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3 id="quiz-google-sheets">Google Sheets</h3>
+<ul>
+<li>[ ] I can build a dropdown with data validation and format cells conditionally based on their values.</li>
+<li>[ ] I can write <code>XLOOKUP</code> and <code>SUMIFS</code> formulas that reference another sheet without help.</li>
+<li>[ ] I can use <code>ARRAYFORMULA</code> or a native Table so a formula fills a whole column automatically.</li>
+<li>[ ] I can write a <code>QUERY</code> with <code>select</code>, <code>where</code>, and <code>group by</code>, and pull data from another file with <code>IMPORTRANGE</code>.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3 id="quiz-apps-script">Apps Script</h3>
+<ul>
+<li>[ ] I can open the Apps Script editor from a Sheet and run a function that logs a value.</li>
+<li>[ ] I can read a range with <code>getValues()</code>, transform the 2-D array in JavaScript, and write it back with <code>setValues()</code>.</li>
+<li>[ ] I can add a custom menu with <code>onOpen</code> and build a custom function usable as <code>=MYFUNC()</code> in a cell.</li>
+<li>[ ] I can set up an installable time-driven or <code>onEdit</code> trigger and debug it from the execution log.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3 id="quiz-sheets-as-a-backend">Sheets as a Web-App Backend</h3>
+<ul>
+<li>[ ] I can design a sheet as a proper data table: one header row, one record per row, a stable ID column.</li>
+<li>[ ] I can deploy an Apps Script Web App and return JSON from <code>doGet</code> with <code>ContentService</code>.</li>
+<li>[ ] I can call that Web App from a browser frontend with <code>fetch()</code> and handle its redirect behavior.</li>
+<li>[ ] I can explain when to use <code>LockService</code> and what the Sheets quota model means for concurrent users.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3 id="quiz-appsheet">AppSheet</h3>
+<ul>
+<li>[ ] I can generate a working AppSheet app from an existing Google Sheet and regenerate its structure after schema changes.</li>
+<li>[ ] I can configure column types, refs between tables, and virtual columns with expressions.</li>
+<li>[ ] I can build slices, format rules, and role-based view visibility.</li>
+<li>[ ] I can build an automation bot that fires on a data change and sends an email or updates a row.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.2</strong> | <strong>4 yes</strong> → Go straight to the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-spreadsheet-fundamentals-data-hygiene"><td>1.1</td><td>Spreadsheet Fundamentals &amp; Data Hygiene</td><td>Beginner</td><td>None</td><td>4h</td></tr>
+<tr data-href="#module-12-formulas-that-do-the-work"><td>1.2</td><td>Formulas That Do the Work</td><td>Beginner</td><td>1.1</td><td>6h</td></tr>
+<tr data-href="#module-13-query-filter-cross-file-data"><td>1.3</td><td>QUERY, FILTER &amp; Cross-File Data</td><td>Beginner–Intermediate</td><td>1.2</td><td>5h</td></tr>
+<tr data-href="#module-21-javascript-the-v8-runtime"><td>2.1</td><td>JavaScript &amp; the V8 Runtime</td><td>Beginner</td><td>None</td><td>6h</td></tr>
+<tr data-href="#module-22-spreadsheetapp-crud"><td>2.2</td><td>SpreadsheetApp CRUD</td><td>Beginner–Intermediate</td><td>2.1</td><td>6h</td></tr>
+<tr data-href="#module-23-custom-functions-menus-sidebars"><td>2.3</td><td>Custom Functions, Menus &amp; Sidebars</td><td>Intermediate</td><td>2.2</td><td>5h</td></tr>
+<tr data-href="#module-24-triggers-automation-professional-workflow"><td>2.4</td><td>Triggers, Automation &amp; Professional Workflow</td><td>Intermediate</td><td>2.2</td><td>6h</td></tr>
+<tr data-href="#module-31-schema-design-data-layer-patterns"><td>3.1</td><td>Schema Design &amp; Data-Layer Patterns</td><td>Intermediate</td><td>1.1, 2.2</td><td>5h</td></tr>
+<tr data-href="#module-32-apps-script-web-apps-json-api"><td>3.2</td><td>Apps Script Web Apps: JSON API</td><td>Intermediate</td><td>3.1</td><td>6h</td></tr>
+<tr data-href="#module-33-frontend-to-sheets"><td>3.3</td><td>Frontend to Sheets</td><td>Intermediate</td><td>3.2</td><td>6h</td></tr>
+<tr data-href="#module-34-concurrency-quotas-scaling-limits"><td>3.4</td><td>Concurrency, Quotas &amp; Scaling Limits</td><td>Advanced</td><td>3.2</td><td>5h</td></tr>
+<tr data-href="#module-41-appsheet-fundamentals"><td>4.1</td><td>AppSheet Fundamentals</td><td>Beginner–Intermediate</td><td>1.1</td><td>5h</td></tr>
+<tr data-href="#module-42-appsheet-logic-automation"><td>4.2</td><td>AppSheet Logic &amp; Automation</td><td>Intermediate</td><td>4.1</td><td>6h</td></tr>
+<tr data-href="#module-43-forms-looker-studio-add-ons"><td>4.3</td><td>Forms, Looker Studio &amp; Add-ons</td><td>Intermediate</td><td>1.3</td><td>4h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 2, 3, and 4 branch independently after Phase 1. Apps Script (Phase 2) and AppSheet (Phase 4) are two different answers to the same question — "how do I turn this Sheet into an app?" — so you can learn either first. Phase 3 depends on Phase 2, not Phase 4.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+<h3 id="track-1-sheets-power-user">Track 1 — Sheets Power User (master the spreadsheet itself)</h3>
+<p><code>1.1 → 1.2 → 1.3 → Capstone 1</code><br>
+Target outcome: <strong>Run a real business's operations from a well-structured workbook</strong></p>
+<h3 id="track-2-automation-engineer">Track 2 — Automation Engineer (make the Sheet work while you sleep)</h3>
+<p><code>1.2 → 2.1 → 2.2 → 2.3 → 2.4 → Capstone 2</code><br>
+Target outcome: <strong>Scheduled and event-driven Apps Script automations with a clasp/Git workflow</strong></p>
+<h3 id="track-3-web-app-builder">Track 3 — Web-App Builder (Sheets as your backend database)</h3>
+<p><code>2.1 → 2.2 → 3.1 → 3.2 → 3.3 → 3.4 → Capstone 3</code><br>
+Target outcome: <strong>A browser web app whose entire storage layer is a Google Sheet behind a JSON API</strong></p>
+<h3 id="track-4-no-code-app-builder">Track 4 — No-Code App Builder (ship a mobile app without code)</h3>
+<p><code>1.1 → 1.3 → 4.1 → 4.2 → Capstone 4</code><br>
+Target outcome: <strong>A deployed AppSheet field app used by non-technical staff</strong></p>
+<h3 id="track-5-full-stack-on-workspace">Track 5 — Full Stack on Workspace (everything)</h3>
+<p><code>All modules in order → Final Capstone</code><br>
+Target outcome: <strong>Associate Google Workspace Administrator readiness + a portfolio-grade integrated build</strong></p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Sheets Power Foundations         (Weeks 1–3)
+Phase 2 — Apps Script Automation           (Weeks 4–7)
+Phase 3 — Sheets as a Web-App Backend      (Weeks 8–11)
+Phase 4 — AppSheet + Extension Ecosystem   (Weeks 12–14)
+Capstone Projects                          (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ── 1.2 ── 1.3 ──────────────────┐
+        │                           │
+        ├─ 2.1 ── 2.2 ─┬─ 2.3       ├─ 4.1 ── 4.2 ── 4.3
+        │              └─ 2.4       │
+        │                  │        │
+        └──────── 3.1 ── 3.2 ── 3.3 │
+                           │        │
+                          3.4 ──────┴─── Final Capstone</code></pre>
+<h2 id="phase-1-sheets-power-foundations">Phase 1: Sheets Power Foundations</h2>
+<h3 id="weeks-1-3">Weeks 1–3 | Goal: run TindaTrack's daily operations from a clean, formula-driven workbook</h3>
+<hr />
+
+<h3 id="module-11-spreadsheet-fundamentals-data-hygiene">Module 1.1 — Spreadsheet Fundamentals &amp; Data Hygiene</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Build a sheet with a native Table, a dropdown from a range, a date-format column, and conditional formatting that highlights overdue rows — in under 20 minutes.<br>
+<strong>Skip if:</strong> You already keep structured, validated data in Sheets and know the difference between a Table and a formatted range.<br>
+<strong>Unlocks:</strong> 1.2, 3.1, 4.1</p>
+</blockquote>
+
+<h4>Structure before features</h4>
+<p>Everything later in this guide — formulas, Apps Script, AppSheet, the web app — assumes your data is shaped like a database table: <strong>one header row, one record per row, one value per cell, no merged cells, no blank separator rows</strong>. This is the single highest-leverage habit in the whole guide. A "pretty" sheet with merged headers and subtotal rows mixed into the data will break <code>QUERY</code>, confuse AppSheet's schema detection, and force every script you write to special-case junk rows.</p>
+<p>Set up the TindaTrack workbook now. Create a spreadsheet named <code>TindaTrack</code> with four sheets and these headers in row 1:</p>
+<pre><code>Products : SKU | Name | Category | UnitPrice | StockQty | ReorderLevel
+Customers: CustomerID | StoreName | OwnerName | Barangay | City | Phone | JoinedDate
+Orders   : OrderID | OrderDate | CustomerID | SKU | Qty | UnitPrice | LineTotal | Status | DeliveredDate
+Payments : PaymentID | OrderID | PaidDate | Amount | Method | Reference</code></pre>
+<p>Seed at least 15 products, 10 customers, 60 order rows, and 30 payments — realistic values, Philippine peso prices, statuses drawn from <code>Pending / Packed / Delivered / Cancelled</code>. You will reuse this exact workbook in every exercise through the Final Capstone.</p>
+
+<h4>Native Tables, validation, and formats</h4>
+<p>Convert each range to a <strong>native Table</strong> (Format → Convert to table). Tables — a 2024+ feature now central to Sheets — give you column types, per-column filters, alternating colors, and structured references like <code>Orders[Status]</code>, and both AppSheet and Gemini-powered features read them more reliably than loose ranges. If you paste unformatted data, current Sheets versions will even offer a Gemini-powered "Convert to table" prompt.</p>
+<p>Then lock the data down with <strong>data validation</strong> (Data → Data validation): <code>Status</code> becomes a dropdown from a list, <code>CustomerID</code> in <code>Orders</code> a dropdown from the <code>Customers</code> range, dates get date validation. Validation is not cosmetic: every typo it prevents is a bug you will not have to debug in Phase 2's scripts or Phase 3's API, because <code>"Deliverd"</code> silently fails every filter that looks for <code>"Delivered"</code>.</p>
+<p>Finish with number formats (₱ currency: custom format <code>"₱"#,##0.00</code>), conditional formatting (highlight <code>Orders</code> rows where <code>Status = "Pending"</code> and <code>OrderDate</code> is more than 7 days old), and <strong>named ranges</strong> for anything scripts will reference later.</p>
+
+<h4>Collaboration primitives</h4>
+<p>Learn the sharing model deliberately — it becomes your web app's security model in Phase 3. Practice: share with view-only vs. editor roles, protect the <code>Products</code> sheet so only you can edit it, use comments with <code>@</code>-mentions, and inspect Version history (File → Version history) to restore a prior state. Smart chips (<code>@</code> to insert people, files, dates) and the <code>Payments</code> sheet's date chips make the workbook self-documenting.</p>
+
+<p><strong>Exercise 1.1 — Build the TindaTrack Workbook</strong></p>
+<p>Dataset: TindaTrack (you are creating it now)</p>
+<ol>
+<li>Create the four sheets with the exact headers above; seed the row counts listed.</li>
+<li>Convert all four ranges to native Tables named <code>Products</code>, <code>Customers</code>, <code>Orders</code>, <code>Payments</code>.</li>
+<li>Add dropdown validation for <code>Status</code>, <code>Method</code>, <code>Category</code>, and <code>CustomerID</code> (from the Customers table).</li>
+<li>Apply ₱ currency format to all money columns and ISO date format (<code>yyyy-mm-dd</code>) to all date columns.</li>
+<li>Add conditional formatting: overdue Pending orders in red; <code>StockQty &lt;= ReorderLevel</code> rows in amber on <code>Products</code>.</li>
+<li>Protect <code>Products</code> against edits by other editors; add a named range <code>ORDER_STATUSES</code> for the status list.</li>
+<li>Break your own rules on a scratch copy — merge cells, add a blank row mid-table — and observe what the Table features stop doing.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-formulas-that-do-the-work">Module 1.2 — Formulas That Do the Work</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Without documentation, write an <code>XLOOKUP</code> joining Orders to Products, a <code>SUMIFS</code> of delivered revenue per customer, and one <code>LET</code>+<code>LAMBDA</code> formula.<br>
+<strong>Skip if:</strong> You already reach for <code>XLOOKUP</code>/<code>SUMIFS</code>/<code>ARRAYFORMULA</code> by instinct and have used <code>LET</code> at least once.<br>
+<strong>Unlocks:</strong> 1.3, 2.1</p>
+</blockquote>
+
+<h4>The lookup family — joining tables</h4>
+<p>Spreadsheet "joins" are lookups. Use <code>XLOOKUP</code> as your default — it replaces the older <code>VLOOKUP</code> pattern, searches any direction, and has a built-in not-found argument, which matters because an unhandled <code>#N/A</code> propagates into every formula downstream and later into scripts that read the cell:</p>
+<pre><code class="language-excel">=XLOOKUP(D2, Products[SKU], Products[Name], "UNKNOWN SKU")
+
+=XLOOKUP(C2, Customers[CustomerID], Customers[StoreName], "?")
+
+' Multi-column pull in one spill:
+=XLOOKUP(D2, Products[SKU], Products[Name]:Products[UnitPrice])</code></pre>
+
+<h4>Conditional aggregation</h4>
+<p>Reports are almost always "sum/count where…". Learn the <code>-IFS</code> family plus the pattern of building criteria from cells, not literals, so one report cell can be repointed without editing formulas:</p>
+<pre><code class="language-excel">=SUMIFS(Orders[LineTotal], Orders[Status], "Delivered", Orders[CustomerID], A2)
+
+=COUNTIFS(Orders[Status], "Pending", Orders[OrderDate], "&lt;"&amp;TODAY()-7)
+
+=SUMIFS(Orders[LineTotal], Orders[OrderDate], "&gt;="&amp;DATE(2026,7,1),
+        Orders[OrderDate], "&lt;="&amp;EOMONTH(DATE(2026,7,1),0))</code></pre>
+
+<h4>Array thinking: ARRAYFORMULA, LET, LAMBDA</h4>
+<p>Dragging a formula down 5,000 rows creates 5,000 formulas to maintain; one array formula in the header row creates one. This is also a performance lever — recalculation cost scales with formula count, and a laggy workbook is usually a dragged-formula workbook:</p>
+<pre><code class="language-excel">=ARRAYFORMULA(IF(Orders[Qty]="",, Orders[Qty] * Orders[UnitPrice]))
+
+=LET(due, Orders[OrderDate] + 7,
+     open, Orders[Status] = "Pending",
+     ARRAYFORMULA(IF(open * (due &lt; TODAY()), "OVERDUE", "")))
+
+=MAP(Orders[LineTotal], LAMBDA(x, IF(x &gt; 5000, "BULK", "REGULAR")))</code></pre>
+<p><code>LET</code> names intermediate values (readability + speed, since each is computed once); <code>LAMBDA</code> with helpers like <code>MAP</code>, <code>BYROW</code>, and <code>SCAN</code> gives you reusable logic — and Named Functions (Data → Named functions) let you package a <code>LAMBDA</code> as your own function, shareable across files.</p>
+
+<p><strong>Exercise 1.2 — The Ops Dashboard Formulas</strong></p>
+<p>Dataset: TindaTrack</p>
+<ol>
+<li>On a new <code>Dash</code> sheet, list every customer with <code>XLOOKUP</code>-pulled store name and barangay.</li>
+<li>Add delivered revenue, pending order count, and last order date per customer using <code>SUMIFS</code>/<code>COUNTIFS</code>/<code>MAXIFS</code>.</li>
+<li>Replace the <code>LineTotal</code> column in <code>Orders</code> with a single <code>ARRAYFORMULA</code>.</li>
+<li>Write a <code>LET</code>-based formula flagging overdue Pending orders.</li>
+<li>Create a Named Function <code>REVENUE_BETWEEN(start_date, end_date)</code> and use it for a July 2026 revenue cell.</li>
+<li>Time a full recalculation before and after converting dragged formulas to array formulas; note the difference.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-query-filter-cross-file-data">Module 1.3 — QUERY, FILTER &amp; Cross-File Data</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Write one <code>QUERY</code> producing monthly revenue by category, and pull the Products table into a second spreadsheet with <code>IMPORTRANGE</code>.<br>
+<strong>Skip if:</strong> You already write grouped <code>QUERY</code> reports and manage <code>IMPORTRANGE</code> permission grants.<br>
+<strong>Unlocks:</strong> Capstone 1, 4.3</p>
+</blockquote>
+
+<h4>QUERY — SQL inside a cell</h4>
+<p><code>QUERY</code> is the closest thing Sheets has to SQL, and it is the mental bridge to Phase 3's data-layer thinking. Columns are addressed by letter (<code>Col1</code> style when fed an expression result). One formula can select, filter, aggregate, sort, and label:</p>
+<pre><code class="language-sql">=QUERY(Orders[#ALL],
+  "select D, sum(G)
+   where H = 'Delivered'
+   group by D
+   order by sum(G) desc
+   label sum(G) 'Revenue'", 1)
+
+=QUERY(Orders[#ALL],
+  "select year(B), month(B)+1, sum(G)
+   where H &lt;&gt; 'Cancelled'
+   group by year(B), month(B)+1
+   label sum(G) 'Monthly Revenue'", 1)</code></pre>
+<p>Know its sharp edges: <code>QUERY</code> coerces each column to the majority type and blanks the minority — a column mixing text SKUs like <code>1001</code> and <code>A-1001</code> will silently lose rows. That is a data-hygiene failure from Module 1.1, not a QUERY bug.</p>
+
+<h4>FILTER, SORT, UNIQUE — composable spills</h4>
+<pre><code class="language-excel">=FILTER(Orders[#ALL], Orders[Status]="Pending", Orders[OrderDate] &lt; TODAY()-7)
+
+=SORT(UNIQUE(Orders[CustomerID]))
+
+=LET(top, SORTN(QUERY(Orders[#ALL],"select C, sum(G) group by C",1), 6, 0, 2, FALSE), top)</code></pre>
+<p>Prefer <code>FILTER</code> when the result must feed another formula (it returns real arrays), and <code>QUERY</code> when you need grouping or labels.</p>
+
+<h4>IMPORTRANGE and the multi-file architecture</h4>
+<p>Real deployments split files: a private master workbook, and separate shared views per audience. <code>IMPORTRANGE("spreadsheet_url", "Orders!A:I")</code> is the plumbing — the first use requires an explicit permission grant, and that grant is per source-file/destination-file pair. This matters for security: anyone with edit access to a destination file inherits read access to the granted range, so never point <code>IMPORTRANGE</code> from a widely-shared file at a sheet containing anything private. Wrap imports in <code>QUERY</code> or <code>FILTER</code> to expose only needed columns.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> treating <code>IMPORTRANGE</code> as a sync tool. It is a live read-only view with its own refresh cadence and quota behavior — chains of imports (A imports B imports C) are slow and fragile. For anything beyond one hop, move the data with Apps Script (Module 2.4) instead.</p></blockquote>
+
+<p><strong>Exercise 1.3 — Reporting Layer</strong></p>
+<p>Dataset: TindaTrack</p>
+<ol>
+<li>Build a <code>Reports</code> sheet with: monthly revenue (QUERY), revenue by category (QUERY joining via XLOOKUP-derived helper column), top 5 customers (SORTN).</li>
+<li>Build an overdue-orders list with <code>FILTER</code> that feeds a <code>COUNTA</code> KPI cell.</li>
+<li>Create a second spreadsheet <code>TindaTrack — Partner View</code>; import only <code>Products</code> minus <code>StockQty</code> via <code>IMPORTRANGE</code> wrapped in <code>QUERY</code>.</li>
+<li>Deliberately type a text value into <code>Qty</code> and observe which reports break and how.</li>
+<li>Document each report formula in a note cell — future-you is the maintainer.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-store-operations-workbook">Phase 1 Capstone: Store Operations Workbook</h3>
+<p><strong>Project: TindaTrack Ops Board</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (a) why one-record-per-row matters, (b) when to use <code>QUERY</code> vs. <code>FILTER</code>, and (c) what <code>ARRAYFORMULA</code> changes about maintenance cost? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> TindaTrack</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A one-screen <code>Dash</code> sheet: revenue this month, pending orders, overdue count, low-stock count — all array-formula driven.</li>
+<li>A per-customer statement generator: pick a <code>CustomerID</code> from a dropdown; orders, payments, and running balance appear via <code>FILTER</code>.</li>
+<li>A reorder sheet listing products at or below reorder level with suggested order quantities.</li>
+<li>Conditional formatting and validation such that a colleague cannot enter an invalid status, SKU, or date.</li>
+<li>A read-only Partner View file fed by <code>IMPORTRANGE</code>, exposing only safe columns.</li>
+<li>A one-page written note: where this workbook would break at 10× the data, and which parts Phase 2 should automate.</li>
+</ol>
+<hr />
+<h2 id="phase-2-apps-script-automation">Phase 2: Apps Script Automation</h2>
+<h3 id="weeks-4-7">Weeks 4–7 | Goal: automate TindaTrack with scripts, custom UI, and triggers under a professional workflow</h3>
+<hr />
+
+<h3 id="module-21-javascript-the-v8-runtime">Module 2.1 — JavaScript &amp; the V8 Runtime</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> In the Apps Script editor, write and run a function using <code>const</code>, an arrow function, <code>map</code>/<code>filter</code>/<code>reduce</code>, template literals, and destructuring, and read its output in the execution log.<br>
+<strong>Skip if:</strong> You already write modern JavaScript (ES2020+) and have run code in the Apps Script editor.<br>
+<strong>Unlocks:</strong> 2.2, 3.1</p>
+</blockquote>
+
+<h4>The environment</h4>
+<p>Apps Script is JavaScript running on Google's servers with privileged access to Workspace services. Since January 31, 2026 the legacy Rhino runtime is fully retired — <strong>everything runs on V8</strong>, so modern JavaScript (classes, arrow functions, destructuring, spread, optional chaining, template literals) is the baseline, and any tutorial teaching <code>var</code>-era idioms or Rhino workarounds is outdated. Open the editor from any Sheet via Extensions → Apps Script. Code lives in the cloud with the file (container-bound) or standalone; execution is capped at 6 minutes per run — a constraint that shapes every design in this guide.</p>
+
+<h4>Core JavaScript you will actually use</h4>
+<p>Sheet data arrives as 2-D arrays, so array methods are 90% of your daily JavaScript:</p>
+<pre><code class="language-js">function jsWarmup() {
+  const orders = [
+    { id: "ORD-0001", qty: 12, unitPrice: 55, status: "Delivered" },
+    { id: "ORD-0002", qty: 3,  unitPrice: 240, status: "Pending" },
+    { id: "ORD-0003", qty: 8,  unitPrice: 55, status: "Delivered" },
+  ];
+
+  const delivered = orders.filter(o =&gt; o.status === "Delivered");
+  const revenue = delivered.reduce((sum, o) =&gt; sum + o.qty * o.unitPrice, 0);
+  const lines = orders.map(({ id, status }) =&gt; `${id}: ${status}`);
+
+  console.log(`Delivered revenue: ${revenue}`);   // 1100
+  console.log(lines.join("\n"));
+}</code></pre>
+<p>Use <code>console.log</code> and read output in the Executions panel — this log is also where trigger failures surface later, so build the habit of checking it now, not after your first silent 2 a.m. trigger failure.</p>
+
+<h4>Services, scopes, and authorization</h4>
+<p>Global service objects (<code>SpreadsheetApp</code>, <code>GmailApp</code>, <code>DriveApp</code>, <code>UrlFetchApp</code>, <code>Utilities</code>) are the API. The first run of a script requests OAuth scopes derived from the services you call — and users can now grant scopes granularly, so a script asking for broad access may get only part of it. Request the narrowest scopes you can (e.g. <code>spreadsheets.currentonly</code> via an explicit <code>oauthScopes</code> list in <code>appsscript.json</code>): over-broad scopes scare users off and widen the blast radius if the script misbehaves.</p>
+
+<p><strong>Exercise 2.1 — Script Warmup on TindaTrack</strong></p>
+<p>Dataset: TindaTrack</p>
+<ol>
+<li>Open a bound script on the TindaTrack workbook; name the project <code>TindaTrack Automations</code>.</li>
+<li>Write <code>logOrderStats()</code>: hard-code five order objects, compute revenue with <code>reduce</code>, log a formatted summary.</li>
+<li>Rewrite it using destructuring and template literals; run and inspect both executions in the log.</li>
+<li>Write a function that throws on purpose; find the stack trace in the Executions panel.</li>
+<li>Inspect <code>appsscript.json</code> (Project Settings → show manifest); identify the runtime (<code>V8</code>) and add an explicit <code>oauthScopes</code> array.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-spreadsheetapp-crud">Module 2.2 — SpreadsheetApp CRUD</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Read all Orders with one <code>getValues()</code>, mark every overdue Pending row "Flagged" in memory, and write back with one <code>setValues()</code> call.<br>
+<strong>Skip if:</strong> You already batch reads/writes by habit and can explain why per-cell <code>getValue()</code> loops are slow.<br>
+<strong>Unlocks:</strong> 2.3, 2.4, 3.1</p>
+</blockquote>
+
+<h4>The batch principle</h4>
+<p>Every call from script to Sheet crosses a network boundary. One <code>getValues()</code> on 10,000 rows takes about the same time as one <code>getValue()</code> on one cell — so a loop of per-cell calls is often 100× slower than read-once/transform/write-once. This single idea separates scripts that finish in 2 seconds from scripts that hit the 6-minute ceiling:</p>
+<pre><code class="language-js">function flagOverdueOrders() {
+  const ss = SpreadsheetApp.getActive();
+  const sheet = ss.getSheetByName("Orders");
+  const range = sheet.getDataRange();
+  const rows = range.getValues();            // ONE read
+  const header = rows[0];
+  const iDate = header.indexOf("OrderDate");
+  const iStatus = header.indexOf("Status");
+
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 7);
+
+  for (let r = 1; r &lt; rows.length; r++) {
+    if (rows[r][iStatus] === "Pending" &amp;&amp; rows[r][iDate] &lt; cutoff) {
+      rows[r][iStatus] = "Flagged";
+    }
+  }
+  range.setValues(rows);                     // ONE write
+}</code></pre>
+<p>Address columns by header name (<code>indexOf</code>), never by hard-coded index — the first time someone inserts a column, index-based code silently corrupts data instead of failing loudly.</p>
+
+<h4>Objects in, objects out</h4>
+<p>Convert 2-D arrays to objects at the boundary and back again; all business logic then works with named fields. This helper pair is the seed of Phase 3's data layer:</p>
+<pre><code class="language-js">function rowsToObjects(values) {
+  const [header, ...data] = values;
+  return data.map(row =&gt;
+    Object.fromEntries(header.map((key, i) =&gt; [key, row[i]])));
+}
+
+function objectsToRows(objects, header) {
+  return objects.map(obj =&gt; header.map(key =&gt; obj[key] ?? ""));
+}
+
+function getDeliveredRevenueByCustomer() {
+  const values = SpreadsheetApp.getActive()
+    .getSheetByName("Orders").getDataRange().getValues();
+  const orders = rowsToObjects(values);
+  const revenue = {};
+  for (const o of orders) {
+    if (o.Status !== "Delivered") continue;
+    revenue[o.CustomerID] = (revenue[o.CustomerID] || 0) + Number(o.LineTotal);
+  }
+  return revenue;
+}</code></pre>
+
+<h4>Appending, deleting, and dates</h4>
+<p>Use <code>sheet.appendRow([...])</code> for single inserts (it is atomic per call) and ranged <code>setValues</code> for bulk loads. Deleting rows inside a forward loop skips rows — iterate bottom-up, or better, mark rows with a <code>DeletedAt</code> value instead of destroying them (soft delete — the same convention your Supabase projects use). Dates come back as JavaScript <code>Date</code> objects in the script's time zone; set the project time zone (<code>Asia/Manila</code>) in <code>appsscript.json</code> or day-boundary logic will be silently off by hours.</p>
+
+<p><strong>Exercise 2.2 — The Data Layer, v0</strong></p>
+<p>Dataset: TindaTrack</p>
+<ol>
+<li>Implement <code>rowsToObjects</code>/<code>objectsToRows</code> and a <code>readTable(name)</code> helper returning objects for any of the four sheets.</li>
+<li>Write <code>flagOverdueOrders()</code> as above and verify against Module 1.3's FILTER report — they must agree.</li>
+<li>Write <code>appendOrder(order)</code> that computes <code>LineTotal</code>, generates the next <code>OrderID</code> (e.g. <code>ORD-0061</code>), and appends.</li>
+<li>Write <code>restockReport()</code> returning products at/below reorder level as objects; log as a table.</li>
+<li>Benchmark: read 60 orders per-cell vs. one <code>getValues()</code>; log both timings with <code>Date.now()</code>.</li>
+<li>Add a <code>DeletedAt</code> column to Orders and implement soft-delete <code>cancelOrder(orderId)</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-custom-functions-menus-sidebars">Module 2.3 — Custom Functions, Menus &amp; Sidebars</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Ship a custom menu that opens a sidebar; the sidebar calls a server function via <code>google.script.run</code> and shows the result.<br>
+<strong>Skip if:</strong> You have built an <code>onOpen</code> menu, a <code>=CUSTOMFUNC()</code>, and an HTML Service sidebar before.<br>
+<strong>Unlocks:</strong> 2.4, 3.3</p>
+</blockquote>
+
+<h4>Custom functions — formulas you invent</h4>
+<p>Any plain function returning a value (or 2-D array) can be called from a cell. Custom functions run on every recalculation and cannot call services requiring authorization — keep them pure and fast, or the whole sheet lags:</p>
+<pre><code class="language-js">/**
+ * Days an order has been pending, or 0 if not pending.
+ * @customfunction
+ */
+function DAYS_PENDING(status, orderDate) {
+  if (status !== "Pending" || !(orderDate instanceof Date)) return 0;
+  return Math.floor((Date.now() - orderDate.getTime()) / 86400000);
+}</code></pre>
+
+<h4>Menus and dialogs</h4>
+<pre><code class="language-js">function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu("TindaTrack")
+    .addItem("Flag overdue orders", "flagOverdueOrders")
+    .addItem("Restock report", "showRestockSidebar")
+    .addToUi();
+}</code></pre>
+<p>The simple <code>onOpen</code> trigger runs automatically on file open — this is how you give non-technical colleagues one-click access to your scripts, which is the difference between an automation that gets used and one that only you remember exists.</p>
+
+<h4>HTML Service — your first frontend</h4>
+<p>Sidebars and dialogs are real HTML/CSS/JS pages served in an iframe, talking to server functions asynchronously through <code>google.script.run</code>. This exact client-server bridge is the foundation of the Phase 3 web app, just embedded in the Sheet:</p>
+<pre><code class="language-js">function showRestockSidebar() {
+  const html = HtmlService.createHtmlOutputFromFile("RestockSidebar")
+    .setTitle("Restock Report");
+  SpreadsheetApp.getUi().showSidebar(html);
+}</code></pre>
+<pre><code class="language-html">&lt;!-- RestockSidebar.html --&gt;
+&lt;div id="list"&gt;Loading…&lt;/div&gt;
+&lt;script&gt;
+  google.script.run
+    .withSuccessHandler(function (items) {
+      document.getElementById("list").innerHTML = items
+        .map(function (p) {
+          return "&lt;p&gt;&lt;b&gt;" + p.Name + "&lt;/b&gt; — stock " +
+                 p.StockQty + " / reorder at " + p.ReorderLevel + "&lt;/p&gt;";
+        })
+        .join("");
+    })
+    .withFailureHandler(function (err) {
+      document.getElementById("list").textContent = "Error: " + err.message;
+    })
+    .restockReport();
+&lt;/script&gt;</code></pre>
+<p>Always attach a <code>withFailureHandler</code> — without it server errors vanish and the sidebar just sits on "Loading…" forever, which users will report as "it's broken" with no further detail.</p>
+
+<p><strong>Exercise 2.3 — TindaTrack Menu Suite</strong></p>
+<p>Dataset: TindaTrack</p>
+<p><em>Retrieval practice: build the <code>onOpen</code> menu and the <code>google.script.run</code> round-trip from memory first, then compare with the snippets above — the gaps reveal what you have not yet internalized.</em></p>
+<ol>
+<li>Add <code>DAYS_PENDING</code> and use it in a new Orders helper column.</li>
+<li>Build the TindaTrack menu with at least three actions from Module 2.2.</li>
+<li>Build the restock sidebar exactly as above, then extend it with a "Create reorder rows" button calling a server function.</li>
+<li>Add a modal dialog (<code>showModalDialog</code>) that confirms before flagging overdue orders and reports how many rows changed.</li>
+<li>Break the server function on purpose; verify the failure handler surfaces the message.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-triggers-automation-professional-workflow">Module 2.4 — Triggers, Automation &amp; Professional Workflow</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Set up a daily 7 a.m. trigger emailing a report, an <code>onEdit</code> installable trigger stamping edits, and a clasp-managed local copy of the project pushed from VS Code.<br>
+<strong>Skip if:</strong> You run trigger-driven automations in production and manage script code with clasp/Git.<br>
+<strong>Unlocks:</strong> Capstone 2, 3.2</p>
+</blockquote>
+
+<h4>Trigger types and their traps</h4>
+<p>Simple triggers (<code>onOpen</code>, <code>onEdit</code>) run without authorization but with heavy restrictions (no services needing auth, 30-second limit). <strong>Installable triggers</strong> (Triggers panel or <code>ScriptApp.newTrigger</code>) run as the installing user with full authorization: time-driven (every N minutes/hours/days), <code>onEdit</code>, <code>onChange</code>, and <code>onFormSubmit</code>. Two traps cause most production incidents: an <code>onEdit</code> that writes to the sheet re-fires itself unless you guard the edited range, and triggers fail <em>silently</em> unless you configure failure notifications or log-and-alert yourself.</p>
+<pre><code class="language-js">function installedOnEdit(e) {
+  const sheet = e.range.getSheet();
+  if (sheet.getName() !== "Orders") return;
+  const header = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const iStatus = header.indexOf("Status") + 1;
+  if (e.range.getColumn() !== iStatus) return;   // guard: only react to Status edits
+
+  if (e.value === "Delivered") {
+    const iDelivered = header.indexOf("DeliveredDate") + 1;
+    sheet.getRange(e.range.getRow(), iDelivered).setValue(new Date());
+  }
+}
+
+function dailyOpsEmail() {
+  const revenue = getDeliveredRevenueByCustomer();
+  const total = Object.values(revenue).reduce((a, b) =&gt; a + b, 0);
+  const low = restockReport();
+  GmailApp.sendEmail(
+    Session.getActiveUser().getEmail(),
+    `TindaTrack daily ops — ₱${total.toFixed(2)} delivered`,
+    `Delivered revenue to date: ₱${total.toFixed(2)}\n` +
+    `Low-stock products: ${low.map(p =&gt; p.Name).join(", ") || "none"}`
+  );
+}</code></pre>
+
+<h4>State: PropertiesService and idempotency</h4>
+<p>Triggers re-run, overlap, and occasionally fire twice. Store cursor state (last processed row/ID, last run time) in <code>PropertiesService.getScriptProperties()</code> and write handlers so running twice produces the same result as running once — otherwise a duplicate trigger sends every customer two invoices. Store secrets (API keys) in Script Properties too, never in code.</p>
+
+<h4>Professional workflow: clasp 3 + Git</h4>
+<p>The in-browser editor has no version control. <strong>clasp</strong> (v3.x, <code>npm install -g @google/clasp</code>) clones a script project to local files, so you edit in VS Code, commit to Git, and <code>clasp push</code>/<code>clasp pull</code> to sync; <code>clasp run</code> executes functions remotely, and clasp 3 even ships an experimental MCP mode so coding agents can drive it. Enable the Apps Script API for your account once at <code>script.google.com/home/usersettings</code>. From here on, treat script projects like any other codebase: branches, commits, code review.</p>
+<pre><code class="language-bash">npm install -g @google/clasp
+clasp login
+clasp clone "&lt;scriptId&gt;"     # scriptId from Project Settings
+git init &amp;&amp; git add -A &amp;&amp; git commit -m "chore: baseline TindaTrack scripts"
+clasp push                    # after local edits
+clasp open-script             # jump back to the browser IDE</code></pre>
+
+<p><strong>Exercise 2.4 — Production Automations</strong></p>
+<p>Dataset: TindaTrack</p>
+<ol>
+<li>Install the <code>onEdit</code> trigger above; verify <code>DeliveredDate</code> stamps only on Status→Delivered edits.</li>
+<li>Schedule <code>dailyOpsEmail</code> for 7 a.m. daily; enable immediate failure notifications on the trigger.</li>
+<li>Make the email idempotent per day using a Script Property (<code>lastOpsEmailDate</code>) so a duplicate firing sends nothing.</li>
+<li>Add an <code>onFormSubmit</code>-style intake: a second sheet <code>Inbox</code> where new rows are validated and moved into <code>Orders</code> by a 15-minute trigger, cursor tracked in properties.</li>
+<li>Clone the project with clasp, commit to Git, make one edit locally, and <code>clasp push</code> it live.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-auto-invoicing-engine">Phase 2 Capstone: Auto-Invoicing Engine</h3>
+<p><strong>Project: TindaTrack Invoicer</strong></p>
+<p><strong>Dataset:</strong> TindaTrack</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A menu action "Generate invoices" that groups a customer's undelivered-but-packed orders and writes one invoice row per customer to a new <code>Invoices</code> sheet with a generated <code>INV-</code> ID.</li>
+<li>A Google Doc invoice template filled per invoice via <code>DocumentApp</code> (or an HTML-to-PDF via <code>Utilities</code>), saved to a Drive folder, link written back to the row.</li>
+<li>An email to each customer (use your own test addresses) attaching their invoice PDF, sent by a daily trigger, idempotent per invoice.</li>
+<li>A sidebar showing invoice run history read from a <code>Log</code> sheet your engine appends to.</li>
+<li>All state in PropertiesService; all secrets out of code; the whole project clasp-managed with at least five meaningful Git commits.</li>
+<li>A README documenting triggers, scopes, and the failure-notification setup.</li>
+</ol>
+<hr />
+<h2 id="phase-3-sheets-as-a-web-app-backend">Phase 3: Sheets as a Web-App Backend</h2>
+<h3 id="weeks-8-11">Weeks 8–11 | Goal: serve TindaTrack to a browser frontend through a JSON API, safely and within quota</h3>
+<hr />
+
+<h3 id="module-31-schema-design-data-layer-patterns">Module 3.1 — Schema Design &amp; Data-Layer Patterns</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.1, 2.2 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Explain why sheet position must never be an ID, then implement <code>findById</code>, <code>insert</code>, <code>update</code>, and <code>softDelete</code> against any TindaTrack table through one generic helper.<br>
+<strong>Skip if:</strong> You already run a sheet-backed data layer with stable IDs, header-name addressing, and soft deletes.<br>
+<strong>Unlocks:</strong> 3.2</p>
+</blockquote>
+
+<h4>A sheet is a table — treat it like one</h4>
+<p>When a Sheet becomes a database, spreadsheet habits become schema decisions. The rules: every table gets a <strong>stable, generated ID column</strong> (never the row number — rows renumber on every sort, insert, and delete, so a position-based "ID" points at a different record tomorrow); every column name is a code identifier (no spaces you'll regret); mutations are <strong>soft deletes and status changes</strong>, not row deletion; and audit columns (<code>CreatedAt</code>, <code>UpdatedAt</code>) go on anything a user can touch. These are the same conventions you would apply in Postgres — the storage engine changed, not the discipline.</p>
+
+<h4>A generic DAL in Apps Script</h4>
+<p>Build one table-access class instead of per-sheet copy-paste. This becomes the only code that knows data lives in a spreadsheet:</p>
+<pre><code class="language-js">class SheetTable {
+  constructor(sheetName, idField) {
+    this.sheet = SpreadsheetApp.getActive().getSheetByName(sheetName);
+    this.idField = idField;
+    const values = this.sheet.getDataRange().getValues();
+    this.header = values[0];
+    this.rows = values.slice(1);
+  }
+
+  all() {
+    return this.rows
+      .map((row, i) =&gt; {
+        const obj = Object.fromEntries(this.header.map((k, c) =&gt; [k, row[c]]));
+        obj._rowIndex = i + 2;               // physical position, internal only
+        return obj;
+      })
+      .filter(o =&gt; !o.DeletedAt);
+  }
+
+  findById(id) {
+    return this.all().find(o =&gt; o[this.idField] === id) || null;
+  }
+
+  insert(obj) {
+    obj.CreatedAt = new Date();
+    this.sheet.appendRow(this.header.map(k =&gt; obj[k] ?? ""));
+    return obj;
+  }
+
+  update(id, patch) {
+    const rec = this.findById(id);
+    if (!rec) throw new Error(`${this.idField} ${id} not found`);
+    const merged = { ...rec, ...patch, UpdatedAt: new Date() };
+    this.sheet.getRange(rec._rowIndex, 1, 1, this.header.length)
+      .setValues([this.header.map(k =&gt; merged[k] ?? "")]);
+    return merged;
+  }
+
+  softDelete(id) { return this.update(id, { DeletedAt: new Date() }); }
+}
+
+function nextId(prefix, table, idField) {
+  const max = new SheetTable(table, idField).all()
+    .reduce((m, o) =&gt; Math.max(m, Number(String(o[idField]).split("-")[1] || 0)), 0);
+  return `${prefix}-${String(max + 1).padStart(4, "0")}`;
+}</code></pre>
+<p>Note <code>_rowIndex</code>: the physical row is looked up fresh on every operation and never stored or exposed. That is what makes the DAL safe against concurrent sorting and inserts.</p>
+
+<h4>Relationships and derived data</h4>
+<p>"Joins" happen in script: read both tables once, index one side with a <code>Map</code> keyed by ID, then enrich. Never store derived values you can compute (a customer's balance) unless recomputing is measurably too slow — stored derivations drift out of sync, and reconciling them later costs more than computing them ever did. Validate every inbound record against a schema object (required fields, allowed statuses) at the DAL boundary, exactly as Zod guards your Next.js APIs.</p>
+
+<p><strong>Exercise 3.1 — TindaTrack DAL</strong></p>
+<p>Dataset: TindaTrack</p>
+<ol>
+<li>Add <code>CreatedAt</code>, <code>UpdatedAt</code>, <code>DeletedAt</code> columns to all four tables.</li>
+<li>Implement <code>SheetTable</code> and <code>nextId</code>; refactor Module 2.2's functions to use them.</li>
+<li>Write <code>getCustomerStatement(customerId)</code> joining Orders and Payments via a <code>Map</code>, returning orders, payments, and balance.</li>
+<li>Write <code>validateOrder(obj)</code> rejecting missing SKU/CustomerID, non-positive Qty, and unknown Status; wire it into <code>insert</code>.</li>
+<li>Sort the Orders sheet by hand mid-test and prove <code>update()</code> still hits the right record.</li>
+<li>Load-test: generate 2,000 fake orders and time <code>all()</code>, <code>findById</code>, and one <code>update</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-apps-script-web-apps-json-api">Module 3.2 — Apps Script Web Apps: JSON API</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Deploy a web app whose <code>doGet</code> routes <code>?action=</code> requests to DAL calls and returns JSON, then hit it with <code>curl</code> following redirects.<br>
+<strong>Skip if:</strong> You have deployed versioned Apps Script web apps and understand <code>execute as</code> / <code>who has access</code> combinations.<br>
+<strong>Unlocks:</strong> 3.3, 3.4</p>
+</blockquote>
+
+<h4>doGet, doPost, and ContentService</h4>
+<p>Deploying a script as a <strong>Web App</strong> gives it a public URL; Apps Script calls your <code>doGet(e)</code> for GET and <code>doPost(e)</code> for POST. Return JSON with <code>ContentService</code> — one router function keeps the API surface explicit:</p>
+<pre><code class="language-js">function doGet(e) {
+  return handle_(e, {
+    listOrders:   () =&gt; new SheetTable("Orders", "OrderID").all(),
+    listProducts: () =&gt; new SheetTable("Products", "SKU").all(),
+    statement:    p  =&gt; getCustomerStatement(p.customerId),
+  });
+}
+
+function doPost(e) {
+  const body = JSON.parse(e.postData.contents || "{}");
+  return handle_({ parameter: body }, {
+    createOrder: p =&gt; {
+      validateOrder(p.order);
+      p.order.OrderID = nextId("ORD", "Orders", "OrderID");
+      return new SheetTable("Orders", "OrderID").insert(p.order);
+    },
+    updateStatus: p =&gt; new SheetTable("Orders", "OrderID")
+      .update(p.orderId, { Status: p.status }),
+  });
+}
+
+function handle_(e, routes) {
+  let payload;
+  try {
+    const action = e.parameter.action;
+    if (!routes[action]) throw new Error(`Unknown action: ${action}`);
+    payload = { ok: true, data: routes[action](e.parameter) };
+  } catch (err) {
+    payload = { ok: false, error: err.message };
+  }
+  return ContentService.createTextOutput(JSON.stringify(payload))
+    .setMimeType(ContentService.MimeType.JSON);
+}</code></pre>
+<p>Two behaviors surprise everyone: web app responses arrive via a <strong>302 redirect</strong> to a one-time <code>googleusercontent.com</code> URL (clients must follow redirects), and you cannot set custom status codes or response headers — errors travel inside the JSON body, hence the <code>ok/error</code> envelope.</p>
+
+<h4>Deployment model: identity and versions</h4>
+<p>Deploy → New deployment → Web app. Two dropdowns define your entire security model:</p>
+<ul>
+<li><strong>Execute as: Me</strong> — every request runs with <em>your</em> authority against a sheet only you can open. This is the common pattern for public-facing tools: the sheet stays private, the API is the only door. It also means the API's power is yours — which is why the router whitelist above matters.</li>
+<li><strong>Execute as: User accessing</strong> + access limited to your domain — each user must authorize, requests run with their identity, and <code>Session.getActiveUser().getEmail()</code> is trustworthy. Right for internal tools with per-user permissions.</li>
+</ul>
+<p>Deployments are <strong>versioned</strong>: the deployment URL pins a snapshot, so pushing code changes nothing until you create a new version on that deployment. Use "Test deployments" (<code>/dev</code> URL) while iterating — it always runs head code. Forgetting to bump the version is the #1 "why isn't my fix live?" mystery.</p>
+
+<h4>Minimal auth for Execute-as-Me APIs</h4>
+<p>An Execute-as-Me web app set to "Anyone" is an open API. Add at least a shared-secret check — an <code>apiKey</code> field validated against a Script Property — and reject early in <code>handle_</code>. It is not OAuth, but it turns "anyone on the internet" into "anyone holding the key", which for a small ops console is usually the right cost/benefit point. Never put the key in client code you ship publicly.</p>
+
+<p><strong>Exercise 3.2 — TindaTrack API v1</strong></p>
+<p>Dataset: TindaTrack</p>
+<ol>
+<li>Implement the router with the five actions above plus <code>restock</code> (Module 2.2's report).</li>
+<li>Deploy Execute-as-Me / Anyone; test every action with <code>curl -L</code> (the <code>-L</code> matters — explain why in a comment).</li>
+<li>Add API-key checking from Script Properties; verify a wrong key returns <code>{ ok: false }</code>.</li>
+<li>Create a test deployment and prove <code>/dev</code> reflects head code while <code>/exec</code> stays pinned.</li>
+<li>Ship a breaking change correctly: new version on the same deployment, same URL, zero client changes.</li>
+<li>Write an <code>ApiLog</code> sheet appender recording timestamp, action, and latency for every request.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-frontend-to-sheets">Module 3.3 — Frontend to Sheets</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.2 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> From a static HTML page on another origin, list orders and create an order against your web app with <code>fetch()</code> — no CORS errors.<br>
+<strong>Skip if:</strong> You know the <code>text/plain</code> preflight trick and have shipped a frontend against an Apps Script API.<br>
+<strong>Unlocks:</strong> Capstone 3</p>
+</blockquote>
+
+<h4>CORS and the preflight trick</h4>
+<p>Apps Script web apps answer simple cross-origin requests with permissive CORS but <strong>cannot answer preflight <code>OPTIONS</code> requests</strong>. A <code>fetch</code> with <code>Content-Type: application/json</code> triggers preflight and fails; the same request sent as <code>text/plain</code> (a "simple request") sails through — and your <code>doPost</code> still just <code>JSON.parse</code>s the body. This one paragraph saves most learners a lost evening:</p>
+<pre><code class="language-js">const API = "https://script.google.com/macros/s/DEPLOYMENT_ID/exec";
+const KEY = "stored-server-side-or-user-entered, never in public source";
+
+async function api(action, params = {}) {
+  const res = await fetch(API, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },  // no preflight
+    body: JSON.stringify({ action, apiKey: KEY, ...params }),
+  });
+  const json = await res.json();          // fetch followed the 302 for us
+  if (!json.ok) throw new Error(json.error);
+  return json.data;
+}
+
+async function loadOrders() {
+  const orders = await api("listOrders");
+  renderTable(orders);
+}
+
+async function createOrder(order) {
+  await api("createOrder", { order });
+  await loadOrders();                      // re-read after write
+}</code></pre>
+
+<h4>The single-file app pattern</h4>
+<p>For internal consoles, one self-contained <code>.html</code> file (vanilla JS or React via a build step) backed by the web app is a complete, deployable product — no server, no hosting bill, storage and API both living in Google's free tier. Structure it like any client: an <code>api()</code> wrapper, optimistic-or-refetch state updates, loading and error states for every call (Apps Script cold starts add 1–3 s of latency — an unspinnered button will get triple-clicked, creating triple orders).</p>
+
+<h4>Alternative read path: Sheets API v4</h4>
+<p>When a frontend (or an external service) only needs to <em>read</em> published data, the official <strong>Sheets API v4</strong> (<code>sheets.googleapis.com/v4/spreadsheets/&lt;id&gt;/values/&lt;range&gt;</code>, API key + sheet shared "anyone with link can view") skips Apps Script entirely and returns value arrays fast. Writes through Sheets API v4 need OAuth and are better mediated by your web app, which is where validation and IDs live. Rule of thumb: <strong>reads can go direct; writes go through the API you control.</strong></p>
+
+<p><strong>Exercise 3.3 — Orders Console</strong></p>
+<p>Dataset: TindaTrack</p>
+<ol>
+<li>Build a single-file HTML console: orders table with status filter, "new order" form (product and customer dropdowns fetched from the API), and a status-change action per row.</li>
+<li>Implement the <code>api()</code> wrapper with the <code>text/plain</code> pattern; confirm in DevTools that no <code>OPTIONS</code> request fires.</li>
+<li>Add loading spinners and a visible error banner; test by disabling the API key.</li>
+<li>Double-submit the form rapidly and document what happens — you will fix this properly in 3.4.</li>
+<li>Read the Products list a second way, via Sheets API v4 with an API key, and compare latency against the web app route.</li>
+<li>Serve the file from a different origin (e.g. a local <code>python3 -m http.server</code>) to prove cross-origin operation.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-concurrency-quotas-scaling-limits">Module 3.4 — Concurrency, Quotas &amp; Scaling Limits</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 3.2 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Explain what breaks first as concurrent users grow — locks, quotas, or latency — and wrap your create path in <code>LockService</code> with a cached read layer.<br>
+<strong>Skip if:</strong> You have already operated a sheet-backed app under real concurrent load and know its graduation criteria.<br>
+<strong>Unlocks:</strong> Capstone 3, Final Capstone</p>
+</blockquote>
+
+<h4>LockService — serializing writers</h4>
+<p>Two simultaneous <code>createOrder</code> calls can both read max ID 60 and both write <code>ORD-0061</code>. Sheets has no transactions; <code>LockService</code> is your mutex — take it around every read-modify-write:</p>
+<pre><code class="language-js">function createOrderSafe(order) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);                       // ms; throws if not acquired
+  try {
+    validateOrder(order);
+    order.OrderID = nextId("ORD", "Orders", "OrderID");
+    return new SheetTable("Orders", "OrderID").insert(order);
+  } finally {
+    lock.releaseLock();
+  }
+}</code></pre>
+<p>Locks serialize, which caps write throughput: if a locked section takes 800 ms, you can complete at most ~75 writes/minute no matter how many users you have. Keep locked sections minimal — validate before locking, log after releasing.</p>
+
+<h4>CacheService — protecting the read path</h4>
+<p>Most traffic is reads of slowly-changing data. <code>CacheService</code> (up to 6 hours, 100 KB per key) can absorb them so the sheet is read once per TTL instead of once per request, cutting both latency and quota burn:</p>
+<pre><code class="language-js">function cachedProducts() {
+  const cache = CacheService.getScriptCache();
+  const hit = cache.get("products");
+  if (hit) return JSON.parse(hit);
+  const data = new SheetTable("Products", "SKU").all();
+  cache.put("products", JSON.stringify(data), 300);   // 5-minute TTL
+  return data;
+}</code></pre>
+<p>Invalidate (<code>cache.remove</code>) inside every write path that touches the cached table, or users will report "my edit disappeared" when it is merely hidden for a TTL.</p>
+
+<h4>The quota landscape — know your ceilings</h4>
+<p>Consumer-account ceilings that matter (Workspace accounts get more): <strong>6 min per execution</strong>, <strong>30 simultaneous executions per user</strong>, <strong>90 min/day total trigger runtime</strong>, ~100 email recipients/day via <code>GmailApp</code>, and <strong>10 million cells per spreadsheet</strong>. The separate Sheets API v4 has per-minute request quotas (currently in the hundreds per minute per project — check the live limits page, and note Google has announced that quota overages will become billable during 2026). None of these are "big data" numbers, and that is the point: a sheet-backed app is a deliberate trade of scale for zero infrastructure.</p>
+
+<h4>When to graduate — and how</h4>
+<p>Move to a real database when any of these become true: sustained concurrent writers beyond a handful; row counts pushing past ~50k with per-request reads; access-control needs finer than the sharing model; or audit/compliance requirements. Because Phase 3 put every sheet access behind <code>SheetTable</code> and every client call behind <code>api()</code>, graduation is a contained rewrite: reimplement the DAL against Supabase/Postgres, keep the API contract, and the frontend never knows. Design for that day from day one — it is the cheapest insurance in this guide.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> benchmarking a sheet-backed app with one user and extrapolating. Latency is fine solo and degrades under lock contention — always test with parallel writers (even just two terminal loops of <code>curl</code>) before promising the app to a team.</p></blockquote>
+
+<p><strong>Exercise 3.4 — Hardening Pass</strong></p>
+<p>Dataset: TindaTrack</p>
+<ol>
+<li>Wrap all write actions in <code>LockService</code>; prove the duplicate-ID race is gone by firing 10 parallel <code>createOrder</code> calls.</li>
+<li>Add <code>CacheService</code> to <code>listProducts</code> and <code>listOrders</code> with write-path invalidation.</li>
+<li>Measure cold vs. warm latency for each API action; record a small table of results.</li>
+<li>Compute your app's theoretical ceiling: max writes/minute given your measured locked-section time.</li>
+<li>Write the graduation memo: the three metrics you will monitor, thresholds that trigger migration, and the Supabase table DDL your four sheets would map to.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-tindatrack-web-console">Phase 3 Capstone: TindaTrack Web Console</h3>
+<p><strong>Project: TindaTrack Console — a browser app with a spreadsheet for a database</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (a) the two web-app identity modes, (b) why <code>text/plain</code> avoids preflight, and (c) what <code>LockService</code> does and does not protect against? If any draws a blank, re-read that module first.</p></blockquote>
+<p><strong>Dataset:</strong> TindaTrack</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A deployed web app API with actions covering full order lifecycle (create, list, status change, cancel), customer statements, and restock — all locked, validated, logged.</li>
+<li>A single-file frontend console: dashboard KPIs, orders table with filters, order entry form, per-customer statement view.</li>
+<li>API-key auth, loading/error states everywhere, and cache with correct invalidation.</li>
+<li>A load test script (parallel curl or a small Node script) and a written results table: latency P50/P95, error rate, at 1 / 5 / 10 parallel clients.</li>
+<li>Versioned deployment history showing at least one zero-downtime API update.</li>
+<li>The graduation memo from Exercise 3.4, finalized.</li>
+<li>Whole project (Code.gs, HTML, docs) clasp-managed in Git.</li>
+</ol>
+<hr />
+<h2 id="phase-4-appsheet-the-extension-ecosystem">Phase 4: AppSheet &amp; the Extension Ecosystem</h2>
+<h3 id="weeks-12-14">Weeks 12–14 | Goal: ship a no-code mobile app on the same TindaTrack data, and wire in Forms, Looker Studio, and add-ons</h3>
+<hr />
+
+<h3 id="module-41-appsheet-fundamentals">Module 4.1 — AppSheet Fundamentals</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Generate an app from TindaTrack, fix every mis-detected column type, set up the Orders→Customers and Orders→Products refs, and use the app on your phone.<br>
+<strong>Skip if:</strong> You have shipped an AppSheet app with correct refs and column types to real users.<br>
+<strong>Unlocks:</strong> 4.2</p>
+</blockquote>
+
+<h4>What AppSheet is (and is not)</h4>
+<p>AppSheet is Google's no-code platform: point it at a data source (your Sheet), it infers a schema, and generates a cross-platform mobile/desktop app — forms, table views, detail views, offline sync — with no code. It occupies the opposite corner from Phase 3: there you built the app and kept full control; here the platform builds the app and you configure it. Knowing both means choosing per project instead of by habit. Plans: free prototyping for up to 10 test users, then Starter ($5/user/mo) and Core ($10/user/mo) for deployed apps; Gemini-powered features are included in subscriptions rather than billed separately, with the newest AI automation tasks in the enterprise tiers.</p>
+
+<h4>From Sheet to app in an hour</h4>
+<p>At <code>appsheet.com</code>: Create → App → from existing data → pick TindaTrack. AppSheet reads your Tables (your Module 1.1 hygiene pays off instantly — clean headers become clean schemas). Then do the pass that separates toy apps from real ones, in Data → Columns:</p>
+<ul>
+<li><strong>Types:</strong> confirm <code>UnitPrice</code>/<code>LineTotal</code> are Price, dates are Date, <code>Phone</code> is Phone (gives tap-to-call), <code>Status</code> is Enum with your four values.</li>
+<li><strong>Keys:</strong> the ID columns you designed in 3.1 become AppSheet keys. Never let it key on row number — same reasoning, same disasters.</li>
+<li><strong>Refs:</strong> set <code>Orders[CustomerID]</code> as a Ref to Customers and <code>Orders[SKU]</code> as a Ref to Products. Refs generate dropdowns, related-record lists on detail views, and dereference expressions.</li>
+<li><strong>Initial values:</strong> <code>UNIQUEID()</code> for new keys, <code>TODAY()</code> for dates.</li>
+</ul>
+<p>After any structural change to the Sheet, use <strong>Regenerate structure</strong> — AppSheet caches the schema and will not see new columns until you do; forgetting this is the AppSheet equivalent of the stale-deployment mystery from Module 3.2.</p>
+
+<h4>Views and UX</h4>
+<p>Views (UX → Views) are configurations, not layouts you draw: deck, table, detail, form, calendar, map, chart. Build: an Orders deck grouped by Status, a Products table sorted by stock, a Customers map view (Barangay + City geocode surprisingly well), and form views with only the columns a field user should touch. Test continuously in the live emulator and on your phone via the AppSheet app.</p>
+
+<p><strong>Exercise 4.1 — TindaTrack Mobile, v0</strong></p>
+<p>Dataset: TindaTrack</p>
+<ol>
+<li>Generate the app; correct every column type; set keys to your ID columns.</li>
+<li>Configure both refs and verify related orders appear on customer and product detail views.</li>
+<li>Set initial values so a new order needs only customer, product, and quantity from the user.</li>
+<li>Build the four views listed above; brand the app with an icon and theme color.</li>
+<li>Add a column to the Sheet, watch the app ignore it, regenerate structure, and watch it appear.</li>
+<li>Install on your phone; create an order offline, reconnect, and confirm it syncs into the Sheet.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-appsheet-logic-automation">Module 4.2 — AppSheet Logic &amp; Automation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Ship a virtual column with a dereference expression, a slice-driven view, a format rule, and a bot that emails on status change.<br>
+<strong>Skip if:</strong> You already write AppSheet expressions fluently and run automation bots in production.<br>
+<strong>Unlocks:</strong> Capstone 4, Final Capstone</p>
+</blockquote>
+
+<h4>The expression language</h4>
+<p>AppSheet expressions are spreadsheet-formula-like, evaluated per row. Square brackets reference columns; dotted derefs walk refs. These four cover most real apps:</p>
+<pre><code class="language-text">Line total (virtual column on Orders):
+  [Qty] * [SKU].[UnitPrice]
+
+Customer balance (virtual column on Customers):
+  SUM(SELECT(Orders[LineTotal], AND([CustomerID] = [_THISROW].[CustomerID],
+                                    [Status] = "Delivered")))
+  - SUM(SELECT(Payments[Amount], [OrderID].[CustomerID] = [_THISROW].[CustomerID]))
+
+Overdue flag (format rule condition on Orders):
+  AND([Status] = "Pending", [OrderDate] &lt; TODAY() - 7)
+
+Valid_If on Qty:
+  AND([Qty] &gt; 0, [Qty] &lt;= [SKU].[StockQty])</code></pre>
+<p>Virtual columns recompute on sync — a heavy <code>SELECT</code> over thousands of rows makes every sync slow for every user, so push expensive derivations back into the Sheet (Phase 2 scripts) when sync times creep past a few seconds.</p>
+
+<h4>Slices, format rules, and roles</h4>
+<p><strong>Slices</strong> are filtered virtual tables (<code>[Status] = "Pending"</code> → a "Pending Orders" slice) that drive focused views and limit what actions apply. <strong>Format rules</strong> color/icon rows on conditions. For roles, use <code>USEREMAIL()</code> in security filters — e.g. delivery riders see only orders where <code>[AssignedTo] = USEREMAIL()</code>. A security filter is enforced server-side and also shrinks the data synced to each device, which is your main performance lever on slow connections.</p>
+
+<h4>Automation: bots</h4>
+<p>Automation → Bots: an <strong>event</strong> (data change, schedule) fires a <strong>process</strong> (steps: send email/SMS/notification, update rows, call a webhook, run a task). Rebuild Module 2.4's automations without code: a bot on Orders updates-only where <code>[Status] = "Delivered"</code> sending the customer a confirmation, and a daily 7 a.m. scheduled bot for the ops summary. On paid enterprise tiers, Gemini-powered AI tasks can extract fields from photos and categorize or summarize free-text — e.g. reading a handwritten order slip photo into structured columns. Webhook steps are the bridge back to code: a bot can POST to your Phase 3 web app, combining no-code triggers with real logic.</p>
+
+<p><strong>Exercise 4.2 — Logic &amp; Bots</strong></p>
+<p>Dataset: TindaTrack</p>
+<ol>
+<li>Add the four expressions above; verify the balance matches Module 3.1's <code>getCustomerStatement</code>.</li>
+<li>Build "Pending" and "Overdue" slices with dedicated deck views and red/amber format rules.</li>
+<li>Add <code>Valid_If</code> rules so an order cannot exceed available stock; test the rejection UX.</li>
+<li>Bot 1: on delivery, email a confirmation using order and customer fields in the template.</li>
+<li>Bot 2: daily scheduled summary of pending count and low-stock products.</li>
+<li>Bot 3: webhook step POSTing new orders to your Phase 3 API's <code>ApiLog</code>; confirm rows arrive.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-forms-looker-studio-add-ons">Module 4.3 — Forms, Looker Studio &amp; Add-ons</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Wire a Google Form into the workbook, build a two-page Looker Studio report on it, and explain when an add-on beats a bound script.<br>
+<strong>Skip if:</strong> You already choose between Forms, Looker Studio, add-ons, and custom script by trade-off rather than familiarity.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4>Google Forms — the zero-effort intake layer</h4>
+<p>A Form linked to your workbook (Responses → Link to Sheets) appends validated rows with timestamps — an instant public write path that needs no API, no auth design, and no frontend. Pair it with the Module 2.4 pattern: an <code>onFormSubmit</code> installable trigger validates and moves each response into <code>Orders</code> proper. The trade-off versus your Phase 3 form: Forms is faster to ship and Google-hardened, but you surrender UX control and cannot do dynamic pricing lookups mid-entry.</p>
+
+<h4>Looker Studio — the reporting layer</h4>
+<p>Looker Studio (free tier) connects directly to Sheets and turns your Reports tables into interactive dashboards — date-range controls, drill-downs, scheduled email delivery, shareable links. Point it at dedicated, array-formula-driven report ranges rather than raw Orders: the connector re-reads the range on refresh, so a pre-aggregated range keeps dashboards fast and your raw data private. This replaces the last reason to give stakeholders edit access to the workbook — they get a URL instead.</p>
+
+<h4>Add-ons: consuming and building</h4>
+<p>The Workspace Marketplace ecosystem (mail merge, document generation, API connectors) is the "extensions" layer — install via Extensions → Add-ons. Evaluate before installing: an add-on gets OAuth scopes to your data, so check the publisher, the scopes requested, and whether a 20-line script of your own would do (after Phase 2, it often would). Building one is packaging you already know: an Apps Script project with <code>onInstall</code>/<code>onOpen</code> homepage triggers and a Marketplace listing — the code model is identical to Module 2.3's menus and sidebars.</p>
+
+<p><strong>Exercise 4.3 — The Ecosystem Pass</strong></p>
+<p>Dataset: TindaTrack</p>
+<ol>
+<li>Build an order-intake Form (customer dropdown from a synced list, product, quantity); link it to the workbook.</li>
+<li>Wire an <code>onFormSubmit</code> trigger validating and promoting responses into <code>Orders</code> with generated IDs.</li>
+<li>Build a two-page Looker Studio report: revenue trends with date control; product/stock status with category filter.</li>
+<li>Schedule weekly PDF delivery of the report to yourself.</li>
+<li>Install one Marketplace add-on relevant to invoicing; write a three-sentence scope-risk assessment of it.</li>
+<li>Write the decision memo: for TindaTrack's order intake, rank Form vs. AppSheet vs. web console for speed-to-ship, UX control, and auth — one paragraph each.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-field-ordering-app">Phase 4 Capstone: Field Ordering App</h3>
+<p><strong>Project: TindaTrack Field — the app your delivery rider actually uses</strong></p>
+<p><strong>Dataset:</strong> TindaTrack</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>An AppSheet app with role-based views: owner sees everything; a rider (second test account) sees only assigned, undelivered orders via security filter.</li>
+<li>Order entry with stock-aware <code>Valid_If</code>, ref dropdowns, and photo capture for delivery proof (image column saving to Drive).</li>
+<li>Slices and format rules making Pending/Overdue/Delivered visually unmistakable on a phone outdoors.</li>
+<li>Three production bots: delivery confirmation email, daily ops summary, webhook into the Phase 3 API log.</li>
+<li>Offline test protocol: create/edit/deliver with airplane mode on, then verify sync integrity in the Sheet.</li>
+<li>Deployment: pass AppSheet's deployment check, move off prototype status, and document the per-user cost at 5 and at 25 users.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-tindatrack-suite">Final Capstone: TindaTrack Suite</h2>
+<p><strong>Project: One Dataset, Four Front Doors</strong></p>
+<p>Integrates all tracks. Uses the TindaTrack dataset from all phases: one workbook serving a formula dashboard (Phase 1), script automations (Phase 2), a web console with a JSON API (Phase 3), and a field mobile app plus Forms intake and Looker Studio reporting (Phase 4) — all at once, without stepping on each other.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A written architecture diagram: every reader and writer of the workbook (formulas, triggers, web app, AppSheet sync, Form, Looker Studio), and where LockService protects which write path.</li>
+<li>The consolidated workbook with all four table schemas, audit columns, and soft deletes consistently applied.</li>
+<li>The Phase 3 web console and Phase 4 AppSheet app running against it simultaneously; a documented test where both create orders within the same minute with no ID collision or data loss.</li>
+<li>Automation coverage: overdue flagging, invoicing, delivery confirmation, and daily ops email — each attributed to its layer (script trigger vs. AppSheet bot) with one sentence on why that layer.</li>
+<li>Looker Studio executive dashboard fed only from pre-aggregated report ranges.</li>
+<li>The load/limits report: measured latency and throughput, current quota headroom, and the graduation thresholds with the Supabase migration sketch.</li>
+<li>Full repo: clasp-managed scripts, frontend, README with deployment runbook (versions, triggers, scopes, keys), and a 10-minute demo video or walkthrough doc.</li>
+<li>A retrospective: which of the four front doors you would cut for a real client, and why.</li>
+</ol>
+<hr />
+<h2 id="quick-reference">Quick Reference: Sheets Stack Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Join two tables in a cell</td><td><code>XLOOKUP</code></td><td>Default lookup; always set the not-found argument</td></tr>
+<tr><td>Grouped report in a cell</td><td><code>QUERY</code></td><td>SQL-like; watch column type coercion</td></tr>
+<tr><td>Filter feeding another formula</td><td><code>FILTER</code></td><td>Returns real arrays; composes with LET/SORTN</td></tr>
+<tr><td>One formula for a whole column</td><td><code>ARRAYFORMULA</code> / Table column</td><td>Fewer formulas = faster recalc</td></tr>
+<tr><td>Reusable custom formula</td><td>Named Function (<code>LAMBDA</code>)</td><td>Shareable across files</td></tr>
+<tr><td>Pull data across files</td><td><code>IMPORTRANGE</code></td><td>Per file-pair grant; wrap in QUERY to limit columns</td></tr>
+<tr><td>Bulk read/write from script</td><td><code>getValues()</code> / <code>setValues()</code></td><td>One batched call, never per-cell loops</td></tr>
+<tr><td>React to edits</td><td>Installable <code>onEdit</code> trigger</td><td>Guard the range or it re-fires on its own writes</td></tr>
+<tr><td>Run on a schedule</td><td>Time-driven trigger</td><td>Make handlers idempotent; enable failure alerts</td></tr>
+<tr><td>Serve JSON from a Sheet</td><td>Web App + <code>ContentService</code></td><td>302 redirect; errors inside the JSON envelope</td></tr>
+<tr><td>POST from a browser without CORS pain</td><td><code>fetch</code> with <code>text/plain</code> body</td><td>Avoids preflight; server still JSON-parses</td></tr>
+<tr><td>Prevent write races</td><td><code>LockService</code></td><td>Wrap every read-modify-write; keep sections short</td></tr>
+<tr><td>Speed up hot reads</td><td><code>CacheService</code></td><td>TTL cache; invalidate in write paths</td></tr>
+<tr><td>Local dev + version control</td><td>clasp 3 + Git</td><td><code>clasp clone / push / pull</code>; enable Apps Script API</td></tr>
+<tr><td>No-code mobile app on a Sheet</td><td>AppSheet</td><td>Regenerate structure after schema changes</td></tr>
+<tr><td>Public intake form</td><td>Google Forms + <code>onFormSubmit</code></td><td>Fastest validated write path</td></tr>
+<tr><td>Stakeholder dashboards</td><td>Looker Studio</td><td>Feed from pre-aggregated ranges only</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-spreadsheet-core">Spreadsheet Core</h3>
+<dl class="glossary">
+<dt>Table (native)</dt>
+<dd>A first-class Sheets structure over a range that adds column types, structured references like <code>Orders[Status]</code>, and per-column filtering.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "formatted range", "table" meaning any grid — a colored range has none of the structural behavior.</dd>
+<dt>Data validation</dt>
+<dd>A per-cell rule constraining what values may be entered, such as a dropdown from a range or a date requirement.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "dropdown" as the whole concept — the dropdown is one UI of the rule, not the rule.</dd>
+<dt>Named range</dt>
+<dd>A saved name pointing at a range, referencable from formulas and scripts instead of coordinates.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing with Named Functions, which package a LAMBDA formula, not a location.</dd>
+<dt>Spill</dt>
+<dd>The behavior of an array-returning formula writing results into neighboring cells below/beside its own cell.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "overflow" — and note a spill fails with <code>#REF!</code> if any target cell is occupied.</dd>
+<dt>QUERY</dt>
+<dd>A Sheets function running a SQL-like language (select/where/group by) over a range within one formula.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "SQL" unqualified — the Query Language is a small dialect, not a SQL engine.</dd>
+<dt>IMPORTRANGE</dt>
+<dd>A function creating a live read-only view of a range from another spreadsheet file, gated by a one-time permission grant.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "sync" or "import" — nothing is copied or pushed; it is a dependent view.</dd>
+<dt>Smart chip</dt>
+<dd>An inline interactive object in a cell (person, file, date, place) inserted with <code>@</code>, carrying metadata beyond its display text.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "link" — a chip is structured data, not a URL.</dd>
+</dl>
+
+<h3 id="glossary-apps-script">Apps Script</h3>
+<dl class="glossary">
+<dt>Container-bound script</dt>
+<dd>An Apps Script project attached to a specific Sheet, Doc, or Form, with implicit access to that file via <code>getActive()</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "macro" — macros are one recorded feature; bound scripts are full projects.</dd>
+<dt>V8 runtime</dt>
+<dd>The Chrome JavaScript engine that executes all Apps Script since the Rhino runtime's retirement in January 2026, enabling modern ECMAScript syntax.</dd>
+<dd class="avoid"><strong>Avoid:</strong> treating "Apps Script" as its own language — it is standard JavaScript plus Google service globals.</dd>
+<dt>Simple trigger</dt>
+<dd>A function like <code>onOpen</code> or <code>onEdit</code> that Apps Script runs automatically by name, without authorization and with restricted capabilities.</dd>
+<dd class="avoid"><strong>Avoid:</strong> conflating with installable triggers, which are registered explicitly and run with full authorization.</dd>
+<dt>Installable trigger</dt>
+<dd>An explicitly registered trigger (time-driven, onEdit, onChange, onFormSubmit) that executes as the installing user with their OAuth grants.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "cron" for the time-driven kind — close, but quotas and ownership semantics differ.</dd>
+<dt>OAuth scope</dt>
+<dd>A named permission (e.g. read spreadsheets, send mail) a script must be granted before calling the corresponding service.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "permissions" loosely — sharing permissions on the file and OAuth scopes on the script are separate systems.</dd>
+<dt>PropertiesService</dt>
+<dd>A small key-value store attached to a script, user, or document, used for state and secrets across executions.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "database" — values are strings with tight size limits; it is a config store.</dd>
+<dt>clasp</dt>
+<dd>Google's command-line tool (v3.x) that syncs Apps Script projects with local files for editor-based development and version control.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "deploy tool" — clasp syncs and can deploy, but deployments themselves are an Apps Script platform concept.</dd>
+</dl>
+
+<h3 id="glossary-web-app-backend">Web-App Backend</h3>
+<dl class="glossary">
+<dt>Web App (deployment)</dt>
+<dd>An Apps Script deployment type that exposes <code>doGet</code>/<code>doPost</code> handlers at a public <code>/exec</code> URL, pinned to a code version.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "the script" — one script can have many deployments at different versions simultaneously.</dd>
+<dt>Execute as Me</dt>
+<dd>A web app identity mode where every request runs with the script owner's authority, regardless of who calls it.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming the caller is identifiable in this mode — <code>getActiveUser()</code> is generally empty for anonymous access.</dd>
+<dt>ContentService</dt>
+<dd>The Apps Script service that builds raw text responses (JSON, CSV) for web app handlers, with a MIME type but no custom status codes or headers.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing with HtmlService, which serves sandboxed HTML pages.</dd>
+<dt>Preflight</dt>
+<dd>The browser's automatic <code>OPTIONS</code> request before "non-simple" cross-origin calls — which Apps Script cannot answer, hence the <code>text/plain</code> pattern.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "CORS error" as a diagnosis — the failure is specifically the unanswered preflight, and the fix is to avoid triggering one.</dd>
+<dt>LockService</dt>
+<dd>A mutual-exclusion service serializing script executions around a critical section, standing in for the transactions Sheets lacks.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "transaction" — a lock prevents interleaving but gives no rollback.</dd>
+<dt>Soft delete</dt>
+<dd>Marking a record deleted via a <code>DeletedAt</code> value while keeping the row, so references and audit history survive.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "archiving" — archiving moves data; soft delete only flags it.</dd>
+<dt>DAL (data access layer)</dt>
+<dd>The single module through which all reads and writes of the storage happen — in this guide, the <code>SheetTable</code> class.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "ORM" — the DAL here maps rows to objects but has no query language or relations engine.</dd>
+<dt>Quota</dt>
+<dd>A platform-imposed ceiling on executions, runtime, calls, or cells that a sheet-backed architecture must be designed within.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "rate limit" for all of them — some quotas are daily totals or absolute sizes, not rates.</dd>
+</dl>
+
+<h3 id="glossary-appsheet">AppSheet</h3>
+<dl class="glossary">
+<dt>Ref</dt>
+<dd>An AppSheet column type declaring that a column's values are keys of another table, generating dropdowns and related-record views.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "foreign key" — conceptually close, but nothing is enforced in the underlying Sheet.</dd>
+<dt>Virtual column</dt>
+<dd>A column that exists only in the app, computed from an expression at sync time and never written to the Sheet.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "formula column" — Sheet formula columns live in the data; virtual columns do not.</dd>
+<dt>Slice</dt>
+<dd>A saved filtered subset of a table (rows, columns, and permitted actions) used as a data source for views.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "filter" — a view filter is per-view UI; a slice is a reusable data object.</dd>
+<dt>Security filter</dt>
+<dd>A server-side row filter evaluated per user (typically via <code>USEREMAIL()</code>) that limits both access and the data synced to the device.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing with slices — a slice hides rows in the UI; a security filter withholds them from the device entirely.</dd>
+<dt>Bot</dt>
+<dd>An AppSheet automation: an event (data change or schedule) bound to a process of steps such as emails, row updates, webhooks, or AI tasks.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "trigger" — reserve that word for Apps Script to keep the two platforms distinct.</dd>
+<dt>Regenerate structure</dt>
+<dd>The action that re-reads the data source's schema into AppSheet after columns are added, removed, or renamed.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "sync" — sync moves row data; regeneration updates the schema.</dd>
+<dt>Valid_If</dt>
+<dd>A per-column expression that constrains acceptable input values in forms, evaluated against the row being edited.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "validation rule" unqualified — Sheets data validation and AppSheet Valid_If enforce at different layers and do not see each other.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>Eloquent JavaScript, 4th ed. (2024, free online)</td><td>The JavaScript foundation Phase 2 assumes — modern syntax, functions, data structures</td></tr>
+<tr><td>JavaScript: The Definitive Guide, 7th ed. (2020)</td><td>Reference-depth JavaScript; still current for the language core V8 runs</td></tr>
+<tr><td>Designing Data-Intensive Applications, 2nd ed. (2025)</td><td>What you graduate <em>to</em> — the concepts behind Module 3.4's migration thinking</td></tr>
+<tr><td>The Ultimate Guide to Google Sheets (Zapier, free ebook, updated online)</td><td>Breadth-first Sheets features companion to Phase 1</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>developers.google.com/apps-script</td><td>Apps Script reference &amp; guides</td><td>The primary source; check release notes for new services</td></tr>
+<tr><td>developers.google.com/workspace/sheets/api</td><td>Sheets API v4 + usage limits</td><td>Bookmark the limits page — quotas change, and overage billing arrives in 2026</td></tr>
+<tr><td>Apps Script Blastoff! (Ben Collins, free course)</td><td>Guided Apps Script intro</td><td>Best structured on-ramp for Phase 2; paid follow-ups go deeper</td></tr>
+<tr><td>codelabs.developers.google.com (clasp codelab)</td><td>clasp workflow</td><td>Hands-on Module 2.4 companion</td></tr>
+<tr><td>support.google.com/appsheet</td><td>AppSheet Help Center</td><td>Expression and bot references for Phase 4</td></tr>
+<tr><td>AppsScriptPulse (pulse.appsscript.info)</td><td>Community tutorials &amp; news</td><td>Curated, current, practitioner-written</td></tr>
+<tr><td>support.google.com/docs — Sheets function list</td><td>Every Sheets function</td><td>Canonical formula syntax reference for Phase 1</td></tr>
+</table>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>TindaTrack workbook (built in Exercise 1.1)</td><td>The single dataset for every exercise and capstone</td></tr>
+<tr><td>clasp 3.x (<code>npm i -g @google/clasp</code>)</td><td>Local development, Git integration, deployments from the terminal</td></tr>
+<tr><td>curl / Postman / Bruno</td><td>Exercising the Phase 3 API outside the browser</td></tr>
+<tr><td>AppSheet free tier (up to 10 test users)</td><td>All of Phase 4 before any payment decision</td></tr>
+<tr><td>Looker Studio (free)</td><td>Module 4.3 dashboards</td></tr>
+</table>
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>google-apps-script tag</td><td>Stack Overflow</td><td>Specific errors — search first; a decade of answered edge cases</td></tr>
+<tr><td>r/GoogleAppsScript</td><td>Reddit</td><td>Design questions and "is this possible?" threads with working examples</td></tr>
+<tr><td>Google Apps Script Community</td><td>Google Groups</td><td>Long-form architecture discussion; Google Developer Experts participate</td></tr>
+<tr><td>AppSheet Creators Community</td><td>googlecloudcommunity.com</td><td>AppSheet expressions, bots, and deployment questions — the de facto official forum</td></tr>
+<tr><td>r/googlesheets</td><td>Reddit</td><td>Formula golf and Phase 1-level problems, answered fast</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
+<h4>Phase 1 — Sheets Power Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — Spreadsheet Fundamentals &amp; Data Hygiene</li>
+<li>[ ] Exercise 1.1 — Build the TindaTrack Workbook</li>
+<li>[ ] Module 1.2 — Formulas That Do the Work</li>
+<li>[ ] Exercise 1.2 — The Ops Dashboard Formulas</li>
+<li>[ ] Module 1.3 — QUERY, FILTER &amp; Cross-File Data</li>
+<li>[ ] Exercise 1.3 — Reporting Layer</li>
+<li>[ ] Capstone 1 — Store Operations Workbook</li>
+</ul>
+<h4>Phase 2 — Apps Script Automation</h4>
+<ul>
+<li>[ ] Module 2.1 — JavaScript &amp; the V8 Runtime</li>
+<li>[ ] Exercise 2.1 — Script Warmup on TindaTrack</li>
+<li>[ ] Module 2.2 — SpreadsheetApp CRUD</li>
+<li>[ ] Exercise 2.2 — The Data Layer, v0</li>
+<li>[ ] Module 2.3 — Custom Functions, Menus &amp; Sidebars</li>
+<li>[ ] Exercise 2.3 — TindaTrack Menu Suite</li>
+<li>[ ] Module 2.4 — Triggers, Automation &amp; Professional Workflow</li>
+<li>[ ] Exercise 2.4 — Production Automations</li>
+<li>[ ] Capstone 2 — Auto-Invoicing Engine</li>
+</ul>
+<h4>Phase 3 — Sheets as a Web-App Backend</h4>
+<ul>
+<li>[ ] Module 3.1 — Schema Design &amp; Data-Layer Patterns</li>
+<li>[ ] Exercise 3.1 — TindaTrack DAL</li>
+<li>[ ] Module 3.2 — Apps Script Web Apps: JSON API</li>
+<li>[ ] Exercise 3.2 — TindaTrack API v1</li>
+<li>[ ] Module 3.3 — Frontend to Sheets</li>
+<li>[ ] Exercise 3.3 — Orders Console</li>
+<li>[ ] Module 3.4 — Concurrency, Quotas &amp; Scaling Limits</li>
+<li>[ ] Exercise 3.4 — Hardening Pass</li>
+<li>[ ] Capstone 3 — TindaTrack Web Console</li>
+</ul>
+<h4>Phase 4 — AppSheet &amp; the Extension Ecosystem</h4>
+<ul>
+<li>[ ] Module 4.1 — AppSheet Fundamentals</li>
+<li>[ ] Exercise 4.1 — TindaTrack Mobile, v0</li>
+<li>[ ] Module 4.2 — AppSheet Logic &amp; Automation</li>
+<li>[ ] Exercise 4.2 — Logic &amp; Bots</li>
+<li>[ ] Module 4.3 — Forms, Looker Studio &amp; Add-ons</li>
+<li>[ ] Exercise 4.3 — The Ecosystem Pass</li>
+<li>[ ] Capstone 4 — Field Ordering App</li>
+</ul>
+<h4>Certifications / Outcomes</h4>
+<ul>
+<li>[ ] Associate Google Workspace Administrator (optional cert target)</li>
+<li>[ ] AppSheet app deployed past prototype status</li>
+<li>[ ] Final Capstone — TindaTrack Suite complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 — Google Sheets, Apps Script &amp; AppSheet Track: Beginner to Intermediate</em><br>
+<em>Non-linear modular design · Placement quiz · 14 modules · ~14 weeks part-time · hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-07-18</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               gs:"apps script",text:"text",/* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

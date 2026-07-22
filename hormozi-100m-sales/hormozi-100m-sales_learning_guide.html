@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$100M Sales Learning Guide — Beginner to Intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">$100M Sales<br>Learning Guide</div>
+      <div class="brand-sub">Offers · Leads · CLOSER · Objections · Scaling</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-intermediate-track" class="nav-top">Beginner to Intermediate Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+<div class="nav-group">
+<a href="#phase-1-sales-foundations-mindset" class="nav-top nav-phase">Phase 1: Foundations &amp; Mindset</a>
+<div class="nav-children">
+<a href="#module-11-the-sales-mindset-the-game" class="nav-child">Module 1.1 — The Sales Mindset &amp; The Game</a>
+<a href="#module-12-why-people-buy-value-emotion" class="nav-child">Module 1.2 — Why People Buy</a>
+<a href="#module-13-know-your-prospect-dream-outcome" class="nav-child">Module 1.3 — Know Your Prospect</a>
+<a href="#phase-1-capstone-customer-offer-brief" class="nav-child">Phase 1 Capstone: Customer &amp; Offer Brief</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-2-the-grand-slam-offer" class="nav-top nav-phase">Phase 2: The Grand Slam Offer</a>
+<div class="nav-children">
+<a href="#module-21-the-value-equation" class="nav-child">Module 2.1 — The Value Equation</a>
+<a href="#module-22-pricing-premium-positioning" class="nav-child">Module 2.2 — Pricing &amp; Positioning</a>
+<a href="#module-23-enhancing-the-offer" class="nav-child">Module 2.3 — Enhancing the Offer</a>
+<a href="#phase-2-capstone-fitforge-grand-slam-offer" class="nav-child">Phase 2 Capstone: Grand Slam Offer</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-3-getting-leads" class="nav-top nav-phase">Phase 3: Getting Leads</a>
+<div class="nav-children">
+<a href="#module-31-leads-lead-magnets-engaged-leads" class="nav-child">Module 3.1 — Leads &amp; Lead Magnets</a>
+<a href="#module-32-the-core-four" class="nav-child">Module 3.2 — The Core Four</a>
+<a href="#module-33-referrals-lead-getters" class="nav-child">Module 3.3 — Referrals &amp; Lead Getters</a>
+<a href="#module-34-landing-pages-that-convert" class="nav-child">Module 3.4 — Landing Pages That Convert</a>
+<a href="#phase-3-capstone-30-day-lead-gen-plan" class="nav-child">Phase 3 Capstone: 30-Day Lead-Gen Plan</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-4-closing-the-closer-framework" class="nav-top nav-phase">Phase 4: Closing — CLOSER</a>
+<div class="nav-children">
+<a href="#module-41-the-closer-framework-overview" class="nav-child">Module 4.1 — The CLOSER Framework</a>
+<a href="#module-42-discovery-diagnosis" class="nav-child">Module 4.2 — Discovery &amp; Diagnosis</a>
+<a href="#module-43-presenting-closing" class="nav-child">Module 4.3 — Presenting &amp; Closing</a>
+<a href="#phase-4-capstone-full-closer-call-script" class="nav-child">Phase 4 Capstone: Full CLOSER Script</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-5-objections-follow-up-scaling" class="nav-top nav-phase">Phase 5: Objections &amp; Scaling</a>
+<div class="nav-children">
+<a href="#module-51-handling-objections" class="nav-child">Module 5.1 — Handling Objections</a>
+<a href="#module-52-follow-up-persistence" class="nav-child">Module 5.2 — Follow-Up &amp; Persistence</a>
+<a href="#module-53-building-a-sales-system-team" class="nav-child">Module 5.3 — Building a Sales System</a>
+<a href="#phase-5-capstone-objection-playbook-follow-up" class="nav-child">Phase 5 Capstone: Objection Playbook</a>
+</div></div>
+<a href="#final-capstone-fitforge-sales-system" class="nav-top">Final Capstone: FitForge Sales System</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="100m-sales-learning-guide">$100M Sales Learning Guide</h1>
+<h2 id="beginner-to-intermediate-track">Beginner to Intermediate Track</h2>
+<h3>Offers · Leads · CLOSER · Objections · Scaling</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 24 24" role="img" aria-label="Sales growth" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#075249" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+<polyline points="17 6 23 6 23 12"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses one running scenario — <strong>FitForge</strong>, a high-ticket $3,000 12-week fitness-transformation offer — so you practice the whole sales motion on a single business. See the <a href="../datasets/fitforge/">FitForge brief</a> in the shared datasets folder — there's no data file, just the fixed scenario facts every script and exercise builds on.</p>
+</blockquote>
+<blockquote class="module-meta">
+<p><strong>Attribution:</strong> The frameworks taught here — the Value Equation, the Grand Slam Offer, the Core Four, and CLOSER — are credited to <strong>Alex Hormozi</strong> (<em>$100M Offers</em>, <em>$100M Leads</em>, and his sales content). This is an independent study guide synthesizing publicly shared ideas for learning purposes; it is not affiliated with or endorsed by Alex Hormozi or Acquisition.com. Read the books for the definitive treatment.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>New to sales</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Some experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>One specific skill</strong> (build an offer, get leads, or close) → Jump via the <strong>Module Index</strong> or follow a curated <strong>Learning Track</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h4>Section A — Mindset &amp; Fundamentals (Modules 1.1–1.3)</h4>
+<ul>
+<li>[ ] I treat selling as a service I do FOR people, not TO them</li>
+<li>[ ] I can explain why emotion drives buying and logic only justifies it</li>
+<li>[ ] I can describe my prospect's dream outcome in their own words</li>
+<li>[ ] I know my prospect's top 3 pains and the cost of not solving them</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h4>Section B — The Offer (Modules 2.1–2.3)</h4>
+<ul>
+<li>[ ] I can write out the four variables of the Value Equation</li>
+<li>[ ] I price on value delivered, not on cost or competitors</li>
+<li>[ ] I use guarantees, bonuses, scarcity, and urgency deliberately</li>
+<li>[ ] I have built an offer so good people feel stupid saying no</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h4>Section C — Getting Leads (Modules 3.1–3.4)</h4>
+<ul>
+<li>[ ] I know the difference between a lead and an engaged lead</li>
+<li>[ ] I can name the Core Four and which quadrant each falls in</li>
+<li>[ ] I run consistent daily outreach or content to create new conversations</li>
+<li>[ ] I can build a landing page that turns clicks into opt-ins and booked calls</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h4>Section D — Closing / CLOSER (Modules 4.1–4.3)</h4>
+<ul>
+<li>[ ] I can recite what each letter of CLOSER stands for</li>
+<li>[ ] I spend most of a sales call asking questions, not pitching</li>
+<li>[ ] I sell the destination (the vacation), not the mechanism (the plane)</li>
+<li>[ ] I ask for the sale directly and stay silent after the ask</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 5</strong></p>
+
+<h4>Section E — Objections &amp; Scaling (Modules 5.1–5.3)</h4>
+<ul>
+<li>[ ] I can handle the four core objections without getting flustered</li>
+<li>[ ] I have a written follow-up sequence I actually run</li>
+<li>[ ] I track my sales numbers (calls, closes, close rate, cash collected)</li>
+<li>[ ] I could hand my sales process to someone else and have it work</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 5.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 5.3</strong> | <strong>4 yes</strong> → Go straight to the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-the-sales-mindset-the-game"><td>1.1</td><td>The Sales Mindset &amp; The Game</td><td>Beginner</td><td>None</td><td>3h</td></tr>
+<tr data-href="#module-12-why-people-buy-value-emotion"><td>1.2</td><td>Why People Buy — Value &amp; Emotion</td><td>Beginner</td><td>1.1</td><td>4h</td></tr>
+<tr data-href="#module-13-know-your-prospect-dream-outcome"><td>1.3</td><td>Know Your Prospect</td><td>Beginner</td><td>1.1</td><td>5h</td></tr>
+<tr data-href="#module-21-the-value-equation"><td>2.1</td><td>The Value Equation</td><td>Beginner–Int</td><td>1.3</td><td>6h</td></tr>
+<tr data-href="#module-22-pricing-premium-positioning"><td>2.2</td><td>Pricing &amp; Premium Positioning</td><td>Intermediate</td><td>2.1</td><td>5h</td></tr>
+<tr data-href="#module-23-enhancing-the-offer"><td>2.3</td><td>Enhancing the Offer</td><td>Intermediate</td><td>2.1</td><td>6h</td></tr>
+<tr data-href="#module-31-leads-lead-magnets-engaged-leads"><td>3.1</td><td>Leads &amp; Lead Magnets</td><td>Beginner–Int</td><td>1.3</td><td>5h</td></tr>
+<tr data-href="#module-32-the-core-four"><td>3.2</td><td>The Core Four</td><td>Intermediate</td><td>3.1</td><td>10h</td></tr>
+<tr data-href="#module-33-referrals-lead-getters"><td>3.3</td><td>Referrals &amp; Lead Getters</td><td>Intermediate</td><td>3.2</td><td>5h</td></tr>
+<tr data-href="#module-34-landing-pages-that-convert"><td>3.4</td><td>Landing Pages That Convert</td><td>Intermediate</td><td>3.1</td><td>8h</td></tr>
+<tr data-href="#module-41-the-closer-framework-overview"><td>4.1</td><td>The CLOSER Framework</td><td>Beginner–Int</td><td>1.2</td><td>5h</td></tr>
+<tr data-href="#module-42-discovery-diagnosis"><td>4.2</td><td>Discovery &amp; Diagnosis</td><td>Intermediate</td><td>4.1</td><td>8h</td></tr>
+<tr data-href="#module-43-presenting-closing"><td>4.3</td><td>Presenting &amp; Closing</td><td>Intermediate</td><td>4.2</td><td>8h</td></tr>
+<tr data-href="#module-51-handling-objections"><td>5.1</td><td>Handling Objections</td><td>Intermediate</td><td>4.3</td><td>8h</td></tr>
+<tr data-href="#module-52-follow-up-persistence"><td>5.2</td><td>Follow-Up &amp; Persistence</td><td>Intermediate</td><td>4.1</td><td>4h</td></tr>
+<tr data-href="#module-53-building-a-sales-system-team"><td>5.3</td><td>Building a Sales System &amp; Team</td><td>Intermediate</td><td>5.1</td><td>8h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phase 2 (Offer), Phase 3 (Leads), and Phase 4 (Closing) are independent skills — you can learn to close (Phase 4) before mastering lead-gen (Phase 3) if closing is your immediate need. Only the Final Capstone assembles all of them into one system.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset — you don't need everything.</p>
+
+<h3 id="track-1-solo-closer-fast-start">Track 1 — Solo Closer Fast Start (just learn to close)</h3>
+<p><code>1.1 → 1.2 → 4.1 → 4.2 → 4.3 → 5.1 → Capstone 4</code><br>
+Target outcome: <strong>Run a structured sales call and close confidently.</strong> Best for appointment setters and new closers.</p>
+
+<h3 id="track-2-offer-builder">Track 2 — Offer Builder (founder / entrepreneur)</h3>
+<p><code>1.1 → 1.3 → 2.1 → 2.2 → 2.3 → Capstone 2</code><br>
+Target outcome: <strong>Build a Grand Slam Offer people feel stupid saying no to.</strong></p>
+
+<h3 id="track-3-lead-generation">Track 3 — Lead Generation / Appointment Setter</h3>
+<p><code>1.1 → 1.3 → 3.1 → 3.2 → 3.3 → 3.4 → Capstone 3</code><br>
+Target outcome: <strong>Create a reliable flow of engaged leads using the Core Four and a converting landing page.</strong></p>
+
+<h3 id="track-4-full-sales-system">Track 4 — Full Sales System (everything)</h3>
+<p><code>All phases → Final Capstone</code><br>
+Target outcome: <strong>A complete offer-to-close-to-scale selling system.</strong></p>
+
+<h3 id="track-5-sales-manager">Track 5 — Sales Manager / Team Builder</h3>
+<p><code>1.1 → 4.1 → 4.2 → 4.3 → 5.1 → 5.2 → 5.3 → Final Capstone</code><br>
+Target outcome: <strong>Document and hand off a sales process that works without you.</strong></p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre class="artifact" data-kind="ROADMAP"><code>Phase 1 — Foundations &amp; Mindset   (Weeks 1–2)
+Phase 2 — The Grand Slam Offer    (Weeks 3–5)   [independent of Phase 3 &amp; 4]
+Phase 3 — Getting Leads           (Weeks 6–8)   [independent of Phase 2 &amp; 4]
+Phase 4 — Closing (CLOSER)        (Weeks 9–12)  [independent of Phase 2 &amp; 3]
+Phase 5 — Objections &amp; Scaling    (Weeks 13–15)
+Capstone Projects                (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre class="artifact" data-kind="MAP"><code>1.1 ── 1.2 ─┬─ 4.1 ── 4.2 ── 4.3 ── 5.1 ─┬─ 5.3 ─┐
+            │                            └─ 5.2  │
+1.1 ── 1.3 ─┼─ 2.1 ── 2.2 ── 2.3 ────────────────┼─ Final
+            │                                    │  Capstone
+            └─ 3.1 ─┬─ 3.2 ── 3.3 ───────────────┤
+                    └─ 3.4 ───────────────────────┘</code></pre>
+
+<h2 id="phase-1-sales-foundations-mindset">Phase 1: Foundations &amp; Mindset</h2>
+<h3 id="weeks-1-2">Weeks 1–2 | Goal: Adopt the service-first sales mindset and understand why people actually buy</h3>
+<hr />
+
+<h3 id="module-11-the-sales-mindset-the-game">Module 1.1 — The Sales Mindset &amp; The Game</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Explain in writing why selling is a service done FOR the buyer, and why volume + a strong offer beats "convincing."<br>
+<strong>Skip if:</strong> you already sell from a service mindset and don't take "no" personally.<br>
+<strong>Unlocks:</strong> every later module.</p>
+</blockquote>
+
+<h4>Selling Is a Service, Not a Manipulation</h4>
+<p>If you truly believe your offer changes lives, NOT selling it is the unethical act. The job is to help a prospect make a decision that is good for them — which often means helping them past their own hesitation. Pressure that benefits you is manipulation; conviction that benefits them is service.</p>
+
+<h4>The Iron Rule &amp; Volume</h4>
+<p>Hormozi's iron rule: <em>the more you do, the less any single outcome matters.</em> A closer who needs the sale loses it. A closer with 40 more conversations this week is calm, curious, and detached from any one result — and closes more because of it.</p>
+<pre class="artifact" data-kind="FRAMEWORK"><code>THE GAME (mental model)
+- You don't need a YES from this person. You need the truth.
+- "No" is data, not rejection. Find out WHY, then decide if you can help.
+- Detachment from outcome = the highest-status posture in the room.
+- More volume → more skill → more calm → higher close rate. Compounding.</code></pre>
+
+<h4>Belief Comes First</h4>
+<p>You cannot transfer a belief you do not hold. Before any call, you must believe three things: the problem is real, your solution works, and this person can succeed with it. If you can't, fix the offer or disqualify the prospect — don't fake it.</p>
+
+<p><strong>Exercise 1.1 — Mindset Brief</strong></p>
+<p>Scenario: FitForge ($3,000 12-week transformation)</p>
+<ol>
+<li>Write one paragraph: why is selling FitForge a service to the right person?</li>
+<li>List 3 beliefs you must hold before a FitForge sales call</li>
+<li>Reframe three "no" responses as data ("too expensive" → what is it really telling you?)</li>
+<li>Write the volume math: if your close rate is 20%, how many calls to land 5 clients?</li>
+</ol>
+<hr />
+
+<h3 id="module-12-why-people-buy-value-emotion">Module 1.2 — Why People Buy — Value &amp; Emotion</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> For FitForge, write the emotional driver behind the purchase and the logical justification the buyer will tell others.<br>
+<strong>Skip if:</strong> you already sell to emotion and confirm with logic.<br>
+<strong>Unlocks:</strong> 2.1, 4.1.</p>
+</blockquote>
+
+<h4>Emotion Buys, Logic Justifies</h4>
+<p>People buy with emotion and rationalize with logic. Nobody buys a fitness program for "12 sessions and a meal plan" — they buy confidence, attraction, energy, and relief from shame. Sell the felt outcome; provide the logic as the permission slip.</p>
+
+<h4>Pain → Dream → Bridge</h4>
+<pre class="artifact" data-kind="FRAMEWORK"><code>THE BUYING JOURNEY
+Current Pain  →  Dream Outcome  →  Your Offer (the bridge)
+
+- Make the current pain conscious and specific (cost of inaction).
+- Make the dream outcome vivid and believable.
+- Position the offer as the shortest, most certain bridge between them.</code></pre>
+
+<h4>Status &amp; Identity</h4>
+<p>Most purchases are a vote for a future identity: "the kind of person who is fit / runs a real business / is in control." Speak to who they want to become, not just what they want to have. Selling features invites comparison; selling identity creates belonging — and belonging is stickier than any feature list.</p>
+
+<p><strong>Exercise 1.2 — Buy Triggers</strong></p>
+<p>Scenario: FitForge</p>
+<ol>
+<li>Write the dominant emotion driving a FitForge purchase</li>
+<li>Write the logical justification the buyer gives their spouse</li>
+<li>Describe the cost of inaction in vivid, specific terms</li>
+<li>Write one sentence selling the future identity, not the features</li>
+</ol>
+<hr />
+
+<h3 id="module-13-know-your-prospect-dream-outcome">Module 1.3 — Know Your Prospect</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Produce a one-page avatar for the FitForge buyer: dream outcome, top pains, objections, and where they hang out.<br>
+<strong>Skip if:</strong> you can already describe your buyer's dream outcome and fears in their words.<br>
+<strong>Unlocks:</strong> 2.1, 3.1.</p>
+</blockquote>
+
+<h4>The Avatar</h4>
+<p>You sell to one person, not a market. Define them precisely enough that you could pick them out of a crowd and finish their sentences.</p>
+<pre class="artifact" data-kind="TEMPLATE"><code>FITFORGE AVATAR — "Busy Brian," 38
+Dream outcome : Lose 20 lbs, feel strong, fit into old clothes, energy for kids
+Top pains     : Tried and failed before; no time; embarrassed at the gym
+Deep fear     : "I'll waste money and quit again like every other time"
+Buys when     : A doctor's warning, a photo, a milestone birthday
+Hangs out     : Instagram fitness reels, r/loseit, local gyms, dad groups</code></pre>
+
+<h4>Voice of Customer</h4>
+<p>Harvest the exact words prospects use from reviews, DMs, and calls. Selling in their language ("I want to stop feeling winded on the stairs") beats your jargon ("improve cardiovascular capacity") every time.</p>
+
+<p><strong>Exercise 1.3 — Build the Avatar</strong></p>
+<p>Scenario: FitForge</p>
+<ol>
+<li>Write a one-page FitForge avatar using the template above</li>
+<li>Collect 10 real "voice of customer" phrases from reviews or forums</li>
+<li>List the buyer's top 4 objections before they ever appear on a call</li>
+<li>Map the 3 places this avatar can be reached</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-customer-offer-brief">Phase 1 Capstone: Customer &amp; Offer Brief</h3>
+<p><strong>Project: FitForge Buyer &amp; Belief Brief</strong></p>
+<p><strong>Scenario:</strong> FitForge ($3,000 12-week transformation)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A one-page avatar (dream outcome, pains, fears, channels)</li>
+<li>A "why this is a service" statement and your 3 required beliefs</li>
+<li>The dominant emotion + logical justification for the purchase</li>
+<li>A voice-of-customer swipe list of 10+ real phrases</li>
+<li>The buyer's top 4 objections, written before any call</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-the-grand-slam-offer">Phase 2: The Grand Slam Offer</h2>
+<h3 id="weeks-3-5">Weeks 3–5 | Goal: Build an offer so good people feel stupid saying no</h3>
+<hr />
+
+<h3 id="module-21-the-value-equation">Module 2.1 — The Value Equation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Score FitForge on all four value variables and name one concrete change that raises perceived value.<br>
+<strong>Skip if:</strong> you can recite and apply all four variables of the Value Equation.<br>
+<strong>Unlocks:</strong> 2.2, 2.3, Capstone 2.</p>
+</blockquote>
+
+<h4>The Equation</h4>
+<p>Hormozi's Value Equation is the engine of every great offer. You raise value by increasing the top and shrinking the bottom.</p>
+<pre class="artifact" data-kind="FRAMEWORK"><code>            Dream Outcome  ×  Perceived Likelihood of Achievement
+VALUE  =  ────────────────────────────────────────────────────────
+              Time Delay   ×   Effort &amp; Sacrifice
+
+Increase value by:
+  ↑ Dream Outcome      — bigger, more vivid result
+  ↑ Likelihood         — proof, guarantees, track record, reversals
+  ↓ Time Delay         — faster first win, quicker total result
+  ↓ Effort &amp; Sacrifice — done-for-you, simpler, less willpower required</code></pre>
+
+<h4>The Highest Leverage: Likelihood &amp; Effort</h4>
+<p>Most sellers only push "dream outcome" louder. The fastest value gains usually come from raising <em>perceived likelihood</em> (proof + guarantees) and lowering <em>effort</em> (do it for them). "Lose 20 lbs" is common; "lose 20 lbs without giving up the foods you love, or it's free" is a Grand Slam.</p>
+
+<p><strong>Exercise 2.1 — Score &amp; Lift</strong></p>
+<p>Scenario: FitForge</p>
+<p><em>Retrieval practice: before step 2, write the four Value Equation variable names from memory — which two are in the numerator and which two in the denominator? Draft your answer first, then check the framework above.</em></p>
+<ol>
+<li>Write FitForge's current dream outcome in one vivid sentence</li>
+<li>Score each of the 4 variables from 1–10 as the offer stands today</li>
+<li>Propose one concrete change to raise likelihood (proof/guarantee)</li>
+<li>Propose one concrete change to lower effort &amp; sacrifice</li>
+<li>Propose one change to shorten time-to-first-win</li>
+</ol>
+<hr />
+
+<h3 id="module-22-pricing-premium-positioning">Module 2.2 — Pricing &amp; Premium Positioning</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Justify FitForge's $3,000 price on value-to-the-buyer and write the ROI framing you'd say on a call.<br>
+<strong>Skip if:</strong> you price on value delivered and can defend a premium without flinching.<br>
+<strong>Unlocks:</strong> 2.3, Capstone 2.</p>
+</blockquote>
+
+<h4>Charge More</h4>
+<p>Low prices attract the worst clients and starve you of the margin needed to over-deliver. A higher price raises perceived value, increases commitment (and therefore results), and funds a better experience. Price is a positioning decision, not a cost calculation.</p>
+
+<h4>Anchor to Value, Not Cost</h4>
+<pre class="artifact" data-kind="SCRIPT"><code>PRICE FRAMING (say it as ROI, not expense)
+"What is being 20 lbs lighter and pain-free worth over the next 10 years?"
+"You'll spend more than $3,000 on failed programs, supplements, and
+ takeout in the next year alone — this replaces all of it with a result."
+
+Rule: never defend price. Re-anchor to the dream outcome and the cost of NOT solving it.</code></pre>
+
+<p><strong>Exercise 2.2 — Price Defense</strong></p>
+<p>Scenario: FitForge</p>
+<ol>
+<li>Write the 10-year value of the FitForge transformation to the buyer</li>
+<li>Write a cost-of-inaction tally (money already wasted, health cost)</li>
+<li>Draft a 3-sentence ROI re-anchor you'd say when someone says "that's a lot"</li>
+<li>Decide on a payment-plan option and how you'd present it</li>
+</ol>
+<hr />
+
+<h3 id="module-23-enhancing-the-offer">Module 2.3 — Enhancing the Offer</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Add a stack of bonuses, a strong guarantee, and honest scarcity/urgency to the FitForge offer.<br>
+<strong>Skip if:</strong> you deliberately use guarantees, bonuses, scarcity, urgency, and naming.<br>
+<strong>Unlocks:</strong> Capstone 2.</p>
+</blockquote>
+
+<h4>Bonuses &amp; The Stack</h4>
+<p>Solve each objection with a bonus. Present them one at a time so perceived value stacks far above the price before you ever name the number.</p>
+
+<h4>Guarantees (Reverse the Risk)</h4>
+<pre class="artifact" data-kind="FRAMEWORK"><code>GUARANTEE TYPES
+- Unconditional : "Full refund within 30 days, no questions."
+- Conditional   : "Do the work and don't lose 15 lbs in 12 weeks? Train free until you do."
+- Anti-guarantee: "All sales final" (for premium, high-demand offers)
+A strong conditional guarantee raises perceived likelihood AND filters for committed buyers.</code></pre>
+
+<h4>Scarcity, Urgency &amp; Naming</h4>
+<p>Scarcity (limited spots) and urgency (a real deadline) move buyers from "someday" to "now" — but only if honest. Manufactured scarcity that a prospect can see through destroys the trust built across the whole call and loses the sale permanently. A clear, benefit-rich name ("The 12-Week Dad-Bod Reversal") sells before you say a word.</p>
+
+<p><strong>Exercise 2.3 — Enhance FitForge</strong></p>
+<p>Scenario: FitForge</p>
+<ol>
+<li>Create a 3-bonus stack, each killing a specific objection</li>
+<li>Write one strong conditional guarantee</li>
+<li>Add one honest scarcity element and one honest urgency element</li>
+<li>Name the offer with a benefit-driven title</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-fitforge-grand-slam-offer">Phase 2 Capstone: The Grand Slam Offer</h3>
+<p><strong>Project: FitForge Grand Slam Offer</strong></p>
+<p><strong>Scenario:</strong> FitForge ($3,000 12-week transformation)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>The core offer scored against all four Value Equation variables</li>
+<li>A value-anchored price with an ROI framing and a payment plan</li>
+<li>A stacked set of bonuses, each tied to an objection</li>
+<li>A strong, specific guarantee</li>
+<li>Honest scarcity + urgency and a benefit-driven offer name</li>
+<li>A one-page written offer you could read aloud on a call</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-getting-leads">Phase 3: Getting Leads</h2>
+<h3 id="weeks-6-8">Weeks 6–8 | Goal: Create a reliable flow of engaged leads using the Core Four</h3>
+<hr />
+
+<h3 id="module-31-leads-lead-magnets-engaged-leads">Module 3.1 — Leads &amp; Lead Magnets</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Design a FitForge lead magnet that gives a real, complete win and naturally leads to the paid offer.<br>
+<strong>Skip if:</strong> you know what makes an engaged lead and can build a lead magnet that converts.<br>
+<strong>Unlocks:</strong> 3.2, 3.3, Capstone 3.</p>
+</blockquote>
+
+<h4>Lead vs. Engaged Lead</h4>
+<p>A <em>lead</em> is anyone you can contact. An <em>engaged lead</em> has shown interest — replied, opted in, booked. You don't have a traffic problem; you have an engagement problem. Everything in lead-gen exists to turn contacts into engaged conversations.</p>
+
+<h4>The Lead Magnet</h4>
+<pre class="artifact" data-kind="FRAMEWORK"><code>GREAT LEAD MAGNET = solves ONE narrow problem completely, fast, and for free.
+It should:
+  1. Reveal a problem they didn't know they had (or quantify it).
+  2. Deliver a real, complete win — not a teaser.
+  3. Make the paid offer the obvious next step.
+
+FitForge example: "The 7-Day Dad Reset" — a free week of done-for-you
+meals + 10-min workouts. A real win that makes the 12 weeks the obvious next step.</code></pre>
+
+<p><strong>Exercise 3.1 — Build a Lead Magnet</strong></p>
+<p>Scenario: FitForge</p>
+<ol>
+<li>Pick one narrow problem the FitForge buyer wants solved this week</li>
+<li>Design a lead magnet that delivers a complete win for free</li>
+<li>Write the one-line promise/headline for it</li>
+<li>Write the natural transition sentence from magnet to the paid offer</li>
+</ol>
+<hr />
+
+<h3 id="module-32-the-core-four">Module 3.2 — The Core Four</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Write a daily action plan for FitForge across all four lead-gen channels with specific volume targets.<br>
+<strong>Skip if:</strong> you can name the Core Four and already run at least two consistently.<br>
+<strong>Unlocks:</strong> 3.3, Capstone 3. <strong>The engine of lead generation.</strong></p>
+</blockquote>
+
+<h4>The Four Ways to Get Anyone's Attention</h4>
+<pre class="artifact" data-kind="FRAMEWORK"><code>THE CORE FOUR (warm/cold × one-to-one/one-to-many)
+
+                 ONE-TO-ONE              ONE-TO-MANY
+WARM    Warm Outreach              Posting Content
+(know you)  (DM/text/call people    (social posts, video,
+             who know you)           email list)
+
+COLD    Cold Outreach             Paid Ads
+(strangers) (cold DM/email/call)    (Meta/Google/YouTube ads)</code></pre>
+
+<h4>Warm Outreach &amp; Content First</h4>
+<p>Beginners with no audience and no budget start with <strong>warm outreach</strong> (people who already know you) and <strong>content</strong> (so the warm audience grows). Cold outreach and paid ads scale later once the offer and messaging are proven. Starting with warm channels validates your message without spending money — you learn what resonates before paying to amplify it.</p>
+
+<h4>Give Before You Ask</h4>
+<pre class="artifact" data-kind="SCRIPT"><code>WARM OUTREACH SCRIPT (FitForge)
+"Hey [Name] — I'm taking on a few people for a 12-week transformation
+and thought of you. No pitch: I put together a free 7-day reset that's
+helped a bunch of busy dads drop the first few pounds. Want me to send it?"
+
+→ Lead with value (the free reset), not the offer. The conversation is the win.</code></pre>
+
+<p><strong>Exercise 3.2 — Core Four Plan</strong></p>
+<p>Scenario: FitForge</p>
+<p><em>Retrieval practice: sketch the 2×2 grid (warm/cold × one-to-one/one-to-many) from memory and write one channel name per quadrant before referring back to the framework.</em></p>
+<ol>
+<li>Place FitForge into all four quadrants with one concrete tactic each</li>
+<li>Write a warm-outreach message that leads with the lead magnet</li>
+<li>Outline 5 content posts that attract the FitForge avatar</li>
+<li>Set daily volume targets (e.g., 20 warm DMs, 1 post) for two weeks</li>
+</ol>
+<hr />
+
+<h3 id="module-33-referrals-lead-getters">Module 3.3 — Referrals &amp; Lead Getters</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.2 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Design a referral ask + incentive for FitForge that clients will actually act on.<br>
+<strong>Skip if:</strong> you have a referral system and understand "lead getters" (affiliates, employees, agencies).<br>
+<strong>Unlocks:</strong> Capstone 3.</p>
+</blockquote>
+
+<h4>Referrals: The Cheapest, Best Leads</h4>
+<p>Referred buyers close faster, pay more, and churn less. Don't wait for them — engineer them. Ask at the moment of peak happiness (a client's first big win), make the ask specific, and give both sides a reason.</p>
+<pre class="artifact" data-kind="SCRIPT"><code>REFERRAL ASK (at a client's first win)
+"Amazing — down 6 lbs in two weeks! Quick favor: who's the ONE friend
+you wish would do this with you? I'll give them the same fast start I gave
+you, and knock $300 off your next block as a thank-you."</code></pre>
+
+<h4>Lead Getters</h4>
+<p>Beyond doing the four yourself, you can recruit others to get leads for you: affiliates, agencies, employees, and partners. This is how lead-gen scales past your own hours.</p>
+
+<p><strong>Exercise 3.3 — Referral Engine</strong></p>
+<p>Scenario: FitForge</p>
+<ol>
+<li>Write a specific referral ask tied to a client win moment</li>
+<li>Design a two-sided incentive (referrer + new client)</li>
+<li>Pick one "lead getter" type and describe how you'd recruit them</li>
+<li>Write the follow-up if a client gives you a name but no intro</li>
+</ol>
+<hr />
+
+<h3 id="module-34-landing-pages-that-convert">Module 3.4 — Landing Pages That Convert</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Wireframe and write a FitForge opt-in page and offer page that turn clicks into booked calls.<br>
+<strong>Skip if:</strong> you design conversion-focused, mobile-first pages with one promise, one form, and one CTA.<br>
+<strong>Unlocks:</strong> Capstone 3. <strong>This is where traffic becomes engaged leads.</strong></p>
+</blockquote>
+
+<p>The Core Four sends people somewhere. That "somewhere" — your landing page — is where a click becomes a lead. A great offer on a confusing page still fails. The job of the page is exactly one thing: get the visitor to take the next step (opt in for the lead magnet, or book a call).</p>
+
+<h4>One Page, One Goal</h4>
+<p>A landing page is not a website. Strip everything that isn't the goal: no top navigation, no "About," no competing links. Every element either moves the visitor toward the single call-to-action or it's removed. Confusion kills conversion.</p>
+<pre class="artifact" data-kind="TEMPLATE"><code>OPT-IN (LEAD CAPTURE) PAGE — above-the-fold anatomy
+┌───────────────────────────────────────────────┐
+│  HEADLINE: the promise (dream outcome + time)  │
+│  Subhead: who it's for + the objection killed  │
+│                                                │
+│  [ visual / before-after / short VSL ]         │
+│                                                │
+│  • benefit bullet 1   • benefit bullet 2       │
+│  • benefit bullet 3                            │
+│                                                │
+│  [  email field  ] [  GET THE FREE RESET  ]    │  ← ONE form, ONE CTA
+│  ★★★★★ "Down 6 lbs in 2 weeks" — real proof    │
+└───────────────────────────────────────────────┘
+No nav bar. No other links. One decision.</code></pre>
+
+<h4>Conversion Copy</h4>
+<p>The headline does 80% of the work. Use the same dream outcome and objection language you collected in Module 1.3 — the visitor should feel the page was written for them.</p>
+<pre class="artifact" data-kind="FRAMEWORK"><code>HEADLINE FORMULA
+[Dream outcome] + [time frame] + [objection removed]
+
+FitForge opt-in : "Drop your first 7 lbs in 7 days — without the gym
+                   or giving up the food you love."
+FitForge offer  : "The 12-Week Dad-Bod Reversal: get strong and lean
+                   in 12 weeks, or train free until you do."
+
+Then: 3 benefit bullets (outcomes, not features) · proof · ONE CTA repeated.</code></pre>
+
+<h4>Design Principles &amp; Mobile-First</h4>
+<p>Most of your traffic arrives on a phone, often on a slow connection — so design for mobile first: a single column, a thumb-reachable button, big tap targets, and a fast-loading page (compress images, minimal scripts). Use visual hierarchy (the eye should land on headline → CTA), a high-contrast button color, and generous whitespace.</p>
+<pre><code class="language-html">&lt;!-- Minimal, mobile-first opt-in hero (semantic + one form) --&gt;
+&lt;section class="optin"&gt;
+  &lt;h1&gt;Drop your first 7 lbs in 7 days&lt;/h1&gt;
+  &lt;p class="sub"&gt;For busy dads — no gym, no giving up the food you love.&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Done-for-you meals &amp;amp; 10-minute workouts&lt;/li&gt;
+    &lt;li&gt;A real result in week one&lt;/li&gt;
+    &lt;li&gt;Zero guesswork&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;form action="/subscribe" method="post"&gt;
+    &lt;input type="email" name="email" placeholder="you@email.com" required&gt;
+    &lt;button type="submit"&gt;Get the free 7-day reset&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;p class="proof"&gt;★★★★★ "Down 6 lbs in two weeks" — Brian, 38&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+
+<h4>Measure &amp; Improve</h4>
+<p>The one metric that matters here is <strong>conversion rate</strong> — visitors ÷ opt-ins (or ÷ booked calls). Improve it by testing ONE thing at a time (headline, CTA text, hero image). A page going from 20% to 30% opt-in is a 50% lift in leads from the same traffic.</p>
+
+<p><strong>Exercise 3.4 — Build the FitForge Pages</strong></p>
+<p>Scenario: FitForge</p>
+<ol>
+<li>Wireframe the above-the-fold opt-in page for the free 7-day reset</li>
+<li>Write the headline with the formula, plus 3 benefit bullets and one proof line</li>
+<li>Structure the hero section in clean, mobile-first HTML with a single email form</li>
+<li>List 3 things you'd remove from the page to reduce distraction</li>
+<li>Pick the one metric to track and one A/B test to run first</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-30-day-lead-gen-plan">Phase 3 Capstone: 30-Day Lead-Gen Plan</h3>
+<p><strong>Project: FitForge Lead Machine</strong></p>
+<p><strong>Scenario:</strong> FitForge</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A lead magnet with headline and delivery plan</li>
+<li>A converting opt-in landing page: wireframe, headline, one form, one CTA</li>
+<li>A filled-in Core Four grid with one tactic per quadrant</li>
+<li>Daily volume targets for warm outreach and content over 30 days</li>
+<li>A referral ask + two-sided incentive</li>
+<li>One scaling lever (a "lead getter") and how you'd start it</li>
+<li>A simple tracker: visitors → opt-ins → engaged leads → calls booked</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-closing-the-closer-framework">Phase 4: Closing — The CLOSER Framework</h2>
+<h3 id="weeks-9-12">Weeks 9–12 | Goal: Run a structured, low-pressure sales call that consistently closes</h3>
+<hr />
+
+<h3 id="module-41-the-closer-framework-overview">Module 4.1 — The CLOSER Framework</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Recite what each CLOSER letter means and map a FitForge call to the six steps.<br>
+<strong>Skip if:</strong> CLOSER is already your default call structure.<br>
+<strong>Unlocks:</strong> 4.2, 4.3. <strong>The backbone of the sales call.</strong></p>
+</blockquote>
+
+<h4>What CLOSER Stands For</h4>
+<pre class="artifact" data-kind="FRAMEWORK"><code>C — Clarify why they're there (get them to say the reason out loud)
+L — Label the problem (name what's really going on)
+O — Overview their past pain (what they've tried, why it failed)
+S — Sell the vacation (the outcome/destination — not the mechanism)
+E — Explain away concerns (handle objections)
+R — Reinforce the decision (lock in the buy; prevent buyer's remorse)</code></pre>
+
+<h4>The Shape of a Great Call</h4>
+<p>The first three letters (C-L-O) are diagnosis: you spend most of the call asking questions and listening. Only after the prospect has stated their problem and pain do you present (S), handle concerns (E), and close + reinforce (R). Most failed calls pitch too early.</p>
+
+<p><strong>Exercise 4.1 — Map the Call</strong></p>
+<p>Scenario: FitForge</p>
+<p><em>Retrieval practice: before writing step 1, attempt all six CLOSER letters and their meanings from memory. Draft first, then compare to the framework above — the gaps reveal which steps you haven't fully internalized yet.</em></p>
+<ol>
+<li>Write what each CLOSER letter means in your own words</li>
+<li>Draft one opening question for the "Clarify" step</li>
+<li>Mark which steps are "ask &amp; listen" vs "present &amp; ask"</li>
+<li>Estimate how much of the call should be the prospect talking</li>
+</ol>
+<hr />
+
+<h3 id="module-42-discovery-diagnosis">Module 4.2 — Discovery &amp; Diagnosis (C·L·O)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Write a question bank that takes a FitForge prospect through Clarify, Label, and Overview.<br>
+<strong>Skip if:</strong> you run discovery with questions and let the prospect state their own pain.<br>
+<strong>Unlocks:</strong> 4.3, Capstone 4.</p>
+</blockquote>
+
+<h4>Ask, Don't Tell</h4>
+<p>The prospect must convince themselves. Your questions guide them to say the problem, the stakes, and the cost of inaction — in their own voice. What they say, they believe; what you say, they doubt.</p>
+<pre class="artifact" data-kind="TEMPLATE"><code>DISCOVERY QUESTION BANK (FitForge)
+Clarify : "What made you book this call today, specifically?"
+          "Why now and not six months ago?"
+Label   : "So if I'm hearing you right, the real issue is ___ — is that fair?"
+Overview: "What have you already tried?"  "Why do you think it didn't stick?"
+          "What's it costing you to stay where you are — health, confidence, energy?"</code></pre>
+
+<h4>Active Listening &amp; The Pause</h4>
+<p>Reflect their words back, then go quiet. Silence after a question is pressure that works FOR the prospect — it gives them room to reach a real answer. Don't rescue the silence.</p>
+
+<p><strong>Exercise 4.2 — Discovery Script</strong></p>
+<p>Scenario: FitForge</p>
+<ol>
+<li>Write 3 "Clarify" questions and 3 "Overview" questions</li>
+<li>Write a "Label" reflection that names the prospect's real problem</li>
+<li>Write a cost-of-inaction question that surfaces the stakes</li>
+<li>Mark two places to deliberately pause and stay silent</li>
+</ol>
+<hr />
+
+<h3 id="module-43-presenting-closing">Module 4.3 — Presenting &amp; Closing (S·E·R)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.2 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Write the present-and-close section of a FitForge call: sell the vacation, handle one concern, ask, and reinforce.<br>
+<strong>Skip if:</strong> you present to the stated problem, ask directly, and reinforce after the yes.<br>
+<strong>Unlocks:</strong> 5.1, Capstone 4.</p>
+</blockquote>
+
+<h4>Sell the Vacation, Not the Plane Flight</h4>
+<p>Prospects don't want your mechanism (the workouts, the app, the check-ins) — they want the destination. Present only the parts of your offer that map directly to the problem THEY stated, framed as the outcome.</p>
+<pre class="artifact" data-kind="SCRIPT"><code>PRESENT (tie every feature to their stated dream)
+"You said you want to feel strong and stop being winded with your kids.
+ Here's exactly how we get you there in 12 weeks..." [outcome, then mechanism]
+
+THE ASK (direct, then silent)
+"It's $3,000 for the full 12 weeks, and based on everything you told me,
+ you're exactly who this works for. Do you want to get started?"
+[then STOP talking]</code></pre>
+
+<h4>Reinforce the Decision</h4>
+<p>The moment after "yes" is when doubt creeps in. Congratulate them, restate the outcome they just bought, and tell them the immediate next step. Reinforcement prevents refunds and cancellations.</p>
+
+<p><strong>Exercise 4.3 — Present &amp; Close</strong></p>
+<p>Scenario: FitForge</p>
+<ol>
+<li>Write a present section that ties 3 features to the prospect's stated dream</li>
+<li>Write your direct ask in one or two sentences</li>
+<li>Write a reinforcement script for right after the yes</li>
+<li>Practice: deliver the ask and stay silent for a full 10 seconds</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-full-closer-call-script">Phase 4 Capstone: Full CLOSER Call Script</h3>
+<p><strong>Project: FitForge End-to-End Call Script</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) what each CLOSER letter means, (2) why C·L·O comes before S·E·R, and (3) what Reinforce prevents? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Scenario:</strong> FitForge</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A complete CLOSER script: Clarify → Label → Overview → Sell → Explain → Reinforce</li>
+<li>A discovery question bank (3+ per C·L·O step)</li>
+<li>A present section that sells the outcome, not the mechanism</li>
+<li>A direct ask and a post-yes reinforcement script</li>
+<li>Two marked silence/pause points</li>
+<li>A self-scored mock call recording against the script</li>
+</ol>
+<hr />
+
+<h2 id="phase-5-objections-follow-up-scaling">Phase 5: Objections, Follow-Up &amp; Scaling</h2>
+<h3 id="weeks-13-15">Weeks 13–15 | Goal: Handle resistance, follow up relentlessly, and turn your selling into a system</h3>
+<hr />
+
+<h3 id="module-51-handling-objections">Module 5.1 — Handling Objections</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.3 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Write calm, non-defensive responses to the four core objections for FitForge.<br>
+<strong>Skip if:</strong> you can handle price, time, belief, and decision objections without pressure.<br>
+<strong>Unlocks:</strong> 5.3, Capstone 5.</p>
+</blockquote>
+
+<h4>The Four Core Objections</h4>
+<pre class="artifact" data-kind="FRAMEWORK"><code>Almost every objection is one of four (or a stall hiding one):
+  1. MONEY    — "I can't afford it" / "too expensive"
+  2. TIME     — "I'm too busy right now"
+  3. BELIEF   — "Will this actually work for ME?"
+  4. DECISION — "I need to think / ask my spouse"  (often fear in disguise)</code></pre>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Trying to "overcome" or "defeat" an objection. An objection is information, not an attack — the goal is to understand what is really being said, not to win an argument. Arguing creates resistance; genuine curiosity dissolves it.</p></blockquote>
+
+<h4>Acknowledge → Reframe → Re-ask</h4>
+<pre class="artifact" data-kind="SCRIPT"><code>OBJECTION PATTERN (never argue)
+Acknowledge: "Totally fair, and I appreciate you being honest."
+Reframe:     re-anchor to the dream outcome / cost of inaction.
+Re-ask:      a calm question that moves forward.
+
+Example — "Too expensive":
+"Fair. Can I ask — is it that the money isn't there, or that you're not
+ yet sure it'll work? Because those are two very different problems."
+(Money → payment plan. Belief → proof + guarantee.)</code></pre>
+
+<h4>Most Objections Are Failures Earlier in the Call</h4>
+<p>A "price" objection usually means value wasn't built in discovery; a "think about it" usually means the problem wasn't made urgent. The best objection handling happens in C·L·O — before the objection exists.</p>
+
+<p><strong>Exercise 5.1 — Objection Playbook</strong></p>
+<p>Scenario: FitForge</p>
+<ol>
+<li>Write an Acknowledge → Reframe → Re-ask response for each of the four objections</li>
+<li>Write the diagnostic question that splits "money" from "belief"</li>
+<li>For "I need to ask my spouse," write a response that invites the spouse in</li>
+<li>For each objection, note which earlier CLOSER step should have prevented it</li>
+</ol>
+<hr />
+
+<h3 id="module-52-follow-up-persistence">Module 5.2 — Follow-Up &amp; Persistence</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Write a multi-touch follow-up sequence for a FitForge prospect who said "not right now."<br>
+<strong>Skip if:</strong> you run a written follow-up sequence and don't quit after one "no."<br>
+<strong>Unlocks:</strong> Capstone 5.</p>
+</blockquote>
+
+<h4>The Fortune Is in the Follow-Up</h4>
+<p>Most sales happen after the first conversation, yet most sellers stop after one touch. A "no" is usually "not yet." Persistent, value-led follow-up — not nagging — wins the deals everyone else abandons.</p>
+<pre class="artifact" data-kind="TEMPLATE"><code>FOLLOW-UP SEQUENCE (after "not right now")
+Day 1  : Recap value + the outcome they wanted. "Door's open when you're ready."
+Day 3  : Send a relevant win/case study (proof).
+Day 7  : New angle — address the real hesitation you suspect.
+Day 14 : A reason to act now (a spot opening, a deadline) — if honest.
+Day 30 : Pure value, no ask. Stay top of mind.</code></pre>
+
+<p><strong>Exercise 5.2 — Follow-Up Sequence</strong></p>
+<p>Scenario: FitForge</p>
+<ol>
+<li>Write a 5-touch follow-up sequence for a "not right now" prospect</li>
+<li>Make at least two touches pure value with no ask</li>
+<li>Write the day-7 message that addresses the suspected real objection</li>
+<li>Decide your cadence and when you'd stop or move them to a nurture list</li>
+</ol>
+<hr />
+
+<h3 id="module-53-building-a-sales-system-team">Module 5.3 — Building a Sales System &amp; Team</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 5.1 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Define the FitForge sales KPIs and the documents needed to hand the process to a new closer.<br>
+<strong>Skip if:</strong> you track sales metrics and could onboard a closer from your documented process.<br>
+<strong>Unlocks:</strong> Final Capstone.</p>
+</blockquote>
+
+<h4>Track What Matters</h4>
+<pre class="artifact" data-kind="FRAMEWORK"><code>CORE SALES METRICS
+  Leads → Booked Calls → Show Rate → Close Rate → Cash Collected
+  - Close rate      = sales ÷ calls taken
+  - Cash collected  = what actually hit the account (not "contract value")
+  - Cost per lead, cost per acquisition (when running ads)
+You can only improve what you measure. Find the weakest link and fix that first.</code></pre>
+
+<h4>From Operator to System</h4>
+<p>To scale past yourself: document the offer, the script, the objection playbook, and the follow-up; record great calls as training; track every closer's numbers; and coach to the metric. The goal is a process that produces results without depending on your personal charisma.</p>
+
+<p><strong>Exercise 5.3 — Systematize</strong></p>
+<p>Scenario: FitForge</p>
+<ol>
+<li>Define the 5 core metrics you'd track weekly</li>
+<li>List the documents a new closer needs on day one</li>
+<li>Pick one metric and write how you'd improve it by 20%</li>
+<li>Outline a simple weekly sales review (what you'd look at and ask)</li>
+</ol>
+<hr />
+
+<h3 id="phase-5-capstone-objection-playbook-follow-up">Phase 5 Capstone: Objection Playbook &amp; Follow-Up</h3>
+<p><strong>Project: FitForge Resistance &amp; Persistence Kit</strong></p>
+<p><strong>Scenario:</strong> FitForge</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A four-objection playbook (Acknowledge → Reframe → Re-ask for each)</li>
+<li>The diagnostic question that separates money from belief</li>
+<li>A 5-touch follow-up sequence with two pure-value touches</li>
+<li>A KPI dashboard definition (the 5 core metrics)</li>
+<li>A one-page "how to run this" doc for a new closer</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-fitforge-sales-system">Final Capstone: The FitForge Sales System</h2>
+<p><strong>Project: End-to-End Selling System</strong></p>
+<p>Integrates every phase into one operating system for selling FitForge. Uses the FitForge scenario throughout.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A one-page buyer avatar and belief brief (Phase 1)</li>
+<li>A complete Grand Slam Offer: value-scored, priced, bonuses, guarantee, scarcity, name (Phase 2)</li>
+<li>A 30-day lead-gen plan across the Core Four, with a converting opt-in landing page and daily targets (Phase 3)</li>
+<li>A full CLOSER call script with a discovery question bank (Phase 4)</li>
+<li>A four-objection playbook and a 5-touch follow-up sequence (Phase 5)</li>
+<li>A KPI dashboard (leads → calls → show → close → cash collected)</li>
+<li>A "run it without me" operations doc to hand to a new closer</li>
+<li>A recorded mock call self-scored against the CLOSER script</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: $100M Sales Framework Matrix</h2>
+<table>
+<tr><th>When you need to…</th><th>Use this framework</th><th>Key move</th></tr>
+<tr><td>Decide if an offer is strong</td><td>The Value Equation</td><td>↑ dream &amp; likelihood, ↓ time &amp; effort</td></tr>
+<tr><td>Make an offer irresistible</td><td>Grand Slam Offer</td><td>Stack bonuses, reverse risk, name it</td></tr>
+<tr><td>Defend a premium price</td><td>Value/ROI anchoring</td><td>Re-anchor to outcome + cost of inaction</td></tr>
+<tr><td>Get attention / leads</td><td>The Core Four</td><td>Warm &amp; cold × one-to-one &amp; one-to-many</td></tr>
+<tr><td>Convert interest to a call</td><td>Lead magnet</td><td>One complete free win → obvious next step</td></tr>
+<tr><td>Turn clicks into leads</td><td>Landing page</td><td>One promise, one form, one CTA — mobile-first</td></tr>
+<tr><td>Run a sales call</td><td>CLOSER</td><td>Diagnose (C·L·O) before you present (S·E·R)</td></tr>
+<tr><td>Present the offer</td><td>Sell the vacation</td><td>Outcome first, mechanism second</td></tr>
+<tr><td>Handle resistance</td><td>4 core objections</td><td>Acknowledge → Reframe → Re-ask</td></tr>
+<tr><td>Win later deals</td><td>Follow-up sequence</td><td>Value-led, multi-touch, persistent</td></tr>
+<tr><td>Scale past yourself</td><td>Sales system + KPIs</td><td>Document, measure, coach to the metric</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-foundations">Foundations &amp; Mindset</h3>
+<dl class="glossary">
+<dt>Dream Outcome</dt>
+<dd>The specific, vivid future state a prospect wants — health, wealth, relationships, or status — stated in their own words, not your marketing language.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "desired result," "goal," "benefit" — these are too generic to anchor a sale.</dd>
+
+<dt>Cost of Inaction</dt>
+<dd>The cumulative price a prospect pays — in money, health, time, or identity — for staying where they are instead of solving the problem today.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "consequence," "downside" — these sound like threats; cost of inaction is a calculation, not a warning.</dd>
+
+<dt>Emotional Driver</dt>
+<dd>The underlying feeling that initiates a purchase decision before logic enters — confidence, relief, identity, fear of missing out. The emotion buys; logic only justifies.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "pain point," "motivation" — pain point is one type of driver; motivation is too broad.</dd>
+
+<dt>Voice of Customer (VoC)</dt>
+<dd>The exact phrases prospects use to describe their problem and dream outcome, harvested from reviews, DMs, and calls. Selling in VoC language always outperforms your internal jargon.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "customer research," "survey data" — VoC is the verbatim language, not a summary of themes.</dd>
+
+<dt>Service Mindset</dt>
+<dd>The belief that selling is something you do FOR a qualified prospect — helping them past hesitation that harms them — not something you do TO them to hit a quota.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "positive attitude," "consultative selling" — those describe behaviors; service mindset is the foundational belief that unlocks them.</dd>
+</dl>
+
+<h3 id="glossary-offer-building">Offer Building</h3>
+<dl class="glossary">
+<dt>Value Equation</dt>
+<dd>Hormozi's formula for perceived value: (Dream Outcome × Perceived Likelihood of Achievement) ÷ (Time Delay × Effort &amp; Sacrifice). You raise value by increasing the numerator and shrinking the denominator.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "value proposition," "value ladder" — those are different frameworks; the Value Equation is this specific formula.</dd>
+
+<dt>Grand Slam Offer</dt>
+<dd>An offer so good the prospect feels stupid saying no — constructed by maximizing all four Value Equation variables, then stacking bonuses, a strong guarantee, and honest scarcity or urgency.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "irresistible offer," "premium offer" — Grand Slam Offer is the specific Hormozi framework, not a generic adjective.</dd>
+
+<dt>Guarantee</dt>
+<dd>A risk-reversal mechanism that shifts the downside of failure from the buyer to the seller, raising perceived likelihood. A conditional guarantee ("do the work and get the result, or we keep working for free") also filters for committed buyers.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "refund policy," "money-back guarantee" — a guarantee is a selling tool that raises perceived value, not just a return policy.</dd>
+
+<dt>Bonus Stack</dt>
+<dd>A sequence of additions to the core offer, presented one at a time, each designed to kill one specific objection before it surfaces. The stack inflates perceived value far above the price before you name the number.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "add-ons," "extras," "perks" — the stack is a deliberate objection-prevention sequence, not a list of nice-to-haves.</dd>
+
+<dt>Scarcity</dt>
+<dd>A real, honest limit on supply — available spots, production capacity, or physical inventory — that moves prospects from "someday" to "now." Must be factually true; manufactured scarcity permanently destroys trust.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "fake urgency," "pressure tactic" — these describe dishonest use; scarcity itself is legitimate when real.</dd>
+
+<dt>Urgency</dt>
+<dd>A real deadline or time-bound reason to act — a price increase date, a cohort start, a limited-time bonus. Urgency limits time; scarcity limits quantity. Both require honesty.</dd>
+<dd class="avoid"><strong>Avoid:</strong> using "urgency" and "scarcity" interchangeably — they are distinct levers targeting different decision barriers.</dd>
+</dl>
+
+<h3 id="glossary-lead-generation">Lead Generation</h3>
+<dl class="glossary">
+<dt>Lead</dt>
+<dd>Anyone you can contact — an email address, a phone number, a DM handle. A lead has not yet shown intent; they are a contact, not a prospect.</dd>
+<dd class="avoid"><strong>Avoid:</strong> using "lead" and "prospect" interchangeably — a prospect has demonstrated interest; a lead has not necessarily.</dd>
+
+<dt>Engaged Lead</dt>
+<dd>A lead who has shown active interest — replied to outreach, opted in for a lead magnet, or booked a call. Engaged leads are the only leads that matter; the goal of all lead generation is to create them.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "warm lead" — ambiguous; "engaged lead" is the precise term Hormozi uses.</dd>
+
+<dt>Lead Magnet</dt>
+<dd>A free, complete solution to one narrow problem that delivers a real win fast and makes the paid offer the obvious next step. It must give a full result, not a teaser or a partial solution.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "freebie," "opt-in bribe," "content upgrade" — those describe the exchange mechanic; lead magnet describes the value it must deliver.</dd>
+
+<dt>Core Four</dt>
+<dd>Hormozi's four lead-generation channels organized as a 2×2: warm outreach, posting content, cold outreach, and paid ads — warm/cold on one axis, one-to-one/one-to-many on the other.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "the four channels," "lead sources" — Core Four is the specific Hormozi taxonomy with the 2×2 structure.</dd>
+
+<dt>Warm Outreach</dt>
+<dd>Personally contacting people who already know you — friends, followers, past clients — to offer value or start a conversation. It is one-to-one and warm, making it the highest-converting starting channel for beginners.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "referral outreach," "warm prospecting" — warm outreach is a specific Core Four channel, not a catch-all for non-cold contact.</dd>
+
+<dt>Lead Getter</dt>
+<dd>A person or system that generates leads on your behalf — an affiliate, a referral partner, an employee, or an agency. Lead getters let you scale lead flow beyond your personal hours.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "referral partner," "affiliate" — those are types of lead getter; use the specific type when precision matters.</dd>
+</dl>
+
+<h3 id="glossary-closing-objections">Closing &amp; Objections</h3>
+<dl class="glossary">
+<dt>CLOSER</dt>
+<dd>Hormozi's six-step call structure: Clarify why they are there, Label the problem, Overview past pain, Sell the vacation (outcome), Explain away concerns, Reinforce the decision. C·L·O is diagnostic; S·E·R is presentation and close.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "CLOSER script" — CLOSER is a call structure, not a word-for-word transcript. A script keeps you in your head; the structure frees you to listen.</dd>
+
+<dt>Sell the Vacation</dt>
+<dd>The principle of presenting the destination the prospect wants — the outcome — rather than the mechanism (how the program works). Prospects buy the result; the mechanism is only relevant as proof it works.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "feature-benefit selling," "solution selling" — these describe presenting what you offer; Sell the Vacation means presenting the outcome as the primary object of desire.</dd>
+
+<dt>Objection</dt>
+<dd>Resistance to moving forward — almost always one of four types: money, time, belief, or decision (often fear in disguise). An objection is information about what is unresolved, not a rejection.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "pushback," "concern" — concern is softer and blurs the diagnostic precision; objection names the thing you must resolve.</dd>
+
+<dt>Reinforce</dt>
+<dd>The final CLOSER step — immediately after the yes — in which you congratulate the buyer, restate the outcome they just purchased, and give them the next concrete step. Skipping Reinforce is the primary source of buyer's remorse, refunds, and cancellations.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "post-close," "onboarding intro" — those describe logistics; Reinforce is a specific psychological step that locks in the buying decision.</dd>
+
+<dt>Acknowledge–Reframe–Re-ask</dt>
+<dd>The three-move objection pattern: validate the concern without defending (Acknowledge), re-anchor to the dream outcome or cost of inaction (Reframe), then ask one forward-moving question (Re-ask). The goal is understanding, not argument.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "objection rebuttal," "handling script" — a rebuttal is a counterargument; this pattern is a diagnostic and re-anchoring sequence.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>$100M Offers — Alex Hormozi</td><td>The Value Equation &amp; Grand Slam Offers</td></tr>
+<tr><td>$100M Leads — Alex Hormozi</td><td>Lead magnets &amp; the Core Four</td></tr>
+<tr><td>$100M Money Models — Alex Hormozi</td><td>Offer sequencing &amp; monetization</td></tr>
+<tr><td>Never Split the Difference — Chris Voss</td><td>Negotiation, labeling, tactical empathy</td></tr>
+<tr><td>Influence — Robert Cialdini</td><td>The psychology of persuasion</td></tr>
+<tr><td>SPIN Selling — Neil Rackham</td><td>Question-led discovery for bigger sales</td></tr>
+<tr><td>To Sell Is Human — Daniel Pink</td><td>The modern, service-first sales mindset</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>Acquisition.com</td><td>Free offer/lead resources</td><td>acquisition.com</td></tr>
+<tr><td>The Game (podcast) — Hormozi</td><td>Sales, offers, scaling</td><td>Short, tactical episodes</td></tr>
+<tr><td>Alex Hormozi (YouTube)</td><td>Offers, leads, closing breakdowns</td><td>Free long-form teaching</td></tr>
+<tr><td>"Closer" sales breakdowns</td><td>CLOSER framework walk-throughs</td><td>Search the framework by name</td></tr>
+<tr><td>Sales Insights Lab / others</td><td>Call practice &amp; objection drills</td><td>For reps and rehearsal</td></tr>
+<tr><td>Local Toastmasters</td><td>Speaking, tonality, presence</td><td>Reps for delivery</td></tr>
+</table>
+<h3 id="datasets-and-tools">Tools &amp; Templates</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>FitForge scenario (this guide)</td><td>Every exercise &amp; capstone</td></tr>
+<tr><td>A CRM (HubSpot/Close/Pipedrive)</td><td>Track leads, calls, follow-up</td></tr>
+<tr><td>Call recorder (Zoom/Fathom)</td><td>Review and self-score your calls</td></tr>
+<tr><td>A simple KPI spreadsheet</td><td>Leads → calls → close rate → cash</td></tr>
+<tr><td>Calendar/booking tool (Calendly)</td><td>Convert engaged leads to booked calls</td></tr>
+</table>
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>r/sales</td><td>Reddit</td><td>Real call breakdowns, objection drills, closer career advice — highly active practitioners</td></tr>
+<tr><td>r/Entrepreneur</td><td>Reddit</td><td>Offer feedback, early-traction stories, founder peer support — good for Phase 2 work</td></tr>
+<tr><td>Acquisition.com / Skool</td><td>Skool</td><td>Hormozi-adjacent practitioner community for offer and lead-gen discussion</td></tr>
+<tr><td>SDRs of Sales Nation</td><td>LinkedIn</td><td>Modern outreach tactics, sequencing, and cold-contact best practices</td></tr>
+<tr><td>Indie Hackers</td><td>Web / Community</td><td>Solo founders sharing real revenue numbers and sales threads — good for high-ticket offer validation</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is session-only and resets on reload.</p></blockquote>
+<h4>Phase 1 — Foundations &amp; Mindset</h4>
+<ul>
+<li>[ ] Module 1.1 — The Sales Mindset &amp; The Game</li>
+<li>[ ] Exercise 1.1 — Mindset Brief</li>
+<li>[ ] Module 1.2 — Why People Buy</li>
+<li>[ ] Exercise 1.2 — Buy Triggers</li>
+<li>[ ] Module 1.3 — Know Your Prospect</li>
+<li>[ ] Exercise 1.3 — Build the Avatar</li>
+<li>[ ] Capstone 1 — Customer &amp; Offer Brief</li>
+</ul>
+<h4>Phase 2 — The Grand Slam Offer</h4>
+<ul>
+<li>[ ] Module 2.1 — The Value Equation</li>
+<li>[ ] Exercise 2.1 — Score &amp; Lift</li>
+<li>[ ] Module 2.2 — Pricing &amp; Premium Positioning</li>
+<li>[ ] Exercise 2.2 — Price Defense</li>
+<li>[ ] Module 2.3 — Enhancing the Offer</li>
+<li>[ ] Exercise 2.3 — Enhance FitForge</li>
+<li>[ ] Capstone 2 — The Grand Slam Offer</li>
+</ul>
+<h4>Phase 3 — Getting Leads</h4>
+<ul>
+<li>[ ] Module 3.1 — Leads &amp; Lead Magnets</li>
+<li>[ ] Exercise 3.1 — Build a Lead Magnet</li>
+<li>[ ] Module 3.2 — The Core Four</li>
+<li>[ ] Exercise 3.2 — Core Four Plan</li>
+<li>[ ] Module 3.3 — Referrals &amp; Lead Getters</li>
+<li>[ ] Exercise 3.3 — Referral Engine</li>
+<li>[ ] Module 3.4 — Landing Pages That Convert</li>
+<li>[ ] Exercise 3.4 — Build the FitForge Pages</li>
+<li>[ ] Capstone 3 — 30-Day Lead-Gen Plan</li>
+</ul>
+<h4>Phase 4 — Closing (CLOSER)</h4>
+<ul>
+<li>[ ] Module 4.1 — The CLOSER Framework</li>
+<li>[ ] Exercise 4.1 — Map the Call</li>
+<li>[ ] Module 4.2 — Discovery &amp; Diagnosis</li>
+<li>[ ] Exercise 4.2 — Discovery Script</li>
+<li>[ ] Module 4.3 — Presenting &amp; Closing</li>
+<li>[ ] Exercise 4.3 — Present &amp; Close</li>
+<li>[ ] Capstone 4 — Full CLOSER Call Script</li>
+</ul>
+<h4>Phase 5 — Objections &amp; Scaling</h4>
+<ul>
+<li>[ ] Module 5.1 — Handling Objections</li>
+<li>[ ] Exercise 5.1 — Objection Playbook</li>
+<li>[ ] Module 5.2 — Follow-Up &amp; Persistence</li>
+<li>[ ] Exercise 5.2 — Follow-Up Sequence</li>
+<li>[ ] Module 5.3 — Building a Sales System &amp; Team</li>
+<li>[ ] Exercise 5.3 — Systematize</li>
+<li>[ ] Capstone 5 — Objection Playbook &amp; Follow-Up</li>
+</ul>
+<h4>Milestones / Outcomes</h4>
+<ul>
+<li>[ ] Built a complete Grand Slam Offer</li>
+<li>[ ] Ran 10 real sales calls using CLOSER</li>
+<li>[ ] Final Capstone — FitForge Sales System complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 — $100M Sales Track: Beginner to Intermediate</em><br>
+<em>Non-linear modular design · Placement quiz · 16 modules · ~16 weeks part-time · hayah-ai</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

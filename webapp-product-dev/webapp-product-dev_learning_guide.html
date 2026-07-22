@@ -1,0 +1,2784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webapp Product Development Learning Guide — PRD to Production</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Webapp Product<br>Development</div>
+      <div class="brand-sub">Next.js · TypeScript · Supabase · Claude API · Vercel</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#prd-to-production-track" class="nav-top">PRD-to-Production Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+<div class="nav-group">
+<a href="#phase-1-product-definition" class="nav-top nav-phase">Phase 1: Product Definition</a>
+<div class="nav-children">
+<a href="#module-11-prd-writing" class="nav-child">Module 1.1 — PRD Writing</a>
+<a href="#module-12-tdd-creation" class="nav-child">Module 1.2 — TDD Creation</a>
+<a href="#module-13-database-schema-design" class="nav-child">Module 1.3 — Database Schema Design</a>
+<a href="#phase-1-capstone-product-definition" class="nav-child">Phase 1 Capstone: Product Definition</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-2-project-setup-and-architecture" class="nav-top nav-phase">Phase 2: Project Setup &amp; Architecture</a>
+<div class="nav-children">
+<a href="#module-21-nextjs-project-scaffolding" class="nav-child">Module 2.1 — Next.js Scaffolding</a>
+<a href="#module-22-supabase-setup-and-rls" class="nav-child">Module 2.2 — Supabase Setup &amp; RLS</a>
+<a href="#module-23-supabase-auth-magic-link" class="nav-child">Module 2.3 — Supabase Auth</a>
+<a href="#phase-2-capstone-project-setup" class="nav-child">Phase 2 Capstone: Project Setup</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-3-core-feature-development" class="nav-top nav-phase">Phase 3: Core Feature Development</a>
+<div class="nav-children">
+<a href="#module-31-nextjs-api-routes" class="nav-child">Module 3.1 — API Routes</a>
+<a href="#module-32-react-components-and-tailwind" class="nav-child">Module 3.2 — React Components &amp; Tailwind</a>
+<a href="#module-33-data-fetching-and-state" class="nav-child">Module 3.3 — Data Fetching &amp; State</a>
+<a href="#module-34-ssr-and-app-router-patterns" class="nav-child">Module 3.4 — SSR &amp; App Router</a>
+<a href="#phase-3-capstone-core-dashboard" class="nav-child">Phase 3 Capstone: Core Dashboard</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-4-ai-integration-and-advanced-features" class="nav-top nav-phase">Phase 4: AI Integration &amp; Advanced Features</a>
+<div class="nav-children">
+<a href="#module-41-claude-api-integration" class="nav-child">Module 4.1 — Claude API Integration</a>
+<a href="#module-42-rate-limiting-and-security" class="nav-child">Module 4.2 — Rate Limiting &amp; Security</a>
+<a href="#module-43-monitoring-and-observability" class="nav-child">Module 4.3 — Monitoring &amp; Observability</a>
+<a href="#phase-4-capstone-ai-powered-feature" class="nav-child">Phase 4 Capstone: AI-Powered Feature</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-5-testing-cicd-and-production" class="nav-top nav-phase">Phase 5: Testing, CI/CD &amp; Production</a>
+<div class="nav-children">
+<a href="#module-51-unit-testing-with-vitest" class="nav-child">Module 5.1 — Unit Testing (Vitest)</a>
+<a href="#module-52-e2e-testing-with-playwright" class="nav-child">Module 5.2 — E2E Testing (Playwright)</a>
+<a href="#module-53-vercel-deployment-and-cicd" class="nav-child">Module 5.3 — Vercel &amp; CI/CD</a>
+<a href="#phase-5-capstone-production-launch" class="nav-child">Phase 5 Capstone: Production Launch</a>
+</div></div>
+<a href="#final-capstone-webapp-product-dev" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="webapp-product-development-learning-guide">Webapp Product Development Learning Guide</h1>
+<h2 id="prd-to-production-track">PRD-to-Production Track</h2>
+<h3>Next.js · TypeScript · Supabase · Claude API · Vercel</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Webapp Product Development" xmlns="http://www.w3.org/2000/svg">
+  <rect x="28" y="40" width="200" height="140" rx="12" ry="12" fill="none" stroke="#075249" stroke-width="14"/>
+  <line x1="28" y1="78" x2="228" y2="78" stroke="#075249" stroke-width="10"/>
+  <circle cx="52" cy="59" r="7" fill="#0d7a6e"/>
+  <circle cx="76" cy="59" r="7" fill="#0d7a6e"/>
+  <circle cx="100" cy="59" r="7" fill="#0d7a6e"/>
+  <rect x="52" y="100" width="60" height="8" rx="4" fill="#075249"/>
+  <rect x="52" y="118" width="100" height="8" rx="4" fill="#0d7a6e"/>
+  <rect x="52" y="136" width="80" height="8" rx="4" fill="#0d7a6e"/>
+  <rect x="144" y="100" width="60" height="44" rx="6" fill="#075249"/>
+  <path d="M80 210 L128 185 L176 210" fill="none" stroke="#075249" stroke-width="10" stroke-linejoin="round"/>
+  <line x1="128" y1="180" x2="128" y2="210" stroke="#075249" stroke-width="10"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same realistic running project: <strong>SensorHub</strong> — a multi-tenant IoT equipment monitoring SaaS webapp. There's no starter spec to download — see the <a href="../datasets/sensorhub/">SensorHub note</a> in the shared datasets folder (writing the PRD in Module 1.1 is where that spec gets invented).</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially through all 5 phases.</li>
+<li><strong>Some experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3>Section A — Product Definition</h3>
+<ul>
+<li>[ ] I can write a PRD that includes user stories with acceptance criteria.</li>
+<li>[ ] I can produce a TDD that maps each PRD requirement to a concrete technical decision.</li>
+<li>[ ] I can design a normalized PostgreSQL schema for a multi-tenant SaaS app.</li>
+<li>[ ] I understand the difference between functional and non-functional requirements.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3>Section B — Project Setup &amp; Auth</h3>
+<ul>
+<li>[ ] I can scaffold a Next.js 14+ App Router project with TypeScript strict mode.</li>
+<li>[ ] I can set up Supabase tables with row-level security policies.</li>
+<li>[ ] I can implement magic-link authentication with Supabase Auth and cookie sessions.</li>
+<li>[ ] I can protect Next.js routes with middleware that checks session state.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3>Section C — Core Feature Development</h3>
+<ul>
+<li>[ ] I can write a Next.js App Router API route that validates input with Zod.</li>
+<li>[ ] I can build reusable React components with Tailwind CSS and TypeScript props.</li>
+<li>[ ] I can manage async data fetching and loading/error state in React.</li>
+<li>[ ] I understand when to use Server Components vs. Client Components in App Router.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3>Section D — AI Integration &amp; Production Hardening</h3>
+<ul>
+<li>[ ] I can call the Claude API and stream a response to the browser via ReadableStream.</li>
+<li>[ ] I can add per-IP and per-user rate limiting to a Next.js API route.</li>
+<li>[ ] I can configure Sentry and structured logging in a Next.js app.</li>
+<li>[ ] I can write Vitest unit tests and Playwright E2E tests for a Next.js app.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 5</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-prd-writing"><td>1.1</td><td>PRD Writing</td><td>Beginner</td><td>None</td><td>3h</td></tr>
+<tr data-href="#module-12-tdd-creation"><td>1.2</td><td>TDD Creation</td><td>Beginner</td><td>1.1</td><td>3h</td></tr>
+<tr data-href="#module-13-database-schema-design"><td>1.3</td><td>Database Schema Design</td><td>Beginner–Intermediate</td><td>1.2</td><td>4h</td></tr>
+<tr data-href="#module-21-nextjs-project-scaffolding"><td>2.1</td><td>Next.js App Router Scaffolding</td><td>Beginner–Intermediate</td><td>1.3</td><td>3h</td></tr>
+<tr data-href="#module-22-supabase-setup-and-rls"><td>2.2</td><td>Supabase Setup &amp; RLS</td><td>Intermediate</td><td>2.1</td><td>4h</td></tr>
+<tr data-href="#module-23-supabase-auth-magic-link"><td>2.3</td><td>Supabase Auth (Magic Link)</td><td>Intermediate</td><td>2.2</td><td>4h</td></tr>
+<tr data-href="#module-31-nextjs-api-routes"><td>3.1</td><td>Next.js API Routes</td><td>Intermediate</td><td>2.3</td><td>4h</td></tr>
+<tr data-href="#module-32-react-components-and-tailwind"><td>3.2</td><td>React Components &amp; Tailwind CSS</td><td>Intermediate</td><td>3.1</td><td>5h</td></tr>
+<tr data-href="#module-33-data-fetching-and-state"><td>3.3</td><td>Data Fetching &amp; State Management</td><td>Intermediate</td><td>3.2</td><td>4h</td></tr>
+<tr data-href="#module-34-ssr-and-app-router-patterns"><td>3.4</td><td>SSR &amp; App Router Patterns</td><td>Intermediate</td><td>3.3</td><td>4h</td></tr>
+<tr data-href="#module-41-claude-api-integration"><td>4.1</td><td>Claude API Integration (Streaming)</td><td>Intermediate</td><td>3.4</td><td>5h</td></tr>
+<tr data-href="#module-42-rate-limiting-and-security"><td>4.2</td><td>Rate Limiting &amp; Security Hardening</td><td>Intermediate</td><td>4.1</td><td>4h</td></tr>
+<tr data-href="#module-43-monitoring-and-observability"><td>4.3</td><td>Monitoring &amp; Observability</td><td>Intermediate</td><td>4.2</td><td>3h</td></tr>
+<tr data-href="#module-51-unit-testing-with-vitest"><td>5.1</td><td>Unit Testing with Vitest</td><td>Intermediate</td><td>4.3</td><td>4h</td></tr>
+<tr data-href="#module-52-e2e-testing-with-playwright"><td>5.2</td><td>E2E Testing with Playwright</td><td>Intermediate</td><td>5.1</td><td>5h</td></tr>
+<tr data-href="#module-53-vercel-deployment-and-cicd"><td>5.3</td><td>Vercel Deployment &amp; CI/CD</td><td>Intermediate</td><td>5.2</td><td>4h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> All 16 modules form a linear progression. Phases 1–2 are process and setup; Phases 3–5 are implementation. Skip any module whose skip-check you can pass.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset of the full guide.</p>
+<h3 id="track-1-solo-founder">Track 1 — Solo Founder (idea to live MVP)</h3>
+<p><code>1.1 → 1.2 → 1.3 → 2.1 → 2.2 → 2.3 → 3.1 → 3.2 → 4.1 → 5.3 → Final Capstone</code><br>
+Target outcome: <strong>Deployed, authenticated SaaS MVP with AI feature in ~8 weeks part-time</strong></p>
+<h3 id="track-2-frontend-dev">Track 2 — Frontend Developer (adding backend skills)</h3>
+<p><code>1.3 → 2.1 → 2.2 → 3.1 → 3.2 → 3.3 → 3.4 → 5.1 → 5.3</code><br>
+Target outcome: <strong>Full-stack Next.js + Supabase capability</strong></p>
+<h3 id="track-3-backend-dev">Track 3 — Backend Developer (adding product &amp; AI skills)</h3>
+<p><code>1.1 → 1.2 → 1.3 → 2.2 → 2.3 → 3.1 → 4.1 → 4.2 → 4.3 → 5.1 → 5.3</code><br>
+Target outcome: <strong>Production-hardened API with AI streaming + monitoring</strong></p>
+<h3 id="track-4-ai-integration">Track 4 — AI Feature Builder (LLM integration focus)</h3>
+<p><code>2.3 → 3.1 → 3.4 → 4.1 → 4.2 → 4.3 → 5.1</code><br>
+Target outcome: <strong>Secure, rate-limited, observable AI feature in an existing app</strong></p>
+<h3 id="track-5-full-path">Track 5 — Full Path (all phases, all modules)</h3>
+<p><code>1.1 → 1.2 → ... → 5.3 → Final Capstone</code><br>
+Target outcome: <strong>Complete PRD-to-production competency in ~13 weeks part-time</strong></p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Product Definition     (Weeks 1–2)   PRD · TDD · DB Schema
+Phase 2 — Setup &amp; Architecture   (Weeks 3–4)   Next.js · Supabase · Auth
+Phase 3 — Core Features          (Weeks 5–7)   API Routes · UI · State · SSR
+Phase 4 — AI &amp; Hardening         (Weeks 8–10)  Claude API · Rate Limits · Sentry
+Phase 5 — Testing &amp; Launch       (Weeks 11–13) Vitest · Playwright · Vercel CI/CD
+Final Capstone                   (Ongoing)     Full SensorHub launch</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 → 1.2 → 1.3
+                \
+                 2.1 → 2.2 → 2.3
+                                \
+                                 3.1 → 3.2 → 3.3 → 3.4
+                                                       \
+                                                        4.1 → 4.2 → 4.3
+                                                                        \
+                                                                         5.1 → 5.2 → 5.3 → Final Capstone</code></pre>
+
+<h2 id="phase-1-product-definition">Phase 1: Product Definition</h2>
+<h3 id="weeks-1-2">Weeks 1–2 | Goal: Produce a PRD, TDD, and database schema before writing a single line of code</h3>
+<hr />
+
+<h3 id="module-11-prd-writing">Module 1.1 — PRD Writing</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Write a one-page PRD for SensorHub with user stories and acceptance criteria in under 60 minutes.<br>
+<strong>Skip if:</strong> You have written PRDs for shipped products before and know what acceptance criteria are.<br>
+<strong>Unlocks:</strong> Module 1.2</p>
+</blockquote>
+
+<h4>What a PRD Is (and Is Not)</h4>
+<p>A Product Requirements Document defines <em>what</em> to build and <em>why</em> — not how. It is the contract between the person with the idea and the person (often the same person) who writes the code. A good PRD stops scope creep before the first commit. The test of a good PRD: a developer should be able to read it and build the right thing without asking a single clarifying question.</p>
+<p>A PRD is not a design document (that is the TDD), not a UI spec (that is a wireframe), and not a backlog (that is a TODO list). Each serves a different purpose. The most common beginner mistake is collapsing all four into one document — the result serves none of those purposes well and causes arguments at every stage of development.</p>
+
+<h4>PRD Structure — the Eight Sections</h4>
+<pre class="artifact" data-kind="TEMPLATE"><code>## [Product Name] — Product Requirements Document
+Version: X.Y | Date: YYYY-MM-DD | Owner: [Name]
+Status: Draft / Active / Archived
+
+## 1. Overview
+One paragraph: what the product does, who it is for, what problem it solves.
+Current stage (prototype / MVP / growth).
+
+## 2. Problem Statement
+What pain exists today? What happens if we do not build this?
+Be specific: "Maintenance supervisors spend 2h/day interpreting raw SCADA numbers
+with no failure-mode guidance."
+
+## 3. Goals &amp; Success Metrics
+| Goal | Metric | Target |
+|---|---|---|
+| Demonstrate value | Demo completion rate | &gt; 60% |
+
+## 4. Target Users
+Primary / Secondary / Tertiary personas. One sentence each.
+
+## 5. User Stories &amp; Acceptance Criteria
+- As a [persona], I want [action] so that [outcome].
+  - AC: [verifiable condition 1]
+  - AC: [verifiable condition 2]
+
+## 6. Functional Requirements
+| ID | Requirement | Priority |
+|---|---|---|
+| FR-01 | [Must Have / Should Have / Nice to Have] | Must Have |
+
+## 7. Non-Functional Requirements
+Performance · Security · Scalability · Availability · Accessibility
+
+## 8. Out of Scope
+List explicitly. "We will NOT build X in this version."</code></pre>
+
+<h4>Writing Acceptance Criteria</h4>
+<p>Every user story needs at least one AC. A good AC is binary — it either passes or fails. Use this formula: <em>Given [context], when [action], then [observable outcome].</em></p>
+<p>Bad AC: "The dashboard loads quickly." Good AC: "Dashboard initial render completes in &lt; 3 seconds on a 10 Mbps connection."</p>
+
+<h4>Prioritization: MoSCoW</h4>
+<p>Label every functional requirement. <strong>Must Have</strong> — MVP is broken without it. <strong>Should Have</strong> — important but workaroundable. <strong>Could Have</strong> — nice to have, cut if time-pressed. <strong>Won't Have</strong> — explicitly out of scope for this version.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Labeling everything "Must Have" defeats the purpose. If your MVP is truly broken without all 20 requirements, you have not defined an MVP — you have defined v1.0. Force the constraint: if you could only ship 5 FRs, which 5? Those are your real Must Haves. Everything else is a Should Have or lower until proven otherwise.</p></blockquote>
+
+<p><strong>Exercise 1.1 — Write the SensorHub PRD</strong></p>
+<p>Dataset: SensorHub — a multi-tenant IoT equipment monitoring SaaS. Users upload sensor CSVs, get AI anomaly reports, and manage equipment assets.</p>
+<p><em>Retrieval practice: For steps 1 and 2, scroll past the PRD template above and write from memory. Draft your answer first, then compare against the template. The effort of recalling — even imperfectly — is what builds retention. Looking up the answer before attempting it skips the learning.</em></p>
+<ol>
+<li>Write a one-paragraph Overview for SensorHub covering what it does, who it is for, and the current stage (MVP).</li>
+<li>Write a Problem Statement that identifies 3 specific pains for the target user (plant maintenance supervisor).</li>
+<li>Define 4 Goals with measurable metrics and targets.</li>
+<li>Write user stories (with AC) for: equipment list view, CSV upload + analysis, AI diagnostic report, lead capture form.</li>
+<li>List at least 12 Functional Requirements using MoSCoW priority.</li>
+<li>Define NFRs for performance (load time), security (auth model), and scalability (concurrent users).</li>
+<li>Write an explicit Out of Scope section with at least 5 items deferred to v2.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-tdd-creation">Module 1.2 — TDD Creation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Module 1.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Given a PRD with 10 FRs, produce a TDD section that maps each FR to a concrete technology decision with rationale.<br>
+<strong>Skip if:</strong> You regularly write architecture docs that trace requirements to implementation decisions.<br>
+<strong>Unlocks:</strong> Module 1.3</p>
+</blockquote>
+
+<blockquote class="callout"><p><strong>Disambiguation:</strong> TDD here means <em>Technical Design Document</em> — not Test-Driven Development. Both acronyms are common in software. This module covers documentation; Module 5.1 covers testing.</p></blockquote>
+<h4>TDD Structure — the Nine Sections</h4>
+<p>A Technical Design Document answers <em>how</em> the PRD requirements will be built. It is written once per project and updated as architecture decisions change. Every decision in the TDD should trace back to a requirement in the PRD. If you cannot point to a PRD requirement that justifies a technology choice, that choice is either unnecessary complexity or a missing requirement — either way, it should be challenged before you write a line of code.</p>
+<pre class="artifact" data-kind="TEMPLATE"><code>## [Product Name] — Technical Design Document
+Version: X.Y | Date: YYYY-MM-DD | Author: [Name]
+Related PRD: [link]
+
+## 1. Summary
+3–5 sentences: full-stack overview, key technology choices, scope.
+
+## 2. Architecture Overview
+ASCII diagram showing: browser → frontend → API layer → database → external services.
+Include data flow arrows and key component names.
+
+## 3. Tech Stack
+| Layer | Technology | Rationale |
+|---|---|---|
+| Frontend | Next.js 16 App Router + TypeScript | SSR + API routes, strict types |
+| Auth | Supabase Auth (magic link) | Passwordless, cookie sessions |
+| Database | Supabase PostgreSQL + RLS | Managed Postgres, built-in auth |
+| AI/LLM | Anthropic Claude API (claude-sonnet-4-6) | Streaming diagnostics, prompt caching |
+| Deployment | Vercel | GitHub integration, preview URLs |
+
+## 4. Component Design
+One subsection per major component. For each:
+- Purpose (one sentence)
+- Inputs / Outputs
+- Key logic
+- State (if React component)
+
+## 5. Data Models
+Full schema: table name, columns (name, type, nullable), constraints, indexes.
+Note which columns have RLS policies.
+
+## 6. API Design
+| Method | Path | Auth | Body | Response |
+|---|---|---|---|---|
+| POST | /api/analyze-csv | Required | multipart/form-data | ReadableStream |
+
+## 7. AI Integration
+- Which model, which endpoint
+- Prompt architecture (system prompt + user message structure)
+- Streaming protocol
+- Token limits and cost controls
+
+## 8. Security Model
+- Auth mechanism
+- RLS policy matrix (table × role → allowed operations)
+- Rate limiting (which routes, which limits)
+- Secrets management
+
+## 9. Testing Strategy
+- Unit: what to test with Vitest
+- Integration: what to test with Playwright
+- CI: when tests run</code></pre>
+
+<h4>Architecture Diagrams in ASCII</h4>
+<p>Draw the system before coding it. ASCII diagrams in the TDD serve as a permanent decision record. Use boxes for services, arrows for data flow, and labels for protocols.</p>
+<pre><code>Browser (React 18)
+  |
+  | HTTPS
+  v
+Vercel Edge (Next.js 16 App Router)
+  |──────────────────────────────────┐
+  | API Routes (Serverless)          | Pages (SSR/SSG)
+  |   POST /api/analyze-csv          |   /dashboard (Server Component)
+  |   POST /api/report               |   / (marketing page)
+  |   GET  /api/assets               |
+  └──────────┬───────────────────────┘
+             |
+     ┌───────┼───────────────┐
+     v       v               v
+ Supabase  Claude API    Upstash Redis
+ (Postgres) (Streaming)  (Rate limiting)</code></pre>
+
+<h4>Tech Stack Decision Log</h4>
+<p>For each technology choice, record the rationale. Future you (and future teammates) need to know why Next.js App Router instead of Pages Router, why Supabase instead of Prisma + Neon, why Upstash Redis instead of in-memory rate limiting.</p>
+
+<p><strong>Exercise 1.2 — Write the SensorHub TDD</strong></p>
+<p>Dataset: SensorHub PRD from Exercise 1.1.</p>
+<ol>
+<li>Write the Architecture Overview section with an ASCII diagram showing all layers (browser, Next.js, Supabase, Claude API, Upstash Redis).</li>
+<li>Fill in the Tech Stack table with all 7 layers and a one-sentence rationale for each choice.</li>
+<li>Design the Component Design section for 4 components: Dashboard page, AssetSelector sidebar, SensorTimeline chart, CSVUploadModal.</li>
+<li>Write the Security Model section: auth mechanism, RLS policy matrix for 4 tables, rate limits on 3 routes.</li>
+<li>Map each of SensorHub's 12 FRs from Exercise 1.1 to at least one TDD section that implements it.</li>
+<li>Write the Testing Strategy section: what Vitest covers, what Playwright covers, CI trigger conditions.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-database-schema-design">Module 1.3 — Database Schema Design</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 1.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Write the full SensorHub schema SQL with RLS policies for all 5 tables from memory.<br>
+<strong>Skip if:</strong> You have designed multi-tenant PostgreSQL schemas with RLS before.<br>
+<strong>Unlocks:</strong> Module 2.1</p>
+</blockquote>
+
+<h4>Multi-Tenant Schema Patterns</h4>
+<p>SaaS apps need data isolation between customers. The most practical approach at Supabase scale is <strong>shared schema with org-scoped RLS</strong>: one set of tables, every row tagged with an <code>organization_id</code>, and RLS policies that filter to the current user's org.</p>
+<pre><code class="language-sql">-- Organizations table (one row per customer account)
+CREATE TABLE organizations (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name        TEXT NOT NULL,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- User profiles (one per auth.users row, linked to one org)
+CREATE TABLE profiles (
+  id              UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  organization_id UUID NOT NULL REFERENCES organizations(id),
+  full_name       TEXT,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Helper: returns the current user's org_id
+CREATE OR REPLACE FUNCTION my_org() RETURNS UUID
+  LANGUAGE sql STABLE SECURITY DEFINER AS $$
+  SELECT organization_id FROM profiles WHERE id = auth.uid()
+$$;</code></pre>
+
+<h4>Row-Level Security Policies</h4>
+<p>RLS is enforced at the database level — it cannot be bypassed by a bug in application code. Every table should have RLS enabled and explicit policies. No policy = no access. Without RLS, a single bug in your API layer — a missing <code>.eq("organization_id", orgId)</code> filter — exposes every tenant's data to every other tenant. RLS makes that class of bug structurally impossible: the database enforces the tenant boundary regardless of what your application code does.</p>
+<pre><code class="language-sql">-- Assets table
+CREATE TABLE assets (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  organization_id UUID NOT NULL REFERENCES organizations(id),
+  name            TEXT NOT NULL,
+  tag_number      TEXT NOT NULL,
+  asset_type      TEXT NOT NULL,
+  is_demo         BOOLEAN NOT NULL DEFAULT false,
+  is_active       BOOLEAN NOT NULL DEFAULT true,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE assets ENABLE ROW LEVEL SECURITY;
+
+-- Anon users see only demo rows; authenticated users see their org
+CREATE POLICY "assets_select" ON assets FOR SELECT USING (
+  is_demo = true
+  OR organization_id = my_org()
+);
+
+-- Only authenticated users in the same org can insert/update
+CREATE POLICY "assets_insert" ON assets FOR INSERT WITH CHECK (
+  organization_id = my_org()
+);
+
+CREATE POLICY "assets_update" ON assets FOR UPDATE USING (
+  organization_id = my_org()
+);</code></pre>
+
+<h4>Soft Deletes and Audit Columns</h4>
+<p>Never hard-delete user-facing records. Add <code>deleted_at TIMESTAMPTZ</code> and filter <code>WHERE deleted_at IS NULL</code>. Add <code>created_at</code> and <code>updated_at</code> to every table. Use a trigger to auto-update <code>updated_at</code>.</p>
+<pre><code class="language-sql">-- health_reports: stores AI diagnostic output (never raw sensor data)
+CREATE TABLE health_reports (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  organization_id UUID NOT NULL REFERENCES organizations(id),
+  asset_id        UUID REFERENCES assets(id),
+  user_id         UUID NOT NULL REFERENCES auth.users(id),
+  health_score    INTEGER CHECK (health_score BETWEEN 0 AND 100),
+  report_text     TEXT NOT NULL,
+  model_used      TEXT NOT NULL,
+  source          TEXT NOT NULL DEFAULT 'csv', -- 'csv' | 'dashboard'
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE health_reports ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "health_reports_select" ON health_reports FOR SELECT USING (
+  organization_id = my_org()
+);
+CREATE POLICY "health_reports_insert" ON health_reports FOR INSERT WITH CHECK (
+  organization_id = my_org()
+);</code></pre>
+
+<h4>Indexes for Query Performance</h4>
+<p>Add compound indexes on every column pair you will use in a <code>WHERE</code> clause together. For time-series data, always index on <code>(asset_id, ts DESC)</code>.</p>
+<pre><code class="language-sql">-- sensor_readings time-series index
+CREATE INDEX idx_sensor_readings_asset_ts
+  ON sensor_readings (asset_id, ts DESC);
+
+-- health_reports per-user count (used for free-tier enforcement)
+CREATE INDEX idx_health_reports_user_id
+  ON health_reports (user_id);</code></pre>
+
+<p><strong>Exercise 1.3 — Design the SensorHub Schema</strong></p>
+<p>Dataset: SensorHub PRD and TDD from Exercises 1.1 and 1.2.</p>
+<p><em>Retrieval practice: For step 1, attempt to write the column names and types for all 5 tables from memory before referring back to any example in this module. Draft the schema first, then compare. Pay attention to which columns you forgot — those gaps reveal what you still need to internalize.</em></p>
+<ol>
+<li>Write the full SQL for all 5 tables: <code>organizations</code>, <code>profiles</code>, <code>assets</code>, <code>sensor_readings</code>, <code>health_reports</code>.</li>
+<li>Add RLS policies for each table covering SELECT, INSERT, and UPDATE for both anon and authenticated roles.</li>
+<li>Create the <code>my_org()</code> helper function and a signup trigger that auto-creates an <code>organizations</code> row and a <code>profiles</code> row when a new user signs up.</li>
+<li>Add compound indexes on all time-series and foreign key lookup columns.</li>
+<li>Create a <code>asset_health_summary</code> view with <code>SECURITY INVOKER</code> that joins <code>assets</code> with their most recent health score from <code>health_reports</code>.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-product-definition">Phase 1 Capstone: Product Definition</h3>
+<p><strong>Project: Complete SensorHub Product Specification</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back at the guide, can you explain (1) the difference between a PRD and a TDD in one sentence each, (2) what MoSCoW prioritization prevents, and (3) why a missing RLS policy exposes tenant data even when your API code is correct? If any of those draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> SensorHub — multi-tenant IoT monitoring SaaS</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A complete PRD.md (8 sections, all required fields, 12+ FRs with MoSCoW priorities).</li>
+<li>A complete TDD.md (9 sections, ASCII architecture diagram, full tech stack table with rationale).</li>
+<li>Full SQL schema file (<code>schema.sql</code>) with all 5 tables, RLS policies, indexes, helper function, and signup trigger.</li>
+<li>A security model matrix (Markdown table) mapping each table to each role and the allowed operations.</li>
+<li>A written out-of-scope list with at least 5 explicit v2 deferrals that reference specific PRD FRs.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-project-setup-and-architecture">Phase 2: Project Setup &amp; Architecture</h2>
+<h3 id="weeks-3-4">Weeks 3–4 | Goal: Scaffold the project, wire up the database, and get auth working end-to-end</h3>
+<hr />
+
+<h3 id="module-21-nextjs-project-scaffolding">Module 2.1 — Next.js App Router Project Scaffolding</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 1.3 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Scaffold a Next.js 14+ App Router project with TypeScript strict mode, Tailwind, and the correct <code>src/app</code> directory structure from memory.<br>
+<strong>Skip if:</strong> You have built a production Next.js App Router project before.<br>
+<strong>Unlocks:</strong> Module 2.2</p>
+</blockquote>
+
+<h4>Scaffolding with create-next-app</h4>
+<pre><code class="language-bash">npx create-next-app@latest sensorhub \
+  --typescript \
+  --tailwind \
+  --app \
+  --src-dir \
+  --import-alias "@/*" \
+  --no-eslint
+
+cd sensorhub
+npm install @supabase/ssr @supabase/supabase-js zod lucide-react</code></pre>
+
+<h4>TypeScript Strict Mode</h4>
+<p>Edit <code>tsconfig.json</code> to enable strict mode and path aliases. The <code>strict</code> flag enables <code>noImplicitAny</code>, <code>strictNullChecks</code>, and <code>strictFunctionTypes</code> — all necessary for catching bugs at compile time rather than runtime. In practice, <code>strictNullChecks</code> catches the most real-world bugs: without it, TypeScript lets you call <code>.map()</code> on a value that could be <code>undefined</code>, and you find out in production rather than at the keyboard. <code>noUncheckedIndexedAccess</code> catches the array-index equivalent — <code>arr[0]</code> becomes <code>string | undefined</code>, not <code>string</code>.</p>
+<pre><code class="language-json">{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [{ "name": "next" }]
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}</code></pre>
+
+<h4>Directory Structure</h4>
+<pre><code>src/
+  app/
+    (marketing)/
+      page.tsx        ← landing page (route group, no layout wrapping)
+    dashboard/
+      page.tsx        ← main dashboard (auth-protected)
+      reports/
+        page.tsx
+    api/
+      assets/
+        route.ts
+      analyze-csv/
+        route.ts
+      report/
+        route.ts
+      leads/
+        route.ts
+      health/
+        route.ts
+    auth/
+      callback/
+        route.ts
+      sign-out/
+        route.ts
+    layout.tsx        ← root layout
+    globals.css
+  components/
+    AssetSelector.tsx
+    SensorTimeline.tsx
+    CSVUploadModal.tsx
+    LeadCaptureModal.tsx
+  lib/
+    supabase-browser.ts   ← client-side Supabase (cookie-aware)
+    supabase-server.ts    ← server-side Supabase
+    supabase-service.ts   ← service role (used only for health probe)
+    ratelimit.ts
+    logger.ts
+    scoring.ts
+  middleware.ts           ← route protection</code></pre>
+
+<h4>Environment Variables</h4>
+<pre><code class="language-bash"># .env.local — never commit this file
+NEXT_PUBLIC_SUPABASE_URL=https://yourproject.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key  # never NEXT_PUBLIC_
+ANTHROPIC_API_KEY=sk-ant-...
+UPSTASH_REDIS_REST_URL=https://...
+UPSTASH_REDIS_REST_TOKEN=...
+SENTRY_DSN=https://...@sentry.io/...</code></pre>
+
+<p><strong>Exercise 2.1 — Scaffold SensorHub</strong></p>
+<p>Dataset: SensorHub project from Phase 1.</p>
+<ol>
+<li>Run <code>create-next-app</code> with the flags above and verify the project starts with <code>npm run dev</code>.</li>
+<li>Set up <code>tsconfig.json</code> with strict mode and <code>noUncheckedIndexedAccess</code>.</li>
+<li>Create the full directory structure from the tree above (empty files are fine at this stage).</li>
+<li>Create <code>.env.local</code> with all 6 environment variables and add <code>.env.local</code> to <code>.gitignore</code>.</li>
+<li>Run <code>npx tsc --noEmit</code> — it must exit with 0 errors.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-supabase-setup-and-rls">Module 2.2 — Supabase Setup &amp; RLS</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Apply the SensorHub schema to a Supabase project and verify RLS by querying as anon vs. authenticated.<br>
+<strong>Skip if:</strong> You have set up Supabase RLS with multi-tenant isolation before.<br>
+<strong>Unlocks:</strong> Module 2.3</p>
+</blockquote>
+
+<h4>Supabase Client Factories</h4>
+<p>The <code>@supabase/ssr</code> package provides cookie-aware clients. You need three separate factories — one for the browser (cookie read/write), one for server components (cookie read only), and one for the service role (bypasses RLS — use sparingly).</p>
+<pre><code class="language-ts">// src/lib/supabase-browser.ts
+// ALWAYS use this on the client side — never import from supabase-server
+import { createBrowserClient } from "@supabase/ssr";
+
+export function createBrowserSupabase() {
+  return createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+}</code></pre>
+
+<pre><code class="language-ts">// src/lib/supabase-server.ts
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
+
+export async function createServerSupabase() {
+  const cookieStore = await cookies();
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() { return cookieStore.getAll(); },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            cookieStore.set(name, value, options)
+          );
+        },
+      },
+    }
+  );
+}</code></pre>
+
+<h4>Running Migrations</h4>
+<p>Apply your schema from Exercise 1.3 to Supabase by pasting the SQL into the Supabase SQL Editor and running it. For local dev, use the Supabase CLI:</p>
+<pre><code class="language-bash">npx supabase init
+npx supabase start                    # starts local Postgres + Auth
+npx supabase db reset                 # applies all migrations in supabase/migrations/
+npx supabase migration new init_schema
+# paste your schema SQL into the generated file, then:
+npx supabase db reset</code></pre>
+
+<h4>Verifying RLS</h4>
+<p>Test RLS in the Supabase SQL Editor by switching roles:</p>
+<pre><code class="language-sql">-- Test as anon: should see only is_demo rows
+SET LOCAL ROLE anon;
+SELECT id, name, is_demo FROM assets;
+
+-- Test as a specific user: should see only their org's rows + demo rows
+SET LOCAL ROLE authenticated;
+SET LOCAL "request.jwt.claims" TO '{"sub":"&lt;user-uuid&gt;"}';
+SELECT id, name, is_demo FROM assets;</code></pre>
+
+<p><strong>Exercise 2.2 — Apply Schema and Verify RLS</strong></p>
+<p>Dataset: SensorHub schema from Exercise 1.3.</p>
+<ol>
+<li>Create a new Supabase project and apply the full schema via the SQL Editor.</li>
+<li>Insert 2 demo assets (<code>is_demo = true</code>) and 2 org-specific assets for a test organization.</li>
+<li>Verify with SQL that querying as <code>anon</code> returns only the 2 demo rows.</li>
+<li>Verify that querying as an authenticated user in the test org returns all 4 rows.</li>
+<li>Wire up <code>createBrowserSupabase()</code> in a test React component and log the current session to the console — confirm it is <code>null</code> when not signed in.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-supabase-auth-magic-link">Module 2.3 — Supabase Auth (Magic Link)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Implement magic-link sign-in, the <code>/auth/callback</code> route, and route-protection middleware for SensorHub from scratch.<br>
+<strong>Skip if:</strong> You have shipped Supabase Auth with magic links and cookie sessions in production before.<br>
+<strong>Unlocks:</strong> Module 3.1</p>
+</blockquote>
+
+<h4>Magic-Link Sign-In Flow</h4>
+<p>Magic links remove the entire password surface from your system: no password hashing to get right, no password-reset flow to build, no brute-force or credential-stuffing vectors. For a B2B SaaS with professional users checking email on managed devices, this is both more secure and less friction than passwords. The tradeoff: users must have access to their email at login time — if your users are in environments where email is unreliable, consider adding a fallback.</p>
+<pre><code class="language-ts">// src/app/auth/sign-in/page.tsx  (simplified)
+"use client";
+import { createBrowserSupabase } from "@/lib/supabase-browser";
+import { useState } from "react";
+
+export default function SignInPage() {
+  const [email, setEmail] = useState("");
+  const [sent, setSent] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const supabase = createBrowserSupabase();
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: `${location.origin}/auth/callback` },
+    });
+    if (!error) setSent(true);
+  }
+
+  if (sent) return &lt;p&gt;Check your email for a sign-in link.&lt;/p&gt;;
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input type="email" value={email} onChange={e =&gt; setEmail(e.target.value)} required /&gt;
+      &lt;button type="submit"&gt;Send Link&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+
+<h4>Auth Callback Route</h4>
+<pre><code class="language-ts">// src/app/auth/callback/route.ts
+import { createServerSupabase } from "@/lib/supabase-server";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(request: NextRequest) {
+  const { searchParams, origin } = new URL(request.url);
+  const code = searchParams.get("code");
+
+  if (code) {
+    const supabase = await createServerSupabase();
+    await supabase.auth.exchangeCodeForSession(code);
+  }
+
+  return NextResponse.redirect(`${origin}/dashboard`);
+}</code></pre>
+
+<h4>Route Protection Middleware</h4>
+<pre><code class="language-ts">// src/middleware.ts
+import { createServerClient } from "@supabase/ssr";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function middleware(request: NextRequest) {
+  let response = NextResponse.next({ request });
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() { return request.cookies.getAll(); },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value)
+          );
+          response = NextResponse.next({ request });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          );
+        },
+      },
+    }
+  );
+
+  // Use getUser() — NOT getSession() — in server code. getUser() revalidates the
+  // JWT against the Supabase Auth server; getSession() only decodes the cookie and
+  // can be spoofed. Calling getUser() here also refreshes the session cookie.
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user &amp;&amp; request.nextUrl.pathname.startsWith("/dashboard")) {
+    return NextResponse.redirect(new URL("/auth/sign-in", request.url));
+  }
+
+  return response;
+}
+
+export const config = {
+  matcher: ["/dashboard/:path*"],
+};</code></pre>
+<blockquote class="callout"><p><strong>Security gotcha:</strong> In <em>server</em> code (middleware, Server Components, route handlers) always authenticate with <code>supabase.auth.getUser()</code>. It makes a request to the Auth server to verify the token. <code>getSession()</code> reads the session straight from the cookie without revalidating it, so a forged cookie passes — never gate access on it server-side. On the <em>client</em>, <code>getSession()</code> is fine because there is no trust boundary to cross.</p></blockquote>
+
+<p><strong>Exercise 2.3 — Wire Up Auth for SensorHub</strong></p>
+<p>Dataset: SensorHub project from Exercise 2.2.</p>
+<ol>
+<li>Build the sign-in page with a magic-link form and a "check your email" confirmation state.</li>
+<li>Implement the <code>/auth/callback</code> route that exchanges the code for a session and redirects to <code>/dashboard</code>.</li>
+<li>Implement the middleware that redirects unauthenticated users from <code>/dashboard/*</code> to <code>/auth/sign-in</code>.</li>
+<li>Implement a sign-out route (<code>/auth/sign-out</code>) that calls <code>supabase.auth.signOut()</code> and redirects to <code>/</code>.</li>
+<li>Test the full flow: visit <code>/dashboard</code> unauthenticated → should redirect. Sign in → should reach <code>/dashboard</code>. Sign out → should redirect to <code>/</code>.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-project-setup">Phase 2 Capstone: Project Setup</h3>
+<p><strong>Project: SensorHub Foundation — Working Auth + DB</strong></p>
+<p><strong>Dataset:</strong> SensorHub — multi-tenant IoT monitoring SaaS</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A running Next.js 16 App Router project with TypeScript strict mode, Tailwind CSS, and the full directory structure from Module 2.1.</li>
+<li>Supabase project with all 5 tables, RLS policies, indexes, <code>my_org()</code> function, and signup trigger applied.</li>
+<li>Working magic-link authentication: sign-in → email → callback → session → <code>/dashboard</code>.</li>
+<li>Route protection middleware blocking unauthenticated access to <code>/dashboard/*</code>.</li>
+<li>Verified RLS: screenshot or SQL proof that anon sees only demo rows and authenticated users see their org's rows.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-core-feature-development">Phase 3: Core Feature Development</h2>
+<h3 id="weeks-5-7">Weeks 5–7 | Goal: Build the full feature set — API routes, UI components, data fetching, and SSR patterns</h3>
+<hr />
+
+<h3 id="module-31-nextjs-api-routes">Module 3.1 — Next.js API Routes</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Write a validated API route for SensorHub that accepts a JSON body, queries Supabase with RLS, and returns a typed response — from scratch.<br>
+<strong>Skip if:</strong> You have written Next.js App Router API routes with Zod validation and Supabase queries before.<br>
+<strong>Unlocks:</strong> Module 3.2</p>
+</blockquote>
+
+<h4>App Router Route Handler Pattern</h4>
+<pre><code class="language-ts">// src/app/api/assets/route.ts
+import { createServerSupabase } from "@/lib/supabase-server";
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  const supabase = await createServerSupabase();
+  const { data, error } = await supabase
+    .from("asset_health_summary")
+    .select("*")
+    .order("health_score", { ascending: true });
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ assets: data });
+}</code></pre>
+
+<h4>Zod Input Validation</h4>
+<p>Never trust request bodies. Parse and validate with Zod at the route boundary before any business logic runs. Without validation: a <code>null</code> body crashes your handler with an unhandled exception (opaque 500 to the caller, noise in your logs); an oversized string field bloats your database; a malformed UUID surfaces as a confusing Postgres error deep in the stack rather than a clear 400 at the API surface. Validation is the contract between your API and its callers — enforce it at the entry point, not downstream.</p>
+<pre><code class="language-ts">// src/app/api/leads/route.ts
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { createServerSupabase } from "@/lib/supabase-server";
+
+const LeadSchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(1).max(200),
+  company: z.string().max(200).optional(),
+  message: z.string().max(2000).optional(),
+  source: z.enum(["landing_hero", "dashboard_cta", "csv_limit"]),
+});
+
+export async function POST(request: NextRequest) {
+  const body = await request.json().catch(() =&gt; null);
+  const parsed = LeadSchema.safeParse(body);
+
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Invalid input", details: parsed.error.flatten() },
+      { status: 400 }
+    );
+  }
+
+  const supabase = await createServerSupabase();
+  const { error } = await supabase.from("leads").insert({
+    ...parsed.data,
+    submitted_at: new Date().toISOString(),
+  });
+
+  if (error) {
+    return NextResponse.json({ error: "Failed to save lead" }, { status: 500 });
+  }
+
+  return NextResponse.json({ success: true }, { status: 201 });
+}</code></pre>
+
+<h4>Parallel Queries with Promise.all</h4>
+<pre><code class="language-ts">// src/app/api/anomalies/route.ts
+import { NextRequest, NextResponse } from "next/server";
+import { createServerSupabase } from "@/lib/supabase-server";
+import { z } from "zod";
+
+const QuerySchema = z.object({
+  assetId: z.string().uuid(),
+  days: z.coerce.number().int().min(1).max(90).default(7),
+});
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const parsed = QuerySchema.safeParse({
+    assetId: searchParams.get("assetId"),
+    days: searchParams.get("days"),
+  });
+
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid query params" }, { status: 400 });
+  }
+
+  const { assetId, days } = parsed.data;
+  const since = new Date(Date.now() - days * 86_400_000).toISOString();
+  const supabase = await createServerSupabase();
+
+  const [readingsResult, anomaliesResult] = await Promise.all([
+    supabase
+      .from("sensor_readings")
+      .select("ts, vibration, temperature, pressure, motor_current")
+      .eq("asset_id", assetId)
+      .gte("ts", since)
+      .order("ts", { ascending: true })
+      .limit(2000),
+    supabase
+      .from("anomaly_scores")
+      .select("ts, severity, max_z_score")
+      .eq("asset_id", assetId)
+      .gte("ts", since)
+      .order("ts", { ascending: true }),
+  ]);
+
+  if (readingsResult.error || anomaliesResult.error) {
+    return NextResponse.json({ error: "Query failed" }, { status: 500 });
+  }
+
+  return NextResponse.json({
+    readings: readingsResult.data,
+    anomalies: anomaliesResult.data,
+  });
+}</code></pre>
+
+<p><strong>Exercise 3.1 — Build SensorHub API Routes</strong></p>
+<p>Dataset: SensorHub Supabase project from Phase 2.</p>
+<ol>
+<li>Build <code>GET /api/assets</code> that returns the <code>asset_health_summary</code> view, ordered critical-first.</li>
+<li>Build <code>GET /api/anomalies?assetId=&amp;days=</code> with Zod param validation and parallel Supabase queries.</li>
+<li>Build <code>POST /api/leads</code> with Zod body validation and a consistent error shape <code>{ error: string }</code>.</li>
+<li>Build <code>GET /api/health</code> that probes the database with a <code>SELECT 1</code> and returns <code>{ status: "ok" | "degraded" }</code>.</li>
+<li>Test all routes with <code>curl</code> or a REST client — verify that invalid inputs return 400, valid inputs return 200/201.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-react-components-and-tailwind">Module 3.2 — React Components &amp; Tailwind CSS</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Build a typed AssetSelector sidebar component with skeleton loading, status badges, and an active-selection highlight — from scratch.<br>
+<strong>Skip if:</strong> You regularly build typed React components with Tailwind, including loading/error states.<br>
+<strong>Unlocks:</strong> Module 3.3</p>
+</blockquote>
+
+<h4>Typed Component Props</h4>
+<pre><code class="language-ts">// src/components/AssetSelector.tsx
+import type { AssetHealthSummary } from "@/types/supabase";
+
+interface AssetSelectorProps {
+  assets: AssetHealthSummary[];
+  selectedId: string | null;
+  onSelect: (id: string) =&gt; void;
+  loading: boolean;
+}
+
+const SEVERITY_BADGE: Record&lt;string, string&gt; = {
+  critical: "bg-red-900/30 text-red-400 border border-red-800",
+  medium:   "bg-amber-900/30 text-amber-400 border border-amber-800",
+  low:      "bg-amber-900/20 text-amber-300 border border-amber-800",
+  normal:   "bg-emerald-900/20 text-emerald-400 border border-emerald-800",
+};
+
+export function AssetSelector({ assets, selectedId, onSelect, loading }: AssetSelectorProps) {
+  if (loading) {
+    return (
+      &lt;div className="space-y-2 p-3"&gt;
+        {[1, 2, 3].map(i =&gt; (
+          &lt;div key={i} className="h-16 bg-gray-800/50 rounded-lg animate-pulse" /&gt;
+        ))}
+      &lt;/div&gt;
+    );
+  }
+
+  return (
+    &lt;nav className="p-3 space-y-1"&gt;
+      {assets.map(asset =&gt; (
+        &lt;button
+          key={asset.id}
+          onClick={() =&gt; onSelect(asset.id)}
+          className={`w-full text-left p-3 rounded-lg transition-colors ${
+            selectedId === asset.id
+              ? "border border-teal-600 bg-teal-900/20"
+              : "border border-transparent hover:bg-gray-800/50"
+          }`}
+        &gt;
+          &lt;div className="flex items-center justify-between"&gt;
+            &lt;span className="text-sm font-medium text-gray-200"&gt;{asset.name}&lt;/span&gt;
+            &lt;span className={`text-xs px-2 py-0.5 rounded-full font-mono ${
+              SEVERITY_BADGE[asset.current_severity ?? "normal"]
+            }`}&gt;
+              {asset.health_score ?? "--"}
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;p className="text-xs text-gray-500 mt-0.5"&gt;{asset.tag_number}&lt;/p&gt;
+        &lt;/button&gt;
+      ))}
+    &lt;/nav&gt;
+  );
+}</code></pre>
+
+<h4>Tailwind Configuration for Custom Tokens</h4>
+<pre><code class="language-ts">// tailwind.config.ts
+import type { Config } from "tailwindcss";
+
+export default {
+  content: ["./src/**/*.{ts,tsx}"],
+  theme: {
+    extend: {
+      colors: {
+        "rb-teal":     "#0d7a6e",
+        "rb-teal-deep":"#075249",
+        "rb-bg":       "#0d1117",
+        "rb-surface":  "#161b22",
+        "rb-border":   "#30363d",
+      },
+      fontFamily: {
+        mono: ["JetBrains Mono", "ui-monospace", "monospace"],
+      },
+    },
+  },
+} satisfies Config;</code></pre>
+
+<p><strong>Exercise 3.2 — Build SensorHub UI Components</strong></p>
+<p>Dataset: SensorHub project from Module 3.1.</p>
+<ol>
+<li>Build the <code>AssetSelector</code> component with skeleton loading, severity badge color map, and active-selection highlight.</li>
+<li>Build a <code>HealthScoreCard</code> component that shows 4 metrics: health score (color-coded), anomaly count (7d), peak z-score, and recommended action.</li>
+<li>Build a <code>LeadCaptureModal</code> component with a form (name, email, company, message), submit handler calling <code>POST /api/leads</code>, and a success confirmation state.</li>
+<li>Configure <code>tailwind.config.ts</code> with the SensorHub color tokens and JetBrains Mono font.</li>
+<li>Verify all components render correctly in <code>next dev</code> with no TypeScript errors (<code>npx tsc --noEmit</code>).</li>
+</ol>
+<hr />
+
+<h3 id="module-33-data-fetching-and-state">Module 3.3 — Data Fetching &amp; State Management</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Implement the SensorHub dashboard page with asset selection state, parallel data fetching, and loading/error states — from scratch.<br>
+<strong>Skip if:</strong> You have built React dashboards with useEffect-based data fetching, useCallback, and loading/error state management before.<br>
+<strong>Unlocks:</strong> Module 3.4</p>
+</blockquote>
+
+<h4>Dashboard Page State Machine</h4>
+<pre><code class="language-ts">// src/app/dashboard/page.tsx  (client component)
+"use client";
+import { useState, useEffect, useCallback } from "react";
+import type { AssetHealthSummary, AnomaliesApiResponse } from "@/types";
+
+export default function DashboardPage() {
+  const [assets, setAssets] = useState&lt;AssetHealthSummary[]&gt;([]);
+  const [selectedId, setSelectedId] = useState&lt;string | null&gt;(null);
+  const [days, setDays] = useState(7);
+  const [assetData, setAssetData] = useState&lt;AnomaliesApiResponse | null&gt;(null);
+  const [loadingAssets, setLoadingAssets] = useState(true);
+  const [loadingData, setLoadingData] = useState(false);
+  const [error, setError] = useState&lt;string | null&gt;(null);
+
+  useEffect(() =&gt; {
+    fetch("/api/assets")
+      .then(r =&gt; r.json())
+      .then(({ assets: data }: { assets: AssetHealthSummary[] }) =&gt; {
+        setAssets(data);
+        if (data.length &gt; 0 &amp;&amp; data[0]) setSelectedId(data[0].id);
+      })
+      .catch(() =&gt; setError("Failed to load assets"))
+      .finally(() =&gt; setLoadingAssets(false));
+  }, []);
+
+  const loadAssetData = useCallback((id: string, numDays: number) =&gt; {
+    setLoadingData(true);
+    setError(null);
+    fetch(`/api/anomalies?assetId=${id}&amp;days=${numDays}`)
+      .then(r =&gt; r.json())
+      .then((data: AnomaliesApiResponse) =&gt; setAssetData(data))
+      .catch(() =&gt; setError("Failed to load asset data"))
+      .finally(() =&gt; setLoadingData(false));
+  }, []);
+
+  useEffect(() =&gt; {
+    if (selectedId) loadAssetData(selectedId, days);
+  }, [selectedId, days, loadAssetData]);
+
+  // ... render layout with AssetSelector, charts, AI panel
+}</code></pre>
+
+<h4>Merging Time-Series Data for Charts</h4>
+<pre><code class="language-ts">// Merge sensor readings with anomaly flags for the chart
+function mergeChartData(
+  readings: SensorReading[],
+  anomalies: AnomalyScore[]
+): ChartDataPoint[] {
+  const anomalySet = new Set(anomalies.map(a =&gt; a.ts));
+  return readings.map(r =&gt; ({
+    ts: r.ts,
+    vibration: r.vibration,
+    temperature: r.temperature,
+    is_anomaly: anomalySet.has(r.ts),
+    // downsample: keep every Nth point for chart perf
+  }));
+}</code></pre>
+
+<p><strong>Exercise 3.3 — Wire Up the Dashboard Data Layer</strong></p>
+<p>Dataset: SensorHub API routes from Module 3.1.</p>
+<ol>
+<li>Implement the dashboard page with all 5 state variables (assets, selectedId, days, assetData, loading states).</li>
+<li>Implement <code>loadAssetData</code> with <code>useCallback</code> and trigger it on asset selection and days-window change.</li>
+<li>Implement <code>mergeChartData</code> that merges readings and anomalies and downsamples to 500 points max.</li>
+<li>Add error boundary: if any fetch fails, show a teal-bordered error card with a retry button.</li>
+<li>Test the full data-flow: select an asset → loading spinner → chart renders with correct data.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-ssr-and-app-router-patterns">Module 3.4 — SSR &amp; App Router Patterns</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Explain the difference between Server and Client Components and correctly classify 6 components from SensorHub.<br>
+<strong>Skip if:</strong> You understand the App Router rendering model and have used Server Components with async data fetching in production.<br>
+<strong>Unlocks:</strong> Module 4.1</p>
+</blockquote>
+
+<h4>Server vs. Client Components</h4>
+<p>The App Router renders components on the server by default. Add <code>"use client"</code> only when you need browser APIs, event handlers, or React hooks. Keep the boundary as deep in the tree as possible.</p>
+<blockquote class="callout"><p><strong>Retrieval check:</strong> Before reading the decision framework below, classify these two SensorHub components and write your reasoning in one sentence each: (1) <code>ReportsPage</code> — fetches reports from Supabase, displays a list, no user interaction. (2) <code>DashboardPage</code> — tracks <code>selectedId</code> with <code>useState</code>, responds to button clicks. Write your classification, then check it against the framework. If both were correct, you can skim the rest of this section.</p></blockquote>
+<pre class="artifact" data-kind="FRAMEWORK"><code>DECISION RULE — Server vs. Client Component
+
+Use SERVER component when:
+  - Fetching data directly from Supabase (no useEffect needed)
+  - Reading environment variables
+  - The component has no interactivity
+
+  Example: /dashboard/reports/page.tsx — fetches user reports on the server,
+  no client state needed
+
+Use CLIENT component ("use client") when:
+  - Using useState, useEffect, useCallback, useContext
+  - Responding to user events (onClick, onChange)
+  - Using browser APIs (localStorage, window, navigator)
+
+  Example: DashboardPage — needs selectedId state, useEffect for fetch
+
+WRONG: Adding "use client" to every component because "it's easier"
+RIGHT: Default to Server; add "use client" only when required</code></pre>
+
+<h4>Async Server Component Data Fetching</h4>
+<pre><code class="language-ts">// src/app/dashboard/reports/page.tsx  (Server Component — no "use client")
+import { createServerSupabase } from "@/lib/supabase-server";
+import { redirect } from "next/navigation";
+
+export default async function ReportsPage() {
+  const supabase = await createServerSupabase();
+  const { data: { user } } = await supabase.auth.getUser();  // getUser, not getSession — server-side trust boundary
+
+  if (!user) redirect("/auth/sign-in");
+
+  const { data: reports } = await supabase
+    .from("health_reports")
+    .select("id, created_at, health_score, model_used, source")
+    .order("created_at", { ascending: false })
+    .limit(20);
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Your Reports&lt;/h1&gt;
+      {reports?.map(r =&gt; (
+        &lt;div key={r.id}&gt;
+          &lt;span&gt;{r.created_at}&lt;/span&gt;
+          &lt;span&gt;Score: {r.health_score}&lt;/span&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+<h4>Route Groups for Layout Separation</h4>
+<pre><code>src/app/
+  (marketing)/           ← route group: no auth layout
+    page.tsx             → renders at /
+  (auth)/                ← route group: centered card layout
+    sign-in/page.tsx     → renders at /sign-in
+  dashboard/             ← auth-required layout
+    layout.tsx           ← sidebar + header shell
+    page.tsx             → renders at /dashboard</code></pre>
+
+<p><strong>Exercise 3.4 — SSR Patterns for SensorHub</strong></p>
+<p>Dataset: SensorHub project from Module 3.3.</p>
+<ol>
+<li>Convert <code>/dashboard/reports</code> to a Server Component that fetches reports directly from Supabase — no <code>useEffect</code>, no client-side fetch.</li>
+<li>Create a <code>dashboard/layout.tsx</code> Server Component that renders the sidebar shell and passes session data down via props.</li>
+<li>Classify 6 SensorHub components as Server or Client and document the reason for each classification.</li>
+<li>Add a <code>(marketing)</code> route group with its own layout — no auth sidebar, just a plain HTML shell.</li>
+<li>Run <code>next build</code> and verify 0 TypeScript errors and 0 "missing 'use client'" warnings.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-core-dashboard">Phase 3 Capstone: Core Dashboard</h3>
+<p><strong>Project: SensorHub Core Dashboard</strong></p>
+<p><strong>Dataset:</strong> SensorHub — multi-tenant IoT monitoring SaaS</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>4 working API routes (<code>/api/assets</code>, <code>/api/anomalies</code>, <code>/api/leads</code>, <code>/api/health</code>) with Zod validation and consistent error shapes.</li>
+<li><code>AssetSelector</code> sidebar with skeleton loading, severity badge color map, and active-selection highlight.</li>
+<li>Dashboard page with asset selection state, parallel data fetching, time-window selector (7/30/90 days), and merged chart data.</li>
+<li>Reports page as a Server Component fetching data from Supabase without <code>useEffect</code>.</li>
+<li>Marketing landing page at <code>/</code> with lead capture form wired to <code>POST /api/leads</code>.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-ai-integration-and-advanced-features">Phase 4: AI Integration &amp; Advanced Features</h2>
+<h3 id="weeks-8-10">Weeks 8–10 | Goal: Add the Claude API streaming feature, rate limiting, and production-grade observability</h3>
+<hr />
+
+<h3 id="module-41-claude-api-integration">Module 4.1 — Claude API Integration (Streaming)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.4 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Build a streaming Claude API route that streams tokens to the browser via ReadableStream and renders them in a React component in real time.<br>
+<strong>Skip if:</strong> You have implemented Claude API streaming in Next.js before, including prompt caching.<br>
+<strong>Unlocks:</strong> Module 4.2</p>
+</blockquote>
+
+<h4>Streaming API Route with Prompt Caching</h4>
+<pre><code class="language-ts">// src/app/api/report/route.ts
+import Anthropic from "@anthropic-ai/sdk";
+import { NextRequest, NextResponse } from "next/server";
+import { createServerSupabase } from "@/lib/supabase-server";
+import { logger } from "@/lib/logger";
+import { z } from "zod";
+
+const CLAUDE_MODEL = "claude-sonnet-4-6";
+
+const DIAGNOSTIC_SYSTEM_PROMPT = `You are an expert predictive maintenance engineer.
+Analyze the sensor statistics provided and return a concise diagnostic report in 3 parts:
+1. Overall status and trend
+2. Root cause hypothesis with named failure modes and evidence
+3. Urgency-graded action: Monitor / Schedule maintenance / Act Now — inspect within 48h
+
+Write in field-engineer language. Reference specific z-score deviations. Be concise — 150 to 400 tokens.`;
+
+const RequestSchema = z.object({
+  assetId: z.string().uuid(),
+  healthScore: z.number().int().min(0).max(100),
+  anomalyCount7d: z.number().int().min(0),
+  peakVibrationSigma: z.number(),
+  trend: z.enum(["stable", "degrading", "critical"]),
+});
+
+export async function POST(request: NextRequest) {
+  const supabase = await createServerSupabase();
+  // Server-side auth: getUser() revalidates the JWT; getSession() would be spoofable.
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const body = await request.json().catch(() =&gt; null);
+  const parsed = RequestSchema.safeParse(body);
+  if (!parsed.success) return NextResponse.json({ error: "Invalid input" }, { status: 400 });
+
+  const { assetId, healthScore, anomalyCount7d, peakVibrationSigma, trend } = parsed.data;
+
+  // org membership lives in the profiles table (see Module 1.3) — not in user_metadata
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("organization_id")
+    .eq("id", user.id)
+    .single();
+
+  if (!profile) return NextResponse.json({ error: "No profile" }, { status: 403 });
+
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+  const llmStream = anthropic.messages.stream({
+    model: CLAUDE_MODEL,
+    max_tokens: 400,
+    system: [
+      {
+        type: "text",
+        text: DIAGNOSTIC_SYSTEM_PROMPT,
+        cache_control: { type: "ephemeral" },   // prompt caching — reduces cost on repeated calls
+      },
+    ],
+    messages: [
+      {
+        role: "user",
+        content: `Asset ID: ${assetId}
+Health Score: ${healthScore}/100
+7-day Anomaly Count: ${anomalyCount7d}
+Peak Vibration Sigma: ${peakVibrationSigma.toFixed(2)}σ
+Trend: ${trend}
+
+Generate diagnostic report.`,
+      },
+    ],
+  });
+
+  // Build a PLAIN-TEXT stream from the SDK's text deltas. Do NOT return
+  // llmStream.toReadableStream() directly — that emits raw JSON event objects,
+  // and the client decodes the body as text, so it would render JSON, not prose.
+  const encoder = new TextEncoder();
+  let fullText = "";
+
+  const readable = new ReadableStream&lt;Uint8Array&gt;({
+    async start(controller) {
+      try {
+        for await (const event of llmStream) {
+          if (
+            event.type === "content_block_delta" &amp;&amp;
+            event.delta.type === "text_delta"
+          ) {
+            fullText += event.delta.text;
+            controller.enqueue(encoder.encode(event.delta.text));
+          }
+        }
+      } catch (err) {
+        controller.error(err);
+        return;
+      }
+      controller.close();
+
+      // Fire-and-forget: persist the assembled report after the stream completes.
+      supabase
+        .from("health_reports")
+        .insert({
+          organization_id: profile.organization_id,
+          asset_id: assetId,
+          user_id: user.id,
+          health_score: healthScore,
+          report_text: fullText,
+          model_used: CLAUDE_MODEL,
+          source: "dashboard",
+        })
+        .then(({ error }) =&gt; {
+          if (error) logger.error({ event: "report_persist_failed", err: error.message });
+        });
+    },
+  });
+
+  return new NextResponse(readable, {
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
+}</code></pre>
+
+<blockquote class="callout"><p><strong>Why prompt caching matters:</strong> The <code>DIAGNOSTIC_SYSTEM_PROMPT</code> is roughly 80 tokens. Without caching, every call to <code>/api/report</code> bills those tokens at full input pricing. With <code>cache_control: { type: "ephemeral" }</code>, Anthropic caches the prompt for up to 5 minutes — subsequent calls within that window are billed at cache-read pricing, which is approximately 90% cheaper for cached input tokens. For a feature users trigger repeatedly throughout a session, this compounds quickly. Log <code>cache_read_input_tokens</code> from the usage field to verify the cache is hitting.</p></blockquote>
+<h4>Rendering the Stream in React</h4>
+<pre><code class="language-ts">// src/components/AIReportPanel.tsx  (simplified)
+"use client";
+import { useState, useRef } from "react";
+
+interface AIReportPanelProps {
+  assetId: string;
+  healthScore: number;
+  anomalyCount7d: number;
+  peakVibrationSigma: number;
+  trend: "stable" | "degrading" | "critical";
+}
+
+export function AIReportPanel(props: AIReportPanelProps) {
+  const [report, setReport] = useState("");
+  const [streaming, setStreaming] = useState(false);
+  const abortRef = useRef&lt;AbortController | null&gt;(null);
+
+  async function runAnalysis() {
+    abortRef.current = new AbortController();
+    setStreaming(true);
+    setReport("");
+
+    const res = await fetch("/api/report", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(props),
+      signal: abortRef.current.signal,
+    });
+
+    if (!res.body) return;
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      setReport(prev =&gt; prev + decoder.decode(value, { stream: true }));
+    }
+    setStreaming(false);
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={runAnalysis} disabled={streaming}&gt;
+        {streaming ? "Analyzing…" : "Run Analysis"}
+      &lt;/button&gt;
+      {streaming &amp;&amp; (
+        &lt;button onClick={() =&gt; abortRef.current?.abort()}&gt;Cancel&lt;/button&gt;
+      )}
+      &lt;pre&gt;{report}&lt;/pre&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+<p><strong>Exercise 4.1 — Build the SensorHub AI Feature</strong></p>
+<p>Dataset: SensorHub project from Phase 3.</p>
+<ol>
+<li>Build <code>POST /api/report</code> with session auth check, Zod body validation, Claude API streaming, and fire-and-forget report persistence.</li>
+<li>Add prompt caching (<code>cache_control: { type: "ephemeral" }</code>) to the system prompt and log token usage per request.</li>
+<li>Build the <code>AIReportPanel</code> client component with stream reading, real-time token rendering, and AbortController cancel support.</li>
+<li>Add a free-tier limit: count existing <code>health_reports</code> rows for the user — block with <code>LIMIT_REACHED</code> error after 2 analyses.</li>
+<li>Test: trigger a stream, verify tokens appear in real time, verify the cancel button stops the stream, verify the <code>health_reports</code> row is created after the stream completes.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-rate-limiting-and-security">Module 4.2 — Rate Limiting &amp; Security Hardening</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 4.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Add Upstash rate limiting to <code>/api/report</code> and security headers to Next.js config from scratch.<br>
+<strong>Skip if:</strong> You have implemented Upstash rate limiting and security headers in a Next.js production app before.<br>
+<strong>Unlocks:</strong> Module 4.3</p>
+</blockquote>
+
+<h4>Upstash Rate Limiter Setup</h4>
+<pre><code class="language-ts">// src/lib/ratelimit.ts
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+
+function makeRatelimit(tokens: number, window: string) {
+  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+    // PASS_THROUGH in local dev — no Redis required
+    return {
+      limit: async () =&gt; ({ success: true, limit: tokens, remaining: tokens, reset: 0 }),
+    };
+  }
+  return new Ratelimit({
+    redis: Redis.fromEnv(),
+    limiter: Ratelimit.slidingWindow(tokens, window as `${number} ${"s" | "m" | "h" | "d"}`),
+  });
+}
+
+// 10 reports per hour per IP (public endpoint)
+export const reportLimiter = makeRatelimit(10, "1 h");
+
+// 5 CSV analyses per hour per user ID (auth-gated endpoint)
+export const csvLimiter = makeRatelimit(5, "1 h");</code></pre>
+
+<h4>Applying Rate Limits in a Route</h4>
+<pre><code class="language-ts">// In src/app/api/report/route.ts — add before Claude call
+import { reportLimiter } from "@/lib/ratelimit";
+
+const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anonymous";
+const { success, remaining } = await reportLimiter.limit(ip);
+
+if (!success) {
+  return NextResponse.json(
+    { error: "Rate limit exceeded. Try again later.", code: "RATE_LIMITED" },
+    { status: 429, headers: { "Retry-After": "3600" } }
+  );
+}</code></pre>
+
+<h4>Security Headers in next.config</h4>
+<pre><code class="language-ts">// next.config.mjs
+const securityHeaders = [
+  { key: "X-Content-Type-Options",  value: "nosniff" },
+  { key: "X-Frame-Options",         value: "DENY" },
+  { key: "X-XSS-Protection",        value: "1; mode=block" },
+  { key: "Referrer-Policy",         value: "strict-origin-when-cross-origin" },
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
+  },
+  {
+    key: "Content-Security-Policy",
+    value: [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline'",  // Next.js requires inline scripts
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+      "img-src 'self' data: https:",
+    ].join("; "),
+  },
+];
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  async headers() {
+    return [{ source: "/(.*)", headers: securityHeaders }];
+  },
+};
+
+export default nextConfig;</code></pre>
+
+<p><strong>Exercise 4.2 — Harden SensorHub Security</strong></p>
+<p>Dataset: SensorHub project from Module 4.1.</p>
+<ol>
+<li>Add Upstash rate limiter with PASS_THROUGH fallback when Redis env vars are unset.</li>
+<li>Apply <code>reportLimiter</code> (10/hr per IP) to <code>/api/report</code> and <code>csvLimiter</code> (5/hr per user ID) to <code>/api/analyze-csv</code>.</li>
+<li>Add all 6 security headers in <code>next.config.mjs</code> and verify them in browser DevTools (Network → response headers).</li>
+<li>Audit all API routes: verify <code>ANTHROPIC_API_KEY</code> and <code>SUPABASE_SERVICE_ROLE_KEY</code> are only read server-side (no <code>NEXT_PUBLIC_</code> prefix).</li>
+<li>Run <code>next build</code> and verify 0 TypeScript errors. Use <code>curl -I</code> to confirm security headers appear on the response.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-monitoring-and-observability">Module 4.3 — Monitoring &amp; Observability</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 4.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Configure Sentry for Next.js and add structured per-request logging to all SensorHub API routes.<br>
+<strong>Skip if:</strong> You have configured Sentry in a Next.js app and written structured logs (JSON-serializable objects with event fields) before.<br>
+<strong>Unlocks:</strong> Module 5.1</p>
+</blockquote>
+
+<h4>Sentry Setup</h4>
+<pre><code class="language-bash">npx @sentry/wizard@latest -i nextjs
+# Generates: sentry.client.config.ts, sentry.server.config.ts, sentry.edge.config.ts
+# Adds instrumentation.ts at project root (NOT inside src/)</code></pre>
+
+<h4>Structured Logger</h4>
+<pre><code class="language-ts">// src/lib/logger.ts
+type LogLevel = "info" | "warn" | "error";
+
+interface LogEntry {
+  level: LogLevel;
+  event: string;
+  [key: string]: unknown;
+}
+
+function log(level: LogLevel, entry: Omit&lt;LogEntry, "level"&gt;) {
+  const line = JSON.stringify({ level, ts: new Date().toISOString(), ...entry });
+  if (level === "error") console.error(line);
+  else console.log(line);
+}
+
+export const logger = {
+  info:  (entry: Omit&lt;LogEntry, "level"&gt;) =&gt; log("info",  entry),
+  warn:  (entry: Omit&lt;LogEntry, "level"&gt;) =&gt; log("warn",  entry),
+  error: (entry: Omit&lt;LogEntry, "level"&gt;) =&gt; log("error", entry),
+};</code></pre>
+
+<h4>Per-Request Logging Wrapper</h4>
+<pre><code class="language-ts">// src/lib/withRequestLog.ts
+import { NextRequest, NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
+
+type RouteHandler = (req: NextRequest) =&gt; Promise&lt;NextResponse&gt;;
+
+export function withRequestLog(handler: RouteHandler): RouteHandler {
+  return async (req: NextRequest) =&gt; {
+    const start = Date.now();
+    let status = 500;
+    try {
+      const res = await handler(req);
+      status = res.status;
+      return res;
+    } catch (err) {
+      logger.error({ event: "request_error", path: req.nextUrl.pathname, err });
+      return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    } finally {
+      logger.info({
+        event: "request",
+        method: req.method,
+        path: req.nextUrl.pathname,
+        status,
+        duration_ms: Date.now() - start,
+      });
+    }
+  };
+}
+
+// Usage in a route:
+// export const POST = withRequestLog(async (req) =&gt; { ... });</code></pre>
+
+<p><strong>Exercise 4.3 — Add Monitoring to SensorHub</strong></p>
+<p>Dataset: SensorHub project from Module 4.2.</p>
+<ol>
+<li>Run the Sentry wizard and verify client, server, and edge configs are generated correctly.</li>
+<li>Implement the structured <code>logger</code> utility with info/warn/error levels.</li>
+<li>Implement <code>withRequestLog</code> and wrap all 4 API routes with it.</li>
+<li>Add Claude token usage logging in <code>/api/report</code>: log <code>input_tokens</code>, <code>output_tokens</code>, <code>cache_read_tokens</code>, and estimated cost per request.</li>
+<li>Trigger a deliberate error (bad Supabase query) and verify it appears in the Sentry dashboard.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-ai-powered-feature">Phase 4 Capstone: AI-Powered Feature</h3>
+<p><strong>Project: SensorHub AI Diagnostic Feature — Production-Hardened</strong></p>
+<p><strong>Dataset:</strong> SensorHub — multi-tenant IoT monitoring SaaS</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Working <code>POST /api/report</code> with Claude API streaming, prompt caching, fire-and-forget report persistence, and a 2-analysis free-tier limit.</li>
+<li><code>AIReportPanel</code> client component with real-time token streaming and AbortController cancel support.</li>
+<li>Upstash rate limiting with PASS_THROUGH fallback on both <code>/api/report</code> and <code>/api/analyze-csv</code>.</li>
+<li>All 6 security headers verified in browser DevTools.</li>
+<li>Sentry configured and <code>withRequestLog</code> wrapping all API routes with Claude token cost logging.</li>
+</ol>
+<hr />
+
+<h2 id="phase-5-testing-cicd-and-production">Phase 5: Testing, CI/CD &amp; Production</h2>
+<h3 id="weeks-11-13">Weeks 11–13 | Goal: Write a test suite, set up CI, and deploy to Vercel production</h3>
+<hr />
+
+<h3 id="module-51-unit-testing-with-vitest">Module 5.1 — Unit Testing with Vitest</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 4.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Write Vitest unit tests for the SensorHub scoring utilities covering all severity thresholds and edge cases — from scratch.<br>
+<strong>Skip if:</strong> You have written Vitest tests for pure functions and React components before.<br>
+<strong>Unlocks:</strong> Module 5.2</p>
+</blockquote>
+
+<p>Writing tests is itself a form of retrieval practice: you must state precisely what your function returns for every case — including edge cases you may have glossed over while writing the implementation. The friction of writing a failing test for an edge case you had not considered is exactly the productive difficulty that builds long-term retention. Do not skip boundary-value tests just because they feel obvious — "obvious" inputs expose non-obvious bugs, and finding them here costs seconds rather than hours in production.</p>
+<h4>Vitest Configuration</h4>
+<pre><code class="language-ts">// vitest.config.ts
+import { defineConfig } from "vitest/config";
+import tsconfigPaths from "vite-tsconfig-paths";
+
+export default defineConfig({
+  plugins: [tsconfigPaths()],
+  test: {
+    environment: "node",
+    globals: true,
+    include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
+  },
+});</code></pre>
+
+<h4>Testing Pure Utility Functions</h4>
+<pre><code class="language-ts">// src/lib/__tests__/scoring.test.ts
+import { describe, it, expect } from "vitest";
+import { classifySeverity, computeHealthScore } from "@/lib/scoring";
+
+describe("classifySeverity", () =&gt; {
+  it("returns 'normal' when max z-score is 0.4", () =&gt; {
+    expect(classifySeverity(0.4)).toBe("normal");
+  });
+  it("returns 'low' when max z-score is 0.8", () =&gt; {
+    expect(classifySeverity(0.8)).toBe("low");
+  });
+  it("returns 'medium' when max z-score is 2.0", () =&gt; {
+    expect(classifySeverity(2.0)).toBe("medium");
+  });
+  it("returns 'critical' when max z-score is 3.5", () =&gt; {
+    expect(classifySeverity(3.5)).toBe("critical");
+  });
+  it("returns 'critical' at exactly the 3.0 threshold", () =&gt; {
+    expect(classifySeverity(3.0)).toBe("critical");
+  });
+});
+
+describe("computeHealthScore", () =&gt; {
+  it("returns 100 with no anomalies", () =&gt; {
+    expect(computeHealthScore(0, 0, 100)).toBe(100);
+  });
+  it("returns 0 or near 0 with all critical readings", () =&gt; {
+    expect(computeHealthScore(100, 100, 100)).toBeLessThanOrEqual(10);
+  });
+  it("penalizes critical events more than low-severity ones", () =&gt; {
+    const lowScore = computeHealthScore(10, 0, 100);
+    const criticalScore = computeHealthScore(0, 10, 100);
+    expect(criticalScore).toBeLessThan(lowScore);
+  });
+});</code></pre>
+
+<h4>Zod Schema Tests</h4>
+<pre><code class="language-ts">// src/app/api/leads/__tests__/validation.test.ts
+import { describe, it, expect } from "vitest";
+import { z } from "zod";
+
+const LeadSchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(1).max(200),
+  source: z.enum(["landing_hero", "dashboard_cta", "csv_limit"]),
+});
+
+describe("LeadSchema", () =&gt; {
+  it("accepts valid input", () =&gt; {
+    const result = LeadSchema.safeParse({
+      email: "user@example.com",
+      name: "Alice",
+      source: "landing_hero",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects invalid email", () =&gt; {
+    const result = LeadSchema.safeParse({ email: "not-an-email", name: "Alice", source: "landing_hero" });
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects unknown source value", () =&gt; {
+    const result = LeadSchema.safeParse({ email: "a@b.com", name: "Alice", source: "unknown" });
+    expect(result.success).toBe(false);
+  });
+});</code></pre>
+
+<p><strong>Exercise 5.1 — Write SensorHub Unit Tests</strong></p>
+<p>Dataset: SensorHub project from Module 4.3.</p>
+<ol>
+<li>Configure <code>vitest.config.ts</code> with <code>vite-tsconfig-paths</code> and node environment.</li>
+<li>Write tests for <code>classifySeverity</code> covering all 4 severity levels and boundary values.</li>
+<li>Write tests for <code>computeHealthScore</code> covering no-anomaly baseline, all-critical, and mixed severity inputs.</li>
+<li>Write tests for the <code>LeadSchema</code> Zod schema covering valid input, invalid email, and unknown enum values.</li>
+<li>Run <code>npm test</code> and verify all tests pass with 0 failures.</li>
+</ol>
+<hr />
+
+<h3 id="module-52-e2e-testing-with-playwright">Module 5.2 — E2E Testing with Playwright</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 5.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Write Playwright tests for the SensorHub sign-in flow and lead capture form that run against a local dev server.<br>
+<strong>Skip if:</strong> You have written Playwright E2E tests with authentication flows before.<br>
+<strong>Unlocks:</strong> Module 5.3</p>
+</blockquote>
+
+<h4>Playwright Configuration</h4>
+<pre><code class="language-ts">// playwright.config.ts
+import { defineConfig, devices } from "@playwright/test";
+
+export default defineConfig({
+  testDir: "./e2e",
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: "html",
+  use: {
+    baseURL: "http://localhost:3000",
+    trace: "on-first-retry",
+    screenshot: "only-on-failure",
+  },
+  projects: [
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+  ],
+  webServer: {
+    command: "npm run dev",
+    url: "http://localhost:3000",
+    reuseExistingServer: !process.env.CI,
+  },
+});</code></pre>
+
+<h4>Testing the Lead Capture Flow</h4>
+<pre><code class="language-ts">// e2e/lead-capture.spec.ts
+import { test, expect } from "@playwright/test";
+
+test.describe("Lead capture form", () =&gt; {
+  test("submits successfully and shows confirmation", async ({ page }) =&gt; {
+    await page.goto("/");
+    await page.getByRole("button", { name: /request assessment/i }).click();
+
+    await page.getByLabel(/name/i).fill("Alice Martinez");
+    await page.getByLabel(/email/i).fill("alice@acme.com");
+    await page.getByLabel(/company/i).fill("Acme Industries");
+    await page.getByRole("button", { name: /submit/i }).click();
+
+    await expect(page.getByText(/request received/i)).toBeVisible({ timeout: 5000 });
+  });
+
+  test("shows validation error for invalid email", async ({ page }) =&gt; {
+    await page.goto("/");
+    await page.getByRole("button", { name: /request assessment/i }).click();
+    await page.getByLabel(/email/i).fill("not-an-email");
+    await page.getByRole("button", { name: /submit/i }).click();
+    await expect(page.getByText(/valid email/i)).toBeVisible();
+  });
+});</code></pre>
+
+<h4>Testing Auth-Gated Routes</h4>
+<pre><code class="language-ts">// e2e/auth.spec.ts
+import { test, expect } from "@playwright/test";
+
+test.describe("Authentication", () =&gt; {
+  test("redirects unauthenticated users from /dashboard to /sign-in", async ({ page }) =&gt; {
+    await page.goto("/dashboard");
+    await expect(page).toHaveURL(/sign-in/);
+  });
+
+  test("landing page is publicly accessible", async ({ page }) =&gt; {
+    await page.goto("/");
+    await expect(page).toHaveURL("/");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  });
+});</code></pre>
+
+<p><strong>Exercise 5.2 — Write SensorHub E2E Tests</strong></p>
+<p>Dataset: SensorHub project from Module 5.1.</p>
+<ol>
+<li>Configure <code>playwright.config.ts</code> with the webServer directive pointing to <code>npm run dev</code>.</li>
+<li>Write a test that verifies unauthenticated access to <code>/dashboard</code> redirects to <code>/sign-in</code>.</li>
+<li>Write a test for the lead capture modal: open → fill form → submit → see confirmation.</li>
+<li>Write a test for the lead form validation: submit with an invalid email → see an error message.</li>
+<li>Run <code>npm run test:e2e</code> against the running dev server and verify all tests pass.</li>
+</ol>
+<hr />
+
+<h3 id="module-53-vercel-deployment-and-cicd">Module 5.3 — Vercel Deployment &amp; CI/CD</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 5.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Configure a GitHub Actions workflow that runs typecheck + Vitest on push and deploys to Vercel on merge to main.<br>
+<strong>Skip if:</strong> You have set up GitHub Actions CI with Vercel preview deployments and production promotion before.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4>Environment Variables on Vercel</h4>
+<pre class="artifact" data-kind="CHECKLIST"><code>Vercel Environment Variable Setup Checklist
+
+Production environment:
+  [ ] NEXT_PUBLIC_SUPABASE_URL         (Prod Supabase project)
+  [ ] NEXT_PUBLIC_SUPABASE_ANON_KEY    (Prod Supabase project)
+  [ ] SUPABASE_SERVICE_ROLE_KEY        (Prod — never NEXT_PUBLIC_)
+  [ ] ANTHROPIC_API_KEY                (Production key)
+  [ ] UPSTASH_REDIS_REST_URL           (Production Redis)
+  [ ] UPSTASH_REDIS_REST_TOKEN         (Production Redis)
+  [ ] SENTRY_DSN                       (Production DSN)
+
+Preview environment:
+  [ ] NEXT_PUBLIC_SUPABASE_URL         (Staging Supabase project)
+  [ ] NEXT_PUBLIC_SUPABASE_ANON_KEY    (Staging)
+  [ ] SUPABASE_SERVICE_ROLE_KEY        (Staging)
+  [ ] ANTHROPIC_API_KEY                (Same key is fine for staging)
+  [ ] Upstash vars optional (PASS_THROUGH fallback handles missing)
+
+Security check:
+  [ ] No secret keys with NEXT_PUBLIC_ prefix
+  [ ] .env.local in .gitignore (verify with: git check-ignore .env.local)
+  [ ] Service role key NOT in any client component import</code></pre>
+
+<h4>GitHub Actions CI Workflow</h4>
+<pre><code class="language-yaml"># .github/workflows/ci.yml
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: $&#123;&#123; secrets.NEXT_PUBLIC_SUPABASE_URL &#125;&#125;
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: $&#123;&#123; secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY &#125;&#125;
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build</code></pre>
+
+<h4>Vercel Deployment Commands</h4>
+<pre><code class="language-bash"># Initial setup (one time)
+npm i -g vercel
+vercel link                   # links local project to Vercel project
+vercel env pull .env.local    # pulls production env vars to local
+
+# Preview deploy (any branch)
+vercel
+
+# Production deploy (main branch — manual)
+vercel --prod
+
+# CI auto-deploy: install Vercel GitHub integration from vercel.com/dashboard
+# Then every push to main auto-deploys to production
+# Every PR gets a unique preview URL</code></pre>
+
+<p><strong>Exercise 5.3 — Deploy SensorHub to Vercel</strong></p>
+<p>Dataset: SensorHub project from Module 5.2.</p>
+<ol>
+<li>Create a Vercel project and link the SensorHub repository via the Vercel dashboard or CLI.</li>
+<li>Set all 7 environment variables for the production environment in Vercel dashboard.</li>
+<li>Create <code>.github/workflows/ci.yml</code> with typecheck, lint, unit tests, and build steps.</li>
+<li>Push to a feature branch — verify the GitHub Actions workflow passes and a Vercel preview URL is generated.</li>
+<li>Merge to main — verify the production deployment succeeds at your <code>.vercel.app</code> URL. Test the full user flow: landing page → lead form → sign in → dashboard → AI report.</li>
+</ol>
+<hr />
+
+<h3 id="phase-5-capstone-production-launch">Phase 5 Capstone: Production Launch</h3>
+<p><strong>Project: SensorHub Production Launch</strong></p>
+<p><strong>Dataset:</strong> SensorHub — multi-tenant IoT monitoring SaaS</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Vitest suite with tests for all pure utilities (scoring, Zod schemas) — zero failures.</li>
+<li>Playwright E2E suite covering redirect-on-unauth, lead form submit, and form validation — zero failures.</li>
+<li>GitHub Actions CI workflow that runs typecheck + lint + unit tests + build on every push.</li>
+<li>Vercel production deployment with all env vars set, <code>next build</code> clean, and preview deploy on every PR.</li>
+<li>Verified production URL: full user flow passes (landing → sign in → dashboard → AI report → report saved).</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-webapp-product-dev">Final Capstone: Full SensorHub — PRD to Production</h2>
+<p><strong>Project: SensorHub v1.0 — Complete Multi-Tenant IoT SaaS</strong></p>
+<p>Integrates all 5 phases. Uses the SensorHub benchmark project from every prior exercise.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li><strong>Product definition artifacts:</strong> PRD.md (8 sections, 12+ FRs), TDD.md (9 sections, architecture diagram), schema.sql (5 tables, RLS, indexes, trigger).</li>
+<li><strong>Running application:</strong> Next.js 16 App Router + TypeScript strict, deployed to Vercel production URL.</li>
+<li><strong>Auth:</strong> Magic-link sign-in, cookie sessions, route-protection middleware, <code>/auth/callback</code> route.</li>
+<li><strong>Core features:</strong> Asset list dashboard, sensor timeline chart with anomaly overlay, health score cards, reports page (Server Component), lead capture form.</li>
+<li><strong>AI feature:</strong> Streaming Claude diagnostic report with prompt caching, free-tier limit (2/user), and fire-and-forget persistence to <code>health_reports</code>.</li>
+<li><strong>Security:</strong> Upstash rate limiting with PASS_THROUGH fallback, all 6 security headers, no secrets in client code, RLS verified on all 5 tables.</li>
+<li><strong>Observability:</strong> Sentry configured, <code>withRequestLog</code> wrapping all routes, Claude token cost logging.</li>
+<li><strong>Tests:</strong> Vitest unit tests (scoring + Zod schemas), Playwright E2E tests (auth redirect, lead form), GitHub Actions CI passing.</li>
+<li><strong>CI/CD:</strong> Automated typecheck + lint + test + build on every push, Vercel preview URL on every PR, auto-deploy to production on main.</li>
+<li><strong>Production checklist:</strong> <code>next build</code> clean, 0 TypeScript errors, all env vars in Vercel dashboard, no committed <code>.env.local</code>, health endpoint at <code>/api/health</code> returning <code>{ status: "ok" }</code>.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Webapp Product Dev Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Pattern</th><th>Notes</th></tr>
+<tr><td>Validate request body</td><td>Zod <code>safeParse</code></td><td>Always validate at route boundary before any business logic</td></tr>
+<tr><td>Auth in Server Component / route / middleware</td><td><code>createServerSupabase().auth.getUser()</code></td><td>Use <code>getUser()</code> (revalidates JWT) — never <code>getSession()</code> server-side</td></tr>
+<tr><td>Auth in Client Component</td><td><code>createBrowserSupabase().auth.getSession()</code></td><td><code>getSession()</code> is fine client-side; never import <code>supabase-server</code> in client components</td></tr>
+<tr><td>Protect a route</td><td><code>src/middleware.ts</code> + <code>matcher</code></td><td>Runs on Edge Runtime — no Node APIs</td></tr>
+<tr><td>Stream LLM response</td><td><code>for await (event of anthropic.messages.stream())</code></td><td>Enqueue <code>text_delta</code> text into a <code>ReadableStream</code> — don't pipe raw <code>toReadableStream()</code> JSON to a text client</td></tr>
+<tr><td>Cancel a stream</td><td><code>AbortController</code> on <code>fetch()</code></td><td>Pass <code>signal</code> to <code>fetch</code>, call <code>abort()</code> on cancel</td></tr>
+<tr><td>Prompt caching</td><td><code>cache_control: { type: "ephemeral" }</code></td><td>Apply to system prompt; saves cost on repeated calls</td></tr>
+<tr><td>Parallel DB queries</td><td><code>Promise.all([query1, query2])</code></td><td>Halves latency vs. sequential awaits</td></tr>
+<tr><td>Rate limit a route</td><td>Upstash <code>Ratelimit.slidingWindow</code></td><td>Return PASS_THROUGH when env vars unset (local dev)</td></tr>
+<tr><td>Soft delete</td><td><code>deleted_at TIMESTAMPTZ</code> column</td><td>Filter <code>WHERE deleted_at IS NULL</code> in all queries</td></tr>
+<tr><td>Multi-tenant isolation</td><td>RLS + <code>organization_id = my_org()</code></td><td>Never bypass with service role for user-facing reads</td></tr>
+<tr><td>Test a utility</td><td>Vitest + <code>describe</code> / <code>it</code> / <code>expect</code></td><td>Test all boundary values, not just happy paths</td></tr>
+<tr><td>Test a user flow</td><td>Playwright <code>page.getByRole</code></td><td>Use ARIA roles, not CSS selectors — more resilient</td></tr>
+<tr><td>Deploy to preview</td><td><code>vercel</code> (CLI) or push a PR branch</td><td>Each PR gets a unique preview URL automatically</td></tr>
+<tr><td>Add security headers</td><td><code>next.config.mjs</code> <code>headers()</code></td><td>Apply to <code>source: "/(.*)"</code> to cover all routes</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions are tight by design — one or two sentences stating what a term <em>is</em>, not how to use it. Each entry includes an <strong style="color:var(--coral)">Avoid</strong> line listing synonyms or near-misses that cause confusion. Once a term appears here, it is used consistently across every module.</p>
+
+<h3 id="glossary-product-definition">Product Definition</h3>
+<dl class="glossary">
+
+<dt>PRD (Product Requirements Document)</dt>
+<dd>The contract that defines <em>what</em> to build and <em>why</em> — scope, target users, user stories, acceptance criteria, and prioritized functional requirements. The TDD answers how; the PRD answers what and why.</dd>
+<dd class="avoid"><strong>Avoid:</strong> spec, product spec, requirements doc — these terms blur the boundary between what and how that the PRD/TDD split enforces.</dd>
+
+<dt>TDD (Technical Design Document)</dt>
+<dd>The document that answers how the PRD will be built — architecture, technology choices with rationale, component design, API contracts, and security model. Every decision traces back to a PRD requirement. Not to be confused with Test-Driven Development.</dd>
+<dd class="avoid"><strong>Avoid:</strong> architecture doc, tech spec — acceptable elsewhere but not used in this guide; TDD is used consistently to mean the design document.</dd>
+
+<dt>User Story</dt>
+<dd>A requirement written from a persona's perspective: "As a [persona], I want [action] so that [outcome]." The "so that" clause is non-negotiable — it anchors the requirement to a real outcome and makes the story testable.</dd>
+<dd class="avoid"><strong>Avoid:</strong> feature request, ticket — both lack the persona and outcome context that make a story verifiable.</dd>
+
+<dt>Acceptance Criteria (AC)</dt>
+<dd>A binary, verifiable condition that a user story must satisfy before it is considered done. Written in Given/When/Then form: <em>Given [context], when [action], then [observable outcome].</em> Binary means pass or fail — no partial credit.</dd>
+<dd class="avoid"><strong>Avoid:</strong> definition of done (broader, team-level agreement), success criteria (often qualitative and non-binary).</dd>
+
+<dt>MoSCoW</dt>
+<dd>A prioritization framework for functional requirements: Must Have (MVP breaks without it), Should Have (important but workaroundable), Could Have (cut if time-pressed), Won't Have (explicitly deferred). Forces ranking — if everything is Must Have, nothing is.</dd>
+<dd class="avoid"><strong>Avoid:</strong> high/medium/low priority — no shared definition of those levels across a team.</dd>
+
+<dt>MVP (Minimum Viable Product)</dt>
+<dd>The smallest set of Must Have features that delivers the core value proposition to real users and generates real feedback. A shipped product, not a prototype.</dd>
+<dd class="avoid"><strong>Avoid:</strong> prototype (not shipped to real users), v1 (implies a fuller feature set than MVP).</dd>
+
+<dt>Scope Creep</dt>
+<dd>The gradual, informal expansion of requirements beyond the agreed PRD — usually through ad hoc additions during development. An explicit Out of Scope section in the PRD is the primary defense.</dd>
+<dd class="avoid"><strong>Avoid:</strong> feature bloat — that is the outcome of scope creep, not the process itself.</dd>
+
+<dt>Functional Requirement (FR)</dt>
+<dd>A specific capability the system must provide, numbered and MoSCoW-prioritized in the PRD. Each FR should map to at least one TDD section that implements it.</dd>
+<dd class="avoid"><strong>Avoid:</strong> feature — a feature implies a user-facing unit of UX; a FR is a capability that may cross multiple features.</dd>
+
+<dt>Non-Functional Requirement (NFR)</dt>
+<dd>A quality attribute the system must have — performance, security, scalability, availability, or accessibility — rather than a specific capability. NFRs constrain how FRs are implemented.</dd>
+<dd class="avoid"><strong>Avoid:</strong> technical requirement — conflates NFRs with implementation details that belong in the TDD.</dd>
+
+</dl>
+
+<h3 id="glossary-project-setup">Project Setup &amp; Database</h3>
+<dl class="glossary">
+
+<dt>Row-Level Security (RLS)</dt>
+<dd>A PostgreSQL mechanism that filters the rows visible to any query based on a policy evaluated for the current session's role and claims. Enforced at the database level — cannot be bypassed by application code bugs.</dd>
+<dd class="avoid"><strong>Avoid:</strong> app-level filtering — application WHERE clauses can be accidentally omitted; RLS cannot be.</dd>
+
+<dt>Multi-tenant</dt>
+<dd>An architecture where a single database and application instance serves multiple customer organizations, with strict data isolation between tenants. In SensorHub, isolation is implemented via <code>organization_id</code> on every table plus RLS policies.</dd>
+<dd class="avoid"><strong>Avoid:</strong> multi-user — users share one organization; tenants are separate organizations with separate data.</dd>
+
+<dt>Soft Delete</dt>
+<dd>Marking a record as deleted by setting a <code>deleted_at</code> timestamp instead of removing the row. Preserves audit history and allows recovery. All queries must include <code>WHERE deleted_at IS NULL</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> logical delete (same concept; soft delete is the more common term in this stack), archive.</dd>
+
+<dt>Audit Columns</dt>
+<dd>The standard set of <code>created_at</code>, <code>updated_at</code>, and optionally <code>created_by</code> columns on every table, tracking record history. <code>updated_at</code> is maintained by a database trigger, not application code.</dd>
+<dd class="avoid"><strong>Avoid:</strong> timestamps — too generic; audit columns have a defined purpose beyond time-tracking.</dd>
+
+<dt>Migration</dt>
+<dd>A versioned SQL file that transforms the database schema from one state to another. Applied sequentially by the Supabase CLI. Never edit a migration already applied to a shared environment — create a new one instead.</dd>
+<dd class="avoid"><strong>Avoid:</strong> SQL script, schema update — neither implies versioning or sequential application guarantees.</dd>
+
+<dt>Anon Role</dt>
+<dd>The Supabase database role used for unauthenticated requests. RLS policies for the anon role control what non-logged-in users can read. In SensorHub, anon users see only rows where <code>is_demo = true</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> guest, public — user-experience terms; anon is the database role name used in RLS policies.</dd>
+
+<dt><code>my_org()</code></dt>
+<dd>The SQL helper function that returns the <code>organization_id</code> of the currently authenticated user by reading from the <code>profiles</code> table. Used in every RLS policy to enforce tenant isolation without repeating the JOIN logic in each policy.</dd>
+<dd class="avoid"><strong>Avoid:</strong> tenant helper — use the specific function name <code>my_org()</code> when referencing this function.</dd>
+
+<dt><code>getUser()</code> vs <code>getSession()</code></dt>
+<dd><code>getUser()</code> revalidates the JWT against the Supabase Auth server — required in all server-side code where the trust boundary exists (middleware, Route Handlers, Server Components). <code>getSession()</code> decodes the cookie locally without revalidation — acceptable on the client, spoofable on the server.</dd>
+<dd class="avoid"><strong>Avoid:</strong> using <code>getSession()</code> server-side for any access-control decision.</dd>
+
+</dl>
+
+<h3 id="glossary-core-development">Core Development</h3>
+<dl class="glossary">
+
+<dt>Server Component</dt>
+<dd>A React component that runs only on the server, with direct database and environment-variable access. Sends HTML to the client — no JavaScript bundle. The default in Next.js App Router. Cannot use <code>useState</code>, <code>useEffect</code>, event handlers, or browser APIs.</dd>
+<dd class="avoid"><strong>Avoid:</strong> SSR component — SSR is a rendering strategy; Server Component is a component model. Related but distinct.</dd>
+
+<dt>Client Component</dt>
+<dd>A React component marked with <code>"use client"</code> that ships a JavaScript bundle to the browser and can use hooks, event handlers, and browser APIs. Push the boundary as deep in the component tree as possible to minimize bundle size.</dd>
+<dd class="avoid"><strong>Avoid:</strong> frontend component — all components are frontend; the distinction is where they execute (server vs. browser).</dd>
+
+<dt>Route Handler</dt>
+<dd>A Next.js App Router API endpoint defined in a <code>route.ts</code> file. Handles HTTP methods (GET, POST, etc.) and returns a <code>NextResponse</code>. The App Router replacement for Pages Router API routes.</dd>
+<dd class="avoid"><strong>Avoid:</strong> API route (the Pages Router term for the equivalent concept), serverless function (infrastructure layer).</dd>
+
+<dt>Route Group</dt>
+<dd>A Next.js App Router directory wrapped in parentheses — e.g. <code>(marketing)</code> — that groups routes under a shared layout without contributing a URL path segment. Used in SensorHub to separate the public marketing layout from the auth-required dashboard layout.</dd>
+<dd class="avoid"><strong>Avoid:</strong> layout group, folder grouping.</dd>
+
+<dt>Zod <code>safeParse</code></dt>
+<dd>The non-throwing variant of Zod validation. Returns <code>&#123; success: true, data &#125;</code> or <code>&#123; success: false, error &#125;</code> instead of throwing. Required in Route Handlers: a thrown validation error surfaces as a 500; <code>safeParse</code> lets you return a clean 400.</dd>
+<dd class="avoid"><strong>Avoid:</strong> <code>.parse()</code> in route handlers — throws on invalid input, masking the validation failure as an internal server error.</dd>
+
+<dt>Magic Link</dt>
+<dd>A passwordless sign-in method where a one-time URL is emailed to the user. Implemented via Supabase <code>signInWithOtp</code>. Removes password storage, reset flows, and brute-force attack surface from the system.</dd>
+<dd class="avoid"><strong>Avoid:</strong> OTP link (OTP usually implies a numeric code, not a URL), passwordless email (describes the medium, not the mechanism).</dd>
+
+<dt>Cookie Session</dt>
+<dd>An authentication session stored in an HTTP-only cookie, accessible to server-side code. Required for Next.js App Router auth. Managed by <code>@supabase/ssr</code> via <code>createServerClient</code> with a cookie adapter.</dd>
+<dd class="avoid"><strong>Avoid:</strong> JWT in <code>localStorage</code> — not accessible server-side and vulnerable to XSS.</dd>
+
+<dt>Middleware (Next.js)</dt>
+<dd>A function in <code>src/middleware.ts</code> that runs on the Edge Runtime before matched requests are processed. In SensorHub, calls <code>getUser()</code> and redirects unauthenticated users away from <code>/dashboard/*</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> auth guard (describes intent, not the mechanism), interceptor (term from other frameworks).</dd>
+
+</dl>
+
+<h3 id="glossary-ai-production">AI &amp; Production</h3>
+<dl class="glossary">
+
+<dt>Streaming (LLM)</dt>
+<dd>Delivering LLM response tokens to the client as they are generated, rather than waiting for the full response. In SensorHub, the Route Handler enqueues text deltas into a <code>ReadableStream</code>; the client reads with <code>res.body.getReader()</code>. Reduces perceived latency for long AI responses.</dd>
+<dd class="avoid"><strong>Avoid:</strong> server-sent events (a different protocol), chunked transfer (HTTP infrastructure term, not the application-level pattern).</dd>
+
+<dt>Prompt Caching</dt>
+<dd>An Anthropic API feature that stores a prompt prefix server-side for up to 5 minutes. Applied via <code>cache_control: &#123; type: "ephemeral" &#125;</code> on the system message. Subsequent requests reusing the same prefix are billed at cache-read pricing — approximately 90% cheaper for input tokens.</dd>
+<dd class="avoid"><strong>Avoid:</strong> response caching (caches the output, not the input), memoization (in-memory client-side concept).</dd>
+
+<dt>Fire-and-Forget</dt>
+<dd>An async operation that is started but not awaited — the caller does not wait for completion or handle the result. Used in SensorHub to persist the health report to <code>health_reports</code> after the stream closes, without blocking the streaming response to the client.</dd>
+<dd class="avoid"><strong>Avoid:</strong> background job — implies a queue with retry and failure handling; fire-and-forget is unqueued and not retried on error.</dd>
+
+<dt>Rate Limiting</dt>
+<dd>Restricting how many requests a caller can make within a time window. In SensorHub, implemented with Upstash sliding-window limiting keyed on IP (public routes) or user ID (authenticated routes). Returns HTTP 429 with a <code>Retry-After</code> header when exceeded.</dd>
+<dd class="avoid"><strong>Avoid:</strong> throttling — usually means slowing requests down, not blocking them.</dd>
+
+<dt>Sliding Window (rate limiting)</dt>
+<dd>A rate-limiting algorithm that counts requests within a rolling window relative to the current moment, not a fixed clock boundary. Avoids the burst-at-boundary problem of fixed-window limiting, where two windows' worth of requests can be sent at a reset boundary.</dd>
+<dd class="avoid"><strong>Avoid:</strong> fixed window — counts from a fixed clock interval and is vulnerable to burst attacks at reset boundaries.</dd>
+
+<dt>Structured Logging</dt>
+<dd>Emitting log lines as JSON objects with named, typed fields (<code>event</code>, <code>level</code>, <code>duration_ms</code>, etc.) rather than free-form strings. Structured logs can be queried, aggregated, and alerted on by log management tools.</dd>
+<dd class="avoid"><strong>Avoid:</strong> <code>console.log("string")</code> for production instrumentation — unqueryable and loses context.</dd>
+
+<dt>Preview Deployment</dt>
+<dd>A unique, short-lived Vercel URL generated for every pull-request branch. Allows testing in a production-like environment before merging to main. Automatically receives the preview environment variables set in the Vercel dashboard.</dd>
+<dd class="avoid"><strong>Avoid:</strong> staging environment — staging is a single persistent environment; preview deployments are ephemeral per PR.</dd>
+
+<dt>Security Headers</dt>
+<dd>HTTP response headers that instruct browsers to enforce content policies and reject certain attack vectors. In SensorHub, applied globally via <code>next.config.mjs</code>'s <code>headers()</code> function. Includes <code>Content-Security-Policy</code>, <code>X-Frame-Options</code>, and <code>Strict-Transport-Security</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> CORS headers — a related but separate concept; CORS controls cross-origin request permissions, not content security policy.</dd>
+
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>The Lean Startup — Eric Ries</td><td>PRD thinking, validated learning, MVP scoping</td></tr>
+<tr><td>Designing Data-Intensive Applications — Martin Kleppmann</td><td>Database schema design, consistency, indexing</td></tr>
+<tr><td>Clean Code — Robert C. Martin</td><td>Writing readable, maintainable TypeScript</td></tr>
+<tr><td>Testing JavaScript Applications — Lucas da Costa</td><td>Vitest, integration testing, test strategy</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>nextjs.org/docs/app</td><td>App Router, Server Components, Route Handlers</td><td>Canonical — check here before Stack Overflow</td></tr>
+<tr><td>supabase.com/docs</td><td>Supabase Auth, RLS, Supabase SSR client</td><td>Auth + RLS section is essential</td></tr>
+<tr><td>docs.anthropic.com</td><td>Claude API, streaming, prompt caching, tool use</td><td>Check model IDs and pricing before starting a project</td></tr>
+<tr><td>upstash.com/docs/redis/sdks/ratelimit</td><td>Upstash rate limiting patterns</td><td>Sliding window vs. fixed window tradeoffs</td></tr>
+<tr><td>playwright.dev/docs/intro</td><td>Playwright setup, selectors, assertions</td><td>Use <code>getByRole</code> for robust selectors</td></tr>
+<tr><td>vitest.dev/guide</td><td>Vitest config, mocking, coverage</td><td>Faster than Jest for Vite-based projects</td></tr>
+<tr><td>vercel.com/docs/deployments/overview</td><td>Vercel CLI, env vars, preview deployments</td><td>GitHub integration setup is 5 minutes</td></tr>
+<tr><td>zod.dev</td><td>Zod schema validation API</td><td>Learn <code>safeParse</code>, <code>transform</code>, <code>refine</code></td></tr>
+</table>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>Supabase free tier</td><td>Managed PostgreSQL + Auth for the SensorHub project</td></tr>
+<tr><td>Upstash free tier</td><td>Redis for rate limiting (10k commands/day free)</td></tr>
+<tr><td>Vercel hobby plan</td><td>Hosting + CI/CD preview deploys (free for personal projects)</td></tr>
+<tr><td>Sentry free tier</td><td>Error tracking (5k errors/month free)</td></tr>
+<tr><td>SKAB pump dataset</td><td>Test CSV for the SensorHub CSV upload feature</td></tr>
+</table>
+<h3 id="communities">Communities</h3>
+<p>Wisdom — knowing what works in practice rather than in theory — comes from exposure to real builders shipping real SaaS products. The communities below are where practitioners discuss what breaks in production, which architectural decisions age well, and what customers actually want. Lurk first; post questions when you are stuck on something you have already attempted.</p>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>r/nextjs</td><td>Reddit</td><td>App Router edge cases, SSR patterns, Vercel deployment gotchas</td></tr>
+<tr><td>Supabase Discord</td><td>Discord</td><td>RLS policy review, Auth edge cases, query optimization</td></tr>
+<tr><td>Indie Hackers</td><td>Web</td><td>SaaS validation, pricing, finding first users, honest revenue numbers</td></tr>
+<tr><td>Anthropic Developer Discord</td><td>Discord</td><td>Claude API streaming patterns, prompt engineering, tool use</td></tr>
+<tr><td>r/SaaS</td><td>Reddit</td><td>Go-to-market, churn analysis, growth strategies from founders who shipped</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is session-only and resets on reload.</p></blockquote>
+<h4>Phase 1 — Product Definition</h4>
+<ul>
+<li>[ ] Module 1.1 — PRD Writing</li>
+<li>[ ] Exercise 1.1 — SensorHub PRD</li>
+<li>[ ] Module 1.2 — TDD Creation</li>
+<li>[ ] Exercise 1.2 — SensorHub TDD</li>
+<li>[ ] Module 1.3 — Database Schema Design</li>
+<li>[ ] Exercise 1.3 — SensorHub Schema SQL</li>
+<li>[ ] Capstone 1 — Complete Product Specification</li>
+</ul>
+<h4>Phase 2 — Project Setup &amp; Architecture</h4>
+<ul>
+<li>[ ] Module 2.1 — Next.js App Router Scaffolding</li>
+<li>[ ] Exercise 2.1 — Scaffold SensorHub</li>
+<li>[ ] Module 2.2 — Supabase Setup &amp; RLS</li>
+<li>[ ] Exercise 2.2 — Apply Schema and Verify RLS</li>
+<li>[ ] Module 2.3 — Supabase Auth (Magic Link)</li>
+<li>[ ] Exercise 2.3 — Wire Up Auth</li>
+<li>[ ] Capstone 2 — Working Auth + DB Foundation</li>
+</ul>
+<h4>Phase 3 — Core Feature Development</h4>
+<ul>
+<li>[ ] Module 3.1 — Next.js API Routes</li>
+<li>[ ] Exercise 3.1 — Build API Routes</li>
+<li>[ ] Module 3.2 — React Components &amp; Tailwind CSS</li>
+<li>[ ] Exercise 3.2 — Build UI Components</li>
+<li>[ ] Module 3.3 — Data Fetching &amp; State Management</li>
+<li>[ ] Exercise 3.3 — Wire Up Dashboard Data Layer</li>
+<li>[ ] Module 3.4 — SSR &amp; App Router Patterns</li>
+<li>[ ] Exercise 3.4 — SSR Patterns</li>
+<li>[ ] Capstone 3 — Core Dashboard Live</li>
+</ul>
+<h4>Phase 4 — AI Integration &amp; Advanced Features</h4>
+<ul>
+<li>[ ] Module 4.1 — Claude API Integration (Streaming)</li>
+<li>[ ] Exercise 4.1 — Build AI Feature</li>
+<li>[ ] Module 4.2 — Rate Limiting &amp; Security Hardening</li>
+<li>[ ] Exercise 4.2 — Harden Security</li>
+<li>[ ] Module 4.3 — Monitoring &amp; Observability</li>
+<li>[ ] Exercise 4.3 — Add Monitoring</li>
+<li>[ ] Capstone 4 — AI Feature Production-Hardened</li>
+</ul>
+<h4>Phase 5 — Testing, CI/CD &amp; Production</h4>
+<ul>
+<li>[ ] Module 5.1 — Unit Testing with Vitest</li>
+<li>[ ] Exercise 5.1 — Write Unit Tests</li>
+<li>[ ] Module 5.2 — E2E Testing with Playwright</li>
+<li>[ ] Exercise 5.2 — Write E2E Tests</li>
+<li>[ ] Module 5.3 — Vercel Deployment &amp; CI/CD</li>
+<li>[ ] Exercise 5.3 — Deploy to Vercel Production</li>
+<li>[ ] Capstone 5 — Production Launch</li>
+</ul>
+<h4>Final Deliverables</h4>
+<ul>
+<li>[ ] Final Capstone — SensorHub v1.0 complete</li>
+<li>[ ] PRD.md + TDD.md committed to repo</li>
+<li>[ ] All GitHub Actions CI checks passing</li>
+<li>[ ] Production URL live and all user flows verified</li>
+</ul>
+
+<p><em>Guide Version 1.0 — Webapp Product Development Track: PRD to Production</em><br>
+<em>Non-linear modular design · Placement quiz · 16 modules · ~13 weeks part-time · hayah-ai</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

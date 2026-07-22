@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Learning Guide — Beginner to Intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Python<br>Learning Guide</div>
+      <div class="brand-sub">Core · Pandas · FastAPI · SQLAlchemy · pytest</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-intermediate-track" class="nav-top">Beginner to Intermediate Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+<div class="nav-group">
+<a href="#phase-1-foundations" class="nav-top nav-phase">Phase 1: Foundations</a>
+<div class="nav-children">
+<a href="#module-11-setup-tooling" class="nav-child">Module 1.1 — Setup &amp; Tooling</a>
+<a href="#module-12-core-syntax-types" class="nav-child">Module 1.2 — Core Syntax &amp; Types</a>
+<a href="#module-13-control-flow-functions" class="nav-child">Module 1.3 — Control Flow &amp; Functions</a>
+<a href="#module-14-data-structures-comprehensions" class="nav-child">Module 1.4 — Data Structures &amp; Comprehensions</a>
+<a href="#phase-1-capstone-cli-inventory-tool" class="nav-child">Phase 1 Capstone: CLI Inventory Tool</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-2-data-files" class="nav-top nav-phase">Phase 2: Data &amp; Files</a>
+<div class="nav-children">
+<a href="#module-21-files-csv-json" class="nav-child">Module 2.1 — Files, CSV &amp; JSON</a>
+<a href="#module-22-errors-logging" class="nav-child">Module 2.2 — Errors &amp; Logging</a>
+<a href="#module-23-pandas-essentials" class="nav-child">Module 2.3 — Pandas Essentials</a>
+<a href="#phase-2-capstone-sales-analytics-report" class="nav-child">Phase 2 Capstone: Sales Analytics Report</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-3-pythonic-oop" class="nav-top nav-phase">Phase 3: Pythonic OOP</a>
+<div class="nav-children">
+<a href="#module-31-classes-dataclasses" class="nav-child">Module 3.1 — Classes &amp; Dataclasses</a>
+<a href="#module-32-iterators-generators-decorators" class="nav-child">Module 3.2 — Iterators, Generators &amp; Decorators</a>
+<a href="#module-33-type-hints" class="nav-child">Module 3.3 — Type Hints</a>
+<a href="#phase-3-capstone-bookstore-domain-model" class="nav-child">Phase 3 Capstone: Bookstore Domain Model</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-4-real-world-python" class="nav-top nav-phase">Phase 4: Real-World Python</a>
+<div class="nav-children">
+<a href="#module-41-consuming-apis-requests" class="nav-child">Module 4.1 — Consuming APIs (requests)</a>
+<a href="#module-42-rest-api-fastapi" class="nav-child">Module 4.2 — REST API with FastAPI</a>
+<a href="#module-43-databases-sqlite-sqlalchemy" class="nav-child">Module 4.3 — Databases: SQLite &amp; SQLAlchemy</a>
+<a href="#phase-4-capstone-bookstore-rest-api" class="nav-child">Phase 4 Capstone: Bookstore REST API</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-5-quality-delivery" class="nav-top nav-phase">Phase 5: Quality &amp; Delivery</a>
+<div class="nav-children">
+<a href="#module-51-testing-pytest" class="nav-child">Module 5.1 — Testing with pytest</a>
+<a href="#module-52-packaging-venv-automation" class="nav-child">Module 5.2 — Packaging, venv &amp; Automation</a>
+<a href="#phase-5-capstone-packaged-cli-tool" class="nav-child">Phase 5 Capstone: Packaged CLI Tool</a>
+</div></div>
+<a href="#final-capstone-bookcart-platform" class="nav-top">Final Capstone: BookCart Platform</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#resources" class="nav-top">Learning Resources</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="python-learning-guide">Python Learning Guide</h1>
+<h2 id="beginner-to-intermediate-track">Beginner to Intermediate Track</h2>
+<h3>Core Python · Pandas · FastAPI · SQLAlchemy · pytest</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 255" role="img" aria-label="Python" xmlns="http://www.w3.org/2000/svg">
+<path fill="#075249" d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.072 61.355.072 126.77c0 65.413 36.289 63.093 36.289 63.093h21.61v-30.356s-1.165-36.289 35.69-36.289h61.43s34.448.557 34.448-33.293V33.892S224.396.072 126.916.072zM92.802 19.66a11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13 11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.13z"/>
+<path fill="#0d7a6e" d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.559 4.713 41.559-60.702c0-65.414-36.289-63.093-36.289-63.093h-21.61v30.355s1.165 36.289-35.69 36.289h-61.43s-34.448-.557-34.448 33.293v56.031s-5.232 33.821 92.247 33.821zm34.114-19.586a11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.131 11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13z"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same realistic <strong>BookCart</strong> online-bookstore dataset (<code>books.csv</code>, <code>orders.csv</code>, <code>customers.csv</code>) — so you build intuition on one domain instead of context-switching. Generating these CSVs is Exercise 1.1 itself; see the <a href="../datasets/bookcart/">BookCart spec</a> in the shared datasets folder for the exact column schema to match.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Some experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or follow a curated <strong>Learning Track</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h4>Section A — Core Python (Modules 1.1–1.4)</h4>
+<ul>
+<li>[ ] I can run a script from the terminal and use a virtual environment</li>
+<li>[ ] I write functions with default and keyword arguments comfortably</li>
+<li>[ ] I use list, dict, and set comprehensions without looking them up</li>
+<li>[ ] I know the difference between mutable and immutable types and how slicing works</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h4>Section B — Data &amp; Files (Modules 2.1–2.3)</h4>
+<ul>
+<li>[ ] I read and write CSV and JSON files using the standard library</li>
+<li>[ ] I use try/except with specific exception types and the logging module</li>
+<li>[ ] I clean and aggregate tabular data in Pandas (filter, groupby, merge)</li>
+<li>[ ] I can build a pivot-style summary table from raw rows</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h4>Section C — Pythonic OOP (Modules 3.1–3.3)</h4>
+<ul>
+<li>[ ] I write classes with <code>__init__</code> and instance methods</li>
+<li>[ ] I use <code>@dataclass</code> and understand <code>__repr__</code> / <code>__eq__</code></li>
+<li>[ ] I write generators with <code>yield</code> and understand iterators</li>
+<li>[ ] I write and apply decorators, and I annotate functions with type hints</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h4>Section D — Real-World Python (Modules 4.1–4.3)</h4>
+<ul>
+<li>[ ] I call REST APIs with <code>requests</code> and handle status codes</li>
+<li>[ ] I have built an HTTP endpoint with a framework like FastAPI or Flask</li>
+<li>[ ] I query a SQL database from Python (sqlite3 or SQLAlchemy)</li>
+<li>[ ] I model tables as ORM classes and run migrations or schema setup</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 5</strong></p>
+
+<h4>Section E — Quality &amp; Delivery (Modules 5.1–5.2)</h4>
+<ul>
+<li>[ ] I write unit tests with pytest, including fixtures</li>
+<li>[ ] I use parametrized tests and measure coverage</li>
+<li>[ ] I structure a project with <code>pyproject.toml</code> and pin dependencies</li>
+<li>[ ] I package a CLI tool with an entry point and automate routine scripts</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 5.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 5.2</strong> | <strong>4 yes</strong> → Go straight to the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-setup-tooling"><td>1.1</td><td>Setup &amp; Tooling</td><td>Beginner</td><td>None</td><td>3h</td></tr>
+<tr data-href="#module-12-core-syntax-types"><td>1.2</td><td>Core Syntax &amp; Types</td><td>Beginner</td><td>1.1</td><td>10h</td></tr>
+<tr data-href="#module-13-control-flow-functions"><td>1.3</td><td>Control Flow &amp; Functions</td><td>Beginner</td><td>1.2</td><td>10h</td></tr>
+<tr data-href="#module-14-data-structures-comprehensions"><td>1.4</td><td>Data Structures &amp; Comprehensions</td><td>Beginner</td><td>1.2</td><td>10h</td></tr>
+<tr data-href="#module-21-files-csv-json"><td>2.1</td><td>Files, CSV &amp; JSON</td><td>Beginner–Int</td><td>1.4</td><td>8h</td></tr>
+<tr data-href="#module-22-errors-logging"><td>2.2</td><td>Errors &amp; Logging</td><td>Intermediate</td><td>1.3</td><td>6h</td></tr>
+<tr data-href="#module-23-pandas-essentials"><td>2.3</td><td>Pandas Essentials</td><td>Intermediate</td><td>2.1</td><td>16h</td></tr>
+<tr data-href="#module-31-classes-dataclasses"><td>3.1</td><td>Classes &amp; Dataclasses</td><td>Intermediate</td><td>1.3</td><td>10h</td></tr>
+<tr data-href="#module-32-iterators-generators-decorators"><td>3.2</td><td>Iterators, Generators &amp; Decorators</td><td>Intermediate</td><td>3.1</td><td>10h</td></tr>
+<tr data-href="#module-33-type-hints"><td>3.3</td><td>Type Hints</td><td>Intermediate</td><td>1.3</td><td>6h</td></tr>
+<tr data-href="#module-41-consuming-apis-requests"><td>4.1</td><td>Consuming APIs (requests)</td><td>Intermediate</td><td>2.1</td><td>8h</td></tr>
+<tr data-href="#module-42-rest-api-fastapi"><td>4.2</td><td>REST API with FastAPI</td><td>Intermediate</td><td>3.1, 3.3</td><td>14h</td></tr>
+<tr data-href="#module-43-databases-sqlite-sqlalchemy"><td>4.3</td><td>Databases: SQLite &amp; SQLAlchemy</td><td>Intermediate</td><td>3.1</td><td>12h</td></tr>
+<tr data-href="#module-51-testing-pytest"><td>5.1</td><td>Testing with pytest</td><td>Intermediate</td><td>1.3</td><td>10h</td></tr>
+<tr data-href="#module-52-packaging-venv-automation"><td>5.2</td><td>Packaging, venv &amp; Automation</td><td>Intermediate</td><td>2.2</td><td>8h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1–3 are best done in order. Phase 4 (Real-World) and Phase 5 (Quality) are largely independent of each other — you can learn testing (5.1) before APIs (4.1) if that fits your goal. Only the Final Capstone requires the whole guide.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset — you don't need everything.</p>
+
+<h3 id="track-1-fundamentals-sprint">Track 1 — Fundamentals Sprint (fastest to productive)</h3>
+<p><code>1.1 → 1.2 → 1.3 → 1.4 → 2.1 → 2.2 → Capstone 1</code><br>
+Target outcome: <strong>Write and ship small Python scripts and CLI tools.</strong> Cert: <strong>PCEP</strong> (Certified Entry-Level Python Programmer).</p>
+
+<h3 id="track-2-data-analyst">Track 2 — Data Analyst with Python</h3>
+<p><code>1.1 → 1.2 → 1.4 → 2.1 → 2.3 → 3.3 → Capstone 2</code><br>
+Target outcome: <strong>Clean, analyze, and report on tabular data.</strong> Pairs well with a SQL track.</p>
+
+<h3 id="track-3-backend-api">Track 3 — Backend / API Developer</h3>
+<p><code>1.x → 3.1 → 3.3 → 4.1 → 4.2 → 4.3 → 5.1 → Capstone 4</code><br>
+Target outcome: <strong>Build and test a database-backed REST API.</strong> Cert: <strong>PCAP</strong>.</p>
+
+<h3 id="track-4-full-python">Track 4 — Full Python (all modules, most complete)</h3>
+<p><code>All phases → Final Capstone</code><br>
+Target outcome: <strong>Job-ready intermediate Python.</strong> Cert: <strong>PCAP</strong> (Certified Associate in Python Programming).</p>
+
+<h3 id="track-5-automation">Track 5 — Automation &amp; Scripting</h3>
+<p><code>1.1 → 1.2 → 1.3 → 2.1 → 2.2 → 5.2 → Capstone 1</code><br>
+Target outcome: <strong>Automate file, data, and report workflows.</strong></p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Foundations          (Weeks 1–4)
+Phase 2 — Data &amp; Files          (Weeks 5–9)
+Phase 3 — Pythonic OOP          (Weeks 10–13)
+Phase 4 — Real-World Python     (Weeks 14–18)   [independent of Phase 5]
+Phase 5 — Quality &amp; Delivery    (Weeks 19–22)   [independent of Phase 4]
+Capstone Projects              (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ── 1.2 ─┬─ 1.3 ─┬─ 2.2 ──────────────┐
+            │       ├─ 3.1 ─┬─ 3.2        │
+            │       │       └─ 4.3 ──┐    ├─ Final
+            │       └─ 3.3 ─── 4.2 ──┤    │  Capstone
+            └─ 1.4 ─── 2.1 ─┬─ 2.3   ├────┤
+                            └─ 4.1 ──┘    │
+                              5.1 ── 5.2 ─┘</code></pre>
+
+<h2 id="phase-1-foundations">Phase 1: Foundations</h2>
+<h3 id="weeks-1-4">Weeks 1–4 | Goal: Set up Python and master core syntax, functions, and data structures</h3>
+<hr />
+
+<h3 id="module-11-setup-tooling">Module 1.1 — Setup &amp; Tooling</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Create a virtual environment, install a package into it, and run a script that imports it.<br>
+<strong>Skip if:</strong> you already use <code>venv</code>/<code>pip</code> and run scripts from the terminal daily.<br>
+<strong>Unlocks:</strong> every later module.</p>
+</blockquote>
+
+<h4>Installing Python &amp; the REPL</h4>
+<p>Use Python 3.11+ from python.org or a version manager (<code>pyenv</code>). Confirm your install and open the interactive REPL:</p>
+<pre><code class="language-bash">python3 --version        # e.g. Python 3.12.2
+python3                  # opens the REPL; Ctrl-D to exit
+python3 script.py        # run a script file</code></pre>
+
+<h4>Virtual Environments &amp; pip</h4>
+<p>Always isolate project dependencies in a virtual environment — never install into the system Python.</p>
+<pre><code class="language-bash"># Create and activate a venv
+python3 -m venv .venv
+source .venv/bin/activate     # Windows: .venv\Scripts\activate
+
+# Install packages and freeze versions
+pip install pandas requests
+pip freeze &gt; requirements.txt
+pip install -r requirements.txt</code></pre>
+
+<h4>Editor &amp; First Script</h4>
+<p>Use VS Code with the Python extension. Create <code>hello.py</code>:</p>
+<pre><code class="language-python">def main() -&gt; None:
+    name = input("Your name: ")
+    print(f"Hello, {name}! Welcome to BookCart.")
+
+if __name__ == "__main__":
+    main()</code></pre>
+
+<p><strong>Exercise 1.1 — Project Bootstrap</strong></p>
+<p>Dataset: BookCart (<code>books.csv</code>, <code>orders.csv</code>, <code>customers.csv</code>)</p>
+<ol>
+<li>Create a project folder <code>bookcart/</code> with a <code>.venv</code> virtual environment</li>
+<li>Install <code>pandas</code> and <code>requests</code>, then freeze to <code>requirements.txt</code></li>
+<li>Download (or create) the three BookCart CSVs into a <code>data/</code> subfolder</li>
+<li>Write <code>main.py</code> that prints the number of lines in <code>books.csv</code> using only the built-in <code>open()</code></li>
+<li>Run it from the terminal and confirm the count</li>
+</ol>
+<hr />
+
+<h3 id="module-12-core-syntax-types">Module 1.2 — Core Syntax &amp; Types</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Without notes, explain mutable vs immutable, slice a string and a list, and format a float to 2 decimals in an f-string.<br>
+<strong>Skip if:</strong> you fluently use Python's built-in types, slicing, and f-strings.<br>
+<strong>Unlocks:</strong> 1.3, 1.4.</p>
+</blockquote>
+
+<h4>Built-in Types</h4>
+<pre><code class="language-python">price = 12.99          # float
+qty = 3                # int
+title = "Dune"         # str
+in_stock = True        # bool
+nothing = None         # NoneType
+
+# Immutable: int, float, str, tuple, bool
+# Mutable:   list, dict, set
+total = price * qty
+print(f"Total: ${total:.2f}")   # Total: $38.97</code></pre>
+
+<h4>Strings &amp; Slicing</h4>
+<pre><code class="language-python">sku = "BC-00417-DUNE"
+print(sku[:2])         # 'BC'
+print(sku[3:8])        # '00417'
+print(sku[-4:])        # 'DUNE'
+print(sku.split("-"))  # ['BC', '00417', 'DUNE']
+print("dune".title())  # 'Dune'
+
+# f-strings handle expressions and alignment
+name, copies = "Dune", 3
+print(f"{name:&lt;10}| {copies:&gt;3} copies")   # Dune      |   3 copies</code></pre>
+
+<h4>Numbers &amp; Truthiness</h4>
+<pre><code class="language-python">print(17 // 5, 17 % 5, 2 ** 10)   # 3 2 1024
+print(bool(0), bool(""), bool([])) # False False False  (falsy)
+print(round(38.975, 2))            # 38.97
+
+discount = 0.1
+final = price * (1 - discount)
+print(f"{final:.2f}")              # 11.69</code></pre>
+
+<p><strong>Exercise 1.2 — Pricing Helpers</strong></p>
+<p>Dataset: BookCart</p>
+<ol>
+<li>Given a price and a discount rate, compute the final price rounded to 2 decimals</li>
+<li>Parse a SKU like <code>BC-00417-DUNE</code> into its three parts using <code>split</code></li>
+<li>Build a formatted receipt line: title left-padded to 20 chars, price right-aligned</li>
+<li>Write a one-liner that reports whether a stock value is "falsy" (0 or empty)</li>
+<li>Format a total of <code>1234.5</code> as <code>$1,234.50</code> using an f-string</li>
+</ol>
+<hr />
+
+<h3 id="module-13-control-flow-functions">Module 1.3 — Control Flow &amp; Functions</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Write a function with default + keyword args that loops over a list and returns a filtered, transformed result.<br>
+<strong>Skip if:</strong> functions, <code>*args</code>/<code>**kwargs</code>, and loops are second nature.<br>
+<strong>Unlocks:</strong> 2.2, 3.1, 3.3, 5.1.</p>
+</blockquote>
+
+<h4>Conditionals &amp; Loops</h4>
+<pre><code class="language-python">def stock_status(qty: int) -&gt; str:
+    if qty == 0:
+        return "out of stock"
+    elif qty &lt; 5:
+        return "low"
+    else:
+        return "ok"
+
+for qty in [0, 3, 12]:
+    print(qty, stock_status(qty))
+
+# while + break/continue
+n, total = 0, 0
+while n &lt; 100:
+    n += 1
+    if n % 2 == 0:
+        continue
+    total += n</code></pre>
+
+<h4>Functions: Arguments &amp; Returns</h4>
+<pre><code class="language-python">def line_total(price: float, qty: int = 1, *, tax: float = 0.0) -&gt; float:
+    """Return the line total including optional tax. tax is keyword-only."""
+    subtotal = price * qty
+    return round(subtotal * (1 + tax), 2)
+
+print(line_total(12.99, 3))            # 38.97
+print(line_total(12.99, 3, tax=0.12))  # 43.65
+
+# *args / **kwargs
+def summarize(*prices: float, **labels: str) -&gt; dict:
+    return {"count": len(prices), "sum": sum(prices), **labels}</code></pre>
+
+<h4>Scope &amp; Pure Functions</h4>
+<pre><code class="language-python">def apply_discount(prices: list[float], rate: float) -&gt; list[float]:
+    # returns a NEW list; does not mutate the input (pure)
+    return [round(p * (1 - rate), 2) for p in prices]
+
+original = [10.0, 20.0]
+discounted = apply_discount(original, 0.1)
+print(original, discounted)   # [10.0, 20.0] [9.0, 18.0]</code></pre>
+
+<p><strong>Exercise 1.3 — Order Calculations</strong></p>
+<p>Dataset: BookCart</p>
+<ol>
+<li>Write <code>stock_status(qty)</code> returning "out of stock" / "low" / "ok"</li>
+<li>Write <code>line_total(price, qty, tax)</code> with a keyword-only <code>tax</code> argument</li>
+<li>Loop over a list of <code>(price, qty)</code> tuples and print each line total</li>
+<li>Write a pure function that applies a discount to a list of prices without mutating it</li>
+<li>Add a function that returns the most expensive book from a list of <code>(title, price)</code> pairs</li>
+</ol>
+<hr />
+
+<h3 id="module-14-data-structures-comprehensions">Module 1.4 — Data Structures &amp; Comprehensions</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Build a dict mapping category → total sales from a list of order dicts, using a comprehension or <code>defaultdict</code>.<br>
+<strong>Skip if:</strong> you reach for the right structure (list/dict/set/tuple) instinctively and write comprehensions fluently.<br>
+<strong>Unlocks:</strong> 2.1, 2.3.</p>
+</blockquote>
+
+<h4>Lists, Dicts, Sets, Tuples</h4>
+<pre><code class="language-python">titles = ["Dune", "1984", "Dune"]      # list: ordered, mutable
+unique = set(titles)                    # {'Dune', '1984'}
+book = {"id": 417, "title": "Dune"}    # dict: key-value
+point = (12.99, 3)                       # tuple: immutable pair
+
+book["price"] = 12.99                   # add/update
+print("title" in book)                  # True
+print(list(book.keys()))                # ['id', 'title', 'price']</code></pre>
+
+<h4>Comprehensions</h4>
+<pre><code class="language-python">prices = [10.0, 25.0, 5.0, 40.0]
+
+cheap = [p for p in prices if p &lt; 20]          # [10.0, 5.0]
+taxed = {i: round(p * 1.12, 2) for i, p in enumerate(prices)}
+labels = {p: ("cheap" if p &lt; 20 else "premium") for p in prices}
+distinct_tiers = {"premium" if p &gt;= 20 else "cheap" for p in prices}</code></pre>
+
+<h4>Grouping &amp; Aggregating</h4>
+<pre><code class="language-python">from collections import defaultdict
+
+orders = [
+    {"category": "SciFi", "total": 38.97},
+    {"category": "SciFi", "total": 12.99},
+    {"category": "History", "total": 22.50},
+]
+
+by_cat: dict[str, float] = defaultdict(float)
+for o in orders:
+    by_cat[o["category"]] += o["total"]
+
+print(dict(by_cat))   # {'SciFi': 51.96, 'History': 22.5}</code></pre>
+
+<p><strong>Exercise 1.4 — In-Memory Analytics</strong></p>
+<p>Dataset: BookCart</p>
+<ol>
+<li>Represent 5 books as a list of dicts with <code>id</code>, <code>title</code>, <code>category</code>, <code>price</code></li>
+<li>Use a comprehension to get all titles under ₱500</li>
+<li>Build a set of distinct categories</li>
+<li>Use <code>defaultdict</code> to total order value per category</li>
+<li>Return the category with the highest total using <code>max</code> with a <code>key</code></li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-cli-inventory-tool">Phase 1 Capstone: CLI Inventory Tool</h3>
+<p><strong>Project: BookCart Stock Checker</strong></p>
+<p><strong>Dataset:</strong> BookCart (<code>books.csv</code>)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A script <code>stock_tool.py</code> that reads <code>books.csv</code> with the built-in <code>csv</code> module</li>
+<li>A function that returns all books with stock below a threshold passed as a CLI argument</li>
+<li>A formatted table printout (title, category, stock, price) with aligned columns</li>
+<li>A per-category summary: number of titles and total inventory value</li>
+<li>Graceful handling when the file is missing (clear message, non-zero exit)</li>
+<li>A short README explaining how to run it</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-data-files">Phase 2: Data &amp; Files</h2>
+<h3 id="weeks-5-9">Weeks 5–9 | Goal: Read/write real data, handle failure gracefully, and analyze with Pandas</h3>
+<hr />
+
+<h3 id="module-21-files-csv-json">Module 2.1 — Files, CSV &amp; JSON</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.4 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Read a CSV into a list of dicts, transform it, and write both a CSV and a JSON file back out.<br>
+<strong>Skip if:</strong> <code>csv.DictReader</code>, <code>json.load/dump</code>, and context managers are routine.<br>
+<strong>Unlocks:</strong> 2.3, 4.1.</p>
+</blockquote>
+
+<h4>Reading &amp; Writing Files Safely</h4>
+<pre><code class="language-python"># Always use a context manager so the file is closed automatically
+with open("data/books.csv", encoding="utf-8") as f:
+    header = f.readline().strip()
+    first_rows = [next(f).strip() for _ in range(3)]</code></pre>
+
+<h4>CSV with the Standard Library</h4>
+<pre><code class="language-python">import csv
+
+with open("data/books.csv", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    books = [row for row in reader]   # list[dict[str, str]]
+
+# Write a filtered subset
+low_stock = [b for b in books if int(b["stock"]) &lt; 5]
+with open("low_stock.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=books[0].keys())
+    writer.writeheader()
+    writer.writerows(low_stock)</code></pre>
+
+<h4>JSON</h4>
+<pre><code class="language-python">import json
+
+with open("data/config.json", encoding="utf-8") as f:
+    config = json.load(f)               # -&gt; dict
+
+report = {"low_stock_count": len(low_stock), "titles": [b["title"] for b in low_stock]}
+with open("report.json", "w", encoding="utf-8") as f:
+    json.dump(report, f, indent=2, ensure_ascii=False)</code></pre>
+
+<p><strong>Exercise 2.1 — ETL Without Pandas</strong></p>
+<p>Dataset: BookCart</p>
+<ol>
+<li>Read <code>books.csv</code> with <code>csv.DictReader</code> into a list of dicts</li>
+<li>Convert <code>price</code> and <code>stock</code> to numeric types</li>
+<li>Filter to books with stock below 5 and write <code>low_stock.csv</code></li>
+<li>Compute total inventory value and write it to <code>report.json</code> with <code>indent=2</code></li>
+<li>Round-trip test: read <code>report.json</code> back and assert the count matches</li>
+</ol>
+<hr />
+
+<h3 id="module-22-errors-logging">Module 2.2 — Errors &amp; Logging</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Catch a specific exception, re-raise with context, and configure a logger that writes to a file with levels.<br>
+<strong>Skip if:</strong> you handle exceptions by type and use the <code>logging</code> module instead of <code>print</code>.<br>
+<strong>Unlocks:</strong> 5.2, robust capstones.</p>
+</blockquote>
+
+<h4>Exceptions by Type</h4>
+<pre><code class="language-python">def load_price(row: dict) -&gt; float:
+    try:
+        return float(row["price"])
+    except KeyError:
+        raise ValueError("row is missing a 'price' field") from None
+    except ValueError:
+        raise ValueError(f"price is not numeric: {row.get('price')!r}")
+
+# try/except/else/finally
+try:
+    p = load_price({"price": "12.99"})
+except ValueError as e:
+    print("bad row:", e)
+else:
+    print("ok:", p)
+finally:
+    print("done")</code></pre>
+
+<h4>Logging Instead of print</h4>
+<pre><code class="language-python">import logging
+
+logging.basicConfig(
+    filename="bookcart.log",
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+)
+log = logging.getLogger("bookcart")
+
+log.info("loaded %d books", 120)
+log.warning("low stock on %s", "Dune")
+log.error("failed to parse row %s", 417)</code></pre>
+
+<h4>Custom Exceptions</h4>
+<pre><code class="language-python">class OutOfStockError(Exception):
+    """Raised when an order exceeds available stock."""
+
+def reserve(stock: int, qty: int) -&gt; int:
+    if qty &gt; stock:
+        raise OutOfStockError(f"requested {qty}, only {stock} available")
+    return stock - qty</code></pre>
+
+<p><strong>Exercise 2.2 — Robust Loader</strong></p>
+<p>Dataset: BookCart</p>
+<ol>
+<li>Write a loader that skips and logs malformed rows in <code>books.csv</code> instead of crashing</li>
+<li>Raise a custom <code>OutOfStockError</code> when an order quantity exceeds stock</li>
+<li>Configure <code>logging</code> to write INFO+ to <code>bookcart.log</code> with timestamps</li>
+<li>Wrap the whole load in try/except/finally and always log a completion line</li>
+<li>Assert your log file contains exactly one WARNING for a known bad row</li>
+</ol>
+<hr />
+
+<h3 id="module-23-pandas-essentials">Module 2.3 — Pandas Essentials</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~16h<br>
+<strong>Skip-check (test-out):</strong> Load three CSVs, merge them, clean dtypes, and produce a category × month sales pivot.<br>
+<strong>Skip if:</strong> Pandas filter/groupby/merge/pivot is already your daily driver.<br>
+<strong>Unlocks:</strong> Capstone 2, the Data Analyst track.</p>
+</blockquote>
+
+<h4>Loading &amp; Inspecting</h4>
+<pre><code class="language-python">import pandas as pd
+
+books = pd.read_csv("data/books.csv")
+orders = pd.read_csv("data/orders.csv", parse_dates=["order_date"])
+
+print(orders.shape)        # (rows, cols)
+print(orders.dtypes)
+orders.info()
+orders.describe()</code></pre>
+
+<h4>Cleaning, Filtering, Deriving</h4>
+<pre><code class="language-python">orders["order_date"] = pd.to_datetime(orders["order_date"])
+orders = orders.drop_duplicates(subset=["order_id"])
+
+# join orders to books to get price and category
+df = orders.merge(books[["book_id", "category", "price"]], on="book_id", how="left")
+df["revenue"] = df["quantity"] * df["price"]
+
+big = df[(df["revenue"] &gt; 1000) &amp; (df["category"] == "SciFi")]</code></pre>
+
+<h4>GroupBy &amp; Pivot</h4>
+<pre><code class="language-python">summary = (df.groupby("category")
+             .agg(revenue=("revenue", "sum"),
+                  orders=("order_id", "nunique"))
+             .reset_index()
+             .sort_values("revenue", ascending=False))
+
+df["month"] = df["order_date"].dt.to_period("M")
+pivot = df.pivot_table(values="revenue", index="category",
+                       columns="month", aggfunc="sum", fill_value=0)</code></pre>
+
+<p><strong>Exercise 2.3 — Sales Analysis in Pandas</strong></p>
+<p>Dataset: BookCart</p>
+<ol>
+<li>Load all three CSVs; parse <code>order_date</code> as datetime</li>
+<li>Merge orders → books → customers into one DataFrame</li>
+<li>Add a <code>revenue</code> column and remove duplicate orders</li>
+<li>Build a category-level summary (revenue, order count) sorted by revenue</li>
+<li>Produce a category × month revenue pivot table</li>
+<li>Export the summary to <code>category_summary.csv</code></li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-sales-analytics-report">Phase 2 Capstone: Sales Analytics Report</h3>
+<p><strong>Project: BookCart Monthly Revenue Report</strong></p>
+<p><strong>Dataset:</strong> BookCart (all three CSVs)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A script that loads and merges the three CSVs with correct dtypes</li>
+<li>A data-quality step that logs duplicates and null counts (reusing Module 2.2 logging)</li>
+<li>Revenue by category and by month (two summary tables)</li>
+<li>Top 10 books by revenue and the bottom 10 by stock turnover</li>
+<li>Export all tables to one Excel workbook with multiple sheets</li>
+<li>A JSON summary with totals for downstream use</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-pythonic-oop">Phase 3: Pythonic OOP</h2>
+<h3 id="weeks-10-13">Weeks 10–13 | Goal: Model a domain with classes, and write idiomatic generators and decorators</h3>
+<hr />
+
+<h3 id="module-31-classes-dataclasses">Module 3.1 — Classes &amp; Dataclasses</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Model an <code>Order</code> with a dataclass, add a computed property, and a method that mutates stock safely.<br>
+<strong>Skip if:</strong> classes, <code>@dataclass</code>, properties, and dunder methods are familiar.<br>
+<strong>Unlocks:</strong> 3.2, 4.2, 4.3.</p>
+</blockquote>
+
+<h4>Classes &amp; Methods</h4>
+<pre><code class="language-python">class Book:
+    def __init__(self, book_id: int, title: str, price: float, stock: int):
+        self.book_id = book_id
+        self.title = title
+        self.price = price
+        self.stock = stock
+
+    def sell(self, qty: int) -&gt; float:
+        if qty &gt; self.stock:
+            raise ValueError("not enough stock")
+        self.stock -= qty
+        return round(self.price * qty, 2)
+
+    def __repr__(self) -&gt; str:
+        return f"Book({self.title!r}, stock={self.stock})"</code></pre>
+
+<h4>Dataclasses &amp; Properties</h4>
+<pre><code class="language-python">from dataclasses import dataclass, field
+
+@dataclass
+class Order:
+    order_id: int
+    book: Book
+    quantity: int
+    discount: float = 0.0
+
+    @property
+    def total(self) -&gt; float:
+        gross = self.book.price * self.quantity
+        return round(gross * (1 - self.discount), 2)
+
+o = Order(1, Book(417, "Dune", 12.99, 10), quantity=3, discount=0.1)
+print(o.total)   # 35.07</code></pre>
+
+<p><strong>Exercise 3.1 — Domain Objects</strong></p>
+<p>Dataset: BookCart</p>
+<ol>
+<li>Write a <code>Book</code> class with a <code>sell(qty)</code> method that decrements stock safely</li>
+<li>Write an <code>Order</code> dataclass with a computed <code>total</code> property including discount</li>
+<li>Add <code>__repr__</code> so objects print readably</li>
+<li>Build a <code>Catalog</code> class that loads <code>books.csv</code> into <code>Book</code> objects</li>
+<li>Add a method to return the <code>Book</code> with the lowest stock</li>
+</ol>
+<hr />
+
+<h3 id="module-32-iterators-generators-decorators">Module 3.2 — Iterators, Generators &amp; Decorators</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Write a generator that streams large-CSV rows lazily and a decorator that times any function.<br>
+<strong>Skip if:</strong> <code>yield</code>, generator expressions, and writing decorators are comfortable.<br>
+<strong>Unlocks:</strong> efficient data pipelines, the Final Capstone.</p>
+</blockquote>
+
+<h4>Generators (lazy iteration)</h4>
+<pre><code class="language-python">def read_rows(path: str):
+    """Yield rows one at a time — memory-friendly for big files."""
+    import csv
+    with open(path, newline="", encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            yield row
+
+# generator expression: sum revenue without building a list
+total = sum(float(r["price"]) * int(r["qty"])
+            for r in read_rows("data/orders.csv"))</code></pre>
+
+<h4>Decorators</h4>
+<pre><code class="language-python">import functools, time
+
+def timed(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        elapsed = time.perf_counter() - start
+        print(f"{func.__name__} took {elapsed:.4f}s")
+        return result
+    return wrapper
+
+@timed
+def load_all(path: str) -&gt; int:
+    return sum(1 for _ in read_rows(path))</code></pre>
+
+<p><strong>Exercise 3.2 — Lazy Pipeline</strong></p>
+<p>Dataset: BookCart</p>
+<ol>
+<li>Write a generator <code>read_rows(path)</code> that yields order rows lazily</li>
+<li>Use a generator expression to compute total revenue without a list</li>
+<li>Write a <code>@timed</code> decorator and apply it to your loader</li>
+<li>Write a <code>@retry(n)</code> decorator factory that retries a flaky function n times</li>
+<li>Chain two generators (filter then transform) into one pipeline</li>
+</ol>
+<hr />
+
+<h3 id="module-33-type-hints">Module 3.3 — Type Hints</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Annotate a module fully and get a clean <code>mypy</code> run, including a <code>TypedDict</code> and an <code>Optional</code> return.<br>
+<strong>Skip if:</strong> you annotate code and run a type checker as a habit.<br>
+<strong>Unlocks:</strong> 4.2 (FastAPI leans on type hints).</p>
+</blockquote>
+
+<h4>Annotations &amp; Containers</h4>
+<pre><code class="language-python">from typing import Optional
+
+def find_book(books: list[dict], book_id: int) -&gt; Optional[dict]:
+    for b in books:
+        if b["id"] == book_id:
+            return b
+    return None
+
+def revenue_by_cat(rows: list[dict]) -&gt; dict[str, float]:
+    out: dict[str, float] = {}
+    for r in rows:
+        out[r["category"]] = out.get(r["category"], 0.0) + r["revenue"]
+    return out</code></pre>
+
+<h4>TypedDict &amp; mypy</h4>
+<pre><code class="language-python">from typing import TypedDict
+
+class BookRow(TypedDict):
+    id: int
+    title: str
+    price: float
+    stock: int
+
+def restock(book: BookRow, amount: int) -&gt; BookRow:
+    book["stock"] += amount
+    return book</code></pre>
+<pre><code class="language-bash">pip install mypy
+mypy bookcart/          # reports type errors statically</code></pre>
+
+<p><strong>Exercise 3.3 — Fully Typed Module</strong></p>
+<p>Dataset: BookCart</p>
+<ol>
+<li>Add type hints to every function in your Phase 2 loader</li>
+<li>Define a <code>BookRow</code> TypedDict for a parsed book record</li>
+<li>Write a function returning <code>Optional[dict]</code> for a lookup that can miss</li>
+<li>Install and run <code>mypy</code>; fix every reported error</li>
+<li>Add a <code>dict[str, float]</code> return annotation to your revenue aggregator</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-bookstore-domain-model">Phase 3 Capstone: Bookstore Domain Model</h3>
+<p><strong>Project: BookCart Object Model</strong></p>
+<p><strong>Dataset:</strong> BookCart (<code>books.csv</code>, <code>orders.csv</code>)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li><code>Book</code>, <code>Customer</code>, and <code>Order</code> classes (dataclasses where natural)</li>
+<li>A <code>Catalog</code> that loads books and exposes lookup + low-stock queries</li>
+<li>An <code>OrderBook</code> service that places orders and decrements stock with validation</li>
+<li>A generator that streams orders from CSV and feeds the service</li>
+<li>A <code>@timed</code> decorator on the bulk-load path</li>
+<li>Full type hints and a clean <code>mypy</code> run</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-real-world-python">Phase 4: Real-World Python</h2>
+<h3 id="weeks-14-18">Weeks 14–18 | Goal: Talk to APIs, build your own REST service, and persist to a database</h3>
+<hr />
+
+<h3 id="module-41-consuming-apis-requests">Module 4.1 — Consuming APIs (requests)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Call a paginated REST API, handle non-200 responses, and serialize results to JSON.<br>
+<strong>Skip if:</strong> <code>requests</code>, status-code handling, and JSON parsing are routine.<br>
+<strong>Unlocks:</strong> data enrichment, the Final Capstone.</p>
+</blockquote>
+
+<h4>GET, Params &amp; Status Codes</h4>
+<pre><code class="language-python">import requests
+
+resp = requests.get(
+    "https://openlibrary.org/search.json",
+    params={"q": "dune", "limit": 5},
+    timeout=10,
+)
+resp.raise_for_status()          # raises on 4xx/5xx
+data = resp.json()
+titles = [doc["title"] for doc in data["docs"]]
+print(titles)</code></pre>
+
+<h4>POST, Sessions &amp; Error Handling</h4>
+<pre><code class="language-python">import requests
+
+session = requests.Session()
+session.headers.update({"User-Agent": "BookCart/1.0"})
+
+try:
+    r = session.post("https://httpbin.org/post", json={"book_id": 417, "qty": 2}, timeout=10)
+    if r.status_code == 200:
+        print(r.json()["json"])
+    elif r.status_code &gt;= 500:
+        print("server error, retry later")
+except requests.RequestException as e:
+    print("network failure:", e)</code></pre>
+
+<p><strong>Exercise 4.1 — Enrich the Catalog</strong></p>
+<p>Dataset: BookCart + Open Library API</p>
+<ol>
+<li>For each book title in <code>books.csv</code>, query the Open Library search API</li>
+<li>Handle non-200 responses and timeouts without crashing the run</li>
+<li>Extract the first-published year and author when available</li>
+<li>Write an enriched <code>books_enriched.json</code> file</li>
+<li>Use a <code>Session</code> and a polite delay between calls</li>
+</ol>
+<hr />
+
+<h3 id="module-42-rest-api-fastapi">Module 4.2 — REST API with FastAPI</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1, 3.3 · <strong>Time:</strong> ~14h<br>
+<strong>Skip-check (test-out):</strong> Build a FastAPI app with a Pydantic model, a GET list endpoint, and a POST that validates input.<br>
+<strong>Skip if:</strong> you have shipped a typed FastAPI (or similar) service with validation.<br>
+<strong>Unlocks:</strong> Capstone 4, the backend track.</p>
+</blockquote>
+
+<h4>App, Models &amp; Endpoints</h4>
+<pre><code class="language-python">from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+
+app = FastAPI(title="BookCart API")
+
+class Book(BaseModel):
+    book_id: int
+    title: str
+    price: float
+    stock: int
+
+CATALOG: dict[int, Book] = {}
+
+@app.get("/books")
+def list_books() -&gt; list[Book]:
+    return list(CATALOG.values())
+
+@app.get("/books/{book_id}")
+def get_book(book_id: int) -&gt; Book:
+    if book_id not in CATALOG:
+        raise HTTPException(status_code=404, detail="book not found")
+    return CATALOG[book_id]</code></pre>
+
+<h4>POST with Validation</h4>
+<pre><code class="language-python">class OrderIn(BaseModel):
+    book_id: int
+    quantity: int
+
+@app.post("/orders", status_code=201)
+def place_order(order: OrderIn) -&gt; dict:
+    book = CATALOG.get(order.book_id)
+    if book is None:
+        raise HTTPException(404, "book not found")
+    if order.quantity &gt; book.stock:
+        raise HTTPException(409, "insufficient stock")
+    book.stock -= order.quantity
+    return {"ok": True, "remaining": book.stock}</code></pre>
+<pre><code class="language-bash">pip install "fastapi[standard]"
+fastapi dev app.py        # interactive docs at /docs</code></pre>
+
+<p><strong>Exercise 4.2 — BookCart API</strong></p>
+<p>Dataset: BookCart</p>
+<ol>
+<li>Load <code>books.csv</code> into the in-memory <code>CATALOG</code> at startup</li>
+<li>Implement <code>GET /books</code> and <code>GET /books/{id}</code> with a 404 path</li>
+<li>Implement <code>POST /orders</code> validating stock and returning 409 when short</li>
+<li>Add a Pydantic model with a price &gt; 0 validator</li>
+<li>Explore the auto-generated docs at <code>/docs</code> and test each endpoint</li>
+</ol>
+<hr />
+
+<h3 id="module-43-databases-sqlite-sqlalchemy">Module 4.3 — Databases: SQLite &amp; SQLAlchemy</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~12h<br>
+<strong>Skip-check (test-out):</strong> Define two related ORM tables, insert rows, and run a join query returning aggregates.<br>
+<strong>Skip if:</strong> you model tables in SQLAlchemy and write queries with joins and aggregates.<br>
+<strong>Unlocks:</strong> Capstone 4, persistent services.</p>
+</blockquote>
+
+<h4>Raw SQLite (stdlib)</h4>
+<pre><code class="language-python">import sqlite3
+
+con = sqlite3.connect("bookcart.db")
+con.execute("""CREATE TABLE IF NOT EXISTS books (
+    book_id INTEGER PRIMARY KEY, title TEXT, price REAL, stock INTEGER)""")
+con.execute("INSERT INTO books VALUES (?, ?, ?, ?)", (417, "Dune", 12.99, 10))
+con.commit()
+
+for row in con.execute("SELECT title, stock FROM books WHERE stock &lt; ?", (5,)):
+    print(row)
+con.close()</code></pre>
+
+<h4>SQLAlchemy ORM</h4>
+<pre><code class="language-python">from sqlalchemy import create_engine, ForeignKey, func, select
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, Session
+
+class Base(DeclarativeBase):
+    pass
+
+class Book(Base):
+    __tablename__ = "books"
+    book_id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str]
+    price: Mapped[float]
+    orders: Mapped[list["Order"]] = relationship(back_populates="book")
+
+class Order(Base):
+    __tablename__ = "orders"
+    order_id: Mapped[int] = mapped_column(primary_key=True)
+    book_id: Mapped[int] = mapped_column(ForeignKey("books.book_id"))
+    quantity: Mapped[int]
+    book: Mapped["Book"] = relationship(back_populates="orders")
+
+engine = create_engine("sqlite:///bookcart.db")
+Base.metadata.create_all(engine)
+
+with Session(engine) as s:
+    stmt = (select(Book.title, func.sum(Order.quantity))
+            .join(Order).group_by(Book.title))
+    for title, qty in s.execute(stmt):
+        print(title, qty)</code></pre>
+
+<p><strong>Exercise 4.3 — Persist BookCart</strong></p>
+<p>Dataset: BookCart</p>
+<ol>
+<li>Define <code>Book</code>, <code>Customer</code>, and <code>Order</code> ORM models with relationships</li>
+<li>Create the schema and bulk-load all three CSVs</li>
+<li>Write a query for total quantity sold per book (join + group by)</li>
+<li>Write a query for customers with no orders (outer join / NOT EXISTS)</li>
+<li>Wrap inserts in a transaction and roll back on any failure</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-bookstore-rest-api">Phase 4 Capstone: Bookstore REST API</h3>
+<p><strong>Project: BookCart Service (API + DB)</strong></p>
+<p><strong>Dataset:</strong> BookCart (all three CSVs)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A FastAPI app backed by SQLAlchemy + SQLite (no in-memory dict)</li>
+<li><code>GET /books</code>, <code>GET /books/{id}</code>, <code>GET /customers/{id}/orders</code></li>
+<li><code>POST /orders</code> that validates stock and writes to the DB in a transaction</li>
+<li>Pydantic request/response models distinct from ORM models</li>
+<li>A seed script that loads the CSVs into the database</li>
+<li>Manual verification via <code>/docs</code> for every endpoint</li>
+</ol>
+<hr />
+
+<h2 id="phase-5-quality-delivery">Phase 5: Quality &amp; Delivery</h2>
+<h3 id="weeks-19-22">Weeks 19–22 | Goal: Test your code and package it so others can install and run it</h3>
+<hr />
+
+<h3 id="module-51-testing-pytest">Module 5.1 — Testing with pytest</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Write a fixture, a parametrized test, and a test that asserts a specific exception is raised, then report coverage.<br>
+<strong>Skip if:</strong> pytest fixtures, parametrization, and coverage are part of your workflow.<br>
+<strong>Unlocks:</strong> trustworthy refactors, CI.</p>
+</blockquote>
+
+<h4>Tests, Fixtures &amp; Parametrization</h4>
+<pre><code class="language-python"># test_pricing.py
+import pytest
+from bookcart.pricing import line_total
+
+@pytest.fixture
+def sample_book():
+    return {"price": 12.99, "stock": 10}
+
+@pytest.mark.parametrize("qty,tax,expected", [
+    (1, 0.0, 12.99),
+    (3, 0.0, 38.97),
+    (2, 0.12, 29.10),
+])
+def test_line_total(qty, tax, expected):
+    assert line_total(12.99, qty, tax=tax) == pytest.approx(expected)
+
+def test_oversell_raises(sample_book):
+    with pytest.raises(ValueError):
+        line_total(sample_book["price"], -1)</code></pre>
+
+<h4>Running &amp; Coverage</h4>
+<pre><code class="language-bash">pip install pytest pytest-cov
+pytest -q                       # run all tests
+pytest --cov=bookcart --cov-report=term-missing</code></pre>
+
+<p><strong>Exercise 5.1 — Test the Domain</strong></p>
+<p>Dataset: BookCart</p>
+<ol>
+<li>Write tests for <code>line_total</code> covering tax and zero-quantity cases</li>
+<li>Add a fixture that builds a small in-memory catalog</li>
+<li>Parametrize a test over several stock/quantity combinations</li>
+<li>Assert that overselling raises your custom <code>OutOfStockError</code></li>
+<li>Get coverage above 90% on your pricing and ordering modules</li>
+</ol>
+<hr />
+
+<h3 id="module-52-packaging-venv-automation">Module 5.2 — Packaging, venv &amp; Automation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Turn a script into an installable package with a console entry point and pinned dependencies.<br>
+<strong>Skip if:</strong> you author <code>pyproject.toml</code> packages with entry points already.<br>
+<strong>Unlocks:</strong> the Final Capstone, the automation track.</p>
+</blockquote>
+
+<h4>Project Layout &amp; pyproject.toml</h4>
+<pre><code class="language-bash">bookcart/
+  pyproject.toml
+  src/bookcart/__init__.py
+  src/bookcart/cli.py
+  tests/test_pricing.py</code></pre>
+<pre><code class="language-yaml">[project]
+name = "bookcart"
+version = "0.1.0"
+dependencies = ["pandas&gt;=2.0", "requests&gt;=2.31"]
+
+[project.scripts]
+bookcart = "bookcart.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"</code></pre>
+
+<h4>Install &amp; Automate</h4>
+<pre><code class="language-bash"># editable install exposes the console command
+pip install -e .
+bookcart --threshold 5        # runs bookcart.cli:main
+
+# schedule a daily report (cron)
+# 0 8 * * *  cd /path/bookcart &amp;&amp; .venv/bin/bookcart --threshold 5</code></pre>
+
+<p><strong>Exercise 5.2 — Ship the Tool</strong></p>
+<p>Dataset: BookCart</p>
+<ol>
+<li>Restructure your Phase 1 CLI into a <code>src/bookcart/</code> package</li>
+<li>Write a <code>pyproject.toml</code> with pinned dependencies and a console entry point</li>
+<li><code>pip install -e .</code> and confirm the <code>bookcart</code> command works</li>
+<li>Add an automation note: a cron line that runs a daily low-stock report</li>
+<li>Verify <code>pytest</code> still passes against the installed package</li>
+</ol>
+<hr />
+
+<h3 id="phase-5-capstone-packaged-cli-tool">Phase 5 Capstone: Packaged CLI Tool</h3>
+<p><strong>Project: BookCart Reporter (installable)</strong></p>
+<p><strong>Dataset:</strong> BookCart (all three CSVs)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>An installable <code>bookcart</code> package with a <code>pyproject.toml</code> and console script</li>
+<li>Subcommands: <code>low-stock</code>, <code>revenue</code>, and <code>enrich</code> (reusing Module 4.1)</li>
+<li>Logging to a file and clean error messages on bad input</li>
+<li>A pytest suite above 85% coverage with at least one fixture and one parametrized test</li>
+<li>A README with install and usage instructions</li>
+<li>A cron example for scheduled reporting</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-bookcart-platform">Final Capstone: BookCart Platform</h2>
+<p><strong>Project: End-to-End BookCart</strong></p>
+<p>Integrates every phase into one project. Uses the BookCart dataset throughout.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A typed <code>src/bookcart/</code> package: domain models (Phase 3), ETL (Phase 2), and logging (2.2)</li>
+<li>A SQLAlchemy + SQLite persistence layer seeded from the three CSVs (4.3)</li>
+<li>A FastAPI service exposing catalog and order endpoints with validation (4.2)</li>
+<li>An enrichment job that augments books from the Open Library API (4.1)</li>
+<li>A Pandas reporting module producing revenue-by-category and monthly tables (2.3)</li>
+<li>A pytest suite (fixtures, parametrization, exception tests) above 85% coverage (5.1)</li>
+<li>Installable via <code>pyproject.toml</code> with a <code>bookcart</code> CLI entry point (5.2)</li>
+<li>A README documenting setup, the data model, the API, and how to run the tests</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Python Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Isolate dependencies</td><td><code>python -m venv .venv</code></td><td>Activate before installing</td></tr>
+<tr><td>Read a CSV (stdlib)</td><td><code>csv.DictReader</code></td><td>Rows as dicts</td></tr>
+<tr><td>Read a CSV (analysis)</td><td><code>pandas.read_csv</code></td><td>Use <code>parse_dates</code></td></tr>
+<tr><td>Read/write JSON</td><td><code>json.load</code> / <code>json.dump</code></td><td><code>indent=2</code> for readability</td></tr>
+<tr><td>Group &amp; aggregate</td><td><code>df.groupby().agg()</code></td><td>Or <code>collections.defaultdict</code></td></tr>
+<tr><td>Join tables</td><td><code>df.merge(..., how="left")</code></td><td>SQL-style joins</td></tr>
+<tr><td>Lazy iteration</td><td>generators (<code>yield</code>)</td><td>Memory-friendly for big files</td></tr>
+<tr><td>Model a record</td><td><code>@dataclass</code></td><td>Auto <code>__init__</code>/<code>__repr__</code></td></tr>
+<tr><td>Static type check</td><td><code>mypy</code></td><td>Annotate, then check</td></tr>
+<tr><td>Call an HTTP API</td><td><code>requests.get/post</code></td><td><code>raise_for_status()</code></td></tr>
+<tr><td>Build a REST API</td><td><code>fastapi</code> + <code>pydantic</code></td><td>Auto docs at <code>/docs</code></td></tr>
+<tr><td>Persist data</td><td><code>sqlalchemy</code> / <code>sqlite3</code></td><td>ORM or raw SQL</td></tr>
+<tr><td>Unit testing</td><td><code>pytest</code></td><td>Fixtures + parametrize</td></tr>
+<tr><td>Package &amp; ship</td><td><code>pyproject.toml</code></td><td>Console entry points</td></tr>
+</table>
+
+<h2 id="resources">Learning Resources</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>Python Crash Course (Matthes)</td><td>Beginner foundations + projects</td></tr>
+<tr><td>Automate the Boring Stuff (Sweigart)</td><td>Practical automation &amp; scripting</td></tr>
+<tr><td>Fluent Python (Ramalho)</td><td>Idiomatic, intermediate-to-advanced</td></tr>
+<tr><td>Python for Data Analysis (McKinney)</td><td>Pandas, by its creator</td></tr>
+<tr><td>Effective Python (Slatkin)</td><td>90 specific best practices</td></tr>
+<tr><td>Architecture Patterns with Python (Percival &amp; Gregory)</td><td>Domain modeling, APIs, testing</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>Official Python Tutorial</td><td>Language fundamentals</td><td>docs.python.org/3/tutorial</td></tr>
+<tr><td>Real Python</td><td>Tutorials across all levels</td><td>realpython.com</td></tr>
+<tr><td>Pandas User Guide</td><td>Data analysis</td><td>pandas.pydata.org/docs</td></tr>
+<tr><td>FastAPI Docs</td><td>Building APIs</td><td>fastapi.tiangolo.com</td></tr>
+<tr><td>SQLAlchemy 2.0 Tutorial</td><td>ORM &amp; databases</td><td>docs.sqlalchemy.org</td></tr>
+<tr><td>pytest Documentation</td><td>Testing</td><td>docs.pytest.org</td></tr>
+<tr><td>mypy Documentation</td><td>Static typing</td><td>mypy.readthedocs.io</td></tr>
+<tr><td>Exercism — Python Track</td><td>Practice with mentoring</td><td>exercism.org</td></tr>
+</table>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>BookCart CSVs (this guide)</td><td>Every exercise &amp; capstone</td></tr>
+<tr><td>Open Library API</td><td>Enrichment in Module 4.1</td></tr>
+<tr><td>VS Code + Python extension</td><td>Editor, debugging, linting</td></tr>
+<tr><td>Ruff</td><td>Fast linter &amp; formatter</td></tr>
+<tr><td>DB Browser for SQLite</td><td>Inspect your database</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is session-only and resets on reload.</p></blockquote>
+<h4>Phase 1 — Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — Setup &amp; Tooling</li>
+<li>[ ] Exercise 1.1 — Project Bootstrap</li>
+<li>[ ] Module 1.2 — Core Syntax &amp; Types</li>
+<li>[ ] Exercise 1.2 — Pricing Helpers</li>
+<li>[ ] Module 1.3 — Control Flow &amp; Functions</li>
+<li>[ ] Exercise 1.3 — Order Calculations</li>
+<li>[ ] Module 1.4 — Data Structures &amp; Comprehensions</li>
+<li>[ ] Exercise 1.4 — In-Memory Analytics</li>
+<li>[ ] Capstone 1 — CLI Inventory Tool</li>
+</ul>
+<h4>Phase 2 — Data &amp; Files</h4>
+<ul>
+<li>[ ] Module 2.1 — Files, CSV &amp; JSON</li>
+<li>[ ] Exercise 2.1 — ETL Without Pandas</li>
+<li>[ ] Module 2.2 — Errors &amp; Logging</li>
+<li>[ ] Exercise 2.2 — Robust Loader</li>
+<li>[ ] Module 2.3 — Pandas Essentials</li>
+<li>[ ] Exercise 2.3 — Sales Analysis in Pandas</li>
+<li>[ ] Capstone 2 — Sales Analytics Report</li>
+</ul>
+<h4>Phase 3 — Pythonic OOP</h4>
+<ul>
+<li>[ ] Module 3.1 — Classes &amp; Dataclasses</li>
+<li>[ ] Exercise 3.1 — Domain Objects</li>
+<li>[ ] Module 3.2 — Iterators, Generators &amp; Decorators</li>
+<li>[ ] Exercise 3.2 — Lazy Pipeline</li>
+<li>[ ] Module 3.3 — Type Hints</li>
+<li>[ ] Exercise 3.3 — Fully Typed Module</li>
+<li>[ ] Capstone 3 — Bookstore Domain Model</li>
+</ul>
+<h4>Phase 4 — Real-World Python</h4>
+<ul>
+<li>[ ] Module 4.1 — Consuming APIs (requests)</li>
+<li>[ ] Exercise 4.1 — Enrich the Catalog</li>
+<li>[ ] Module 4.2 — REST API with FastAPI</li>
+<li>[ ] Exercise 4.2 — BookCart API</li>
+<li>[ ] Module 4.3 — Databases: SQLite &amp; SQLAlchemy</li>
+<li>[ ] Exercise 4.3 — Persist BookCart</li>
+<li>[ ] Capstone 4 — Bookstore REST API</li>
+</ul>
+<h4>Phase 5 — Quality &amp; Delivery</h4>
+<ul>
+<li>[ ] Module 5.1 — Testing with pytest</li>
+<li>[ ] Exercise 5.1 — Test the Domain</li>
+<li>[ ] Module 5.2 — Packaging, venv &amp; Automation</li>
+<li>[ ] Exercise 5.2 — Ship the Tool</li>
+<li>[ ] Capstone 5 — Packaged CLI Tool</li>
+</ul>
+<h4>Certifications / Outcomes</h4>
+<ul>
+<li>[ ] PCEP — Certified Entry-Level Python Programmer</li>
+<li>[ ] PCAP — Certified Associate in Python Programming</li>
+<li>[ ] Final Capstone — BookCart Platform complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 — Python Track: Beginner to Intermediate</em><br>
+<em>Non-linear modular design · Placement quiz · 15 modules · ~22 weeks part-time · hayah-ai</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VS Code on Windows Learning Guide — Absolute Beginner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">VS Code on Windows<br>Learning Guide</div>
+      <div class="brand-sub">Install · Edit · Preview HTML</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#absolute-beginner-track" class="nav-top">Absolute Beginner Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-install-and-launch-vs-code" class="nav-top nav-phase">Phase 1: Install &amp; Launch</a>
+<div class="nav-children">
+<a href="#module-11-download-vs-code-for-windows" class="nav-child">Module 1.1 — Download VS Code</a>
+<a href="#module-12-run-the-installer" class="nav-child">Module 1.2 — Run the Installer</a>
+<a href="#module-13-tour-the-vs-code-window" class="nav-child">Module 1.3 — Tour the Window</a>
+<a href="#phase-1-capstone-first-launch-checklist" class="nav-child">Phase 1 Capstone: First-Launch Checklist</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-editing-your-first-code-file" class="nav-top nav-phase">Phase 2: Editing Your First File</a>
+<div class="nav-children">
+<a href="#module-21-open-a-folder-as-a-workspace" class="nav-child">Module 2.1 — Open a Folder</a>
+<a href="#module-22-write-and-save-an-html-file" class="nav-child">Module 2.2 — Write &amp; Save HTML</a>
+<a href="#module-23-editing-essentials" class="nav-child">Module 2.3 — Editing Essentials</a>
+<a href="#phase-2-capstone-build-about-me-html" class="nav-child">Phase 2 Capstone: Build about-me.html</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-see-it-work-and-build-good-habits" class="nav-top nav-phase">Phase 3: See It Work</a>
+<div class="nav-children">
+<a href="#module-31-preview-html-in-the-browser" class="nav-child">Module 3.1 — Preview in Browser</a>
+<a href="#module-32-auto-format-with-prettier" class="nav-child">Module 3.2 — Auto-format with Prettier</a>
+<a href="#module-33-extensions-themes-and-habits" class="nav-child">Module 3.3 — Extensions &amp; Habits</a>
+<a href="#phase-3-capstone-polish-and-publish-ready" class="nav-child">Phase 3 Capstone: Polish the Page</a>
+</div></div>
+
+<a href="#final-capstone-my-first-web-page" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="vs-code-on-windows-learning-guide">VS Code on Windows Learning Guide</h1>
+<h2 id="absolute-beginner-track">Absolute Beginner Track</h2>
+<h3>Download &amp; Install · Edit Code · Preview an HTML File</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Visual Studio Code" xmlns="http://www.w3.org/2000/svg">
+  <path d="M188 24 L232 46 L232 210 L188 232 L96 148 L52 182 L24 168 L24 88 L52 74 L96 108 L188 24 Z" fill="none" stroke="#075249" stroke-width="12" stroke-linejoin="round"/>
+  <path d="M188 70 L188 186 L112 128 L188 70 Z" fill="#0d7a6e"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. If you already have VS Code installed, jump straight to <strong>Phase 2</strong> and start editing. Use the <strong>Placement Quiz</strong> below to find your entry point, or the <strong>Module Index</strong> to jump anywhere. Every exercise builds the same running example: a personal web page called <strong>about-me.html</strong>.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Never installed a code editor</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Already have VS Code open</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point, or skip to <strong>Phase 2</strong>.</li>
+<li><strong>Just need one skill</strong> (e.g. "how do I preview my HTML?") → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3 id="quiz-installing">A. Installing VS Code</h3>
+<ul>
+<li>[ ] I know the difference between the User Installer and the System Installer.</li>
+<li>[ ] VS Code is already installed and opens when I search for it in the Start menu.</li>
+<li>[ ] I know what "Add to PATH" and the desktop icon options in the installer do.</li>
+<li>[ ] I could reinstall or update VS Code without help.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3 id="quiz-editing">B. Editing &amp; Saving Files</h3>
+<ul>
+<li>[ ] I can open a folder in VS Code and see its files in the Explorer sidebar.</li>
+<li>[ ] I can create a new file, name it <code>index.html</code>, and save it.</li>
+<li>[ ] I know when a file has unsaved changes (the dot on the tab).</li>
+<li>[ ] I can use undo, find, and multi-cursor editing.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3 id="quiz-preview">C. Previewing &amp; Formatting</h3>
+<ul>
+<li>[ ] I can open my HTML file in a web browser to see how it looks.</li>
+<li>[ ] I have used a Live Server / Live Preview extension with auto-reload.</li>
+<li>[ ] I can install an extension from the Marketplace.</li>
+<li>[ ] I can auto-format a messy file with one keystroke.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.2</strong> | <strong>4 yes</strong> → You've finished this guide's material.</p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-download-vs-code-for-windows"><td>1.1</td><td>Download VS Code for Windows (right installer)</td><td>Beginner</td><td>None</td><td>0.5h</td></tr>
+<tr data-href="#module-12-run-the-installer"><td>1.2</td><td>Run the Installer &amp; First Launch</td><td>Beginner</td><td>1.1</td><td>0.5h</td></tr>
+<tr data-href="#module-13-tour-the-vs-code-window"><td>1.3</td><td>Tour the VS Code Window</td><td>Beginner</td><td>1.2</td><td>0.5h</td></tr>
+<tr data-href="#module-21-open-a-folder-as-a-workspace"><td>2.1</td><td>Open a Folder as a Workspace</td><td>Beginner</td><td>1.3</td><td>0.5h</td></tr>
+<tr data-href="#module-22-write-and-save-an-html-file"><td>2.2</td><td>Write &amp; Save an HTML File</td><td>Beginner</td><td>2.1</td><td>1h</td></tr>
+<tr data-href="#module-23-editing-essentials"><td>2.3</td><td>Editing Essentials (undo, find, multi-cursor, Emmet)</td><td>Beginner–Intermediate</td><td>2.2</td><td>1h</td></tr>
+<tr data-href="#module-31-preview-html-in-the-browser"><td>3.1</td><td>Preview HTML in the Browser (Live Server)</td><td>Beginner</td><td>2.2</td><td>0.75h</td></tr>
+<tr data-href="#module-32-auto-format-with-prettier"><td>3.2</td><td>Auto-format with Prettier</td><td>Beginner–Intermediate</td><td>3.1</td><td>0.75h</td></tr>
+<tr data-href="#module-33-extensions-themes-and-habits"><td>3.3</td><td>Extensions, Themes &amp; Good Habits</td><td>Beginner</td><td>1.3</td><td>0.75h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phase 1 is a one-time setup you never repeat. Phases 2 and 3 are the reusable skills — every time you edit a code file for the rest of your life, you use them. Module 3.3 (extensions) only needs the window tour from 1.3, so you can reach it early if you're curious.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+<h3 id="track-1-zero-to-first-page">Track 1 — Zero to First Page (the full path)</h3>
+<p><code>1.1 → 1.2 → 1.3 → 2.1 → 2.2 → 3.1 → Final Capstone</code><br>
+Target outcome: <strong>A working <code>about-me.html</code> you can open in a browser.</strong></p>
+<h3 id="track-2-already-installed">Track 2 — Already Installed, Just Teach Me to Edit</h3>
+<p><code>2.1 → 2.2 → 2.3 → 3.1</code><br>
+Target outcome: <strong>Confident creating, editing, saving, and previewing HTML files.</strong></p>
+<h3 id="track-3-clean-and-fast">Track 3 — Clean &amp; Fast (power-user habits)</h3>
+<p><code>2.3 → 3.2 → 3.3</code><br>
+Target outcome: <strong>Emmet shortcuts, one-key auto-format, and a tuned editor.</strong></p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Install &amp; Launch VS Code    (Day 1, ~1.5h)
+Phase 2 — Editing Your First File      (Day 1–2, ~2.5h)
+Phase 3 — See It Work &amp; Good Habits    (Day 2, ~2.25h)
+Final Capstone — My First Web Page     (Day 2)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ── 1.2 ── 1.3 ──┬── 2.1 ── 2.2 ──┬── 3.1 ──┐
+                    │                └── 2.3    ├── Final Capstone
+                    └────────────────── 3.3    │
+                                    3.1 ── 3.2 ─┘</code></pre>
+<hr />
+
+<h2 id="phase-1-install-and-launch-vs-code">Phase 1: Install &amp; Launch VS Code</h2>
+<h3 id="weeks-day-1-setup">Day 1 | Goal: Get VS Code downloaded, installed, and open on your Windows PC.</h3>
+<hr />
+
+<h3 id="module-11-download-vs-code-for-windows">Module 1.1 — Download VS Code for Windows</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~0.5h<br>
+<strong>Skip-check (test-out):</strong> Download the correct <code>.exe</code> for a normal Windows account (no admin rights) and explain why you chose it.<br>
+<strong>Skip if:</strong> You already have the installer downloaded or VS Code installed.<br>
+<strong>Unlocks:</strong> Module 1.2</p>
+</blockquote>
+
+<h4>What VS Code is (and isn't)</h4>
+<p>Visual Studio Code ("VS Code") is a free, lightweight <strong>code editor</strong> made by Microsoft. It is a sophisticated text editor for code — it does not run your website for you, and it is <em>not</em> the same as the much heavier "Visual Studio" IDE. Confusing the two leads beginners to download gigabytes they don't need, so make sure you are on the right site: <code>code.visualstudio.com</code>.</p>
+<p>The current stable release as of this guide is <strong>version 1.129</strong> (July 2026). Versions update roughly monthly; the download page always serves the latest, so you never need to hunt for a version number.</p>
+
+<h4>Go to the official download page</h4>
+<p>Open your web browser and go to <strong><code>https://code.visualstudio.com/download</code></strong>. Downloading from anywhere else (a random "free download" mirror) risks bundled malware — the trap here is that fake VS Code installers are a common way to get tricked into installing something harmful, so only trust the official Microsoft domain.</p>
+<p>On the download page you'll see a large <strong>Windows</strong> button. Below it are the specific options.</p>
+
+<h4>User Installer vs. System Installer — pick the right one</h4>
+<p>Windows offers three shapes of the same editor. This choice trips up almost every beginner, so here is the plain-English version:</p>
+<div class="table-scroll">
+<table>
+<tr><th>Option</th><th>What it does</th><th>Choose it when</th></tr>
+<tr><td><strong>User Installer</strong></td><td>Installs VS Code just for your Windows account, in your user folder. <strong>No administrator password needed.</strong> Updates install quietly in the background.</td><td><strong>Almost always — this is the recommended default.</strong></td></tr>
+<tr><td>System Installer</td><td>Installs for <em>all</em> users on the PC. Requires an administrator password.</td><td>A shared/lab computer where every account should have it.</td></tr>
+<tr><td>.zip archive</td><td>A "portable" copy you unzip yourself — no installer, no Start-menu entry.</td><td>Advanced use (running from a USB stick). Not for beginners.</td></tr>
+</table>
+</div>
+<p>For a personal Windows laptop, download the <strong>User Installer (x64)</strong>. The file it saves is named like <code>VSCodeUserSetup-x64-1.129.exe</code>. If your PC is a newer ARM-based machine (e.g. some Surface models) choose the <strong>Arm64</strong> User Installer instead; if you're unsure, x64 works on the vast majority of Windows PCs.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Downloading "Visual Studio Community" instead of "Visual Studio Code." They are different products from the same company. You want the small one called <strong>Code</strong>.</p></blockquote>
+
+<p><strong>Exercise 1.1 — Get the right installer</strong></p>
+<p>Running example: preparing to build <code>about-me.html</code>.</p>
+<ol>
+<li>Open your browser and navigate to <code>https://code.visualstudio.com/download</code>.</li>
+<li>Confirm the address bar shows the exact domain <code>code.visualstudio.com</code> with a padlock.</li>
+<li>Click the Windows <strong>User Installer</strong> download (x64, unless you know you have an Arm64 machine).</li>
+<li>Find the downloaded file in your <code>Downloads</code> folder and confirm its name starts with <code>VSCodeUserSetup</code>.</li>
+<li>Write down one sentence: why is the User Installer the right pick for your own laptop?</li>
+</ol>
+<hr />
+
+<h3 id="module-12-run-the-installer">Module 1.2 — Run the Installer &amp; First Launch</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~0.5h<br>
+<strong>Skip-check (test-out):</strong> Launch VS Code from the Start menu and open a folder — proving it installed and is on your system.<br>
+<strong>Skip if:</strong> VS Code already opens from the Start menu.<br>
+<strong>Unlocks:</strong> Module 1.3</p>
+</blockquote>
+
+<h4>Run the setup wizard</h4>
+<p>Double-click the <code>VSCodeUserSetup-x64-1.129.exe</code> file you downloaded. Windows may show a blue "Windows protected your PC" SmartScreen box the first time — because the file is new to your machine, not because it's unsafe. Click <strong>More info → Run anyway</strong>. (This is safe <em>only because</em> you downloaded from the official Microsoft site in Module 1.1 — never click "Run anyway" on a file from an unknown source.)</p>
+
+<h4>The checkboxes that matter</h4>
+<p>Accept the licence agreement, keep the default install location, and then you reach the "Select Additional Tasks" screen. Here is what to tick and why:</p>
+<div class="table-scroll">
+<table>
+<tr><th>Checkbox</th><th>Recommendation</th><th>Why it matters</th></tr>
+<tr><td>Create a desktop icon</td><td>Optional</td><td>Convenience only.</td></tr>
+<tr><td>Add "Open with Code" to file context menu</td><td><strong>Tick both</strong></td><td>Lets you right-click any folder in File Explorer and open it instantly in VS Code — a huge time-saver you'll use constantly.</td></tr>
+<tr><td>Register Code as an editor for supported file types</td><td>Tick</td><td>Double-clicking a <code>.html</code> or <code>.txt</code> file can open it in VS Code.</td></tr>
+<tr><td><strong>Add to PATH</strong></td><td><strong>Leave ticked</strong> (default)</td><td>Lets you type <code>code .</code> in a terminal to open the current folder. You'll appreciate this later; leaving it off means a confusing "command not found" down the road.</td></tr>
+</table>
+</div>
+<p>Click <strong>Install</strong>, wait a few seconds, and let it finish. Tick <strong>Launch Visual Studio Code</strong> on the final screen, then <strong>Finish</strong>.</p>
+
+<h4>Confirm it's really installed</h4>
+<p>Close VS Code, then press the <strong>Windows key</strong> and type <code>code</code>. "Visual Studio Code" should appear as a Start-menu result. If it does, the installation is complete and reproducible — you can now open it any time without the installer.</p>
+
+<p><strong>Exercise 1.2 — Install and verify</strong></p>
+<ol>
+<li>Run the installer and tick <strong>Add "Open with Code"</strong> for both files and directories.</li>
+<li>Leave <strong>Add to PATH</strong> ticked. Finish the install.</li>
+<li>Launch VS Code; when it opens, you'll see a "Welcome" tab — that's expected.</li>
+<li>Close it, press the Windows key, type <code>code</code>, and re-open it from the Start menu.</li>
+<li>In File Explorer, right-click any folder and confirm you now see <strong>"Open with Code"</strong> in the menu.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-tour-the-vs-code-window">Module 1.3 — Tour the VS Code Window</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~0.5h<br>
+<strong>Skip-check (test-out):</strong> Point to the Activity Bar, Explorer, Editor area, and Command Palette without looking them up.<br>
+<strong>Skip if:</strong> You can already name the main regions of the VS Code window.<br>
+<strong>Unlocks:</strong> Phase 2, Module 3.3</p>
+</blockquote>
+
+<h4>The five regions you'll actually use</h4>
+<p>When VS Code opens, the window is divided into a handful of areas. Knowing their names means every tutorial you ever read will make sense — instructions like "click the Explorer" become obvious instead of mysterious.</p>
+<div class="table-scroll">
+<table>
+<tr><th>Region</th><th>Where</th><th>What it's for</th></tr>
+<tr><td><strong>Activity Bar</strong></td><td>Far-left vertical strip of icons</td><td>Switches big panels: Explorer (files), Search, Source Control (git), Run, Extensions.</td></tr>
+<tr><td><strong>Explorer / Side Bar</strong></td><td>Left panel</td><td>The file tree of your open folder — where you create and open files.</td></tr>
+<tr><td><strong>Editor</strong></td><td>Big central area</td><td>Where you actually type and edit your code. Files open as tabs across the top.</td></tr>
+<tr><td><strong>Panel</strong></td><td>Bottom (toggle with <code>Ctrl+`</code>)</td><td>Terminal, Problems, and Output. You can ignore it for now.</td></tr>
+<tr><td><strong>Status Bar</strong></td><td>Thin bar at the very bottom</td><td>Shows the language mode (e.g. "HTML"), line/column, and encoding.</td></tr>
+</table>
+</div>
+
+<h4>The Command Palette — your master shortcut</h4>
+<p>Press <strong><code>Ctrl+Shift+P</code></strong>. A search box drops down from the top: this is the <strong>Command Palette</strong>, and it can run <em>every</em> command in VS Code by name. If you ever forget a shortcut, open the palette and type what you want ("format", "install extension", "open folder"). Learning this one shortcut means you never have to memorise the rest.</p>
+<blockquote class="callout"><p><strong>Retrieval practice:</strong> before reading on, try to name the far-left strip of icons and the big central area from memory. Naming them now — rather than re-scanning the table — is what fixes them in memory.</p></blockquote>
+
+<h4>Pick a theme (optional, 30 seconds)</h4>
+<p>Open the Command Palette (<code>Ctrl+Shift+P</code>), type <code>Color Theme</code>, press Enter, and use the arrow keys to preview light and dark themes. A comfortable theme reduces eye strain over long sessions — pick whichever you'll actually enjoy looking at.</p>
+
+<p><strong>Exercise 1.3 — Name the window</strong></p>
+<ol>
+<li>Open VS Code. Hover over each icon in the far-left Activity Bar and note its tooltip name.</li>
+<li>Click the top icon (Explorer). Notice it currently says "You have not yet opened a folder."</li>
+<li>Open the Command Palette with <code>Ctrl+Shift+P</code>, then press <code>Esc</code> to close it.</li>
+<li>Toggle the bottom Panel open and closed with <code>Ctrl+`</code> (the backtick key, above Tab).</li>
+<li>Switch to a Color Theme you like via the Command Palette.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-first-launch-checklist">Phase 1 Capstone: First-Launch Checklist</h3>
+<p><strong>Project: Prove VS Code is installed and you can navigate it.</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) why the User Installer is the beginner default, and (2) what the Command Palette does? If either draws a blank, re-read that module first.</p></blockquote>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>VS Code launches from the Start menu by typing <code>code</code>.</li>
+<li>Right-clicking a folder in File Explorer shows "Open with Code."</li>
+<li>You can open and close the Command Palette on demand.</li>
+<li>You can name the Activity Bar, Explorer, and Editor regions.</li>
+<li>You've chosen a color theme you like.</li>
+<li>Write one sentence describing the difference between VS Code and a web browser.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-editing-your-first-code-file">Phase 2: Editing Your First Code File</h2>
+<h3 id="weeks-day-1-2-editing">Day 1–2 | Goal: Create, write, save, and confidently edit an HTML file.</h3>
+<hr />
+
+<h3 id="module-21-open-a-folder-as-a-workspace">Module 2.1 — Open a Folder as a Workspace</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~0.5h<br>
+<strong>Skip-check (test-out):</strong> Create a folder <code>my-first-site</code>, open it in VS Code, and see it named at the top of the Explorer.<br>
+<strong>Skip if:</strong> You already open folders and see files in the Explorer.<br>
+<strong>Unlocks:</strong> Module 2.2</p>
+</blockquote>
+
+<h4>Why VS Code works on folders, not loose files</h4>
+<p>VS Code is happiest when you open a whole <strong>folder</strong> (it calls this a "workspace"), not a single file. A real project is a folder of related files — your HTML, images, and stylesheets all live together. Opening the folder lets the Explorer show them side by side and lets features like Live Server work. Open just a loose file and half of VS Code's helpfulness is switched off.</p>
+
+<h4>Create your project folder</h4>
+<p>First, make a folder for this guide's running example. In File Explorer, go to your <code>Documents</code>, create a new folder named <code>my-first-site</code>. Then, in VS Code, choose <strong>File → Open Folder…</strong> (or press <code>Ctrl+K</code> then <code>Ctrl+O</code>), select <code>my-first-site</code>, and click Select Folder.</p>
+<p>The Explorer on the left now shows <strong>MY-FIRST-SITE</strong> at the top. It's empty — that's exactly right; you'll add the file next. If VS Code shows a "Do you trust the authors of the files in this folder?" prompt, click <strong>Yes, I trust the authors</strong> for folders you created yourself. This trust prompt exists because opening someone else's project can run code, so only trust folders whose contents you know.</p>
+
+<p><strong>Exercise 2.1 — Open the workspace</strong></p>
+<p>Running example: the <code>my-first-site</code> folder that will hold <code>about-me.html</code>.</p>
+<ol>
+<li>Create a folder <code>my-first-site</code> inside your Documents.</li>
+<li>In VS Code, use <strong>File → Open Folder…</strong> to open it.</li>
+<li>Confirm the Explorer shows <code>MY-FIRST-SITE</code> at the top.</li>
+<li>Click <strong>Yes, I trust the authors</strong> if prompted.</li>
+<li>Tip: close the Welcome tab so the editor area is clear.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-write-and-save-an-html-file">Module 2.2 — Write &amp; Save an HTML File</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~1h<br>
+<strong>Skip-check (test-out):</strong> Create <code>about-me.html</code>, type a valid HTML skeleton, and save it with no unsaved-changes dot on the tab.<br>
+<strong>Skip if:</strong> You can already create, write, and save an HTML file confidently.<br>
+<strong>Unlocks:</strong> Module 2.3, Module 3.1</p>
+</blockquote>
+
+<h4>Create the file</h4>
+<p>In the Explorer, hover over the <code>MY-FIRST-SITE</code> heading — a row of small icons appears. Click the <strong>New File</strong> icon (a page with a "+"). Type the name <strong><code>about-me.html</code></strong> and press Enter. The <code>.html</code> extension is what tells VS Code "this is HTML" — get it wrong (e.g. <code>about-me.txt</code>) and you lose color highlighting and the browser won't treat it as a web page.</p>
+
+<h4>Type your first HTML</h4>
+<p>An HTML file has a standard skeleton. Type the following into <code>about-me.html</code> (typing it out, rather than pasting, is how it sticks):</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;About Me&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hi, I'm Alex&lt;/h1&gt;
+    &lt;p&gt;This is my very first web page, built in VS Code.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>Each part has a job: <code>&lt;!DOCTYPE html&gt;</code> tells the browser this is modern HTML; <code>&lt;head&gt;</code> holds information about the page (like its <code>&lt;title&gt;</code>); <code>&lt;body&gt;</code> holds what you actually see. The <code>&lt;h1&gt;</code> is a big heading and <code>&lt;p&gt;</code> is a paragraph.</p>
+
+<h4>Save it — and know when it's unsaved</h4>
+<p>Look at the file's tab. When you have unsaved changes, VS Code shows a <strong>solid dot</strong> instead of the little "x" on the tab. Press <strong><code>Ctrl+S</code></strong> to save; the dot turns back into an "x". Unsaved work is the single most common beginner frustration — you preview the page, nothing changed, because the edit was never saved. Get in the habit of pressing <code>Ctrl+S</code> constantly.</p>
+<blockquote class="callout"><p><strong>Tip:</strong> Turn on <strong>File → Auto Save</strong> to have VS Code save for you after a short pause. Many beginners enable it on day one to sidestep the "why didn't my change show up?" trap entirely.</p></blockquote>
+
+<p><strong>Exercise 2.2 — Your first page</strong></p>
+<p>Running example: <code>about-me.html</code>.</p>
+<ol>
+<li>Create <code>about-me.html</code> in the <code>my-first-site</code> folder.</li>
+<li>Type the HTML skeleton above (type it, don't paste).</li>
+<li>Change the <code>&lt;h1&gt;</code> to your own name and edit the paragraph text.</li>
+<li>Add a second paragraph: <code>&lt;p&gt;I am learning to code.&lt;/p&gt;</code></li>
+<li>Save with <code>Ctrl+S</code> and confirm the tab's dot becomes an "x".</li>
+<li>Deliberately type a character, watch the dot appear, then save again.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-editing-essentials">Module 2.3 — Editing Essentials</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~1h<br>
+<strong>Skip-check (test-out):</strong> Use undo/redo, Find &amp; Replace, multi-cursor, and one Emmet expansion in a real file.<br>
+<strong>Skip if:</strong> You already use multi-cursor and Emmet comfortably.<br>
+<strong>Unlocks:</strong> Track 3</p>
+</blockquote>
+
+<h4>The everyday editing shortcuts</h4>
+<p>These are the keystrokes you'll use thousands of times. Learning them now saves hours later — reaching for the mouse for every edit is what makes coding feel slow.</p>
+<div class="table-scroll">
+<table>
+<tr><th>Action</th><th>Shortcut</th><th>Notes</th></tr>
+<tr><td>Undo / Redo</td><td><code>Ctrl+Z</code> / <code>Ctrl+Y</code></td><td>Your safety net — edit fearlessly.</td></tr>
+<tr><td>Save</td><td><code>Ctrl+S</code></td><td>Do it constantly.</td></tr>
+<tr><td>Find</td><td><code>Ctrl+F</code></td><td>Search within the file.</td></tr>
+<tr><td>Find &amp; Replace</td><td><code>Ctrl+H</code></td><td>Swap one word for another everywhere.</td></tr>
+<tr><td>Add cursor to next match</td><td><code>Ctrl+D</code></td><td>Select a word, press again to grab the next identical word — edit them all at once.</td></tr>
+<tr><td>Move line up/down</td><td><code>Alt+↑</code> / <code>Alt+↓</code></td><td>Reorder lines without cut/paste.</td></tr>
+<tr><td>Copy line down</td><td><code>Shift+Alt+↓</code></td><td>Duplicate a line instantly.</td></tr>
+<tr><td>Comment / uncomment</td><td><code>Ctrl+/</code></td><td>Toggle the current line as a comment.</td></tr>
+</table>
+</div>
+
+<h4>Emmet — type less HTML</h4>
+<p>VS Code has <strong>Emmet</strong> built in (no install needed). It expands short abbreviations into full HTML. In an empty <code>.html</code> file, type an exclamation mark <code>!</code> and press <strong>Tab</strong> — VS Code writes an entire HTML skeleton for you. Type <code>ul&gt;li*3</code> and press Tab to get a list with three items:</p>
+<pre><code class="language-html">&lt;!-- typing  ul&gt;li*3  then Tab  produces: --&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+<p>Emmet turns tedious typing into a couple of keystrokes; it's one of the biggest reasons developers write HTML fast.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Nothing happens when you press Tab after <code>!</code>. Almost always the file isn't recognised as HTML — check the language mode in the bottom-right Status Bar says <strong>HTML</strong>. If it says "Plain Text," you probably saved the file without the <code>.html</code> extension.</p></blockquote>
+
+<p><strong>Exercise 2.3 — Edit like a pro</strong></p>
+<p>Running example: <code>about-me.html</code>.</p>
+<ol>
+<li>Use <code>Ctrl+D</code> to select every occurrence of a repeated word and change them all at once.</li>
+<li>Use <code>Ctrl+H</code> to replace your name with a nickname, then undo it with <code>Ctrl+Z</code>.</li>
+<li>Duplicate your <code>&lt;p&gt;</code> line with <code>Shift+Alt+↓</code> and edit the copy.</li>
+<li>Below your paragraphs, type <code>ul&gt;li*3</code> and press Tab; fill the three list items with three hobbies.</li>
+<li>Reorder two lines using <code>Alt+↑</code> / <code>Alt+↓</code>.</li>
+<li>Save and confirm the Status Bar shows the language as <strong>HTML</strong>.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-build-about-me-html">Phase 2 Capstone: Build about-me.html</h3>
+<p><strong>Project: A complete, hand-typed personal page.</strong></p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A folder <code>my-first-site</code> opened as a workspace in VS Code.</li>
+<li><code>about-me.html</code> with a valid skeleton (DOCTYPE, head, title, body).</li>
+<li>An <code>&lt;h1&gt;</code> with your name and at least two <code>&lt;p&gt;</code> paragraphs.</li>
+<li>A <code>&lt;ul&gt;</code> list of three hobbies, created with Emmet.</li>
+<li>At least one edit made using multi-cursor (<code>Ctrl+D</code>).</li>
+<li>The file saved (no unsaved-changes dot) with the Status Bar reading HTML.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-see-it-work-and-build-good-habits">Phase 3: See It Work &amp; Build Good Habits</h2>
+<h3 id="weeks-day-2-preview">Day 2 | Goal: See your page in a real browser, keep it tidy, and set up a comfortable editor.</h3>
+<hr />
+
+<h3 id="module-31-preview-html-in-the-browser">Module 3.1 — Preview HTML in the Browser</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~0.75h<br>
+<strong>Skip-check (test-out):</strong> Open <code>about-me.html</code> in a browser and see edits auto-reload after saving.<br>
+<strong>Skip if:</strong> You already use Live Server or Live Preview with auto-reload.<br>
+<strong>Unlocks:</strong> Module 3.2</p>
+</blockquote>
+
+<h4>The simplest way: open the file in a browser</h4>
+<p>Your HTML file is just a file on disk. Find <code>about-me.html</code> in File Explorer and double-click it (or drag it onto an open browser window). It opens in your default browser and shows your heading and paragraphs. To see a change, you'd edit, save, and manually refresh the browser — which gets tedious fast.</p>
+
+<h4>The better way: Live Server (auto-reload)</h4>
+<p><strong>Live Server</strong> is an extension that serves your page and <em>automatically refreshes the browser every time you save</em>. This tight edit → save → see-it-instantly loop is the single biggest boost to how fast you learn, because you get immediate feedback on every change.</p>
+<p>Install it:</p>
+<ol>
+<li>Click the <strong>Extensions</strong> icon in the Activity Bar (the four-squares icon), or press <code>Ctrl+Shift+X</code>.</li>
+<li>Search for <strong>Live Server</strong> (by Ritwick Dey).</li>
+<li>Click <strong>Install</strong>.</li>
+</ol>
+<p>Then, with <code>about-me.html</code> open, either click <strong>"Go Live"</strong> in the bottom-right Status Bar, or right-click the file and choose <strong>"Open with Live Server."</strong> Your browser opens at an address like <code>http://127.0.0.1:5500/about-me.html</code>. Now edit the <code>&lt;h1&gt;</code>, press <code>Ctrl+S</code>, and watch the browser update on its own.</p>
+<blockquote class="callout"><p><strong>Alternative:</strong> Microsoft publishes its own extension called <strong>Live Preview</strong> that shows the page in a panel <em>inside</em> VS Code. Either works; Live Server is the long-standing beginner favourite, so this guide uses it. Don't run both at once on the same file — pick one.</p></blockquote>
+
+<p><strong>Exercise 3.1 — See it live</strong></p>
+<p>Running example: <code>about-me.html</code>.</p>
+<ol>
+<li>Install the <strong>Live Server</strong> extension.</li>
+<li>Open <code>about-me.html</code> and click <strong>Go Live</strong> in the Status Bar.</li>
+<li>In VS Code, change your <code>&lt;h1&gt;</code> text and press <code>Ctrl+S</code>.</li>
+<li>Watch the browser refresh automatically — no manual reload.</li>
+<li>Add a new hobby to your list, save, and confirm it appears instantly.</li>
+<li>Stop the server by clicking the "Port: 5500" indicator in the Status Bar.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-auto-format-with-prettier">Module 3.2 — Auto-format with Prettier</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~0.75h<br>
+<strong>Skip-check (test-out):</strong> Take a messy, badly-indented HTML file and clean it up with one Format Document command.<br>
+<strong>Skip if:</strong> You already format on save with Prettier.<br>
+<strong>Unlocks:</strong> Module 3.3</p>
+</blockquote>
+
+<h4>Why formatting matters</h4>
+<p>As your file grows, inconsistent indentation makes it hard to see which tag is inside which. A formatter fixes spacing and indentation automatically so the structure is obvious at a glance — you spend your attention on the code, not on lining things up by hand.</p>
+
+<h4>Install Prettier and format</h4>
+<ol>
+<li>Open Extensions (<code>Ctrl+Shift+X</code>), search <strong>Prettier - Code formatter</strong> (by Prettier), and Install.</li>
+<li>Open a messy HTML file, then press <strong><code>Shift+Alt+F</code></strong> (Format Document). Everything snaps into clean, consistent indentation.</li>
+<li>The first time, VS Code may ask which formatter to use — choose <strong>Prettier</strong>.</li>
+</ol>
+<p>Watch what "Format Document" does to sloppy input:</p>
+<pre><code class="language-html">&lt;!-- before --&gt;
+&lt;body&gt;&lt;h1&gt;Hi&lt;/h1&gt;&lt;p&gt;messy
+   and    crooked&lt;/p&gt;&lt;/body&gt;
+
+&lt;!-- after Shift+Alt+F --&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hi&lt;/h1&gt;
+  &lt;p&gt;messy and crooked&lt;/p&gt;
+&lt;/body&gt;</code></pre>
+
+<h4>Format on save (set it once)</h4>
+<p>Even better, have VS Code format every time you save. Open the Command Palette (<code>Ctrl+Shift+P</code>), type <strong>"Preferences: Open Settings (UI)"</strong>, search <strong>Format On Save</strong>, and tick the box. Now every <code>Ctrl+S</code> both saves <em>and</em> tidies — your files stay clean without a second thought.</p>
+
+<p><strong>Exercise 3.2 — Tidy up</strong></p>
+<p>Running example: a deliberately messy copy of <code>about-me.html</code>.</p>
+<ol>
+<li>Install <strong>Prettier</strong>.</li>
+<li>Squash a few lines of your HTML together and mangle the indentation on purpose.</li>
+<li>Press <code>Shift+Alt+F</code> and watch it snap back to clean formatting.</li>
+<li>Enable <strong>Format On Save</strong> in Settings.</li>
+<li>Make another mess, then just press <code>Ctrl+S</code> and confirm it auto-formats.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-extensions-themes-and-habits">Module 3.3 — Extensions, Themes &amp; Good Habits</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~0.75h<br>
+<strong>Skip-check (test-out):</strong> Install, disable, and uninstall an extension, and explain what a bloated extension list costs you.<br>
+<strong>Skip if:</strong> You already manage extensions and know the core habits.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4>Managing extensions</h4>
+<p>The Extensions view (<code>Ctrl+Shift+X</code>) is the Marketplace. Each extension you install adds features — but every one also adds a little startup cost and clutter. Install deliberately: too many extensions can slow VS Code down and cause conflicts, so add one when you have a real need, not "just in case." You can <strong>Disable</strong> an extension without removing it, or <strong>Uninstall</strong> it entirely from the same panel.</p>
+<p>A sensible beginner starter set is just three: <strong>Live Server</strong>, <strong>Prettier</strong>, and (optionally) an icon theme for a nicer file tree. That's genuinely enough to build real pages.</p>
+
+<h4>Habits that make you faster</h4>
+<ul>
+<li><strong>Save constantly</strong> (<code>Ctrl+S</code>) or turn on Auto Save — the number-one fix for "my change didn't show up."</li>
+<li><strong>Open a folder, not a loose file</strong> — so the Explorer and Live Server work properly.</li>
+<li><strong>Learn the Command Palette</strong> (<code>Ctrl+Shift+P</code>) — it replaces memorising dozens of shortcuts.</li>
+<li><strong>Let Prettier format on save</strong> — never hand-indent again.</li>
+<li><strong>Keep the Status Bar in view</strong> — it tells you the language mode and warns of problems.</li>
+</ul>
+
+<blockquote class="callout"><p><strong>Disambiguation:</strong> "VS Code" (the free editor in this guide) is not "Visual Studio" (a large, separate IDE for .NET/C++), even though both are Microsoft products. Tutorials sometimes say "Visual Studio" loosely — if they show the interface from this guide, they mean VS Code.</p></blockquote>
+
+<p><strong>Exercise 3.3 — Curate your setup</strong></p>
+<ol>
+<li>Open the Extensions view and read the description of one extension before installing it.</li>
+<li>Install an icon theme (search "Material Icon Theme" or similar) and enable it.</li>
+<li>Disable it, notice the file icons revert, then re-enable it.</li>
+<li>Uninstall any extension you don't actually need.</li>
+<li>Write your own three-line "good habits" note and pin it somewhere you'll see it.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-polish-and-publish-ready">Phase 3 Capstone: Polish the Page</h3>
+<p><strong>Project: A clean, live-previewed, auto-formatted about-me.html.</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you (1) start Live Server, (2) format a document, and (3) enable format-on-save? If any is fuzzy, re-read that module.</p></blockquote>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Live Server installed; <code>about-me.html</code> opens with auto-reload.</li>
+<li>Prettier installed with <strong>Format On Save</strong> enabled.</li>
+<li>The file is cleanly indented (proof: it survives a <code>Shift+Alt+F</code> unchanged).</li>
+<li>An intentional edit saved and seen auto-refreshing in the browser.</li>
+<li>Your extension list trimmed to only what you use.</li>
+<li>A short written note of your five good habits.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-my-first-web-page">Final Capstone: My First Web Page</h2>
+<p><strong>Project: A finished about-me.html, built and previewed entirely in VS Code.</strong></p>
+<p>Integrates every skill: installing VS Code, opening a workspace, writing and saving HTML, editing efficiently, previewing live, and formatting cleanly. Uses the running example from all phases.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>VS Code installed via the User Installer and launching from the Start menu.</li>
+<li>A <code>my-first-site</code> folder opened as a workspace.</li>
+<li><code>about-me.html</code> with a valid skeleton, a heading, at least two paragraphs, and a three-item hobby list.</li>
+<li>At least one section added using an Emmet expansion.</li>
+<li>The page running under Live Server with auto-reload demonstrated.</li>
+<li>Prettier installed and Format On Save enabled; the file is cleanly formatted.</li>
+<li>The file saved with no unsaved-changes dot and the Status Bar reading HTML.</li>
+<li>A two-sentence reflection: what was the single most useful shortcut or feature you learned?</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: VS Code Task–Shortcut Matrix</h2>
+<div class="table-scroll">
+<table>
+<tr><th>Task</th><th>How</th><th>Notes</th></tr>
+<tr><td>Open the download page</td><td><code>code.visualstudio.com/download</code></td><td>Official Microsoft site only.</td></tr>
+<tr><td>Open a folder (workspace)</td><td><code>Ctrl+K Ctrl+O</code></td><td>Or File → Open Folder.</td></tr>
+<tr><td>New file</td><td>New File icon in Explorer</td><td>Give it a <code>.html</code> extension.</td></tr>
+<tr><td>Save</td><td><code>Ctrl+S</code></td><td>Solid dot on tab = unsaved.</td></tr>
+<tr><td>Save all</td><td><code>Ctrl+K S</code></td><td>Saves every open file.</td></tr>
+<tr><td>Command Palette</td><td><code>Ctrl+Shift+P</code></td><td>Run any command by name.</td></tr>
+<tr><td>Extensions view</td><td><code>Ctrl+Shift+X</code></td><td>Install Live Server, Prettier.</td></tr>
+<tr><td>Toggle terminal/panel</td><td><code>Ctrl+`</code></td><td>Backtick key, above Tab.</td></tr>
+<tr><td>Find</td><td><code>Ctrl+F</code></td><td>Search in file.</td></tr>
+<tr><td>Find &amp; Replace</td><td><code>Ctrl+H</code></td><td>Swap text.</td></tr>
+<tr><td>Multi-cursor next match</td><td><code>Ctrl+D</code></td><td>Edit repeats at once.</td></tr>
+<tr><td>Move line up/down</td><td><code>Alt+↑</code> / <code>Alt+↓</code></td><td>Reorder without cut/paste.</td></tr>
+<tr><td>Format Document</td><td><code>Shift+Alt+F</code></td><td>Needs a formatter (Prettier).</td></tr>
+<tr><td>Emmet expand</td><td>type abbreviation, then <code>Tab</code></td><td><code>!</code> → full HTML skeleton.</td></tr>
+<tr><td>Live preview</td><td>"Go Live" in Status Bar</td><td>Requires Live Server.</td></tr>
+</table>
+</div>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+<h3 id="glossary-editor-terms">Editor &amp; Setup Terms</h3>
+<dl class="glossary">
+<dt>VS Code</dt>
+<dd>Microsoft's free, lightweight code editor — the program this guide installs and uses.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Visual Studio", "VS" — Visual Studio is a different, much larger IDE.</dd>
+<dt>User Installer</dt>
+<dd>The Windows installer that sets up VS Code for your account only, without needing an administrator password. The recommended default.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "admin installer" — that describes the System Installer, the opposite choice.</dd>
+<dt>Workspace</dt>
+<dd>The folder you have open in VS Code; its files show in the Explorer.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "project file" — a workspace is a folder, not a single file.</dd>
+<dt>Command Palette</dt>
+<dd>The <code>Ctrl+Shift+P</code> search box that runs any VS Code command by name.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "search bar" — that usually means <code>Ctrl+F</code> in-file search.</dd>
+<dt>Extension</dt>
+<dd>An add-on from the Marketplace that gives VS Code new abilities, such as Live Server or Prettier.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "plugin", "add-on" — VS Code's own name is "extension".</dd>
+<dt>Emmet</dt>
+<dd>The built-in feature that expands short abbreviations (like <code>!</code> or <code>ul&gt;li*3</code>) into full HTML when you press Tab.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "autocomplete", "snippet" — those are related but separate features.</dd>
+</dl>
+<h3 id="glossary-html-terms">HTML File Terms</h3>
+<dl class="glossary">
+<dt>Element / Tag</dt>
+<dd>A building block of HTML written between angle brackets, like <code>&lt;p&gt;…&lt;/p&gt;</code>. The opening and closing tags plus their content form an element.</dd>
+<dd class="avoid"><strong>Avoid:</strong> using "tag" and "element" as if fully interchangeable — a tag is one bracketed part; the element is the whole thing.</dd>
+<dt>Extension (file)</dt>
+<dd>The suffix after the dot in a filename, such as <code>.html</code>, that tells software what kind of file it is.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing this with a VS Code Extension (an add-on) — same word, different meaning.</dd>
+<dt>Live Server</dt>
+<dd>An extension that serves your HTML and auto-refreshes the browser each time you save.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "web host", "deploy" — Live Server runs only on your own machine for previewing.</dd>
+<dt>Localhost</dt>
+<dd>Your own computer acting as a web server; addresses like <code>127.0.0.1:5500</code> point back to it.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "the internet" — a localhost page is not published or visible to anyone else.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<h3 id="books">Books</h3>
+<div class="table-scroll">
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>HTML and CSS: Design and Build Websites — Jon Duckett (2014)</td><td>Gentle, highly visual intro to HTML for total beginners.</td></tr>
+<tr><td>Learning Web Design, 5th ed. — Jennifer Robbins (2018)</td><td>Broader beginner path: HTML, CSS, and how the web works.</td></tr>
+<tr><td>HTML &amp; CSS: The Complete Reference — Thomas Powell</td><td>A lookup reference once you know the basics.</td></tr>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--ink-soft)">Note: VS Code changes monthly, so its <em>features</em> are best learned from the live docs below rather than any printed book, which dates quickly.</p>
+<h3 id="online-resources">Online Resources</h3>
+<div class="table-scroll">
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>code.visualstudio.com/docs</td><td>Official VS Code docs</td><td>Always current; start with "Getting Started".</td></tr>
+<tr><td>code.visualstudio.com/docs/setup/windows</td><td>Windows setup guide</td><td>The authoritative install walkthrough.</td></tr>
+<tr><td>VS Code "Intro Videos"</td><td>Short official tutorials</td><td>5-minute videos on each core feature.</td></tr>
+<tr><td>MDN Web Docs (developer.mozilla.org)</td><td>HTML reference</td><td>The trusted reference for every HTML tag.</td></tr>
+<tr><td>freeCodeCamp — Responsive Web Design</td><td>Free HTML/CSS course</td><td>Hands-on, project-based, no cost.</td></tr>
+<tr><td>W3Schools HTML Tutorial</td><td>Quick HTML lookups</td><td>Fast "try it" examples for each tag.</td></tr>
+</table>
+</div>
+<h3 id="tools-and-templates">Tools &amp; Templates</h3>
+<div class="table-scroll">
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>Live Server (Ritwick Dey)</td><td>Auto-reloading local preview of your HTML.</td></tr>
+<tr><td>Live Preview (Microsoft)</td><td>In-editor preview panel — an alternative to Live Server.</td></tr>
+<tr><td>Prettier</td><td>One-key / on-save code formatting.</td></tr>
+<tr><td>Material Icon Theme</td><td>Clearer file-type icons in the Explorer.</td></tr>
+</table>
+</div>
+<h3 id="communities">Communities</h3>
+<div class="table-scroll">
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>r/learnprogramming</td><td>Reddit</td><td>Absolute-beginner questions, judgement-free.</td></tr>
+<tr><td>r/vscode</td><td>Reddit</td><td>VS Code tips, extensions, and troubleshooting.</td></tr>
+<tr><td>Stack Overflow</td><td>Web</td><td>Searchable answers to specific error messages.</td></tr>
+<tr><td>freeCodeCamp Forum</td><td>Web</td><td>Friendly help while working through the free course.</td></tr>
+</table>
+</div>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
+<h4>Phase 1 — Install &amp; Launch</h4>
+<ul>
+<li>[ ] Module 1.1 — Download VS Code for Windows</li>
+<li>[ ] Exercise 1.1 — Got the right installer</li>
+<li>[ ] Module 1.2 — Run the Installer &amp; First Launch</li>
+<li>[ ] Exercise 1.2 — Installed and verified</li>
+<li>[ ] Module 1.3 — Tour the VS Code Window</li>
+<li>[ ] Exercise 1.3 — Named the window regions</li>
+<li>[ ] Capstone 1 — First-Launch Checklist</li>
+</ul>
+<h4>Phase 2 — Editing Your First File</h4>
+<ul>
+<li>[ ] Module 2.1 — Open a Folder as a Workspace</li>
+<li>[ ] Exercise 2.1 — Opened the workspace</li>
+<li>[ ] Module 2.2 — Write &amp; Save an HTML File</li>
+<li>[ ] Exercise 2.2 — Built your first page</li>
+<li>[ ] Module 2.3 — Editing Essentials</li>
+<li>[ ] Exercise 2.3 — Edited like a pro</li>
+<li>[ ] Capstone 2 — Build about-me.html</li>
+</ul>
+<h4>Phase 3 — See It Work</h4>
+<ul>
+<li>[ ] Module 3.1 — Preview HTML in the Browser</li>
+<li>[ ] Exercise 3.1 — Saw it live</li>
+<li>[ ] Module 3.2 — Auto-format with Prettier</li>
+<li>[ ] Exercise 3.2 — Tidied up</li>
+<li>[ ] Module 3.3 — Extensions, Themes &amp; Good Habits</li>
+<li>[ ] Exercise 3.3 — Curated the setup</li>
+<li>[ ] Capstone 3 — Polish the Page</li>
+</ul>
+<h4>Outcomes</h4>
+<ul>
+<li>[ ] VS Code installed and launching from the Start menu</li>
+<li>[ ] Confident creating, editing, and saving HTML files</li>
+<li>[ ] Final Capstone — My First Web Page complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 — VS Code on Windows Track: Absolute Beginner</em><br>
+<em>Non-linear modular design · Placement quiz · 9 modules · ~1 weekend part-time · hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-07-21 (VS Code 1.129)</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

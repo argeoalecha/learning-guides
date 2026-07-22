@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTM Strategy &amp; Automation Learning Guide — From Strategy to GTM Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">GTM Strategy &amp;<br>Automation Guide</div>
+      <div class="brand-sub">Clay · Make.com · n8n · HubSpot · Salesforce · AI Outreach</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#gtm-strategy-automation-learning-guide" class="nav-top">GTM Strategy &amp; Automation</a>
+<a href="#from-strategy-to-gtm-engineering-track" class="nav-top">Strategy to GTM Engineering</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+<div class="nav-group">
+<a href="#phase-1-gtm-strategy-foundations" class="nav-top nav-phase">Phase 1: GTM Strategy Foundations</a>
+<div class="nav-children">
+<a href="#module-11-gtm-fundamentals" class="nav-child">Module 1.1 — GTM Fundamentals</a>
+<a href="#module-12-market-sizing" class="nav-child">Module 1.2 — Market Sizing</a>
+<a href="#module-13-product-market-fit" class="nav-child">Module 1.3 — PMF &amp; GTM Triggers</a>
+<a href="#phase-1-capstone-saasflow" class="nav-child">Phase 1 Capstone</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-2-icp-targeting-messaging" class="nav-top nav-phase">Phase 2: ICP, Targeting &amp; Messaging</a>
+<div class="nav-children">
+<a href="#module-21-icp-definition" class="nav-child">Module 2.1 — ICP Definition</a>
+<a href="#module-22-value-proposition" class="nav-child">Module 2.2 — Value Proposition</a>
+<a href="#module-23-outreach-sequencing" class="nav-child">Module 2.3 — Outreach Sequencing</a>
+<a href="#phase-2-capstone-saasflow" class="nav-child">Phase 2 Capstone</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-3-gtm-operations" class="nav-top nav-phase">Phase 3: GTM Operations</a>
+<div class="nav-children">
+<a href="#module-31-crm-architecture" class="nav-child">Module 3.1 — CRM Architecture</a>
+<a href="#module-32-lead-enrichment" class="nav-child">Module 3.2 — Lead Enrichment</a>
+<a href="#module-33-lead-scoring" class="nav-child">Module 3.3 — Lead Scoring &amp; Routing</a>
+<a href="#phase-3-capstone-saasflow" class="nav-child">Phase 3 Capstone</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-4-gtm-automation" class="nav-top nav-phase">Phase 4: GTM Automation</a>
+<div class="nav-children">
+<a href="#module-41-clay-workflows" class="nav-child">Module 4.1 — Clay Workflows</a>
+<a href="#module-42-workflow-automation" class="nav-child">Module 4.2 — Make.com &amp; n8n</a>
+<a href="#module-43-ai-personalization" class="nav-child">Module 4.3 — AI Personalization</a>
+<a href="#phase-4-capstone-saasflow" class="nav-child">Phase 4 Capstone</a>
+</div></div>
+<a href="#final-capstone-saasflow" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#resources" class="nav-top">Resources</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="gtm-strategy-automation-learning-guide">GTM Strategy &amp; Automation Learning Guide</h1>
+<h2 id="from-strategy-to-gtm-engineering-track">From Strategy to GTM Engineering Track</h2>
+<h3>Clay · Make.com · n8n · HubSpot · Salesforce · AI Outreach</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="GTM Strategy" xmlns="http://www.w3.org/2000/svg">
+  <rect x="28" y="40" width="200" height="140" rx="12" fill="none" stroke="#075249" stroke-width="14"/>
+  <line x1="28" y1="88" x2="228" y2="88" stroke="#075249" stroke-width="10"/>
+  <circle cx="80" cy="176" r="22" fill="#0d7a6e"/>
+  <circle cx="176" cy="176" r="22" fill="#0d7a6e"/>
+  <line x1="102" y1="176" x2="154" y2="176" stroke="#075249" stroke-width="8"/>
+  <rect x="58" y="108" width="44" height="32" rx="5" fill="#075249"/>
+  <rect x="154" y="108" width="44" height="32" rx="5" fill="#075249"/>
+  <rect x="106" y="108" width="44" height="32" rx="5" fill="#0d7a6e"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same realistic <strong>SaasFlow</strong> scenario — a B2B SaaS company selling project-management automation to mid-market operations teams at $8,400 ACV. See the <a href="../datasets/saasflow/">SaasFlow brief</a> in the shared datasets folder — there's no data file, just the fixed scenario facts every exercise builds on.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially through Phase 1.</li>
+<li><strong>Some GTM experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong> — e.g., jump to Module 3.2 for lead enrichment or 4.1 for Clay.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3>Section A — GTM Strategy</h3>
+<ul>
+<li>[ ] I can explain the difference between PLG, SLG, and marketing-led GTM motions.</li>
+<li>[ ] I can build a TAM/SAM/SOM model from scratch for a SaaS product.</li>
+<li>[ ] I know what signals indicate product-market fit beyond NPS score.</li>
+<li>[ ] I can write a GTM brief that includes motion, channel mix, and success metrics.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3>Section B — ICP &amp; Messaging</h3>
+<ul>
+<li>[ ] I can define an ICP using firmographic, technographic, and psychographic criteria.</li>
+<li>[ ] I can write a value proposition that quantifies the cost of the problem.</li>
+<li>[ ] I have built or critiqued a multi-touch outreach sequence (email + LinkedIn + call).</li>
+<li>[ ] I can map messaging to buyer personas at each stage of the funnel.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3>Section C — GTM Operations</h3>
+<ul>
+<li>[ ] I understand CRM data standards and what "single source of truth" means in practice.</li>
+<li>[ ] I have set up or evaluated a lead enrichment waterfall using 2+ data providers.</li>
+<li>[ ] I can design a lead scoring model and explain how routing rules connect to SLA tiers.</li>
+<li>[ ] I have audited a CRM for data hygiene issues and written a remediation plan.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3>Section D — GTM Automation</h3>
+<ul>
+<li>[ ] I have built a Clay table that enriches leads using 2+ data providers.</li>
+<li>[ ] I can explain when to use Make.com vs. n8n for a given automation use case.</li>
+<li>[ ] I have written AI personalization prompts that use enriched data variables.</li>
+<li>[ ] I have shipped an end-to-end automated outreach workflow from trigger to CRM update.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.2</strong> | <strong>4 yes</strong> → Attempt the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-gtm-fundamentals"><td>1.1</td><td>GTM Fundamentals &amp; Go-to-Market Models</td><td>Beginner</td><td>None</td><td>2h</td></tr>
+<tr data-href="#module-12-market-sizing"><td>1.2</td><td>Market Sizing &amp; Competitive Landscape</td><td>Beginner</td><td>None</td><td>2h</td></tr>
+<tr data-href="#module-13-product-market-fit"><td>1.3</td><td>Product-Market Fit &amp; GTM Triggers</td><td>Beginner</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-21-icp-definition"><td>2.1</td><td>ICP Definition &amp; Account Scoring</td><td>Beginner–Intermediate</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-22-value-proposition"><td>2.2</td><td>Value Proposition &amp; Positioning</td><td>Beginner–Intermediate</td><td>2.1</td><td>2h</td></tr>
+<tr data-href="#module-23-outreach-sequencing"><td>2.3</td><td>Multi-Channel Outreach Sequencing</td><td>Intermediate</td><td>2.1, 2.2</td><td>3h</td></tr>
+<tr data-href="#module-31-crm-architecture"><td>3.1</td><td>CRM Architecture &amp; Data Hygiene</td><td>Intermediate</td><td>2.1</td><td>2h</td></tr>
+<tr data-href="#module-32-lead-enrichment"><td>3.2</td><td>Lead Enrichment &amp; Data Waterfall</td><td>Intermediate</td><td>3.1</td><td>3h</td></tr>
+<tr data-href="#module-33-lead-scoring"><td>3.3</td><td>Lead Scoring &amp; Intelligent Routing</td><td>Intermediate</td><td>3.1, 3.2</td><td>3h</td></tr>
+<tr data-href="#module-41-clay-workflows"><td>4.1</td><td>Clay Workflows &amp; AI Research</td><td>Intermediate</td><td>3.2</td><td>3h</td></tr>
+<tr data-href="#module-42-workflow-automation"><td>4.2</td><td>Make.com &amp; n8n Workflow Automation</td><td>Intermediate</td><td>3.1</td><td>3h</td></tr>
+<tr data-href="#module-43-ai-personalization"><td>4.3</td><td>AI-Powered Personalization at Scale</td><td>Advanced</td><td>4.1, 4.2</td><td>3h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1 and 2 are sequential foundations. Phases 3 and 4 have some parallel paths — Module 3.1 is prerequisite to both 3.2 and 4.2, so ops-track learners can do 3.1 → 4.2 before finishing 3.3.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset of the full guide.</p>
+
+<h3 id="track-1-gtm-strategist">Track 1 — GTM Strategist (strategy-first)</h3>
+<p><code>1.1 → 1.2 → 1.3 → 2.1 → 2.2 → Phase 1 Capstone → Phase 2 Capstone</code><br>
+Target outcome: <strong>GTM brief, ICP canvas, and positioning deck you can present to a VP of Sales.</strong></p>
+
+<h3 id="track-2-demand-gen">Track 2 — Demand Gen &amp; Outreach (messaging to pipeline)</h3>
+<p><code>2.1 → 2.2 → 2.3 → 3.1 → Phase 2 Capstone</code><br>
+Target outcome: <strong>Full 7-touch outreach sequence with persona-mapped messaging and CRM-ready data standard.</strong></p>
+
+<h3 id="track-3-gtm-ops">Track 3 — GTM Operations (RevOps / GTM Ops role)</h3>
+<p><code>3.1 → 3.2 → 3.3 → 4.1 → Phase 3 Capstone</code><br>
+Target outcome: <strong>CRM architecture doc, enrichment waterfall, lead scoring model, and routing rulebook.</strong></p>
+
+<h3 id="track-4-gtm-engineer">Track 4 — GTM Engineer (full automation stack)</h3>
+<p><code>3.2 → 4.1 → 4.2 → 4.3 → Phase 4 Capstone → Final Capstone</code><br>
+Target outcome: <strong>End-to-end automated prospecting pipeline: Clay enrichment → Make/n8n routing → AI-personalized outreach → CRM sync.</strong></p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — GTM Strategy Foundations     (Weeks 1–2)
+Phase 2 — ICP, Targeting &amp; Messaging   (Weeks 3–4)
+Phase 3 — GTM Operations               (Weeks 5–7)
+Phase 4 — GTM Automation               (Weeks 8–10)
+Final Capstone                          (Week 11–12)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ──┬── 1.2
+      ├── 1.3 ──── 2.1 ──┬── 2.2 ── 2.3
+      │                  └── 3.1 ──┬── 3.2 ── 4.1 ──┬── 4.3
+      │                            └── 3.3           └── Final Capstone
+      └──────────────────────────── 4.2 ─────────────┘</code></pre>
+
+<h2 id="phase-1-gtm-strategy-foundations">Phase 1: GTM Strategy Foundations</h2>
+<h3 id="weeks-1-2">Weeks 1–2 | Goal: Build a defensible GTM motion for a new product</h3>
+<hr />
+
+<h3 id="module-11-gtm-fundamentals">Module 1.1 — GTM Fundamentals &amp; Go-to-Market Models</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Name the four GTM motions, explain when each applies, and identify which motion fits a $15k ACV product with a 30-day free trial.<br>
+<strong>Skip if:</strong> You can distinguish PLG from SLG by unit economics, not just definition.<br>
+<strong>Unlocks:</strong> Modules 1.2, 1.3, 2.1</p>
+</blockquote>
+
+<h4>The Four GTM Motions</h4>
+<p>Every GTM plan is built around one dominant motion. Choosing the wrong one wastes budget and misaligns the team.</p>
+<ul>
+<li><strong>Product-Led Growth (PLG):</strong> Product is the acquisition channel. Users self-onboard, hit a value moment, and convert or upgrade. Works when time-to-value is under 10 minutes. Examples: Slack, Figma, Notion.</li>
+<li><strong>Sales-Led Growth (SLG):</strong> Reps drive pipeline via outbound or inbound. Required when the buyer is not the user, the deal involves procurement, or customization is needed. Examples: Salesforce, Workday.</li>
+<li><strong>Marketing-Led Growth:</strong> Content, SEO, and brand create demand that funnels to sales or self-serve. Works for complex topics where buyers research extensively. Examples: HubSpot early days, Semrush.</li>
+<li><strong>Community-Led Growth:</strong> A network of practitioners creates demand and trust before the first sales touch. Works when the problem is cross-company (e.g., devtools, data stacks). Examples: dbt, Figma community.</li>
+</ul>
+
+<h4>GTM Motion Selection Framework</h4>
+<pre class="artifact" data-kind="FRAMEWORK"><code>GTM MOTION SELECTION MATRIX
+
+Dimension               PLG         SLG         Mktg-Led    Community
+─────────────────────────────────────────────────────────────────────
+ACV sweet spot          &lt;$2k        $15k–$200k  $5k–$50k    $1k–$20k
+Buyer = User?           Yes         No          Mixed        Mixed
+Sales cycle             Days        30–180d     30–90d       60–120d
+Required CAC ratio      &lt;3×LTV      &lt;3×LTV      &lt;3×LTV      &lt;5×LTV
+Time-to-value           &lt;10 min     Days–weeks  Days         Weeks
+Core GTM hire           Growth eng  AE + SDR    Content + SA Devrel/CM
+─────────────────────────────────────────────────────────────────────
+
+Decision rule:
+1. ACV &lt; $3k AND buyer = user → PLG first
+2. ACV &gt; $10k OR buyer ≠ user → SLG required
+3. High-research category, long cycle → layer in Marketing-Led
+4. Developer or practitioner audience → add Community-Led
+
+SaasFlow situation:
+  ACV = $8,400 | Buyer = VP Ops | User = Ops analyst
+  → Primary motion: SLG  |  Secondary: Marketing-Led
+  → PLG trial for product-qualified lead (PQL) signal only</code></pre>
+
+<h4>Unit Economics That Drive Motion Choice</h4>
+<p>The right motion is inseparable from the numbers. Two ratios govern this decision:</p>
+<ul>
+<li><strong>LTV:CAC ratio</strong> — target ≥ 3:1. If your CAC is $5k and LTV is $25k, SLG is viable. If CAC is $2k and LTV is $8k, you need a lower-touch motion.</li>
+<li><strong>Payback period</strong> — months to recover CAC from gross margin. SLG typically 12–18 months; PLG 6–12 months. Series A investors want &lt;18 months.</li>
+</ul>
+
+<p><strong>Exercise 1.1 — SaasFlow GTM Motion Audit</strong></p>
+<p>Scenario: SaasFlow ($8,400 ACV, B2B SaaS, ops automation for mid-market).</p>
+<ol>
+<li>Calculate LTV assuming 24-month average contract and 80% gross margin.</li>
+<li>Map SaasFlow's buyer journey: who discovers, who evaluates, who signs.</li>
+<li>Using the Motion Selection Matrix, justify a primary and secondary GTM motion for SaasFlow.</li>
+<li>Draft a one-paragraph GTM hypothesis: "We will acquire customers by _____ and retain them by _____."</li>
+<li>Identify one metric that would cause you to switch motions within 6 months.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-market-sizing">Module 1.2 — Market Sizing &amp; Competitive Landscape</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Build a bottom-up SAM estimate for a B2B SaaS product in 15 minutes using LinkedIn and public data only.<br>
+<strong>Skip if:</strong> You can explain why TAM is misleading for fundraising decks and what investors actually want instead.<br>
+<strong>Unlocks:</strong> Module 1.3, Phase 2</p>
+</blockquote>
+
+<h4>TAM / SAM / SOM — The Framework Investors Actually Use</h4>
+<p>Most founders inflate TAM. Investors fund SAM and SOM.</p>
+<ul>
+<li><strong>TAM (Total Addressable Market):</strong> Everyone who could theoretically buy your product. Useful for category sizing only.</li>
+<li><strong>SAM (Serviceable Addressable Market):</strong> The portion of TAM you can realistically reach with your current distribution. This is the fundraising number.</li>
+<li><strong>SOM (Serviceable Obtainable Market):</strong> What you can capture in 2–3 years given your GTM capacity. This is your operating plan number.</li>
+</ul>
+
+<pre class="artifact" data-kind="TEMPLATE"><code>BOTTOM-UP MARKET SIZING WORKSHEET
+
+Product: SaasFlow — project-management automation for mid-market ops teams
+
+Step 1: Define your ICP tightly
+  Target: Operations Directors at US companies, 200–2,000 employees, tech-enabled
+  Source: LinkedIn Sales Navigator filter
+
+Step 2: Count the universe
+  US companies 200–2,000 employees:       ~180,000 companies  (Census SUSB)
+  % with dedicated Ops function:          ~40%  = 72,000 companies
+  % tech-enabled (use SaaS tools):        ~60%  = 43,200 companies
+  = Addressable accounts (SAM):           43,200
+
+Step 3: Apply win rate assumption
+  Year 1 target penetration:              0.5%  = 216 new logos
+  Year 2 target penetration:              1.2%  = 518 new logos
+  Year 3 target penetration:              2.5%  = 1,080 new logos
+
+Step 4: Calculate revenue
+  ACV:                                    $8,400
+  SOM Year 3:                             1,080 × $8,400 = $9.1M ARR
+
+Step 5: Sanity-check against GTM capacity
+  AEs needed at 216 new logos/yr:        ~4 AEs (54 deals/AE/yr)
+  SDRs needed at 3:1 SDR:AE ratio:       ~4 SDRs
+  GTM headcount cost (loaded):           ~$1.2M/yr at 216 logos
+  CAC:                                   $1.2M / 216 = $5,556 per customer
+  LTV (24mo × $8,400 × 80% margin):      $13,440
+  LTV:CAC:                               2.4× → borderline; push ACV up or CAC down</code></pre>
+
+<h4>Competitive Landscape Mapping</h4>
+<pre class="artifact" data-kind="TEMPLATE"><code>COMPETITIVE LANDSCAPE MAP — SaasFlow
+
+Axis 1: Automation depth (Low → High)
+Axis 2: Ops team focus (Generic PM → Ops-specialist)
+
+QUADRANT MAP:
+                      LOW AUTOMATION
+                            │
+          Monday.com        │   Asana
+          ClickUp            │   Notion
+                            │
+GENERIC ──────────────────┼────────────────── OPS-SPECIALIST
+                            │
+          Zapier (generic) │   SaasFlow ← YOU ARE HERE
+          Make.com          │   Process Street
+                            │
+                      HIGH AUTOMATION
+
+Key differentiation questions per competitor:
+1. Where do they lose deals? (Ask lost-deal interviews)
+2. What do their G2/Capterra 1-star reviews say?
+3. What integrations are missing from their roadmap?
+
+Competitive positioning rule: Own the quadrant nobody else is in.
+SaasFlow owns: High automation + Ops-specialist = "the GTM ops platform for RevOps teams"</code></pre>
+
+<p><strong>Exercise 1.2 — SaasFlow Market Model</strong></p>
+<p>Scenario: SaasFlow expansion into APAC (Australia + Singapore markets).</p>
+<ol>
+<li>Find the count of Australian companies with 200–2,000 employees using a public source (ABS Business Register or similar).</li>
+<li>Apply the same filtering logic from the worksheet to derive APAC SAM.</li>
+<li>Identify SaasFlow's top 3 competitors in APAC and map them on the two axes above.</li>
+<li>Write a one-sentence "we win because ___" positioning statement for the APAC market.</li>
+<li>Flag one assumption in your SAM model that, if wrong, would cut the number by 50%.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-product-market-fit">Module 1.3 — Product-Market Fit &amp; GTM Triggers</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Module 1.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Name three PMF signals beyond NPS and explain which GTM motion each unlocks.<br>
+<strong>Skip if:</strong> You can write a GTM trigger event playbook from memory, including what data to watch and what action to take at each threshold.<br>
+<strong>Unlocks:</strong> Phase 2</p>
+</blockquote>
+
+<h4>What PMF Actually Means — and How to Measure It</h4>
+<p>Product-market fit is not a feeling. It is a measurable state where your product solves a real problem for a repeatable segment.</p>
+<p>The three most reliable PMF signals:</p>
+<ul>
+<li><strong>Retention curve flattening:</strong> D30 or M3 retention stabilizes above 20% for B2B. If the curve keeps declining, you have no PMF regardless of NPS.</li>
+<li><strong>Sean Ellis Test:</strong> "How disappointed would you be if you could no longer use this product?" — 40%+ "Very disappointed" is the PMF threshold.</li>
+<li><strong>Revenue from pull, not push:</strong> Customers find you, not just through outbound. Organic sign-ups or inbound demo requests appear without paid spend.</li>
+</ul>
+
+<h4>GTM Trigger Event Playbook</h4>
+<pre class="artifact" data-kind="FRAMEWORK"><code>GTM TRIGGER EVENT PLAYBOOK — SaasFlow
+
+TRIGGER TIER 1 — Expansion signals (existing accounts)
+────────────────────────────────────────────────────────
+Event: User count doubles in 30 days
+  → Action: CSM books expansion call within 48h
+  → Offer: Multi-seat discount (15% off annual)
+  → CRM update: Tag "expansion-ready", assign to AE
+
+Event: 3+ power users in different departments
+  → Action: Send multi-team case study, book discovery call
+  → Offer: Cross-team workspace upgrade
+  → CRM update: Flag for cross-sell motion
+
+TRIGGER TIER 2 — Intent signals (target accounts)
+────────────────────────────────────────────────────────
+Event: Target account posts "Operations Director" job listing
+  → Action: SDR outreach within 24h — reference the hiring signal
+  → Message angle: "Growing ops teams need automation before headcount"
+  → Source: LinkedIn job alerts or Clay Claygent monitor
+
+Event: Target account raises funding (Series B+)
+  → Action: AE-led outreach within 48h
+  → Message angle: "Post-funding ops teams need scalable systems fast"
+  → Source: Crunchbase webhook, Clay enrichment
+
+TRIGGER TIER 3 — GTM motion triggers (company level)
+────────────────────────────────────────────────────────
+PMF signal met (Ellis Test ≥40%):
+  → Unlock: Outbound SDR motion
+  → Budget: First $50k in outbound tooling (Clay + sequencer)
+
+M3 retention ≥25% AND 10 paying customers:
+  → Unlock: Marketing-Led layer (content + SEO)
+  → Budget: First content hire or agency retainer
+
+3 customers with zero outbound (organic):
+  → Unlock: PLG trial layer for PQL capture
+  → Budget: Self-serve onboarding investment
+
+GTM READINESS CHECKLIST
+────────────────────────────────────────────────────────
+[ ] ICP defined with ≥3 firmographic criteria
+[ ] 10 customer interviews completed
+[ ] Ellis Test score ≥ 40% "Very Disappointed"
+[ ] M3 retention ≥ 20%
+[ ] Unit economics: LTV:CAC ≥ 2.5×
+[ ] CRM configured with deal stages
+[ ] First messaging tested in at least 50 outreach touches
+[ ] Competitive positioning documented
+[ ] Sales playbook v1 written
+[ ] SDR hired or founder doing outbound manually</code></pre>
+
+<p><strong>Exercise 1.3 — SaasFlow GTM Readiness Assessment</strong></p>
+<p>Scenario: SaasFlow has 14 paying customers, M3 retention of 28%, Ellis Test at 44%, and 2 inbound leads last month.</p>
+<ol>
+<li>Score SaasFlow on the GTM Readiness Checklist above. Which items are met, which are unknown?</li>
+<li>Which GTM trigger tier is SaasFlow in right now? What does that unlock?</li>
+<li>Write the one intent-signal monitoring setup SaasFlow should run this week using free tools.</li>
+<li>Draft a 3-bullet "GTM go signal" memo for the founding team — what threshold must be hit before hiring an SDR?</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-saasflow">Phase 1 Capstone: SaasFlow GTM Blueprint</h3>
+<p><strong>Project: Build SaasFlow's GTM Foundation Document</strong></p>
+<p><strong>Scenario:</strong> SaasFlow, B2B SaaS, $8,400 ACV, ops automation for mid-market teams.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>One-page GTM motion selection memo — chosen motion, rationale, and the metric that would trigger a pivot.</li>
+<li>Bottom-up SAM model for US market with all assumptions explicit and a 3-year SOM projection.</li>
+<li>Competitive landscape map with 4–6 named competitors positioned on two axes; annotate SaasFlow's differentiation.</li>
+<li>GTM trigger event playbook — 2 Tier 1 expansion signals and 2 Tier 2 intent signals with specific actions.</li>
+<li>GTM Readiness Checklist scored for SaasFlow's current state, with a "next 90 days" action plan to close the gaps.</li>
+<li>One-paragraph investor narrative: "SaasFlow is pursuing a [motion] GTM in a $[SAM] market. We have [PMF signal]. Our first [N] customers were acquired by [method] at $[CAC] with [LTV:CAC] unit economics."</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-icp-targeting-messaging">Phase 2: ICP, Targeting &amp; Messaging</h2>
+<h3 id="weeks-3-4">Weeks 3–4 | Goal: Build a research-backed ICP and craft messaging that converts</h3>
+<hr />
+
+<h3 id="module-21-icp-definition">Module 2.1 — ICP Definition &amp; Account Scoring</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 1.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Write a complete ICP definition with firmographic, technographic, and psychographic criteria, plus a 100-point account scoring model for SaasFlow.<br>
+<strong>Skip if:</strong> You have built and shipped an ICP definition used by SDRs in production.<br>
+<strong>Unlocks:</strong> Modules 2.2, 2.3, 3.1</p>
+</blockquote>
+
+<h4>The Three Layers of ICP</h4>
+<p>Most ICP definitions stop at firmographics. That produces a list of 10,000 companies that all look the same. Add technographic and psychographic layers to build a list that converts.</p>
+<ul>
+<li><strong>Firmographic:</strong> Company size, industry, geography, funding stage, revenue range. The "who."</li>
+<li><strong>Technographic:</strong> What tools they already use. A company using Salesforce + HubSpot + Zapier signals GTM maturity and budget. The "how they buy."</li>
+<li><strong>Psychographic:</strong> Growth stage, hiring patterns, content consumption, community activity. The "why now."</li>
+</ul>
+
+<pre class="artifact" data-kind="TEMPLATE"><code>ICP DEFINITION CANVAS — SaasFlow
+
+FIRMOGRAPHIC CRITERIA (must-have)
+  Company size:     200–2,000 employees
+  Industry:         Tech-enabled businesses (SaaS, fintech, e-commerce, agency)
+  Geography:        US, Canada, Australia
+  Revenue:          $5M–$100M ARR
+  Funding stage:    Bootstrapped (profitable) OR Series A–C
+
+FIRMOGRAPHIC CRITERIA (nice-to-have)
+  Headcount growth: &gt;20% YoY (signals scaling pain)
+  Department:       Has a dedicated Operations or RevOps function
+  Open roles:       Hiring for "Operations Analyst" or "Revenue Operations"
+
+TECHNOGRAPHIC CRITERIA (must-have)
+  CRM:              HubSpot or Salesforce (not spreadsheet-only)
+  Comm stack:       Slack or Microsoft Teams
+  No existing:      Must NOT have a direct competitor (Process Street Enterprise)
+
+TECHNOGRAPHIC CRITERIA (nice-to-have)
+  Data enrichment:  Already using Apollo, ZoomInfo, or Clay (budget + sophistication signal)
+  Automation:       Uses Zapier or Make.com (open to no-code automation)
+  Analytics:        Looker, Metabase, or Tableau (data-literate culture)
+
+PSYCHOGRAPHIC CRITERIA
+  Pain signals:     Posts about "ops bottlenecks," "manual processes," "scaling ops"
+  Content signals:  Reads RevOps Co-op, Operations Nation, SaaStr
+  Community:        Active in Pavilion, RevOps Co-op, or OpsStars
+  Mindset:          "We'd rather automate than hire" — cost-per-process vs. headcount
+
+ACCOUNT SCORING MODEL (0–100 points)
+─────────────────────────────────────────────────────────────────────
+Firmographic signals (40 pts max):
+  + 15 pts: Headcount 200–2,000
+  + 10 pts: Industry match (tech-enabled B2B)
+  + 10 pts: Funding Series A–C or bootstrapped profitable
+  +  5 pts: Geography US / Canada / AU
+
+Technographic signals (35 pts max):
+  + 15 pts: HubSpot or Salesforce CRM confirmed
+  + 10 pts: Uses automation tool (Zapier, Make, Clay)
+  +  5 pts: Data enrichment tool detected
+  +  5 pts: Slack or Teams confirmed
+
+Psychographic signals (25 pts max):
+  + 15 pts: Active hiring for ops/RevOps role right now
+  +  5 pts: Leadership posts about process/automation pain
+  +  5 pts: Community member (Pavilion, RevOps Co-op)
+
+SCORING TIERS:
+  80–100:  Tier 1 — AE outreach, priority queue, 48h SLA
+  60–79:   Tier 2 — SDR sequence, 5-day SLA
+  40–59:   Tier 3 — Nurture sequence only, no SDR time
+  &lt;40:     Disqualify — do not work</code></pre>
+
+<p><strong>Exercise 2.1 — SaasFlow ICP Scoring</strong></p>
+<p>Scenario: You have 5 accounts that came in from a trade show. Score each using the model above.</p>
+<ol>
+<li>Draft the ICP Canvas for SaasFlow with your own firmographic, technographic, and psychographic criteria (can differ from the template if you have a reason).</li>
+<li>Score these accounts using the 100-point model: (a) 350-person SaaS, Salesforce CRM, hiring RevOps Analyst, no current automation — what tier? (b) 50-person e-commerce, no CRM, no ops hire — what tier? (c) 1,800-person enterprise, SAP ERP, Salesforce, data team of 10 — what tier?</li>
+<li>Write the disqualification criteria you would use on a discovery call to DQ a lead in under 5 minutes.</li>
+<li>Propose one enrichment data point that isn't in the template above and explain how to get it at scale.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-value-proposition">Module 2.2 — Value Proposition &amp; Positioning</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 2.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Write a positioning statement using the April Dunford framework for SaasFlow in under 10 minutes, then convert it to a cold email opening line.<br>
+<strong>Skip if:</strong> You can articulate the difference between a value proposition and a positioning statement, and can explain why "we save you time" fails as a VP.<br>
+<strong>Unlocks:</strong> Module 2.3</p>
+</blockquote>
+
+<h4>Value Proposition vs. Positioning</h4>
+<p>These are not the same thing, and conflating them creates generic messaging.</p>
+<ul>
+<li><strong>Value proposition:</strong> The specific outcome your product delivers, quantified. "SaasFlow reduces ops team time spent on manual reporting from 12 hours/week to 2 hours/week."</li>
+<li><strong>Positioning:</strong> How you occupy a distinct place in the buyer's mind relative to alternatives. "For ops teams who've outgrown Zapier, SaasFlow is the ops automation platform built for Revenue Operations workflows."</li>
+</ul>
+
+<pre class="artifact" data-kind="TEMPLATE"><code>POSITIONING STATEMENT FORMULA (April Dunford Framework)
+
+TEMPLATE:
+  For [TARGET CUSTOMER]
+  Who [STATEMENT OF NEED OR OPPORTUNITY]
+  [PRODUCT NAME] is a [PRODUCT CATEGORY]
+  That [KEY BENEFIT — compelling reason to buy]
+  Unlike [PRIMARY COMPETITIVE ALTERNATIVE]
+  Our product [STATEMENT OF PRIMARY DIFFERENTIATION]
+
+SAASFLOW EXAMPLE:
+  For Revenue Operations and Operations Directors at B2B SaaS companies (200–2,000 employees)
+  Who are spending 10+ hours per week on manual data entry, reporting, and workflow management
+  SaasFlow is a GTM operations automation platform
+  That eliminates manual ops work by automating CRM updates, lead routing, and reporting workflows
+  Unlike generic automation tools like Zapier or Make.com
+  SaasFlow is built for RevOps workflows with native HubSpot and Salesforce integrations and
+  pre-built GTM automation templates — no code required.
+
+MESSAGING HIERARCHY (3 levels)
+────────────────────────────────────────────────────────
+Level 1 — Tagline (7 words max):
+  "Automate your ops. Close more deals."
+
+Level 2 — Hero headline (website, 1 sentence):
+  "SaasFlow eliminates the manual work slowing your revenue team down."
+
+Level 3 — Elevator pitch (30 seconds, 3 sentences):
+  "SaasFlow is an ops automation platform for RevOps teams at mid-market B2B companies.
+   We automate CRM updates, lead routing, and reporting workflows that ops teams are
+   currently doing manually. Our customers save 8–12 hours per person per week."
+
+Level 4 — Discovery call opener (1 sentence):
+  "We help ops teams like yours eliminate the 10+ hours per week of manual CRM work
+   so your team can focus on strategic projects instead of data entry."
+
+PERSONA-SPECIFIC MESSAGE VARIANTS:
+  VP of Operations: "SaasFlow reduces your team's reporting overhead by 70%."
+  RevOps Manager:   "Stop losing deals because your CRM data is wrong."
+  CFO:              "At $8,400/year, SaasFlow replaces 0.5 FTE of manual ops work."</code></pre>
+
+<p><strong>Exercise 2.2 — SaasFlow Positioning Workshop</strong></p>
+<p>Scenario: SaasFlow is preparing a new outbound campaign targeting RevOps Managers at Series B SaaS companies.</p>
+<ol>
+<li>Write a positioning statement using the April Dunford template for SaasFlow. Identify one alternative you are positioning against.</li>
+<li>Write a Level 3 elevator pitch for three different personas: VP Operations, RevOps Manager, and CFO.</li>
+<li>Identify the "before state" and "after state" for SaasFlow's buyer in one sentence each.</li>
+<li>Write two cold email subject lines: one curiosity-based and one outcome-based. Explain which you'd A/B test first and why.</li>
+<li>Find a real G2 or Capterra review for a competitor and rewrite their customer's pain as a SaasFlow positioning statement.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-outreach-sequencing">Module 2.3 — Multi-Channel Outreach Sequencing</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Modules 2.1, 2.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Write a 7-touch cold outreach sequence for SaasFlow — day, channel, and message for each touch — and explain your rationale for the channel order.<br>
+<strong>Skip if:</strong> You have built a sequence that produced a positive reply rate above 3%.<br>
+<strong>Unlocks:</strong> Phase 3</p>
+</blockquote>
+
+<h4>Why Sequences Beat Single Touches</h4>
+<p>60% of deals that close required 5+ touches before the first reply. Single-email campaigns are not sequences; they are broadcasts. A sequence earns attention through pattern and persistence.</p>
+<p>Three principles of effective sequences:</p>
+<ul>
+<li><strong>Channel diversity:</strong> Email + LinkedIn + phone creates redundancy. If email goes to spam, LinkedIn lands. If LinkedIn is ignored, the phone call breaks the pattern.</li>
+<li><strong>Value escalation:</strong> Each touch adds something new — a case study, a stat, a question, an insight — rather than re-asking the same thing.</li>
+<li><strong>Timing cadence:</strong> Day 1, 3, 7, 10, 14, 21, 30. Front-loaded for freshness; spaced for patience.</li>
+</ul>
+
+<pre class="artifact" data-kind="SCRIPT"><code>SAASFLOW 7-TOUCH OUTREACH SEQUENCE
+Target persona: RevOps Manager, Series B SaaS, 200–500 employees
+
+─────────────────────────────────────────────────────────────────────
+TOUCH 1 — Day 1 — Cold Email (Personalized Opener)
+Subject: {first_name}, how {company} handles ops data entry
+
+Hi {first_name},
+
+Noticed {company} is scaling quickly — {hiring_signal or funding_event}.
+
+One pattern I see at companies at your stage: the RevOps team is
+spending 10–12 hours per week manually updating CRM fields and
+building the same reports from scratch every week.
+
+Is that something your team deals with at {company}?
+
+Happy to share what a few similar teams (like {reference_company})
+did to fix it in under 30 days.
+
+{signature}
+
+─────────────────────────────────────────────────────────────────────
+TOUCH 2 — Day 3 — LinkedIn Connection Request
+Message: "Hi {first_name} — I sent you a note about ops automation.
+Would love to connect — I work with a lot of RevOps teams at {industry}
+companies and think there's a relevant story for {company}."
+
+─────────────────────────────────────────────────────────────────────
+TOUCH 3 — Day 7 — Cold Email (Case Study)
+Subject: How {reference_company} saved 11 hours/week
+
+{first_name},
+
+Quick follow-up — sharing a relevant example.
+
+{reference_company} (similar size to {company}) was spending ~11
+hours per week on manual CRM updates and weekly reporting.
+
+After automating with SaasFlow:
+  → CRM accuracy went from 62% to 94%
+  → Reporting time dropped from 11h to 1.5h/week
+  → AEs stopped complaining about stale data
+
+Worth a 20-minute chat to see if the same applies to {company}?
+
+{signature}
+
+─────────────────────────────────────────────────────────────────────
+TOUCH 4 — Day 10 — LinkedIn Message (after connection accepted)
+"Hey {first_name}, appreciate the connect. Did my email land? Curious
+whether the manual ops work issue resonates — I've got a 20-min
+breakdown that's been useful for teams like yours."
+
+─────────────────────────────────────────────────────────────────────
+TOUCH 5 — Day 14 — Cold Email (Insight / Reframe)
+Subject: The ops bottleneck most Series B teams don't see
+
+{first_name},
+
+One insight from working with 40+ RevOps teams: the biggest drag on
+pipeline velocity isn't SDR headcount — it's data latency. When CRM
+records are 2–3 days stale, AEs waste 3+ hours/week chasing context
+before every call.
+
+SaasFlow closes that gap automatically. No manual work required.
+
+Would it make sense to spend 20 minutes walking through how it works?
+
+{signature}
+
+─────────────────────────────────────────────────────────────────────
+TOUCH 6 — Day 21 — Phone Call (if number available)
+Script opener: "Hi {first_name}, this is [name] from SaasFlow.
+I've sent you a couple of emails about ops automation — I know inboxes
+are crazy. I'm calling because I genuinely think there's a fit here.
+Do you have 2 minutes now, or should I call back at a better time?"
+
+─────────────────────────────────────────────────────────────────────
+TOUCH 7 — Day 30 — Break-Up Email
+Subject: Closing the loop, {first_name}
+
+Hey {first_name},
+
+I've reached out a few times and haven't heard back — totally get it,
+timing might just be off.
+
+I'm going to close out my follow-ups for now. If ops automation ever
+becomes a priority at {company}, I hope you'll reach out.
+
+If there's a better person on your team I should talk to, I'd
+appreciate the intro — otherwise, I'll leave you alone.
+
+{signature}
+
+─────────────────────────────────────────────────────────────────────
+SEQUENCE METRICS TO TRACK:
+  Open rate target:        &gt;45%
+  Reply rate target:       &gt;3%
+  Positive reply rate:     &gt;1.5%
+  Meeting booked rate:     &gt;0.8%
+  Unsubscribe rate:        &lt;0.5% (above this = messaging problem)</code></pre>
+
+<p><strong>Exercise 2.3 — SaasFlow Sequence Build</strong></p>
+<p>Scenario: SaasFlow is launching a new outbound campaign targeting VP Operations at Australian SaaS companies.</p>
+<ol>
+<li>Rewrite Touch 1 for the Australian VP Ops persona — adjust the tone, reference a local trigger event, and change the reference company to a hypothetical Australian SaaS.</li>
+<li>Map each touch to a specific goal: what is the single thing you want the prospect to do after reading/hearing it?</li>
+<li>Write Touch 5 (the Insight email) for a different angle: data quality rather than time savings.</li>
+<li>Define your A/B test plan: which two subject lines would you test in Touch 1, and what reply rate would you need to see before declaring a winner?</li>
+<li>Role-play the Touch 6 phone call: write the full opener, the bridge if they say "I don't have time," and the voicemail you'd leave if they don't answer.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-saasflow">Phase 2 Capstone: SaasFlow ICP &amp; Outreach Playbook</h3>
+<p><strong>Project: Build the SaasFlow Outbound Playbook v1</strong></p>
+<p><strong>Scenario:</strong> SaasFlow, preparing for first SDR hire. You are the founding AE writing the playbook they will use.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>ICP Definition Canvas — firmographic, technographic, and psychographic criteria finalized.</li>
+<li>Account Scoring Model — 100-point model with tier definitions and SLA commitments per tier.</li>
+<li>Positioning Statement — using the April Dunford framework, plus messaging hierarchy (tagline → headline → pitch).</li>
+<li>3 persona-specific message variants — VP Ops, RevOps Manager, CFO.</li>
+<li>Full 7-touch outreach sequence — all 7 touches written out with channel, day, subject line, and body.</li>
+<li>Sequence metrics dashboard definition — list the 5 KPIs you will track, their targets, and what action you take if they fall below target.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-gtm-operations">Phase 3: GTM Operations</h2>
+<h3 id="weeks-5-7">Weeks 5–7 | Goal: Build the operational foundation that scales your GTM motion</h3>
+<hr />
+
+<h3 id="module-31-crm-architecture">Module 3.1 — CRM Architecture &amp; Data Hygiene</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Audit a fictional CRM data model and identify 3 hygiene issues that would break lead routing or reporting.<br>
+<strong>Skip if:</strong> You have configured CRM objects, fields, and deal stages in HubSpot or Salesforce for a live GTM team.<br>
+<strong>Unlocks:</strong> Modules 3.2, 3.3, 4.2</p>
+</blockquote>
+
+<h4>CRM as the System of Record</h4>
+<p>The CRM is only as valuable as the data in it. A poorly structured CRM creates three compounding problems: routing failures (leads go to the wrong rep), reporting errors (pipeline numbers are wrong), and personalization gaps (reps don't know the account before the call).</p>
+
+<pre class="artifact" data-kind="FRAMEWORK"><code>CRM DATA STANDARD — SaasFlow (HubSpot)
+
+CONTACT OBJECT — Required Fields
+─────────────────────────────────────────────────────────────────────
+  first_name          Text        Source: enrichment or form
+  last_name           Text        Source: enrichment or form
+  email               Email       Source: enrichment or form (validated)
+  title               Text        Source: enrichment (LinkedIn)
+  linkedin_url        URL         Source: enrichment
+  phone               Phone       Source: enrichment or SDR
+  lead_source         Enum        [Outbound|Inbound|PLG|Referral|Event]
+  hs_lead_status      Enum        [New|Working|Open|Connected|Bad Timing|DQ]
+  icp_score           Number      0–100 (computed from scoring model)
+  icp_tier            Enum        [Tier 1|Tier 2|Tier 3|DQ]
+  enrichment_date     Date        Last enrichment run date
+
+COMPANY OBJECT — Required Fields
+─────────────────────────────────────────────────────────────────────
+  name                Text        Source: enrichment
+  domain              Text        Source: form or enrichment
+  employee_count      Number      Source: enrichment (LinkedIn/Clearbit)
+  industry            Enum        Source: enrichment
+  annual_revenue      Number      Source: enrichment (where available)
+  tech_stack          Text[]      Source: technographic enrichment (BuiltWith)
+  funding_stage       Enum        [Bootstrapped|Pre-Seed|Seed|Series A|B|C|D+|PE|Public]
+  last_funding_date   Date        Source: enrichment (Crunchbase)
+  account_score       Number      0–100 (computed from ICP model)
+  account_tier        Enum        [Tier 1|Tier 2|Tier 3|DQ]
+
+DEAL OBJECT — Required Stages
+─────────────────────────────────────────────────────────────────────
+  Stage 1: Discovery Call Booked      (0% probability)
+  Stage 2: Discovery Completed        (20%)
+  Stage 3: Demo Booked               (35%)
+  Stage 4: Demo Completed            (50%)
+  Stage 5: Proposal Sent             (65%)
+  Stage 6: Contract Out              (80%)
+  Stage 7: Closed Won                (100%)
+  Stage 8: Closed Lost               (0%)
+
+HYGIENE RULES (enforced by automation)
+─────────────────────────────────────────────────────────────────────
+  Rule 1: No contact advances to Stage 2 without company object linked.
+  Rule 2: No deal advances past Stage 3 without icp_score ≥ 40.
+  Rule 3: Contacts with no activity in 90 days flagged for re-enrichment.
+  Rule 4: Email bounces auto-set hs_lead_status = "Bad Data"; remove from sequences.
+  Rule 5: Duplicate detection runs on email + domain on every import.</code></pre>
+
+<p><strong>Exercise 3.1 — SaasFlow CRM Audit</strong></p>
+<p>Scenario: SaasFlow's SDR imported 200 leads from a trade show CSV. The CSV has: Name, Email, Company, Title. No other fields.</p>
+<ol>
+<li>List the 5 fields missing from this import that are required by the CRM Data Standard above.</li>
+<li>Write the enrichment workflow: what data do you pull, from which source, in what order?</li>
+<li>Map out the 5 hygiene rules above as workflow steps: when does each trigger, and what is the output?</li>
+<li>Define the "data decay" problem: how often should each field type be re-enriched, and why?</li>
+<li>Write a one-page CRM onboarding doc for an incoming SDR: what they must fill in manually vs. what is auto-populated.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-lead-enrichment">Module 3.2 — Lead Enrichment &amp; Data Waterfall</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Design a 3-provider enrichment waterfall for email finding and explain the fallback logic.<br>
+<strong>Skip if:</strong> You have built a live enrichment waterfall in Clay or a similar tool with real match rates above 70%.<br>
+<strong>Unlocks:</strong> Modules 3.3, 4.1</p>
+</blockquote>
+
+<h4>Why a Single Provider Fails</h4>
+<p>No single data provider covers 100% of your ICP. Apollo covers 70% of US contacts. LinkedIn is authoritative but rate-limited. Using a single provider leaves 30–40% of your list unenriched. A waterfall solves this by cascading through providers until a match is found.</p>
+<p>Real-world benchmark: single provider email match rate ≈ 40–60%; 3-provider waterfall ≈ 75–85%.</p>
+
+<pre class="artifact" data-kind="FRAMEWORK"><code>ENRICHMENT WATERFALL DESIGN — SaasFlow
+
+OBJECTIVE: Enrich contact email + direct phone for SaasFlow ICP accounts
+
+WATERFALL STRUCTURE (cascade in order; stop at first match)
+─────────────────────────────────────────────────────────────────────
+Field: Work Email
+  Provider 1: Apollo.io            Expected match: 60%  | Cost: $0.01/record
+  Provider 2: Hunter.io            Expected match: 25% of remaining | Cost: $0.02
+  Provider 3: Snov.io              Expected match: 15% of remaining | Cost: $0.015
+  Provider 4: Pattern match        name@domain format, verify with ZeroBounce
+  → Combined expected coverage: ~82%
+
+Field: Direct Phone
+  Provider 1: Apollo.io            Expected match: 40%  | Cost: included
+  Provider 2: Datagma              Expected match: 30% of remaining | Cost: €0.05
+  Provider 3: Cognism              Expected match: 20% of remaining | Cost: varies
+  → Combined expected coverage: ~62%
+
+Field: Company Firmographics (size, industry, revenue)
+  Provider 1: Clearbit / Breaker   Expected match: 85%  | Cost: varies
+  Provider 2: LinkedIn (Clay)      Expected match: 95% if LinkedIn URL exists
+  → Combined expected coverage: ~95%
+
+Field: Technographics (tech stack)
+  Provider 1: BuiltWith            Expected match: 80% (web-based companies)
+  Provider 2: HG Insights / Bombora Expected match: 70% of enterprise accounts
+  → Combined expected coverage: ~85% for web-based ICPs
+
+WATERFALL LOGIC (Clay implementation):
+  Row → Try Provider 1 → if empty → Try Provider 2 → if empty → Try Provider 3
+  → if empty → flag as "Manual Review Required"
+  → Never overwrite a verified value with an unverified one
+
+VALIDATION STEP (always final):
+  Email:  ZeroBounce or NeverBounce — only keep "Valid" status
+  Phone:  Format check only (no cost); manual verify for Tier 1 accounts
+  Remove: "Catch-all" emails — deliverability risk
+
+ENRICHMENT COST MODEL:
+  1,000 contacts × full waterfall (email + phone + firmographic + tech):
+    Apollo:    $10   (1,000 × $0.01)
+    Hunter:    $5    (400 remaining × $0.02 × 0.25 match rate attempt = ~250 tries... adjust)
+    ZeroBounce: $8  (validation)
+    Clearbit:  ~$30 (firmographic, varies by plan)
+    Total:     ~$50–80 per 1,000 contacts enriched
+    Output:    ~820 valid emails (82% match), ~620 phones (62% match)</code></pre>
+
+<p><strong>Exercise 3.2 — SaasFlow Enrichment Waterfall</strong></p>
+<p>Scenario: SaasFlow has 500 raw account names from a purchased list. You have Apollo, Clay, and Hunter available.</p>
+<ol>
+<li>Design the enrichment order: which field do you enrich first, and why does order matter?</li>
+<li>Calculate the expected output: how many valid emails and phones will you end up with after the waterfall?</li>
+<li>Write the validation step criteria: what email statuses from ZeroBounce do you keep vs. drop, and why?</li>
+<li>Map the enrichment workflow as a sequence of steps (use plain text or a list, not a diagram).</li>
+<li>Propose a re-enrichment cadence: how often should each field type be refreshed, and what triggers an off-cycle re-run?</li>
+<li>Calculate the cost per enriched contact for the 500-account SaasFlow list using the cost model above.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-lead-scoring">Module 3.3 — Lead Scoring &amp; Intelligent Routing</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Modules 3.1, 3.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Write a complete lead routing rulebook: triggers, conditions, assignee logic, SLA tiers, and fallback.<br>
+<strong>Skip if:</strong> You have built a live scoring model in HubSpot or a similar tool that routes leads with measurable impact on time-to-first-contact.<br>
+<strong>Unlocks:</strong> Phase 4</p>
+</blockquote>
+
+<h4>Scoring Model Architecture</h4>
+<p>Lead scoring without routing rules is just a number. The value is in what happens when a score crosses a threshold.</p>
+
+<pre class="artifact" data-kind="FRAMEWORK"><code>INTELLIGENT ROUTING RULES — SaasFlow
+
+SCORING MODEL INPUTS (100 points total)
+─────────────────────────────────────────────────────────────────────
+Firmographic signals (40 pts):
+  Company size 200–2,000 employees    +15 pts
+  Industry: tech-enabled B2B          +10 pts
+  Funding Series A–C or bootstrapped  +10 pts
+  Geography: US / CA / AU             + 5 pts
+
+Technographic signals (35 pts):
+  HubSpot or Salesforce CRM detected  +15 pts
+  Automation tool detected            +10 pts
+  Enrichment tool detected            + 5 pts
+  Slack or Teams detected             + 5 pts
+
+Intent signals (25 pts):
+  Active hiring for RevOps/Ops role   +15 pts
+  Leadership post about ops pain      + 5 pts
+  Community membership                + 5 pts
+
+SCORE DECAY:
+  -5 pts per 30 days of no engagement (opens, clicks, replies)
+  Score recalculated nightly by automation
+
+ROUTING TIERS + SLA
+─────────────────────────────────────────────────────────────────────
+TIER 1 — HOT (Score 80–100)
+  Route to:        Senior AE (direct assignment, round-robin within tier)
+  SLA:             First contact within 4 business hours
+  Action:          Personalized video + direct calendar link
+  Fallback:        If no AE response in 4h → SDR Manager notified
+  CRM tag:         "hot-lead", trigger Slack alert to AE + Slack channel
+
+TIER 2 — WARM (Score 60–79)
+  Route to:        SDR queue (FIFO within tier)
+  SLA:             First touch within 24 business hours
+  Action:          Enroll in 7-touch sequence (Module 2.3)
+  Fallback:        If no SDR touch in 24h → reassign to next available SDR
+  CRM tag:         "warm-lead"
+
+TIER 3 — COLD (Score 40–59)
+  Route to:        Nurture sequence only (no SDR time)
+  SLA:             Automated email Day 1, Day 7, Day 21
+  Action:          3-touch nurture sequence; promote to Tier 2 if score increases
+  Fallback:        None; fully automated
+  CRM tag:         "nurture"
+
+DISQUALIFIED (Score &lt;40 OR manual DQ flag)
+  Route to:        Archive; remove from active sequences
+  CRM tag:         "disqualified"
+  Reason required: Select from: [budget|authority|need|timing|bad data|competitor]
+
+ROUTING TRIGGER CONDITIONS
+─────────────────────────────────────────────────────────────────────
+Trigger 1: New lead created with icp_score populated → route to tier
+Trigger 2: Lead score crosses tier boundary (e.g., 59→60) → upgrade route
+Trigger 3: Lead replies to any sequence touch → pause sequence, notify AE
+Trigger 4: Lead books meeting via Calendly → notify AE, stop all sequences
+Trigger 5: Lead score drops below 40 (decay) → move to DQ, notify SDR</code></pre>
+
+<p><strong>Exercise 3.3 — SaasFlow Routing Simulation</strong></p>
+<p>Scenario: SaasFlow receives 50 new leads from a webinar. 12 are Tier 1, 23 are Tier 2, 10 are Tier 3, 5 are DQ.</p>
+<ol>
+<li>Map the workflow: what happens to each tier in the first 4 hours after the webinar ends?</li>
+<li>Write the Slack alert message that fires for a Tier 1 lead — what information does it include?</li>
+<li>Define the score decay formula: a lead with a score of 75 that receives no engagement for 60 days — what is their new score? What tier are they in?</li>
+<li>Design the "re-scoring trigger": what behavior should promote a Tier 3 lead to Tier 2 automatically?</li>
+<li>Write the DQ documentation standard: what 3 fields must an SDR complete before marking a lead as disqualified?</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-saasflow">Phase 3 Capstone: SaasFlow GTM Ops Stack</h3>
+<p><strong>Project: Design the SaasFlow Revenue Operations Infrastructure</strong></p>
+<p><strong>Scenario:</strong> SaasFlow has hired its first SDR and first AE. You are building the ops infrastructure they will run on.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>CRM Data Standard document — all required fields per object, data type, source, and hygiene rules.</li>
+<li>Enrichment Waterfall design — 3 providers per key field with expected match rates and cost-per-contact model.</li>
+<li>Lead Scoring Model — 100-point model with all signals, weights, and decay logic documented.</li>
+<li>Routing Rulebook — all 4 tiers with SLA, assignee logic, trigger conditions, and fallback rules.</li>
+<li>CRM Automation Map — list the 5 automations you will build in HubSpot and what each one does.</li>
+<li>Ops Metrics Dashboard definition — 6 KPIs the RevOps function will track weekly (e.g., time-to-first-contact by tier, sequence reply rates, CRM data completeness %).</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-gtm-automation">Phase 4: GTM Automation</h2>
+<h3 id="weeks-8-10">Weeks 8–10 | Goal: Automate the GTM stack end-to-end from enrichment to CRM sync</h3>
+<hr />
+
+<h3 id="module-41-clay-workflows">Module 4.1 — Clay Workflows &amp; AI Research</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Describe a Clay table setup that enriches a list of 500 accounts with email, tech stack, and a custom AI research column — what columns, what providers, what prompt.<br>
+<strong>Skip if:</strong> You have shipped a Clay workflow that enriches leads and pushes results to a CRM in production.<br>
+<strong>Unlocks:</strong> Module 4.3</p>
+</blockquote>
+
+<h4>What Clay Does (and Why It Changes GTM Operations)</h4>
+<p>Clay is a data enrichment and workflow platform that connects 150+ data providers and exposes them in a spreadsheet-like interface with an AI research agent (Claygent). The operational shift: instead of pulling a list from one provider and living with 40% coverage, you pull from many providers in a waterfall and get 80%+ coverage automatically.</p>
+<p>Clay's core workflow model:</p>
+<ul>
+<li><strong>Input:</strong> A list of accounts, contacts, or domains.</li>
+<li><strong>Columns:</strong> Each column is either a data enrichment call (provider → field) or an AI prompt (Claygent).</li>
+<li><strong>Output:</strong> Enriched rows, filtered by conditions, pushed to CRM or sequencer.</li>
+</ul>
+
+<pre class="artifact" data-kind="SCRIPT"><code>CLAYGENT PROMPT LIBRARY — SaasFlow (5 Production Prompts)
+
+─────────────────────────────────────────────────────────────────────
+PROMPT 1: Recent Company News (personalization)
+Column name: recent_news_summary
+Prompt:
+  "Search the web for news about {{company_name}} published in the
+   last 90 days. Focus on: funding announcements, product launches,
+   leadership changes, hiring surges, or expansion news.
+   Return a 1–2 sentence summary of the most relevant finding.
+   If no news found, return 'No recent news found.'"
+
+Use in: Touch 1 email opener — "Saw that {company} recently {recent_news_summary}..."
+
+─────────────────────────────────────────────────────────────────────
+PROMPT 2: Ops Pain Signal Detection
+Column name: ops_pain_signal
+Prompt:
+  "Search LinkedIn posts and web content by {{contact_name}} at
+   {{company_name}} in the last 6 months. Look for any mention of:
+   manual processes, ops bottlenecks, CRM problems, data quality,
+   reporting overhead, or scaling challenges.
+   Return the most relevant quote or paraphrase (1 sentence),
+   or 'No signal found' if nothing matches."
+
+Use in: Hyper-personalized opener — "Saw your post about {ops_pain_signal}..."
+
+─────────────────────────────────────────────────────────────────────
+PROMPT 3: Tech Stack Inference
+Column name: inferred_tech_stack
+Prompt:
+  "Visit {{company_domain}} and identify any SaaS tools mentioned
+   in the website footer, integrations page, or 'How it works' page.
+   Also search for job postings that mention specific tools.
+   Return a comma-separated list of tools found.
+   Focus on: CRM, analytics, automation, data, and productivity tools."
+
+Use in: ICP scoring column (does tech stack match Tier 1 criteria?)
+
+─────────────────────────────────────────────────────────────────────
+PROMPT 4: Hiring Signal Classifier
+Column name: hiring_ops_signal
+Prompt:
+  "Search LinkedIn Jobs for open roles at {{company_name}} right now.
+   Return 'YES — [role title]' if they are hiring for any of:
+   Operations Manager, Revenue Operations, RevOps Analyst,
+   GTM Engineer, Sales Operations, or Process Automation.
+   Return 'NO' if no matching roles found."
+
+Use in: Intent scoring — +15 pts if YES (per scoring model)
+
+─────────────────────────────────────────────────────────────────────
+PROMPT 5: Competitor Usage Detection
+Column name: competitor_flag
+Prompt:
+  "Search the web and LinkedIn for evidence that {{company_name}}
+   uses any of these competitors to SaasFlow:
+   [Process Street, Pipefy, Nintex, Kissflow, Monday Work Management].
+   Return 'COMPETITOR DETECTED — [product name]' if found,
+   or 'None detected' if no evidence.
+   Source: G2 reviews, LinkedIn posts, job descriptions, case studies."
+
+Use in: Disqualification filter — remove from sequence if competitor detected</code></pre>
+
+<h4>Clay Table Architecture for SaasFlow</h4>
+<pre class="artifact" data-kind="FRAMEWORK"><code>CLAY TABLE SETUP — SaasFlow Outbound Enrichment
+
+INPUT: CSV of 500 account names + domains (from trade show)
+
+COLUMN ORDER (left to right — enrichment order matters):
+─────────────────────────────────────────────────────────────────────
+Col A: company_name       (input)
+Col B: domain             (input)
+Col C: linkedin_url       (enrichment: Clay LinkedIn lookup)
+Col D: employee_count     (enrichment: Clearbit via domain)
+Col E: industry           (enrichment: Clearbit)
+Col F: funding_stage      (enrichment: Crunchbase)
+Col G: tech_stack         (enrichment: BuiltWith via domain)
+Col H: inferred_tech_stack (Claygent Prompt 3 — fallback if BuiltWith empty)
+Col I: hiring_ops_signal  (Claygent Prompt 4)
+Col J: competitor_flag    (Claygent Prompt 5)
+Col K: account_score      (formula column: sum of scoring signals)
+Col L: account_tier       (formula: IF score≥80 "Tier 1" ELSE IF ≥60 "Tier 2" ...)
+Col M: contact_name       (enrichment: LinkedIn Sales Nav — find decision maker)
+Col N: contact_title      (enrichment: LinkedIn)
+Col O: email              (enrichment waterfall: Apollo → Hunter → Snov)
+Col P: phone              (enrichment: Apollo → Datagma)
+Col Q: recent_news        (Claygent Prompt 1 — only for Tier 1 and 2)
+Col R: ops_pain_signal    (Claygent Prompt 2 — only for Tier 1)
+Col S: email_valid        (enrichment: ZeroBounce — filter: Valid only)
+
+FILTER: Export only rows where:
+  email_valid = "Valid"
+  AND competitor_flag = "None detected"
+  AND account_tier ≠ "DQ"
+
+OUTPUT: Push to HubSpot via Clay's native HubSpot integration
+  → Create Contact if not exists
+  → Create Company if not exists
+  → Set account_tier field
+  → Enroll in appropriate sequence based on tier</code></pre>
+
+<p><strong>Exercise 4.1 — SaasFlow Clay Build</strong></p>
+<p>Scenario: SaasFlow received 200 business cards from SaaStr Annual. You need to enrich and qualify all 200 before Monday.</p>
+<ol>
+<li>Map the Clay table column order for these 200 contacts — what 10 columns do you build, and in what order?</li>
+<li>Write a Claygent prompt to detect whether a contact's company has recently experienced a leadership change in the last 60 days (relevant to timing for outreach).</li>
+<li>Define the filter criteria for which rows get pushed to HubSpot as Tier 1 contacts.</li>
+<li>Estimate the Clay credit cost for enriching 200 contacts with the waterfall (email + phone + firmographic + 2 Claygent prompts).</li>
+<li>Design the Clay → HubSpot push: what fields map to what HubSpot properties, and which field triggers sequence enrollment?</li>
+</ol>
+<hr />
+
+<h3 id="module-42-workflow-automation">Module 4.2 — Make.com &amp; n8n Workflow Automation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Describe a Make.com scenario that triggers when a HubSpot deal moves to "Demo Completed" and sends a personalized follow-up email with a proposal link.<br>
+<strong>Skip if:</strong> You have built and shipped at least 3 production automations in Make.com or n8n that run without manual intervention.<br>
+<strong>Unlocks:</strong> Module 4.3</p>
+</blockquote>
+
+<h4>Make.com vs. n8n — When to Use Which</h4>
+<pre class="artifact" data-kind="FRAMEWORK"><code>PLATFORM SELECTION DECISION TREE
+
+START: What is the primary driver?
+
+Q1: Do you need to self-host for data residency / compliance reasons?
+  → YES: n8n (self-hosted) — go to Q3
+  → NO:  Continue to Q2
+
+Q2: Is the team non-technical (no-code preferred)?
+  → YES: Make.com — go to Q4
+  → NO:  Go to Q3
+
+Q3: Does the workflow need complex branching logic or custom code?
+  → YES: n8n — native JS/Python nodes, full code control
+  → NO:  Either platform; choose based on cost (see below)
+
+Q4: Is per-operation pricing a concern at your volume?
+  → YES (&gt;50k ops/mo): n8n (per-execution, predictable) or Make.com Teams
+  → NO:  Make.com Core ($9/mo for 10k ops) is sufficient
+
+─────────────────────────────────────────────────────────────────────
+FEATURE COMPARISON:
+                        Make.com        n8n
+────────────────────────────────────────────────────────────────────
+Hosting                 Cloud-only      Cloud or self-hosted
+Pricing model           Per operation   Per execution (workflow run)
+UI complexity           Low (visual)    Medium (node graph)
+Custom code             Limited         Full JS/Python nodes
+Native integrations     1,000+          400+ (growing fast)
+Ideal user              RevOps/Ops      GTM Engineer / Dev
+HubSpot support         Native          Native
+Salesforce support      Native          Native
+Clay integration        Via webhook     Via webhook
+Best for                SaasFlow Tier 1 Developer-led GTM stacks
+────────────────────────────────────────────────────────────────────
+
+SAASFLOW RECOMMENDATION:
+  Primary automation platform: Make.com (team is non-technical)
+  Secondary for custom logic:  n8n (when custom JS enrichment needed)
+
+─────────────────────────────────────────────────────────────────────
+MAKE.COM SCENARIO ANATOMY (SaasFlow example)
+─────────────────────────────────────────────────────────────────────
+Scenario: "Demo Completed → Proposal Follow-Up"
+
+Module 1:  TRIGGER — HubSpot: Watch Deal Stage Changes
+           Filter: Deal Stage = "Demo Completed"
+
+Module 2:  HubSpot: Get Contact (associated with deal)
+           Output: contact_name, email, company_name, account_tier
+
+Module 3:  ROUTER (based on account_tier)
+           Branch A: Tier 1 → personalized video + proposal
+           Branch B: Tier 2 → templated proposal email
+           Branch C: Other → notify AE to handle manually
+
+Module 4A: Claude API: Generate personalized proposal intro
+           Input: contact_name, company_name, pain_signal, deal_value
+           Output: custom_intro (2 sentences)
+
+Module 5A: Gmail / Outlook: Send email
+           To: {{contact.email}}
+           Subject: "SaasFlow proposal for {{company_name}}"
+           Body: {{custom_intro}} + proposal_link
+
+Module 6:  HubSpot: Create Task for AE
+           Due: +2 business days
+           Title: "Follow up on proposal sent to {{contact_name}}"
+
+Module 7:  Slack: Post to #deals channel
+           Message: "Proposal sent to {{contact_name}} at {{company_name}}
+                     | Tier: {{account_tier}} | Deal: ${{amount}}"</code></pre>
+
+<p><strong>Exercise 4.2 — SaasFlow Workflow Design</strong></p>
+<p>Scenario: SaasFlow wants to automate two workflows: (1) new inbound lead from website form → enrichment → CRM → sequence enrollment; (2) deal closed-lost → win-back campaign enrollment 90 days later.</p>
+<ol>
+<li>Map Workflow 1 (inbound → CRM) as a sequence of modules: trigger, enrichment call, scoring, routing decision, CRM write, sequence enrollment.</li>
+<li>Map Workflow 2 (closed-lost → win-back) — what is the trigger, what is the 90-day delay mechanism, and what is the first touch in the win-back sequence?</li>
+<li>Identify which of these two workflows is better built in Make.com vs. n8n, and justify your choice using the decision tree.</li>
+<li>Write the error handling plan: what happens if the HubSpot API is down when the automation fires? What does the SDR see?</li>
+<li>List the 3 monitoring checks you would run weekly to confirm both workflows are running correctly.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-ai-personalization">Module 4.3 — AI-Powered Personalization at Scale</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> Modules 4.1, 4.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Write a Claude API prompt that generates a personalized cold email opener using 5 enriched variables, then describe how you would A/B test it at scale.<br>
+<strong>Skip if:</strong> You have deployed AI personalization in a live outreach sequence and measured impact on reply rate.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4>The Personalization Stack</h4>
+<p>AI personalization is not "change the first name." It is using enriched data to generate context-specific language that a human SDR would spend 5 minutes researching and writing per prospect — done in milliseconds at scale.</p>
+<p>Three levels of personalization:</p>
+<ul>
+<li><strong>Level 1 — Variable substitution:</strong> Insert {first_name}, {company}, {title}. Table stakes. Everyone does this.</li>
+<li><strong>Level 2 — Signal-based:</strong> Insert a reference to a trigger event (funding, hiring, news). Requires enrichment.</li>
+<li><strong>Level 3 — AI-generated:</strong> Use an LLM to synthesize enriched context into a custom sentence or paragraph. Requires good prompt design and enriched inputs.</li>
+</ul>
+
+<pre class="artifact" data-kind="TEMPLATE"><code>AI PERSONALIZATION PROMPT LIBRARY — SaasFlow (5 Prompts)
+
+─────────────────────────────────────────────────────────────────────
+PROMPT 1: Cold Email Opener (Level 3 Personalization)
+System: You are a B2B SaaS SDR at SaasFlow. Write concise, direct,
+        non-sycophantic cold email openers. No greetings. No emojis.
+        Maximum 2 sentences.
+
+User:   "Write a personalized email opener for {{contact_name}},
+         {{contact_title}} at {{company_name}}.
+
+         Context:
+         - Recent news: {{recent_news_summary}}
+         - Ops pain signal: {{ops_pain_signal}}
+         - Hiring signal: {{hiring_ops_signal}}
+         - Company size: {{employee_count}} employees
+
+         The opener must reference ONE specific context signal (news,
+         hiring, or pain) and bridge it to the cost of manual ops work.
+         Do not mention SaasFlow. Do not use 'I hope this finds you well.'"
+
+Example output:
+  "Saw {company} is hiring a RevOps Analyst — usually means the team
+   is underwater with manual work before a new hire can help. That's
+   the gap we typically see costing ops teams 10+ hours per week."
+
+─────────────────────────────────────────────────────────────────────
+PROMPT 2: LinkedIn Connection Message (75 words max)
+System: You are writing a LinkedIn connection request note.
+        Be conversational, specific, not salesy. Max 75 words.
+
+User:   "Write a LinkedIn connection note for {{contact_name}} at
+         {{company_name}}. They are a {{contact_title}}.
+         Relevant context: {{ops_pain_signal}} or {{recent_news}}.
+         Goal: get the connection accepted. No pitch. No CTA.
+         Just a genuine reason to connect."
+
+─────────────────────────────────────────────────────────────────────
+PROMPT 3: Follow-Up Email (after no reply, Touch 3)
+System: You write follow-up emails for B2B SaaS. Short, direct,
+        add value, do not repeat the previous email.
+
+User:   "Write a 3-sentence follow-up email for {{contact_name}}
+         at {{company_name}}. They did not reply to the first email.
+         First email referenced: {{previous_email_summary}}.
+         New angle: use this customer result — {{reference_case_study}}.
+         End with a soft CTA (question or low-friction ask)."
+
+─────────────────────────────────────────────────────────────────────
+PROMPT 4: Objection Handler (for reply "Not the right time")
+System: You handle objections in B2B sales emails. Never argue.
+        Acknowledge, reframe, leave the door open. 2–3 sentences max.
+
+User:   "{{contact_name}} replied: '{{objection_text}}'.
+         Company context: {{company_name}}, {{recent_news}}.
+         Write a reply that: (1) acknowledges their timing, (2) offers
+         one piece of value they can use RIGHT NOW without buying anything,
+         (3) asks if 90 days from now would be a better time."
+
+─────────────────────────────────────────────────────────────────────
+PROMPT 5: Meeting Confirmation + Pre-Call Brief
+System: You are preparing an AE for a discovery call. Be concise.
+        Format as a brief the AE can read in 2 minutes before the call.
+
+User:   "Generate a pre-call brief for a discovery call with
+         {{contact_name}}, {{contact_title}} at {{company_name}}.
+
+         Inputs:
+         - Employee count: {{employee_count}}
+         - Tech stack: {{tech_stack}}
+         - Funding stage: {{funding_stage}}
+         - Recent news: {{recent_news_summary}}
+         - Ops pain signal: {{ops_pain_signal}}
+         - ICP score: {{account_score}} ({{account_tier}})
+
+         Format:
+         Company snapshot: [2 sentences]
+         Why they match our ICP: [bullet points]
+         Likely pain: [1 sentence]
+         Landmines to avoid: [1–2 bullets]
+         Suggested opening question: [1 question]"</code></pre>
+
+<p><strong>Exercise 4.3 — SaasFlow AI Personalization Pipeline</strong></p>
+<p>Scenario: SaasFlow will send 500 personalized emails next Monday using AI-generated openers from the prompt library above.</p>
+<ol>
+<li>Map the full data pipeline: what enrichment columns must exist before the AI personalization step runs?</li>
+<li>Write a quality control check: how do you sample 10% of AI-generated openers before sending, and what criteria make you reject a batch?</li>
+<li>Design the A/B test: Variant A = AI-generated opener (Prompt 1), Variant B = human-written template from Module 2.3. What sample size, what success metric, and what duration?</li>
+<li>Write a "fallback prompt" for Prompt 1: what should the AI generate when no context signals are available (no news, no pain signal, no hiring signal)?</li>
+<li>Propose how you would measure the incremental lift from AI personalization vs. variable substitution alone — what experiment design answers this?</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-saasflow">Phase 4 Capstone: SaasFlow Automation Pipeline</h3>
+<p><strong>Project: Build the End-to-End SaasFlow GTM Automation Stack</strong></p>
+<p><strong>Scenario:</strong> SaasFlow is ready to automate its full GTM motion from enrichment to outreach to CRM sync.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Clay table architecture — column map for 500-account enrichment workflow including all providers and Claygent prompts.</li>
+<li>Claygent Prompt Library — 3 custom prompts designed for SaasFlow's ICP (not copied from module; adapted).</li>
+<li>Make.com scenario map — 2 scenarios: (a) Clay webhook → HubSpot contact create + sequence enroll; (b) Deal stage change → AE notification + proposal send.</li>
+<li>AI personalization pipeline — prompt library adapted for SaasFlow's latest messaging (from Phase 2 Capstone), with fallback logic.</li>
+<li>QC checklist — how do you verify each automation is working correctly before going live?</li>
+<li>GTM automation metrics — define 4 KPIs that measure the performance of the automation stack (e.g., enrichment match rate, automation error rate, time-to-sequence-enroll).</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-saasflow">Final Capstone: SaasFlow Full GTM Build</h2>
+<p><strong>Project: Complete SaasFlow GTM Playbook — Strategy to Automation</strong></p>
+<p>Integrates all four phases. Uses the SaasFlow scenario throughout.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li><strong>GTM Blueprint (Phase 1):</strong> Motion selection, SAM model, competitive map, and GTM trigger playbook — all updated with anything you learned in later phases.</li>
+<li><strong>Outbound Playbook (Phase 2):</strong> Final ICP canvas, 100-point scoring model, positioning statement, messaging hierarchy, and 7-touch sequence — ready to hand to an SDR on day one.</li>
+<li><strong>RevOps Infrastructure Doc (Phase 3):</strong> CRM data standard, enrichment waterfall design, lead scoring model, and routing rulebook — formatted as a technical spec an engineer could implement.</li>
+<li><strong>Automation Stack Design (Phase 4):</strong> Clay table architecture, Make.com scenario map (2 scenarios), AI prompt library (5 prompts), and QC checklist.</li>
+<li><strong>30/60/90 Day GTM Plan:</strong> What gets built in each phase, who owns it, and what metrics signal success at each milestone.</li>
+<li><strong>Board-ready one-pager:</strong> Summarize SaasFlow's GTM strategy in a single page — motion, ICP, channel, ACV, SAM, unit economics, and 12-month ARR target — as if presenting to an investor or board.</li>
+<li><strong>Self-assessment:</strong> Which module did you find hardest? What would you do differently if you were starting SaasFlow from scratch today?</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: GTM Strategy &amp; Automation Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Framework</th><th>Notes</th></tr>
+<tr><td>GTM motion selection</td><td>GTM Motion Selection Matrix (Module 1.1)</td><td>Use ACV and buyer=user test first</td></tr>
+<tr><td>Market sizing (bottom-up)</td><td>Bottom-Up Sizing Worksheet (Module 1.2)</td><td>Always sanity-check with GTM capacity</td></tr>
+<tr><td>PMF measurement</td><td>Sean Ellis Test + retention curve</td><td>40% "very disappointed" threshold</td></tr>
+<tr><td>ICP definition</td><td>ICP Definition Canvas (Module 2.1)</td><td>3 layers: firmographic, technographic, psychographic</td></tr>
+<tr><td>Account scoring</td><td>100-point scoring model (Module 2.1)</td><td>Nightly recalculation with decay</td></tr>
+<tr><td>Positioning statement</td><td>April Dunford framework (Module 2.2)</td><td>Different from value proposition</td></tr>
+<tr><td>Cold outreach sequence</td><td>7-Touch Sequence Template (Module 2.3)</td><td>Day 1, 3, 7, 10, 14, 21, 30</td></tr>
+<tr><td>CRM architecture</td><td>CRM Data Standard (Module 3.1)</td><td>Define required fields per object before launch</td></tr>
+<tr><td>Lead enrichment</td><td>Enrichment Waterfall (Module 3.2)</td><td>3-provider waterfall → 80%+ coverage</td></tr>
+<tr><td>Lead routing</td><td>Routing Rulebook (Module 3.3)</td><td>Tier 1 = 4h SLA; Tier 2 = 24h SLA</td></tr>
+<tr><td>AI research at scale</td><td>Clay + Claygent (Module 4.1)</td><td>150+ data providers, waterfall logic built-in</td></tr>
+<tr><td>Workflow automation (no-code)</td><td>Make.com (Module 4.2)</td><td>Best for non-technical teams; per-operation pricing</td></tr>
+<tr><td>Workflow automation (developer)</td><td>n8n (Module 4.2)</td><td>Self-hostable; full JS/Python; per-execution pricing</td></tr>
+<tr><td>AI email personalization</td><td>Claude API + Prompt Library (Module 4.3)</td><td>Requires enriched inputs; always QC sample before send</td></tr>
+<tr><td>Sequence metrics</td><td>Open rate, reply rate, positive reply rate, meeting rate</td><td>Targets: 45% / 3% / 1.5% / 0.8%</td></tr>
+</table>
+
+<h2 id="resources">Learning Resources</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td><em>Obviously Awesome</em> — April Dunford</td><td>Positioning and market category design</td></tr>
+<tr><td><em>Founding Sales</em> — Pete Kazanjy</td><td>First sales process for founders, GTM fundamentals</td></tr>
+<tr><td><em>The Sales Development Playbook</em> — Trish Bertuzzi</td><td>SDR team design, sequencing, outbound strategy</td></tr>
+<tr><td><em>Revenue Architecture</em> — Jacco van der Kooij</td><td>RevOps framework, GTM motion design</td></tr>
+<tr><td><em>Hacking Growth</em> — Sean Ellis &amp; Morgan Brown</td><td>PLG, PMF testing, growth experiment design</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>RevOps Co-op (revopscoop.com)</td><td>RevOps community and resources</td><td>Slack community, playbooks, job board</td></tr>
+<tr><td>Pavilion (joinpavilion.com)</td><td>GTM executive community</td><td>Paid membership; excellent for VP-level content</td></tr>
+<tr><td>SaaStr (saastr.com)</td><td>B2B SaaS GTM strategy</td><td>Annual conference + large article archive</td></tr>
+<tr><td>Clay University (clay.com/university)</td><td>Clay workflows, Claygent, enrichment</td><td>Free; official Clay learning resource</td></tr>
+<tr><td>Lenny's Newsletter (lennysnewsletter.com)</td><td>PLG, PMF, growth strategy</td><td>Paid; among the best GTM writing available</td></tr>
+<tr><td>Exit Five (exitfive.com)</td><td>B2B marketing and demand gen</td><td>Community + newsletter by Dave Gerhardt</td></tr>
+<tr><td>GTM Partners (gtmpartners.com)</td><td>GTM frameworks and research</td><td>Free frameworks and analyst reports</td></tr>
+</table>
+<h3 id="tools-and-templates">Tools &amp; Templates</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>Clay (clay.com)</td><td>Lead enrichment, Claygent AI research, waterfall automation</td></tr>
+<tr><td>Make.com</td><td>No-code workflow automation; HubSpot and Salesforce integrations</td></tr>
+<tr><td>n8n (n8n.io)</td><td>Developer-centric automation; self-hostable; full code nodes</td></tr>
+<tr><td>Apollo.io</td><td>Lead database, email finder, sequencer</td></tr>
+<tr><td>ZeroBounce</td><td>Email validation; reduce bounce rates before sending</td></tr>
+<tr><td>Hunter.io</td><td>Email finder, domain search; waterfall provider 2</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is session-only and resets on reload.</p></blockquote>
+<h4>Phase 1 — GTM Strategy Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — GTM Fundamentals &amp; Go-to-Market Models</li>
+<li>[ ] Exercise 1.1 — SaasFlow GTM Motion Audit</li>
+<li>[ ] Module 1.2 — Market Sizing &amp; Competitive Landscape</li>
+<li>[ ] Exercise 1.2 — SaasFlow Market Model</li>
+<li>[ ] Module 1.3 — Product-Market Fit &amp; GTM Triggers</li>
+<li>[ ] Exercise 1.3 — SaasFlow GTM Readiness Assessment</li>
+<li>[ ] Phase 1 Capstone — SaasFlow GTM Blueprint</li>
+</ul>
+<h4>Phase 2 — ICP, Targeting &amp; Messaging</h4>
+<ul>
+<li>[ ] Module 2.1 — ICP Definition &amp; Account Scoring</li>
+<li>[ ] Exercise 2.1 — SaasFlow ICP Scoring</li>
+<li>[ ] Module 2.2 — Value Proposition &amp; Positioning</li>
+<li>[ ] Exercise 2.2 — SaasFlow Positioning Workshop</li>
+<li>[ ] Module 2.3 — Multi-Channel Outreach Sequencing</li>
+<li>[ ] Exercise 2.3 — SaasFlow Sequence Build</li>
+<li>[ ] Phase 2 Capstone — SaasFlow Outbound Playbook</li>
+</ul>
+<h4>Phase 3 — GTM Operations</h4>
+<ul>
+<li>[ ] Module 3.1 — CRM Architecture &amp; Data Hygiene</li>
+<li>[ ] Exercise 3.1 — SaasFlow CRM Audit</li>
+<li>[ ] Module 3.2 — Lead Enrichment &amp; Data Waterfall</li>
+<li>[ ] Exercise 3.2 — SaasFlow Enrichment Waterfall</li>
+<li>[ ] Module 3.3 — Lead Scoring &amp; Intelligent Routing</li>
+<li>[ ] Exercise 3.3 — SaasFlow Routing Simulation</li>
+<li>[ ] Phase 3 Capstone — SaasFlow GTM Ops Stack</li>
+</ul>
+<h4>Phase 4 — GTM Automation</h4>
+<ul>
+<li>[ ] Module 4.1 — Clay Workflows &amp; AI Research</li>
+<li>[ ] Exercise 4.1 — SaasFlow Clay Build</li>
+<li>[ ] Module 4.2 — Make.com &amp; n8n Workflow Automation</li>
+<li>[ ] Exercise 4.2 — SaasFlow Workflow Design</li>
+<li>[ ] Module 4.3 — AI-Powered Personalization at Scale</li>
+<li>[ ] Exercise 4.3 — SaasFlow AI Personalization Pipeline</li>
+<li>[ ] Phase 4 Capstone — SaasFlow Automation Pipeline</li>
+</ul>
+<h4>Final Capstone</h4>
+<ul>
+<li>[ ] Final Capstone — SaasFlow Full GTM Build (all phases integrated)</li>
+</ul>
+<h4>Certifications / Outcomes</h4>
+<ul>
+<li>[ ] GTM Blueprint complete (investor-ready)</li>
+<li>[ ] Outbound Playbook v1 ready for SDR hand-off</li>
+<li>[ ] RevOps Infrastructure Doc complete</li>
+<li>[ ] Automation Stack shipped and monitored in production</li>
+<li>[ ] Final Capstone project submitted</li>
+</ul>
+
+<p><em>Guide Version 1.0 — GTM Strategy &amp; Automation Track: From Strategy to GTM Engineering</em><br>
+<em>Non-linear modular design · Placement quiz · 12 modules · ~10 weeks part-time · hayah-ai</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

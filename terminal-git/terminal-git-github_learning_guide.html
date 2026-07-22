@@ -1,0 +1,2027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terminal · Git · GitHub Learning Guide — Beginner to Intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Terminal · Git &amp; GitHub<br>Learning Guide</div>
+      <div class="brand-sub">zsh · git · GitHub CLI · Vercel · Claude Code</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+      <a href="#terminal-git-github-learning-guide" class="nav-top">Terminal · Git · GitHub</a>
+      <a href="#beginner-to-intermediate" class="nav-top">Beginner to Intermediate Track</a>
+      <a href="#quick-start" class="nav-top">Quick Start</a>
+      <a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+      <a href="#module-index" class="nav-top">Module Index</a>
+      <a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+      <a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+      <div class="nav-group">
+        <a href="#phase-1-shell-foundations" class="nav-top nav-phase">Phase 1: Shell Foundations</a>
+        <div class="nav-children">
+          <a href="#module-11-terminal-orientation" class="nav-child">Module 1.1 — Terminal Orientation</a>
+          <a href="#module-12-git-config-aliases" class="nav-child">Module 1.2 — Git Config &amp; Aliases</a>
+          <a href="#phase-1-capstone-workspace-setup" class="nav-child">Phase 1 Capstone: Workspace Setup</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="#phase-2-the-daily-loop" class="nav-top nav-phase">Phase 2: The Daily Loop</a>
+        <div class="nav-children">
+          <a href="#module-21-branch-naming-creation" class="nav-child">Module 2.1 — Branch Naming &amp; Creation</a>
+          <a href="#module-22-staging-commit-messages" class="nav-child">Module 2.2 — Staging &amp; Commit Messages</a>
+          <a href="#module-23-push-vercel-previews" class="nav-child">Module 2.3 — Push &amp; Vercel Previews</a>
+          <a href="#module-24-pull-requests-with-github-cli" class="nav-child">Module 2.4 — Pull Requests with GitHub CLI</a>
+          <a href="#module-25-pr-review-ci-merge" class="nav-child">Module 2.5 — PR Review, CI &amp; Merge</a>
+          <a href="#phase-2-capstone-ship-a-feature" class="nav-child">Phase 2 Capstone: Ship a Feature</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="#phase-3-parallel-work-recovery" class="nav-top nav-phase">Phase 3: Parallel Work &amp; Recovery</a>
+        <div class="nav-children">
+          <a href="#module-31-git-worktrees" class="nav-child">Module 3.1 — Git Worktrees</a>
+          <a href="#module-32-git-stash-wip" class="nav-child">Module 3.2 — Git Stash &amp; WIP</a>
+          <a href="#module-33-undo-reset-reflog" class="nav-child">Module 3.3 — Undo, Reset &amp; Reflog</a>
+          <a href="#phase-3-capstone-parallel-sprint" class="nav-child">Phase 3 Capstone: Parallel Sprint</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="#phase-4-advanced-patterns" class="nav-top nav-phase">Phase 4: Advanced Patterns</a>
+        <div class="nav-children">
+          <a href="#module-41-interactive-rebase" class="nav-child">Module 4.1 — Interactive Rebase</a>
+          <a href="#module-42-cherry-pick-bisect-tags" class="nav-child">Module 4.2 — Cherry-Pick, Bisect &amp; Tags</a>
+          <a href="#module-43-claude-in-terminal" class="nav-child">Module 4.3 — Claude in Terminal</a>
+          <a href="#module-44-troubleshooting-shell-mastery" class="nav-child">Module 4.4 — Troubleshooting &amp; Shell Mastery</a>
+          <a href="#module-45-github-actions" class="nav-child">Module 4.5 — GitHub Actions</a>
+          <a href="#phase-4-capstone-clean-pr-history" class="nav-child">Phase 4 Capstone: Clean PR History</a>
+        </div>
+      </div>
+      <a href="#final-capstone-full-stack-ship-cycle" class="nav-top">Final Capstone</a>
+      <a href="#quick-reference" class="nav-top">Quick Reference</a>
+      <a href="#resources" class="nav-top">Resources</a>
+      <a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+  <div class="hero-text">
+    <h1 id="terminal-git-github-learning-guide">Terminal · Git · GitHub Learning Guide</h1>
+    <h2 id="beginner-to-intermediate">Beginner to Intermediate Track</h2>
+    <h3>zsh · git · GitHub CLI · Vercel · Claude Code</h3>
+  </div>
+  <div class="hero-mark">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 84" role="img" aria-label="Terminal icon">
+      <rect x="8" y="14" width="68" height="56" rx="7" fill="none" stroke="#075249" stroke-width="4.5"/>
+      <line x1="8" y1="28" x2="76" y2="28" stroke="#075249" stroke-width="3"/>
+      <circle cx="20" cy="21" r="3.5" fill="#0d7a6e"/>
+      <circle cx="31" cy="21" r="3.5" fill="#075249" opacity="0.5"/>
+      <polyline points="16,42 26,50 16,58" fill="none" stroke="#075249" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="32" y1="58" x2="62" y2="58" stroke="#0d7a6e" stroke-width="3.5" stroke-linecap="round"/>
+    </svg>
+  </div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. All exercises use the same benchmark project: <strong>rotabrain-blades</strong> — a Next.js web app deployed on Vercel. There's no starter code to download — see the <a href="../datasets/rotabrain-blades/">rotabrain-blades note</a> in the shared datasets folder for a minimal equivalent to scaffold locally, or substitute any Next.js repo you already have.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and follow phases sequentially.</li>
+<li><strong>Some experience</strong> → Take the <strong>Placement Quiz</strong> below to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or choose a <strong>Learning Track</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz</h2>
+<p>Check every statement that describes you now. The score directs you to the right entry point.</p>
+
+<h3 id="quiz-terminal-shell">Shell &amp; Terminal</h3>
+<ul>
+<li>[ ] I can navigate directories, create files, and run scripts from the terminal without looking things up.</li>
+<li>[ ] I know what <code>~/.zshrc</code> does and have edited it at least once.</li>
+<li>[ ] I use shell aliases regularly to save keystrokes.</li>
+<li>[ ] I can pipe command output to another command (<code>|</code>) and redirect to a file.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3 id="quiz-git-basics">Git Basics</h3>
+<ul>
+<li>[ ] I understand what a branch is and can create and switch branches without help.</li>
+<li>[ ] I can stage specific files (not just <code>git add .</code>), write a commit, and push to a remote.</li>
+<li>[ ] I know the difference between <code>git merge</code> and <code>git rebase</code>.</li>
+<li>[ ] I have resolved a merge conflict without panicking.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3 id="quiz-github-prs">GitHub &amp; Pull Requests</h3>
+<ul>
+<li>[ ] I regularly open PRs using the GitHub CLI (<code>gh pr create</code>) rather than the browser.</li>
+<li>[ ] I use squash merges and understand why they keep history clean.</li>
+<li>[ ] I can check PR status, CI results, and Vercel preview links from the terminal.</li>
+<li>[ ] I know how to keep a branch current with main using rebase instead of merge.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.4</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.1</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3 id="quiz-advanced-git">Advanced Git</h3>
+<ul>
+<li>[ ] I have used <code>git worktree</code> to run two branches simultaneously in separate directories.</li>
+<li>[ ] I can clean up messy commits with interactive rebase before merging.</li>
+<li>[ ] I know how to cherry-pick a commit from one branch to another.</li>
+<li>[ ] I have used <code>git bisect</code> to track down a regression.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.2</strong> | <strong>4 yes</strong> → Jump to the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<div class="table-scroll">
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-terminal-orientation"><td>1.1</td><td>Terminal Orientation &amp; zsh Setup</td><td>Beginner</td><td>None</td><td>~1h</td></tr>
+<tr data-href="#module-12-git-config-aliases"><td>1.2</td><td>Git Global Config &amp; Aliases</td><td>Beginner</td><td>1.1</td><td>~1h</td></tr>
+<tr data-href="#module-21-branch-naming-creation"><td>2.1</td><td>Branch Naming &amp; Creation</td><td>Beginner</td><td>1.2</td><td>~1h</td></tr>
+<tr data-href="#module-22-staging-commit-messages"><td>2.2</td><td>Staging &amp; Commit Messages</td><td>Beginner</td><td>2.1</td><td>~1.5h</td></tr>
+<tr data-href="#module-23-push-vercel-previews"><td>2.3</td><td>Push &amp; Vercel Previews</td><td>Beginner</td><td>2.2</td><td>~1h</td></tr>
+<tr data-href="#module-24-pull-requests-with-github-cli"><td>2.4</td><td>Pull Requests with GitHub CLI</td><td>Beginner–Intermediate</td><td>2.3</td><td>~1.5h</td></tr>
+<tr data-href="#module-25-pr-review-ci-merge"><td>2.5</td><td>PR Review, CI Checks &amp; Merge</td><td>Beginner–Intermediate</td><td>2.4</td><td>~1.5h</td></tr>
+<tr data-href="#module-31-git-worktrees"><td>3.1</td><td>Git Worktrees</td><td>Intermediate</td><td>2.5</td><td>~2h</td></tr>
+<tr data-href="#module-32-git-stash-wip"><td>3.2</td><td>Git Stash &amp; WIP Management</td><td>Beginner–Intermediate</td><td>2.2</td><td>~1h</td></tr>
+<tr data-href="#module-33-undo-reset-reflog"><td>3.3</td><td>Undo, Reset &amp; Reflog</td><td>Intermediate</td><td>2.2</td><td>~1.5h</td></tr>
+<tr data-href="#module-41-interactive-rebase"><td>4.1</td><td>Interactive Rebase &amp; Clean History</td><td>Intermediate</td><td>3.1, 3.3</td><td>~2h</td></tr>
+<tr data-href="#module-42-cherry-pick-bisect-tags"><td>4.2</td><td>Cherry-Pick, Bisect &amp; Tags</td><td>Intermediate</td><td>4.1</td><td>~1.5h</td></tr>
+<tr data-href="#module-43-claude-in-terminal"><td>4.3</td><td>Claude in Terminal (AI Pairing)</td><td>Intermediate</td><td>3.1</td><td>~2h</td></tr>
+<tr data-href="#module-44-troubleshooting-shell-mastery"><td>4.4</td><td>Troubleshooting &amp; Shell Mastery</td><td>Intermediate</td><td>4.1, 4.2</td><td>~1.5h</td></tr>
+<tr data-href="#module-45-github-actions"><td>4.5</td><td>GitHub Actions &amp; CI/CD Workflows</td><td>Intermediate</td><td>2.5</td><td>~2h</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote class="callout"><p><strong>Note:</strong> Modules 3.2 and 3.3 are independent of 3.1 — you can tackle stash and undo skills without learning worktrees first. Module 4.3 (Claude in Terminal) can start after 3.1, before completing 4.1 or 4.2. Module 4.5 (GitHub Actions) only requires 2.5 — you can do it right after Phase 2 if CI/CD is your priority.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset of the full guide.</p>
+<h3 id="track-1-quick-shipper">Track 1 — Quick Shipper (Ship features confidently)</h3>
+<p><code>1.2 → 2.1 → 2.2 → 2.3 → 2.4 → 2.5 → Phase 2 Capstone</code><br>
+Target outcome: <strong>Daily git + GitHub CLI fluency</strong> — branch, commit, push, PR, merge without looking anything up.</p>
+<h3 id="track-2-full-engineer">Track 2 — Full Engineer (Complete mastery)</h3>
+<p><code>1.1 → 1.2 → 2.1 → 2.2 → 2.3 → 2.4 → 2.5 → 3.1 → 3.2 → 3.3 → 4.1 → 4.2 → 4.3 → 4.4 → Final Capstone</code><br>
+Target outcome: <strong>Senior-level terminal &amp; git proficiency</strong> — worktrees, rebase, bisect, AI pairing, clean history.</p>
+<h3 id="track-3-safety-net">Track 3 — Safety Net (Recovery &amp; crisis management)</h3>
+<p><code>3.2 → 3.3 → 4.4</code><br>
+Target outcome: <strong>Never lose work again</strong> — stash, reflog, undo any mistake, resolve any conflict.</p>
+<h3 id="track-4-ai-pairing">Track 4 — AI Pairing (Claude-assisted development)</h3>
+<p><code>2.1 → 2.2 → 3.1 → 4.3</code><br>
+Target outcome: <strong>Effective Claude Code + worktree dual-terminal workflow</strong> — scope tightly, review before committing, ship clean.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code class="language-bash">Phase 1 — Shell Foundations     (Weeks 1–2)   ~2h total
+Phase 2 — The Daily Loop        (Weeks 2–4)   ~7.5h total
+Phase 3 — Parallel Work         (Weeks 4–6)   ~4.5h total
+Phase 4 — Advanced Patterns     (Weeks 6–8)   ~9h total
+Final Capstone                  (Ongoing)     ~3h</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code class="language-bash">1.1 ─── 1.2 ─── 2.1 ─── 2.2 ─┬─ 2.3 ─── 2.4 ─── 2.5 ─── 3.1 ─── 4.1 ─── 4.2 ─┐
+                               ├─ 3.2                       │                     │
+                               └─ 3.3 ─────────────────────-┘   4.3 (after 3.1) ──┤
+                                                                  4.4 (after 4.1) ──┘
+                                                                  → Final Capstone</code></pre>
+
+<hr />
+
+<h2 id="phase-1-shell-foundations">Phase 1: Shell Foundations</h2>
+<h3 id="weeks-1-2">Weeks 1–2 | Goal: A configured, alias-powered terminal and git identity</h3>
+<hr />
+
+<h3 id="module-11-terminal-orientation">Module 1.1 — Terminal Orientation &amp; zsh Setup</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~1h<br>
+<strong>Skip-check:</strong> Navigate to any directory, grep for a pattern in all <code>.tsx</code> files, and add a shell alias — without googling anything.<br>
+<strong>Skip if:</strong> You edit <code>~/.zshrc</code> comfortably, use aliases daily, and understand pipe (<code>|</code>) and redirect (<code>&gt;</code>).<br>
+<strong>Unlocks:</strong> Module 1.2</p>
+</blockquote>
+
+<h4>1.1.1 The Terminal Mental Model</h4>
+<p>The terminal is a text interface to your OS. On macOS, the default shell is <strong>zsh</strong>. Your shell reads <code>~/.zshrc</code> on startup — this is where aliases, paths, and environment variables live.</p>
+<p>Three concepts unlock 80% of terminal usage:</p>
+<ul>
+<li><strong>Current directory</strong> (<code>pwd</code>) — every command runs relative to here.</li>
+<li><strong>Paths</strong> — <code>~</code> is your home directory; absolute paths start with <code>/</code>; relative paths start from <code>pwd</code>.</li>
+<li><strong>Pipes</strong> (<code>|</code>) — the output of one command becomes the input of the next.</li>
+</ul>
+
+<h4>1.1.2 Essential Navigation</h4>
+<pre><code class="language-bash"># Where am I?
+$ pwd
+
+# List files (long format, show hidden)
+$ ls -la
+
+# Navigate
+$ cd ~/projects/rotabrain-blades
+$ cd ..            # up one level
+$ cd -             # back to previous directory
+
+# Create and view files
+$ mkdir -p src/components
+$ touch src/components/HealthScoreCard.tsx
+$ cat package.json
+
+# Find files (excluding node_modules)
+$ find . -name "*.tsx" -not -path "*/node_modules/*"
+
+# Grep file contents recursively
+$ grep -r "HealthScore" src/</code></pre>
+
+<h4>1.1.3 Shell Config — ~/.zshrc</h4>
+<p>Aliases live in <code>~/.zshrc</code>. Changes take effect after <code>source ~/.zshrc</code> or opening a new terminal tab.</p>
+<pre><code class="language-bash"># Open ~/.zshrc in VS Code
+$ code ~/.zshrc
+
+# Add project navigation shortcuts
+alias rotabrain="cd ~/projects/rotabrain-blades"
+alias hayah="cd ~/projects/hayah-ai"
+
+# Apply immediately
+$ source ~/.zshrc
+$ rotabrain    # now works</code></pre>
+
+<h4>1.1.4 Pipes and Redirection</h4>
+<pre><code class="language-bash"># Pipe: pass output into another command
+$ npm run build 2&gt;&amp;1 | grep "Error"
+
+# Redirect output to a file (stdout + stderr)
+$ npm run build &gt; build.log 2&gt;&amp;1
+
+# Chain: run second command only if first succeeds
+$ git add . &amp;&amp; git commit -m "chore: initial commit"
+
+# Chain: run second command regardless
+$ git stash ; cd ..</code></pre>
+
+<p><strong>Exercise 1.1 — Terminal Orientation</strong></p>
+<p>Project: rotabrain-blades (local clone)</p>
+<ol>
+<li>Navigate to the <code>rotabrain-blades</code> repo root and verify with <code>pwd</code>.</li>
+<li>Run <code>ls -la</code> and identify: the <code>.git</code> directory, <code>package.json</code>, and the <code>src/</code> folder.</li>
+<li>Use <code>find</code> to list all <code>.tsx</code> files under <code>src/</code>, excluding <code>node_modules</code>.</li>
+<li>Use <code>grep -r</code> to find all files that import from <code>@/components</code>.</li>
+<li>Add a <code>rotabrain</code> alias to <code>~/.zshrc</code>, source it, and confirm it works from any directory.</li>
+<li>Run <code>npm run build 2&gt;&amp;1 | tail -20</code> to see the last 20 lines of build output.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-git-config-aliases">Module 1.2 — Git Global Config &amp; Aliases</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Module 1.1 · <strong>Time:</strong> ~1h<br>
+<strong>Skip-check:</strong> Run <code>git lg</code> and see a decorated one-line graph; push a new branch with no flags (autoSetupRemote handles it).<br>
+<strong>Skip if:</strong> Your <code>~/.gitconfig</code> already has rebase pull, autoSetupRemote, and a full alias set.<br>
+<strong>Unlocks:</strong> Module 2.1</p>
+</blockquote>
+
+<h4>1.2.1 Git Identity</h4>
+<pre><code class="language-bash">$ git config --global user.name "Your Name"
+$ git config --global user.email "you@example.com"
+$ git config --global core.editor "code --wait"</code></pre>
+
+<h4>1.2.2 The Three Most Valuable Config Lines</h4>
+<pre><code class="language-bash"># pull --rebase by default (keeps history linear, no merge commits on pull)
+$ git config --global pull.rebase true
+
+# Auto -u origin on first push (no --set-upstream flag needed)
+$ git config --global push.autoSetupRemote true
+
+# autosquash: fixup!/squash! commits reorder automatically in interactive rebase
+$ git config --global rebase.autosquash true</code></pre>
+
+<h4>1.2.3 Git Aliases</h4>
+<pre><code class="language-bash"># One-line decorated graph log (most-used alias)
+$ git config --global alias.lg "log --oneline --graph --decorate"
+
+# Shorthand for status
+$ git config --global alias.st "status"
+
+# Save everything as a WIP checkpoint
+$ git config --global alias.save "!git add -A &amp;&amp; git commit -m 'WIP: checkpoint'"
+
+# Undo last commit, keep changes staged
+$ git config --global alias.undo "reset HEAD~1"
+
+# Nuclear: discard everything
+$ git config --global alias.wipe "reset --hard HEAD"</code></pre>
+
+<h4>1.2.4 Shell Aliases for Git in ~/.zshrc</h4>
+<pre><code class="language-bash">alias gs="git status"
+alias ga="git add"
+alias gc="git commit -m"
+alias gp="git push"
+alias gpl="git pull"
+alias gd="git diff"
+alias gds="git diff --staged"
+alias gl="git log --oneline --graph --decorate -20"
+alias gb="git branch -a"
+alias gco="git checkout"
+alias gcob="git checkout -b"
+alias grb="git rebase"
+alias gst="git stash"
+alias gstp="git stash pop"
+alias gf="git fetch --prune"
+alias gwl="git worktree list"
+alias gwa="git worktree add"
+alias gwr="git worktree remove"</code></pre>
+
+<p><strong>Exercise 1.2 — Git Config</strong></p>
+<p>Project: rotabrain-blades</p>
+<ol>
+<li>Set your global git identity (name + email). Confirm with <code>git config --global --list</code>.</li>
+<li>Enable <code>pull.rebase true</code> and <code>push.autoSetupRemote true</code>. Write one sentence explaining what each does.</li>
+<li>Add the <code>lg</code> alias and run <code>git lg -10</code> on the rotabrain repo. Describe the output format.</li>
+<li>Add the <code>save</code> alias. Make a trivial file change, run <code>git save</code>, then <code>git undo</code> to unstage it.</li>
+<li>Add the full zsh alias set to <code>~/.zshrc</code>, source it, and verify <code>gs</code>, <code>gd</code>, and <code>gl</code> all work.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-workspace-setup">Phase 1 Capstone: Workspace Setup</h3>
+<p><strong>Project: rotabrain-blades environment audit</strong></p>
+<p><strong>Dataset:</strong> Your local <code>rotabrain-blades</code> repository</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A fully configured <code>~/.zshrc</code> with project navigation aliases and the full git alias set.</li>
+<li>A <code>~/.gitconfig</code> with identity, rebase pull, autoSetupRemote, autosquash, and git aliases.</li>
+<li>Run <code>git lg</code> on rotabrain-blades and confirm the decorated graph displays correctly.</li>
+<li>Add one custom alias of your own design (e.g., <code>alias gclean="git branch --merged main | grep -v main | xargs git branch -d"</code>).</li>
+<li>Explain in one sentence: what does <code>source ~/.zshrc</code> do, and when do you need to run it?</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-the-daily-loop">Phase 2: The Daily Loop</h2>
+<h3 id="weeks-2-4">Weeks 2–4 | Goal: Ship features cleanly from branch creation to merged PR</h3>
+<hr />
+
+<h3 id="module-21-branch-naming-creation">Module 2.1 — Branch Naming &amp; Creation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Module 1.2 · <strong>Time:</strong> ~1h<br>
+<strong>Skip-check:</strong> Create a <code>feat/health-score-tooltip</code> branch from a fresh main pull in under 30 seconds — from memory.<br>
+<strong>Skip if:</strong> You know all five branch prefixes and always pull main before branching.<br>
+<strong>Unlocks:</strong> Module 2.2</p>
+</blockquote>
+
+<h4>2.1.1 The Branching Contract</h4>
+<p>Three rules that eliminate most production incidents: <strong>main is always deployable</strong>. Every feature, fix, or chore lives on a branch. A PR is the gate between branch and main.</p>
+
+<h4>2.1.2 Branch Naming Convention</h4>
+<div class="table-scroll">
+<table>
+<tr><th>Prefix</th><th>Use For</th><th>Example</th></tr>
+<tr><td><code>feat/</code></td><td>New feature or capability</td><td><code>feat/health-score-tooltip</code></td></tr>
+<tr><td><code>fix/</code></td><td>Bug fix</td><td><code>fix/chart-overflow</code></td></tr>
+<tr><td><code>chore/</code></td><td>Config, deps, refactor</td><td><code>chore/update-dependencies</code></td></tr>
+<tr><td><code>docs/</code></td><td>Documentation only</td><td><code>docs/api-reference</code></td></tr>
+<tr><td><code>hotfix/</code></td><td>Urgent production fix</td><td><code>hotfix/auth-crash</code></td></tr>
+</table>
+</div>
+
+<h4>2.1.3 Creating a Branch — The Correct Pattern</h4>
+<pre><code class="language-bash"># Always pull main first — branch from a fresh state
+$ git checkout main &amp;&amp; git pull
+
+# Create and switch in one command
+$ git checkout -b feat/health-score-tooltip
+
+# Confirm you are on the right branch
+$ git branch</code></pre>
+
+<h4>2.1.4 Accidentally Committed to Main?</h4>
+<pre><code class="language-bash"># Do not panic. Move it to a branch — never force-push main.
+$ git checkout -b fix/oops-committed-to-main
+$ git push -u origin fix/oops-committed-to-main
+# Then open a PR. Never force-push main.</code></pre>
+
+<p><strong>Exercise 2.1 — Branch Creation</strong></p>
+<p>Project: rotabrain-blades</p>
+<ol>
+<li>Pull the latest main and verify it is up to date with <code>git lg -5</code>.</li>
+<li>Create <code>feat/health-score-tooltip</code> from main.</li>
+<li>Confirm which branch you are on using two different commands (<code>git branch</code> and <code>git status</code>).</li>
+<li>Create a second branch <code>fix/chart-overflow</code> from main (checkout main first). Then delete it.</li>
+<li>Simulate the "oops" scenario: commit directly to main, then move that commit to a new branch.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-staging-commit-messages">Module 2.2 — Staging &amp; Commit Messages</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Module 2.1 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check:</strong> Stage a single hunk from a multi-file diff using <code>git add -p</code> and write a correct conventional commit message for it.<br>
+<strong>Skip if:</strong> You use <code>git add -p</code> habitually and know all commit type prefixes.<br>
+<strong>Unlocks:</strong> Module 2.3, Module 3.2, Module 3.3</p>
+</blockquote>
+
+<h4>2.2.1 Staging with Precision</h4>
+<p><code>git add .</code> stages everything. <code>git add -p</code> (patch mode) stages individual hunks — letting you craft logical commits even when multiple unrelated changes are open in your editor.</p>
+<pre><code class="language-bash"># Stage a specific file
+$ git add src/components/HealthScoreCard.tsx
+
+# Interactive patch mode — stage hunk by hunk
+$ git add -p
+# At each hunk: y=stage  n=skip  s=split  e=edit manually  q=quit
+
+# Verify what is staged before committing
+$ git diff --staged</code></pre>
+
+<h4>2.2.2 Commit Message Format</h4>
+<p>Format: <code>type(scope): short imperative description</code></p>
+<pre><code class="language-bash"># Good
+$ git commit -m "feat(dashboard): add tooltip to health score card"
+$ git commit -m "fix(dashboard): correct tooltip z-index"
+$ git commit -m "chore(deps): upgrade react to 18.3.1"
+
+# Bad — vague, wrong tense, no scope
+$ git commit -m "fix stuff"
+$ git commit -m "Added tooltip"</code></pre>
+<div class="table-scroll">
+<table>
+<tr><th>Type</th><th>Use For</th></tr>
+<tr><td><code>feat</code></td><td>New feature</td></tr>
+<tr><td><code>fix</code></td><td>Bug fix</td></tr>
+<tr><td><code>chore</code></td><td>Build, config, deps — no prod change</td></tr>
+<tr><td><code>docs</code></td><td>Documentation only</td></tr>
+<tr><td><code>style</code></td><td>Formatting, whitespace — no logic change</td></tr>
+<tr><td><code>test</code></td><td>Adding or fixing tests</td></tr>
+<tr><td><code>perf</code></td><td>Performance improvement</td></tr>
+<tr><td><code>refactor</code></td><td>Code restructure, no behavior change</td></tr>
+<tr><td><code>revert</code></td><td>Reverting a previous commit</td></tr>
+</table>
+</div>
+
+<h4>2.2.3 Multiple Commits on a Branch</h4>
+<pre><code class="language-bash"># Multiple commits are fine — they squash into one clean commit on merge
+$ git add src/components/HealthScoreCard.tsx
+$ git commit -m "feat(dashboard): add tooltip component"
+
+$ git add src/styles/tooltip.css
+$ git commit -m "style(dashboard): add tooltip positioning"
+
+# See your branch commits vs main
+$ git log main..HEAD --oneline</code></pre>
+
+<p><strong>Exercise 2.2 — Staging &amp; Commits</strong></p>
+<p>Project: rotabrain-blades, branch <code>feat/health-score-tooltip</code></p>
+<ol>
+<li>Make changes to at least 3 different files in the rotabrain project.</li>
+<li>Use <code>git add -p</code> to stage only the changes from one file, skipping the others.</li>
+<li>Run <code>git diff --staged</code> to verify only the intended hunk is staged. Commit with a correct conventional message.</li>
+<li>Stage and commit the remaining files one at a time with distinct, scoped messages.</li>
+<li>Run <code>git log main..HEAD --oneline</code> and confirm your branch-specific commits appear.</li>
+<li>Write one deliberately "bad" commit message and explain in writing exactly why it fails the convention.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-push-vercel-previews">Module 2.3 — Push &amp; Vercel Previews</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Module 2.2 · <strong>Time:</strong> ~1h<br>
+<strong>Skip-check:</strong> Push a branch, find the Vercel preview URL in the GitHub PR checks, and verify the feature — all from the terminal, no browser navigation required.<br>
+<strong>Skip if:</strong> You understand autoSetupRemote and have used Vercel branch previews before.<br>
+<strong>Unlocks:</strong> Module 2.4</p>
+</blockquote>
+
+<h4>2.3.1 First Push vs Subsequent Pushes</h4>
+<pre><code class="language-bash"># First push — with autoSetupRemote=true, no flags needed
+$ git push
+
+# Without autoSetupRemote (old way):
+$ git push -u origin feat/health-score-tooltip
+
+# All subsequent pushes on the same branch:
+$ git push</code></pre>
+
+<h4>2.3.2 Vercel Auto-Preview</h4>
+<p>The moment your branch lands on GitHub, Vercel builds a preview URL automatically. No configuration needed — it is wired to the repo. The preview is a <strong>full live environment</strong> with real Supabase data — exactly what production looks like.</p>
+<pre><code class="language-bash"># URL pattern
+rotabrain-blades-git-feat-health-score-tooltip-argeos-projects.vercel.app
+
+# Check all PR checks including Vercel status
+$ gh pr checks</code></pre>
+
+<h4>2.3.3 Push More Commits — Preview Rebuilds Automatically</h4>
+<pre><code class="language-bash"># Make additional fixes based on preview review
+$ git add src/components/HealthScoreCard.tsx
+$ git commit -m "fix(dashboard): correct tooltip z-index on mobile"
+$ git push
+# Vercel rebuilds the preview within ~30 seconds</code></pre>
+
+<p><strong>Exercise 2.3 — Push &amp; Preview</strong></p>
+<p>Project: rotabrain-blades, branch <code>feat/health-score-tooltip</code></p>
+<ol>
+<li>Push the branch. Confirm with <code>git log --oneline origin/feat/health-score-tooltip</code>.</li>
+<li>Open the GitHub repo. Find the branch and observe the Vercel deployment check running.</li>
+<li>Once the Vercel build completes, open the preview URL and verify the feature works.</li>
+<li>Make one additional fix commit and push. Wait for the preview to rebuild.</li>
+<li>Run <code>gh pr checks</code> (requires a draft PR open). List every check and its status.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-pull-requests-with-github-cli">Module 2.4 — Pull Requests with GitHub CLI</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 2.3 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check:</strong> Open a PR with title, multi-line body (What / Why sections), and a draft flag — all from the terminal, zero browser.<br>
+<strong>Skip if:</strong> You use <code>gh pr create</code> habitually and understand draft PRs.<br>
+<strong>Unlocks:</strong> Module 2.5</p>
+</blockquote>
+
+<h4>2.4.1 Installing and Authenticating GitHub CLI</h4>
+<pre><code class="language-bash"># Install (macOS)
+$ brew install gh
+
+# Authenticate (opens browser OAuth flow)
+$ gh auth login
+
+# Verify
+$ gh auth status</code></pre>
+
+<h4>2.4.2 Opening a PR</h4>
+<pre><code class="language-bash">$ gh pr create \
+  --title "feat: add tooltip to health score card" \
+  --body "## What
+Adds a tooltip to HealthScoreCard showing the raw score value.
+
+## Why
+Users were confused about the scale — the tooltip eliminates the ambiguity."
+
+# Or open in browser for a richer editor
+$ gh pr create --web</code></pre>
+
+<h4>2.4.3 Draft PRs</h4>
+<p>Open a draft when the branch is not review-ready but you want the Vercel preview running immediately.</p>
+<pre><code class="language-bash"># Open as draft
+$ gh pr create --draft --title "WIP: redesign sensor grid"
+
+# Mark ready for review when done
+$ gh pr ready</code></pre>
+
+<h4>2.4.4 Essential PR Commands</h4>
+<pre><code class="language-bash">$ gh pr list          # list open PRs in the repo
+$ gh pr view          # view current branch PR
+$ gh pr view --web    # open PR in browser
+$ gh pr checks        # CI check results for current PR
+$ gh pr status        # PR status dashboard</code></pre>
+
+<p><strong>Exercise 2.4 — Pull Requests</strong></p>
+<p>Project: rotabrain-blades, branch <code>feat/health-score-tooltip</code></p>
+<ol>
+<li>Install and authenticate <code>gh</code>. Run <code>gh auth status</code> and confirm it shows your account.</li>
+<li>Open a draft PR with a proper title and What/Why body.</li>
+<li>Run <code>gh pr list</code> and confirm your PR appears.</li>
+<li>Run <code>gh pr checks</code> and identify the Vercel deploy check. What is its status?</li>
+<li>Mark the PR as ready with <code>gh pr ready</code>.</li>
+<li>Open the PR in the browser with <code>gh pr view --web</code> and verify the body rendered correctly.</li>
+</ol>
+<hr />
+
+<h3 id="module-25-pr-review-ci-merge">Module 2.5 — PR Review, CI Checks &amp; Merge</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 2.4 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check:</strong> Review a PR locally, leave a change request, squash-merge your own PR, and sync main — all from the terminal.<br>
+<strong>Skip if:</strong> You routinely review, approve, and squash-merge PRs via the CLI.<br>
+<strong>Unlocks:</strong> Module 3.1</p>
+</blockquote>
+
+<h4>2.5.1 Reviewing a PR</h4>
+<pre><code class="language-bash"># Check out a PR locally to test it
+$ gh pr checkout 42
+
+# Approve
+$ gh pr review 42 --approve
+
+# Request changes
+$ gh pr review 42 --request-changes --body "Fix the N+1 query in the sensor loader first"
+
+# Leave a comment
+$ gh pr review 42 --comment --body "Looks good — verify on mobile before merging"</code></pre>
+
+<h4>2.5.2 Merge Strategies</h4>
+<div class="table-scroll">
+<table>
+<tr><th>Strategy</th><th>Command</th><th>When to Use</th></tr>
+<tr><td>Squash</td><td><code>gh pr merge --squash</code></td><td>Recommended — one clean commit per feature on main</td></tr>
+<tr><td>Merge commit</td><td><code>gh pr merge --merge</code></td><td>When you need full history preserved on main</td></tr>
+<tr><td>Rebase</td><td><code>gh pr merge --rebase</code></td><td>When commits are already clean and linear</td></tr>
+</table>
+</div>
+
+<h4>2.5.3 Post-Merge Sync</h4>
+<pre><code class="language-bash"># Squash merge (recommended)
+$ gh pr merge --squash
+
+# Sync main locally
+$ git checkout main &amp;&amp; git pull
+
+# Delete the local feature branch
+$ git branch -d feat/health-score-tooltip
+# Vercel promotes the already-verified build — no rebuild needed</code></pre>
+
+<h4>2.5.4 Keeping a Branch Current with Main</h4>
+<p>If main has moved while you were working, rebase — it keeps history linear and avoids a merge commit on your branch.</p>
+<pre><code class="language-bash">$ git checkout main &amp;&amp; git pull
+$ git checkout feat/health-score-tooltip
+$ git rebase main
+
+# Resolve any conflicts, then:
+$ git rebase --continue
+
+# Force push because history was rewritten
+$ git push --force-with-lease</code></pre>
+<blockquote class="callout">
+<p><strong>--force-with-lease vs --force</strong><br>
+Always default to <code>--force-with-lease</code>. It fails safely if someone else pushed to the branch since your last fetch. <code>--force</code> overwrites regardless — never use it on shared branches.</p>
+</blockquote>
+
+<p><strong>Exercise 2.5 — PR Review &amp; Merge</strong></p>
+<p>Project: rotabrain-blades</p>
+<ol>
+<li>Check out a PR with <code>gh pr checkout</code> and review the diff with <code>git diff main</code>.</li>
+<li>Leave a review comment with <code>gh pr review --comment</code>.</li>
+<li>Squash-merge your <code>feat/health-score-tooltip</code> PR with <code>gh pr merge --squash</code>.</li>
+<li>Run <code>git checkout main &amp;&amp; git pull</code> and verify the squashed commit appears in <code>git lg</code>.</li>
+<li>Delete the merged local branch. Delete the remote branch with <code>git push origin --delete feat/health-score-tooltip</code>.</li>
+<li>Practice rebase on a new branch: make a commit, then rebase it on main, then force-push with <code>--force-with-lease</code>.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-ship-a-feature">Phase 2 Capstone: Ship a Feature</h3>
+<p><strong>Project: Complete a full feature cycle on rotabrain-blades</strong></p>
+<p><strong>Dataset:</strong> rotabrain-blades repository</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Create <code>feat/sensor-grid-v2</code> from a fresh main pull.</li>
+<li>Make at least 3 commits using <code>git add -p</code> with conventional messages.</li>
+<li>Push and open a draft PR, then mark it ready.</li>
+<li>Verify the feature on the Vercel preview URL.</li>
+<li>Squash-merge the PR. Confirm main has the squashed commit via <code>git lg</code>.</li>
+<li>Delete both local and remote feature branches. Sync main.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-parallel-work-recovery">Phase 3: Parallel Work &amp; Recovery</h2>
+<h3 id="weeks-4-6">Weeks 4–6 | Goal: Work on multiple branches simultaneously and recover from any mistake</h3>
+<hr />
+
+<h3 id="module-31-git-worktrees">Module 3.1 — Git Worktrees</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.5 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check:</strong> Set up two worktrees, run both dev servers on different ports simultaneously, and push a commit from the feature worktree — without stashing anything.<br>
+<strong>Skip if:</strong> You use worktrees regularly and never stash to switch branches.<br>
+<strong>Unlocks:</strong> Module 4.1, Module 4.3</p>
+</blockquote>
+
+<h4>3.1.1 The Problem Worktrees Solve</h4>
+<p>Without worktrees, switching branches means stashing WIP, waiting for the dev server to restart, and losing context. Worktrees check out multiple branches simultaneously in separate directories — no stashing, no context switching, no lost work. Essential when pairing with Claude on one branch while keeping a reference branch running.</p>
+
+<h4>3.1.2 Core Commands</h4>
+<pre><code class="language-bash"># Add a worktree (creates new branch from current HEAD)
+$ git worktree add ../rotabrain-feat-tooltip feat/health-score-tooltip
+
+# Add a worktree from an existing remote branch
+$ git worktree add ../rotabrain-hotfix origin/hotfix/auth-crash
+
+# List all active worktrees
+$ git worktree list
+
+# Remove a worktree when done
+$ git worktree remove ../rotabrain-feat-tooltip
+
+# Prune stale metadata (after manually deleting a directory)
+$ git worktree prune</code></pre>
+
+<h4>3.1.3 Directory Convention</h4>
+<pre><code class="language-bash">~/projects/
+  rotabrain-blades/         # main repo (main branch)
+  rotabrain-feat-tooltip/   # worktree: feat/health-score-tooltip
+  rotabrain-feat-sensors/   # worktree: feat/sensor-grid
+  rotabrain-hotfix-auth/    # worktree: hotfix/auth-crash</code></pre>
+
+<h4>3.1.4 Dual-Terminal Pattern</h4>
+<pre><code class="language-bash"># Terminal A — main branch, reference build on port 3000
+$ cd ~/projects/rotabrain-blades
+$ PORT=3000 npm run dev
+
+# Terminal B — feature worktree, Claude building on port 3001
+$ cd ~/projects/rotabrain-feat-tooltip
+$ PORT=3001 npm run dev
+
+# Both live simultaneously — compare side by side in the browser
+# localhost:3000  vs  localhost:3001
+
+# When done, push from Terminal B
+$ git push
+$ gh pr create --title "feat: health score tooltip"</code></pre>
+
+<p><strong>Exercise 3.1 — Git Worktrees</strong></p>
+<p>Project: rotabrain-blades</p>
+<ol>
+<li>Create a worktree for <code>feat/sensor-grid</code> at <code>../rotabrain-feat-sensors</code>.</li>
+<li>Run <code>git worktree list</code> and confirm both the main repo and new worktree appear.</li>
+<li>Start the dev server in both directories on ports 3000 and 3001. Confirm both respond.</li>
+<li>Make a commit in the worktree and push it to the remote.</li>
+<li>Open a PR from the worktree's branch using <code>gh pr create</code>.</li>
+<li>Remove the worktree after merging. Confirm with <code>git worktree list</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-git-stash-wip">Module 3.2 — Git Stash &amp; WIP Management</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 2.2 · <strong>Time:</strong> ~1h<br>
+<strong>Skip-check:</strong> Stash with a label including untracked files, switch branches, apply the specific stash by index, then drop it.<br>
+<strong>Skip if:</strong> You use worktrees instead of stash for branch-switching (the better habit), but know stash for emergencies.<br>
+<strong>Unlocks:</strong> Module 3.3</p>
+</blockquote>
+
+<h4>3.2.1 When to Stash</h4>
+<p>Stash is for short interruptions — a hotfix lands while you are mid-feature. If you find yourself stashing frequently to switch branches, switch to worktrees (Module 3.1) instead. Each branch in its own directory eliminates the need for stash entirely.</p>
+
+<h4>3.2.2 Core Stash Commands</h4>
+<pre><code class="language-bash"># Always label your stash — you will forget what stash@{0} was
+$ git stash push -m "WIP: tooltip styling half done"
+
+# Include untracked new files
+$ git stash -u
+
+# List all stashes
+$ git stash list
+# stash@{0}: On feat/tooltip: WIP: tooltip styling half done
+# stash@{1}: On feat/sensors: WIP: initial sensor layout
+
+# Apply latest stash and remove from list
+$ git stash pop
+
+# Apply a specific stash without removing
+$ git stash apply stash@{1}
+
+# Drop a stash after applying
+$ git stash drop stash@{0}
+
+# Clear all stashes (destructive)
+$ git stash clear</code></pre>
+
+<h4>3.2.3 The WIP Checkpoint Pattern (Better Than Stash)</h4>
+<p>For longer interruptions, a WIP commit is safer than stash — it is in the reflog and has a message.</p>
+<pre><code class="language-bash"># Commit everything as WIP (the git alias from Module 1.2)
+$ git save
+
+# Switch to another branch or worktree for the hotfix...
+
+# Come back and undo the WIP commit, restoring working state
+$ git undo    # alias for: git reset HEAD~1</code></pre>
+
+<p><strong>Exercise 3.2 — Git Stash</strong></p>
+<p>Project: rotabrain-blades</p>
+<ol>
+<li>Make changes to two files on <code>feat/health-score-tooltip</code>. Stash with a label using <code>git stash push -m</code>.</li>
+<li>Switch to a <code>hotfix/stash-demo</code> branch. Make a commit there, then switch back.</li>
+<li>Apply your stash with <code>git stash pop</code>. Confirm changes are restored.</li>
+<li>Create two more stashes. Use <code>git stash apply stash@{1}</code> to apply a non-latest stash.</li>
+<li>Drop all stashes and confirm <code>git stash list</code> is empty.</li>
+<li>Practice the WIP commit pattern: <code>git save</code>, switch branches, come back, <code>git undo</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-undo-reset-reflog">Module 3.3 — Undo, Reset &amp; Reflog</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.2 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check:</strong> Hard-reset a branch, realize a mistake, use reflog to recover the lost commit — in under 2 minutes.<br>
+<strong>Skip if:</strong> You know all three reset modes and have used <code>git reflog</code> to recover from a bad reset.<br>
+<strong>Unlocks:</strong> Module 4.1</p>
+</blockquote>
+
+<h4>3.3.1 The Undo Reference</h4>
+<div class="table-scroll">
+<table>
+<tr><th>Situation</th><th>Command</th><th>Safe?</th></tr>
+<tr><td>Undo last commit (keep staged)</td><td><code>git reset --soft HEAD~1</code></td><td>Yes</td></tr>
+<tr><td>Undo last commit (keep unstaged)</td><td><code>git reset HEAD~1</code></td><td>Yes</td></tr>
+<tr><td>Undo last commit (discard)</td><td><code>git reset --hard HEAD~1</code></td><td>Destructive</td></tr>
+<tr><td>Discard all unstaged changes</td><td><code>git checkout -- .</code></td><td>Destructive</td></tr>
+<tr><td>Discard one file</td><td><code>git checkout -- path/to/file</code></td><td>Destructive</td></tr>
+<tr><td>Revert a pushed commit safely</td><td><code>git revert &lt;sha&gt;</code></td><td>Yes — adds a new commit</td></tr>
+<tr><td>Recover lost commit or stash</td><td><code>git reflog</code></td><td>Yes — read-only</td></tr>
+</table>
+</div>
+
+<h4>3.3.2 The Three Reset Modes</h4>
+<pre><code class="language-bash"># --soft: undo the commit, keep changes staged.
+# Use when you want to recommit with a different message.
+$ git reset --soft HEAD~1
+
+# Default (--mixed): undo the commit, unstage changes.
+# Use when you want to re-stage selectively.
+$ git reset HEAD~1
+
+# --hard: undo the commit and discard all changes. Destructive.
+# Use when you are certain you do not want those changes.
+$ git reset --hard HEAD~1</code></pre>
+
+<h4>3.3.3 git reflog — Your Safety Net</h4>
+<p>Every HEAD movement is logged — even after a hard reset. This is your recovery tool when you think work is gone.</p>
+<pre><code class="language-bash">$ git reflog
+# abc1234 HEAD@{0}: reset: moving to HEAD~1
+# def5678 HEAD@{1}: commit: feat(dashboard): add tooltip to health score card
+# ghi9012 HEAD@{2}: commit: chore: checkpoint before refactor
+
+# Recover to the state before the hard reset
+$ git reset --hard def5678</code></pre>
+
+<h4>3.3.4 Safe Revert for Pushed Commits</h4>
+<pre><code class="language-bash"># Never hard-reset a pushed commit — use revert instead.
+# git revert creates a new commit that undoes the target, keeping history intact.
+$ git revert abc1234
+$ git push</code></pre>
+
+<p><strong>Exercise 3.3 — Undo &amp; Reflog</strong></p>
+<p>Project: rotabrain-blades</p>
+<ol>
+<li>Make 3 commits on a test branch. Use <code>git reset --soft HEAD~1</code> to undo the last one, then recommit with a better message.</li>
+<li>Make another commit. Use <code>git reset HEAD~1</code> (mixed). Stage only part of the changes and commit.</li>
+<li>Make a commit and hard-reset it. Use <code>git reflog</code> to find the lost SHA and recover it.</li>
+<li>Push a commit to a remote branch. Use <code>git revert</code> to undo it without rewriting history.</li>
+<li>Discard a single file's changes with <code>git checkout -- path/to/file</code>. Verify with <code>git status</code>.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-parallel-sprint">Phase 3 Capstone: Parallel Sprint</h3>
+<p><strong>Project: Two simultaneous features on rotabrain-blades using worktrees</strong></p>
+<p><strong>Dataset:</strong> rotabrain-blades repository</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Set up two worktrees: <code>feat/sensor-grid-v2</code> and <code>feat/export-csv</code>.</li>
+<li>Run both on different ports. Make at least 2 commits in each worktree.</li>
+<li>Simulate an interrupt: stash WIP in one worktree, apply a hotfix in the main repo, then restore the stash.</li>
+<li>Practice a hard reset in the second worktree and recover the lost commit via reflog.</li>
+<li>Merge both features via separate squash-merge PRs. Clean up all worktrees and branches.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-advanced-patterns">Phase 4: Advanced Patterns</h2>
+<h3 id="weeks-6-8">Weeks 6–8 | Goal: Clean history, surgical git operations, and effective AI-assisted development</h3>
+<hr />
+
+<h3 id="module-41-interactive-rebase">Module 4.1 — Interactive Rebase &amp; Clean History</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.1, Module 3.3 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check:</strong> Take 4 messy WIP commits and squash them into 2 clean ones with correct conventional messages — without losing any changes.<br>
+<strong>Skip if:</strong> You rebase interactively before every PR merge and understand squash/fixup/reword/drop.<br>
+<strong>Unlocks:</strong> Module 4.2, Module 4.4</p>
+</blockquote>
+
+<h4>4.1.1 Why History Matters</h4>
+<p>Clean commit history is not vanity — it is searchable blame. When a production bug surfaces months later, <code>git log --oneline</code> and <code>git bisect</code> are your first tools. WIP commits and "fix typo" noise make those tools slower.</p>
+
+<h4>4.1.2 Interactive Rebase Workflow</h4>
+<pre><code class="language-bash"># Rebase the last 4 commits interactively
+$ git rebase -i HEAD~4
+
+# Editor opens with commits listed oldest-first:
+# pick abc1234 feat: add tooltip component
+# pick def5678 WIP: tooltip almost working
+# pick ghi9012 fix typo in tooltip
+# pick jkl3456 fix tooltip z-index
+#
+# Change to:
+# pick abc1234 feat: add tooltip component
+# squash def5678 WIP: tooltip almost working
+# fixup ghi9012 fix typo in tooltip
+# reword jkl3456 fix tooltip z-index
+# Save and close</code></pre>
+<div class="table-scroll">
+<table>
+<tr><th>Command</th><th>What It Does</th></tr>
+<tr><td><code>pick</code></td><td>Keep the commit as-is</td></tr>
+<tr><td><code>squash</code></td><td>Combine into previous commit, edit the combined message</td></tr>
+<tr><td><code>fixup</code></td><td>Combine into previous commit, discard this commit's message</td></tr>
+<tr><td><code>reword</code></td><td>Keep the changes, edit the commit message</td></tr>
+<tr><td><code>drop</code></td><td>Delete the commit entirely</td></tr>
+</table>
+</div>
+<blockquote class="callout">
+<p><strong>The Golden Rule of Rebase:</strong> Never rebase commits that have been pushed and others are working on. Interactive rebase rewrites history (new SHAs). On a personal feature branch before merge: always safe. On a shared branch or after a colleague has checked it out: never.</p>
+</blockquote>
+
+<p><strong>Exercise 4.1 — Interactive Rebase</strong></p>
+<p>Project: rotabrain-blades</p>
+<ol>
+<li>Create 5 messy commits on a new branch: mix WIP commits, typo fixes, and real feature work.</li>
+<li>Use <code>git rebase -i HEAD~5</code> to squash them into exactly 2 clean commits with conventional messages.</li>
+<li>Verify with <code>git log --oneline</code> — confirm only 2 commits remain and both messages are correct.</li>
+<li>Practice <code>reword</code>: change one commit's message without touching its code.</li>
+<li>Practice <code>drop</code>: remove one commit entirely and verify the code change is gone.</li>
+<li>Rebase the cleaned branch on top of main, then force-push with <code>--force-with-lease</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-cherry-pick-bisect-tags">Module 4.2 — Cherry-Pick, Bisect &amp; Tags</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 4.1 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check:</strong> Cherry-pick a single commit from a feature branch onto main. Use bisect to identify the commit introducing a bug in 5 steps or fewer.<br>
+<strong>Skip if:</strong> You have used all three tools in production workflows.<br>
+<strong>Unlocks:</strong> Module 4.4</p>
+</blockquote>
+
+<h4>4.2.1 Cherry-Pick</h4>
+<pre><code class="language-bash"># Apply a single commit from one branch to another
+$ git cherry-pick abc1234
+
+# Cherry-pick a range (inclusive of both endpoints)
+$ git cherry-pick abc1234^..def5678
+
+# Cherry-pick without auto-committing (review the change first)
+$ git cherry-pick abc1234 --no-commit</code></pre>
+
+<h4>4.2.2 git bisect — Binary Search for Regressions</h4>
+<pre><code class="language-bash">$ git bisect start
+$ git bisect bad             # current commit is broken
+$ git bisect good abc1234    # this commit was working fine
+
+# Git checks out the midpoint commit. Test it, then tell git:
+$ git bisect good   # or:
+$ git bisect bad
+
+# Repeat until git prints: "abc1234 is the first bad commit"
+$ git bisect reset  # return to HEAD when done</code></pre>
+
+<h4>4.2.3 Tags &amp; GitHub Releases</h4>
+<pre><code class="language-bash"># Create an annotated tag
+$ git tag -a v1.2.0 -m "Release: sensor grid redesign"
+
+# Push the tag to GitHub
+$ git push origin v1.2.0
+
+# Create a GitHub Release from the tag
+$ gh release create v1.2.0 --title "v1.2.0 — Sensor Grid" --notes "Changes in this release"
+
+# List all tags
+$ git tag -l
+
+# Delete a local tag
+$ git tag -d v1.2.0-beta</code></pre>
+
+<p><strong>Exercise 4.2 — Cherry-Pick, Bisect &amp; Tags</strong></p>
+<p>Project: rotabrain-blades</p>
+<ol>
+<li>Create two commits on <code>feat/sensor-grid</code> — one real change, one typo fix. Cherry-pick only the real change onto main.</li>
+<li>Introduce a deliberate bug in one commit, then make 5 more clean commits. Use bisect to identify the bad commit.</li>
+<li>Reset from bisect and fix the bug properly with a new commit.</li>
+<li>Tag the current main as <code>v1.0.0</code> and push the tag. Create a GitHub Release from it.</li>
+<li>Verify the release with <code>gh release list</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-claude-in-terminal">Module 4.3 — Claude in Terminal (AI Pairing)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check:</strong> Give Claude a file-scoped task; review with <code>git add -p</code>; stage only the correct hunks; commit with a conventional message — zero blind-commits.<br>
+<strong>Skip if:</strong> You pair with Claude regularly and always review before committing.<br>
+<strong>Unlocks:</strong> Module 4.4</p>
+</blockquote>
+
+<h4>4.3.1 Installing Claude Code</h4>
+<pre><code class="language-bash"># Install globally
+$ npm install -g @anthropic-ai/claude-code
+
+# Start in your feature worktree
+$ cd ~/projects/rotabrain-feat-tooltip
+$ claude
+
+# Or with an immediate task
+$ claude "add a tooltip to the HealthScoreCard showing raw value"</code></pre>
+
+<h4>4.3.2 Prompting Patterns</h4>
+<pre><code class="language-bash"># BAD — vague, may touch unrelated files
+$ claude "fix the chart"
+
+# GOOD — file-specific, scoped to a concrete observable problem
+$ claude "in src/components/SensorChart.tsx the recharts ResponsiveContainer
+overflows on screens narrower than 375px — add minWidth 300 and wrap in an overflow-x-auto div"
+
+# Pipe errors directly — give Claude the error, not your description of it
+$ npm run build 2&gt;&amp;1 | claude "fix all TypeScript errors in this output"
+$ npx eslint src/ --format compact 2&gt;&amp;1 | claude "fix these lint errors"
+$ npx tsc --noEmit 2&gt;&amp;1 | claude "resolve all type errors"</code></pre>
+
+<h4>4.3.3 Worktree + Dual-Terminal Pattern</h4>
+<pre><code class="language-bash"># Terminal A — main branch running for reference
+$ cd ~/projects/rotabrain-blades
+$ PORT=3000 npm run dev
+
+# Terminal B — Claude building on the feature worktree
+$ cd ~/projects/rotabrain-feat-sensor-grid
+$ PORT=3001 npm run dev
+$ claude "redesign the sensor grid to use a 3-column layout on desktop"</code></pre>
+
+<h4>4.3.4 Review Before Committing — Non-Negotiable</h4>
+<pre><code class="language-bash"># Always review Claude's diff before staging
+$ git diff
+
+# Stage interactively — hunk by hunk
+$ git add -p
+# y = stage  n = skip  s = split into smaller hunks
+
+# Discard a specific file if Claude went wrong
+$ git checkout -- src/components/SensorChart.tsx
+
+# Discard everything if the result is wrong
+$ git reset --hard HEAD</code></pre>
+<blockquote class="callout">
+<p><strong>Never blind-commit Claude output.</strong> Always run <code>git diff</code> first. Claude writes good code, but: it may touch files you did not expect; it may make stylistically wrong choices for your codebase. <code>git add -p</code> is your surgical instrument. Checkpoint before risky operations: <code>git save</code>, then if results are wrong, <code>git reset --hard HEAD</code>.</p>
+</blockquote>
+
+<p><strong>Exercise 4.3 — Claude in Terminal</strong></p>
+<p>Project: rotabrain-blades worktree</p>
+<ol>
+<li>Create a worktree for <code>feat/claude-demo</code> and start both dev servers on ports 3000 and 3001.</li>
+<li>Give Claude a vague prompt. Note what files it touches. Discard. Rewrite with file + line specificity.</li>
+<li>Pipe a real TypeScript error: <code>npx tsc --noEmit 2&gt;&amp;1 | claude "fix these"</code>. Review the output carefully.</li>
+<li>Use <code>git add -p</code> to selectively stage Claude's changes. Skip at least one hunk deliberately.</li>
+<li>Use <code>/add</code> to add two files to Claude's context, then request a cross-file refactor.</li>
+<li>Commit only the correct changes with a conventional message. Discard the rest with <code>git checkout --</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-44-troubleshooting-shell-mastery">Module 4.4 — Troubleshooting &amp; Shell Mastery</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 4.1, Module 4.2 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check:</strong> Diagnose a rebase conflict, a worktree "already checked out" error, and a stash pop conflict — all from the lookup table — in under 10 minutes.<br>
+<strong>Skip if:</strong> You can resolve all ten scenarios from memory.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4>4.4.1 Troubleshooting Lookup Table</h4>
+<div class="table-scroll">
+<table>
+<tr><th>Problem</th><th>Fix</th></tr>
+<tr><td>Merge conflict during rebase</td><td>Edit conflict markers → <code>git add .</code> → <code>git rebase --continue</code></td></tr>
+<tr><td>Accidentally pushed to main</td><td><code>git revert &lt;sha&gt;</code> → push the revert → open a PR to explain</td></tr>
+<tr><td>Worktree: "already checked out"</td><td><code>git worktree list</code> → <code>git worktree remove</code> → retry</td></tr>
+<tr><td>PR CI failing (Vercel build)</td><td><code>gh pr checks</code> to see which step. Run <code>npm run build</code> locally first.</td></tr>
+<tr><td>Local branch out of sync</td><td><code>git fetch --prune</code> then <code>git rebase origin/main</code></td></tr>
+<tr><td>Cannot delete branch: unmerged</td><td><code>git branch -D</code> (capital D) to force delete</td></tr>
+<tr><td>Stash pop has conflicts</td><td>Resolve conflicts → <code>git stash drop stash@{0}</code> to clean up</td></tr>
+<tr><td>Claude edited wrong file</td><td><code>git checkout -- path/to/file</code> to revert that file only</td></tr>
+<tr><td>Lost commits after hard reset</td><td><code>git reflog</code> to find SHA → <code>git reset --hard &lt;sha&gt;</code></td></tr>
+<tr><td>gh CLI: auth expired</td><td><code>gh auth login</code> → follow browser OAuth flow</td></tr>
+</table>
+</div>
+
+<h4>4.4.2 Keeping the Repo Clean</h4>
+<pre><code class="language-bash"># Prune deleted remote branches from local refs
+$ git fetch --prune
+
+# Delete all merged local branches (safe)
+$ git branch --merged main | grep -v "^\*\|main" | xargs git branch -d
+
+# Remove untracked files — dry run first to see what would be deleted
+$ git clean -nfd   # dry run
+$ git clean -fd    # actually delete</code></pre>
+
+<h4>4.4.3 Advanced Shell Efficiency</h4>
+<pre><code class="language-bash"># Ctrl+R: reverse-search command history
+# Type a prefix, press Ctrl+R to find previous matching commands
+
+# Run a shell command from inside the claude REPL
+&gt; ! git diff
+
+# Worktree + release in one flow
+$ git worktree add ../rotabrain-release release/v2.0 &amp;&amp; cd ../rotabrain-release
+$ gh release create v2.0.0 --title "v2.0.0" --notes "Full sensor grid redesign"</code></pre>
+
+<p><strong>Exercise 4.4 — Troubleshooting</strong></p>
+<p>Project: rotabrain-blades</p>
+<ol>
+<li>Simulate a rebase conflict: make diverging commits on both main and a feature branch, rebase and resolve.</li>
+<li>Trigger a "worktree already checked out" error deliberately and resolve it.</li>
+<li>Create a stash, apply it to a branch where it conflicts, resolve, then drop the stash.</li>
+<li>Run <code>git branch --merged main</code> and delete all merged branches with one xargs command.</li>
+<li>Run <code>git clean -nfd</code> on the repo root. Identify which files you would actually delete and which you would skip.</li>
+</ol>
+<hr />
+
+<h3 id="module-45-github-actions">Module 4.5 — GitHub Actions &amp; CI/CD Workflows</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.5 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Write a workflow that runs <code>npm test</code> on every PR open/push and a separate workflow that deploys on merge to main — both from memory, without referencing docs.<br>
+<strong>Skip if:</strong> You have shipped working Actions workflows to a production repo and routinely debug failed runs from the terminal with <code>gh run view</code>.<br>
+<strong>Unlocks:</strong> Phase 4 Capstone</p>
+</blockquote>
+
+<h4>4.5.1 Workflow YAML Anatomy</h4>
+<p>A GitHub Actions workflow is a YAML file in <code>.github/workflows/</code>. Every workflow has the same four top-level keys:</p>
+<pre><code class="language-yaml">name: CI                          # displayed in the Actions UI
+
+on:                               # trigger(s)
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:                             # one or more parallel jobs
+  test:                           # job id (arbitrary name)
+    runs-on: ubuntu-latest        # runner image
+
+    steps:
+      - uses: actions/checkout@v4           # check out the repo
+      - uses: actions/setup-node@v4         # install Node
+        with:
+          node-version: 20
+      - run: npm ci                          # install deps
+      - run: npm test                        # run tests</code></pre>
+
+<blockquote class="callout">
+<p><strong>Always pin <code>actions/checkout</code> to a version tag (<code>@v4</code>), not <code>@main</code>.</strong> Floating refs can silently change behaviour when the upstream action updates. Same rule for any community action you add.</p>
+</blockquote>
+
+<h4>4.5.2 Pattern 1 — CI on Pull Request</h4>
+<p>The most important workflow you will ever write. Runs tests and linting on every PR push so CI status is visible before merge.</p>
+<pre><code class="language-yaml"># .github/workflows/ci.yml
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm             # cache node_modules between runs
+
+      - run: npm ci
+      - run: npm run lint        # fails fast if lint errors exist
+      - run: npm test            # unit tests
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck   # tsc --noEmit</code></pre>
+
+<p>Two jobs run in parallel — <code>test</code> and <code>typecheck</code>. Both must pass for the PR to be mergeable (once you configure branch protection in GitHub Settings → Branches).</p>
+
+<h4>4.5.3 Pattern 2 — Deploy on Merge to Main</h4>
+<p>Triggers only when a PR is squash-merged into main. For a Vercel-hosted project, Vercel's own GitHub integration already handles this automatically — but this pattern matters for any non-Vercel deployment target (custom server, Docker push, etc.).</p>
+<pre><code class="language-yaml"># .github/workflows/deploy.yml
+name: Deploy
+
+on:
+  push:
+    branches: [main]             # only fires on commits to main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production      # requires manual approval if configured
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Deploy to server
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}   # injected at runtime
+        run: |
+          echo "Deploying build to production..."
+          # your deployment command here</code></pre>
+
+<p>Secrets are never in the YAML file. They live in GitHub → repo Settings → Secrets and variables → Actions, and are injected as environment variables at runtime.</p>
+
+<h4>4.5.4 Managing Secrets &amp; Workflows from the Terminal</h4>
+<p>You don't need to leave the terminal to manage Actions.</p>
+<pre><code class="language-bash"># Add a secret (prompts for the value, never echoed)
+$ gh secret set DEPLOY_KEY
+
+# List secret names (values are never revealed)
+$ gh secret list
+
+# List workflows in the repo
+$ gh workflow list
+
+# Trigger a workflow manually (must have workflow_dispatch trigger)
+$ gh workflow run ci.yml
+
+# List recent runs
+$ gh run list
+
+# Watch a run live (streams each step in real time)
+$ gh run watch
+
+# View a specific run — shows step logs if it failed
+$ gh run view 12345678
+
+# View just the failed step log
+$ gh run view 12345678 --log-failed</code></pre>
+
+<h4>4.5.5 Debugging Failed Runs</h4>
+<p>When CI goes red, the fastest path to the root cause is:</p>
+<pre><code class="language-bash"># Step 1 — find the failed run id
+$ gh run list --limit 5
+
+# Step 2 — view only the failed steps (much less noise than full log)
+$ gh run view &lt;run-id&gt; --log-failed
+
+# Step 3 — if you need the full log locally
+$ gh run view &lt;run-id&gt; --log &gt; /tmp/run.log
+$ grep -i "error\|failed\|ENOENT" /tmp/run.log</code></pre>
+
+<p>The three most common failure causes:</p>
+<ul>
+<li><strong>Missing <code>npm ci</code> before the test step</strong> — <code>node_modules</code> is never present on a fresh runner; always install first.</li>
+<li><strong>Environment variable not set</strong> — you added a secret locally but forgot to add it in GitHub Settings → Secrets. The runner gets an empty string, not an error.</li>
+<li><strong>Node version mismatch</strong> — your local Node is 22, the runner is 18 (or vice versa). Always pin the version in <code>setup-node</code> to match <code>.nvmrc</code> or your <code>engines</code> field in <code>package.json</code>.</li>
+</ul>
+
+<p><strong>Exercise 4.5 — rotabrain-blades CI Workflow</strong></p>
+<p>Project: rotabrain-blades</p>
+<ol>
+<li>Create <code>.github/workflows/ci.yml</code> with two parallel jobs: <code>test</code> (runs <code>npm ci &amp;&amp; npm test</code>) and <code>lint</code> (runs <code>npm ci &amp;&amp; npm run lint</code>). Trigger on <code>pull_request</code> to <code>main</code>.</li>
+<li>Push the workflow file on a branch, open a PR, and watch CI run with <code>gh run watch</code>.</li>
+<li>Intentionally break the test (introduce a typo in a test file), push, and use <code>gh run view --log-failed</code> to identify the exact failing line. Fix it and re-push.</li>
+<li>Add a <code>DEPLOY_KEY</code> secret to the repo with <code>gh secret set DEPLOY_KEY</code>. Verify it appears in <code>gh secret list</code>.</li>
+<li>Create <code>.github/workflows/deploy.yml</code> that triggers on push to <code>main</code>, runs <code>npm run build</code>, and echoes the secret name (not its value) to the log. Merge the PR and confirm the deploy workflow fires.</li>
+<li>Enable branch protection on <code>main</code>: require the <code>test</code> and <code>lint</code> status checks to pass before merging. Verify you cannot merge a PR with a failing check.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-clean-pr-history">Phase 4 Capstone: Clean PR History</h3>
+<p><strong>Project: Full advanced workflow on rotabrain-blades</strong></p>
+<p><strong>Dataset:</strong> rotabrain-blades repository</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Create a feature branch with 6+ messy commits. Use interactive rebase to consolidate into 3 clean commits.</li>
+<li>Use Claude in a worktree to implement one sub-feature. Review with <code>git add -p</code> — commit only the correct hunks.</li>
+<li>Cherry-pick one commit from a sibling branch onto your feature branch.</li>
+<li>Open a PR, ensure all CI checks pass (use <code>gh pr checks</code> to confirm), squash-merge to main.</li>
+<li>Write or update <code>.github/workflows/ci.yml</code> so both <code>test</code> and <code>lint</code> jobs run on PR open. Debug any failure with <code>gh run view --log-failed</code>.</li>
+<li>Tag the release as <code>v1.1.0</code> and create a GitHub Release with release notes.</li>
+<li>Clean up: all worktrees removed, merged branches deleted, <code>git fetch --prune</code> run. Verify with <code>git worktree list</code> and <code>git branch -a</code>.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-full-stack-ship-cycle">Final Capstone: Full-Stack Ship Cycle</h2>
+<p><strong>Project: End-to-end feature ship on rotabrain-blades</strong></p>
+<p>Integrates all phases. Uses the rotabrain-blades benchmark project throughout.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Start the day: pull main, create a feature branch, set up a worktree, start both dev servers.</li>
+<li>Use Claude in the feature worktree to scaffold a new dashboard component. Review every hunk before staging.</li>
+<li>Make 5+ commits (WIP-style as you go), then clean with interactive rebase before opening the PR.</li>
+<li>Open a PR with a What/Why body, verify on the Vercel preview, and request a review.</li>
+<li>Simulate main moving: another commit lands on main. Rebase your branch on the new main with <code>--force-with-lease</code>.</li>
+<li>Handle a stash conflict that arises during the rebase. Resolve and continue.</li>
+<li>Squash-merge the PR. Tag the release. Write GitHub Release notes from the PR body.</li>
+<li>Clean up everything: worktrees, branches, pruned refs. Verify a completely clean repo state.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Terminal · Git · GitHub CLI</h2>
+<h3 id="daily-git-commands">Daily Git Commands</h3>
+<div class="table-scroll">
+<table>
+<tr><th>Command</th><th>What It Does</th></tr>
+<tr><td><code>git status</code></td><td>Show staged, unstaged, and untracked files</td></tr>
+<tr><td><code>git log --oneline --graph</code></td><td>Compact, visual commit history</td></tr>
+<tr><td><code>git diff</code></td><td>Unstaged changes</td></tr>
+<tr><td><code>git diff --staged</code></td><td>Staged changes (about to be committed)</td></tr>
+<tr><td><code>git branch -a</code></td><td>All local and remote branches</td></tr>
+<tr><td><code>git branch -d feat/old</code></td><td>Delete local branch (safe — won't delete unmerged)</td></tr>
+<tr><td><code>git push origin --delete feat/old</code></td><td>Delete remote branch</td></tr>
+<tr><td><code>git fetch --prune</code></td><td>Sync remote refs, prune deleted remote branches</td></tr>
+<tr><td><code>git clean -fd</code></td><td>Remove untracked files and directories</td></tr>
+<tr><td><code>git reflog</code></td><td>Show all recent HEAD movements — the safety net</td></tr>
+</table>
+</div>
+<h3 id="github-cli-essentials">GitHub CLI Essentials</h3>
+<div class="table-scroll">
+<table>
+<tr><th>Command</th><th>What It Does</th></tr>
+<tr><td><code>gh pr list</code></td><td>List open PRs in current repo</td></tr>
+<tr><td><code>gh pr view</code></td><td>View current branch PR</td></tr>
+<tr><td><code>gh pr status</code></td><td>PR status dashboard</td></tr>
+<tr><td><code>gh pr checks</code></td><td>CI check results for current PR</td></tr>
+<tr><td><code>gh pr merge --squash</code></td><td>Squash-merge current branch PR</td></tr>
+<tr><td><code>gh issue list</code></td><td>List open issues</td></tr>
+<tr><td><code>gh repo view --web</code></td><td>Open repo in browser</td></tr>
+<tr><td><code>gh run list</code></td><td>List recent GitHub Actions runs</td></tr>
+<tr><td><code>gh run watch</code></td><td>Stream live output of the current run</td></tr>
+<tr><td><code>gh run view &lt;id&gt; --log-failed</code></td><td>Show only failed step logs for a run</td></tr>
+<tr><td><code>gh workflow list</code></td><td>List all workflows in the repo</td></tr>
+<tr><td><code>gh workflow run &lt;file&gt;</code></td><td>Trigger a workflow manually (requires <code>workflow_dispatch</code>)</td></tr>
+<tr><td><code>gh secret set &lt;NAME&gt;</code></td><td>Add or update a repo Actions secret</td></tr>
+<tr><td><code>gh secret list</code></td><td>List secret names (values never shown)</td></tr>
+<tr><td><code>gh auth login</code></td><td>Authenticate with GitHub</td></tr>
+<tr><td><code>gh release create</code></td><td>Create a GitHub Release from a tag</td></tr>
+</table>
+</div>
+
+<h2 id="resources">Learning Resources</h2>
+<h3 id="books">Books</h3>
+<div class="table-scroll">
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>Pro Git (Scott Chacon) — free at git-scm.com</td><td>Definitive git reference — internals to advanced workflows</td></tr>
+<tr><td>The Missing Semester of Your CS Education (MIT OpenCourseWare)</td><td>Shell, editors, git — the course CS programs skip</td></tr>
+<tr><td>Learning the bash Shell (O'Reilly)</td><td>Shell scripting and environment mastery</td></tr>
+<tr><td>GitHub Actions: The Complete Guide (Packt)</td><td>CI/CD pipelines that complement the PR workflow</td></tr>
+</table>
+</div>
+<h3 id="online-resources">Online Resources</h3>
+<div class="table-scroll">
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>git-scm.com/docs</td><td>Git reference</td><td>Official docs — every flag explained</td></tr>
+<tr><td>cli.github.com/manual</td><td>GitHub CLI</td><td>Full <code>gh</code> command reference</td></tr>
+<tr><td>ohshitgit.com</td><td>Git recovery</td><td>Plain-language fixes for common disasters</td></tr>
+<tr><td>learngitbranching.js.org</td><td>Git branching</td><td>Interactive visual exercises — best for rebase and cherry-pick</td></tr>
+<tr><td>explainshell.com</td><td>Shell commands</td><td>Paste any command to see every flag explained</td></tr>
+<tr><td>docs.github.com/actions</td><td>GitHub Actions</td><td>Official reference — workflow syntax, triggers, contexts, expressions</td></tr>
+<tr><td>docs.anthropic.com/claude-code</td><td>Claude Code</td><td>Official Claude Code CLI documentation</td></tr>
+</table>
+</div>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<div class="table-scroll">
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>rotabrain-blades (private repo)</td><td>Benchmark project for all exercises and capstones</td></tr>
+<tr><td>GitHub CLI (<code>brew install gh</code>)</td><td>Terminal-first PR and release management</td></tr>
+<tr><td>Claude Code (<code>npm install -g @anthropic-ai/claude-code</code>)</td><td>AI-assisted development in the terminal</td></tr>
+<tr><td>Vercel Dashboard</td><td>Branch preview deployments and production promotions</td></tr>
+<tr><td>VS Code (<code>core.editor = code --wait</code>)</td><td>Git commit editor, rebase editor, conflict resolution</td></tr>
+</table>
+</div>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is session-only and resets on reload.</p></blockquote>
+<h4>Phase 1 — Shell Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — Terminal Orientation &amp; zsh Setup</li>
+<li>[ ] Exercise 1.1 — Terminal navigation and alias setup</li>
+<li>[ ] Module 1.2 — Git Global Config &amp; Aliases</li>
+<li>[ ] Exercise 1.2 — Git identity, config, and alias set</li>
+<li>[ ] Capstone 1 — Workspace Setup complete</li>
+</ul>
+<h4>Phase 2 — The Daily Loop</h4>
+<ul>
+<li>[ ] Module 2.1 — Branch Naming &amp; Creation</li>
+<li>[ ] Exercise 2.1 — Branch creation and oops recovery</li>
+<li>[ ] Module 2.2 — Staging &amp; Commit Messages</li>
+<li>[ ] Exercise 2.2 — Patch staging and conventional commits</li>
+<li>[ ] Module 2.3 — Push &amp; Vercel Previews</li>
+<li>[ ] Exercise 2.3 — Push, preview, and CI checks</li>
+<li>[ ] Module 2.4 — Pull Requests with GitHub CLI</li>
+<li>[ ] Exercise 2.4 — Draft PR and gh commands</li>
+<li>[ ] Module 2.5 — PR Review, CI &amp; Merge</li>
+<li>[ ] Exercise 2.5 — Review, squash-merge, and post-merge sync</li>
+<li>[ ] Capstone 2 — Ship a Feature end-to-end</li>
+</ul>
+<h4>Phase 3 — Parallel Work &amp; Recovery</h4>
+<ul>
+<li>[ ] Module 3.1 — Git Worktrees</li>
+<li>[ ] Exercise 3.1 — Dual-worktree dual-server setup</li>
+<li>[ ] Module 3.2 — Git Stash &amp; WIP Management</li>
+<li>[ ] Exercise 3.2 — Stash, apply by index, WIP commit pattern</li>
+<li>[ ] Module 3.3 — Undo, Reset &amp; Reflog</li>
+<li>[ ] Exercise 3.3 — Hard reset and reflog recovery</li>
+<li>[ ] Capstone 3 — Parallel Sprint</li>
+</ul>
+<h4>Phase 4 — Advanced Patterns</h4>
+<ul>
+<li>[ ] Module 4.1 — Interactive Rebase &amp; Clean History</li>
+<li>[ ] Exercise 4.1 — Squash 5 messy commits into 2 clean ones</li>
+<li>[ ] Module 4.2 — Cherry-Pick, Bisect &amp; Tags</li>
+<li>[ ] Exercise 4.2 — Bisect a regression, tag a release</li>
+<li>[ ] Module 4.3 — Claude in Terminal (AI Pairing)</li>
+<li>[ ] Exercise 4.3 — File-scoped prompt, selective staging</li>
+<li>[ ] Module 4.4 — Troubleshooting &amp; Shell Mastery</li>
+<li>[ ] Exercise 4.4 — Simulate and resolve 5 common problems</li>
+<li>[ ] Module 4.5 — GitHub Actions &amp; CI/CD Workflows</li>
+<li>[ ] Exercise 4.5 — CI workflow, failed run debug, branch protection</li>
+<li>[ ] Capstone 4 — Clean PR History</li>
+</ul>
+<h4>Final Capstone</h4>
+<ul>
+<li>[ ] Final Capstone — Full-Stack Ship Cycle complete</li>
+</ul>
+<h4>Mastery Outcomes</h4>
+<ul>
+<li>[ ] Can complete the 6-step loop from memory with zero lookups</li>
+<li>[ ] Can recover from any mistake using reflog or revert</li>
+<li>[ ] Use worktrees instead of stash for all branch-switching</li>
+<li>[ ] Never blind-commit Claude output — always <code>git add -p</code> first</li>
+</ul>
+
+<p><em>Guide Version 1.0 — Terminal · Git · GitHub Track: Beginner to Intermediate</em><br>
+<em>Non-linear modular design · Placement quiz · 15 modules · ~4 weeks part-time · hayah-ai</em><br>
+<em>Based on "The Terminal — Engineering Playbook" by Argeo Alecha · 2026 Edition</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

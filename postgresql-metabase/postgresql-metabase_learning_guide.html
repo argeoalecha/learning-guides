@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PostgreSQL &amp; Metabase Learning Guide — Beginner to Intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">PostgreSQL &amp; Metabase<br>Learning Guide</div>
+      <div class="brand-sub">PostgreSQL · SQL · psql · Metabase · ERD</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-intermediate-track" class="nav-top">Beginner to Intermediate Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-postgresql-foundations" class="nav-top nav-phase">Phase 1: PostgreSQL Foundations</a>
+<div class="nav-children">
+<a href="#module-11-setup-and-psql" class="nav-child">Module 1.1 — Setup &amp; psql</a>
+<a href="#module-12-data-types-and-schema-design" class="nav-child">Module 1.2 — Data Types &amp; Schema Design</a>
+<a href="#module-13-inserting-and-modifying-data" class="nav-child">Module 1.3 — Inserting &amp; Modifying Data</a>
+<a href="#phase-1-capstone-build-the-tindahub-schema" class="nav-child">Phase 1 Capstone: Build the TindaHub Schema</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-querying-and-analysis" class="nav-top nav-phase">Phase 2: Querying &amp; Analysis</a>
+<div class="nav-children">
+<a href="#module-21-select-filtering-and-sorting" class="nav-child">Module 2.1 — SELECT, Filtering &amp; Sorting</a>
+<a href="#module-22-aggregation-and-grouping" class="nav-child">Module 2.2 — Aggregation &amp; Grouping</a>
+<a href="#module-23-joins" class="nav-child">Module 2.3 — Joins</a>
+<a href="#module-24-subqueries-and-ctes" class="nav-child">Module 2.4 — Subqueries &amp; CTEs</a>
+<a href="#module-25-window-functions" class="nav-child">Module 2.5 — Window Functions</a>
+<a href="#phase-2-capstone-revenue-and-cohort-analytics" class="nav-child">Phase 2 Capstone: Revenue &amp; Cohort Analytics</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-postgresql-power-features" class="nav-top nav-phase">Phase 3: PostgreSQL Power Features</a>
+<div class="nav-children">
+<a href="#module-31-indexes-and-query-performance" class="nav-child">Module 3.1 — Indexes &amp; Query Performance</a>
+<a href="#module-32-jsonb-and-semi-structured-data" class="nav-child">Module 3.2 — JSONB &amp; Semi-structured Data</a>
+<a href="#module-33-views-functions-and-procedures" class="nav-child">Module 3.3 — Views, Functions &amp; Procedures</a>
+<a href="#module-34-transactions-constraints-and-integrity" class="nav-child">Module 3.4 — Transactions &amp; Integrity</a>
+<a href="#phase-3-capstone-the-analytics-layer" class="nav-child">Phase 3 Capstone: The Analytics Layer</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-metabase-visualization-and-bi" class="nav-top nav-phase">Phase 4: Metabase Visualization &amp; BI</a>
+<div class="nav-children">
+<a href="#module-41-connect-and-explore" class="nav-child">Module 4.1 — Connect &amp; Explore</a>
+<a href="#module-42-questions-and-native-sql" class="nav-child">Module 4.2 — Questions &amp; Native SQL</a>
+<a href="#module-43-charts-and-visualizations" class="nav-child">Module 4.3 — Charts &amp; Visualizations</a>
+<a href="#module-44-dashboards-filters-and-sharing" class="nav-child">Module 4.4 — Dashboards, Filters &amp; Sharing</a>
+<a href="#phase-4-capstone-tindahub-executive-dashboard" class="nav-child">Phase 4 Capstone: TindaHub Executive Dashboard</a>
+</div></div>
+
+<a href="#final-capstone-end-to-end-data-platform" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="postgresql-metabase-learning-guide">PostgreSQL &amp; Metabase Learning Guide</h1>
+<h2 id="beginner-to-intermediate-track">Beginner to Intermediate Track</h2>
+<h3>PostgreSQL · SQL · psql · Metabase · ERD</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="PostgreSQL and Metabase" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="128" cy="56" rx="78" ry="30" fill="none" stroke="#075249" stroke-width="14"/>
+  <path d="M50 56 V152 C50 169 85 182 128 182 C171 182 206 169 206 152 V56" fill="none" stroke="#075249" stroke-width="14"/>
+  <path d="M50 104 C50 121 85 134 128 134 C171 134 206 121 206 104" fill="none" stroke="#0d7a6e" stroke-width="12"/>
+  <rect x="150" y="150" width="22" height="56" rx="4" fill="#0d7a6e"/>
+  <rect x="182" y="126" width="22" height="80" rx="4" fill="#075249"/>
+  <rect x="118" y="170" width="22" height="36" rx="4" fill="#0d7a6e"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same realistic <strong>TindaHub</strong> marketplace dataset — a Philippine online store with COD orders priced in pesos. <code>schema.sql</code> and <code>seed.sql</code> now live in the shared <a href="../datasets/tindahub/">datasets folder</a> — Module 1.2's <code>psql</code> command below points there.</p>
+</blockquote>
+
+<blockquote class="callout">
+<p><strong>Already studied the Data Analyst guide?</strong> Its <em>Phase 4 — SQL Mastery</em> covers analyst-style querying (SELECT, joins, window functions, CTEs) against a sales table. This guide treats PostgreSQL itself as the subject — schema design, indexing, performance, JSONB, transactions — and then layers a full <strong>Metabase</strong> BI track on top. The querying modules here (Phase 2) overlap by design so this guide stands alone; if you tested out of analyst SQL, jump straight to <strong>Phase 3</strong> and <strong>Phase 4</strong>.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Some experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3 id="quiz-database-foundations">A. Database Foundations</h3>
+<ul>
+<li>[ ] I can install PostgreSQL (or run it in Docker) and connect with <code>psql</code>.</li>
+<li>[ ] I can choose the right column type (<code>text</code> vs <code>varchar</code>, <code>numeric</code> vs <code>float</code>, <code>timestamptz</code>).</li>
+<li>[ ] I can write a <code>CREATE TABLE</code> with a primary key, foreign key, and a <code>CHECK</code> constraint.</li>
+<li>[ ] I can <code>INSERT</code>, <code>UPDATE</code>, and run an <code>INSERT ... ON CONFLICT</code> upsert.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3 id="quiz-querying-and-analysis">B. Querying &amp; Analysis</h3>
+<ul>
+<li>[ ] I can join three tables and filter with <code>WHERE</code> before aggregating.</li>
+<li>[ ] I know when to use <code>HAVING</code> instead of <code>WHERE</code>.</li>
+<li>[ ] I can write a CTE and a correlated subquery.</li>
+<li>[ ] I can compute a running total and a per-group rank with window functions.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.4</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3 id="quiz-postgresql-internals">C. PostgreSQL Power Features</h3>
+<ul>
+<li>[ ] I can read an <code>EXPLAIN ANALYZE</code> plan and tell a Seq Scan from an Index Scan.</li>
+<li>[ ] I can query and index a <code>jsonb</code> column.</li>
+<li>[ ] I can write a view and a PL/pgSQL function.</li>
+<li>[ ] I can explain ACID and pick a transaction isolation level.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3 id="quiz-metabase-bi">D. Metabase &amp; BI</h3>
+<ul>
+<li>[ ] I can connect a PostgreSQL database to Metabase and browse it.</li>
+<li>[ ] I can build a question in the query builder and save it.</li>
+<li>[ ] I can write a native SQL question with a field-filter variable.</li>
+<li>[ ] I can assemble a dashboard with linked filters and share it.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.2</strong> | <strong>4 yes</strong> → Go to the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-setup-and-psql"><td>1.1</td><td>Setup &amp; psql</td><td>Beginner</td><td>None</td><td>2h</td></tr>
+<tr data-href="#module-12-data-types-and-schema-design"><td>1.2</td><td>Data Types &amp; Schema Design</td><td>Beginner</td><td>1.1</td><td>4h</td></tr>
+<tr data-href="#module-13-inserting-and-modifying-data"><td>1.3</td><td>Inserting &amp; Modifying Data</td><td>Beginner</td><td>1.2</td><td>3h</td></tr>
+<tr data-href="#module-21-select-filtering-and-sorting"><td>2.1</td><td>SELECT, Filtering &amp; Sorting</td><td>Beginner</td><td>1.3</td><td>3h</td></tr>
+<tr data-href="#module-22-aggregation-and-grouping"><td>2.2</td><td>Aggregation &amp; Grouping</td><td>Beginner–Intermediate</td><td>2.1</td><td>3h</td></tr>
+<tr data-href="#module-23-joins"><td>2.3</td><td>Joins</td><td>Beginner–Intermediate</td><td>2.1</td><td>4h</td></tr>
+<tr data-href="#module-24-subqueries-and-ctes"><td>2.4</td><td>Subqueries &amp; CTEs</td><td>Intermediate</td><td>2.2, 2.3</td><td>4h</td></tr>
+<tr data-href="#module-25-window-functions"><td>2.5</td><td>Window Functions</td><td>Intermediate</td><td>2.2</td><td>4h</td></tr>
+<tr data-href="#module-31-indexes-and-query-performance"><td>3.1</td><td>Indexes &amp; Query Performance</td><td>Intermediate</td><td>2.3</td><td>4h</td></tr>
+<tr data-href="#module-32-jsonb-and-semi-structured-data"><td>3.2</td><td>JSONB &amp; Semi-structured Data</td><td>Intermediate</td><td>2.1</td><td>3h</td></tr>
+<tr data-href="#module-33-views-functions-and-procedures"><td>3.3</td><td>Views, Functions &amp; Procedures</td><td>Intermediate</td><td>2.4</td><td>4h</td></tr>
+<tr data-href="#module-34-transactions-constraints-and-integrity"><td>3.4</td><td>Transactions &amp; Integrity</td><td>Intermediate</td><td>1.3</td><td>3h</td></tr>
+<tr data-href="#module-41-connect-and-explore"><td>4.1</td><td>Connect &amp; Explore</td><td>Beginner</td><td>2.1</td><td>2h</td></tr>
+<tr data-href="#module-42-questions-and-native-sql"><td>4.2</td><td>Questions &amp; Native SQL</td><td>Beginner–Intermediate</td><td>4.1</td><td>3h</td></tr>
+<tr data-href="#module-43-charts-and-visualizations"><td>4.3</td><td>Charts &amp; Visualizations</td><td>Beginner–Intermediate</td><td>4.2</td><td>3h</td></tr>
+<tr data-href="#module-44-dashboards-filters-and-sharing"><td>4.4</td><td>Dashboards, Filters &amp; Sharing</td><td>Intermediate</td><td>4.3</td><td>4h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1–3 build the PostgreSQL skillset and can run in parallel with the Data Analyst guide's SQL phase. Phase 4 (Metabase) depends only on being able to read a SELECT — it does not require Phase 3. A BI-focused learner can go 1.1 → 2.1 → 2.2 → 4.x.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+<h3 id="track-1-sql-analyst">Track 1 — SQL Analyst (query the data)</h3>
+<p><code>2.1 → 2.2 → 2.3 → 2.4 → 2.5 → Phase 2 Capstone</code><br>
+Target outcome: <strong>write production analytics queries against any PostgreSQL warehouse</strong></p>
+<h3 id="track-2-database-builder">Track 2 — Database Builder (design &amp; run the DB)</h3>
+<p><code>1.1 → 1.2 → 1.3 → 3.1 → 3.4 → Phase 3 Capstone</code><br>
+Target outcome: <strong>design a normalized schema, index it, and protect integrity with constraints and transactions</strong></p>
+<h3 id="track-3-bi-dashboards">Track 3 — BI &amp; Dashboards (Metabase)</h3>
+<p><code>1.1 → 2.1 → 2.2 → 4.1 → 4.2 → 4.3 → 4.4 → Phase 4 Capstone</code><br>
+Target outcome: <strong>self-serve dashboards and embedded analytics on a live PostgreSQL connection</strong></p>
+<h3 id="track-4-full-data-platform">Track 4 — Full Data Platform (everything)</h3>
+<p><code>Phase 1 → Phase 2 → Phase 3 → Phase 4 → Final Capstone</code><br>
+Target outcome: <strong>own the stack end to end — schema, queries, performance, and the BI layer</strong></p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — PostgreSQL Foundations     (Weeks 1–2)
+Phase 2 — Querying &amp; Analysis         (Weeks 3–4)
+Phase 3 — PostgreSQL Power Features   (Weeks 5–6)
+Phase 4 — Metabase Visualization &amp; BI (Weeks 7–8)
+Final Capstone                        (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ── 1.2 ── 1.3 ─┬─ 2.1 ─┬─ 2.2 ─┬─ 2.4 ──┐
+                   │       └─ 2.3 ──┤        │
+                   │               └─ 2.5 ───┤
+                   │                         ├─ 3.1 ─┐
+                   │                         ├─ 3.3 ─┤
+                   └─ 3.4                    └─ 3.2 ─┼─ Final
+                   └─ 4.1 ── 4.2 ── 4.3 ── 4.4 ─────┘ Capstone</code></pre>
+
+<h2 id="phase-1-postgresql-foundations">Phase 1: PostgreSQL Foundations</h2>
+<h3 id="weeks-1-2">Weeks 1–2 | Goal: stand up PostgreSQL, design a sound schema, and load data into it</h3>
+<hr />
+
+<h3 id="module-11-setup-and-psql">Module 1.1 — Setup &amp; psql</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> From a clean machine, start a PostgreSQL 16 server in Docker, connect with <code>psql</code>, and run <code>\dt</code> against a database you created.<br>
+<strong>Skip if:</strong> You already run PostgreSQL locally and are fluent with psql meta-commands.<br>
+<strong>Unlocks:</strong> 1.2, 4.1</p>
+</blockquote>
+
+<h4 id="111-run-postgresql">Run PostgreSQL the reproducible way</h4>
+<p>Installing a database server globally on your laptop leaves version drift and leftover data directories you forget about. Running it in Docker gives you a disposable, version-pinned server you can throw away and rebuild — which matters because every exercise here assumes a known PostgreSQL version and a clean slate you can return to.</p>
+<pre><code class="language-bash"># Start PostgreSQL 16 with a named volume so data survives container restarts
+docker run --name tindahub-pg \
+  -e POSTGRES_PASSWORD=devpass \
+  -e POSTGRES_DB=tindahub \
+  -p 5432:5432 \
+  -v tindahub_data:/var/lib/postgresql/data \
+  -d postgres:16
+
+# Connect with the psql client running inside the same container
+docker exec -it tindahub-pg psql -U postgres -d tindahub</code></pre>
+
+<blockquote class="callout"><p><strong>No Docker? Native setup on macOS (Homebrew).</strong> If you don't have a container runtime, Homebrew's PostgreSQL gives you the same server natively — only the start-up step differs; every SQL exercise is identical. The trade-off: it runs as a long-lived background service rather than a disposable container, so "throw it away and rebuild" becomes "re-run <code>schema.sql</code>" instead of <code>docker rm</code>.</p></blockquote>
+<pre><code class="language-bash"># Install and start PostgreSQL 17 as a background service (persists across reboots)
+brew install postgresql@17
+brew services start postgresql@17
+
+# Homebrew puts the binaries off-PATH; add them for this shell
+export PATH="$(brew --prefix postgresql@17)/bin:$PATH"
+
+# Your macOS username is the default superuser role (no password — local trust auth)
+createdb tindahub
+psql -d tindahub                       # connect; \q to quit
+
+# Connection URI for Metabase / other tools later:
+#   postgresql://localhost:5432/tindahub</code></pre>
+<p>Loading the schema and seed is then a one-liner you can re-run any time to reset to a clean slate — this replaces the Docker volume as your "known starting point". <code>schema.sql</code> and <code>seed.sql</code> live in the shared <a href="../datasets/tindahub/">datasets folder</a>, not alongside this guide — adjust the path to wherever you cloned/downloaded it:</p>
+<pre><code class="language-bash">psql -d tindahub -f ../datasets/tindahub/schema.sql -f ../datasets/tindahub/seed.sql</code></pre>
+
+<h4 id="112-psql-meta-commands">psql meta-commands you will use daily</h4>
+<p>psql is the official terminal client. Its backslash meta-commands are not SQL — they are client shortcuts that inspect the database far faster than writing catalog queries by hand.</p>
+<pre><code class="language-sql">\l              -- list databases
+\dt             -- list tables in the current schema
+\d customers    -- describe the customers table (columns, types, indexes)
+\dn             -- list schemas
+\di             -- list indexes
+\x              -- toggle expanded display (great for wide rows)
+\timing on      -- show how long each query takes
+\copy orders FROM 'orders.csv' WITH (FORMAT csv, HEADER)   -- bulk load a CSV
+\q              -- quit</code></pre>
+<p>The difference between <code>\copy</code> (runs client-side, reads a file on your machine) and the SQL <code>COPY</code> (runs server-side, reads a file on the server) trips up beginners constantly — inside Docker the server cannot see your laptop's filesystem, so you almost always want <code>\copy</code>.</p>
+
+<h4 id="113-connection-strings">Connection strings</h4>
+<p>Tools like Metabase, Prisma, and psql itself all accept a libpq connection URI. Knowing its anatomy means you can connect anything.</p>
+<pre><code class="language-bash">postgresql://USER:PASSWORD@HOST:PORT/DBNAME?sslmode=require
+# example for the local container:
+postgresql://postgres:devpass@localhost:5432/tindahub</code></pre>
+
+<h4 id="114-pgadmin-a-gui-alternative-to-psql">pgAdmin: a GUI alternative to psql</h4>
+<p>Everything in this guide is written against <code>psql</code> because the terminal is scriptable, reproducible, and works identically on any machine — but you are not locked into it. <strong>pgAdmin</strong> is the official PostgreSQL GUI client, and many learners find it easier to build a mental model of the database when they can see the object tree (databases → schemas → tables → columns) rather than typing <code>\d</code> repeatedly. Use whichever fits how you think — the SQL you write is identical either way.</p>
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> reach for pgAdmin when you want to <em>browse</em> (inspect an unfamiliar schema, eyeball data in a grid, click through foreign keys) and reach for <code>psql</code> when you want to <em>automate</em> (re-run a script, chain commands, work over SSH with no display). Most people end up using both — pgAdmin to explore, <code>psql</code> for the repeatable one-liners in this guide.</p></blockquote>
+
+<p><strong>Installing pgAdmin</strong></p>
+<pre><code class="language-bash"># macOS — download the .dmg from pgadmin.org, or via Homebrew Cask:
+brew install --cask pgadmin4</code></pre>
+<p>pgAdmin runs as a desktop app that opens a local browser tab (it's a web UI served on your own machine, not a hosted service — your credentials and query results never leave your laptop).</p>
+
+<p><strong>Connecting to the same server this guide uses</strong></p>
+<ol>
+<li>Open pgAdmin → right-click <strong>Servers</strong> in the left tree → <strong>Register → Server…</strong></li>
+<li><strong>General tab:</strong> Name it anything, e.g. <code>TindaHub local</code>.</li>
+<li><strong>Connection tab:</strong>
+  <ul>
+  <li>Host: <code>localhost</code> (or <code>127.0.0.1</code> if the Docker native-Homebrew setup earlier in this module used that)</li>
+  <li>Port: <code>5432</code></li>
+  <li>Maintenance database: <code>tindahub</code></li>
+  <li>Username: <code>postgres</code> (Docker path) or your macOS username (native Homebrew path, <code>trust</code> auth — leave password blank)</li>
+  </ul>
+</li>
+<li>Save. The left tree now shows <strong>Servers → TindaHub local → Databases → tindahub → Schemas → public → Tables</strong> — expand it to browse columns, indexes, and constraints without typing <code>\d</code>.</li>
+</ol>
+<blockquote class="callout"><p><strong>"Connection refused" on port 5432?</strong> pgAdmin can prompt for a password before it even reaches the server, which makes a stopped server look like a login problem. Rule it out first: on native Homebrew installs, <code>brew services list</code> shows the status of <code>postgresql@17</code> — if it says anything other than <code>started</code>, run <code>brew services start postgresql@17</code> and retry the connection. If it's already running, the error is a genuine auth/network issue instead.</p></blockquote>
+
+<p><strong>pgAdmin equivalents of the psql meta-commands from 1.1.2</strong></p>
+<table>
+<tr><th>psql</th><th>pgAdmin equivalent</th></tr>
+<tr><td><code>\l</code> (list databases)</td><td>Left tree → <strong>Databases</strong> node, expanded</td></tr>
+<tr><td><code>\dt</code> (list tables)</td><td>Left tree → <em>db</em> → Schemas → <code>public</code> → <strong>Tables</strong></td></tr>
+<tr><td><code>\d customers</code> (describe table)</td><td>Click the table → <strong>Properties</strong> tab (columns, types) and <strong>SQL</strong> tab (full <code>CREATE TABLE</code>)</td></tr>
+<tr><td>Run a query</td><td><strong>Query Tool</strong> (icon in the toolbar, or right-click a database → <strong>Query Tool</strong>) — results render in a sortable, filterable grid</td></tr>
+<tr><td><code>\timing on</code></td><td>Query Tool's <strong>Explain</strong> panel and the execution-time readout under the results grid</td></tr>
+<tr><td><code>\copy orders FROM 'orders.csv' ...</code></td><td>Right-click table → <strong>Import/Export Data…</strong></td></tr>
+<tr><td>Loading <code>schema.sql</code> / <code>seed.sql</code></td><td>Query Tool → <strong>Open File</strong> (folder icon) → select the <code>.sql</code> file → <strong>Execute</strong> (▶ or F5)</td></tr>
+</table>
+<p>The ERD you will draw for the TindaHub schema in Module 1.2 also has a built-in shortcut here: right-click the <code>tindahub</code> database → <strong>ERD For Database</strong> generates one automatically from the live schema, which is a useful way to check your hand-drawn version in Module 1.2 against the real thing.</p>
+
+<p><strong>Exercise 1.1 — Stand up the environment</strong></p>
+<p>Dataset: TindaHub (you will create the empty <code>tindahub</code> database now and fill it in 1.2–1.3).</p>
+<ol>
+<li>Start PostgreSQL 16 in Docker with a named volume, exposing port 5432.</li>
+<li>Connect with <code>psql</code> and confirm the server version with <code>SELECT version();</code>.</li>
+<li>Create a second database called <code>scratch</code>, then list all databases with <code>\l</code>.</li>
+<li>Turn on <code>\timing</code> and run <code>SELECT 1;</code> to see the round-trip time.</li>
+<li>Write the full connection URI for the <code>tindahub</code> database and save it — you will paste it into Metabase in Phase 4.</li>
+<li>Stop and remove the container, then recreate it and confirm your data volume persisted.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-data-types-and-schema-design">Module 1.2 — Data Types &amp; Schema Design</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Draw the TindaHub ERD and write the <code>CREATE TABLE</code> statements for all six tables with correct types, keys, and constraints.<br>
+<strong>Skip if:</strong> You can confidently choose between <code>numeric</code>, <code>integer</code>, <code>text</code>, and <code>timestamptz</code> and normalize a schema to 3NF.<br>
+<strong>Unlocks:</strong> 1.3, 3.4</p>
+</blockquote>
+
+<h4 id="121-choosing-types">Choosing the right type</h4>
+<p>The column type is the first and cheapest integrity control you have. A money amount stored as <code>float</code> will silently accumulate rounding errors; a date stored as <code>text</code> cannot be sorted or filtered by range. Get the type right and a whole class of bugs never happens.</p>
+<table>
+<tr><th>Use case</th><th>Type</th><th>Why</th></tr>
+<tr><td>Surrogate key</td><td><code>bigint GENERATED ALWAYS AS IDENTITY</code></td><td>Standard, gap-tolerant auto-increment; preferred over <code>serial</code></td></tr>
+<tr><td>Money (₱)</td><td><code>numeric(12,2)</code></td><td>Exact decimal — never <code>float</code> for currency</td></tr>
+<tr><td>Counts / quantities</td><td><code>integer</code></td><td>Whole numbers, 4 bytes</td></tr>
+<tr><td>Free text</td><td><code>text</code></td><td>No length penalty in PostgreSQL; <code>varchar(n)</code> only when a real limit exists</td></tr>
+<tr><td>Timestamp</td><td><code>timestamptz</code></td><td>Stores an instant in UTC; <code>timestamp</code> (no tz) drops the offset</td></tr>
+<tr><td>Yes/no flag</td><td><code>boolean</code></td><td>Clearer than <code>0/1</code> integers</td></tr>
+<tr><td>Fixed set of values</td><td><code>text</code> + <code>CHECK</code> or an <code>enum</code></td><td>Constrains to known states like order status</td></tr>
+</table>
+<blockquote class="callout"><p><strong>Common mistake:</strong> using <code>float</code>/<code>double precision</code> for prices. <code>0.1 + 0.2</code> is not <code>0.3</code> in binary floating point. Money is always <code>numeric</code>. Reserve <code>float</code> for genuinely approximate measurements like sensor readings.</p></blockquote>
+
+<h4 id="122-the-tindahub-schema">The TindaHub schema</h4>
+<p>TindaHub is a Philippine online marketplace: customers place orders that contain line items of products, and each order is paid (usually by Cash on Delivery). Six tables, normalized so each fact lives in exactly one place.</p>
+<pre><code class="language-sql">CREATE TABLE categories (
+  category_id  bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name         text NOT NULL UNIQUE
+);
+
+CREATE TABLE customers (
+  customer_id  bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  full_name    text NOT NULL,
+  email        text NOT NULL UNIQUE,
+  city         text NOT NULL,
+  province     text NOT NULL,
+  region       text NOT NULL,
+  created_at   timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE products (
+  product_id   bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  category_id  bigint NOT NULL REFERENCES categories(category_id),
+  name         text NOT NULL,
+  price        numeric(12,2) NOT NULL CHECK (price &gt;= 0),
+  is_active    boolean NOT NULL DEFAULT true,
+  attributes   jsonb NOT NULL DEFAULT '{}'::jsonb
+);
+
+CREATE TABLE orders (
+  order_id     bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  customer_id  bigint NOT NULL REFERENCES customers(customer_id),
+  status       text NOT NULL DEFAULT 'pending'
+               CHECK (status IN ('pending','shipped','delivered','cancelled')),
+  ordered_at   timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE order_items (
+  order_item_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  order_id      bigint NOT NULL REFERENCES orders(order_id) ON DELETE CASCADE,
+  product_id    bigint NOT NULL REFERENCES products(product_id),
+  quantity      integer NOT NULL CHECK (quantity &gt; 0),
+  unit_price    numeric(12,2) NOT NULL CHECK (unit_price &gt;= 0)
+);
+
+CREATE TABLE payments (
+  payment_id   bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  order_id     bigint NOT NULL UNIQUE REFERENCES orders(order_id),
+  method       text NOT NULL CHECK (method IN ('cod','gcash','card','bank')),
+  amount       numeric(12,2) NOT NULL CHECK (amount &gt;= 0),
+  paid_at      timestamptz
+);</code></pre>
+
+<h4 id="123-keys-and-normalization">Keys, foreign keys, and normalization</h4>
+<p>Notice <code>unit_price</code> is copied onto <code>order_items</code> rather than always read from <code>products.price</code>. That is deliberate: a product's price changes over time, but an order must remember what the customer actually paid. Normalization removes <em>redundant</em> data, not <em>historical</em> data — telling them apart is the core schema-design judgment call.</p>
+<p>Foreign keys (<code>REFERENCES</code>) make the database reject orphan rows — you cannot insert an order item for a product that does not exist. <code>ON DELETE CASCADE</code> on <code>order_items</code> means deleting an order automatically removes its lines, while the absence of cascade on <code>products</code> protects you from deleting a product that orders still reference.</p>
+
+<p><strong>Exercise 1.2 — Design and create the schema</strong></p>
+<p>Dataset: TindaHub</p>
+<p><em>Retrieval practice: before reading the schema block above, sketch the six tables and their relationships from the prose description in 1.2.2. Then compare — the columns you forgot are the ones to study.</em></p>
+<ol>
+<li>Draw the ERD: six tables with primary keys, foreign keys, and cardinalities (one customer → many orders, one order → many order_items).</li>
+<li>Run the six <code>CREATE TABLE</code> statements in order (parents before children).</li>
+<li>Use <code>\d orders</code> to verify the <code>CHECK</code> constraint on <code>status</code> exists.</li>
+<li>Attempt to insert an <code>order_items</code> row referencing a non-existent <code>product_id</code> and observe the foreign-key error.</li>
+<li>Add a <code>CHECK</code> that <code>payments.amount</code> cannot exceed ₱1,000,000, then test it.</li>
+<li>Explain in one sentence why <code>unit_price</code> lives on <code>order_items</code> and not only on <code>products</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-inserting-and-modifying-data">Module 1.3 — Inserting &amp; Modifying Data</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Seed all six tables with realistic data, then write an idempotent upsert that re-runs without creating duplicates.<br>
+<strong>Skip if:</strong> You are fluent with multi-row INSERT, UPDATE...FROM, DELETE, and ON CONFLICT.<br>
+<strong>Unlocks:</strong> 2.1, 3.4</p>
+</blockquote>
+
+<h4 id="131-insert">INSERT, including multi-row and RETURNING</h4>
+<p><code>RETURNING</code> is a PostgreSQL feature that hands back generated values (like the new identity key) in the same round trip, so you don't need a second query to find out what id you just created.</p>
+<pre><code class="language-sql">INSERT INTO categories (name) VALUES
+  ('Electronics'), ('Home &amp; Living'), ('Groceries'), ('Fashion');
+
+INSERT INTO customers (full_name, email, city, province, region) VALUES
+  ('Maria Santos', 'maria@example.com', 'Cebu City', 'Cebu', 'Central Visayas'),
+  ('Jose Reyes',   'jose@example.com',  'Davao City', 'Davao del Sur', 'Davao Region')
+RETURNING customer_id, full_name;</code></pre>
+
+<h4 id="132-update-delete">UPDATE and DELETE</h4>
+<p>The single most expensive mistake in SQL is an <code>UPDATE</code> or <code>DELETE</code> with no <code>WHERE</code> clause — it rewrites or removes every row in the table. Always write the <code>WHERE</code> first, and consider running the matching <code>SELECT</code> before you commit.</p>
+<pre><code class="language-sql">-- Mark an order delivered
+UPDATE orders SET status = 'delivered' WHERE order_id = 1;
+
+-- UPDATE ... FROM: deactivate products whose category was discontinued
+UPDATE products p
+SET is_active = false
+FROM categories c
+WHERE p.category_id = c.category_id AND c.name = 'Fashion';
+
+DELETE FROM orders WHERE status = 'cancelled' AND ordered_at &lt; now() - interval '1 year';</code></pre>
+
+<h4 id="133-upsert">UPSERT with ON CONFLICT</h4>
+<p>An upsert inserts a row, or updates it if a unique key already exists. This is what makes a seed or sync script <em>idempotent</em> — safe to run repeatedly without creating duplicates, which is essential for reproducible data pipelines.</p>
+<pre><code class="language-sql">INSERT INTO categories (name) VALUES ('Electronics')
+ON CONFLICT (name) DO NOTHING;
+
+-- Or update on conflict:
+INSERT INTO products (category_id, name, price)
+VALUES (1, 'USB-C Charger 30W', 499.00)
+ON CONFLICT (product_id) DO UPDATE
+  SET price = EXCLUDED.price;</code></pre>
+
+<p><strong>Exercise 1.3 — Seed TindaHub</strong></p>
+<p>Dataset: TindaHub</p>
+<ol>
+<li>Insert 4 categories, 8 customers (spread across PH regions), and 15 products with realistic peso prices.</li>
+<li>Create 20 orders across the 8 customers with a mix of statuses, then add 2–4 <code>order_items</code> per order.</li>
+<li>Insert one <code>payments</code> row per non-cancelled order, mostly <code>cod</code>.</li>
+<li>Write an <code>ON CONFLICT DO NOTHING</code> insert for categories and run it twice — confirm no duplicates appear.</li>
+<li>Use <code>UPDATE ... FROM</code> to set <code>order_items.unit_price</code> to the current <code>products.price</code> for one order.</li>
+<li>Run a <code>DELETE</code> that removes a single test order and confirm its <code>order_items</code> cascade away.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-build-the-tindahub-schema">Phase 1 Capstone: Build the TindaHub Schema</h3>
+<p><strong>Project: A seeded, constraint-protected TindaHub database</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain why money uses <code>numeric</code> not <code>float</code>, what a foreign key enforces, and what makes an upsert idempotent? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> TindaHub</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A single <code>schema.sql</code> file creating all six tables with correct types, keys, and CHECK constraints.</li>
+<li>A separate <code>seed.sql</code> that is fully idempotent (re-runnable) using <code>ON CONFLICT</code>.</li>
+<li>At least 8 customers, 15 products across 4 categories, 20 orders, 50+ order items, and matching payments.</li>
+<li>An ERD diagram (drawn by hand or with a tool) saved alongside the SQL.</li>
+<li>A short README explaining one normalization decision and one denormalization decision (the <code>unit_price</code> copy).</li>
+<li>Proof the constraints work: three failing inserts (bad status, negative price, orphan FK) with their error messages captured.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-querying-and-analysis">Phase 2: Querying &amp; Analysis</h2>
+<h3 id="weeks-3-4">Weeks 3–4 | Goal: turn the TindaHub data into answers — filter, aggregate, join, and rank</h3>
+<hr />
+
+<h3 id="module-21-select-filtering-and-sorting">Module 2.1 — SELECT, Filtering &amp; Sorting</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Write a query that returns active products under ₱500 in Electronics, sorted by price descending, showing only the first 10.<br>
+<strong>Skip if:</strong> You are fluent with WHERE, the comparison/logical operators, <code>IN</code>/<code>BETWEEN</code>/<code>LIKE</code>, <code>ORDER BY</code>, and <code>LIMIT</code>.<br>
+<strong>Unlocks:</strong> 2.2, 2.3, 3.2, 4.1</p>
+</blockquote>
+
+<h4 id="211-select-basics">SELECT, projection, and aliases</h4>
+<p>SQL is declarative: you describe the result you want, not the steps to get it. The clauses are written in a fixed order but evaluated in another — <code>FROM</code> then <code>WHERE</code> then <code>SELECT</code> then <code>ORDER BY</code> then <code>LIMIT</code> — which is why you cannot reference a <code>SELECT</code> alias inside <code>WHERE</code>.</p>
+<pre><code class="language-sql">SELECT name AS product_name,
+       price,
+       price * 1.12 AS price_with_vat   -- 12% PH VAT
+FROM products
+WHERE is_active = true;</code></pre>
+
+<h4 id="212-filtering">Filtering with WHERE</h4>
+<pre><code class="language-sql">SELECT * FROM products
+WHERE category_id = 1                 -- Electronics
+  AND price BETWEEN 100 AND 500
+  AND name ILIKE '%charger%'          -- ILIKE = case-insensitive LIKE
+  AND is_active = true;
+
+SELECT * FROM orders
+WHERE status IN ('shipped','delivered')
+  AND ordered_at &gt;= date '2026-01-01';</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> filtering for missing values with <code>= NULL</code>. <code>NULL</code> means "unknown", so <code>anything = NULL</code> is itself <code>NULL</code> (never true). Use <code>IS NULL</code> / <code>IS NOT NULL</code>. This is the single most common reason a "correct-looking" filter returns zero rows.</p></blockquote>
+
+<h4 id="213-sorting-and-limit">Sorting, DISTINCT, and LIMIT</h4>
+<pre><code class="language-sql">SELECT DISTINCT region FROM customers ORDER BY region;
+
+SELECT name, price
+FROM products
+WHERE category_id = 1 AND is_active = true
+ORDER BY price DESC
+LIMIT 10;</code></pre>
+
+<p><strong>Exercise 2.1 — Explore the catalog</strong></p>
+<p>Dataset: TindaHub</p>
+<ol>
+<li>List all active products with their price and a computed VAT-inclusive price.</li>
+<li>Find products whose name contains "cable" (case-insensitive), priced under ₱300.</li>
+<li>Return the distinct list of provinces your customers come from.</li>
+<li>Show the 5 most expensive active products, name and price only.</li>
+<li>Find all orders placed in the last 30 days that are not cancelled.</li>
+<li>Write one query that uses <code>IS NULL</code> to find payments that have not been paid yet (<code>paid_at</code> is null).</li>
+</ol>
+<hr />
+
+<h3 id="module-22-aggregation-and-grouping">Module 2.2 — Aggregation &amp; Grouping</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Compute revenue per category and return only categories with revenue above ₱10,000, sorted high to low.<br>
+<strong>Skip if:</strong> You know the difference between WHERE and HAVING and can use <code>COUNT</code>/<code>SUM</code>/<code>AVG</code> with <code>GROUP BY</code> and <code>FILTER</code>.<br>
+<strong>Unlocks:</strong> 2.4, 2.5, 4.1</p>
+</blockquote>
+
+<h4 id="221-aggregate-functions">Aggregate functions</h4>
+<p>An aggregate collapses many rows into one summary value. The mental model: <code>GROUP BY</code> sorts rows into buckets, then each aggregate runs once per bucket.</p>
+<pre><code class="language-sql">SELECT COUNT(*)            AS order_count,
+       SUM(quantity)       AS units_sold,
+       AVG(unit_price)     AS avg_line_price,
+       MAX(unit_price)     AS top_line_price
+FROM order_items;</code></pre>
+
+<h4 id="222-group-by-having">GROUP BY and HAVING</h4>
+<p><code>WHERE</code> filters rows <em>before</em> grouping; <code>HAVING</code> filters groups <em>after</em> aggregating. Using the wrong one either misses the aggregate (you can't put <code>SUM(...)</code> in <code>WHERE</code>) or scans rows you could have eliminated cheaply.</p>
+<pre><code class="language-sql">SELECT c.name AS category,
+       SUM(oi.quantity * oi.unit_price) AS revenue
+FROM order_items oi
+JOIN products p   ON p.product_id = oi.product_id
+JOIN categories c ON c.category_id = p.category_id
+GROUP BY c.name
+HAVING SUM(oi.quantity * oi.unit_price) &gt; 10000
+ORDER BY revenue DESC;</code></pre>
+
+<h4 id="223-filter-clause">The FILTER clause</h4>
+<p>PostgreSQL's <code>FILTER</code> lets one query compute several conditional aggregates in a single pass — cleaner than wrapping each in a <code>CASE</code>.</p>
+<pre><code class="language-sql">SELECT
+  COUNT(*)                                   AS total_orders,
+  COUNT(*) FILTER (WHERE status = 'delivered') AS delivered,
+  COUNT(*) FILTER (WHERE status = 'cancelled') AS cancelled
+FROM orders;</code></pre>
+
+<p><strong>Exercise 2.2 — Summarize sales</strong></p>
+<p>Dataset: TindaHub</p>
+<ol>
+<li>Count orders per status.</li>
+<li>Compute total revenue (quantity × unit_price) per category, highest first.</li>
+<li>Return only categories whose revenue exceeds ₱10,000 using <code>HAVING</code>.</li>
+<li>Find the average order value (revenue per order) across all delivered orders.</li>
+<li>Use <code>FILTER</code> to show, per region, the count of delivered vs cancelled orders in one query.</li>
+<li>Identify the top 3 customers by total spend.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-joins">Module 2.3 — Joins</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Write a query listing every customer and their order count, including customers with zero orders.<br>
+<strong>Skip if:</strong> You can explain INNER vs LEFT vs FULL joins, write a self-join, and use a LEFT JOIN + IS NULL anti-join.<br>
+<strong>Unlocks:</strong> 2.4, 3.1</p>
+</blockquote>
+
+<h4 id="231-join-types">The join types</h4>
+<p>A join matches rows across tables on a condition. The type decides what happens to rows with no match — and choosing wrong is how analysts silently drop or duplicate data.</p>
+<table>
+<tr><th>Join</th><th>Keeps</th><th>Typical use</th></tr>
+<tr><td><code>INNER JOIN</code></td><td>only matched rows</td><td>orders that have a payment</td></tr>
+<tr><td><code>LEFT JOIN</code></td><td>all left rows + matches</td><td>all customers, even with no orders</td></tr>
+<tr><td><code>FULL JOIN</code></td><td>all rows from both</td><td>reconciling two sources</td></tr>
+<tr><td><code>CROSS JOIN</code></td><td>every combination</td><td>building a date × category grid</td></tr>
+</table>
+<pre><code class="language-sql">-- All customers and how many orders each placed (zero included)
+SELECT c.full_name, COUNT(o.order_id) AS orders
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.customer_id
+GROUP BY c.full_name
+ORDER BY orders DESC;</code></pre>
+
+<h4 id="232-multi-table-joins">Multi-table joins</h4>
+<pre><code class="language-sql">SELECT o.order_id, c.full_name, p.name AS product, oi.quantity, oi.unit_price
+FROM orders o
+JOIN customers c    ON c.customer_id = o.customer_id
+JOIN order_items oi ON oi.order_id   = o.order_id
+JOIN products p     ON p.product_id  = oi.product_id
+WHERE o.status = 'delivered'
+ORDER BY o.order_id;</code></pre>
+
+<h4 id="233-anti-joins-and-self-joins">Anti-joins and self-joins</h4>
+<p>An <em>anti-join</em> finds rows with no match — the classic "customers who never ordered". A LEFT JOIN keeping only the <code>NULL</code> side is the readable way to express it.</p>
+<pre><code class="language-sql">SELECT c.full_name
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.customer_id
+WHERE o.order_id IS NULL;</code></pre>
+
+<p><strong>Exercise 2.3 — Connect the tables</strong></p>
+<p>Dataset: TindaHub</p>
+<ol>
+<li>List every customer with their total order count, including those with zero (LEFT JOIN).</li>
+<li>Produce an order line report: order id, customer name, product, quantity, line total.</li>
+<li>Find customers who have never placed an order (anti-join).</li>
+<li>Find products that have never been ordered.</li>
+<li>For each region, show total delivered revenue (join orders → order_items, filter, group).</li>
+<li>Use a <code>CROSS JOIN</code> to build a grid of every category × every order status, then LEFT JOIN actual counts onto it.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-subqueries-and-ctes">Module 2.4 — Subqueries &amp; CTEs</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2, 2.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Rewrite a nested subquery as a chained CTE, and write one recursive CTE.<br>
+<strong>Skip if:</strong> You are fluent with scalar, <code>IN</code>, correlated, and <code>EXISTS</code> subqueries plus <code>WITH</code> CTEs.<br>
+<strong>Unlocks:</strong> 3.3, Final Capstone</p>
+</blockquote>
+
+<h4 id="241-subqueries">Subqueries</h4>
+<pre><code class="language-sql">-- Scalar subquery: products priced above the catalog average
+SELECT name, price FROM products
+WHERE price &gt; (SELECT AVG(price) FROM products);
+
+-- Correlated subquery: customers whose latest order is delivered
+SELECT c.full_name
+FROM customers c
+WHERE (SELECT o.status FROM orders o
+       WHERE o.customer_id = c.customer_id
+       ORDER BY o.ordered_at DESC LIMIT 1) = 'delivered';</code></pre>
+
+<h4 id="242-ctes">Common Table Expressions (CTEs)</h4>
+<p>A CTE (<code>WITH</code>) names a query so you can build a result in readable, testable stages instead of deeply nested parentheses. Each step can be selected on its own while debugging.</p>
+<pre><code class="language-sql">WITH order_totals AS (
+  SELECT o.order_id, o.customer_id,
+         SUM(oi.quantity * oi.unit_price) AS order_value
+  FROM orders o
+  JOIN order_items oi ON oi.order_id = o.order_id
+  GROUP BY o.order_id, o.customer_id
+),
+customer_spend AS (
+  SELECT customer_id, SUM(order_value) AS lifetime_value
+  FROM order_totals
+  GROUP BY customer_id
+)
+SELECT c.full_name, cs.lifetime_value
+FROM customer_spend cs
+JOIN customers c ON c.customer_id = cs.customer_id
+ORDER BY cs.lifetime_value DESC;</code></pre>
+
+<h4 id="243-recursive-ctes">Recursive CTEs</h4>
+<p>A recursive CTE walks a hierarchy or generates a series by repeatedly feeding its own output back in. Here it produces a continuous calendar — invaluable for filling gaps in time-series charts later in Metabase.</p>
+<pre><code class="language-sql">WITH RECURSIVE calendar AS (
+  SELECT date '2026-01-01' AS day
+  UNION ALL
+  SELECT day + 1 FROM calendar WHERE day &lt; date '2026-01-31'
+)
+SELECT day FROM calendar;</code></pre>
+
+<p><strong>Exercise 2.4 — Compose with CTEs</strong></p>
+<p>Dataset: TindaHub</p>
+<ol>
+<li>Find products priced above the catalog average with a scalar subquery.</li>
+<li>Use <code>EXISTS</code> to list customers who have at least one delivered order.</li>
+<li>Build a two-step CTE that computes per-order totals, then per-customer lifetime value.</li>
+<li>Rewrite the lifetime-value query as a single nested subquery, then explain which version you'd ship and why.</li>
+<li>Write a recursive CTE generating every day of January 2026.</li>
+<li>LEFT JOIN that calendar to daily order counts so days with zero orders still appear.</li>
+</ol>
+<hr />
+
+<h3 id="module-25-window-functions">Module 2.5 — Window Functions</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Write a query giving each customer's orders a sequence number and a running total of spend, plus month-over-month revenue growth.<br>
+<strong>Skip if:</strong> You can use <code>ROW_NUMBER</code>, <code>RANK</code>, <code>LAG</code>/<code>LEAD</code>, and frame clauses confidently.<br>
+<strong>Unlocks:</strong> 3.3, Final Capstone</p>
+</blockquote>
+
+<h4 id="251-window-basics">Windows vs GROUP BY</h4>
+<p>A window function computes across a set of rows <em>without collapsing them</em> — you keep every row and add a calculated column. That is the key difference from <code>GROUP BY</code>, and it is what makes running totals, rankings, and row-to-row comparisons possible.</p>
+<pre><code class="language-sql">SELECT order_id, customer_id, ordered_at,
+       ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY ordered_at) AS order_seq,
+       RANK()       OVER (ORDER BY ordered_at)                          AS overall_rank
+FROM orders;</code></pre>
+
+<h4 id="252-running-totals">Running totals and frames</h4>
+<pre><code class="language-sql">WITH daily AS (
+  SELECT date_trunc('day', o.ordered_at)::date AS day,
+         SUM(oi.quantity * oi.unit_price)       AS revenue
+  FROM orders o JOIN order_items oi ON oi.order_id = o.order_id
+  GROUP BY 1
+)
+SELECT day, revenue,
+       SUM(revenue) OVER (ORDER BY day
+                          ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_total
+FROM daily
+ORDER BY day;</code></pre>
+
+<h4 id="253-lag-lead">LAG, LEAD, and growth</h4>
+<p><code>LAG</code> pulls a value from a previous row, letting you compute period-over-period change in pure SQL instead of exporting to a spreadsheet.</p>
+<pre><code class="language-sql">WITH monthly AS (
+  SELECT date_trunc('month', o.ordered_at)::date AS month,
+         SUM(oi.quantity * oi.unit_price)         AS revenue
+  FROM orders o JOIN order_items oi ON oi.order_id = o.order_id
+  GROUP BY 1
+)
+SELECT month, revenue,
+       LAG(revenue) OVER (ORDER BY month) AS prev_revenue,
+       ROUND(100.0 * (revenue - LAG(revenue) OVER (ORDER BY month))
+             / NULLIF(LAG(revenue) OVER (ORDER BY month), 0), 1) AS mom_growth_pct
+FROM monthly
+ORDER BY month;</code></pre>
+
+<p><strong>Exercise 2.5 — Rank and accumulate</strong></p>
+<p>Dataset: TindaHub</p>
+<ol>
+<li>Number each customer's orders chronologically with <code>ROW_NUMBER</code>.</li>
+<li>Rank products by total units sold using <code>RANK</code>; note any ties.</li>
+<li>Build a daily revenue running total with an explicit frame clause.</li>
+<li>Compute month-over-month revenue growth percentage with <code>LAG</code> (guard the divide-by-zero with <code>NULLIF</code>).</li>
+<li>For each region, find each customer's rank by spend using <code>PARTITION BY region</code>.</li>
+<li>Use <code>NTILE(4)</code> to split customers into spend quartiles.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-revenue-and-cohort-analytics">Phase 2 Capstone: Revenue &amp; Cohort Analytics</h3>
+<p><strong>Project: A query pack answering the business questions TindaHub's founder actually asks</strong></p>
+<p><strong>Dataset:</strong> TindaHub</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Monthly revenue with month-over-month growth, as a single CTE-based query.</li>
+<li>Top 10 products by revenue, with their share of total revenue.</li>
+<li>Revenue by region, with each region's percentage of the national total.</li>
+<li>A customer cohort table: group customers by signup month, show how many placed an order in each subsequent month.</li>
+<li>Customer lifetime-value ranking with spend quartiles (<code>NTILE</code>).</li>
+<li>A "never ordered" list and a "ordered once then churned" list (anti-join + window).</li>
+<li>Every query saved in one <code>analytics.sql</code> file with a one-line comment above each explaining the business question.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-postgresql-power-features">Phase 3: PostgreSQL Power Features</h2>
+<h3 id="weeks-5-6">Weeks 5–6 | Goal: make queries fast, model semi-structured data, and protect integrity</h3>
+<hr />
+
+<h3 id="module-31-indexes-and-query-performance">Module 3.1 — Indexes &amp; Query Performance</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Read an <code>EXPLAIN ANALYZE</code> plan, identify a Seq Scan that should be an Index Scan, add the right index, and prove the speedup.<br>
+<strong>Skip if:</strong> You can read query plans and choose between B-tree, partial, and composite indexes.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+
+<h4 id="311-explain-analyze">Reading EXPLAIN ANALYZE</h4>
+<p>An index is a separate data structure that lets PostgreSQL find rows without scanning the whole table. But an index you never query is pure cost — it slows every write and takes disk. <code>EXPLAIN ANALYZE</code> shows you what the planner actually does, so you index based on evidence, not guesses.</p>
+<pre><code class="language-sql">EXPLAIN ANALYZE
+SELECT * FROM orders WHERE customer_id = 42;
+-- Look for "Seq Scan on orders" (reads every row) vs
+-- "Index Scan using ..." (jumps straight to matches).
+-- Compare "actual time" before and after adding an index.</code></pre>
+
+<h4 id="312-index-types">Choosing an index</h4>
+<table>
+<tr><th>Index</th><th>Best for</th></tr>
+<tr><td>B-tree (default)</td><td>equality and range on a column: <code>customer_id = 42</code>, <code>price &lt; 500</code></td></tr>
+<tr><td>Composite</td><td>queries filtering on several columns together; column order matters</td></tr>
+<tr><td>Partial</td><td>indexing only relevant rows: active products, undelivered orders</td></tr>
+<tr><td>GIN</td><td><code>jsonb</code>, arrays, full-text search (see 3.2)</td></tr>
+</table>
+<pre><code class="language-sql">-- Foreign keys are NOT indexed automatically — this one speeds up the join in 2.3
+CREATE INDEX idx_orders_customer ON orders (customer_id);
+
+-- Composite: filter by customer then sort by date
+CREATE INDEX idx_orders_customer_date ON orders (customer_id, ordered_at DESC);
+
+-- Partial: only index the orders you actually query hot
+CREATE INDEX idx_orders_open ON orders (ordered_at)
+  WHERE status IN ('pending','shipped');</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> assuming PostgreSQL auto-indexes foreign keys. It indexes <em>primary keys</em> and <em>unique constraints</em>, but a plain foreign-key column gets no index. The join in your hottest report can quietly run a sequential scan until you add one.</p></blockquote>
+
+<h4 id="313-when-not-to-index">When an index won't help</h4>
+<p>On a tiny table a Seq Scan is faster than an index lookup, so the planner ignores your index — that is correct, not a bug. Indexes earn their keep on large tables and selective filters. Functions on a column (<code>WHERE lower(email) = ...</code>) also bypass a plain index unless you build a matching <em>expression index</em>.</p>
+
+<p><strong>Exercise 3.1 — Make it fast</strong></p>
+<p>Dataset: TindaHub (generate ~100k synthetic orders first using <code>generate_series</code>)</p>
+<ol>
+<li>Use <code>generate_series</code> to bulk-insert 100k orders and 300k order_items.</li>
+<li><code>EXPLAIN ANALYZE</code> a filter on <code>customer_id</code> and record the plan and time.</li>
+<li>Add a B-tree index on <code>orders(customer_id)</code>; re-run and compare.</li>
+<li>Create a composite index supporting "this customer's orders newest first" and confirm an Index Scan.</li>
+<li>Create a partial index for open orders; show it is smaller than a full index with <code>\di+</code>.</li>
+<li>Write an expression index on <code>lower(email)</code> and prove a case-insensitive lookup uses it.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-jsonb-and-semi-structured-data">Module 3.2 — JSONB &amp; Semi-structured Data</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Query a <code>jsonb</code> attribute, filter on a nested key, and add a GIN index that the planner uses.<br>
+<strong>Skip if:</strong> You are fluent with <code>-&gt;</code>, <code>-&gt;&gt;</code>, <code>@&gt;</code>, <code>jsonb_array_elements</code>, and GIN indexing.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4 id="321-jsonb-basics">Why jsonb, and when not to</h4>
+<p>The <code>products.attributes</code> column is <code>jsonb</code> because different categories have different specs — a charger has wattage, a shirt has size. Modeling every possible attribute as its own column would leave most of them null. But <code>jsonb</code> is for genuinely variable data only: anything you filter or join on constantly still belongs in a real typed column, because relational constraints don't reach inside JSON.</p>
+<pre><code class="language-sql">UPDATE products SET attributes = '{"watts": 30, "ports": ["usb-c","usb-a"]}'
+WHERE name = 'USB-C Charger 30W';
+
+SELECT name,
+       attributes -&gt;&gt; 'watts'           AS watts_text,   -- ->> returns text
+       attributes -&gt; 'ports'            AS ports_json    -- ->  returns jsonb
+FROM products
+WHERE attributes ? 'watts';                              -- ? = key exists</code></pre>
+
+<h4 id="322-filtering-json">Filtering and containment</h4>
+<pre><code class="language-sql">-- Containment: products that ship with a usb-c port
+SELECT name FROM products
+WHERE attributes @&gt; '{"ports": ["usb-c"]}';
+
+-- Expand a JSON array into rows
+SELECT p.name, port
+FROM products p, jsonb_array_elements_text(p.attributes -&gt; 'ports') AS port;</code></pre>
+
+<h4 id="323-gin-index">Indexing jsonb with GIN</h4>
+<p>A GIN index makes containment (<code>@&gt;</code>) and key-existence queries fast over <code>jsonb</code> — without it, every such query scans and parses every row's JSON.</p>
+<pre><code class="language-sql">CREATE INDEX idx_products_attrs ON products USING gin (attributes);
+
+EXPLAIN ANALYZE
+SELECT name FROM products WHERE attributes @&gt; '{"ports": ["usb-c"]}';</code></pre>
+
+<p><strong>Exercise 3.2 — Model the flexible specs</strong></p>
+<p>Dataset: TindaHub</p>
+<ol>
+<li>Populate <code>attributes</code> for at least 10 products with category-appropriate keys.</li>
+<li>Extract a scalar attribute as text with <code>-&gt;&gt;</code> and cast it to a number to filter (e.g. watts &gt; 20).</li>
+<li>Use <code>@&gt;</code> containment to find products with a specific feature.</li>
+<li>Expand an array attribute into one row per element with <code>jsonb_array_elements_text</code>.</li>
+<li>Add a GIN index and prove with <code>EXPLAIN ANALYZE</code> that a containment query uses it.</li>
+<li>Write one sentence on an attribute that should be promoted out of jsonb into a real column, and why.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-views-functions-and-procedures">Module 3.3 — Views, Functions &amp; Procedures</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.4 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Create a view, a materialized view with a refresh, and a PL/pgSQL function that returns a table.<br>
+<strong>Skip if:</strong> You can build views, materialized views, and write PL/pgSQL functions.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4 id="331-views">Views</h4>
+<p>A view is a saved query that behaves like a table. It gives every consumer — including Metabase — one canonical definition of "order revenue", so the logic lives in one place instead of being re-pasted into a dozen dashboards.</p>
+<pre><code class="language-sql">CREATE VIEW order_revenue AS
+SELECT o.order_id, o.customer_id, o.status, o.ordered_at,
+       SUM(oi.quantity * oi.unit_price) AS revenue
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.order_id
+GROUP BY o.order_id, o.customer_id, o.status, o.ordered_at;
+
+SELECT * FROM order_revenue WHERE status = 'delivered';</code></pre>
+
+<h4 id="332-materialized-views">Materialized views</h4>
+<p>A materialized view stores the computed result on disk, so an expensive aggregate is paid once and read instantly. The trade-off: it is a snapshot and goes stale until you <code>REFRESH</code> it — fine for a dashboard that updates hourly, wrong for live balances.</p>
+<pre><code class="language-sql">CREATE MATERIALIZED VIEW daily_revenue AS
+SELECT date_trunc('day', ordered_at)::date AS day, SUM(revenue) AS revenue
+FROM order_revenue GROUP BY 1;
+
+REFRESH MATERIALIZED VIEW daily_revenue;   -- run on a schedule</code></pre>
+
+<h4 id="333-plpgsql-functions">PL/pgSQL functions</h4>
+<pre><code class="language-sql">CREATE OR REPLACE FUNCTION revenue_between(start_d date, end_d date)
+RETURNS numeric
+LANGUAGE plpgsql AS $$
+DECLARE total numeric;
+BEGIN
+  SELECT COALESCE(SUM(revenue), 0) INTO total
+  FROM order_revenue
+  WHERE ordered_at &gt;= start_d AND ordered_at &lt; end_d;
+  RETURN total;
+END;
+$$;
+
+SELECT revenue_between(date '2026-01-01', date '2026-02-01');</code></pre>
+
+<p><strong>Exercise 3.3 — Encapsulate the logic</strong></p>
+<p>Dataset: TindaHub</p>
+<ol>
+<li>Create the <code>order_revenue</code> view and query it three different ways.</li>
+<li>Build a <code>customer_ltv</code> view on top of <code>order_revenue</code> (a view on a view).</li>
+<li>Create a <code>daily_revenue</code> materialized view and refresh it.</li>
+<li>Write a function <code>revenue_between(start, end)</code> returning a numeric total.</li>
+<li>Write a table-returning function <code>top_products(n int)</code> using <code>RETURNS TABLE</code>.</li>
+<li>Explain when you'd choose a materialized view over a plain view for a Metabase card.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-transactions-constraints-and-integrity">Module 3.4 — Transactions &amp; Integrity</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Wrap a multi-statement order placement in a transaction that rolls back cleanly on failure, and explain one isolation anomaly.<br>
+<strong>Skip if:</strong> You understand ACID, <code>BEGIN/COMMIT/ROLLBACK</code>, isolation levels, and constraint types.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4 id="341-transactions">Transactions and ACID</h4>
+<p>A transaction groups statements so they all succeed or all fail together — atomicity. Placing an order means inserting into <code>orders</code>, <code>order_items</code>, and <code>payments</code>; if the payment insert fails, you must not be left with a half-created order. Without a transaction, a crash mid-sequence leaves corrupt data that no query can trust.</p>
+<pre><code class="language-sql">BEGIN;
+  INSERT INTO orders (customer_id) VALUES (1) RETURNING order_id;  -- say it returns 101
+  INSERT INTO order_items (order_id, product_id, quantity, unit_price)
+    VALUES (101, 5, 2, 499.00);
+  INSERT INTO payments (order_id, method, amount, paid_at)
+    VALUES (101, 'cod', 998.00, NULL);
+COMMIT;   -- or ROLLBACK; to discard everything above</code></pre>
+
+<h4 id="342-isolation">Isolation levels</h4>
+<p>Concurrency creates anomalies — two transactions reading and writing the same rows can interfere. The isolation level is the dial between speed and correctness.</p>
+<table>
+<tr><th>Level</th><th>Prevents</th><th>Note</th></tr>
+<tr><td>Read Committed (default)</td><td>dirty reads</td><td>fine for most apps</td></tr>
+<tr><td>Repeatable Read</td><td>+ non-repeatable reads</td><td>snapshot for a whole transaction</td></tr>
+<tr><td>Serializable</td><td>+ phantom reads</td><td>safest; may abort with a serialization error you must retry</td></tr>
+</table>
+
+<h4 id="343-constraints">Constraints as the last line of defense</h4>
+<p>Application code has bugs; constraints do not get bypassed. <code>NOT NULL</code>, <code>UNIQUE</code>, <code>CHECK</code>, and foreign keys enforce rules at the storage layer, so even a buggy script or a direct psql session cannot write data that violates them.</p>
+<pre><code class="language-sql">ALTER TABLE order_items
+  ADD CONSTRAINT positive_line_total CHECK (quantity * unit_price &gt;= 0);
+
+-- A deferrable constraint checked only at COMMIT (useful for circular inserts)
+ALTER TABLE payments
+  ADD CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES orders(order_id)
+  DEFERRABLE INITIALLY IMMEDIATE;</code></pre>
+
+<p><strong>Exercise 3.4 — Protect the data</strong></p>
+<p>Dataset: TindaHub</p>
+<ol>
+<li>Place a complete order (orders + items + payment) inside one transaction; confirm all three rows exist.</li>
+<li>Repeat, but make the payment insert fail (violate the method CHECK); confirm the whole thing rolls back.</li>
+<li>Open two psql sessions and demonstrate a non-repeatable read under Read Committed.</li>
+<li>Re-run the same scenario under Repeatable Read and observe the difference.</li>
+<li>Add a <code>CHECK</code> constraint and prove it rejects a bad row.</li>
+<li>Write one paragraph: which isolation level would you use for TindaHub's checkout, and why?</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-the-analytics-layer">Phase 3 Capstone: The Analytics Layer</h3>
+<p><strong>Project: A fast, encapsulated, integrity-safe data layer ready for BI</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain what a Seq Scan vs Index Scan means, when a materialized view beats a plain view, and what atomicity guarantees? If any draws a blank, re-read that module first.</p></blockquote>
+<p><strong>Dataset:</strong> TindaHub (with the 100k-order synthetic data from 3.1)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>An indexing plan: for the five hottest analytics queries, the index that supports each, with before/after <code>EXPLAIN ANALYZE</code> timings.</li>
+<li>The <code>order_revenue</code> and <code>customer_ltv</code> views, plus a <code>daily_revenue</code> materialized view with a documented refresh cadence.</li>
+<li>Two reusable functions: <code>revenue_between</code> and <code>top_products</code>.</li>
+<li>A jsonb GIN index supporting at least one product-attribute filter.</li>
+<li>A transactional order-placement script that is atomic and rolls back on failure.</li>
+<li>A one-page "data layer" README documenting every view, index, and function for the Metabase team.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-metabase-visualization-and-bi">Phase 4: Metabase Visualization &amp; BI</h2>
+<h3 id="weeks-7-8">Weeks 7–8 | Goal: turn the PostgreSQL layer into self-serve dashboards anyone can read</h3>
+<hr />
+
+<h3 id="module-41-connect-and-explore">Module 4.1 — Connect &amp; Explore</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Connect TindaHub to Metabase, set a column's semantic type, and build a saved question in the query builder without writing SQL.<br>
+<strong>Skip if:</strong> You have connected a database to Metabase and built GUI questions before.<br>
+<strong>Unlocks:</strong> 4.2</p>
+</blockquote>
+
+<h4 id="411-run-metabase">Run Metabase and connect PostgreSQL</h4>
+<p>Metabase is an open-source BI tool that sits on top of your database and lets non-SQL users ask questions. Run it in Docker alongside PostgreSQL. The one connection gotcha: from inside the Metabase container, <code>localhost</code> means the Metabase container itself, not your Postgres container — use the host's address or a shared Docker network.</p>
+<pre><code class="language-bash"># Simplest: put both containers on one network so Metabase can reach Postgres by name
+docker network create tindahub-net
+docker network connect tindahub-net tindahub-pg
+
+docker run -d --name metabase --network tindahub-net \
+  -p 3000:3000 metabase/metabase
+# Open http://localhost:3000, then add a PostgreSQL database:
+#   Host: tindahub-pg   Port: 5432   DB: tindahub   User: postgres   Pass: devpass</code></pre>
+
+<h4 id="412-semantic-types">Data model: semantic types</h4>
+<p>After connecting, Metabase scans the schema. In <strong>Admin → Table Metadata</strong> you set each column's <em>semantic type</em> — telling Metabase that <code>price</code> is currency, <code>region</code> is a location, <code>ordered_at</code> is a creation timestamp. This metadata is what makes Metabase format pesos correctly, draw maps, and offer sensible date breakouts. Skipping it gives you raw numbers and no maps.</p>
+
+<h4 id="413-query-builder">The query builder</h4>
+<p>The GUI query builder ("Notebook editor") lets you pick a table, filter, summarize, and group — generating SQL underneath. It maps directly onto what you learned in Phase 2: <em>Filter</em> = WHERE, <em>Summarize</em> = aggregate + GROUP BY, <em>Join data</em> = JOIN. Build the simple things here; drop to SQL (4.2) only when the GUI runs out.</p>
+
+<p><strong>Exercise 4.1 — First questions</strong></p>
+<p>Dataset: TindaHub (live PostgreSQL connection)</p>
+<ol>
+<li>Run Metabase in Docker on a shared network and connect the <code>tindahub</code> database.</li>
+<li>Set semantic types: <code>price</code>/<code>amount</code> → Currency, <code>region</code>/<code>province</code>/<code>city</code> → location types, <code>ordered_at</code> → Creation timestamp.</li>
+<li>In the query builder, build "count of orders by status" and save it.</li>
+<li>Build "sum of revenue by category" using a join and a summarize step.</li>
+<li>Build "orders over time" grouped by month and view it as a line chart.</li>
+<li>Organize the three saved questions into a new collection called "TindaHub".</li>
+</ol>
+<hr />
+
+<h3 id="module-42-questions-and-native-sql">Module 4.2 — Questions &amp; Native SQL</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Write a native SQL question with a required field-filter variable that drives a dropdown, and save it as a reusable model.<br>
+<strong>Skip if:</strong> You have written native SQL questions with variables and field filters in Metabase.<br>
+<strong>Unlocks:</strong> 4.3</p>
+</blockquote>
+
+<h4 id="421-native-questions">Native SQL questions</h4>
+<p>When a question needs a window function, a CTE, or anything the GUI can't express, switch to a <strong>native query</strong> and write SQL directly — this is where Phase 2 and Phase 3 pay off. Point it at your <code>order_revenue</code> view so the logic stays canonical.</p>
+<pre><code class="language-sql">SELECT date_trunc('month', ordered_at)::date AS month,
+       SUM(revenue) AS revenue
+FROM order_revenue
+WHERE status = 'delivered'
+GROUP BY 1
+ORDER BY 1;</code></pre>
+
+<h4 id="422-variables-and-field-filters">Variables and field filters</h4>
+<p>Metabase variables turn a static query into an interactive one. A plain <code>{{var}}</code> is a simple input; a <strong>field filter</strong> maps the variable to a real column so Metabase renders a smart widget (a date picker, a searchable category dropdown) and handles the SQL safely. The <code>[[ ... ]]</code> wrapper makes a filter optional — the clause vanishes when the user leaves it blank.</p>
+<pre><code class="language-sql">SELECT c.name AS category,
+       SUM(oi.quantity * oi.unit_price) AS revenue
+FROM order_items oi
+JOIN products p   ON p.product_id = oi.product_id
+JOIN categories c ON c.category_id = p.category_id
+JOIN orders o     ON o.order_id = oi.order_id
+WHERE 1=1
+  [[ AND {{ ordered_at }} ]]     -- field filter mapped to orders.ordered_at (date picker)
+  [[ AND c.name = {{ category }} ]]  -- simple text variable
+GROUP BY 1
+ORDER BY revenue DESC;</code></pre>
+<p><em>Retrieval practice: before reading the next paragraph, predict what the dashboard shows if the user leaves both filters blank. Then verify by running it.</em></p>
+<p>With both filters blank, the <code>[[ ]]</code> clauses drop out and you get all-time revenue per category — optional filters degrade gracefully to "no filter".</p>
+
+<h4 id="423-models">Models — the reusable building block</h4>
+<p>A Metabase <em>model</em> is a curated, saved question other questions build on, with cleaned-up column names and types. Models are the BI-layer equivalent of a database view: define "what an order is worth" once, then let the whole team build on it without re-writing the join.</p>
+
+<p><strong>Exercise 4.2 — Interactive SQL questions</strong></p>
+<p>Dataset: TindaHub (live)</p>
+<ol>
+<li>Write a native question for monthly delivered revenue off the <code>order_revenue</code> view.</li>
+<li>Add a field filter mapped to <code>orders.ordered_at</code> so the user gets a date-range picker.</li>
+<li>Add an optional category text variable with <code>[[ ]]</code> and confirm it disappears when blank.</li>
+<li>Convert the top-products query into a Metabase model with friendly column names.</li>
+<li>Build a new question on top of that model (a question on a model).</li>
+<li>Add a "required" toggle to one variable and observe how the UI changes.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-charts-and-visualizations">Module 4.3 — Charts &amp; Visualizations</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 4.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Take three different questions and pick the correct chart type for each, justifying the choice, with proper currency and axis formatting.<br>
+<strong>Skip if:</strong> You can confidently match data shape to chart type and configure formatting in Metabase.<br>
+<strong>Unlocks:</strong> 4.4</p>
+</blockquote>
+
+<h4 id="431-chart-selection">Match the chart to the question</h4>
+<p>The chart is the message. The wrong type buries the insight — a pie chart with twelve slices communicates nothing, while the same data as a bar chart ranks instantly.</p>
+<table>
+<tr><th>Question shape</th><th>Chart</th><th>Why</th></tr>
+<tr><td>One metric over time</td><td>Line / area</td><td>shows trend and seasonality</td></tr>
+<tr><td>Ranking categories</td><td>Bar (sorted)</td><td>length is the easiest visual comparison</td></tr>
+<tr><td>Part-to-whole (2–4 parts)</td><td>Pie / donut</td><td>only when parts are few</td></tr>
+<tr><td>Two metrics correlated</td><td>Scatter</td><td>reveals relationship and outliers</td></tr>
+<tr><td>Geographic</td><td>Map (region)</td><td>revenue by PH region</td></tr>
+<tr><td>Single KPI</td><td>Number / trend</td><td>one big number with period delta</td></tr>
+<tr><td>Cross-tab</td><td>Pivot table</td><td>category × month grid</td></tr>
+</table>
+
+<h4 id="432-formatting">Formatting that earns trust</h4>
+<p>Money shown as <code>998</code> instead of <code>₱998.00</code> makes a Philippine stakeholder hesitate. In the visualization settings, set currency to PHP, control decimal places, give axes real titles, and add a goal line where a target exists. Formatting is not decoration — it is what makes a chart legible at a glance.</p>
+
+<h4 id="433-trend-and-goals">KPI trends and goals</h4>
+<p>A single-number visualization can show a comparison to the previous period (a green/red delta) and a goal line. For TindaHub's founder, "revenue this month vs last, against a ₱500,000 target" is more useful than a raw total.</p>
+
+<p><strong>Exercise 4.3 — Visualize</strong></p>
+<p>Dataset: TindaHub (live)</p>
+<ol>
+<li>Turn monthly revenue into a line chart with a PHP-formatted axis and a goal line.</li>
+<li>Turn revenue-by-category into a sorted bar chart.</li>
+<li>Build a revenue-by-region map using the location semantic types from 4.1.</li>
+<li>Create a single-number KPI for this month's revenue with a previous-period comparison.</li>
+<li>Build a pivot table of category (rows) × month (columns) showing revenue.</li>
+<li>Write one sentence per chart justifying why that type fits the question.</li>
+</ol>
+<hr />
+
+<h3 id="module-44-dashboards-filters-and-sharing">Module 4.4 — Dashboards, Filters &amp; Sharing</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Assemble a multi-card dashboard with a shared date filter wired to every card, plus a category filter, and share it via a public link or subscription.<br>
+<strong>Skip if:</strong> You can build dashboards with linked filters, parameters, and subscriptions.<br>
+<strong>Unlocks:</strong> Phase 4 Capstone, Final Capstone</p>
+</blockquote>
+
+<h4 id="441-dashboards">Assembling a dashboard</h4>
+<p>A dashboard arranges saved questions into one screen that tells a coherent story. Order matters: put the headline KPIs at the top-left (where eyes land first), supporting detail below. A dashboard that makes the reader hunt for the number defeats its purpose.</p>
+
+<h4 id="442-dashboard-filters">Dashboard filters wired to many cards</h4>
+<p>A single dashboard filter (e.g. a date range or region) can drive every card at once — you connect the filter to each card's field or variable. This is the payoff of the field filters from 4.2: one control updates the whole board, so a regional manager filters to their region and every chart re-scopes together.</p>
+<pre><code class="language-sql">-- A card built to accept a dashboard date filter via a field filter on ordered_at
+SELECT date_trunc('week', ordered_at)::date AS week,
+       SUM(revenue) AS revenue
+FROM order_revenue
+WHERE status = 'delivered'
+  [[ AND {{ ordered_at }} ]]
+GROUP BY 1
+ORDER BY 1;</code></pre>
+
+<h4 id="443-sharing">Sharing, subscriptions, and embedding</h4>
+<p>Metabase can share a dashboard three ways: an internal link for logged-in teammates, a <em>public link</em> for anyone (no login — use only for non-sensitive data), and <em>embedding</em> inside another app. <strong>Subscriptions</strong> email a dashboard snapshot on a schedule — TindaHub's founder can get the weekly numbers in their inbox every Monday without opening Metabase. Alerts do the same when a single result crosses a threshold.</p>
+
+<p><strong>Exercise 4.4 — Ship the dashboard</strong></p>
+<p>Dataset: TindaHub (live)</p>
+<ol>
+<li>Create a "TindaHub Overview" dashboard and add the five cards from 4.3.</li>
+<li>Add a dashboard date-range filter and wire it to every time-based card.</li>
+<li>Add a region filter and wire it to the map and revenue cards.</li>
+<li>Arrange KPIs top-left, trends middle, detail tables bottom.</li>
+<li>Set up a weekly email subscription of the dashboard.</li>
+<li>Create a public link (or signed embed) and confirm the filters work for an anonymous viewer.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-tindahub-executive-dashboard">Phase 4 Capstone: TindaHub Executive Dashboard</h3>
+<p><strong>Project: A dashboard the founder checks every morning</strong></p>
+<p><strong>Dataset:</strong> TindaHub (live PostgreSQL connection)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A connected Metabase instance with semantic types set on every relevant column.</li>
+<li>At least two native SQL questions built on the Phase 3 views, with field-filter variables.</li>
+<li>One Metabase model that other cards reuse.</li>
+<li>A 6–8 card "Executive Overview" dashboard: revenue KPI with goal, monthly trend, category bar, regional map, top-products table, and order-status breakdown.</li>
+<li>A global date filter and a region filter wired across all relevant cards.</li>
+<li>A scheduled weekly email subscription and a documented public/embed share link.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-end-to-end-data-platform">Final Capstone: End-to-End Data Platform</h2>
+<p><strong>Project: TindaHub, from empty database to live executive BI</strong></p>
+<p>Integrates all four phases. Uses the TindaHub benchmark dataset throughout.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li><strong>Schema</strong> — the six-table TindaHub database with full constraints, plus an ERD (Phase 1).</li>
+<li><strong>Seed</strong> — an idempotent seed script and a <code>generate_series</code> bulk-load reaching 100k+ orders (Phases 1, 3).</li>
+<li><strong>Analytics</strong> — an <code>analytics.sql</code> query pack: monthly growth, cohorts, LTV quartiles, regional share (Phase 2).</li>
+<li><strong>Performance</strong> — an indexing plan with before/after <code>EXPLAIN ANALYZE</code> evidence for the five hottest queries (Phase 3).</li>
+<li><strong>Data layer</strong> — <code>order_revenue</code> / <code>customer_ltv</code> views, a <code>daily_revenue</code> materialized view, and two functions (Phase 3).</li>
+<li><strong>Integrity</strong> — a transactional, atomic order-placement script with documented isolation choice (Phase 3).</li>
+<li><strong>BI</strong> — a connected Metabase with a multi-card executive dashboard, linked filters, and a weekly subscription (Phase 4).</li>
+<li><strong>Write-up</strong> — a README walking a new hire from <code>docker run</code> to the live dashboard, citing one decision from each phase.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: PostgreSQL &amp; Metabase Task-Tool Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Connect from terminal</td><td><code>psql "postgresql://user:pass@host:5432/db"</code></td><td>libpq URI works everywhere</td></tr>
+<tr><td>Describe a table</td><td><code>\d tablename</code></td><td>psql meta-command</td></tr>
+<tr><td>Browse schema visually</td><td>pgAdmin → Query Tool</td><td>GUI alternative to psql, see 1.1.4</td></tr>
+<tr><td>Bulk load a CSV</td><td><code>\copy t FROM 'f.csv' (FORMAT csv, HEADER)</code></td><td>client-side; use inside Docker</td></tr>
+<tr><td>Auto-increment key</td><td><code>bigint GENERATED ALWAYS AS IDENTITY</code></td><td>preferred over <code>serial</code></td></tr>
+<tr><td>Money column</td><td><code>numeric(12,2)</code></td><td>never <code>float</code></td></tr>
+<tr><td>Upsert</td><td><code>INSERT ... ON CONFLICT (key) DO UPDATE</code></td><td>idempotent loads</td></tr>
+<tr><td>Filter for missing</td><td><code>WHERE col IS NULL</code></td><td>never <code>= NULL</code></td></tr>
+<tr><td>Keep unmatched rows</td><td><code>LEFT JOIN</code></td><td><code>+ IS NULL</code> for anti-join</td></tr>
+<tr><td>Filter groups</td><td><code>HAVING</code></td><td><code>WHERE</code> filters rows first</td></tr>
+<tr><td>Conditional aggregate</td><td><code>COUNT(*) FILTER (WHERE ...)</code></td><td>cleaner than CASE</td></tr>
+<tr><td>Multi-stage query</td><td><code>WITH cte AS (...)</code></td><td>readable, testable steps</td></tr>
+<tr><td>Running total / rank</td><td><code>SUM(...) OVER (...)</code>, <code>ROW_NUMBER()</code></td><td>keeps every row</td></tr>
+<tr><td>Period-over-period</td><td><code>LAG() OVER (ORDER BY ...)</code></td><td>guard with <code>NULLIF</code></td></tr>
+<tr><td>Inspect a plan</td><td><code>EXPLAIN ANALYZE &lt;query&gt;</code></td><td>Seq Scan vs Index Scan</td></tr>
+<tr><td>Index a foreign key</td><td><code>CREATE INDEX ... ON t (fk_col)</code></td><td>not automatic</td></tr>
+<tr><td>Query JSON</td><td><code>col -&gt;&gt; 'key'</code>, <code>col @&gt; '{...}'</code></td><td>GIN index for <code>@&gt;</code></td></tr>
+<tr><td>Cache an aggregate</td><td><code>CREATE MATERIALIZED VIEW</code> + <code>REFRESH</code></td><td>snapshot, can go stale</td></tr>
+<tr><td>Atomic multi-write</td><td><code>BEGIN; ... COMMIT;</code></td><td><code>ROLLBACK</code> on failure</td></tr>
+<tr><td>Metabase optional filter</td><td><code>[[ AND {{ var }} ]]</code></td><td>clause drops when blank</td></tr>
+<tr><td>Metabase smart widget</td><td>Field filter mapped to a column</td><td>date pickers, dropdowns</td></tr>
+<tr><td>Reusable BI building block</td><td>Metabase Model</td><td>view-equivalent for the BI layer</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-relational-core">Relational Core</h3>
+<dl class="glossary">
+<dt>Relation</dt>
+<dd>A table: a set of rows (tuples) sharing the same typed columns.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "spreadsheet", "sheet" — a relation has a fixed typed schema and no inherent row order.</dd>
+<dt>Primary key</dt>
+<dd>The column(s) that uniquely identify each row; implies <code>NOT NULL</code> and <code>UNIQUE</code> and is auto-indexed.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "ID column" loosely — not every id is a primary key, and a key can be composite.</dd>
+<dt>Foreign key</dt>
+<dd>A column whose values must match a primary key in another table, enforcing referential integrity.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "reference column", "link" — those don't imply the database <em>enforces</em> the match.</dd>
+<dt>Normalization</dt>
+<dd>Organizing tables so each fact is stored once, removing redundancy that could go inconsistent.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing with statistical "normalization" (scaling numbers) — unrelated meaning.</dd>
+<dt>Surrogate key</dt>
+<dd>A system-generated identifier (an identity/sequence value) with no business meaning.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "natural key" — that is a key made of real-world data like an email; the opposite choice.</dd>
+</dl>
+
+<h3 id="glossary-querying">Querying</h3>
+<dl class="glossary">
+<dt>Predicate</dt>
+<dd>A boolean condition in a <code>WHERE</code>/<code>HAVING</code>/<code>ON</code> clause that a row must satisfy.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "filter" used vaguely — a predicate is the specific boolean expression, not the whole step.</dd>
+<dt>Aggregate</dt>
+<dd>A function (<code>SUM</code>, <code>COUNT</code>, <code>AVG</code>) that collapses many rows into one summary value per group.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "window function" — a window keeps every row; an aggregate collapses them.</dd>
+<dt>Join</dt>
+<dd>An operation that combines rows from two relations based on a matching condition.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "merge", "lookup" — those are spreadsheet/code framings, not the relational operation.</dd>
+<dt>CTE (Common Table Expression)</dt>
+<dd>A named, temporary result defined with <code>WITH</code> that exists only for the duration of one query.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "temp table", "subquery" — a CTE is neither persisted nor (usually) nested in parentheses.</dd>
+<dt>Window function</dt>
+<dd>A calculation across a set of related rows (a "window") that returns one value per row without collapsing the result.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "analytic function" loosely, and never "aggregate" — the no-collapse behavior is the distinction.</dd>
+</dl>
+
+<h3 id="glossary-postgres-internals">PostgreSQL Internals</h3>
+<dl class="glossary">
+<dt>Index</dt>
+<dd>An auxiliary data structure that lets the engine locate rows without scanning the whole table.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "key" — a key is a constraint; an index is the physical lookup structure (though keys create one).</dd>
+<dt>Sequential scan (Seq Scan)</dt>
+<dd>A query plan step that reads every row of a table; correct and fast on small tables, costly on large ones.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "full scan" loosely — in Postgres plans the exact term is "Seq Scan".</dd>
+<dt>Transaction</dt>
+<dd>A unit of work that is atomic: all its statements commit together or none do.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "batch", "session" — a session can contain many transactions; a batch implies no atomicity.</dd>
+<dt>Materialized view</dt>
+<dd>A view whose result is physically stored and must be explicitly refreshed; trades freshness for speed.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "view" unqualified — a plain view stores no data and is always current.</dd>
+<dt>jsonb</dt>
+<dd>PostgreSQL's binary JSON type, storing decomposed JSON that supports indexing and containment operators.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "json" type — the plain <code>json</code> type stores raw text and can't be GIN-indexed the same way.</dd>
+</dl>
+
+<h3 id="glossary-metabase-bi">Metabase &amp; BI</h3>
+<dl class="glossary">
+<dt>Question</dt>
+<dd>A single saved query in Metabase plus its chosen visualization.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "report", "chart" alone — a question bundles the query <em>and</em> the chart.</dd>
+<dt>Model</dt>
+<dd>A curated, reusable saved question (clean columns and types) that other questions build on — the BI analogue of a view.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "dataset" (old Metabase term) and "table" — a model is derived and curated, not raw.</dd>
+<dt>Field filter</dt>
+<dd>A Metabase variable mapped to a real database column, which renders a smart widget (date picker, dropdown) and injects SQL safely.</dd>
+<dd class="avoid"><strong>Avoid:</strong> plain "variable" — a basic <code>{{var}}</code> has no column mapping and no smart widget.</dd>
+<dt>Dashboard</dt>
+<dd>A single screen arranging multiple questions, optionally driven by shared filters.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "report" — a dashboard is interactive and multi-card, not a static document.</dd>
+<dt>Subscription</dt>
+<dd>A scheduled delivery of a dashboard snapshot by email or Slack on a recurring cadence.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "alert" — an alert fires on a threshold/condition; a subscription fires on a schedule.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td><em>The Art of PostgreSQL</em> — Dimitri Fontaine</td><td>SQL-first thinking and PostgreSQL-specific power features</td></tr>
+<tr><td><em>PostgreSQL: Up and Running</em> — Obe &amp; Hsu</td><td>Practical admin and feature tour</td></tr>
+<tr><td><em>SQL Performance Explained</em> — Markus Winand</td><td>Indexing and query plans (database-agnostic, applies to PG)</td></tr>
+<tr><td><em>Designing Data-Intensive Applications</em> — Martin Kleppmann</td><td>Transactions, isolation, storage internals (deep background)</td></tr>
+<tr><td><em>Learning SQL</em> — Alan Beaulieu</td><td>Gentle from-zero SQL foundations</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>PostgreSQL Official Docs</td><td>Everything</td><td>The canonical reference; the "Functions and Operators" chapter is gold</td></tr>
+<tr><td>use-the-index-luke.com</td><td>Indexing &amp; performance</td><td>Free companion to <em>SQL Performance Explained</em></td></tr>
+<tr><td>pgexercises.com</td><td>Query practice</td><td>Interactive exercises with solutions</td></tr>
+<tr><td>Metabase Learn</td><td>BI &amp; dashboards</td><td>Official tutorials, SQL-in-Metabase, data modeling</td></tr>
+<tr><td>Metabase Docs</td><td>Field filters, models, embedding</td><td>Authoritative for variables and sharing</td></tr>
+<tr><td>Postgres Weekly (newsletter)</td><td>Ecosystem news</td><td>Stay current on features and patterns</td></tr>
+<tr><td>explain.dalibo.com</td><td>Plan visualization</td><td>Paste an EXPLAIN plan to see it graphically</td></tr>
+</table>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>TindaHub <code>schema.sql</code> / <code>seed.sql</code> (shared <a href="../datasets/tindahub/">datasets folder</a>)</td><td>This guide's own benchmark schema — load with the <code>psql</code> command in Module 1.2</td></tr>
+<tr><td>Docker + <code>postgres:16</code> image</td><td>Disposable, version-pinned local server</td></tr>
+<tr><td>Docker + <code>metabase/metabase</code> image</td><td>Local BI instance</td></tr>
+<tr><td>DBeaver / pgAdmin</td><td>GUI client for browsing and writing SQL</td></tr>
+<tr><td><code>generate_series()</code></td><td>Synthesize large datasets for performance testing</td></tr>
+<tr><td>Pagila / dvdrental sample DB</td><td>A richer practice schema beyond TindaHub</td></tr>
+</table>
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>r/PostgreSQL</td><td>Reddit</td><td>Practical Q&amp;A and version-feature discussion</td></tr>
+<tr><td>PostgreSQL mailing lists (pgsql-general)</td><td>Email/web</td><td>Authoritative answers from core contributors</td></tr>
+<tr><td>Metabase Discourse</td><td>Forum</td><td>Field-filter, model, and embedding troubleshooting</td></tr>
+<tr><td>Database Administrators</td><td>Stack Exchange</td><td>High-quality answered questions on schema and performance</td></tr>
+<tr><td>Postgres Slack / Discord</td><td>Chat</td><td>Real-time help from practitioners</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is session-only and resets on reload.</p></blockquote>
+<h4>Phase 1 — PostgreSQL Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — Setup &amp; psql</li>
+<li>[ ] Exercise 1.1 — Stand up the environment</li>
+<li>[ ] Module 1.2 — Data Types &amp; Schema Design</li>
+<li>[ ] Exercise 1.2 — Design and create the schema</li>
+<li>[ ] Module 1.3 — Inserting &amp; Modifying Data</li>
+<li>[ ] Exercise 1.3 — Seed TindaHub</li>
+<li>[ ] Capstone 1 — Build the TindaHub Schema</li>
+</ul>
+<h4>Phase 2 — Querying &amp; Analysis</h4>
+<ul>
+<li>[ ] Module 2.1 — SELECT, Filtering &amp; Sorting</li>
+<li>[ ] Exercise 2.1 — Explore the catalog</li>
+<li>[ ] Module 2.2 — Aggregation &amp; Grouping</li>
+<li>[ ] Exercise 2.2 — Summarize sales</li>
+<li>[ ] Module 2.3 — Joins</li>
+<li>[ ] Exercise 2.3 — Connect the tables</li>
+<li>[ ] Module 2.4 — Subqueries &amp; CTEs</li>
+<li>[ ] Exercise 2.4 — Compose with CTEs</li>
+<li>[ ] Module 2.5 — Window Functions</li>
+<li>[ ] Exercise 2.5 — Rank and accumulate</li>
+<li>[ ] Capstone 2 — Revenue &amp; Cohort Analytics</li>
+</ul>
+<h4>Phase 3 — PostgreSQL Power Features</h4>
+<ul>
+<li>[ ] Module 3.1 — Indexes &amp; Query Performance</li>
+<li>[ ] Exercise 3.1 — Make it fast</li>
+<li>[ ] Module 3.2 — JSONB &amp; Semi-structured Data</li>
+<li>[ ] Exercise 3.2 — Model the flexible specs</li>
+<li>[ ] Module 3.3 — Views, Functions &amp; Procedures</li>
+<li>[ ] Exercise 3.3 — Encapsulate the logic</li>
+<li>[ ] Module 3.4 — Transactions &amp; Integrity</li>
+<li>[ ] Exercise 3.4 — Protect the data</li>
+<li>[ ] Capstone 3 — The Analytics Layer</li>
+</ul>
+<h4>Phase 4 — Metabase Visualization &amp; BI</h4>
+<ul>
+<li>[ ] Module 4.1 — Connect &amp; Explore</li>
+<li>[ ] Exercise 4.1 — First questions</li>
+<li>[ ] Module 4.2 — Questions &amp; Native SQL</li>
+<li>[ ] Exercise 4.2 — Interactive SQL questions</li>
+<li>[ ] Module 4.3 — Charts &amp; Visualizations</li>
+<li>[ ] Exercise 4.3 — Visualize</li>
+<li>[ ] Module 4.4 — Dashboards, Filters &amp; Sharing</li>
+<li>[ ] Exercise 4.4 — Ship the dashboard</li>
+<li>[ ] Capstone 4 — TindaHub Executive Dashboard</li>
+</ul>
+<h4>Certifications / Outcomes</h4>
+<ul>
+<li>[ ] Comfortable reading and writing any analytics query against PostgreSQL</li>
+<li>[ ] Can design, index, and protect a production schema</li>
+<li>[ ] Can build and share a Metabase executive dashboard on a live connection</li>
+<li>[ ] Final Capstone project complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 — PostgreSQL &amp; Metabase Track: Beginner to Intermediate</em><br>
+<em>Non-linear modular design · Placement quiz · 16 modules · ~8 weeks part-time · hayah-ai</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

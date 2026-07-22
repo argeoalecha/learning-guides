@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Science &amp; Machine Learning Learning Guide — Beginner to Intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Data Science &amp;<br>Machine Learning</div>
+      <div class="brand-sub">Python · scikit-learn · XGBoost · PyTorch</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-intermediate-track" class="nav-top">Beginner → Intermediate Track</a>
+<a href="#how-this-fits" class="nav-top">How This Fits the Other Guides</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-the-ml-workflow" class="nav-top nav-phase">Phase 1: The ML Workflow</a>
+<div class="nav-children">
+<a href="#module-11-from-question-to-ml-problem" class="nav-child">Module 1.1 — Question to ML Problem</a>
+<a href="#module-12-the-scikit-learn-workflow" class="nav-child">Module 1.2 — scikit-learn &amp; Baselines</a>
+<a href="#module-13-feature-engineering" class="nav-child">Module 1.3 — Feature Engineering</a>
+<a href="#phase-1-capstone-baseline-model" class="nav-child">Phase 1 Capstone: Baseline Model</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-supervised-learning" class="nav-top nav-phase">Phase 2: Supervised Learning</a>
+<div class="nav-children">
+<a href="#module-21-regression-models" class="nav-child">Module 2.1 — Regression Models</a>
+<a href="#module-22-classification-models" class="nav-child">Module 2.2 — Classification Models</a>
+<a href="#module-23-ensembles-boosting" class="nav-child">Module 2.3 — Ensembles &amp; Boosting</a>
+<a href="#phase-2-capstone-churn-classifier" class="nav-child">Phase 2 Capstone: Churn Classifier</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-evaluation-tuning" class="nav-top nav-phase">Phase 3: Evaluation &amp; Tuning</a>
+<div class="nav-children">
+<a href="#module-31-validation-metrics" class="nav-child">Module 3.1 — Validation &amp; Metrics</a>
+<a href="#module-32-bias-variance" class="nav-child">Module 3.2 — Bias–Variance &amp; Overfitting</a>
+<a href="#module-33-hyperparameter-tuning" class="nav-child">Module 3.3 — Tuning &amp; Pipelines</a>
+<a href="#phase-3-capstone-tuned-pipeline" class="nav-child">Phase 3 Capstone: Tuned Pipeline</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-unsupervised-learning" class="nav-top nav-phase">Phase 4: Unsupervised Learning</a>
+<div class="nav-children">
+<a href="#module-41-clustering" class="nav-child">Module 4.1 — Clustering</a>
+<a href="#module-42-dimensionality-reduction" class="nav-child">Module 4.2 — Dimensionality Reduction</a>
+<a href="#phase-4-capstone-customer-segments" class="nav-child">Phase 4 Capstone: Customer Segments</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-5-deep-learning-production" class="nav-top nav-phase">Phase 5: Deep Learning &amp; Production</a>
+<div class="nav-children">
+<a href="#module-51-neural-network-fundamentals" class="nav-child">Module 5.1 — Neural Networks</a>
+<a href="#module-52-practical-nlp" class="nav-child">Module 5.2 — Practical NLP</a>
+<a href="#module-53-notebook-to-production" class="nav-child">Module 5.3 — Notebook to Production</a>
+<a href="#phase-5-capstone-deploy-model" class="nav-child">Phase 5 Capstone: Deploy a Model</a>
+</div></div>
+
+<a href="#final-capstone-end-to-end-ml" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="data-science-ml-learning-guide">Data Science &amp; Machine Learning Learning Guide</h1>
+<h2 id="beginner-to-intermediate-track">Beginner → Intermediate Track</h2>
+<h3>Python · scikit-learn · XGBoost · PyTorch · pandas · matplotlib</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Neural network graph" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#0d7a6e" stroke-width="4" opacity="0.55">
+    <line x1="56" y1="64" x2="128" y2="48"/><line x1="56" y1="64" x2="128" y2="128"/><line x1="56" y1="64" x2="128" y2="208"/>
+    <line x1="56" y1="192" x2="128" y2="48"/><line x1="56" y1="192" x2="128" y2="128"/><line x1="56" y1="192" x2="128" y2="208"/>
+    <line x1="128" y1="48" x2="200" y2="128"/><line x1="128" y1="128" x2="200" y2="128"/><line x1="128" y1="208" x2="200" y2="128"/>
+  </g>
+  <g fill="#075249">
+    <circle cx="56" cy="64" r="16"/><circle cx="56" cy="192" r="16"/>
+    <circle cx="200" cy="128" r="18"/>
+  </g>
+  <g fill="#0d7a6e">
+    <circle cx="128" cy="48" r="14"/><circle cx="128" cy="128" r="14"/><circle cx="128" cy="208" r="14"/>
+  </g>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same realistic running dataset — <strong>ShopSphere</strong>, an online retailer's customer table (demographics, behavior, transactions, and free-text reviews) used to predict churn, estimate lifetime value, and segment customers. Download it from the shared <a href="../datasets/shopsphere/">datasets folder</a> (customers table + reviews table, with a README on the seeded leakage columns and ~6% churn base rate).</p>
+</blockquote>
+
+<h2 id="how-this-fits">How This Fits the Other Guides</h2>
+<p>Machine learning is the <em>modeling</em> layer that sits on top of skills taught in three companion guides. To avoid repeating them, this guide <strong>assumes</strong> the prerequisites below and links out instead of re-teaching them. If a prerequisite is shaky, study it there first — modeling on a weak foundation produces confident, wrong answers.</p>
+<table>
+<tr><th>If you need…</th><th>Go to</th><th>Why it is not repeated here</th></tr>
+<tr><td>Python syntax, functions, OOP, pandas/NumPy mechanics, virtual environments</td><td><a href="../python/python_learning_guide.html">Python Learning Guide</a></td><td>This guide writes Python fluently from Module 1.1; it teaches modeling, not the language.</td></tr>
+<tr><td>Descriptive statistics, probability, distributions, hypothesis testing, EDA, data cleaning (missing values, outliers), statistical regression for <em>inference</em></td><td><a href="../statistics-with-python/statistics-with-python_learning_guide.html">Statistics with Python Guide</a></td><td>We use these as inputs. Module 2.1 here treats regression for <strong>prediction</strong> (test-set accuracy), the explicit complement to the stats guide's regression for <strong>inference</strong> (p-values, confidence intervals).</td></tr>
+<tr><td>Excel, Power BI, SQL, building an analyst portfolio, the business-reporting side of analytics</td><td><a href="../data-analyst/da_learning_guide_v3_merged.html">Data Analyst Guide</a></td><td>That guide's "ML &amp; Data Science Basics" module is a teaser; this guide is the full treatment it points toward.</td></tr>
+</table>
+<blockquote class="callout"><p><strong>The one-line boundary:</strong> the Statistics guide answers <em>"what is true about this data?"</em> (inference); this guide answers <em>"what will happen with new, unseen data?"</em> (prediction). Both fit a line through points — but they optimize for, and are judged by, completely different things.</p></blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>New to modeling (but know Python + stats)</strong> → Start at Module 1.1 and go sequentially. The whole game is the train/validate/test discipline introduced in Phase 1; everything later is variations on it.</li>
+<li><strong>Some ML experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or pick a curated <strong>Learning Track</strong> (Classical ML, Deep Learning &amp; NLP, end-to-end Data Scientist, or Competition).</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3 id="quiz-workflow">ML Workflow &amp; Feature Engineering</h3>
+<ul>
+<li>[ ] I can explain why we hold out a test set and never touch it until the very end.</li>
+<li>[ ] I can frame a business question as a supervised vs. unsupervised problem and pick the target variable.</li>
+<li>[ ] I can build a scikit-learn <code>Pipeline</code> with a <code>ColumnTransformer</code> that encodes categoricals and scales numerics.</li>
+<li>[ ] I can explain what data leakage is and name two ways it sneaks into a pipeline.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3 id="quiz-supervised">Supervised Learning</h3>
+<ul>
+<li>[ ] I can fit and interpret a regularized regression (ridge/lasso) and explain what the penalty does.</li>
+<li>[ ] I can explain how a decision tree splits and why a single tree overfits.</li>
+<li>[ ] I understand how a random forest and gradient boosting differ in how they combine trees.</li>
+<li>[ ] I can choose between logistic regression, SVM, and a boosted tree for a given problem and justify it.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3 id="quiz-evaluation">Evaluation &amp; Tuning</h3>
+<ul>
+<li>[ ] I can explain why accuracy is misleading on imbalanced data and what to use instead.</li>
+<li>[ ] I can read a confusion matrix and compute precision, recall, and F1 from it.</li>
+<li>[ ] I can diagnose overfitting vs. underfitting from a learning curve.</li>
+<li>[ ] I can run cross-validated hyperparameter search without leaking the test set.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3 id="quiz-unsupervised-deep">Unsupervised &amp; Deep Learning</h3>
+<ul>
+<li>[ ] I can run k-means, choose <code>k</code> sensibly, and explain why features must be scaled first.</li>
+<li>[ ] I can use PCA for dimensionality reduction and interpret explained variance.</li>
+<li>[ ] I can build and train a small neural network and explain a forward/backward pass at a high level.</li>
+<li>[ ] I can turn raw text into features and train a working text classifier.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 5.1</strong> | <strong>4 yes</strong> → Use the <strong>Final Capstone</strong> as a portfolio piece</p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-from-question-to-ml-problem"><td>1.1</td><td>From Question to ML Problem</td><td>Beginner</td><td>Python, stats</td><td>4h</td></tr>
+<tr data-href="#module-12-the-scikit-learn-workflow"><td>1.2</td><td>The scikit-learn Workflow &amp; Baselines</td><td>Beginner</td><td>1.1</td><td>6h</td></tr>
+<tr data-href="#module-13-feature-engineering"><td>1.3</td><td>Feature Engineering for Models</td><td>Beginner–Intermediate</td><td>1.2</td><td>8h</td></tr>
+<tr data-href="#module-21-regression-models"><td>2.1</td><td>Regression Models (Prediction)</td><td>Intermediate</td><td>1.3</td><td>8h</td></tr>
+<tr data-href="#module-22-classification-models"><td>2.2</td><td>Classification Models</td><td>Intermediate</td><td>1.3</td><td>8h</td></tr>
+<tr data-href="#module-23-ensembles-boosting"><td>2.3</td><td>Ensembles &amp; Gradient Boosting</td><td>Intermediate</td><td>2.1, 2.2</td><td>8h</td></tr>
+<tr data-href="#module-31-validation-metrics"><td>3.1</td><td>Validation &amp; Metrics</td><td>Intermediate</td><td>2.2</td><td>8h</td></tr>
+<tr data-href="#module-32-bias-variance"><td>3.2</td><td>Bias–Variance &amp; Overfitting</td><td>Intermediate</td><td>3.1</td><td>5h</td></tr>
+<tr data-href="#module-33-hyperparameter-tuning"><td>3.3</td><td>Hyperparameter Tuning &amp; Pipelines</td><td>Intermediate</td><td>3.1</td><td>7h</td></tr>
+<tr data-href="#module-41-clustering"><td>4.1</td><td>Clustering</td><td>Intermediate</td><td>1.3</td><td>7h</td></tr>
+<tr data-href="#module-42-dimensionality-reduction"><td>4.2</td><td>Dimensionality Reduction</td><td>Intermediate</td><td>1.3</td><td>6h</td></tr>
+<tr data-href="#module-51-neural-network-fundamentals"><td>5.1</td><td>Neural Network Fundamentals</td><td>Intermediate</td><td>2.2, 3.1</td><td>10h</td></tr>
+<tr data-href="#module-52-practical-nlp"><td>5.2</td><td>Practical NLP</td><td>Intermediate</td><td>2.2</td><td>8h</td></tr>
+<tr data-href="#module-53-notebook-to-production"><td>5.3</td><td>From Notebook to Production</td><td>Intermediate</td><td>3.3</td><td>7h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phase 1 is the spine — every later phase assumes the train/validate/test discipline and pipeline pattern from it. After Phase 1, the <strong>supervised</strong> (Phase 2–3), <strong>unsupervised</strong> (Phase 4), and <strong>deep learning / NLP</strong> (Phase 5) tracks are largely independent and can be taken in any order.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+<h3 id="track-1-classical-ml">Track 1 — Classical ML Practitioner (the sklearn workhorse)</h3>
+<p><code>1.1 → 1.2 → 1.3 → 2.1 → 2.2 → 2.3 → 3.1 → 3.3 → Final Capstone</code><br>
+Target outcome: <strong>Junior ML Engineer / Data Scientist</strong> — ships well-validated tabular models.</p>
+<h3 id="track-2-deep-learning-nlp">Track 2 — Deep Learning &amp; NLP</h3>
+<p><code>1.2 → 1.3 → 3.1 → 5.1 → 5.2 → 5.3 → Final Capstone</code><br>
+Target outcome: <strong>ML Engineer (DL focus)</strong> — comfortable with neural networks and text.</p>
+<h3 id="track-3-data-scientist">Track 3 — End-to-End Data Scientist</h3>
+<p><code>1.1 → 1.3 → 2.2 → 3.1 → 4.1 → 4.2 → 5.3 → Final Capstone</code><br>
+Target outcome: <strong>Data Scientist</strong> — frames the problem, models it, and ships it.</p>
+<h3 id="track-4-competition">Track 4 — Competition / Kaggle</h3>
+<p><code>1.3 → 2.3 → 3.1 → 3.2 → 3.3 → 4.2 → Final Capstone</code><br>
+Target outcome: <strong>Competitive modeler</strong> — feature engineering, boosting, and ruthless validation.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — The ML Workflow            (Weeks 1–3)
+Phase 2 — Supervised Learning        (Weeks 4–7)
+Phase 3 — Evaluation &amp; Tuning        (Weeks 8–10)
+Phase 4 — Unsupervised Learning      (Weeks 11–12)
+Phase 5 — Deep Learning &amp; Production (Weeks 13–17)
+Final Capstone — End-to-End ML        (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ── 1.2 ── 1.3 ─┬─ 2.1 ─┐
+                   ├─ 2.2 ──┼─ 2.3 ── 3.1 ─┬─ 3.2
+                   │        │               └─ 3.3 ── 5.3 ─┐
+                   ├─ 4.1 ──┴─ 4.2                          ├─ Final
+                   └─ 5.1 ── 5.2 ──────────────────────────┘  Capstone</code></pre>
+
+<h2 id="phase-1-the-ml-workflow">Phase 1: The ML Workflow</h2>
+<h3 id="weeks-1-3">Weeks 1–3 | Goal: frame a problem, build a leak-free pipeline, and beat a baseline — the habits everything else rests on</h3>
+<hr />
+
+<h3 id="module-11-from-question-to-ml-problem">Module 1.1 — From Question to ML Problem</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Python (see the <a href="../python/python_learning_guide.html">Python Guide</a>), basic statistics (see the <a href="../statistics-with-python/statistics-with-python_learning_guide.html">Statistics Guide</a>) · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Given the ShopSphere business goal "reduce customer churn," state the ML task type, the target variable, the unit of prediction, the label source, and one way the project could fail before any modeling.<br>
+<strong>Skip if:</strong> You can reliably translate a vague business goal into a precise supervised/unsupervised task with a defined target and success metric.<br>
+<strong>Unlocks:</strong> Every modeling module — a wrongly framed problem cannot be rescued by a better algorithm.</p>
+</blockquote>
+
+<h4>The hardest part of ML is not the algorithm</h4>
+<p>Beginners reach for models; practitioners obsess over framing. Most failed ML projects fail before a single model is trained — the target was defined wrong, the labels did not exist, or the thing being predicted is unavailable at prediction time. Getting the question right is leverage: a clearly framed mediocre model beats a brilliant model answering the wrong question.</p>
+
+<h4>Supervised, unsupervised, and "should this even be ML?"</h4>
+<p><strong>Supervised</strong> learning maps inputs to a known label — <em>classification</em> (a category: will this customer churn?) or <em>regression</em> (a number: what is their lifetime value?). <strong>Unsupervised</strong> learning finds structure with no labels — clustering customers into segments. Crucially, many problems should not be ML at all: if a simple rule or a SQL query answers it, ML adds cost and opacity for no gain. ML earns its complexity only when the pattern is too intricate to hand-code and you have enough labeled examples to learn it.</p>
+
+<h4>Defining the target and avoiding the framing traps</h4>
+<p>Pin down five things before modeling: the <strong>unit</strong> (one row = one customer-month), the <strong>target</strong> (churned within 30 days: yes/no), the <strong>label source</strong> (how do you know they churned?), the <strong>features available at prediction time</strong>, and the <strong>success metric</strong> tied to the business goal. The deadliest trap is using a feature that would not exist when you actually predict — e.g., "cancellation reason" to predict cancellation — which inflates offline scores and collapses in production.</p>
+<pre><code class="language-py"># Framing the ShopSphere churn problem as a spec, in code-as-documentation
+problem = {
+    "task": "binary classification",
+    "unit": "one customer, snapshot at month end",
+    "target": "churned_next_30d",          # 1 if no purchase in next 30 days
+    "label_source": "transactions table, looking 30 days forward",
+    "features_at_predict_time": [
+        "tenure_months", "avg_order_value", "orders_last_90d",
+        "days_since_last_order", "support_tickets", "plan_type", "region",
+    ],
+    "leakage_to_exclude": ["cancellation_reason", "refund_after_churn"],
+    "success_metric": "recall on churners >= 0.70 at precision >= 0.40",
+}
+assert problem["target"] not in problem["features_at_predict_time"]</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Optimizing accuracy for an imbalanced target. If only 5% of ShopSphere customers churn, a model that predicts "nobody churns" is 95% accurate and 100% useless. Define success in terms the business feels (caught churners, false alarms) <em>before</em> you train — the metric you choose silently dictates the model you will end up with.</p></blockquote>
+
+<p><strong>Exercise 1.1 — Frame Three ShopSphere Problems</strong></p>
+<p>Dataset: the ShopSphere customer + transactions tables (schema provided; no modeling yet).</p>
+<ol>
+<li>Write a full problem spec (the five elements above) for churn prediction.</li>
+<li>Write a problem spec for predicting customer lifetime value, and identify whether it is classification or regression.</li>
+<li>Write a problem spec for customer segmentation and state why it is unsupervised.</li>
+<li>For the churn problem, list three features that would be data leakage and explain why each is unavailable at prediction time.</li>
+<li>Propose one version of the churn problem that should <em>not</em> be solved with ML, and give the simpler alternative.</li>
+<li>Choose a success metric for churn and justify it against the business cost of false positives vs. false negatives.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-the-scikit-learn-workflow">Module 1.2 — The scikit-learn Workflow &amp; Baselines</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Load ShopSphere, split off a test set <em>before</em> any analysis, fit a <code>DummyClassifier</code> baseline and a logistic regression, and report both on the held-out test set — explaining why the dummy matters.<br>
+<strong>Skip if:</strong> You use the estimator API (<code>fit</code>/<code>predict</code>/<code>score</code>), split data correctly, and always establish a baseline first.<br>
+<strong>Unlocks:</strong> Every model in Phases 2–5 — they all share this exact API and discipline.</p>
+</blockquote>
+
+<h4>The estimator API: learn it once, use it everywhere</h4>
+<p>scikit-learn's genius is uniformity: every model — linear regression, random forest, k-means — exposes the same <code>fit</code> / <code>predict</code> / (<code>transform</code>) interface. Learn the pattern once and swapping algorithms is a one-line change, which is exactly what lets you compare many models fairly. This consistency is why sklearn is the default first tool for tabular ML.</p>
+
+<h4>The train/test split is sacred</h4>
+<p>You hold out a <strong>test set</strong> at the very start and do not look at it until the end. The test set is your only honest estimate of performance on unseen data; the moment you use it to make a decision (pick a model, tune a knob), it is contaminated and your reported score becomes optimistic fiction. The single most common reason a model "great in the notebook" fails in production is that the test set was peeked at, directly or indirectly.</p>
+<pre><code class="language-py">import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.dummy import DummyClassifier
+from sklearn.metrics import f1_score
+
+df = pd.read_csv("shopsphere.csv")
+X = df.drop(columns=["churned_next_30d", "customer_id"])
+y = df["churned_next_30d"]
+
+# Split FIRST — stratify so churn rate matches in both halves
+X_train, X_test, y_train, y_test = train_test_split(
+    X.select_dtypes("number"), y,           # numeric-only for a quick baseline
+    test_size=0.2, stratify=y, random_state=42,
+)
+
+# A baseline you must beat — "predict the majority class"
+dummy = DummyClassifier(strategy="most_frequent").fit(X_train, y_train)
+print("dummy   F1:", f1_score(y_test, dummy.predict(X_test)))
+
+# The first real model
+clf = LogisticRegression(max_iter=1000, class_weight="balanced").fit(X_train, y_train)
+print("logreg  F1:", f1_score(y_test, clf.predict(X_test)))</code></pre>
+
+<h4>Why a baseline is non-negotiable</h4>
+<p>A score in isolation is meaningless. An F1 of 0.62 sounds fine until a <code>DummyClassifier</code> gets 0.60 — then your "model" learned almost nothing. The baseline (predict the majority class, or the mean for regression) is the floor that turns an absolute number into a meaningful comparison. Always establish it first; it is the cheapest insight in all of ML.</p>
+
+<p><strong>Exercise 1.2 — Baseline Before Brilliance</strong></p>
+<p>Dataset: ShopSphere churn (numeric features only for this first pass).</p>
+<ol>
+<li>Load the data and split off a 20% stratified test set before any exploration.</li>
+<li>Confirm the churn rate is similar in train and test (proof your stratify worked).</li>
+<li>Fit a <code>DummyClassifier</code> with both <code>most_frequent</code> and <code>stratified</code> strategies; report F1 for each.</li>
+<li>Fit a logistic regression and compare its test F1 to the dummy.</li>
+<li>Re-run the whole thing with a different <code>random_state</code> and observe how much the score moves — this previews why one split is not enough (Module 3.1).</li>
+<li>Write two sentences interpreting whether your model is actually learning, using the dummy as the reference.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-feature-engineering">Module 1.3 — Feature Engineering for Models</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Build a single scikit-learn <code>Pipeline</code> with a <code>ColumnTransformer</code> that imputes, scales numerics, and one-hot-encodes categoricals — fit only on training data — and explain how this design prevents leakage.<br>
+<strong>Skip if:</strong> You build leak-free <code>ColumnTransformer</code> pipelines and create model-ready features from raw columns fluently.<br>
+<strong>Unlocks:</strong> Every supervised and unsupervised module — they all consume engineered features.</p>
+</blockquote>
+
+<h4>Why feature engineering beats fancier models</h4>
+<p>On tabular data, well-crafted features routinely matter more than the choice of algorithm — a thoughtful feature can do what a deeper model cannot, because it injects domain knowledge the model would otherwise have to discover from scratch. This is distinct from the <em>data cleaning</em> taught in the <a href="../statistics-with-python/statistics-with-python_learning_guide.html">Statistics Guide</a> (fixing missing values and outliers so the data is correct). Feature engineering starts from clean data and <em>creates predictive signal</em>: ratios, time-since events, aggregations, and encodings that make the target easier to learn.</p>
+
+<h4>Encoding, scaling, and why models care</h4>
+<p>Models speak numbers. Categorical columns (<code>plan_type</code>, <code>region</code>) must be <strong>encoded</strong> — usually one-hot — or the model invents a fake ordering. Many models (logistic regression, SVM, k-means, neural nets) are sensitive to feature <strong>scale</strong>: leave <code>avg_order_value</code> in thousands next to <code>tenure_months</code> in tens and the large-magnitude feature dominates the math, distorting both fit and distance calculations. Tree-based models are the exception — they are scale-invariant — which is itself a useful thing to know.</p>
+
+<h4>The Pipeline is the leakage firewall</h4>
+<p>The critical rule: every transformation that <em>learns</em> from data (the mean for imputation, the scale for standardization, the categories for encoding) must be fit on the <strong>training data only</strong>, then applied to validation/test. Fit a scaler on the full dataset and information from the test set bleeds into training — the model has effectively seen the future. A scikit-learn <code>Pipeline</code> enforces this automatically: it re-fits every step inside each cross-validation fold, so leakage becomes structurally impossible rather than something you must remember.</p>
+<pre><code class="language-py">from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+
+num = ["tenure_months", "avg_order_value", "orders_last_90d", "days_since_last_order"]
+cat = ["plan_type", "region"]
+
+numeric = Pipeline([
+    ("impute", SimpleImputer(strategy="median")),
+    ("scale", StandardScaler()),
+])
+categorical = Pipeline([
+    ("impute", SimpleImputer(strategy="most_frequent")),
+    ("onehot", OneHotEncoder(handle_unknown="ignore")),
+])
+
+preprocess = ColumnTransformer([
+    ("num", numeric, num),
+    ("cat", categorical, cat),
+])
+
+model = Pipeline([
+    ("prep", preprocess),
+    ("clf", LogisticRegression(max_iter=1000, class_weight="balanced")),
+])
+model.fit(X_train, y_train)        # every learned step fits on TRAIN only
+print("test F1:", f1_score(y_test, model.predict(X_test)))</code></pre>
+<p><em>Retrieval practice: before re-reading, write down which pipeline steps "learn" from data and must therefore be fit on training data only. The ones you forget are exactly where leakage hides.</em></p>
+
+<p><strong>Exercise 1.3 — Build the ShopSphere Feature Pipeline</strong></p>
+<p>Dataset: full ShopSphere customer table (numeric + categorical columns).</p>
+<ol>
+<li>Create three derived features from raw columns (e.g., <code>orders_per_month = orders_last_90d / tenure_months</code>).</li>
+<li>Build a <code>ColumnTransformer</code> that median-imputes + scales numerics and mode-imputes + one-hot-encodes categoricals.</li>
+<li>Wrap it with a classifier in a single <code>Pipeline</code> and fit on the training set only.</li>
+<li>Demonstrate leakage: fit a <code>StandardScaler</code> on the full dataset, then properly inside the pipeline, and compare the difference.</li>
+<li>Confirm the pipeline beats your Module 1.2 numeric-only baseline.</li>
+<li>Show that a tree-based model gives nearly identical results with and without scaling, and explain why.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-baseline-model">Phase 1 Capstone: A Defensible Baseline Model</h3>
+<p><strong>Project: take ShopSphere from raw tables to a leak-free, baseline-beating churn model you can defend.</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) why the test set must be split off first, (2) what data leakage is and where a pipeline stops it, and (3) why a baseline is required to interpret any score? Re-read the relevant module for any blank.</p></blockquote>
+<p><strong>Dataset:</strong> the full ShopSphere customer + transactions data.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A written problem spec (task, unit, target, label source, features-at-predict-time, success metric).</li>
+<li>A documented list of excluded leakage features with justification.</li>
+<li>A stratified train/test split made before any analysis.</li>
+<li>At least three engineered features with a one-line rationale each.</li>
+<li>A single <code>Pipeline</code> (preprocessing + model) that cannot leak.</li>
+<li>A results table comparing a dummy baseline, logistic regression, and one other model on the held-out test set.</li>
+<li>A short writeup: does the model meet the success metric, and what is the single biggest risk to it in production?</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-supervised-learning">Phase 2: Supervised Learning</h2>
+<h3 id="weeks-4-7">Weeks 4–7 | Goal: master the workhorse regression and classification models, ending with the boosted trees that win on tabular data</h3>
+<hr />
+
+<h3 id="module-21-regression-models">Module 2.1 — Regression Models (Prediction)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Predict ShopSphere customer lifetime value with linear, ridge, and lasso regression; report test-set RMSE and R²; and explain what the L1/L2 penalty does and when you'd prefer each.<br>
+<strong>Skip if:</strong> You use regularized and tree-based regression for prediction and read RMSE/MAE/R² fluently.<br>
+<strong>Unlocks:</strong> Ensembles (2.3), and the regression metrics in 3.1.</p>
+</blockquote>
+
+<h4>Prediction is not inference — the boundary with the Statistics guide</h4>
+<p>The <a href="../statistics-with-python/statistics-with-python_learning_guide.html">Statistics Guide</a> teaches regression for <strong>inference</strong>: estimating coefficients with confidence intervals and p-values to understand <em>relationships</em>. Here, regression is for <strong>prediction</strong>: the only question is how accurately the model forecasts the target on data it has never seen, measured on a held-out test set. The same equation serves both, but the goals diverge — an inference model prizes interpretable, unbiased coefficients; a prediction model will happily accept biased coefficients (via regularization) if they lower test error. Confusing the two leads people to over-trust p-values from a model tuned for prediction.</p>
+
+<h4>Regularization: trading a little bias for a lot less variance</h4>
+<p>Plain linear regression can overfit when features are many or correlated, chasing noise. <strong>Ridge</strong> (L2) shrinks coefficients toward zero smoothly, taming this without removing features; <strong>Lasso</strong> (L1) can drive coefficients exactly to zero, performing automatic feature selection. The penalty deliberately introduces a little bias to cut variance — and on unseen data, that trade usually wins. Reach for lasso when you suspect many features are useless; ridge when most carry some signal.</p>
+<pre><code class="language-py">from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+import numpy as np
+
+# y here is continuous: customer lifetime value
+for name, reg in {
+    "linear": LinearRegression(),
+    "ridge":  Ridge(alpha=1.0),
+    "lasso":  Lasso(alpha=0.1),
+    "forest": RandomForestRegressor(n_estimators=300, random_state=42),
+}.items():
+    model = Pipeline([("prep", preprocess), ("reg", reg)]).fit(X_train, y_clv_train)
+    pred = model.predict(X_test)
+    rmse = np.sqrt(mean_squared_error(y_clv_test, pred))
+    print(f"{name:7s} RMSE={rmse:8.2f}  R2={r2_score(y_clv_test, pred):.3f}")</code></pre>
+
+<h4>Reading regression metrics</h4>
+<p><strong>RMSE</strong> is in the target's units and punishes large errors heavily — use it when big misses are especially costly. <strong>MAE</strong> is the average absolute error, more robust to outliers. <strong>R²</strong> reports the fraction of variance explained (1.0 is perfect, 0.0 is no better than predicting the mean, and it can go negative on the test set when the model is worse than the mean). Report at least two — a good R² with a business-unacceptable RMSE means the model explains the pattern but is still too imprecise to use.</p>
+
+<p><strong>Exercise 2.1 — Predict Lifetime Value</strong></p>
+<p>Dataset: ShopSphere, target = customer lifetime value (continuous).</p>
+<ol>
+<li>Fit linear, ridge, and lasso regression inside your Phase 1 pipeline; report test RMSE and R² for each.</li>
+<li>Inspect the lasso coefficients and list which features it zeroed out — interpret what that means.</li>
+<li>Sweep <code>alpha</code> for ridge across several values and plot test RMSE vs. alpha.</li>
+<li>Fit a random forest regressor and compare; note whether scaling changed its result.</li>
+<li>Identify the customer the model mispredicts most badly and hypothesize why.</li>
+<li>Write one paragraph distinguishing what you'd report if your goal were inference vs. prediction (cross-reference the Statistics guide).</li>
+</ol>
+<hr />
+
+<h3 id="module-22-classification-models">Module 2.2 — Classification Models</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Train logistic regression, k-NN, a decision tree, and an SVM on ShopSphere churn; compare them on a proper validation scheme; and explain the core mechanism and a failure mode of each.<br>
+<strong>Skip if:</strong> You can choose among the standard classifiers and explain their decision boundaries and trade-offs.<br>
+<strong>Unlocks:</strong> Ensembles (2.3), evaluation (3.1), neural nets (5.1).</p>
+</blockquote>
+
+<h4>Four classifiers, four ways of drawing a boundary</h4>
+<p>Each classic classifier carves the feature space differently, and knowing how is how you pick one. <strong>Logistic regression</strong> draws a linear boundary and outputs calibrated probabilities — a strong, interpretable default. <strong>k-NN</strong> classifies by the majority vote of nearby points — simple, but slow at prediction and badly hurt by unscaled features and high dimensions. <strong>Decision trees</strong> split on one feature at a time into axis-aligned regions — wonderfully interpretable, but a single deep tree memorizes the training data. <strong>SVM</strong> finds the boundary with the widest margin and, via kernels, can model non-linear separations — powerful but harder to tune and scale.</p>
+
+<h4>Probabilities, thresholds, and the business decision</h4>
+<p>Most classifiers predict a probability, and <code>0.5</code> is just a default cutoff, not a law. The threshold is a business lever: lower it to catch more churners (higher recall, more false alarms), raise it to be more selective (higher precision). Decoupling "the model's probability" from "the action threshold" is a key intermediate skill — you tune the model once, then move the threshold to match the cost of each error type (developed fully in Module 3.1).</p>
+<pre><code class="language-py">from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.svm import SVC
+from sklearn.metrics import classification_report
+
+models = {
+    "logreg": LogisticRegression(max_iter=1000, class_weight="balanced"),
+    "knn":    KNeighborsClassifier(n_neighbors=15),
+    "tree":   DecisionTreeClassifier(max_depth=5, class_weight="balanced", random_state=42),
+    "svm":    SVC(kernel="rbf", class_weight="balanced", probability=True),
+}
+for name, clf in models.items():
+    pipe = Pipeline([("prep", preprocess), ("clf", clf)]).fit(X_train, y_train)
+    print(f"\n=== {name} ===")
+    print(classification_report(y_test, pipe.predict(X_test), digits=3))
+
+# The threshold is a lever, not a constant:
+proba = pipe.predict_proba(X_test)[:, 1]
+caught = ((proba &gt;= 0.30).astype(int))   # lower cutoff -> catch more churners</code></pre>
+
+<p><strong>Exercise 2.2 — A Classifier Bake-Off</strong></p>
+<p>Dataset: ShopSphere churn (binary target).</p>
+<ol>
+<li>Train all four classifiers inside the pipeline and produce a comparison table of precision, recall, and F1.</li>
+<li>Visualize the decision tree (depth ≤ 4) and read off the top two splits in plain English.</li>
+<li>Show that k-NN's score collapses if you remove the scaler, and explain why.</li>
+<li>Take your best model's predicted probabilities and sweep the threshold from 0.2 to 0.8, plotting precision and recall.</li>
+<li>Pick a threshold justified by the business cost of a missed churner vs. a wasted retention offer.</li>
+<li>Write one sentence per model on when you would and would not choose it.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-ensembles-boosting">Module 2.3 — Ensembles &amp; Gradient Boosting</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1, 2.2 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Train a random forest and a gradient-boosted model (XGBoost or LightGBM) on ShopSphere, explain how bagging differs from boosting, and extract and interpret feature importances.<br>
+<strong>Skip if:</strong> You use random forests and gradient boosting confidently and understand bagging vs. boosting.<br>
+<strong>Unlocks:</strong> The strongest tabular baselines for the capstones; tuning (3.3).</p>
+</blockquote>
+
+<h4>Why many weak models beat one strong one</h4>
+<p>An <strong>ensemble</strong> combines many models so their errors cancel. A single decision tree overfits; combine hundreds and the noise averages out while the signal reinforces. This is why tree ensembles, not neural networks, still win the majority of tabular ML problems — they capture complex interactions with minimal feature engineering and are remarkably hard to beat on structured data.</p>
+
+<h4>Bagging vs. boosting — two ways to combine</h4>
+<p><strong>Bagging</strong> (random forest) trains many trees <em>in parallel</em>, each on a random subset of rows and features, then averages them — this reduces variance and is robust and forgiving to tune. <strong>Boosting</strong> (XGBoost, LightGBM, gradient boosting) trains trees <em>sequentially</em>, each one correcting the previous ensemble's mistakes — this reduces bias and usually reaches higher accuracy, but is more sensitive to hyperparameters and can overfit if you let it run too long. The mental model: bagging is a committee voting independently; boosting is a relay where each runner fixes the last one's errors.</p>
+<pre><code class="language-py">from sklearn.ensemble import RandomForestClassifier
+from xgboost import XGBClassifier   # pip install xgboost
+import pandas as pd
+
+rf = Pipeline([("prep", preprocess),
+    ("clf", RandomForestClassifier(n_estimators=400, max_depth=None,
+                                   class_weight="balanced", random_state=42))
+]).fit(X_train, y_train)
+
+# Boosting: scale_pos_weight handles class imbalance for churn
+xgb = Pipeline([("prep", preprocess),
+    ("clf", XGBClassifier(n_estimators=400, learning_rate=0.05, max_depth=4,
+                          subsample=0.8, colsample_bytree=0.8,
+                          scale_pos_weight=(y_train==0).sum()/(y_train==1).sum(),
+                          eval_metric="logloss", random_state=42))
+]).fit(X_train, y_train)
+
+# Which features drive churn? (importances from the fitted forest)
+feat_names = rf.named_steps["prep"].get_feature_names_out()
+importances = rf.named_steps["clf"].feature_importances_
+print(pd.Series(importances, index=feat_names).sort_values(ascending=False).head(10))</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Reading default tree feature importances as causation. They are biased toward high-cardinality features and only tell you what the model <em>used</em>, not what <em>causes</em> churn. For trustworthy attributions use permutation importance or SHAP values — and never tell a stakeholder "X causes churn" from a <code>feature_importances_</code> bar chart alone.</p></blockquote>
+
+<p><strong>Exercise 2.3 — Boost the Churn Model</strong></p>
+<p>Dataset: ShopSphere churn.</p>
+<ol>
+<li>Train a random forest and an XGBoost (or LightGBM) model in the pipeline; compare F1 and ROC-AUC on the test set.</li>
+<li>Extract the top 10 feature importances from the forest and interpret the top three.</li>
+<li>Recompute importances with permutation importance and note any features that change rank.</li>
+<li>Show boosting overfitting: push <code>n_estimators</code> very high with no regularization and watch train vs. test diverge.</li>
+<li>Tame it with <code>learning_rate</code>, <code>max_depth</code>, and <code>subsample</code>; report the improvement.</li>
+<li>Write a short note: why do tree ensembles tend to beat a neural net on this tabular dataset?</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-churn-classifier">Phase 2 Capstone: The ShopSphere Churn Classifier</h3>
+<p><strong>Project: build the best honestly-validated churn classifier across the model families you now know.</strong></p>
+<p><strong>Dataset:</strong> full ShopSphere churn data.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A model comparison spanning logistic regression, a tree, a random forest, and a boosted model — all in pipelines.</li>
+<li>A results table with precision, recall, F1, and ROC-AUC on the held-out test set, against the dummy baseline.</li>
+<li>A chosen production threshold, justified by the cost of false positives vs. false negatives.</li>
+<li>A feature-importance analysis (with permutation importance) and a plain-English summary of churn drivers.</li>
+<li>A demonstration of one model overfitting and how you detected and fixed it.</li>
+<li>A one-page recommendation: which model ships, and the honest caveats.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-evaluation-tuning">Phase 3: Evaluation &amp; Tuning</h2>
+<h3 id="weeks-8-10">Weeks 8–10 | Goal: measure models honestly, diagnose why they fail, and tune them without fooling yourself</h3>
+<hr />
+
+<h3 id="module-31-validation-metrics">Module 3.1 — Validation &amp; Metrics</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Set up stratified k-fold cross-validation for ShopSphere, justify the right metric for an imbalanced target, and read a confusion matrix and ROC/PR curve to choose an operating threshold.<br>
+<strong>Skip if:</strong> You use cross-validation correctly and select and interpret classification/regression metrics with confidence.<br>
+<strong>Unlocks:</strong> Tuning (3.3), and trustworthy comparison everywhere else.</p>
+</blockquote>
+
+<h4>One split lies; cross-validation tells the truth</h4>
+<p>A single train/test split gives a score that depends heavily on <em>which</em> rows landed where — you saw this wobble in Module 1.2. <strong>k-fold cross-validation</strong> rotates the validation set through k slices and averages, giving both a more stable estimate and a sense of its variance. For classification, use <strong>stratified</strong> folds so each fold preserves the class balance — otherwise a rare-class fold can be all-or-nothing. Cross-validation is for model <em>selection</em>; the untouched test set still delivers the final, honest verdict.</p>
+
+<h4>Choosing a metric that matches the problem</h4>
+<p>Accuracy is the wrong default for imbalanced data. <strong>Precision</strong> asks "of those I flagged as churners, how many really were?"; <strong>recall</strong> asks "of all real churners, how many did I catch?"; <strong>F1</strong> balances the two. <strong>ROC-AUC</strong> measures ranking quality across all thresholds, but on heavily imbalanced data the <strong>precision-recall curve</strong> is more informative. The metric is not a formality — it <em>is</em> your definition of success, and optimizing the wrong one produces a model that scores well and helps no one.</p>
+<pre><code class="language-py">from sklearn.model_selection import cross_val_score, StratifiedKFold
+from sklearn.metrics import confusion_matrix, roc_auc_score, average_precision_score
+
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+scores = cross_val_score(xgb, X_train, y_train, cv=cv, scoring="f1")
+print(f"CV F1: {scores.mean():.3f} +/- {scores.std():.3f}")   # estimate AND its spread
+
+pred  = xgb.predict(X_test)
+proba = xgb.predict_proba(X_test)[:, 1]
+tn, fp, fn, tp = confusion_matrix(y_test, pred).ravel()
+precision = tp / (tp + fp)
+recall    = tp / (tp + fn)
+print(f"precision={precision:.3f}  recall={recall:.3f}")
+print(f"ROC-AUC={roc_auc_score(y_test, proba):.3f}  PR-AUC={average_precision_score(y_test, proba):.3f}")</code></pre>
+<blockquote class="callout"><p><strong>Disambiguation:</strong> <strong>Validation set</strong> vs. <strong>test set</strong> — they are not interchangeable. The validation set (or CV folds) is used <em>during</em> development to choose models and hyperparameters; the test set is touched <em>once</em>, at the very end, for the final estimate. Reusing the test set for tuning quietly turns it into a validation set and your reported performance becomes optimistic.</p></blockquote>
+
+<p><strong>Exercise 3.1 — Validate Like You Mean It</strong></p>
+<p>Dataset: ShopSphere churn.</p>
+<ol>
+<li>Run 5-fold stratified cross-validation on your best Phase 2 model; report mean and standard deviation of F1.</li>
+<li>Compare CV F1 to your single-split F1 and explain any gap.</li>
+<li>Plot the confusion matrix and compute precision, recall, and F1 by hand from its four cells.</li>
+<li>Plot both the ROC and precision-recall curves; argue which is more honest for this churn rate.</li>
+<li>Pick an operating threshold from the PR curve to hit your Phase 1 success metric.</li>
+<li>Write two sentences on why the test set must stay untouched until the final report.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-bias-variance">Module 3.2 — Bias–Variance &amp; Overfitting</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> From a learning curve and a train-vs-validation gap, correctly diagnose whether a ShopSphere model is overfitting or underfitting, and prescribe the right fix for each.<br>
+<strong>Skip if:</strong> You diagnose bias vs. variance from learning/validation curves and know the standard levers for each.<br>
+<strong>Unlocks:</strong> Principled tuning (3.3) instead of random knob-twiddling.</p>
+</blockquote>
+
+<h4>The central tension of all ML</h4>
+<p>Every model balances two failure modes. <strong>High bias (underfitting)</strong>: the model is too simple to capture the pattern — it does poorly on both training and validation data. <strong>High variance (overfitting)</strong>: the model is so flexible it memorizes training noise — it scores great on training data and poorly on validation. The signature is the <em>gap</em>: a large train-validation gap means variance; uniformly poor scores mean bias. Almost every tuning decision you will ever make is really a move along this axis.</p>
+
+<h4>Learning curves: the diagnostic that tells you what to do</h4>
+<p>A learning curve plots training and validation score as you feed in more data. If both curves are low and converged, you have a bias problem — more data will not help; you need a more expressive model or better features. If training is high but validation lags with a persistent gap, you have variance — more data, regularization, or a simpler model will help. Reading this curve is what separates principled tuning from guessing.</p>
+<pre><code class="language-py">from sklearn.model_selection import learning_curve
+import numpy as np, matplotlib.pyplot as plt
+
+sizes, train_sc, val_sc = learning_curve(
+    xgb, X_train, y_train, cv=cv, scoring="f1",
+    train_sizes=np.linspace(0.1, 1.0, 8),
+)
+plt.plot(sizes, train_sc.mean(axis=1), "o-", label="train")
+plt.plot(sizes, val_sc.mean(axis=1),  "o-", label="validation")
+plt.xlabel("training examples"); plt.ylabel("F1"); plt.legend()
+# Big persistent gap -> variance (overfit): regularize / simplify / get data
+# Both low and flat   -> bias (underfit): richer model / better features</code></pre>
+
+<p><strong>Exercise 3.2 — Diagnose and Cure</strong></p>
+<p>Dataset: ShopSphere churn.</p>
+<ol>
+<li>Plot a learning curve for a deliberately overfit model (deep unregularized tree) and identify the variance signature.</li>
+<li>Plot a learning curve for a deliberately underfit model (logistic regression on one weak feature) and identify the bias signature.</li>
+<li>For the overfit model, apply two variance-reducing fixes and show the gap shrink.</li>
+<li>For the underfit model, apply two bias-reducing fixes and show both scores rise.</li>
+<li>Write a short decision rule: given a train/validation gap, what do you change first?</li>
+</ol>
+<hr />
+
+<h3 id="module-33-hyperparameter-tuning">Module 3.3 — Hyperparameter Tuning &amp; Pipelines</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~7h<br>
+<strong>Skip-check (test-out):</strong> Run a cross-validated <code>RandomizedSearchCV</code> over a full ShopSphere pipeline (preprocessing + model), report the best params, and explain why tuning must happen inside cross-validation.<br>
+<strong>Skip if:</strong> You tune with grid/randomized/Bayesian search over full pipelines and handle imbalance without leakage.<br>
+<strong>Unlocks:</strong> Production-quality models (5.3) and the final capstone.</p>
+</blockquote>
+
+<h4>Parameters vs. hyperparameters, and why search is needed</h4>
+<p>The model <em>learns</em> parameters (tree splits, regression coefficients) from data; <strong>hyperparameters</strong> (tree depth, learning rate, regularization strength) are settings <em>you</em> choose that govern how it learns. There is no formula for the best ones — they depend on the data — so you search: try combinations and keep what validates best. <strong>Grid search</strong> is exhaustive; <strong>randomized search</strong> samples and is far more efficient when only a few hyperparameters matter (usually true), which is why it is the better default for anything beyond a tiny grid.</p>
+
+<h4>Tuning must live inside cross-validation</h4>
+<p>The cardinal rule: hyperparameter search must be cross-validated, and the test set must stay out of it entirely. If you tune by repeatedly checking the test set, you are fitting the test set by hand and your final score is a lie. Putting the whole pipeline inside the search means preprocessing is re-fit on each fold's training portion — preventing the leakage that quietly inflates results. Tune the preprocessing and the model <em>together</em>; they interact.</p>
+<pre><code class="language-py">from sklearn.model_selection import RandomizedSearchCV
+from scipy.stats import randint, uniform
+
+param_dist = {
+    "clf__n_estimators": randint(200, 800),
+    "clf__max_depth": randint(2, 8),
+    "clf__learning_rate": uniform(0.01, 0.3),
+    "clf__subsample": uniform(0.6, 0.4),          # 0.6 .. 1.0
+    "prep__num__impute__strategy": ["median", "mean"],   # tune preprocessing too
+}
+search = RandomizedSearchCV(
+    xgb, param_dist, n_iter=40, cv=cv, scoring="f1",
+    random_state=42, n_jobs=-1,
+)
+search.fit(X_train, y_train)             # test set never seen here
+print("best F1 (CV):", round(search.best_score_, 3))
+print("best params :", search.best_params_)
+# Only NOW do we touch the test set, exactly once:
+print("test F1     :", round(f1_score(y_test, search.predict(X_test)), 3))</code></pre>
+<p><em>Retrieval practice: before reading on, state from memory why the test set must not appear anywhere inside <code>RandomizedSearchCV</code>. If you cannot, re-read Module 3.1's validation-vs-test disambiguation.</em></p>
+
+<p><strong>Exercise 3.3 — Tune the Whole Pipeline</strong></p>
+<p>Dataset: ShopSphere churn.</p>
+<ol>
+<li>Define a hyperparameter search space spanning both the model and at least one preprocessing step.</li>
+<li>Run <code>RandomizedSearchCV</code> with stratified CV and your chosen metric; report best CV score and params.</li>
+<li>Compare randomized vs. a small grid search for the same compute budget; note which found a better model.</li>
+<li>Handle class imbalance two ways (class weights vs. resampling inside the pipeline) and compare.</li>
+<li>Evaluate the tuned model on the test set exactly once and compare to the untuned Phase 2 result.</li>
+<li>Write two sentences on how you guarded against test-set leakage during tuning.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-tuned-pipeline">Phase 3 Capstone: A Tuned, Trustworthy Pipeline</h3>
+<p><strong>Project: turn your Phase 2 churn model into a rigorously validated, tuned, and diagnosed pipeline.</strong></p>
+<p><strong>Dataset:</strong> ShopSphere churn.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A cross-validated comparison of your candidate models with mean ± std of the chosen metric.</li>
+<li>A learning-curve diagnosis for the final model (bias vs. variance) with the fix you applied.</li>
+<li>A cross-validated hyperparameter search over the full pipeline, with best params reported.</li>
+<li>Confusion matrix, ROC, and PR curves, plus a justified operating threshold.</li>
+<li>A single, final test-set evaluation (used exactly once) versus the dummy and the untuned model.</li>
+<li>A reproducibility note: random seeds, library versions, and how to re-run end to end.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-unsupervised-learning">Phase 4: Unsupervised Learning</h2>
+<h3 id="weeks-11-12">Weeks 11–12 | Goal: find structure without labels — segment customers and compress features</h3>
+<hr />
+
+<h3 id="module-41-clustering">Module 4.1 — Clustering</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~7h<br>
+<strong>Skip-check (test-out):</strong> Segment ShopSphere customers with k-means, choose <code>k</code> with the elbow and silhouette methods, and explain why DBSCAN can succeed where k-means fails.<br>
+<strong>Skip if:</strong> You run k-means/hierarchical/DBSCAN, choose <code>k</code> defensibly, and evaluate clusters without labels.<br>
+<strong>Unlocks:</strong> The segmentation capstone; feeds engineered cluster labels back into supervised models.</p>
+</blockquote>
+
+<h4>Learning without an answer key</h4>
+<p>Clustering groups similar rows when there is no target to predict — the goal is to <em>discover</em> structure (natural customer segments) rather than reproduce a known label. Because there is no ground truth, evaluation is intrinsically harder and more judgment-driven: a "good" clustering is one that is stable, interpretable, and actionable, not one with a single objective score. This is the defining mindset shift from supervised work.</p>
+
+<h4>k-means, its assumptions, and choosing k</h4>
+<p><strong>k-means</strong> partitions data into <code>k</code> clusters by minimizing distance to cluster centers. It is fast and the default, but it assumes roughly spherical, similarly-sized clusters and you must pick <code>k</code> up front. Because it is distance-based, <strong>features must be scaled first</strong> — skip that and the largest-magnitude feature silently defines the clusters. Choose <code>k</code> with the <strong>elbow</strong> (where added clusters stop reducing inertia much) and the <strong>silhouette</strong> score (how well-separated clusters are), then sanity-check that the segments mean something to the business.</p>
+<pre><code class="language-py">from sklearn.cluster import KMeans, DBSCAN
+from sklearn.metrics import silhouette_score
+from sklearn.preprocessing import StandardScaler
+
+Xs = StandardScaler().fit_transform(X_train[num])   # scaling is mandatory here
+
+# Elbow + silhouette to choose k
+for k in range(2, 8):
+    km = KMeans(n_clusters=k, n_init=10, random_state=42).fit(Xs)
+    print(f"k={k}  inertia={km.inertia_:10.0f}  silhouette={silhouette_score(Xs, km.labels_):.3f}")
+
+# DBSCAN finds arbitrary shapes and flags outliers as -1 (no k needed)
+db = DBSCAN(eps=1.2, min_samples=10).fit(Xs)
+print("DBSCAN clusters:", len(set(db.labels_)) - (1 if -1 in db.labels_ else 0))</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Running k-means on unscaled features. Distance-based algorithms let a feature measured in thousands (spend) dominate one measured in tens (tenure), so the clusters end up reflecting a single column. Always scale before any distance-based method — and remember tree models, by contrast, never need it.</p></blockquote>
+
+<p><strong>Exercise 4.1 — Segment ShopSphere Customers</strong></p>
+<p>Dataset: ShopSphere behavioral + transaction features (no churn label used).</p>
+<ol>
+<li>Scale the features, then run k-means for <code>k</code> = 2..8; plot the elbow and silhouette curves.</li>
+<li>Choose a <code>k</code> and justify it with both the curves and business interpretability.</li>
+<li>Profile each segment (mean spend, tenure, order frequency) and name the segments in plain English.</li>
+<li>Run DBSCAN and compare the segments and outliers it finds to k-means.</li>
+<li>Add the cluster label as a feature to your Phase 2 churn model and report whether it helps.</li>
+<li>Write one paragraph on how you'd defend these segments to a marketing team that wants "real" groups.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-dimensionality-reduction">Module 4.2 — Dimensionality Reduction</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Use PCA to reduce ShopSphere's features, interpret the explained-variance curve to choose the number of components, and use t-SNE/UMAP to visualize clusters in 2-D — explaining what each is and is not for.<br>
+<strong>Skip if:</strong> You apply PCA correctly (scaling first, interpreting explained variance) and know when to use t-SNE/UMAP vs. PCA.<br>
+<strong>Unlocks:</strong> Faster, less-overfit models; honest cluster visualization for the capstone.</p>
+</blockquote>
+
+<h4>The curse of dimensionality, and what PCA does about it</h4>
+<p>As features multiply, data becomes sparse, distances lose meaning, and models overfit — the "curse of dimensionality." <strong>PCA</strong> (Principal Component Analysis) finds new axes (linear combinations of features) ordered by how much variance they capture, letting you keep the few that hold most of the information and drop the rest. This speeds up models, can reduce overfitting, and enables visualization — at the cost of interpretability, since components are blends of original features. Like all distance/variance methods, PCA requires scaling first.</p>
+
+<h4>PCA vs. t-SNE/UMAP — different jobs</h4>
+<p>This pairing is constantly confused. <strong>PCA</strong> is a linear, reversible transform suitable for feeding reduced features into a model. <strong>t-SNE</strong> and <strong>UMAP</strong> are non-linear techniques built purely for <em>visualization</em> — they reveal local cluster structure beautifully in 2-D but distort global distances and should not be fed to a downstream model. Use PCA to compress for modeling; use t-SNE/UMAP to <em>look</em> at high-dimensional structure, never to measure it.</p>
+<pre><code class="language-py">from sklearn.decomposition import PCA
+import numpy as np
+
+Xs = StandardScaler().fit_transform(X_train[num])    # scale BEFORE PCA
+pca = PCA().fit(Xs)
+cum = np.cumsum(pca.explained_variance_ratio_)
+print("components for 90% variance:", np.argmax(cum &gt;= 0.90) + 1)
+
+# Reduce to the components covering 90% variance, for modeling
+pca90 = PCA(n_components=0.90).fit(Xs)
+X_reduced = pca90.transform(Xs)
+print("reduced from", Xs.shape[1], "to", X_reduced.shape[1], "features")
+
+# For VISUALIZATION ONLY, project to 2-D with t-SNE
+from sklearn.manifold import TSNE
+emb = TSNE(n_components=2, perplexity=30, random_state=42).fit_transform(Xs[:2000])</code></pre>
+
+<p><strong>Exercise 4.2 — Compress and Visualize</strong></p>
+<p>Dataset: ShopSphere numeric features.</p>
+<ol>
+<li>Scale, fit PCA, and plot the cumulative explained-variance curve; choose the component count for 90% variance.</li>
+<li>Interpret the first two principal components by their feature loadings as best you can.</li>
+<li>Train your Phase 2 model on PCA-reduced features and compare accuracy and training time to the full feature set.</li>
+<li>Project the data to 2-D with t-SNE (or UMAP), colored by the Module 4.1 cluster labels.</li>
+<li>Explain, in two sentences, why you would not feed the t-SNE coordinates into a classifier.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-customer-segments">Phase 4 Capstone: ShopSphere Customer Segments</h3>
+<p><strong>Project: deliver an actionable, defensible customer segmentation with a visual and a business readout.</strong></p>
+<p><strong>Dataset:</strong> ShopSphere behavioral + transaction data.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A scaled feature set and a justified choice of <code>k</code> (elbow + silhouette).</li>
+<li>Named, profiled segments with mean feature values and a one-line persona each.</li>
+<li>A comparison of k-means vs. DBSCAN, including how each handles outliers.</li>
+<li>A PCA explained-variance analysis and a 2-D t-SNE/UMAP visualization colored by segment.</li>
+<li>An experiment adding segment labels as a feature to the churn model, with the measured effect.</li>
+<li>A one-page brief for a non-technical stakeholder describing each segment and a suggested action.</li>
+</ol>
+<hr />
+
+<h2 id="phase-5-deep-learning-production">Phase 5: Deep Learning &amp; Production</h2>
+<h3 id="weeks-13-17">Weeks 13–17 | Goal: build neural networks, handle text, and ship a model beyond the notebook</h3>
+<hr />
+
+<h3 id="module-51-neural-network-fundamentals">Module 5.1 — Neural Network Fundamentals</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2, 3.1 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Build, train, and evaluate a small feed-forward network on ShopSphere churn in PyTorch (or Keras), explain the forward pass / loss / backprop / optimizer loop, and explain why this network does not beat your boosted trees.<br>
+<strong>Skip if:</strong> You build and train neural nets, understand the training loop and the role of activations, loss, and optimizers, and know when deep learning is the wrong tool.<br>
+<strong>Unlocks:</strong> Practical NLP (5.2) and the path toward modern deep learning.</p>
+</blockquote>
+
+<h4>What a neural network actually is</h4>
+<p>A neural network is layers of simple linear units with non-linear <strong>activation functions</strong> between them; stacking these lets the network approximate very complex functions. The non-linearity is the whole point — without an activation like ReLU between layers, a deep network collapses mathematically into a single linear model and gains nothing from depth. Deep learning's superpower is <em>representation learning</em>: on unstructured data (images, text, audio) it learns features automatically, which is exactly where it crushes classical ML — and exactly why it rarely beats boosted trees on small tabular datasets like ShopSphere.</p>
+
+<h4>The training loop: the same four steps every time</h4>
+<p>Training is a loop: <strong>forward pass</strong> (compute predictions), <strong>loss</strong> (measure error against the truth), <strong>backward pass</strong> (backpropagation computes the gradient of the loss w.r.t. every weight), and <strong>optimizer step</strong> (nudge weights down the gradient). Repeat over mini-batches for several epochs. Understanding these four steps demystifies every framework — Keras hides the loop, PyTorch makes it explicit, but it is always these four moves.</p>
+<pre><code class="language-py">import torch, torch.nn as nn
+
+# Tensors from the preprocessed (scaled, encoded) ShopSphere features
+Xtr = torch.tensor(preprocess.fit_transform(X_train).toarray(), dtype=torch.float32)
+ytr = torch.tensor(y_train.values, dtype=torch.float32).unsqueeze(1)
+
+net = nn.Sequential(
+    nn.Linear(Xtr.shape[1], 32), nn.ReLU(), nn.Dropout(0.3),   # non-linearity + regularization
+    nn.Linear(32, 16), nn.ReLU(),
+    nn.Linear(16, 1),                                          # logit for binary churn
+)
+loss_fn = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([(y_train==0).sum()/(y_train==1).sum()]))
+opt = torch.optim.Adam(net.parameters(), lr=1e-3)
+
+for epoch in range(50):
+    opt.zero_grad()
+    logits = net(Xtr)            # 1) forward
+    loss = loss_fn(logits, ytr)  # 2) loss
+    loss.backward()              # 3) backprop
+    opt.step()                   # 4) optimizer step
+    if epoch % 10 == 0:
+        print(f"epoch {epoch:2d}  loss {loss.item():.4f}")</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Reaching for deep learning by default. On small/medium tabular data, a gradient-boosted tree usually trains in seconds, needs little tuning, and wins — while a neural net needs scaling, careful regularization, and far more data to compete. Deep learning earns its keep on unstructured data (text, images, audio); using it on a 10k-row spreadsheet is usually effort spent to lose.</p></blockquote>
+
+<p><strong>Exercise 5.1 — A Neural Net for Churn</strong></p>
+<p>Dataset: ShopSphere churn (preprocessed, scaled features).</p>
+<ol>
+<li>Build a feed-forward network with at least one hidden layer, ReLU activations, and dropout.</li>
+<li>Write (or configure) the training loop and plot training loss over epochs.</li>
+<li>Evaluate on the test set with the same F1/ROC-AUC metrics you used for classical models.</li>
+<li>Remove all activation functions and show the network's performance collapses toward a linear model.</li>
+<li>Compare the net honestly against your tuned XGBoost; report which wins and hypothesize why.</li>
+<li>Write two sentences naming a data type where the neural net <em>would</em> be the right choice.</li>
+</ol>
+<hr />
+
+<h3 id="module-52-practical-nlp">Module 5.2 — Practical NLP</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Turn ShopSphere review text into features (TF-IDF and embeddings), train a classifier to predict review sentiment, and explain the trade-off between bag-of-words and embedding representations.<br>
+<strong>Skip if:</strong> You vectorize text, train and evaluate a text classifier, and understand TF-IDF vs. embeddings.<br>
+<strong>Unlocks:</strong> The text dimension of the final capstone; a foothold into modern LLM-era NLP.</p>
+</blockquote>
+
+<h4>Text must become numbers — the only question is how</h4>
+<p>Models cannot read; text must be vectorized. The classic approach, <strong>bag-of-words / TF-IDF</strong>, scores each word by how characteristic it is of a document — simple, fast, surprisingly strong, and interpretable, but blind to word order and meaning ("not good" looks similar to "good"). <strong>Embeddings</strong> map words or sentences to dense vectors where similar meanings sit close together, capturing semantics that TF-IDF cannot — at the cost of interpretability and more compute. Choosing between them is the central practical decision in classic NLP.</p>
+
+<h4>A working text classifier</h4>
+<p>For many business tasks, TF-IDF plus a linear model is a strong, cheap baseline you should always try first — it often gets you 90% of the value for 5% of the effort, and it tells you whether the problem is even learnable before you invest in heavier methods. Reach for embeddings (or a transformer) when nuance and word order genuinely matter and the simple baseline plateaus.</p>
+<pre><code class="language-py">from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+
+# ShopSphere reviews -> sentiment (1 = positive, 0 = negative)
+text_clf = Pipeline([
+    ("tfidf", TfidfVectorizer(ngram_range=(1, 2), min_df=5, stop_words="english")),
+    ("clf", LogisticRegression(max_iter=1000, class_weight="balanced")),
+]).fit(reviews_train, sent_train)
+
+print("test F1:", f1_score(sent_test, text_clf.predict(reviews_test)))
+
+# Inspect the most "positive" and "negative" words the model learned
+import numpy as np
+vocab = np.array(text_clf.named_steps["tfidf"].get_feature_names_out())
+coef  = text_clf.named_steps["clf"].coef_[0]
+print("most positive:", vocab[np.argsort(coef)[-8:]])
+print("most negative:", vocab[np.argsort(coef)[:8]])</code></pre>
+
+<p><strong>Exercise 5.2 — Classify ShopSphere Reviews</strong></p>
+<p>Dataset: ShopSphere <code>review_text</code> with sentiment labels.</p>
+<ol>
+<li>Build a TF-IDF + logistic regression pipeline and report test F1 against a majority-class baseline.</li>
+<li>Inspect the top positive/negative tokens and sanity-check they make sense.</li>
+<li>Add bigrams (<code>ngram_range=(1,2)</code>) and measure whether "not good" type phrases improve results.</li>
+<li>Swap in sentence embeddings (e.g., a pretrained model) feeding a classifier; compare to TF-IDF on score and speed.</li>
+<li>Find two reviews the model gets confidently wrong and explain what representation would fix them.</li>
+<li>Write a short note on when TF-IDF is the right call and when embeddings earn their cost.</li>
+</ol>
+<hr />
+
+<h3 id="module-53-notebook-to-production">Module 5.3 — From Notebook to Production</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.3 · <strong>Time:</strong> ~7h<br>
+<strong>Skip-check (test-out):</strong> Serialize a trained ShopSphere pipeline, serve it behind an API endpoint that accepts raw customer JSON and returns a churn probability, and describe how you would detect model drift after deployment.<br>
+<strong>Skip if:</strong> You package, serve, and monitor models, and understand training-serving skew and drift.<br>
+<strong>Unlocks:</strong> The deployment leg of the final capstone; the bridge to MLOps.</p>
+</blockquote>
+
+<h4>A model in a notebook delivers zero value</h4>
+<p>A model creates value only when something <em>uses</em> its predictions. The gap between "0.85 F1 in a notebook" and "a service that scores live customers" is where most projects quietly die. Productionizing means three things: a reproducible artifact, a serving interface, and monitoring — and the discipline is that the model in production must see data preprocessed <em>identically</em> to training, or its predictions silently degrade.</p>
+
+<h4>Serialize the whole pipeline, not just the model</h4>
+<p>Because your preprocessing lives in the same <code>Pipeline</code> as the model, you serialize the <em>whole</em> object — so serving applies the exact same imputation, scaling, and encoding learned at training time. This is what prevents <strong>training-serving skew</strong>: if the API scaled features differently than training did, every prediction would be subtly wrong while looking perfectly healthy. Ship the pipeline, pin the library versions, and accept raw inputs at the boundary.</p>
+<pre><code class="language-py">import joblib
+from fastapi import FastAPI
+import pandas as pd
+
+# After training the tuned pipeline, persist the ENTIRE object:
+joblib.dump(search.best_estimator_, "churn_pipeline.joblib")
+
+# Serve it (see the Python Guide's FastAPI module for the web-framework details)
+app = FastAPI()
+model = joblib.load("churn_pipeline.joblib")
+
+@app.post("/predict")
+def predict(customer: dict):
+    X = pd.DataFrame([customer])               # raw fields, exactly as in training
+    proba = float(model.predict_proba(X)[0, 1])  # pipeline re-applies preprocessing
+    return {"churn_probability": round(proba, 4),
+            "action": "offer_retention" if proba &gt;= 0.30 else "monitor"}</code></pre>
+
+<h4>It does not end at deployment — drift and monitoring</h4>
+<p>A deployed model decays. <strong>Data drift</strong> (the input distribution shifts — a new customer demographic) and <strong>concept drift</strong> (the relationship changes — churn behavior evolves after a pricing change) both silently erode accuracy, often with no error in the logs. You must monitor input distributions and, when labels eventually arrive, live performance — and plan to retrain on a schedule or a trigger. A model is a perishable asset, not a finished deliverable.</p>
+<blockquote class="callout"><p><strong>Disambiguation:</strong> <strong>Data drift</strong> vs. <strong>concept drift</strong> — data drift is a change in the inputs <em>X</em> (who your customers are); concept drift is a change in the relationship <em>X→y</em> (what makes them churn). They demand different responses: data drift may just need recalibration or retraining on fresh data, while concept drift can require rethinking the features and the problem itself.</p></blockquote>
+
+<p><strong>Exercise 5.3 — Ship the Churn Model</strong></p>
+<p>Dataset: your tuned ShopSphere churn pipeline from Phase 3.</p>
+<ol>
+<li>Serialize the entire fitted pipeline with <code>joblib</code> and reload it in a fresh process to confirm it predicts identically.</li>
+<li>Wrap it in a minimal API endpoint that accepts raw customer JSON and returns a churn probability and action.</li>
+<li>Send three example requests (a clear churner, a clear stayer, an ambiguous one) and verify sensible outputs.</li>
+<li>Write a script that simulates data drift (shift one feature's distribution) and detect it with a simple statistical check.</li>
+<li>Define a concrete retraining trigger (metric threshold or schedule) and justify it.</li>
+<li>Pin your environment (library versions) and document how to reproduce the served model exactly.</li>
+</ol>
+<hr />
+
+<h3 id="phase-5-capstone-deploy-model">Phase 5 Capstone: Deploy a Model</h3>
+<p><strong>Project: take any ShopSphere model from this guide and make it a usable, monitored service.</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) the four steps of the neural-net training loop, (2) why you serialize the whole pipeline and not just the model, and (3) the difference between data drift and concept drift? Re-read the relevant module for any blank.</p></blockquote>
+<p><strong>Dataset:</strong> ShopSphere (the churn pipeline and/or the review classifier).</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A serialized, version-pinned pipeline that reloads and predicts identically in a clean environment.</li>
+<li>An API endpoint accepting raw inputs and returning a prediction plus a business action.</li>
+<li>Documented example requests covering clear and ambiguous cases.</li>
+<li>A drift-detection check on at least one input feature.</li>
+<li>A written monitoring + retraining plan (what you watch, the trigger, the cadence).</li>
+<li>A README a teammate can follow to run the service locally end to end.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-end-to-end-ml">Final Capstone: End-to-End ML on ShopSphere</h2>
+<p><strong>Project: from raw customer data to a deployed, monitored, well-validated machine learning system.</strong></p>
+<p>Integrates every phase. Uses the ShopSphere data carried throughout the guide.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li><strong>Problem framing:</strong> a written spec for the primary task (churn), with target, leakage exclusions, and a business-tied success metric.</li>
+<li><strong>Feature pipeline:</strong> a single leak-free <code>Pipeline</code> with engineered features, imputation, scaling, and encoding.</li>
+<li><strong>Supervised model:</strong> a tuned, cross-validated classifier (boosted trees or better) beating a documented baseline.</li>
+<li><strong>Honest evaluation:</strong> CV results with variance, confusion matrix, ROC/PR curves, a justified threshold, and a single final test-set score.</li>
+<li><strong>Diagnostics:</strong> a learning-curve bias/variance analysis and the fix applied.</li>
+<li><strong>Unsupervised insight:</strong> a customer segmentation (with visualization) and an experiment feeding segment labels back into the supervised model.</li>
+<li><strong>Text dimension:</strong> a review-sentiment classifier, and a note on how its signal could enrich the churn model.</li>
+<li><strong>Deployment:</strong> a serialized pipeline served behind an API returning predictions and actions.</li>
+<li><strong>Operations:</strong> a drift-monitoring and retraining plan.</li>
+<li><strong>A capstone README</strong> that lets a stranger understand the problem, reproduce the model, and call the service — with explicit cross-references to the Python and Statistics guides for prerequisites.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Data Science &amp; ML Task-Tool Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Split data honestly</td><td><code>train_test_split(stratify=y)</code></td><td>Do it first; stratify for classification</td></tr>
+<tr><td>Establish a baseline</td><td><code>DummyClassifier</code> / <code>DummyRegressor</code></td><td>A score means nothing without it</td></tr>
+<tr><td>Preprocess without leaking</td><td><code>Pipeline</code> + <code>ColumnTransformer</code></td><td>Re-fits per fold; the leakage firewall</td></tr>
+<tr><td>Encode categoricals</td><td><code>OneHotEncoder(handle_unknown="ignore")</code></td><td>Avoids fake ordering; handles unseen levels</td></tr>
+<tr><td>Scale numerics</td><td><code>StandardScaler</code></td><td>Needed for linear/SVM/k-NN/k-means/PCA, not trees</td></tr>
+<tr><td>Regularized regression</td><td><code>Ridge</code> (L2) / <code>Lasso</code> (L1)</td><td>Lasso also selects features (zeros them out)</td></tr>
+<tr><td>Strong tabular classifier</td><td><code>XGBClassifier</code> / <code>LGBMClassifier</code></td><td>Usually the model to beat on tables</td></tr>
+<tr><td>Cross-validate</td><td><code>cross_val_score</code> + <code>StratifiedKFold</code></td><td>For selection; keep the test set out</td></tr>
+<tr><td>Imbalanced metric</td><td>F1, PR-AUC, <code>classification_report</code></td><td>Accuracy lies on imbalanced targets</td></tr>
+<tr><td>Diagnose over/underfit</td><td><code>learning_curve</code></td><td>Gap = variance; both low = bias</td></tr>
+<tr><td>Tune hyperparameters</td><td><code>RandomizedSearchCV</code></td><td>Inside CV; more efficient than full grid</td></tr>
+<tr><td>Cluster</td><td><code>KMeans</code> / <code>DBSCAN</code></td><td>Scale first; choose k via elbow + silhouette</td></tr>
+<tr><td>Reduce dimensions</td><td><code>PCA</code> (model) / <code>TSNE</code> (view)</td><td>PCA to compress; t-SNE only to visualize</td></tr>
+<tr><td>Neural network</td><td>PyTorch / Keras</td><td>For unstructured data; overkill for small tables</td></tr>
+<tr><td>Vectorize text</td><td><code>TfidfVectorizer</code> / embeddings</td><td>TF-IDF is a strong, cheap first baseline</td></tr>
+<tr><td>Serve a model</td><td><code>joblib.dump</code> + an API</td><td>Serialize the whole pipeline, not just the model</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-workflow-data">Workflow &amp; Data</h3>
+<dl class="glossary">
+<dt>Supervised learning</dt>
+<dd>Learning a mapping from inputs to a known label, split into classification (categories) and regression (numbers).</dd>
+<dd class="avoid"><strong>Avoid:</strong> "prediction" as a synonym — unsupervised learning also produces outputs; the distinction is the presence of labels.</dd>
+<dt>Feature</dt>
+<dd>An input variable the model uses to predict the target; a column of the model-ready matrix.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "variable", "attribute" loosely — the <em>target</em> is also a variable but is not a feature.</dd>
+<dt>Data leakage</dt>
+<dd>Any situation where information unavailable at prediction time influences training, inflating offline scores.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "overfitting" — leakage is a data/process flaw; overfitting is a model fitting noise. They are different bugs.</dd>
+<dt>Feature engineering</dt>
+<dd>Creating new predictive inputs from raw data (ratios, aggregations, encodings) to make the target easier to learn.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "data cleaning" — cleaning fixes correctness; feature engineering adds signal. See the Statistics guide for cleaning.</dd>
+<dt>Pipeline</dt>
+<dd>A chained sequence of transformers ending in an estimator, fit as one object so preprocessing re-fits within each CV fold.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "workflow", "script" — a sklearn Pipeline is a specific composable object, not any sequence of steps.</dd>
+</dl>
+
+<h3 id="glossary-modeling-evaluation">Modeling &amp; Evaluation</h3>
+<dl class="glossary">
+<dt>Regularization</dt>
+<dd>A penalty added to a model's loss to discourage complexity, trading a little bias for reduced variance.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "normalization" — normalization rescales features; regularization constrains the model.</dd>
+<dt>Bias / Variance</dt>
+<dd>Bias is error from a too-simple model (underfitting); variance is error from a too-flexible model fitting noise (overfitting).</dd>
+<dd class="avoid"><strong>Avoid:</strong> statistical "bias" (a skewed estimate) — here it means systematic underfitting.</dd>
+<dt>Cross-validation</dt>
+<dd>Estimating model performance by rotating the validation set through k folds and averaging, used for model selection.</dd>
+<dd class="avoid"><strong>Avoid:</strong> conflating with the <em>test set</em>, which is touched once at the very end, never during selection.</dd>
+<dt>Ensemble</dt>
+<dd>A model that combines many base models so their independent errors cancel, via bagging (parallel) or boosting (sequential).</dd>
+<dd class="avoid"><strong>Avoid:</strong> using "random forest" and "boosting" interchangeably — they are different ensembling strategies.</dd>
+<dt>Precision / Recall</dt>
+<dd>Precision is the fraction of positive predictions that are correct; recall is the fraction of actual positives that are caught.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "accuracy" — accuracy is misleading on imbalanced data; precision and recall expose the trade-off.</dd>
+<dt>ROC-AUC</dt>
+<dd>The area under the true-positive vs. false-positive curve; a threshold-independent measure of ranking quality.</dd>
+<dd class="avoid"><strong>Avoid:</strong> reading it as accuracy — on heavy imbalance, PR-AUC is the more honest summary.</dd>
+</dl>
+
+<h3 id="glossary-deep-learning-production">Deep Learning &amp; Production</h3>
+<dl class="glossary">
+<dt>Hyperparameter</dt>
+<dd>A configuration set by the practitioner before training (e.g., tree depth, learning rate), as opposed to learned parameters.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "parameter" — parameters (weights, splits) are learned from data; hyperparameters are chosen.</dd>
+<dt>Activation function</dt>
+<dd>A non-linear function applied between neural-network layers that lets the network model non-linear relationships.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "loss function" — activations shape the network; the loss measures its error.</dd>
+<dt>Backpropagation</dt>
+<dd>The algorithm that computes the gradient of the loss with respect to every weight, enabling the optimizer to update them.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "training" as a synonym — backprop is one step (gradient computation) inside the training loop.</dd>
+<dt>Embedding</dt>
+<dd>A dense numeric vector representing an item (word, sentence) such that semantically similar items lie close together.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "TF-IDF vector" — TF-IDF is sparse and meaning-blind; embeddings are dense and capture semantics.</dd>
+<dt>Training-serving skew</dt>
+<dd>A mismatch between how data is processed in training versus at serving time, silently corrupting live predictions.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "drift" — skew is a deployment-time processing bug; drift is the world changing over time.</dd>
+<dt>Concept drift</dt>
+<dd>A change over time in the relationship between inputs and target, degrading a deployed model even with stable inputs.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "data drift" — data drift is a shift in the inputs themselves, not in the input→target relationship.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td><em>Hands-On Machine Learning with Scikit-Learn, Keras &amp; TensorFlow</em> (Géron)</td><td>The single best practical, code-first ML book; mirrors this guide's arc</td></tr>
+<tr><td><em>Python Machine Learning</em> (Raschka &amp; Mirjalili)</td><td>Rigorous yet practical; strong on the why behind algorithms</td></tr>
+<tr><td><em>An Introduction to Statistical Learning</em> (James et al., free PDF)</td><td>The accessible theory bridge; Python edition available</td></tr>
+<tr><td><em>Designing Machine Learning Systems</em> (Huyen)</td><td>The production/MLOps side — deployment, drift, monitoring</td></tr>
+<tr><td><em>Deep Learning with PyTorch</em> (Stevens et al.)</td><td>A practical path into neural networks for Module 5</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>scikit-learn User Guide</td><td>Classical ML</td><td>Exceptional docs; the reference you'll return to most</td></tr>
+<tr><td>Andrew Ng — Machine Learning Specialization (Coursera)</td><td>Foundations</td><td>The canonical first course; intuition over math</td></tr>
+<tr><td>fast.ai — Practical Deep Learning</td><td>Deep learning</td><td>Top-down, code-first; pairs well with Module 5</td></tr>
+<tr><td>Kaggle Learn (micro-courses)</td><td>Hands-on ML</td><td>Short, practical, with runnable notebooks</td></tr>
+<tr><td>StatQuest (YouTube)</td><td>Algorithm intuition</td><td>Clearest visual explanations of how each model works</td></tr>
+<tr><td>Google ML Crash Course</td><td>Foundations</td><td>Free, concise, with interactive exercises</td></tr>
+<tr><td>Companion: <a href="../statistics-with-python/statistics-with-python_learning_guide.html">Statistics with Python</a></td><td>Prerequisites</td><td>Distributions, inference, EDA, cleaning — assumed here</td></tr>
+<tr><td>Companion: <a href="../python/python_learning_guide.html">Python Learning Guide</a></td><td>Prerequisites</td><td>Language, pandas, FastAPI for the serving module</td></tr>
+</table>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>ShopSphere (shared <a href="../datasets/shopsphere/">datasets folder</a>)</td><td>This guide's own benchmark — customers table + reviews table</td></tr>
+<tr><td>scikit-learn + pandas + NumPy</td><td>The core classical-ML stack for every phase</td></tr>
+<tr><td>XGBoost / LightGBM</td><td>State-of-the-art gradient boosting for tabular data</td></tr>
+<tr><td>PyTorch / Keras</td><td>Neural networks (Phase 5)</td></tr>
+<tr><td>Kaggle Datasets &amp; UCI ML Repository</td><td>Practice datasets to apply skills beyond ShopSphere</td></tr>
+<tr><td>Jupyter / Google Colab</td><td>Interactive experimentation; Colab gives free GPUs for DL</td></tr>
+<tr><td>SHAP</td><td>Trustworthy feature attribution beyond default importances</td></tr>
+</table>
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>Kaggle (forums + competitions)</td><td>Web</td><td>Where practical modeling skill is forged and benchmarked</td></tr>
+<tr><td>r/MachineLearning</td><td>Reddit</td><td>Research trends and serious technical discussion</td></tr>
+<tr><td>r/learnmachinelearning</td><td>Reddit</td><td>Beginner-friendly questions and learning-path advice</td></tr>
+<tr><td>Cross Validated</td><td>Stack Exchange</td><td>Authoritative answers on statistics and ML methodology</td></tr>
+<tr><td>Hugging Face forums &amp; Discord</td><td>Web</td><td>Modern NLP, embeddings, and transformer practice</td></tr>
+<tr><td>MLOps Community</td><td>Slack</td><td>The production/deployment side — drift, serving, monitoring</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is session-only and resets on reload.</p></blockquote>
+<h4>Phase 1 — The ML Workflow</h4>
+<ul>
+<li>[ ] Module 1.1 — From Question to ML Problem</li>
+<li>[ ] Exercise 1.1 — Frame Three ShopSphere Problems</li>
+<li>[ ] Module 1.2 — The scikit-learn Workflow &amp; Baselines</li>
+<li>[ ] Exercise 1.2 — Baseline Before Brilliance</li>
+<li>[ ] Module 1.3 — Feature Engineering for Models</li>
+<li>[ ] Exercise 1.3 — Build the ShopSphere Feature Pipeline</li>
+<li>[ ] Capstone 1 — A Defensible Baseline Model</li>
+</ul>
+<h4>Phase 2 — Supervised Learning</h4>
+<ul>
+<li>[ ] Module 2.1 — Regression Models (Prediction)</li>
+<li>[ ] Exercise 2.1 — Predict Lifetime Value</li>
+<li>[ ] Module 2.2 — Classification Models</li>
+<li>[ ] Exercise 2.2 — A Classifier Bake-Off</li>
+<li>[ ] Module 2.3 — Ensembles &amp; Gradient Boosting</li>
+<li>[ ] Exercise 2.3 — Boost the Churn Model</li>
+<li>[ ] Capstone 2 — The ShopSphere Churn Classifier</li>
+</ul>
+<h4>Phase 3 — Evaluation &amp; Tuning</h4>
+<ul>
+<li>[ ] Module 3.1 — Validation &amp; Metrics</li>
+<li>[ ] Exercise 3.1 — Validate Like You Mean It</li>
+<li>[ ] Module 3.2 — Bias–Variance &amp; Overfitting</li>
+<li>[ ] Exercise 3.2 — Diagnose and Cure</li>
+<li>[ ] Module 3.3 — Hyperparameter Tuning &amp; Pipelines</li>
+<li>[ ] Exercise 3.3 — Tune the Whole Pipeline</li>
+<li>[ ] Capstone 3 — A Tuned, Trustworthy Pipeline</li>
+</ul>
+<h4>Phase 4 — Unsupervised Learning</h4>
+<ul>
+<li>[ ] Module 4.1 — Clustering</li>
+<li>[ ] Exercise 4.1 — Segment ShopSphere Customers</li>
+<li>[ ] Module 4.2 — Dimensionality Reduction</li>
+<li>[ ] Exercise 4.2 — Compress and Visualize</li>
+<li>[ ] Capstone 4 — ShopSphere Customer Segments</li>
+</ul>
+<h4>Phase 5 — Deep Learning &amp; Production</h4>
+<ul>
+<li>[ ] Module 5.1 — Neural Network Fundamentals</li>
+<li>[ ] Exercise 5.1 — A Neural Net for Churn</li>
+<li>[ ] Module 5.2 — Practical NLP</li>
+<li>[ ] Exercise 5.2 — Classify ShopSphere Reviews</li>
+<li>[ ] Module 5.3 — From Notebook to Production</li>
+<li>[ ] Exercise 5.3 — Ship the Churn Model</li>
+<li>[ ] Capstone 5 — Deploy a Model</li>
+</ul>
+<h4>Certifications / Outcomes</h4>
+<ul>
+<li>[ ] Complete a public Kaggle competition (top 50% on a tabular task)</li>
+<li>[ ] TensorFlow Developer Certificate or equivalent DL milestone</li>
+<li>[ ] A deployed model serving live predictions (portfolio piece)</li>
+<li>[ ] Final Capstone project complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 — Data Science &amp; Machine Learning Track: Beginner to Intermediate</em><br>
+<em>Non-linear modular design · Placement quiz · 14 modules · ~17 weeks part-time · hayah-ai</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

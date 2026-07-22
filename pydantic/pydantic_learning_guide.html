@@ -1,0 +1,2179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pydantic Learning Guide — Beginner to Intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Pydantic<br>Learning Guide</div>
+      <div class="brand-sub">Python · Pydantic v2 · FastAPI · Pydantic AI</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#beginner-intermediate-track" class="nav-top">Beginner–Intermediate Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+<div class="nav-group">
+<a href="#phase-1-foundations" class="nav-top nav-phase">Phase 1: Foundations</a>
+<div class="nav-children">
+<a href="#module-11-why-pydantic" class="nav-child">Module 1.1 — Why Pydantic?</a>
+<a href="#module-12-basemodel-fundamentals" class="nav-child">Module 1.2 — BaseModel Fundamentals</a>
+<a href="#module-13-field-types-and-coercion" class="nav-child">Module 1.3 — Field Types &amp; Coercion</a>
+<a href="#module-14-validators-field-and-model" class="nav-child">Module 1.4 — Validators</a>
+<a href="#phase-1-capstone-validated-order-loader" class="nav-child">Phase 1 Capstone: Validated Order Loader</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-2-data-validation-patterns" class="nav-top nav-phase">Phase 2: Data Validation Patterns</a>
+<div class="nav-children">
+<a href="#module-21-nested-models-and-complex-structures" class="nav-child">Module 2.1 — Nested Models</a>
+<a href="#module-22-parsing-and-loading-data" class="nav-child">Module 2.2 — Parsing &amp; Loading Data</a>
+<a href="#module-23-custom-validators" class="nav-child">Module 2.3 — Custom Validators</a>
+<a href="#module-24-settings-management" class="nav-child">Module 2.4 — Settings Management</a>
+<a href="#phase-2-capstone-etl-validation-pipeline" class="nav-child">Phase 2 Capstone: ETL Validation Pipeline</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-3-production-and-integration" class="nav-top nav-phase">Phase 3: Production &amp; Integration</a>
+<div class="nav-children">
+<a href="#module-31-pydantic-and-pandas" class="nav-child">Module 3.1 — Pydantic &amp; Pandas</a>
+<a href="#module-32-pydantic-and-fastapi" class="nav-child">Module 3.2 — Pydantic &amp; FastAPI</a>
+<a href="#module-33-json-schema-and-data-contracts" class="nav-child">Module 3.3 — JSON Schema &amp; Contracts</a>
+<a href="#module-34-error-handling-and-reports" class="nav-child">Module 3.4 — Error Handling &amp; Reports</a>
+<a href="#phase-3-capstone-production-data-contract" class="nav-child">Phase 3 Capstone: Production Data Contract</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-4-pydantic-ai-typed-agents" class="nav-top nav-phase">Phase 4: Pydantic AI</a>
+<div class="nav-children">
+<a href="#module-41-why-pydantic-ai" class="nav-child">Module 4.1 — Why Pydantic AI?</a>
+<a href="#module-42-structured-outputs-from-llms" class="nav-child">Module 4.2 — Structured LLM Outputs</a>
+<a href="#module-43-tools-dependencies-and-runcontext" class="nav-child">Module 4.3 — Tools &amp; Dependencies</a>
+<a href="#module-44-output-validation-and-streaming" class="nav-child">Module 4.4 — Validation &amp; Streaming</a>
+<a href="#phase-4-capstone-ai-order-intake-agent" class="nav-child">Phase 4 Capstone: AI Order Intake Agent</a>
+</div></div>
+<a href="#final-capstone-pydantic" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="pydantic-learning-guide">Pydantic Learning Guide</h1>
+<h2 id="beginner-intermediate-track">Beginner–Intermediate Track</h2>
+<h3>Python · Pydantic v2 · Pandas · FastAPI · Pydantic AI</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Pydantic" xmlns="http://www.w3.org/2000/svg">
+<path d="M128 20 L212 56 L212 132 C212 182 176 218 128 234 C80 218 44 182 44 132 L44 56 Z" fill="#0d7a6e"/>
+<path d="M128 44 L196 74 L196 132 C196 170 166 198 128 212 C90 198 60 170 60 132 L60 74 Z" fill="#075249"/>
+<polyline points="90,128 114,154 166,98" stroke="#e8f4f1" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same realistic <strong>E-commerce Orders Dataset</strong> scenario. Download <code>ecommerce_orders.csv</code> from the shared <a href="../datasets/ecommerce-orders/">datasets folder</a> — it's deliberately ~23% invalid rows (bad emails, out-of-range discounts, ship-before-order dates) so <code>load_orders_from_csv</code> in Module 2.2 has real errors to catch.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Some Pydantic experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+<h3>Section A — Python Foundations</h3>
+<ul>
+<li>[ ] I can write a Python class with typed attributes using <code>int</code>, <code>str</code>, <code>float</code>, and <code>Optional</code>.</li>
+<li>[ ] I understand what a Python <code>dataclass</code> does and how it differs from a plain class.</li>
+<li>[ ] I can import and use <code>datetime.date</code> and work with ISO date strings.</li>
+<li>[ ] I understand Python type hints well enough to annotate a function signature.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.2</strong> | <strong>4 yes</strong> → Skip to <strong>Section B</strong></p>
+<h3>Section B — Pydantic Basics</h3>
+<ul>
+<li>[ ] I can define a <code>BaseModel</code> subclass and instantiate it from a dict.</li>
+<li>[ ] I know the difference between <code>model_validate()</code> and direct instantiation.</li>
+<li>[ ] I can write a <code>@field_validator</code> that raises a <code>ValueError</code> on bad input.</li>
+<li>[ ] I understand what a <code>ValidationError</code> is and how to inspect its <code>.errors()</code>.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.2</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.1</strong> | <strong>4 yes</strong> → Skip to <strong>Section C</strong></p>
+<h3>Section C — Data Pipeline Skills</h3>
+<ul>
+<li>[ ] I can load a CSV with <code>csv.DictReader</code> and validate each row with a Pydantic model.</li>
+<li>[ ] I know how to use <code>TypeAdapter</code> to validate a <code>List[MyModel]</code> in one call.</li>
+<li>[ ] I can export a Pydantic model's JSON Schema with <code>model_json_schema()</code>.</li>
+<li>[ ] I have used Pydantic with either Pandas DataFrames or a FastAPI endpoint.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.2</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.1</strong> | <strong>4 yes</strong> → Go straight to the <strong>Final Capstone</strong></p>
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-why-pydantic"><td>1.1</td><td>Why Pydantic? Data Quality Problems</td><td>Beginner</td><td>Python basics</td><td>2h</td></tr>
+<tr data-href="#module-12-basemodel-fundamentals"><td>1.2</td><td>BaseModel Fundamentals</td><td>Beginner</td><td>1.1</td><td>3h</td></tr>
+<tr data-href="#module-13-field-types-and-coercion"><td>1.3</td><td>Field Types &amp; Type Coercion</td><td>Beginner</td><td>1.2</td><td>3h</td></tr>
+<tr data-href="#module-14-validators-field-and-model"><td>1.4</td><td>Validators: Field-Level &amp; Model-Level</td><td>Beginner–Intermediate</td><td>1.3</td><td>3h</td></tr>
+<tr data-href="#module-21-nested-models-and-complex-structures"><td>2.1</td><td>Nested Models &amp; Complex Structures</td><td>Beginner–Intermediate</td><td>1.4</td><td>3h</td></tr>
+<tr data-href="#module-22-parsing-and-loading-data"><td>2.2</td><td>Parsing &amp; Loading Data (JSON, CSV, Dicts)</td><td>Intermediate</td><td>2.1</td><td>4h</td></tr>
+<tr data-href="#module-23-custom-validators"><td>2.3</td><td>Custom Validators with @field_validator</td><td>Intermediate</td><td>2.2</td><td>3h</td></tr>
+<tr data-href="#module-24-settings-management"><td>2.4</td><td>Settings Management with BaseSettings</td><td>Intermediate</td><td>2.1</td><td>2h</td></tr>
+<tr data-href="#module-31-pydantic-and-pandas"><td>3.1</td><td>Pydantic &amp; Pandas: Validated DataFrames</td><td>Intermediate</td><td>2.2, 2.3</td><td>4h</td></tr>
+<tr data-href="#module-32-pydantic-and-fastapi"><td>3.2</td><td>Pydantic &amp; FastAPI: Data API Contracts</td><td>Intermediate</td><td>2.1</td><td>4h</td></tr>
+<tr data-href="#module-33-json-schema-and-data-contracts"><td>3.3</td><td>JSON Schema Export &amp; Data Contracts</td><td>Intermediate</td><td>3.1</td><td>3h</td></tr>
+<tr data-href="#module-34-error-handling-and-reports"><td>3.4</td><td>Error Handling &amp; Validation Reports</td><td>Intermediate</td><td>3.1</td><td>3h</td></tr>
+<tr data-href="#module-41-why-pydantic-ai"><td>4.1</td><td>Why Pydantic AI? Typed Agents</td><td>Intermediate</td><td>1.4, 2.1</td><td>2h</td></tr>
+<tr data-href="#module-42-structured-outputs-from-llms"><td>4.2</td><td>Structured Outputs from LLMs</td><td>Intermediate</td><td>4.1</td><td>4h</td></tr>
+<tr data-href="#module-43-tools-dependencies-and-runcontext"><td>4.3</td><td>Tools, Dependencies &amp; RunContext</td><td>Intermediate</td><td>4.2</td><td>4h</td></tr>
+<tr data-href="#module-44-output-validation-and-streaming"><td>4.4</td><td>Output Validation, Retries &amp; Streaming</td><td>Intermediate–Advanced</td><td>4.3</td><td>4h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Modules 3.1, 3.2, and 3.3 are independent of each other — complete them in any order after finishing Phase 2. Module 2.4 (Settings) can be done any time after Module 2.1. <strong>Phase 4 (Pydantic AI)</strong> builds directly on the modelling skills from Phases 1–2 — it needs an LLM provider API key (e.g. <code>ANTHROPIC_API_KEY</code>) to run, but the Pydantic concepts transfer unchanged.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset of the guide.</p>
+<h3 id="track-1-data-analyst-essentials">Track 1 — Data Analyst Essentials (validate incoming data fast)</h3>
+<p><code>1.1 → 1.2 → 1.3 → 1.4 → 2.2 → 2.3 → Phase 1 Capstone</code><br>
+Target outcome: <strong>Validate any CSV or JSON feed reliably before analysis</strong></p>
+<h3 id="track-2-pipeline-engineer">Track 2 — Pipeline Engineer (robust ETL with Pydantic)</h3>
+<p><code>1.2 → 1.3 → 1.4 → 2.1 → 2.2 → 2.3 → 2.4 → 3.1 → 3.4 → Phase 2 Capstone</code><br>
+Target outcome: <strong>Production-grade ETL pipeline with full validation reports</strong></p>
+<h3 id="track-3-api-data-contracts">Track 3 — API Data Contracts (FastAPI + Pydantic)</h3>
+<p><code>1.2 → 1.3 → 2.1 → 3.2 → 3.3 → Phase 3 Capstone</code><br>
+Target outcome: <strong>Define, enforce, and publish data contracts for an API</strong></p>
+<h3 id="track-4-ai-agent-builder">Track 4 — AI Agent Builder (typed LLM agents with Pydantic AI)</h3>
+<p><code>1.2 → 1.3 → 1.4 → 2.1 → 4.1 → 4.2 → 4.3 → 4.4 → Phase 4 Capstone</code><br>
+Target outcome: <strong>Build agents whose LLM outputs are validated Pydantic models, with tools and retries</strong></p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Foundations           (Weeks 1–2)
+Phase 2 — Data Validation Patterns  (Weeks 3–4)
+Phase 3 — Production &amp; Integration  (Weeks 5–6)
+Phase 4 — Pydantic AI (Typed Agents)  (Weeks 7–8)
+Capstone Projects               (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 → 1.2 → 1.3 → 1.4 ─┬─ 2.1 → 2.2 → 2.3 ─┬─ 3.1 ─┐
+                         └─ 2.4               ├─ 3.2  ├─ Final Capstone
+                                              └─ 3.3 ─┤
+                                              └─ 3.4 ─┘
+1.4 + 2.1 ──→ 4.1 → 4.2 → 4.3 → 4.4 ──────────→ Phase 4 Capstone</code></pre>
+
+<h2 id="phase-1-foundations">Phase 1: Foundations</h2>
+<h3 id="weeks-1-2">Weeks 1–2 | Goal: Define validated data models and understand what Pydantic catches at runtime</h3>
+<hr />
+
+<h3 id="module-11-why-pydantic">Module 1.1 — Why Pydantic? Data Quality Problems</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Basic Python (functions, dicts, lists) · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Explain in one sentence what a <code>ValidationError</code> is and write a two-line example that triggers one.<br>
+<strong>Skip if:</strong> You already know why runtime type errors in dicts are dangerous and have used Pydantic to catch them.<br>
+<strong>Unlocks:</strong> Module 1.2</p>
+</blockquote>
+
+<h4>The silent-bug problem in data analysis</h4>
+<p>Analysts load data from CSVs, APIs, and databases — and every source can deliver wrong types, missing values, or out-of-range numbers. Python dicts accept anything without complaint, so a bad value can propagate silently through dozens of calculations before surfacing as a wrong report.</p>
+<pre><code class="language-py">order = {"order_id": "ORD-001", "quantity": "two", "unit_price": 19.99}
+
+# This raises TypeError at the multiplication — far from where the bad data entered
+total = order["quantity"] * order["unit_price"]
+</code></pre>
+
+<h4>How Pydantic stops the problem at the boundary</h4>
+<p>Pydantic validates data the moment it enters your model — before any calculation runs. The error message tells you exactly which field failed and why, which turns a mystery bug into a clear action item.</p>
+<pre><code class="language-py">from pydantic import BaseModel, ValidationError
+
+class Order(BaseModel):
+    order_id: str
+    quantity: int
+    unit_price: float
+
+try:
+    order = Order(order_id="ORD-001", quantity="two", unit_price=19.99)
+except ValidationError as e:
+    print(e)
+# 1 validation error for Order
+# quantity
+#   Input should be a valid integer, unable to parse string as an integer
+#   [type=int_parsing, input_value='two', ...]
+</code></pre>
+
+<h4>Why Pydantic v2 over alternatives</h4>
+<p>Python dataclasses do not validate types at runtime — they only annotate them. Pydantic v2 (released 2023) is written in Rust, runs 5–50x faster than v1, and ships JSON Schema export, settings management, and strict mode out of the box. For data analysts, the combination of instant validation, readable errors, and DataFrame interoperability makes it the best fit.</p>
+
+<p><strong>Exercise 1.1 — Spot the Bug</strong></p>
+<p>Dataset: E-commerce Orders Dataset</p>
+<ol>
+<li>Install Pydantic v2: <code>pip install pydantic</code></li>
+<li>Create an <code>Order</code> model with fields <code>order_id: str</code>, <code>quantity: int</code>, <code>unit_price: float</code>, <code>status: str</code>.</li>
+<li>Instantiate it with valid data and print <code>order.model_dump()</code>.</li>
+<li>Pass <code>quantity="five"</code> and capture the <code>ValidationError</code>. Print <code>e.errors()</code> and identify the <code>type</code> field in the first error dict.</li>
+<li>Pass <code>unit_price=None</code> (no default) and observe the error. Then add <code>= None</code> as a default and observe the difference.</li>
+<li>Write a helper <code>safe_load(data: dict)</code> that returns <code>(order, None)</code> on success or <code>(None, error_list)</code> on failure.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-basemodel-fundamentals">Module 1.2 — BaseModel Fundamentals</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Module 1.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Write an <code>OrderRecord</code> model with 6 fields including an <code>Optional</code> float, instantiate it, and call <code>model_dump()</code> and <code>model_dump_json()</code>.<br>
+<strong>Skip if:</strong> You can define a BaseModel, use <code>Optional</code> fields with defaults, and serialize to dict and JSON without looking anything up.<br>
+<strong>Unlocks:</strong> Module 1.3</p>
+</blockquote>
+
+<h4>Defining a model</h4>
+<p>A Pydantic model is a class that inherits <code>BaseModel</code>. Every class attribute with a type annotation becomes a validated field. Without a default, the field is required — missing it raises a <code>ValidationError</code> at instantiation, not silently later.</p>
+<pre><code class="language-py">from pydantic import BaseModel
+from datetime import date
+from typing import Optional
+
+class OrderRecord(BaseModel):
+    order_id: str
+    customer_email: str
+    product_sku: str
+    quantity: int
+    unit_price: float
+    discount_pct: Optional[float] = None
+    order_date: date
+    status: str
+
+order = OrderRecord(
+    order_id="ORD-001",
+    customer_email="juan@example.com",
+    product_sku="SKU-A1",
+    quantity=3,
+    unit_price=299.00,
+    order_date="2024-01-15",
+    status="pending"
+)
+print(order.quantity)        # 3
+print(type(order.order_date))  # &lt;class 'datetime.date'&gt;
+</code></pre>
+
+<h4>Optional fields and defaults</h4>
+<p><code>Optional[float] = None</code> means the field accepts a float or <code>None</code>, and defaults to <code>None</code> if omitted. Omitting a required field (no default) always raises a <code>ValidationError</code> — there is no silent <code>None</code> fallback. This distinction matters when loading CSVs where a column might simply not be present.</p>
+
+<h4>Serialization: model_dump() and model_dump_json()</h4>
+<pre><code class="language-py">d = order.model_dump()
+print(d["order_date"])        # datetime.date(2024, 1, 15)
+
+j = order.model_dump_json()
+print(j)
+# {"order_id":"ORD-001","customer_email":"juan@example.com",...,"order_date":"2024-01-15"}
+</code></pre>
+<p><code>model_dump()</code> returns a Python dict with native Python types. <code>model_dump_json()</code> returns a JSON string with dates serialized as ISO strings — ready to write to a file or send over HTTP.</p>
+
+<h4>Model copy and updates</h4>
+<pre><code class="language-py">updated = order.model_copy(update={"status": "shipped", "quantity": 5})
+print(updated.status)    # shipped
+print(order.status)      # pending  — original is unchanged
+</code></pre>
+
+<p><strong>Exercise 1.2 — Build the Order Model</strong></p>
+<p>Dataset: E-commerce Orders Dataset</p>
+<ol>
+<li>Define <code>OrderRecord</code> with all fields from the dataset: <code>order_id</code>, <code>customer_email</code>, <code>product_sku</code>, <code>quantity</code>, <code>unit_price</code>, <code>discount_pct</code> (optional), <code>order_date</code>, <code>ship_date</code> (optional), <code>region</code>, <code>status</code>.</li>
+<li>Instantiate a valid record and verify <code>type(order.order_date)</code> is <code>datetime.date</code>.</li>
+<li>Call <code>model_dump()</code> and confirm <code>discount_pct</code> is <code>None</code> when omitted.</li>
+<li>Call <code>model_dump_json()</code> and confirm dates are ISO strings, not Python objects.</li>
+<li>Use <code>model_copy(update=...)</code> to change the status to <code>"shipped"</code> and set a <code>ship_date</code>. Confirm the original is unchanged.</li>
+<li>Attempt to instantiate with <code>order_date</code> missing and confirm the <code>ValidationError</code> identifies the field.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-field-types-and-coercion">Module 1.3 — Field Types &amp; Type Coercion</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Module 1.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Use <code>EmailStr</code> and <code>UUID</code> field types, explain what type coercion means in Pydantic v2, and demonstrate strict mode on one field.<br>
+<strong>Skip if:</strong> You know the difference between lax and strict mode in Pydantic v2 and have used <code>EmailStr</code>, <code>UUID</code>, and <code>Field(ge=1)</code>.<br>
+<strong>Unlocks:</strong> Module 1.4</p>
+</blockquote>
+
+<h4>Built-in Python types</h4>
+<p>Pydantic validates all standard Python types: <code>str</code>, <code>int</code>, <code>float</code>, <code>bool</code>, <code>bytes</code>, <code>list</code>, <code>dict</code>, <code>datetime.date</code>, <code>datetime.datetime</code>, <code>uuid.UUID</code>. The key behavior is <em>coercion in lax mode</em>: Pydantic will attempt to convert an incoming value to the declared type before failing. A string <code>"2024-01-15"</code> becomes a <code>datetime.date</code>; the string <code>"3"</code> becomes an <code>int</code>. This matters for CSV data, where every value starts as a string.</p>
+
+<h4>Pydantic-specific types: EmailStr, UUID, HttpUrl</h4>
+<pre><code class="language-py">from pydantic import BaseModel, EmailStr, HttpUrl
+from uuid import UUID
+from datetime import date
+
+class OrderRecord(BaseModel):
+    order_id: UUID
+    customer_email: EmailStr
+    quantity: int
+    unit_price: float
+    order_date: date
+
+order = OrderRecord(
+    order_id="550e8400-e29b-41d4-a716-446655440000",
+    customer_email="maria@shop.ph",
+    quantity=2,
+    unit_price=149.50,
+    order_date="2024-01-15"
+)
+print(type(order.order_id))        # &lt;class 'uuid.UUID'&gt;
+print(type(order.order_date))      # &lt;class 'datetime.date'&gt;
+print(order.customer_email)        # maria@shop.ph  (validated format)
+
+# EmailStr requires:  pip install pydantic[email]
+</code></pre>
+
+<h4>Field constraints with Field()</h4>
+<pre><code class="language-py">from pydantic import BaseModel, Field
+from typing import Optional
+
+class OrderRecord(BaseModel):
+    order_id: str = Field(min_length=3, max_length=50)
+    quantity: int = Field(ge=1, description="Units ordered, at least 1")
+    unit_price: float = Field(gt=0.0, description="Price per unit in PHP")
+    discount_pct: Optional[float] = Field(None, ge=0.0, le=1.0)
+</code></pre>
+<p><code>ge</code> (greater-than-or-equal), <code>gt</code> (greater-than), <code>le</code> (less-than-or-equal), <code>lt</code> (less-than) are enforced at validation time. If <code>quantity=0</code> arrives, Pydantic raises a <code>ValidationError</code> immediately — no need for a manual <code>if</code> check.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Pydantic v2 is stricter than v1. In v1, passing <code>True</code> for an <code>int</code> field was silently accepted (Python <code>bool</code> is a subclass of <code>int</code>). In v2 strict mode, that raises an error. When migrating a v1 codebase, run with <code>model_config = ConfigDict(strict=False)</code> first to surface coercion differences before tightening to strict mode.</p></blockquote>
+
+<h4>Strict mode</h4>
+<pre><code class="language-py">from pydantic import BaseModel, ConfigDict
+
+class StrictOrder(BaseModel):
+    model_config = ConfigDict(strict=True)
+    quantity: int
+    unit_price: float
+
+# In strict mode, "3" does NOT coerce to int — it raises a ValidationError
+# Use strict mode when your source data should already be typed correctly
+# (e.g., a validated database result) and coercion would hide a bug.
+try:
+    StrictOrder(quantity="3", unit_price=9.99)
+except Exception as e:
+    print(e)
+# 1 validation error for StrictOrder
+# quantity
+#   Input should be a valid integer [type=int_type, ...]
+</code></pre>
+
+<p><strong>Exercise 1.3 — Typed and Constrained Fields</strong></p>
+<p>Dataset: E-commerce Orders Dataset</p>
+<ol>
+<li>Add <code>EmailStr</code> to the <code>customer_email</code> field. Test with <code>"not-an-email"</code> and confirm it fails.</li>
+<li>Add <code>Field(ge=1)</code> to <code>quantity</code> and <code>Field(gt=0)</code> to <code>unit_price</code>. Test that <code>quantity=0</code> fails.</li>
+<li>Add <code>Field(ge=0.0, le=1.0)</code> to <code>discount_pct</code>. Test <code>discount_pct=1.5</code>.</li>
+<li>Add a <code>UUID</code> type to <code>order_id</code>. Pass a valid UUID string and confirm <code>type(order.order_id)</code> is <code>uuid.UUID</code>.</li>
+<li>Switch to <code>ConfigDict(strict=True)</code>. Pass <code>quantity="3"</code> and observe the error. Switch back to lax mode and observe the coercion.</li>
+<li>Load 5 rows from a CSV where every value is a string. Verify that lax mode coerces <code>quantity</code> and <code>unit_price</code> correctly.</li>
+</ol>
+<hr />
+
+<h3 id="module-14-validators-field-and-model">Module 1.4 — Validators: Field-Level &amp; Model-Level</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 1.3 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Write a <code>@field_validator</code> that normalizes a string and a <code>@model_validator(mode="after")</code> that validates a cross-field date rule.<br>
+<strong>Skip if:</strong> You can write both field and model validators, know when to use <code>mode="before"</code> vs <code>mode="after"</code>, and understand the validator execution order.<br>
+<strong>Unlocks:</strong> Phase 2</p>
+</blockquote>
+
+<h4>@field_validator — single-field rules</h4>
+<p>A <code>@field_validator</code> runs after Pydantic has already coerced the value to the declared type (in <code>mode="after"</code>, the default). Raise <code>ValueError</code> to reject the input; return the (optionally transformed) value to accept it. The <code>@classmethod</code> decorator is required — Pydantic uses it to detect validators at class definition time.</p>
+<pre><code class="language-py">from pydantic import BaseModel, field_validator
+from typing import Optional
+
+class OrderRecord(BaseModel):
+    order_id: str
+    quantity: int
+    unit_price: float
+    discount_pct: Optional[float] = None
+    region: str
+
+    @field_validator("quantity")
+    @classmethod
+    def quantity_must_be_positive(cls, v: int) -&gt; int:
+        if v &lt; 1:
+            raise ValueError("quantity must be at least 1")
+        return v
+
+    @field_validator("region", mode="before")
+    @classmethod
+    def normalize_region(cls, v: str) -&gt; str:
+        allowed = {"NCR", "LUZON", "VISAYAS", "MINDANAO"}
+        normalized = v.strip().upper()
+        if normalized not in allowed:
+            raise ValueError(f"region must be one of {allowed}")
+        return normalized
+</code></pre>
+
+<h4>mode="before" vs mode="after"</h4>
+<p><code>mode="before"</code> receives the raw input value before Pydantic's type coercion — useful for cleaning strings (strip whitespace, uppercase) before they are validated. <code>mode="after"</code> receives the already-coerced typed value — useful for range and business-rule checks. Using the wrong mode can cause validators to receive a type they don't expect.</p>
+
+<h4>@model_validator — cross-field rules</h4>
+<p>When a rule involves two or more fields together, use <code>@model_validator(mode="after")</code>. It runs after all field validators have passed, so all fields on <code>self</code> are already validated and typed.</p>
+<pre><code class="language-py">from pydantic import BaseModel, model_validator
+from datetime import date
+from typing import Optional
+
+class OrderRecord(BaseModel):
+    order_id: str
+    order_date: date
+    ship_date: Optional[date] = None
+    discount_pct: Optional[float] = None
+    unit_price: float
+
+    @model_validator(mode="after")
+    def ship_after_order(self) -&gt; "OrderRecord":
+        if self.ship_date and self.ship_date &lt; self.order_date:
+            raise ValueError(
+                f"ship_date {self.ship_date} cannot be before order_date {self.order_date}"
+            )
+        return self
+</code></pre>
+
+<h4>Validator execution order</h4>
+<p>Validators run in this sequence: <code>mode="before"</code> field validators → Pydantic type coercion → <code>mode="after"</code> field validators → <code>@model_validator(mode="after")</code>. If any step fails, subsequent validators for that field do not run. This means a <code>@model_validator</code> is guaranteed to see fully typed, field-validated data.</p>
+
+<p><strong>Exercise 1.4 — Custom Validation Rules</strong></p>
+<p>Dataset: E-commerce Orders Dataset</p>
+<ol>
+<li>Add a <code>@field_validator("order_id", mode="before")</code> that strips whitespace and uppercases the value.</li>
+<li>Add a <code>@field_validator("discount_pct")</code> that raises a <code>ValueError</code> if the value is outside 0.0–1.0.</li>
+<li>Add a <code>@field_validator("status", mode="before")</code> that lowercases the value and raises if it is not one of <code>{"pending", "processing", "shipped", "delivered", "cancelled"}</code>.</li>
+<li>Add a <code>@model_validator(mode="after")</code> that raises if <code>ship_date</code> is before <code>order_date</code>.</li>
+<li>Test your model with a row where <code>ship_date</code> is one day before <code>order_date</code>. Confirm the model validator fires (not a field validator).</li>
+<li>Load 10 rows from the dataset and print a count of how many passed vs. failed validation.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-validated-order-loader">Phase 1 Capstone: Validated Order Loader</h3>
+<p><strong>Project: E-commerce Order Intake Validator</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) what mode="before" vs mode="after" means on a field validator, (2) why a model_validator runs after all field validators, and (3) what model_dump_json() returns for a date field? If any draws a blank, re-read that module first.</p></blockquote>
+<p><strong>Dataset:</strong> E-commerce Orders Dataset (ecommerce_orders.csv)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Define a complete <code>OrderRecord</code> model using all dataset fields, with <code>EmailStr</code>, <code>Field</code> constraints, and appropriate <code>Optional</code> defaults.</li>
+<li>Add <code>@field_validator</code> for <code>order_id</code> normalization, <code>status</code> lowercasing, and <code>region</code> normalization.</li>
+<li>Add a <code>@model_validator</code> enforcing that <code>ship_date &gt;= order_date</code> when both are present.</li>
+<li>Write a <code>load_orders(filepath: str)</code> function that reads the CSV, validates every row, and returns <code>(valid_orders: list[OrderRecord], errors: list[dict])</code>.</li>
+<li>Print a validation summary: total rows, valid count, error count, and error rate as a percentage.</li>
+<li>Serialize the valid orders list to a JSON file using <code>model_dump_json()</code>.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-data-validation-patterns">Phase 2: Data Validation Patterns</h2>
+<h3 id="weeks-3-4">Weeks 3–4 | Goal: Handle real-world data shapes — nested structures, batch loading, and dynamic config</h3>
+<hr />
+
+<h3 id="module-21-nested-models-and-complex-structures">Module 2.1 — Nested Models &amp; Complex Structures</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 1.4 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Define a model with a nested <code>Address</code> sub-model and a <code>List[LineItem]</code> field, instantiate it from a nested dict, and access a deeply nested attribute.<br>
+<strong>Skip if:</strong> You can nest models, use <code>List[Model]</code> fields, and understand how Pydantic validates nested structures recursively.<br>
+<strong>Unlocks:</strong> Modules 2.2, 2.4</p>
+</blockquote>
+
+<h4>Nested models</h4>
+<p>Any Pydantic model can be used as the type of another model's field. Pydantic validates the nested model recursively — a <code>ValidationError</code> on a nested field reports the full path (e.g., <code>customer.address.city</code>), making it easy to trace where invalid data originated.</p>
+<pre><code class="language-py">from pydantic import BaseModel, EmailStr
+from typing import Optional
+
+class Address(BaseModel):
+    street: str
+    city: str
+    province: str
+    barangay: Optional[str] = None
+
+class Customer(BaseModel):
+    customer_id: str
+    email: EmailStr
+    address: Address
+
+class OrderRecord(BaseModel):
+    order_id: str
+    customer: Customer
+    product_sku: str
+    quantity: int
+    unit_price: float
+
+order_data = {
+    "order_id": "ORD-001",
+    "customer": {
+        "customer_id": "CUST-001",
+        "email": "pedro@shop.ph",
+        "address": {
+            "street": "123 Rizal St.",
+            "city": "Cebu City",
+            "province": "Cebu"
+        }
+    },
+    "product_sku": "SKU-A1",
+    "quantity": 2,
+    "unit_price": 499.00
+}
+
+order = OrderRecord.model_validate(order_data)
+print(order.customer.address.city)   # Cebu City
+print(order.customer.address.barangay)  # None
+</code></pre>
+
+<h4>List fields and Dict fields</h4>
+<pre><code class="language-py">from pydantic import BaseModel
+from typing import List, Dict
+
+class LineItem(BaseModel):
+    product_sku: str
+    quantity: int
+    unit_price: float
+
+class OrderRecord(BaseModel):
+    order_id: str
+    items: List[LineItem]
+    metadata: Dict[str, str] = {}
+
+order = OrderRecord(
+    order_id="ORD-002",
+    items=[
+        {"product_sku": "SKU-A1", "quantity": 2, "unit_price": 299.00},
+        {"product_sku": "SKU-B3", "quantity": 1, "unit_price": 499.00}
+    ],
+    metadata={"source": "web", "campaign": "summer-sale"}
+)
+print(len(order.items))         # 2
+print(order.items[0].unit_price)  # 299.0
+</code></pre>
+
+<h4>model_dump() with nested structures</h4>
+<p>Calling <code>model_dump()</code> on a model with nested sub-models returns a fully nested dict — all sub-models are also converted to dicts, recursively. This makes it easy to pass validated data to a database insert or a downstream function that expects plain Python dicts.</p>
+
+<p><strong>Exercise 2.1 — Nested Order Structure</strong></p>
+<p>Dataset: E-commerce Orders Dataset</p>
+<ol>
+<li>Define an <code>Address</code> model with <code>street</code>, <code>city</code>, <code>province</code>, and optional <code>barangay</code>.</li>
+<li>Define a <code>Customer</code> model with <code>customer_id</code>, <code>email</code>, and an <code>address: Address</code> field.</li>
+<li>Define an <code>OrderRecord</code> that has a <code>customer: Customer</code> nested field.</li>
+<li>Build a dict representing two orders with different customer addresses and validate both.</li>
+<li>Access <code>order.customer.address.province</code> for each and print it.</li>
+<li>Call <code>order.model_dump()</code> and confirm the result is a plain nested dict with no Pydantic model instances inside.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-parsing-and-loading-data">Module 2.2 — Parsing &amp; Loading Data (JSON, CSV, Dicts)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Write a function that loads a CSV with <code>csv.DictReader</code>, validates each row, and returns valid records and error dicts separately.<br>
+<strong>Skip if:</strong> You can batch-validate a list of dicts, handle <code>ValidationError</code> per row, and know why <code>model_validate()</code> replaces <code>parse_obj()</code> in v2.<br>
+<strong>Unlocks:</strong> Module 2.3</p>
+</blockquote>
+
+<h4>model_validate() — the primary entry point</h4>
+<p><code>model_validate(data)</code> is the Pydantic v2 method for constructing a model from any Python object — a dict, another model instance, or an ORM row. It runs all validators. Direct instantiation (<code>Model(**kwargs)</code>) also validates, but <code>model_validate()</code> is preferred when the input is already a dict because it explicitly signals "this data comes from outside."</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Pydantic v1 used <code>parse_obj()</code>, <code>parse_raw()</code>, and <code>from_orm()</code>. All three are removed in v2. The v2 equivalents are <code>model_validate()</code>, <code>model_validate_json()</code>, and <code>model_validate(obj, from_attributes=True)</code>. If you see a <code>parse_obj</code> call in older code, replace it with <code>model_validate()</code>.</p></blockquote>
+
+<h4>Batch loading from a CSV</h4>
+<pre><code class="language-py">import csv
+from pydantic import BaseModel, ValidationError, field_validator, EmailStr
+from datetime import date
+from typing import Optional, List, Dict, Any
+from enum import Enum
+
+class OrderStatus(str, Enum):
+    pending = "pending"
+    processing = "processing"
+    shipped = "shipped"
+    delivered = "delivered"
+    cancelled = "cancelled"
+
+class OrderRecord(BaseModel):
+    order_id: str
+    customer_email: EmailStr
+    product_sku: str
+    quantity: int
+    unit_price: float
+    discount_pct: Optional[float] = None
+    order_date: date
+    status: OrderStatus
+
+def load_orders_from_csv(filepath: str):
+    valid_orders: List[OrderRecord] = []
+    errors: List[Dict[str, Any]] = []
+    with open(filepath, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row_num, row in enumerate(reader, start=2):
+            try:
+                order = OrderRecord.model_validate(row)
+                valid_orders.append(order)
+            except ValidationError as e:
+                errors.append({
+                    "row": row_num,
+                    "order_id": row.get("order_id", "UNKNOWN"),
+                    "error_count": e.error_count(),
+                    "errors": e.errors()
+                })
+    return valid_orders, errors
+</code></pre>
+
+<h4>Loading from JSON</h4>
+<pre><code class="language-py">import json
+from pydantic import BaseModel
+from datetime import date
+
+class OrderRecord(BaseModel):
+    order_id: str
+    quantity: int
+    order_date: date
+
+# From a JSON string
+raw_json = '{"order_id": "ORD-001", "quantity": 3, "order_date": "2024-01-15"}'
+order = OrderRecord.model_validate_json(raw_json)
+
+# From a parsed dict
+data = json.loads(raw_json)
+order2 = OrderRecord.model_validate(data)
+</code></pre>
+
+<p><strong>Exercise 2.2 — CSV Batch Loader</strong></p>
+<p>Dataset: E-commerce Orders Dataset</p>
+<ol>
+<li>Implement <code>load_orders_from_csv(filepath)</code> returning <code>(valid, errors)</code> as shown above.</li>
+<li>Run it on the full dataset and print total rows, valid count, and error count.</li>
+<li>Print the first 3 error dicts. Identify the most common validation error type across all invalid rows.</li>
+<li>Write the valid orders to <code>valid_orders.json</code> using <code>json.dumps([o.model_dump(mode="json") for o in valid], indent=2)</code>.</li>
+<li>Load <code>valid_orders.json</code> back and validate each row with <code>OrderRecord.model_validate_json()</code>. Confirm zero errors on a file you already validated.</li>
+<li>Modify one JSON row to introduce a bad <code>status</code> value and confirm the re-validation catches it.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-custom-validators">Module 2.3 — Custom Validators with @field_validator</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Write a validator that transforms an input value (not just rejects it), and another that handles <code>None</code> correctly for an Optional field.<br>
+<strong>Skip if:</strong> You can write validators in both modes, handle Optional fields safely, return transformed values, and chain validators on the same field.<br>
+<strong>Unlocks:</strong> Module 3.1, Phase 2 Capstone</p>
+</blockquote>
+
+<h4>Transforming values — validators as normalizers</h4>
+<p>A validator that returns a transformed value is called a normalizer. Normalization at the model boundary means downstream code never needs to clean the data — it is always in the canonical form. For a data analyst, this eliminates the strip/upper/coerce logic that otherwise scatters across multiple pipeline scripts.</p>
+<pre><code class="language-py">from pydantic import BaseModel, field_validator
+from typing import Optional
+
+class OrderRecord(BaseModel):
+    order_id: str
+    region: str
+    discount_pct: Optional[float] = None
+    product_sku: str
+
+    @field_validator("order_id", mode="before")
+    @classmethod
+    def normalize_order_id(cls, v: str) -&gt; str:
+        return v.strip().upper()
+
+    @field_validator("region", mode="before")
+    @classmethod
+    def validate_region(cls, v: str) -&gt; str:
+        allowed = {"NCR", "LUZON", "VISAYAS", "MINDANAO"}
+        normalized = v.strip().upper()
+        if normalized not in allowed:
+            raise ValueError(f"'{v}' is not a valid region. Allowed: {allowed}")
+        return normalized
+
+    @field_validator("discount_pct", mode="after")
+    @classmethod
+    def round_discount(cls, v: Optional[float]) -&gt; Optional[float]:
+        if v is not None:
+            return round(v, 4)
+        return v
+
+    @field_validator("product_sku", mode="before")
+    @classmethod
+    def normalize_sku(cls, v: str) -&gt; str:
+        return v.strip().upper().replace(" ", "-")
+</code></pre>
+
+<h4>Handling Optional fields in validators</h4>
+<p>When a field is <code>Optional[float] = None</code> and the validator uses <code>mode="after"</code>, Pydantic will not call the validator at all if the value is <code>None</code> and the field has a default. If you need to run logic on <code>None</code> (e.g., replace it with a computed default), use <code>mode="before"</code> where you receive the raw input before the Optional check.</p>
+
+<h4>Validators on multiple fields at once</h4>
+<pre><code class="language-py">from pydantic import BaseModel, field_validator
+
+class OrderRecord(BaseModel):
+    order_id: str
+    product_sku: str
+    region: str
+
+    @field_validator("order_id", "product_sku", "region", mode="before")
+    @classmethod
+    def strip_and_upper(cls, v: str) -&gt; str:
+        return v.strip().upper()
+</code></pre>
+
+<p><em>Retrieval practice: before reading the solution below, write out from memory the three things a @field_validator decorator needs to be valid in Pydantic v2 — the decorator itself, the method signature, and the return contract. Write it down, then compare against the examples above.</em></p>
+
+<p><strong>Exercise 2.3 — Build a Normalizing Loader</strong></p>
+<p>Dataset: E-commerce Orders Dataset</p>
+<ol>
+<li>Add a single <code>@field_validator("order_id", "product_sku", mode="before")</code> that strips and uppercases both fields.</li>
+<li>Add a <code>@field_validator("region", mode="before")</code> that maps common typos (<code>"ncr"</code>, <code>"Metro Manila"</code>, <code>"metro manila"</code>) to <code>"NCR"</code> before checking the allowed set.</li>
+<li>Add a <code>@field_validator("discount_pct", mode="after")</code> that rounds to 4 decimal places and replaces any value below <code>0.001</code> with <code>None</code> (treat near-zero discounts as absent).</li>
+<li>Re-run the CSV batch loader with this normalized model. Compare the valid count against the non-normalized run from Module 2.2 — the number should increase.</li>
+<li>Print 3 examples where normalization rescued a row that would have otherwise failed.</li>
+<li>Write the normalized valid orders to <code>normalized_orders.json</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-settings-management">Module 2.4 — Settings Management with BaseSettings</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Define a <code>BaseSettings</code> class with three fields, load values from a <code>.env</code> file, and demonstrate that a missing required field raises at startup.<br>
+<strong>Skip if:</strong> You have used <code>pydantic-settings</code> to manage environment-based config with type validation and <code>.env</code> file support.<br>
+<strong>Unlocks:</strong> Phase 2 Capstone</p>
+</blockquote>
+
+<h4>Why settings belong in Pydantic</h4>
+<p><code>os.environ.get("BATCH_SIZE", "1000")</code> returns a string everywhere. Forgetting to cast it to <code>int</code> means your pipeline silently uses the string <code>"1000"</code> as a batch size — no error, wrong behavior. <code>BaseSettings</code> validates and casts environment variables at startup, so a misconfigured environment fails immediately with a clear message instead of misbehaving silently at runtime.</p>
+
+<h4>Defining a settings model</h4>
+<pre><code class="language-py">from pydantic_settings import BaseSettings
+from typing import Optional
+
+class PipelineSettings(BaseSettings):
+    database_url: str
+    batch_size: int = 1000
+    max_validation_errors: int = 100
+    output_path: str = "./output"
+    api_key: Optional[str] = None
+    dry_run: bool = False
+
+    model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
+
+# Reads from environment variables (DATABASE_URL, BATCH_SIZE, etc.)
+# Falls back to .env file if the variable is not set in the environment.
+# Raises ValidationError at startup if DATABASE_URL is missing.
+settings = PipelineSettings()
+print(settings.batch_size)   # int, not string
+print(settings.dry_run)      # bool
+</code></pre>
+
+<h4>Using settings in a pipeline</h4>
+<pre><code class="language-py">from pydantic_settings import BaseSettings
+
+class PipelineSettings(BaseSettings):
+    input_csv: str = "ecommerce_orders.csv"
+    output_json: str = "validated_orders.json"
+    batch_size: int = 500
+    model_config = {"env_file": ".env"}
+
+def run_pipeline(settings: PipelineSettings) -&gt; None:
+    print(f"Loading: {settings.input_csv}")
+    print(f"Batch size: {settings.batch_size}")
+    print(f"Output: {settings.output_json}")
+
+if __name__ == "__main__":
+    cfg = PipelineSettings()
+    run_pipeline(cfg)
+</code></pre>
+<p>Install with: <code>pip install pydantic-settings</code></p>
+
+<p><strong>Exercise 2.4 — Pipeline Config with BaseSettings</strong></p>
+<p>Dataset: E-commerce Orders Dataset</p>
+<ol>
+<li>Install <code>pydantic-settings</code> and define a <code>PipelineSettings</code> model with <code>input_csv</code>, <code>output_json</code>, <code>batch_size</code>, <code>max_errors</code>, and <code>dry_run</code> fields.</li>
+<li>Create a <code>.env</code> file with <code>INPUT_CSV=ecommerce_orders.csv</code> and <code>BATCH_SIZE=250</code>. Verify the settings load correctly.</li>
+<li>Remove <code>DATABASE_URL</code> from the env and confirm the error message names the missing field.</li>
+<li>Add a <code>@field_validator("batch_size")</code> that raises if the value exceeds 10000 (safety cap).</li>
+<li>Wire <code>PipelineSettings</code> into your CSV loader from Module 2.2 so it reads <code>input_csv</code> and <code>output_json</code> from settings instead of hardcoded strings.</li>
+<li>Set <code>dry_run=True</code> in <code>.env</code> and add a branch in your pipeline that skips writing the output file when <code>dry_run</code> is true.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-etl-validation-pipeline">Phase 2 Capstone: ETL Validation Pipeline</h3>
+<p><strong>Project: Normalized E-commerce Order ETL</strong></p>
+<p><strong>Dataset:</strong> E-commerce Orders Dataset</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Define a fully normalized <code>OrderRecord</code> model: nested <code>Customer</code> and <code>Address</code> sub-models, <code>OrderStatus</code> enum, <code>EmailStr</code>, <code>Field</code> constraints, and all field normalizers from Module 2.3.</li>
+<li>Wire in <code>PipelineSettings</code> from Module 2.4 — all file paths and batch sizes come from the settings model.</li>
+<li>Build <code>run_etl(settings: PipelineSettings)</code> that loads the CSV in batches of <code>settings.batch_size</code>, validates each row, and accumulates valid records and errors.</li>
+<li>Write valid records to <code>settings.output_json</code> as a JSON array.</li>
+<li>Write invalid rows to <code>settings.error_log</code> as a JSON array with row number, <code>order_id</code>, and full error list.</li>
+<li>Print a final report: total rows, valid, invalid, error rate, top 3 most frequent error types by field name.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-production-and-integration">Phase 3: Production &amp; Integration</h2>
+<h3 id="weeks-5-6">Weeks 5–6 | Goal: Connect Pydantic to Pandas, FastAPI, and JSON Schema for production use</h3>
+<hr />
+
+<h3 id="module-31-pydantic-and-pandas">Module 3.1 — Pydantic &amp; Pandas: Validated DataFrames</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Modules 2.2, 2.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Validate a Pandas DataFrame row-by-row, collect errors per row, and reconstruct a clean DataFrame from the valid records using <code>model_dump()</code>.<br>
+<strong>Skip if:</strong> You can validate a DataFrame using Pydantic, use <code>TypeAdapter</code> for batch validation, and round-trip clean data back to a DataFrame.<br>
+<strong>Unlocks:</strong> Module 3.3, Phase 3 Capstone</p>
+</blockquote>
+
+<h4>Row-by-row validation from a DataFrame</h4>
+<p>DataFrames do not validate types — a column declared as <code>float64</code> can silently contain <code>NaN</code>, and a string column can contain mixed types after a join. Validating rows with Pydantic before analysis ensures every calculation operates on clean, typed data.</p>
+<pre><code class="language-py">import pandas as pd
+from pydantic import BaseModel, ValidationError, field_validator, Field
+from datetime import date
+from typing import Optional, List, Dict, Any
+from enum import Enum
+
+class OrderStatus(str, Enum):
+    pending = "pending"
+    processing = "processing"
+    shipped = "shipped"
+    delivered = "delivered"
+    cancelled = "cancelled"
+
+class OrderRecord(BaseModel):
+    order_id: str
+    quantity: int = Field(ge=1)
+    unit_price: float = Field(gt=0)
+    order_date: date
+    status: OrderStatus
+    discount_pct: Optional[float] = Field(None, ge=0.0, le=1.0)
+
+def validate_dataframe(df: pd.DataFrame):
+    valid_records: List[OrderRecord] = []
+    errors: List[Dict[str, Any]] = []
+    for idx, row in df.iterrows():
+        try:
+            record = OrderRecord.model_validate(row.to_dict())
+            valid_records.append(record)
+        except ValidationError as e:
+            errors.append({"row_index": idx, "errors": e.errors()})
+    clean_df = pd.DataFrame([r.model_dump(mode="json") for r in valid_records])
+    return clean_df, errors
+
+df = pd.read_csv("ecommerce_orders.csv")
+clean_df, errors = validate_dataframe(df)
+print(f"Clean rows: {len(clean_df)}, Invalid: {len(errors)}")
+</code></pre>
+
+<h4>TypeAdapter for batch validation</h4>
+<p><code>TypeAdapter</code> validates a full list in one call and raises a combined <code>ValidationError</code> listing every failure across all items. It is faster than a Python loop for large DataFrames but gives less per-row control — if one item fails, the whole batch is rejected. Use row-by-row for partial-success pipelines; use <code>TypeAdapter</code> when you need all-or-nothing batch validation.</p>
+<pre><code class="language-py">from pydantic import TypeAdapter
+from typing import List
+
+adapter = TypeAdapter(List[OrderRecord])
+records = df.to_dict(orient="records")
+
+# All-or-nothing: raises ValidationError if any row is invalid
+validated = adapter.validate_python(records)
+clean_df = pd.DataFrame([r.model_dump(mode="json") for r in validated])
+</code></pre>
+
+<h4>Handling NaN from Pandas</h4>
+<p>Pandas represents missing values as <code>float('nan')</code>, which Pydantic treats as a float, not as <code>None</code>. For <code>Optional[float]</code> fields, add a <code>mode="before"</code> validator to convert <code>NaN</code> to <code>None</code> before validation.</p>
+<pre><code class="language-py">import math
+from pydantic import field_validator
+from typing import Optional
+
+class OrderRecord(BaseModel):
+    discount_pct: Optional[float] = None
+
+    @field_validator("discount_pct", mode="before")
+    @classmethod
+    def nan_to_none(cls, v):
+        if isinstance(v, float) and math.isnan(v):
+            return None
+        return v
+</code></pre>
+
+<p><strong>Exercise 3.1 — Validate a DataFrame</strong></p>
+<p>Dataset: E-commerce Orders Dataset</p>
+<ol>
+<li>Load the dataset with <code>pd.read_csv()</code> and add a NaN-to-None validator for all Optional fields.</li>
+<li>Run row-by-row validation and print clean row count and error count.</li>
+<li>Reconstruct a clean DataFrame from the valid records using <code>model_dump(mode="json")</code>.</li>
+<li>Verify column dtypes on the clean DataFrame — <code>order_date</code> will be <code>object</code> (string) since JSON serialization converts dates. Convert it back to <code>datetime</code> with <code>pd.to_datetime()</code>.</li>
+<li>Run <code>TypeAdapter</code> batch validation on the same data. Observe the difference in error reporting when one row is invalid.</li>
+<li>Compute total revenue (<code>quantity * unit_price * (1 - discount_pct)</code>) on the clean DataFrame. Compare the result to running it on the unvalidated original — document any difference.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-pydantic-and-fastapi">Module 3.2 — Pydantic &amp; FastAPI: Data API Contracts</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Define a FastAPI POST endpoint that accepts an <code>OrderRecord</code> request model and returns an <code>OrderResponse</code> model, and explain what the <code>response_model</code> parameter does.<br>
+<strong>Skip if:</strong> You have built FastAPI endpoints with Pydantic request/response models and understand how FastAPI uses Pydantic for both validation and OpenAPI docs.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+
+<h4>FastAPI + Pydantic — the natural pairing</h4>
+<p>FastAPI uses Pydantic natively: every request body is a Pydantic model, and every response model is validated before it is sent. This means your data contract — the exact shape and types the API accepts and returns — is declared once in Python and automatically reflected in the OpenAPI docs at <code>/docs</code>.</p>
+<pre><code class="language-py">from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, EmailStr, Field
+from datetime import date
+from typing import Optional
+from enum import Enum
+
+app = FastAPI()
+
+class OrderStatus(str, Enum):
+    pending = "pending"
+    processing = "processing"
+    shipped = "shipped"
+    delivered = "delivered"
+
+class CreateOrderRequest(BaseModel):
+    customer_email: EmailStr
+    product_sku: str
+    quantity: int = Field(ge=1)
+    unit_price: float = Field(gt=0)
+    order_date: date
+    discount_pct: Optional[float] = Field(None, ge=0.0, le=1.0)
+
+class OrderResponse(BaseModel):
+    order_id: str
+    customer_email: str
+    total_amount: float
+    status: OrderStatus
+
+@app.post("/orders", response_model=OrderResponse, status_code=201)
+async def create_order(order: CreateOrderRequest):
+    total = order.quantity * order.unit_price
+    if order.discount_pct:
+        total = total * (1 - order.discount_pct)
+    return OrderResponse(
+        order_id="ORD-AUTO-001",
+        customer_email=order.customer_email,
+        total_amount=round(total, 2),
+        status=OrderStatus.pending
+    )
+</code></pre>
+
+<h4>Automatic validation errors from FastAPI</h4>
+<p>When a request body fails Pydantic validation, FastAPI returns an HTTP 422 Unprocessable Entity with the full <code>ValidationError</code> detail in the response body — no manual error handling needed. The error shape matches the Pydantic <code>.errors()</code> format, so API consumers get actionable field-level messages.</p>
+
+<h4>response_model — filtering and shaping the response</h4>
+<p>The <code>response_model</code> parameter tells FastAPI which fields to include in the response. If your handler returns a database object with extra fields (like <code>hashed_password</code>), <code>response_model</code> filters them out before the response is sent. This is the cleanest way to prevent accidental data leaks in an API.</p>
+
+<p><strong>Exercise 3.2 — Order API Endpoint</strong></p>
+<p>Dataset: E-commerce Orders Dataset</p>
+<ol>
+<li>Install FastAPI and uvicorn: <code>pip install fastapi uvicorn</code>.</li>
+<li>Define <code>CreateOrderRequest</code> and <code>OrderResponse</code> models as above. Add <code>region</code> as a required field on the request model.</li>
+<li>Implement <code>POST /orders</code>. Return a computed <code>total_amount</code> that applies the discount when present.</li>
+<li>Add <code>GET /orders/{order_id}</code> that returns an <code>OrderResponse</code> or raises <code>HTTPException(404)</code>.</li>
+<li>Run the server with <code>uvicorn main:app --reload</code> and open <code>/docs</code>. Confirm the OpenAPI schema reflects the field constraints from <code>Field(ge=1)</code>.</li>
+<li>Send a POST request with <code>quantity=0</code> using <code>curl</code> or the Swagger UI. Confirm the 422 response body names the failing field.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-json-schema-and-data-contracts">Module 3.3 — JSON Schema Export &amp; Data Contracts</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Export a Pydantic model's JSON Schema, add descriptions to all fields with <code>Field(description=...)</code>, and explain what a data contract is and why it matters.<br>
+<strong>Skip if:</strong> You can export a full JSON Schema from a Pydantic model and have used it as a contract shared between systems or teams.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+
+<h4>What is a data contract?</h4>
+<p>A data contract is a formal, versioned specification of what a data source promises to deliver — field names, types, constraints, and nullability. When the source violates the contract (a field disappears, a type changes), the consumer detects it immediately. Without a contract, schema drift is discovered weeks later when an analysis produces nonsense results.</p>
+
+<h4>model_json_schema() — exporting the contract</h4>
+<pre><code class="language-py">from pydantic import BaseModel, Field, EmailStr
+from datetime import date
+from typing import Optional
+from enum import Enum
+import json
+
+class Region(str, Enum):
+    ncr = "NCR"
+    luzon = "Luzon"
+    visayas = "Visayas"
+    mindanao = "Mindanao"
+
+class OrderRecord(BaseModel):
+    """A single e-commerce order record from the PH storefront."""
+    order_id: str = Field(min_length=3, description="Unique order ID, format ORD-XXXXXX")
+    customer_email: EmailStr = Field(description="Customer contact email address")
+    product_sku: str = Field(min_length=3, description="Product SKU code")
+    quantity: int = Field(ge=1, description="Units ordered; must be at least 1")
+    unit_price: float = Field(gt=0, description="Price per unit in Philippine Peso")
+    discount_pct: Optional[float] = Field(None, ge=0.0, le=1.0, description="Discount fraction 0.0–1.0; absent means no discount")
+    order_date: date = Field(description="ISO date when order was placed")
+    region: Region = Field(description="Philippine delivery region")
+
+schema = OrderRecord.model_json_schema()
+print(json.dumps(schema, indent=2))
+</code></pre>
+
+<h4>Using the schema to validate raw files before loading</h4>
+<pre><code class="language-py">import jsonschema
+import json
+
+# Export once, save as a file, share with upstream data producers
+schema = OrderRecord.model_json_schema()
+with open("order_schema_v1.json", "w") as f:
+    json.dump(schema, f, indent=2)
+
+# Validate a raw dict against the schema before even constructing the model
+raw_row = {"order_id": "ORD-001", "customer_email": "bad-email", "quantity": -1}
+try:
+    jsonschema.validate(instance=raw_row, schema=schema)
+except jsonschema.ValidationError as e:
+    print(e.message)
+</code></pre>
+
+<p><strong>Exercise 3.3 — Publish a Data Contract</strong></p>
+<p>Dataset: E-commerce Orders Dataset</p>
+<ol>
+<li>Add <code>Field(description=...)</code> to every field in <code>OrderRecord</code>.</li>
+<li>Export the JSON Schema to <code>order_schema_v1.json</code>.</li>
+<li>Open the schema file and verify the <code>properties</code> section lists all fields with their constraints and descriptions.</li>
+<li>Simulate a schema drift: remove the <code>region</code> field from the model, export <code>order_schema_v2.json</code>, and write a diff function that compares the two schemas and reports added, removed, and changed fields.</li>
+<li>Use <code>jsonschema.validate()</code> to pre-validate 5 raw dicts against <code>order_schema_v1.json</code> before passing them to Pydantic. Observe that some errors are caught at the schema level before Pydantic runs.</li>
+<li>Write a <code>contract_check(new_schema, old_schema)</code> function that raises if any required field from <code>old_schema</code> is missing from <code>new_schema</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-error-handling-and-reports">Module 3.4 — Error Handling &amp; Validation Reports</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Write a function that validates a CSV and returns a structured report including error rate, top error types by field, and a sample of bad rows.<br>
+<strong>Skip if:</strong> You can build a full validation report from <code>e.errors()</code>, aggregate error types, and present results in a way that is actionable for a data engineer.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+
+<h4>The ValidationError structure</h4>
+<p>Every <code>ValidationError</code> exposes <code>.errors()</code> as a list of dicts. Each dict has: <code>loc</code> (tuple of field path), <code>msg</code> (human-readable message), <code>type</code> (machine-readable error code like <code>int_parsing</code> or <code>value_error</code>), and <code>input</code> (the original value that failed). Aggregating by <code>type</code> across all invalid rows identifies the most common data quality issues in a source file.</p>
+<pre><code class="language-py">from pydantic import BaseModel, ValidationError, field_validator, Field
+from datetime import date
+from typing import Optional, List, Dict, Any
+from collections import Counter
+import csv
+
+class OrderRecord(BaseModel):
+    order_id: str
+    quantity: int = Field(ge=1)
+    unit_price: float = Field(gt=0)
+    order_date: date
+    status: str
+    discount_pct: Optional[float] = Field(None, ge=0.0, le=1.0)
+
+def validate_csv_with_report(filepath: str) -&gt; Dict[str, Any]:
+    valid_records: List[OrderRecord] = []
+    error_rows: List[Dict] = []
+    error_type_counter: Counter = Counter()
+
+    with open(filepath, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row_num, row in enumerate(reader, start=2):
+            try:
+                record = OrderRecord.model_validate(row)
+                valid_records.append(record)
+            except ValidationError as e:
+                for err in e.errors():
+                    field = ".".join(str(loc) for loc in err["loc"])
+                    error_type_counter[f"{field}:{err['type']}"] += 1
+                error_rows.append({
+                    "row": row_num,
+                    "order_id": row.get("order_id", "UNKNOWN"),
+                    "errors": [
+                        {
+                            "field": ".".join(str(loc) for loc in err["loc"]),
+                            "message": err["msg"],
+                            "type": err["type"],
+                            "input": err.get("input")
+                        }
+                        for err in e.errors()
+                    ]
+                })
+
+    total = len(valid_records) + len(error_rows)
+    return {
+        "total_rows": total,
+        "valid": len(valid_records),
+        "invalid": len(error_rows),
+        "error_rate_pct": round(len(error_rows) / max(total, 1) * 100, 2),
+        "top_errors": error_type_counter.most_common(5),
+        "error_rows": error_rows
+    }
+
+report = validate_csv_with_report("ecommerce_orders.csv")
+print(f"Valid: {report['valid']}, Invalid: {report['invalid']}, Rate: {report['error_rate_pct']}%")
+print("Top errors:", report["top_errors"])
+</code></pre>
+
+<h4>Partial validation — collecting all errors before stopping</h4>
+<p>By default, Pydantic stops validating a model after the first error in a given field. Set <code>model_config = ConfigDict(validate_default=True)</code> to continue validating all fields even after early failures. For reporting purposes, you want every error in a row, not just the first.</p>
+
+<p><strong>Exercise 3.4 — Build a Validation Report</strong></p>
+<p>Dataset: E-commerce Orders Dataset</p>
+<ol>
+<li>Implement <code>validate_csv_with_report(filepath)</code> as above and run it on the full dataset.</li>
+<li>Print the top 5 error types sorted by frequency. Identify which field causes the most failures.</li>
+<li>Write the <code>error_rows</code> list to <code>validation_errors.json</code> for sharing with the data engineering team.</li>
+<li>Build a summary DataFrame from the error rows: one row per error, columns <code>row_num</code>, <code>order_id</code>, <code>field</code>, <code>error_type</code>, <code>input_value</code>.</li>
+<li>Group the summary DataFrame by <code>field</code> and <code>error_type</code> and compute the count of each combination.</li>
+<li>Identify any <code>order_id</code> values that appear in the error list more than once and print them — they indicate a source system problem, not a one-off bad row.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-production-data-contract">Phase 3 Capstone: Production Data Contract</h3>
+<p><strong>Project: End-to-End Validated Order Pipeline with Published Schema</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) how TypeAdapter differs from row-by-row validation, (2) what model_json_schema() produces and how it is used as a contract, and (3) how FastAPI uses response_model to filter the response? If any draws a blank, re-read that module first.</p></blockquote>
+<p><strong>Dataset:</strong> E-commerce Orders Dataset</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Define a production <code>OrderRecord</code> model with full field descriptions, constraints, NaN-to-None validators, and a nested <code>Customer</code> sub-model.</li>
+<li>Export <code>order_schema_v1.json</code> and write a <code>contract_check()</code> function that compares two schema versions and logs added/removed/changed fields.</li>
+<li>Build <code>validate_dataframe(df)</code> using row-by-row validation with NaN handling, returning a clean DataFrame and an error report.</li>
+<li>Expose a FastAPI <code>POST /validate-batch</code> endpoint that accepts a list of raw order dicts, runs Pydantic validation, and returns a <code>BatchValidationResult</code> model with counts and the first 10 error rows.</li>
+<li>Generate a full validation report from the E-commerce Orders Dataset using <code>validate_csv_with_report()</code> and write it to <code>pipeline_report.json</code>.</li>
+<li>Run all components end-to-end: load CSV → validate → write clean JSON → publish schema → generate error report.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-pydantic-ai-typed-agents">Phase 4: Pydantic AI — Typed AI Agents</h2>
+<h3 id="weeks-7-8">Weeks 7–8 | Goal: Turn an LLM's free-text guesses into validated Pydantic models, with tools, dependencies, and retries</h3>
+<hr />
+
+<h3 id="module-41-why-pydantic-ai">Module 4.1 — Why Pydantic AI? Typed Agents</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.4 (validators), 2.1 (nested models) · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Explain why an LLM that returns JSON is still not safe to feed into your pipeline, and how Pydantic AI's <code>output_type</code> closes that gap differently from prompting "return JSON".<br>
+<strong>Skip if:</strong> You already build agents whose results are validated Pydantic models and understand why that beats parsing raw LLM text.<br>
+<strong>Unlocks:</strong> 4.2 (structured outputs), 4.3 (tools), 4.4 (validation &amp; streaming).</p>
+</blockquote>
+
+<h4>The problem Pydantic AI exists to solve</h4>
+<p>An LLM is a text generator: ask it for an order and it returns prose, or JSON-that-looks-right, or JSON with the quantity as the word "three". Everything you learned in Phases 1–3 was about never trusting external data — and an LLM is the least trustworthy data source you will ever integrate, because it is confidently wrong. <strong>Pydantic AI</strong>, built by the Pydantic team, makes the agent's result a <em>validated Pydantic model</em>: the same <code>BaseModel</code>, <code>Field</code> constraints, and validators from this guide now police what the model is allowed to return. If the LLM's output does not satisfy the schema, you get a <code>ValidationError</code> (or an automatic retry) instead of a corrupt record three steps downstream.</p>
+
+<h4>"Return JSON" is not a contract — a schema is</h4>
+<p>Prompting "respond in JSON" is a request the model can ignore, mis-format, or hallucinate fields into. Declaring an <code>output_type</code> is enforcement: Pydantic AI sends the model your model's JSON Schema, then validates the response against it before handing it back. The difference is exactly the difference between a comment saying "this should be a positive integer" and a <code>Field(gt=0)</code> that raises when it isn't — Phase 1's central lesson, now applied to the model's mouth.</p>
+
+<pre><code class="language-py"># The smallest possible Pydantic AI agent
+# pip install "pydantic-ai-slim[anthropic]"   (or: pip install pydantic-ai)
+from pydantic_ai import Agent
+
+# Model strings are "provider:model". We default to Sonnet for agents;
+# swap to 'anthropic:claude-opus-4-8' when the reasoning is harder.
+agent = Agent(
+    "anthropic:claude-sonnet-4-6",
+    instructions="You read a customer message and summarize the order intent in one line.",
+)
+
+result = agent.run_sync("Hi! Can I get 3 of SKU-100 shipped to Manila?")
+print(result.output)          # -> a plain string (no output_type set yet)
+print(result.usage())         # token usage, for cost tracking</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Treating LLM output as trusted because "it returned valid JSON." Valid JSON can still have the wrong field names, an out-of-range quantity, a hallucinated SKU, or a price the customer never mentioned. The whole point of this phase is that the LLM's output is <em>external input</em> — give it the same validation scrutiny you would give an uploaded CSV.</p></blockquote>
+
+<p><strong>Exercise 4.1 — From String to Contract</strong></p>
+<p>Dataset: E-commerce Orders Dataset (use the free-text customer messages, e.g. "send me five of SKU-42 to Cebu").</p>
+<ol>
+<li>Install Pydantic AI and set your provider key (<code>ANTHROPIC_API_KEY</code>); run the minimal agent above on three customer messages.</li>
+<li>Write down, for each message, two ways the raw string output could break a downstream pipeline (wrong type, missing field, hallucinated value).</li>
+<li>List the fields a structured <code>OrderRequest</code> would need to make those failures impossible — you will build it in 4.2.</li>
+<li>In one paragraph, contrast "prompt the model to return JSON" with "declare an <code>output_type</code>," referencing Phase 1's coercion vs. strict-mode lesson.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-structured-outputs-from-llms">Module 4.2 — Structured Outputs from LLMs</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Build an agent with an <code>output_type</code> of a nested Pydantic model (order + customer), run it on a messy customer message, and show the result is a validated model instance — then trigger a <code>ValidationError</code> by constraining a field.<br>
+<strong>Skip if:</strong> You set <code>output_type</code> to BaseModels (including unions) and rely on the validated instance directly.<br>
+<strong>Unlocks:</strong> 4.3 (tools that read/write that structured data).</p>
+</blockquote>
+
+<h4>output_type turns the agent into a typed function</h4>
+<p>Pass a <code>BaseModel</code> as <code>output_type</code> and <code>result.output</code> is an instance of that model — already validated, fully typed, autocompleting in your editor. The agent stops being "an LLM you parse" and becomes "a function from messy text to a clean record." Every modelling tool from Phases 1–2 applies unchanged: nested sub-models, <code>Field</code> constraints, enums, optional fields with defaults.</p>
+
+<pre><code class="language-py">from pydantic import BaseModel, Field
+from pydantic_ai import Agent
+
+class Customer(BaseModel):
+    name: str | None = None
+    city: str
+
+class OrderRequest(BaseModel):
+    sku: str = Field(pattern=r"^SKU-\d+$")     # reject hallucinated SKU formats
+    quantity: int = Field(gt=0, le=1000)        # constraints police the LLM
+    customer: Customer
+
+order_agent = Agent(
+    "anthropic:claude-sonnet-4-6",
+    output_type=OrderRequest,
+    instructions=(
+        "Extract the order from the customer message. "
+        "SKUs look like 'SKU-100'. If the city is missing, ask for it via the error."
+    ),
+)
+
+result = order_agent.run_sync("hey, 5x sku-42 for Maria over in Cebu please")
+order = result.output                  # a validated OrderRequest, not a string
+print(order.quantity, order.customer.city)   # 5 Cebu
+print(order.model_dump_json())         # ready to feed Phase 3's pipeline</code></pre>
+
+<h4>When the model can't comply, validation is your safety net</h4>
+<p>If the customer message implies <code>quantity: 0</code> or a malformed SKU, your <code>Field</code> constraints raise a <code>ValidationError</code> exactly as they would for any other input — the bad record never enters your system. This is the bridge that makes the whole guide cohere: the agent's output flows into the same <code>model_validate</code> / <code>model_dump</code> / TypeAdapter machinery you built in Phases 2–3.</p>
+<p><em>Retrieval practice: before running it, predict from memory what happens when the model returns <code>quantity: -2</code> for your <code>Field(gt=0)</code> field — exception type, and where it surfaces. Then test it.</em></p>
+
+<p><strong>Exercise 4.2 — The Typed Order Agent</strong></p>
+<p>Dataset: E-commerce Orders Dataset (free-text messages).</p>
+<ol>
+<li>Define <code>OrderRequest</code> with a nested <code>Customer</code> model, a SKU pattern, and a constrained quantity.</li>
+<li>Run the agent on five messages of varying messiness; confirm each <code>result.output</code> is an <code>OrderRequest</code> instance.</li>
+<li>Feed one extracted order into your Phase 3 <code>OrderRecord</code> pipeline via <code>model_dump()</code> and show it round-trips.</li>
+<li>Craft a message that forces a <code>ValidationError</code> (impossible quantity or bad SKU) and catch it; inspect <code>e.errors()</code>.</li>
+<li>Add an <code>output_type</code> union (e.g. <code>OrderRequest | Clarification</code>) so the agent can return a "need more info" model instead of guessing.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-tools-dependencies-and-runcontext">Module 4.3 — Tools, Dependencies &amp; RunContext</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Give an agent a typed dependency (an inventory lookup) and a <code>@agent.tool</code> that uses it via <code>RunContext</code>, then show the agent calling the tool to ground its answer in real data.<br>
+<strong>Skip if:</strong> You register tools with <code>RunContext</code>, type dependencies with <code>deps_type</code>, and inject them at <code>run</code> time.<br>
+<strong>Unlocks:</strong> 4.4 (validators that also use dependencies); the capstone.</p>
+</blockquote>
+
+<h4>Tools let the agent fetch facts instead of inventing them</h4>
+<p>An LLM has no access to your inventory, your database, or today's prices — left alone it will hallucinate them. A <strong>tool</strong> is a plain Python function you register with the agent; the model can call it during a run to get real data. Pydantic AI validates the tool's arguments against its type hints (your schema discipline again) and feeds the return value back to the model. This is how you keep the agent honest: it reasons, but it grounds its reasoning in functions you control.</p>
+
+<h4>Dependencies and RunContext: typed, injected, testable</h4>
+<p><code>deps_type</code> declares what external resources a run needs (a DB connection, an inventory dict, an HTTP client); you pass the actual object into <code>agent.run(...)</code>, and tools read it through <code>RunContext[Deps]</code>. Because dependencies are injected per-run rather than hard-coded, you can pass a real database in production and a fake dict in tests — the same dependency-injection benefit FastAPI gives you, applied to agents.</p>
+
+<pre><code class="language-py">from dataclasses import dataclass
+from pydantic_ai import Agent, RunContext
+
+@dataclass
+class Deps:
+    inventory: dict[str, int]        # swap for a real DB in production
+
+stock_agent = Agent(
+    "anthropic:claude-sonnet-4-6",
+    deps_type=Deps,
+    output_type=OrderRequest,
+    instructions="Extract the order. Before confirming, check stock with the tool.",
+)
+
+@stock_agent.tool
+def stock_level(ctx: RunContext[Deps], sku: str) -> int:
+    """Return the units currently in stock for a SKU."""
+    return ctx.deps.inventory.get(sku, 0)      # grounded in real data, not guessed
+
+result = stock_agent.run_sync(
+    "I want 2 of SKU-7 to Davao",
+    deps=Deps(inventory={"SKU-7": 10, "SKU-42": 0}),
+)
+print(result.output)
+# Inspect which tools the model called and with what arguments:
+for msg in result.all_messages():
+    print(msg)</code></pre>
+
+<p><strong>Exercise 4.3 — Ground the Agent in Inventory</strong></p>
+<p>Dataset: E-commerce Orders Dataset + a small inventory dict (SKU → units in stock).</p>
+<ol>
+<li>Define a <code>Deps</code> dataclass holding the inventory and register a <code>stock_level</code> tool that reads it via <code>RunContext</code>.</li>
+<li>Run the agent on an order for an in-stock SKU and an out-of-stock SKU; inspect <code>result.all_messages()</code> to confirm the tool was called.</li>
+<li>Add a second tool, <code>city_is_serviceable(city)</code>, returning a bool, and have the instructions require both checks.</li>
+<li>Write a test that injects a <em>fake</em> inventory dict and asserts the agent's behaviour — proving dependency injection makes the agent testable without a live database.</li>
+</ol>
+<hr />
+
+<h3 id="module-44-output-validation-and-streaming">Module 4.4 — Output Validation, Retries &amp; Streaming</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate–Advanced · <strong>Prereqs:</strong> 4.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Add an output validator that raises <code>ModelRetry</code> when an order exceeds available stock, watch the agent self-correct, and stream a response token-by-token.<br>
+<strong>Skip if:</strong> You use <code>@agent.output_validator</code> with <code>ModelRetry</code> for business-rule self-correction and stream structured output.<br>
+<strong>Unlocks:</strong> The Phase 4 capstone and production-grade agents.</p>
+</blockquote>
+
+<h4>ModelRetry: turn a validation failure into a second chance</h4>
+<p>Schema validation rejects bad output; sometimes you want the agent to <em>fix</em> it instead. An <strong>output validator</strong> runs after the model produces a result, and raising <code>ModelRetry</code> sends the error message back to the model so it can try again with that feedback. This is the agentic version of a <code>model_validator</code>: a cross-field business rule ("quantity must not exceed stock") that, on failure, prompts a correction rather than a crash. Cap retries (the agent's <code>retries=</code> setting) so a model that cannot satisfy the rule fails loudly instead of looping forever.</p>
+
+<pre><code class="language-py">from pydantic_ai import Agent, RunContext, ModelRetry
+
+checkout_agent = Agent(
+    "anthropic:claude-sonnet-4-6",
+    deps_type=Deps,
+    output_type=OrderRequest,
+    retries=2,                       # bound the self-correction loop
+    instructions="Extract a valid, fulfillable order from the message.",
+)
+
+@checkout_agent.output_validator
+def within_stock(ctx: RunContext[Deps], output: OrderRequest) -> OrderRequest:
+    available = ctx.deps.inventory.get(output.sku, 0)
+    if output.quantity > available:
+        # Feedback goes back to the model, which retries with this hint
+        raise ModelRetry(
+            f"Only {available} units of {output.sku} are in stock; "
+            f"reduce the quantity or suggest a backorder."
+        )
+    return output
+
+result = checkout_agent.run_sync(
+    "Give me 50 of SKU-7 to Manila",
+    deps=Deps(inventory={"SKU-7": 10}),
+)
+print(result.output)     # the agent has reconciled quantity against real stock</code></pre>
+
+<h4>Streaming: structured output, delivered live</h4>
+<p>For chat-style UX you do not want the user staring at a blank screen while a long response generates. <code>agent.run_stream(...)</code> yields the output as it arrives — text deltas for prose, or progressively-validated structured data — so you can render tokens immediately. Streaming is the right default for any user-facing agent where latency is visible; it does not change the validation guarantees, only when you see the result.</p>
+
+<pre><code class="language-py">import asyncio
+
+async def main():
+    async with checkout_agent.run_stream(
+        "2 of SKU-7 to Cebu",
+        deps=Deps(inventory={"SKU-7": 10}),
+    ) as stream:
+        async for text in stream.stream_text(delta=True):
+            print(text, end="", flush=True)     # render live, token by token
+        final = await stream.get_output()        # validated OrderRequest at the end
+        print("\n", final.model_dump_json())
+
+asyncio.run(main())</code></pre>
+
+<p><strong>Exercise 4.4 — Self-Correcting Checkout Agent</strong></p>
+<p>Dataset: E-commerce Orders Dataset + inventory dict.</p>
+<ol>
+<li>Add an <code>@agent.output_validator</code> that raises <code>ModelRetry</code> when the requested quantity exceeds stock; set <code>retries=2</code>.</li>
+<li>Run an over-quantity order and inspect <code>result.all_messages()</code> to see the retry round-trip and the corrected output.</li>
+<li>Force an impossible order (quantity exceeds stock for every SKU) and confirm the agent exhausts retries and raises rather than looping forever.</li>
+<li>Convert one run to streaming with <code>run_stream</code>; print text deltas live and assert the final <code>get_output()</code> is a validated <code>OrderRequest</code>.</li>
+<li>Wrap the agent behind a FastAPI <code>POST /intake</code> endpoint (reuse Module 3.2) that accepts a raw message and returns the validated order or a 422.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-ai-order-intake-agent">Phase 4 Capstone: AI Order Intake Agent</h3>
+<p><strong>Project: A Typed, Grounded, Self-Correcting Order Intake Agent</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) why <code>output_type</code> is a contract and "return JSON" is not, (2) how <code>RunContext</code> + <code>deps_type</code> let a tool read real data, and (3) what <code>ModelRetry</code> does differently from a plain <code>ValidationError</code>? If any draws a blank, re-read that module first.</p></blockquote>
+<p><strong>Dataset:</strong> E-commerce Orders Dataset (free-text customer messages) + an inventory dict.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>An <code>OrderRequest</code> output model (nested <code>Customer</code>, SKU pattern, constrained quantity) reused from the Phase 3 <code>OrderRecord</code> field definitions where possible.</li>
+<li>An agent with <code>output_type=OrderRequest</code>, a typed <code>Deps</code>, and at least two tools (<code>stock_level</code>, <code>city_is_serviceable</code>) grounded in injected data.</li>
+<li>An output validator that raises <code>ModelRetry</code> on over-quantity orders, with <code>retries</code> bounded and a clean failure when unsatisfiable.</li>
+<li>A streaming entry point that renders the response live and returns a validated order at the end.</li>
+<li>A FastAPI <code>POST /intake</code> endpoint that turns a raw customer message into a validated order (or a 422 with the validation errors), reusing Module 3.2's patterns.</li>
+<li>A <code>test_agent.py</code> with at least four tests using <strong>injected fake dependencies</strong>: a clean extraction, a constraint failure, a successful <code>ModelRetry</code> self-correction, and a retry-exhausted failure.</li>
+<li>A short <code>AGENT_NOTES.md</code> explaining how the agent's output flows into the Phase 3 validation pipeline and why every LLM result is treated as untrusted input.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-pydantic">Final Capstone: The Data Quality Gateway</h2>
+<p><strong>Project: Production-Grade Order Validation System</strong></p>
+<p>Integrates all three phases. Uses the E-commerce Orders Dataset throughout.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Define a versioned <code>OrderRecord</code> v1 and v2 model (v2 adds a <code>currency</code> field), export both JSON Schemas, and use <code>contract_check()</code> to document the diff.</li>
+<li>Build a full ETL runner with <code>PipelineSettings</code> config, batch processing, per-row validation, normalization validators, and NaN-to-None handling.</li>
+<li>Produce three output artifacts: <code>valid_orders.json</code>, <code>error_report.json</code>, and <code>pipeline_summary.json</code> (counts, error rate, top errors, run timestamp).</li>
+<li>Build a FastAPI app with <code>POST /orders</code>, <code>POST /validate-batch</code>, and <code>GET /schema</code> endpoints. The schema endpoint returns the live JSON Schema from <code>OrderRecord.model_json_schema()</code>.</li>
+<li>Write a <code>test_pipeline.py</code> file with at least 6 tests: one test per validator, one for the cross-field model validator, and one end-to-end test that loads a 10-row CSV fixture and asserts the expected valid/error counts.</li>
+<li>Write a one-page <code>DATA_CONTRACT.md</code> documenting the <code>OrderRecord</code> schema: field names, types, constraints, and an example valid JSON record.</li>
+<li>Run the full pipeline on the E-commerce Orders Dataset and verify the valid output round-trips through Pydantic without a single additional error.</li>
+<li><strong>Optional AI extension (Phase 4):</strong> add a Pydantic AI <code>POST /intake</code> endpoint that turns a free-text customer message into a validated <code>OrderRecord</code> via an agent with <code>output_type</code>, an inventory tool, and a <code>ModelRetry</code> stock-check — proving the same schema governs both uploaded data and LLM-extracted data.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Pydantic Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Method</th><th>Notes</th></tr>
+<tr><td>Define a model</td><td><code>class M(BaseModel)</code></td><td>Subclass BaseModel; all annotated fields are validated</td></tr>
+<tr><td>Instantiate from a dict</td><td><code>M.model_validate(d)</code></td><td>Preferred over M(**d) for external data</td></tr>
+<tr><td>Instantiate from JSON string</td><td><code>M.model_validate_json(s)</code></td><td>Parses and validates in one step</td></tr>
+<tr><td>Serialize to dict</td><td><code>m.model_dump()</code></td><td>Use <code>mode="json"</code> for JSON-safe types</td></tr>
+<tr><td>Serialize to JSON string</td><td><code>m.model_dump_json()</code></td><td>Dates become ISO strings</td></tr>
+<tr><td>Copy with changes</td><td><code>m.model_copy(update={...})</code></td><td>Original is unchanged (immutable copy)</td></tr>
+<tr><td>Field constraints</td><td><code>Field(ge=1, le=100)</code></td><td>ge, gt, le, lt, min_length, max_length, pattern</td></tr>
+<tr><td>Single-field validator</td><td><code>@field_validator("f")</code></td><td>Add <code>mode="before"</code> for pre-coercion transforms</td></tr>
+<tr><td>Cross-field validator</td><td><code>@model_validator(mode="after")</code></td><td>Runs after all field validators; receives self</td></tr>
+<tr><td>Batch list validation</td><td><code>TypeAdapter(List[M]).validate_python(lst)</code></td><td>All-or-nothing; faster than loop for large batches</td></tr>
+<tr><td>Export JSON Schema</td><td><code>M.model_json_schema()</code></td><td>Returns a dict; serialize to JSON with json.dumps()</td></tr>
+<tr><td>Environment config</td><td><code>class S(BaseSettings)</code></td><td>Requires pydantic-settings; reads from env + .env file</td></tr>
+<tr><td>Strict (no coercion) mode</td><td><code>ConfigDict(strict=True)</code></td><td>Strings are not coerced to int/float/date</td></tr>
+<tr><td>Email validation</td><td><code>EmailStr</code></td><td>Requires pydantic[email]</td></tr>
+<tr><td>Inspect errors</td><td><code>e.errors()</code></td><td>List of dicts with loc, msg, type, input keys</td></tr>
+<tr><td>Create an agent</td><td><code>Agent("anthropic:claude-sonnet-4-6")</code></td><td>Pydantic AI; "provider:model" string. Opus 4.8 for harder reasoning</td></tr>
+<tr><td>Validated LLM output</td><td><code>Agent(..., output_type=M)</code></td><td><code>result.output</code> is a validated BaseModel, not a string</td></tr>
+<tr><td>Run an agent</td><td><code>agent.run_sync(msg, deps=...)</code></td><td>Async: <code>await agent.run(...)</code>; <code>.output</code> holds the result</td></tr>
+<tr><td>Give the agent a tool</td><td><code>@agent.tool</code> + <code>RunContext</code></td><td>Function the model can call; args validated by type hints</td></tr>
+<tr><td>Inject dependencies</td><td><code>deps_type=Deps</code></td><td>Passed at run time; read via <code>ctx.deps</code> — testable with fakes</td></tr>
+<tr><td>Self-correcting validation</td><td><code>raise ModelRetry(msg)</code></td><td>In <code>@agent.output_validator</code>; bound with <code>retries=N</code></td></tr>
+<tr><td>Stream a response</td><td><code>agent.run_stream(...)</code></td><td><code>async for</code> deltas; <code>get_output()</code> for the validated result</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+<h3 id="glossary-core-concepts">Core Concepts</h3>
+<dl class="glossary">
+<dt>BaseModel</dt>
+<dd>A Pydantic class that, when subclassed, turns annotated class attributes into validated, type-checked fields instantiated at construction time.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "data class", "schema class" — these imply no runtime validation. A BaseModel always validates.</dd>
+<dt>ValidationError</dt>
+<dd>An exception raised by Pydantic when one or more fields fail validation; it aggregates all field errors into a single object with a structured <code>.errors()</code> list.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Pydantic error", "parse error" — too vague. The specific class name matters for catching it.</dd>
+<dt>Type coercion</dt>
+<dd>Pydantic's automatic conversion of an input value to the declared field type in lax mode — for example, converting the string <code>"3"</code> to the integer <code>3</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "casting", "type conversion" — both imply explicit programmer intent. Coercion is implicit and controlled by Pydantic's mode setting.</dd>
+<dt>Strict mode</dt>
+<dd>A Pydantic configuration where no type coercion is performed; the input must already be the exact declared type or the field raises a <code>ValidationError</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "no-coercion mode" — the official name is strict mode (<code>ConfigDict(strict=True)</code>).</dd>
+<dt>Lax mode</dt>
+<dd>The default Pydantic validation mode where reasonable type conversions (coercion) are attempted before failing; the opposite of strict mode.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "lenient mode", "default mode" — the official name is lax mode.</dd>
+</dl>
+<h3 id="glossary-validators-and-fields">Validators &amp; Fields</h3>
+<dl class="glossary">
+<dt>field_validator</dt>
+<dd>A classmethod decorator that attaches a custom validation or transformation function to one or more named fields on a BaseModel.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "validator" (the v1 name) — removed in v2. Always use <code>@field_validator</code>.</dd>
+<dt>model_validator</dt>
+<dd>A classmethod decorator that attaches a validation function to the entire model, running after all field validators have passed; used for cross-field rules.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "root_validator" (the v1 name) — removed in v2.</dd>
+<dt>Field()</dt>
+<dd>A Pydantic function used as a field default to declare constraints (<code>ge</code>, <code>le</code>, <code>min_length</code>), a description, an alias, or other metadata on a model field.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing it with Python's built-in <code>dataclasses.field()</code> — same name, different purpose.</dd>
+<dt>TypeAdapter</dt>
+<dd>A Pydantic utility class that wraps any type (including <code>List[Model]</code>) and exposes <code>validate_python()</code> and <code>validate_json()</code> without requiring a BaseModel subclass.</dd>
+<dd class="avoid"><strong>Avoid:</strong> using it as a replacement for BaseModel when you need per-record error isolation — TypeAdapter raises a single combined error for the whole batch.</dd>
+<dt>model_validate</dt>
+<dd>The v2 method for constructing a Pydantic model from a dict, ORM object, or another model instance, running all validators.</dd>
+<dd class="avoid"><strong>Avoid:</strong> <code>parse_obj()</code> — the v1 equivalent, removed in v2.</dd>
+</dl>
+<h3 id="glossary-integration-and-output">Integration &amp; Output</h3>
+<dl class="glossary">
+<dt>model_dump</dt>
+<dd>A BaseModel method that returns the model's data as a plain Python dict, with all sub-models also converted to dicts recursively.</dd>
+<dd class="avoid"><strong>Avoid:</strong> <code>dict()</code> — the v1 equivalent, deprecated in v2.</dd>
+<dt>JSON Schema</dt>
+<dd>A vocabulary for describing the structure and constraints of JSON data; Pydantic generates it automatically via <code>model_json_schema()</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Pydantic schema" — the output is standard JSON Schema (draft 2020-12), usable by any JSON Schema validator, not just Pydantic.</dd>
+<dt>BaseSettings</dt>
+<dd>A Pydantic model class (from <code>pydantic-settings</code>) that reads and validates configuration from environment variables and <code>.env</code> files.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing it with <code>BaseModel</code> — BaseSettings adds env-variable sourcing on top of BaseModel's validation.</dd>
+<dt>Data contract</dt>
+<dd>A formal, versioned agreement between a data producer and a data consumer that specifies field names, types, constraints, and nullability of a dataset.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "schema" as a synonym when communicating across teams — schema implies structure only; a contract implies obligation and versioning.</dd>
+</dl>
+<h3 id="glossary-pydantic-ai">Pydantic AI</h3>
+<dl class="glossary">
+<dt>Agent</dt>
+<dd>The core Pydantic AI object that binds a model, instructions, dependencies, tools, and an output type into one runnable, type-safe unit invoked with <code>run</code> / <code>run_sync</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "chatbot", "chain" — an Agent is a typed wrapper around a model run, not a conversation UI or a LangChain-style pipeline.</dd>
+<dt>output_type</dt>
+<dd>The Pydantic type an agent is constrained to return; <code>result.output</code> is a validated instance of it, so the LLM's response is schema-checked before you use it.</dd>
+<dd class="avoid"><strong>Avoid:</strong> <code>result_type</code> — the older name for the same parameter; current Pydantic AI uses <code>output_type</code>.</dd>
+<dt>Tool</dt>
+<dd>A Python function registered on an agent (via <code>@agent.tool</code>) that the model may call mid-run to fetch real data; its arguments are validated against the function's type hints.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "plugin", "function call" loosely — in Pydantic AI a tool is specifically a typed, registered Python callable.</dd>
+<dt>RunContext</dt>
+<dd>The object passed to tools and validators that carries the run's injected dependencies (<code>ctx.deps</code>), usage, and message history.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "session", "state" — RunContext is per-run and typed via <code>deps_type</code>, not a persistent store.</dd>
+<dt>deps_type</dt>
+<dd>The declared type of an agent's runtime dependencies (DB connections, API clients, lookup data), injected at <code>run</code> time and read inside tools through <code>RunContext</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> hard-coding resources inside tools — injecting via <code>deps_type</code> is what makes an agent testable with fakes.</dd>
+<dt>ModelRetry</dt>
+<dd>An exception raised inside a tool or output validator that sends its message back to the model so it can correct its previous attempt, bounded by the agent's <code>retries</code> setting.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing it with <code>ValidationError</code> — a ValidationError rejects output; a ModelRetry asks the model to fix it.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>Python for Data Analysis (3rd ed.) — Wes McKinney</td><td>Pandas foundations; pairs well with Pydantic's DataFrame integration</td></tr>
+<tr><td>Architecture Patterns with Python — Percival &amp; Gregory</td><td>Using Pydantic for domain models and data validation in production systems</td></tr>
+<tr><td>FastAPI — Sebastian Ramirez (online docs)</td><td>Canonical reference for Pydantic + FastAPI integration</td></tr>
+<tr><td>Robust Python — Patrick Viafore</td><td>Type hints, runtime validation, and defensive data handling in Python</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>docs.pydantic.dev</td><td>Official Pydantic v2 documentation</td><td>The authoritative source; the migration guide is essential if coming from v1</td></tr>
+<tr><td>fastapi.tiangolo.com</td><td>FastAPI + Pydantic integration</td><td>Tutorial section shows request/response models end-to-end</td></tr>
+<tr><td>pydantic-settings docs</td><td>BaseSettings and env config</td><td>Separate package since v2; install with pydantic-settings</td></tr>
+<tr><td>Real Python — Pydantic tutorials</td><td>Beginner-friendly walkthroughs</td><td>Good for visual learners; code examples are runnable</td></tr>
+<tr><td>json-schema.org</td><td>JSON Schema specification</td><td>Understand what model_json_schema() produces</td></tr>
+<tr><td>testdriven.io — FastAPI course</td><td>FastAPI + Pydantic in production</td><td>Covers testing, Docker, and deployment</td></tr>
+<tr><td>ai.pydantic.dev</td><td>Official Pydantic AI documentation</td><td>The authoritative source for agents, tools, output types, and streaming (Phase 4)</td></tr>
+<tr><td>Anthropic Claude API docs</td><td>Provider for Pydantic AI agents</td><td>Model IDs and keys; <code>claude-sonnet-4-6</code> is a solid agent default, <code>claude-opus-4-8</code> for harder reasoning</td></tr>
+</table>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>E-commerce Orders Dataset (shared <a href="../datasets/ecommerce-orders/">datasets folder</a>)</td><td>This guide's own benchmark — 1,500 rows, ~23% deliberately invalid</td></tr>
+<tr><td>Kaggle E-commerce Datasets</td><td>Additional practice datasets for order, customer, and product validation schemas</td></tr>
+<tr><td>Faker (pip install faker)</td><td>Generate synthetic order data for testing validators</td></tr>
+<tr><td>jsonschema (pip install jsonschema)</td><td>Validate raw data against exported Pydantic JSON Schemas</td></tr>
+<tr><td>pytest + hypothesis</td><td>Property-based testing of Pydantic validators with random inputs</td></tr>
+<tr><td>pandera</td><td>DataFrame-native schema validation; complements Pydantic for column-level rules</td></tr>
+<tr><td>pydantic-ai (pip install pydantic-ai)</td><td>Build typed LLM agents whose outputs are validated Pydantic models (Phase 4)</td></tr>
+</table>
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>r/Python</td><td>Reddit</td><td>General Python questions; Pydantic threads are common and well-answered</td></tr>
+<tr><td>Pydantic GitHub Discussions</td><td>GitHub</td><td>Bug reports, v1-to-v2 migration questions, feature requests from the maintainers</td></tr>
+<tr><td>FastAPI Discord</td><td>Discord</td><td>Active community for FastAPI + Pydantic integration questions; fast response times</td></tr>
+<tr><td>Data Engineering Discord (DataTalks.Club)</td><td>Discord</td><td>Pipeline validation patterns, ETL data contracts, real-world Pydantic use cases</td></tr>
+<tr><td>Pydantic AI GitHub Discussions</td><td>GitHub</td><td>Agent patterns, tool design, and provider integration questions answered by the maintainers</td></tr>
+<tr><td>Stack Overflow — tag: pydantic</td><td>Stack Overflow</td><td>Canonical Q&amp;A archive; most common validation patterns are already answered</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is session-only and resets on reload.</p></blockquote>
+<h4>Phase 1 — Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — Why Pydantic? Data Quality Problems</li>
+<li>[ ] Exercise 1.1 — Spot the Bug</li>
+<li>[ ] Module 1.2 — BaseModel Fundamentals</li>
+<li>[ ] Exercise 1.2 — Build the Order Model</li>
+<li>[ ] Module 1.3 — Field Types &amp; Type Coercion</li>
+<li>[ ] Exercise 1.3 — Typed and Constrained Fields</li>
+<li>[ ] Module 1.4 — Validators: Field-Level &amp; Model-Level</li>
+<li>[ ] Exercise 1.4 — Custom Validation Rules</li>
+<li>[ ] Capstone 1 — E-commerce Order Intake Validator</li>
+</ul>
+<h4>Phase 2 — Data Validation Patterns</h4>
+<ul>
+<li>[ ] Module 2.1 — Nested Models &amp; Complex Structures</li>
+<li>[ ] Exercise 2.1 — Nested Order Structure</li>
+<li>[ ] Module 2.2 — Parsing &amp; Loading Data</li>
+<li>[ ] Exercise 2.2 — CSV Batch Loader</li>
+<li>[ ] Module 2.3 — Custom Validators with @field_validator</li>
+<li>[ ] Exercise 2.3 — Build a Normalizing Loader</li>
+<li>[ ] Module 2.4 — Settings Management with BaseSettings</li>
+<li>[ ] Exercise 2.4 — Pipeline Config with BaseSettings</li>
+<li>[ ] Capstone 2 — Normalized E-commerce Order ETL</li>
+</ul>
+<h4>Phase 3 — Production &amp; Integration</h4>
+<ul>
+<li>[ ] Module 3.1 — Pydantic &amp; Pandas: Validated DataFrames</li>
+<li>[ ] Exercise 3.1 — Validate a DataFrame</li>
+<li>[ ] Module 3.2 — Pydantic &amp; FastAPI: Data API Contracts</li>
+<li>[ ] Exercise 3.2 — Order API Endpoint</li>
+<li>[ ] Module 3.3 — JSON Schema Export &amp; Data Contracts</li>
+<li>[ ] Exercise 3.3 — Publish a Data Contract</li>
+<li>[ ] Module 3.4 — Error Handling &amp; Validation Reports</li>
+<li>[ ] Exercise 3.4 — Build a Validation Report</li>
+<li>[ ] Capstone 3 — Production Data Contract</li>
+</ul>
+<h4>Phase 4 — Pydantic AI</h4>
+<ul>
+<li>[ ] Module 4.1 — Why Pydantic AI? Typed Agents</li>
+<li>[ ] Exercise 4.1 — From String to Contract</li>
+<li>[ ] Module 4.2 — Structured Outputs from LLMs</li>
+<li>[ ] Exercise 4.2 — The Typed Order Agent</li>
+<li>[ ] Module 4.3 — Tools, Dependencies &amp; RunContext</li>
+<li>[ ] Exercise 4.3 — Ground the Agent in Inventory</li>
+<li>[ ] Module 4.4 — Output Validation, Retries &amp; Streaming</li>
+<li>[ ] Exercise 4.4 — Self-Correcting Checkout Agent</li>
+<li>[ ] Capstone 4 — AI Order Intake Agent</li>
+</ul>
+<h4>Final Milestone</h4>
+<ul>
+<li>[ ] Final Capstone — The Data Quality Gateway</li>
+<li>[ ] DATA_CONTRACT.md written and published</li>
+<li>[ ] test_pipeline.py passing with 6+ tests</li>
+</ul>
+
+<p><em>Guide Version 1.0 — Pydantic Track: Beginner to Intermediate</em><br>
+<em>Non-linear modular design · Placement quiz · 16 modules · ~8 weeks part-time · hayah-ai</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

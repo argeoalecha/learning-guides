@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statistics with Python Learning Guide — Data Cleaning to EDA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Statistics with Python<br>Learning Guide</div>
+      <div class="brand-sub">Python · NumPy · Pandas · SciPy · Matplotlib · Seaborn · Statsmodels</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#statistics-with-python-learning-guide" class="nav-top">Statistics with Python</a>
+<a href="#data-cleaning-to-eda-track" class="nav-top">Data Cleaning to EDA Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+<div class="nav-group">
+<a href="#phase-1-python-statistical-foundations" class="nav-top nav-phase">Phase 1: Python &amp; Stats Foundations</a>
+<div class="nav-children">
+<a href="#module-11-numpy-pandas-essentials" class="nav-child">Module 1.1 — NumPy &amp; Pandas Essentials</a>
+<a href="#module-12-descriptive-statistics-in-python" class="nav-child">Module 1.2 — Descriptive Statistics</a>
+<a href="#module-13-probability-distributions-sampling" class="nav-child">Module 1.3 — Distributions &amp; Sampling</a>
+<a href="#phase-1-capstone-shopflow" class="nav-child">Phase 1 Capstone</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-2-data-cleaning" class="nav-top nav-phase">Phase 2: Data Cleaning</a>
+<div class="nav-children">
+<a href="#module-21-diagnosing-data-quality" class="nav-child">Module 2.1 — Diagnosing Data Quality</a>
+<a href="#module-22-handling-missing-data" class="nav-child">Module 2.2 — Handling Missing Data</a>
+<a href="#module-23-outlier-detection-treatment" class="nav-child">Module 2.3 — Outlier Detection &amp; Treatment</a>
+<a href="#module-24-standardization-type-coercion" class="nav-child">Module 2.4 — Standardization &amp; Type Coercion</a>
+<a href="#phase-2-capstone-shopflow" class="nav-child">Phase 2 Capstone</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-3-correct-data-structures" class="nav-top nav-phase">Phase 3: Correct Data Structures</a>
+<div class="nav-children">
+<a href="#module-31-tidy-data-reshaping" class="nav-child">Module 3.1 — Tidy Data &amp; Reshaping</a>
+<a href="#module-32-data-types-categoricals" class="nav-child">Module 3.2 — Data Types &amp; Categoricals</a>
+<a href="#module-33-aggregation-grouping" class="nav-child">Module 3.3 — Aggregation &amp; Grouping</a>
+<a href="#phase-3-capstone-shopflow" class="nav-child">Phase 3 Capstone</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-4-exploratory-data-analysis" class="nav-top nav-phase">Phase 4: Exploratory Data Analysis</a>
+<div class="nav-children">
+<a href="#module-41-univariate-analysis" class="nav-child">Module 4.1 — Univariate Analysis</a>
+<a href="#module-42-bivariate-multivariate-analysis" class="nav-child">Module 4.2 — Bivariate &amp; Multivariate Analysis</a>
+<a href="#module-43-eda-for-time-series-data" class="nav-child">Module 4.3 — EDA for Time-Series</a>
+<a href="#phase-4-capstone-shopflow" class="nav-child">Phase 4 Capstone</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-5-statistical-inference" class="nav-top nav-phase">Phase 5: Statistical Inference</a>
+<div class="nav-children">
+<a href="#module-51-hypothesis-testing" class="nav-child">Module 5.1 — Hypothesis Testing</a>
+<a href="#module-52-regression-correlation" class="nav-child">Module 5.2 — Regression &amp; Correlation</a>
+<a href="#phase-5-capstone-shopflow" class="nav-child">Phase 5 Capstone</a>
+</div></div>
+<a href="#final-capstone-shopflow" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#resources" class="nav-top">Resources</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="statistics-with-python-learning-guide">Statistics with Python Learning Guide</h1>
+<h2 id="data-cleaning-to-eda-track">Data Cleaning to EDA Track</h2>
+<h3>Python · NumPy · Pandas · SciPy · Matplotlib · Seaborn</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Statistics with Python" xmlns="http://www.w3.org/2000/svg">
+  <path d="M128,16 C84,16 52,44 52,84 L52,112 C52,120 60,128 68,128 L128,128 L128,108 C128,100 120,92 112,92 L88,92 L88,72 C88,52 106,36 128,36 C150,36 168,52 168,72 L168,84 L192,84 L192,72 C192,40 164,16 128,16 Z" fill="#075249"/>
+  <circle cx="152" cy="56" r="9" fill="#e8f4f1"/>
+  <path d="M128,240 C172,240 204,212 204,172 L204,144 C204,136 196,128 188,128 L128,128 L128,148 C128,156 136,164 144,164 L168,164 L168,184 C168,204 150,220 128,220 C106,220 88,204 88,184 L88,172 L64,172 L64,184 C64,216 92,240 128,240 Z" fill="#0d7a6e"/>
+  <circle cx="104" cy="200" r="9" fill="#e8f4f1"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same realistic <strong>ShopFlow</strong> dataset — an 80,000-row Philippine e-commerce transaction log with messy, real-world data quality issues. Download <code>shopflow_orders.csv</code> from the shared <a href="../datasets/shopflow/">datasets folder</a>.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Some Python experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>. Data cleaning starts at Phase 2; EDA starts at Phase 4.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3>Section A — Python &amp; Data Tooling</h3>
+<ul>
+<li>[ ] I can create and index a Pandas DataFrame from a CSV file.</li>
+<li>[ ] I can use NumPy to compute mean, standard deviation, and percentiles on an array.</li>
+<li>[ ] I can use boolean masks to filter rows in a DataFrame.</li>
+<li>[ ] I understand the difference between a NumPy array and a Pandas Series.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3>Section B — Data Cleaning</h3>
+<ul>
+<li>[ ] I can identify and quantify missing values in a DataFrame using <code>.isnull()</code>.</li>
+<li>[ ] I can choose between drop, forward-fill, and KNN imputation based on the missing-data mechanism.</li>
+<li>[ ] I can detect outliers using both the IQR method and Z-scores.</li>
+<li>[ ] I can parse mixed date formats and normalize categorical strings in Pandas.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3>Section C — Data Structures</h3>
+<ul>
+<li>[ ] I know what "tidy data" means and can reshape wide data to long format with <code>.melt()</code>.</li>
+<li>[ ] I understand when to use <code>pd.Categorical</code> (ordered) vs. a plain string column.</li>
+<li>[ ] I can use <code>groupby().agg()</code> with multiple aggregation functions in one call.</li>
+<li>[ ] I can resample a time-indexed DataFrame from daily to weekly frequency.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3>Section D — EDA &amp; Statistical Inference</h3>
+<ul>
+<li>[ ] I can produce a histogram, boxplot, and QQ plot for a numeric column.</li>
+<li>[ ] I can build a correlation heatmap and explain which pairs have strong relationships.</li>
+<li>[ ] I can run a two-sample t-test and interpret the p-value and effect size.</li>
+<li>[ ] I can fit an OLS regression model and report R² and coefficient significance.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 5.1</strong> | <strong>4 yes</strong> → Go straight to the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-numpy-pandas-essentials"><td>1.1</td><td>NumPy &amp; Pandas Essentials</td><td>Beginner</td><td>None</td><td>3h</td></tr>
+<tr data-href="#module-12-descriptive-statistics-in-python"><td>1.2</td><td>Descriptive Statistics in Python</td><td>Beginner</td><td>1.1</td><td>3h</td></tr>
+<tr data-href="#module-13-probability-distributions-sampling"><td>1.3</td><td>Probability Distributions &amp; Sampling</td><td>Beginner–Intermediate</td><td>1.2</td><td>3h</td></tr>
+<tr data-href="#module-21-diagnosing-data-quality"><td>2.1</td><td>Diagnosing Data Quality</td><td>Beginner</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-22-handling-missing-data"><td>2.2</td><td>Handling Missing Data</td><td>Intermediate</td><td>2.1</td><td>3h</td></tr>
+<tr data-href="#module-23-outlier-detection-treatment"><td>2.3</td><td>Outlier Detection &amp; Treatment</td><td>Intermediate</td><td>2.1, 1.2</td><td>3h</td></tr>
+<tr data-href="#module-24-standardization-type-coercion"><td>2.4</td><td>Standardization &amp; Type Coercion</td><td>Intermediate</td><td>2.1</td><td>2h</td></tr>
+<tr data-href="#module-31-tidy-data-reshaping"><td>3.1</td><td>Tidy Data &amp; Reshaping</td><td>Intermediate</td><td>2.4</td><td>2h</td></tr>
+<tr data-href="#module-32-data-types-categoricals"><td>3.2</td><td>Data Types &amp; Categoricals</td><td>Intermediate</td><td>3.1</td><td>2h</td></tr>
+<tr data-href="#module-33-aggregation-grouping"><td>3.3</td><td>Aggregation &amp; Grouping</td><td>Intermediate</td><td>3.1, 3.2</td><td>3h</td></tr>
+<tr data-href="#module-41-univariate-analysis"><td>4.1</td><td>Univariate Analysis</td><td>Intermediate</td><td>Phase 3</td><td>3h</td></tr>
+<tr data-href="#module-42-bivariate-multivariate-analysis"><td>4.2</td><td>Bivariate &amp; Multivariate Analysis</td><td>Intermediate</td><td>4.1</td><td>3h</td></tr>
+<tr data-href="#module-43-eda-for-time-series-data"><td>4.3</td><td>EDA for Time-Series Data</td><td>Intermediate</td><td>3.3, 4.1</td><td>3h</td></tr>
+<tr data-href="#module-51-hypothesis-testing"><td>5.1</td><td>Hypothesis Testing</td><td>Intermediate–Advanced</td><td>1.3, Phase 4</td><td>4h</td></tr>
+<tr data-href="#module-52-regression-correlation"><td>5.2</td><td>Regression &amp; Correlation</td><td>Advanced</td><td>5.1</td><td>4h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1–3 build the foundation. Phases 4–5 are the payoff — skip directly to Phase 4 if you already have clean, well-structured data and want to focus on analysis and visualization.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset of the full guide.</p>
+
+<h3 id="track-1-data-analyst-fast-track">Track 1 — Data Analyst Fast-Track (job-ready in 6 weeks)</h3>
+<p><code>1.1 → 1.2 → 2.1 → 2.2 → 2.3 → 3.1 → 3.3 → 4.1 → 4.2 → Final Capstone</code><br>
+Target outcome: <strong>Junior Data Analyst role — Pandas, cleaning, and EDA proficiency</strong></p>
+
+<h3 id="track-2-data-cleaning-specialist">Track 2 — Data Cleaning Specialist (deep dive)</h3>
+<p><code>1.1 → 2.1 → 2.2 → 2.3 → 2.4 → 3.1 → 3.2 → Phase 2 Capstone → Phase 3 Capstone</code><br>
+Target outcome: <strong>Ability to own data quality pipelines end-to-end</strong></p>
+
+<h3 id="track-3-eda-focus">Track 3 — EDA Focus (visualization &amp; storytelling)</h3>
+<p><code>1.2 → 3.3 → 4.1 → 4.2 → 4.3 → Phase 4 Capstone</code><br>
+Target outcome: <strong>Portfolio-ready EDA notebook with Matplotlib/Seaborn</strong></p>
+
+<h3 id="track-4-full-statistics-path">Track 4 — Full Statistics Path (all modules)</h3>
+<p><code>1.1 → 1.2 → 1.3 → All Phase 2 → All Phase 3 → All Phase 4 → All Phase 5 → Final Capstone</code><br>
+Target outcome: <strong>Statistical analysis competency covering cleaning, EDA, hypothesis testing, and regression</strong></p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Python &amp; Statistical Foundations    (Weeks 1–2)
+Phase 2 — Data Cleaning                        (Weeks 3–5)
+Phase 3 — Correct Data Structures             (Weeks 6–7)
+Phase 4 — Exploratory Data Analysis           (Weeks 8–9)
+Phase 5 — Statistical Inference               (Weeks 10–11)
+Final Capstone                                 (Week 12)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ─┬─ 1.2 ── 1.3 ─────────────────────────┐
+     │                                        │
+     └─ 2.1 ─┬─ 2.2 ──┐                      │
+              ├─ 2.3 ──┤                      │
+              └─ 2.4 ──┴─ 3.1 ─┬─ 3.2 ──┐   │
+                                └─ 3.3 ──┴─ 4.1 ─┬─ 4.2 ─┐
+                                                   └─ 4.3 ─┴─ 5.1 ── 5.2 ── Final Capstone</code></pre>
+
+<h2 id="phase-1-python-statistical-foundations">Phase 1: Python &amp; Statistical Foundations</h2>
+<h3 id="weeks-1-2">Weeks 1–2 | Goal: Comfortable with NumPy, Pandas, and core descriptive statistics</h3>
+<hr />
+
+<h3 id="module-11-numpy-pandas-essentials">Module 1.1 — NumPy &amp; Pandas Essentials</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Basic Python (loops, functions, lists) · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Load a CSV, filter rows by a condition, compute the column mean — all without looking anything up.<br>
+<strong>Skip if:</strong> You use <code>df.groupby()</code>, <code>.loc[]</code>, and vectorized string methods in daily work.<br>
+<strong>Unlocks:</strong> 1.2, 2.1</p>
+</blockquote>
+
+<h4>Arrays vs. Series vs. DataFrame</h4>
+<p>NumPy arrays are typed, fixed-size, and optimized for numeric math. A Pandas Series is a 1D array with a labeled index. A DataFrame is a dictionary of aligned Series — the workhorse of data analysis. Understanding the boundary between them prevents the most common performance mistakes (calling <code>.apply()</code> when a vectorized NumPy operation would be 100× faster).</p>
+
+<h4>Loading &amp; Inspecting the ShopFlow Dataset</h4>
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+
+# Load ShopFlow dataset (80k e-commerce transactions)
+df = pd.read_csv("shopflow_orders.csv", parse_dates=["order_date", "delivery_date"])
+
+print(df.shape)      # (80000, 14)
+print(df.dtypes)
+print(df.head(3))
+print(df.info())     # shows non-null counts and dtypes side-by-side
+
+# Columns: order_id, customer_id, order_date, delivery_date, product_category,
+#          region, quantity, order_value, discount_pct, shipping_fee,
+#          weight_kg, delivery_tier, delivery_status, customer_phone</code></pre>
+
+<h4>Vectorized Operations</h4>
+<p>Loops over DataFrame rows are almost always wrong — they're 100–1000× slower than vectorized operations. NumPy broadcasts element-wise operations across entire arrays in C-speed loops.</p>
+<pre><code class="language-python">prices = df["order_value"].to_numpy()
+
+# Vectorized stats — never loop for these
+print(f"Mean:   {np.mean(prices):.2f}")
+print(f"Median: {np.median(prices):.2f}")
+print(f"Std:    {np.std(prices):.2f}")
+print(f"P95:    {np.percentile(prices, 95):.2f}")
+
+# Boolean indexing — vectorized row filter
+high_value = df[df["order_value"] &gt; 5000]
+print(f"High-value orders: {len(high_value):,}")
+
+# Vectorized string normalization (no loop needed)
+df["product_category"] = df["product_category"].str.strip().str.lower()
+
+# .loc for label-based, .iloc for position-based access
+metro_express = df.loc[
+    (df["region"] == "NCR") &amp; (df["delivery_tier"] == "express"),
+    ["order_id", "order_value", "delivery_date"]
+]</code></pre>
+
+<p><strong>Exercise 1.1 — First Contact with ShopFlow</strong></p>
+<p>Dataset: ShopFlow (shopflow_orders.csv)</p>
+<ol>
+<li>Load the dataset and print <code>.shape</code>, <code>.dtypes</code>, and <code>.describe()</code>.</li>
+<li>Using NumPy, compute the mean, median, standard deviation, and 90th percentile of <code>order_value</code>.</li>
+<li>Filter to orders from the "Visayas" region with <code>order_value</code> greater than ₱2,000. How many rows?</li>
+<li>Normalize <code>product_category</code> to lowercase with no leading/trailing whitespace.</li>
+<li>Using <code>.value_counts()</code>, find the top 5 product categories by order count.</li>
+<li>Create a new column <code>revenue_per_item</code> as <code>order_value / quantity</code> (vectorized — no loop).</li>
+</ol>
+<hr />
+
+<h3 id="module-12-descriptive-statistics-in-python">Module 1.2 — Descriptive Statistics in Python</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Module 1.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Compute skewness, kurtosis, and a weighted mean on a column and explain what each number means.<br>
+<strong>Skip if:</strong> You can distinguish when to use mean vs. median and explain what a high kurtosis signals.<br>
+<strong>Unlocks:</strong> 1.3, 2.3</p>
+</blockquote>
+
+<h4>Measures of Central Tendency &amp; Spread</h4>
+<p>The mean is sensitive to outliers; use it only when the distribution is roughly symmetric. The median is robust. Mode is for categorical data. Variance and standard deviation measure spread around the mean; IQR measures spread around the median — use IQR when you have outliers.</p>
+
+<h4>Five-Number Summary &amp; Distribution Shape</h4>
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+from scipy import stats
+
+df = pd.read_csv("shopflow_orders.csv")
+
+# --- Five-number summary + mean ---
+print(df["order_value"].describe())
+# min, 25%, 50%, 75%, max — plus count, mean, std
+
+# --- Skewness and kurtosis ---
+# Skewness &gt; 0: right tail (common for monetary data)
+# Kurtosis &gt; 3 (excess kurtosis &gt; 0): heavier tails than normal
+print(f"Skewness: {df['order_value'].skew():.3f}")
+print(f"Kurtosis: {df['order_value'].kurt():.3f}")  # excess kurtosis
+
+# --- Mode for categorical columns ---
+print(f"Most common category: {df['product_category'].mode()[0]}")
+
+# --- Weighted mean: order value weighted by quantity ---
+weighted_mean = np.average(
+    df["order_value"].dropna(),
+    weights=df.loc[df["order_value"].notna(), "quantity"]
+)
+print(f"Weighted mean order value: ₱{weighted_mean:,.2f}")
+
+# --- Coefficient of variation (relative spread, unit-free) ---
+cv = df["order_value"].std() / df["order_value"].mean()
+print(f"CV: {cv:.3f}")  # &gt; 1 means very high dispersion</code></pre>
+
+<h4>Grouped Descriptive Statistics</h4>
+<pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv("shopflow_orders.csv")
+
+# Descriptive stats per product category
+by_category = (df.groupby("product_category")["order_value"]
+                 .agg(count="count",
+                      mean="mean",
+                      median="median",
+                      std="std",
+                      cv=lambda x: x.std() / x.mean())
+                 .sort_values("mean", ascending=False)
+                 .round(2))
+print(by_category.head(10))</code></pre>
+
+<p><strong>Exercise 1.2 — Profiling ShopFlow Order Values</strong></p>
+<p>Dataset: ShopFlow (shopflow_orders.csv)</p>
+<ol>
+<li>Compute the full five-number summary for <code>order_value</code> and <code>quantity</code>.</li>
+<li>Report skewness and kurtosis for <code>order_value</code>. Is the distribution right-skewed? What does that imply for using the mean as a summary?</li>
+<li>Compute the weighted mean of <code>order_value</code>, weighted by <code>quantity</code>. Is it higher or lower than the unweighted mean? Why?</li>
+<li>Using <code>groupby()</code>, compute mean and median order value per <code>region</code>. Which region has the largest gap between mean and median?</li>
+<li>Compute the coefficient of variation for each product category. Which category has the most consistent order values?</li>
+</ol>
+<hr />
+
+<h3 id="module-13-probability-distributions-sampling">Module 1.3 — Probability Distributions &amp; Sampling</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 1.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Run a normality test on a column, explain why you'd log-transform monetary data, and generate a bootstrap confidence interval for the mean.<br>
+<strong>Skip if:</strong> You understand when CLT applies and can generate a bootstrap CI without looking up the syntax.<br>
+<strong>Unlocks:</strong> 5.1, 5.2</p>
+</blockquote>
+
+<h4>Testing for Normality</h4>
+<p>Most statistical tests assume normality. Monetary data is almost always right-skewed — applying a t-test to raw <code>order_value</code> without checking the distribution first is a common mistake. The log transform is the standard fix for right-skewed positive data.</p>
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+from scipy import stats
+
+df = pd.read_csv("shopflow_orders.csv")
+order_values = df["order_value"].dropna()
+
+# --- D'Agostino-Pearson normality test ---
+# H0: data is normally distributed
+stat, p_value = stats.normaltest(order_values)
+print(f"Normality test — p: {p_value:.4e}")   # very small: reject H0
+
+# --- Log-transform to approach normality ---
+log_values = np.log1p(order_values)   # log1p = log(1+x), safe for x=0
+stat2, p_value2 = stats.normaltest(log_values)
+print(f"Log-transformed  — p: {p_value2:.4f}")   # much larger</code></pre>
+
+<h4>Fitting &amp; Sampling Distributions</h4>
+<pre><code class="language-python">import numpy as np
+from scipy import stats
+
+log_values = np.log1p(df["order_value"].dropna())
+
+# --- Fit normal to log-transformed data ---
+mu, sigma = stats.norm.fit(log_values)
+print(f"Fitted log-normal: μ={mu:.3f}  σ={sigma:.3f}")
+
+# --- Generate synthetic samples from the fitted distribution ---
+rng = np.random.default_rng(seed=42)
+synthetic = rng.normal(loc=mu, scale=sigma, size=10_000)
+synthetic_original_scale = np.expm1(synthetic)  # invert log1p
+
+# --- Bootstrap 95% CI for the median order value ---
+bootstrapped_medians = [
+    np.median(rng.choice(df["order_value"].dropna().to_numpy(),
+                         size=1000, replace=True))
+    for _ in range(5000)
+]
+ci_low, ci_high = np.percentile(bootstrapped_medians, [2.5, 97.5])
+print(f"Bootstrap 95% CI for median: [₱{ci_low:.2f}, ₱{ci_high:.2f}]")</code></pre>
+
+<p><strong>Exercise 1.3 — Distribution Fitting on ShopFlow</strong></p>
+<p>Dataset: ShopFlow (shopflow_orders.csv)</p>
+<ol>
+<li>Run a normality test on raw <code>order_value</code>. Report the p-value and conclude whether the data is normally distributed.</li>
+<li>Apply a log transform and re-run the normality test. How much did the p-value improve?</li>
+<li>Fit a normal distribution to the log-transformed values and report μ and σ.</li>
+<li>Generate 5,000 bootstrap samples of size 500 from <code>order_value</code>. Plot the distribution of bootstrap means. Does it look normal? Why?</li>
+<li>Compute a 99% bootstrap confidence interval for the mean. Compare the width to the 95% CI.</li>
+<li>Compute the daily order count and test whether it follows a Poisson distribution. Report your reasoning.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-shopflow">Phase 1 Capstone: Statistical Profile Report</h3>
+<p><strong>Project: ShopFlow Baseline Statistical Report</strong></p>
+<p><strong>Dataset:</strong> ShopFlow (shopflow_orders.csv)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A Python script or notebook that loads and inspects the full dataset, reporting shape, dtypes, and non-null counts.</li>
+<li>A descriptive statistics table for all numeric columns (count, mean, median, std, min, max, skewness, kurtosis).</li>
+<li>A grouped summary: mean and median <code>order_value</code> per <code>region</code> and per <code>product_category</code>.</li>
+<li>A normality test result for <code>order_value</code> and <code>quantity</code>, with commentary on which statistical tests are appropriate for each.</li>
+<li>Bootstrap 95% confidence intervals for the mean and median of <code>order_value</code>.</li>
+<li>A one-paragraph written conclusion summarizing what the distribution of order values tells you about ShopFlow's customer base.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-data-cleaning">Phase 2: Data Cleaning</h2>
+<h3 id="weeks-3-5">Weeks 3–5 | Goal: Produce a fully clean, audit-trail-documented ShopFlow dataset</h3>
+<hr />
+
+<h3 id="module-21-diagnosing-data-quality">Module 2.1 — Diagnosing Data Quality</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Module 1.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Produce a quality report table showing missing-value counts, percentages, dtypes, and cardinality for every column — in under 10 lines.<br>
+<strong>Skip if:</strong> You routinely run a data quality audit before any analysis and know how to detect duplicate keys.<br>
+<strong>Unlocks:</strong> 2.2, 2.3, 2.4</p>
+</blockquote>
+
+<h4>The Quality Audit Pattern</h4>
+<p>Never start cleaning without a full audit first. Jumping straight to <code>.fillna()</code> without understanding which columns are missing, how much, and in what pattern leads to imputation choices that introduce bias. Build a reusable <code>quality_report()</code> function and run it at the start of every project.</p>
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+
+df = pd.read_csv("shopflow_orders.csv")
+
+def quality_report(frame: pd.DataFrame) -&gt; pd.DataFrame:
+    missing = frame.isnull().sum()
+    missing_pct = (missing / len(frame) * 100).round(2)
+    return pd.DataFrame({
+        "dtype":         frame.dtypes,
+        "missing_count": missing,
+        "missing_pct":   missing_pct,
+        "n_unique":      frame.nunique(),
+        "sample_values": [frame[c].dropna().unique()[:3].tolist() for c in frame.columns],
+    }).sort_values("missing_pct", ascending=False)
+
+report = quality_report(df)
+print(report.to_string())</code></pre>
+
+<h4>Detecting Duplicates &amp; Cardinality Anomalies</h4>
+<pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv("shopflow_orders.csv")
+
+# --- Exact duplicate rows ---
+n_dupes = df.duplicated().sum()
+print(f"Exact duplicate rows: {n_dupes}")
+
+# --- Duplicate primary keys (order_id should be unique) ---
+dup_keys = df.duplicated(subset=["order_id"], keep=False)
+print(f"Rows with duplicate order_id: {dup_keys.sum()}")
+print(df[dup_keys].sort_values("order_id").head(6))
+
+# --- Cardinality check: low-cardinality object columns ---
+# Unexpectedly high cardinality may mean free-text leaked in
+# Unexpectedly low cardinality may mean encoding errors
+for col in df.select_dtypes("object").columns:
+    n = df[col].nunique()
+    if n &lt; 50:
+        print(f"\n{col} ({n} unique): {sorted(df[col].dropna().unique())}")</code></pre>
+
+<p><strong>Exercise 2.1 — Quality Audit of ShopFlow</strong></p>
+<p>Dataset: ShopFlow (shopflow_orders.csv)</p>
+<ol>
+<li>Run <code>quality_report(df)</code> and identify the three columns with the highest missing percentage.</li>
+<li>Check for exact duplicate rows and for rows with duplicate <code>order_id</code>. Are the duplicates identical across all columns, or do they differ?</li>
+<li>For each low-cardinality string column, list all unique values. Identify at least two columns with encoding inconsistencies (e.g., "express" vs. "Express" vs. "EXPRESS").</li>
+<li>Check whether <code>delivery_date</code> is ever earlier than <code>order_date</code>. How many such rows exist?</li>
+<li>Check whether <code>order_value</code> or <code>quantity</code> contain any zero or negative values. Flag these as suspicious.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-handling-missing-data">Module 2.2 — Handling Missing Data</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Given a column missing 12% of values, decide between drop/fill/impute and justify the choice in one sentence.<br>
+<strong>Skip if:</strong> You understand MCAR, MAR, and MNAR and can apply KNN imputation from scikit-learn.<br>
+<strong>Unlocks:</strong> 2.3, 2.4</p>
+</blockquote>
+
+<h4>Missing Data Mechanisms</h4>
+<p><strong>MCAR</strong> (Missing Completely At Random) — missingness is unrelated to any variable. Safe to drop rows. <strong>MAR</strong> (Missing At Random) — missingness depends on observed variables (e.g., <code>shipping_fee</code> is missing only for COD orders). Imputation with context is safe. <strong>MNAR</strong> (Missing Not At Random) — missingness depends on the missing value itself (e.g., very high discounts are redacted). Imputation will introduce bias; flag and document.</p>
+
+<h4>Four Imputation Strategies</h4>
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+from sklearn.impute import KNNImputer
+
+df = pd.read_csv("shopflow_orders.csv", parse_dates=["order_date", "delivery_date"])
+
+# --- Strategy 1: Drop rows where the analysis target is missing ---
+# Only safe under MCAR assumption and low missing %
+df_clean = df.dropna(subset=["order_value"]).copy()
+print(f"Rows kept: {len(df_clean):,}  ({len(df_clean)/len(df)*100:.1f}%)")
+
+# --- Strategy 2: Forward-fill for time-ordered, sparse categorical ---
+# delivery_status progresses monotonically per order — ffill is appropriate
+df_clean = df_clean.sort_values(["order_id", "order_date"])
+df_clean["delivery_status"] = (
+    df_clean.groupby("order_id")["delivery_status"].ffill()
+)
+
+# --- Strategy 3: Median imputation for numeric columns (MAR) ---
+# Use transform so the median is computed per group, not globally
+df_clean["discount_pct"] = df_clean.groupby("product_category")["discount_pct"] \
+    .transform(lambda x: x.fillna(x.median()))
+
+# --- Strategy 4: KNN imputation for correlated numeric features ---
+numeric_cols = ["order_value", "quantity", "weight_kg", "shipping_fee"]
+imputer = KNNImputer(n_neighbors=5)
+df_clean[numeric_cols] = imputer.fit_transform(df_clean[numeric_cols])
+
+print(f"Missing values remaining: {df_clean.isnull().sum().sum()}")</code></pre>
+
+<p><strong>Exercise 2.2 — Imputation Strategy Decisions</strong></p>
+<p>Dataset: ShopFlow (shopflow_orders.csv)</p>
+<ol>
+<li>For each column with missing values, classify the mechanism as MCAR, MAR, or MNAR and justify your choice in one sentence.</li>
+<li>Drop rows where <code>order_value</code> is missing. Report what percentage of the dataset was lost.</li>
+<li>Apply group-median imputation for <code>discount_pct</code>, grouped by <code>product_category</code>. Compare the before/after distribution with <code>.describe()</code>.</li>
+<li>Apply KNN imputation (k=5) to the numeric columns. Check whether any imputed <code>order_value</code> values are negative — if so, clip to zero.</li>
+<li>After all imputation steps, run <code>quality_report(df_clean)</code> and confirm zero missing values remain.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-outlier-detection-treatment">Module 2.3 — Outlier Detection &amp; Treatment</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Modules 2.1, 1.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Detect IQR outliers and Z-score outliers on the same column. Explain why they give different counts.<br>
+<strong>Skip if:</strong> You know when to remove outliers vs. when to Winsorize vs. when to leave them and why.<br>
+<strong>Unlocks:</strong> 4.1, 5.1</p>
+</blockquote>
+
+<h4>IQR Fences vs. Z-Score</h4>
+<p>The IQR method is non-parametric — it makes no assumption about the distribution. Z-score assumes normality. For right-skewed data like <code>order_value</code>, Z-score will miss many outliers while IQR will catch them. Use IQR as the default for business data.</p>
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+from scipy import stats
+
+df = pd.read_csv("shopflow_orders.csv")
+col = df["order_value"].dropna()
+
+# --- IQR fences ---
+Q1, Q3 = col.quantile(0.25), col.quantile(0.75)
+IQR = Q3 - Q1
+lower_fence = Q1 - 1.5 * IQR
+upper_fence = Q3 + 1.5 * IQR
+iqr_mask = (df["order_value"] &lt; lower_fence) | (df["order_value"] &gt; upper_fence)
+print(f"IQR outliers: {iqr_mask.sum()} ({iqr_mask.sum()/len(df)*100:.2f}%)")
+print(f"  Lower fence: ₱{lower_fence:,.2f}  Upper fence: ₱{upper_fence:,.2f}")
+
+# --- Z-score (assumes near-normal) ---
+z = np.abs(stats.zscore(col))
+z_mask = z &gt; 3
+print(f"Z-score outliers (|z| &gt; 3): {z_mask.sum()}")
+
+# --- Winsorizing: cap at percentile bounds (preferred over dropping) ---
+p01 = df["order_value"].quantile(0.01)
+p99 = df["order_value"].quantile(0.99)
+df["order_value_w"] = df["order_value"].clip(lower=p01, upper=p99)
+print(f"Max before Winsorizing: ₱{df['order_value'].max():,.0f}")
+print(f"Max after  Winsorizing: ₱{df['order_value_w'].max():,.0f}")</code></pre>
+
+<h4>Decision Framework: Remove, Winsorize, or Keep?</h4>
+<pre><code class="language-pre">OUTLIER TREATMENT DECISION TREE
+================================
+Is the outlier a data entry error?
+  YES → Remove the row (document the reason)
+  NO  → Is it a legitimate extreme value?
+          YES, analysis is descriptive → Winsorize (clip to 1st/99th percentile)
+          YES, analysis is predictive  → Keep but flag with is_outlier=True column
+          UNCERTAIN → Keep, report both with and without outliers</code></pre>
+
+<p><strong>Exercise 2.3 — Outlier Detection on ShopFlow</strong></p>
+<p>Dataset: ShopFlow (shopflow_orders.csv)</p>
+<ol>
+<li>Apply IQR outlier detection to <code>order_value</code>. Print the lower and upper fence values.</li>
+<li>Apply Z-score detection (threshold 3) to the same column. Are the counts different? Explain why.</li>
+<li>Print the top 10 outlier rows by <code>order_value</code>. Do they look like data errors or legitimate high-value orders?</li>
+<li>Apply Winsorizing at the 1st and 99th percentiles. Plot histograms of the original and Winsorized columns side by side (use Matplotlib).</li>
+<li>Add an <code>is_outlier</code> boolean column flagging IQR outliers. What percentage of each <code>product_category</code> is flagged?</li>
+<li>Check <code>quantity</code> for outliers. Are there orders with unusually high quantities that are likely bulk B2B orders rather than errors?</li>
+</ol>
+<hr />
+
+<h3 id="module-24-standardization-type-coercion">Module 2.4 — Standardization &amp; Type Coercion</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Parse a column with mixed date formats ("2024-01-15" and "01/15/2024") into a proper datetime column in one line.<br>
+<strong>Skip if:</strong> You can convert dtypes, normalize strings, and handle mixed date formats without looking them up.<br>
+<strong>Unlocks:</strong> 3.1, 3.2</p>
+</blockquote>
+
+<h4>Date Parsing &amp; String Normalization</h4>
+<pre><code class="language-python">import pandas as pd
+import re
+
+df = pd.read_csv("shopflow_orders.csv")
+
+# --- Parse mixed date formats (ISO and PH slash format) ---
+df["order_date"] = pd.to_datetime(df["order_date"], infer_datetime_format=True, errors="coerce")
+bad_dates = df["order_date"].isnull().sum()
+print(f"Unparseable order_date values: {bad_dates}")
+
+# --- Normalize product_category: strip, lowercase, underscores ---
+df["product_category"] = (
+    df["product_category"]
+    .str.strip()
+    .str.lower()
+    .str.replace(r"\s+", "_", regex=True)
+)
+print(df["product_category"].value_counts().head(8))
+
+# --- Normalize Philippine phone numbers to 09XXXXXXXXX ---
+df["customer_phone"] = (
+    df["customer_phone"]
+    .str.replace(r"[^0-9]", "", regex=True)   # strip non-digits
+    .str.replace(r"^639", "09", regex=True)    # convert +639 to 09
+    .str.replace(r"^9", "09", regex=True)      # handle missing leading 0
+)
+print(df["customer_phone"].str.match(r"^09\d{9}$").mean())  # valid format rate</code></pre>
+
+<h4>Dtype Optimization &amp; Downcast</h4>
+<pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv("shopflow_orders.csv")
+
+before_mb = df.memory_usage(deep=True).sum() / 1_000_000
+
+# Downcast integer columns
+df["quantity"] = pd.to_numeric(df["quantity"], errors="coerce").astype("Int16")
+
+# Convert low-cardinality strings to category
+for col in ["region", "product_category", "delivery_tier", "delivery_status"]:
+    df[col] = df[col].astype("category")
+
+# Convert boolean-like int column
+if "is_returned" in df.columns:
+    df["is_returned"] = df["is_returned"].astype("boolean")
+
+after_mb = df.memory_usage(deep=True).sum() / 1_000_000
+print(f"Memory: {before_mb:.1f} MB → {after_mb:.1f} MB  ({(1-after_mb/before_mb)*100:.0f}% reduction)")</code></pre>
+
+<p><strong>Exercise 2.4 — Type &amp; Format Standardization</strong></p>
+<p>Dataset: ShopFlow (shopflow_orders.csv)</p>
+<ol>
+<li>Parse <code>order_date</code> and <code>delivery_date</code>. Report how many values failed to parse (are <code>NaT</code> after coercion).</li>
+<li>Normalize <code>product_category</code> and <code>delivery_tier</code> to lowercase with underscores. Before/after <code>.value_counts()</code> to confirm merging of duplicates.</li>
+<li>Normalize <code>customer_phone</code> to the 09XXXXXXXXX format. What percentage of rows have a valid phone number after normalization?</li>
+<li>Apply dtype downcasting and category conversion. Report the memory reduction percentage.</li>
+<li>Add a <code>days_to_deliver</code> column computed as <code>(delivery_date - order_date).dt.days</code>. What is the distribution? Are there negative values?</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-shopflow">Phase 2 Capstone: Clean ShopFlow Pipeline</h3>
+<p><strong>Project: Reproducible Data Cleaning Pipeline</strong></p>
+<p><strong>Dataset:</strong> ShopFlow (shopflow_orders.csv)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A Python function <code>clean_shopflow(path: str) -&gt; pd.DataFrame</code> that reads the raw CSV and returns a fully clean DataFrame with no missing values and correct dtypes.</li>
+<li>Inside the pipeline: date parsing, string normalization, duplicate removal, median/KNN imputation, and outlier Winsorizing (1st/99th).</li>
+<li>A <code>cleaning_log</code> dictionary that records how many rows were affected by each step.</li>
+<li>A <code>quality_report()</code> run on both raw and cleaned data, saved as two CSV files for comparison.</li>
+<li>A written summary (5–8 bullet points) documenting every transformation applied and the justification for each imputation strategy chosen.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-correct-data-structures">Phase 3: Correct Data Structures</h2>
+<h3 id="weeks-6-7">Weeks 6–7 | Goal: Transform cleaned data into analytically correct structures ready for EDA</h3>
+<hr />
+
+<h3 id="module-31-tidy-data-reshaping">Module 3.1 — Tidy Data &amp; Reshaping</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.4 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Convert a wide pivot table (regions as columns, months as rows) to tidy format using <code>.melt()</code>.<br>
+<strong>Skip if:</strong> You know Hadley Wickham's three tidy data rules and can reshape without looking up the syntax.<br>
+<strong>Unlocks:</strong> 3.2, 3.3</p>
+</blockquote>
+
+<h4>The Three Rules of Tidy Data</h4>
+<p>1. Each variable forms its own column. 2. Each observation forms its own row. 3. Each type of observational unit forms its own table. Violations are the root cause of most "why won't this groupby work" bugs. Wide tables look clean in Excel but break analytics tools.</p>
+<pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv("shopflow_orders.csv", parse_dates=["order_date"])
+
+# --- Build a wide monthly-regional revenue table (untidy) ---
+df["month"] = df["order_date"].dt.to_period("M").astype(str)
+wide = (df.groupby(["month", "region"])["order_value"]
+          .sum()
+          .unstack("region")    # each region becomes a column
+          .reset_index())
+print(wide.head(3))
+# month | Luzon | Visayas | Mindanao | NCR | ...
+
+# --- Melt back to tidy: one row per month-region observation ---
+tidy = wide.melt(id_vars="month",
+                 var_name="region",
+                 value_name="total_revenue")
+print(tidy.head(6))
+# month | region | total_revenue  ← correct tidy form</code></pre>
+
+<h4>Pivot Tables</h4>
+<pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv("shopflow_orders.csv")
+
+# Two-way pivot: avg order value by region × delivery_tier
+pivot = pd.pivot_table(
+    df,
+    values="order_value",
+    index="region",
+    columns="delivery_tier",
+    aggfunc="mean",
+    fill_value=0,
+    margins=True,    # adds row/column totals
+    margins_name="Overall",
+)
+print(pivot.round(2))</code></pre>
+
+<p><strong>Exercise 3.1 — Reshaping ShopFlow</strong></p>
+<p>Dataset: ShopFlow (cleaned from Phase 2 pipeline)</p>
+<ol>
+<li>Create a wide table with months as rows and product categories as columns, values = total order count. Then <code>.melt()</code> it back to tidy form.</li>
+<li>Build a pivot table showing median <code>order_value</code> by <code>region</code> and <code>product_category</code>. Which region–category combination has the highest median?</li>
+<li>Identify a column in ShopFlow that violates tidy data principle #1 (multiple values in one cell). Propose a fix using <code>.str.split()</code> and <code>.explode()</code>.</li>
+<li>Stack and unstack a multi-level index. Confirm that <code>.stack()</code> followed by <code>.unstack()</code> is a lossless round-trip.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-data-types-categoricals">Module 3.2 — Data Types &amp; Categoricals</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Create an ordered <code>pd.Categorical</code> for a delivery tier column and filter rows where tier is "express" or better in one expression.<br>
+<strong>Skip if:</strong> You use <code>pd.Categorical(ordered=True)</code> in production code and understand why it matters for groupby sort order.<br>
+<strong>Unlocks:</strong> 3.3, 4.1</p>
+</blockquote>
+
+<h4>Ordered Categoricals</h4>
+<p>An ordered categorical encodes a known rank (standard &lt; express &lt; same_day). This matters for: correct <code>groupby</code> sort order, valid <code>&gt;=</code> comparisons, and correct box-plot ordering in Seaborn without a manual <code>order=</code> parameter.</p>
+<pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv("shopflow_orders.csv")
+
+# --- Define ordered categorical for delivery_tier ---
+tier_order = ["standard", "express", "same_day"]
+df["delivery_tier"] = pd.Categorical(
+    df["delivery_tier"].str.strip().str.lower(),
+    categories=tier_order,
+    ordered=True,
+)
+
+# Comparison using ordering semantics
+premium = df[df["delivery_tier"] &gt;= "express"]
+print(f"Express or faster: {len(premium):,} orders ({len(premium)/len(df)*100:.1f}%)")
+
+# groupby now sorts by tier order automatically
+print(df.groupby("delivery_tier")["order_value"].mean())</code></pre>
+
+<h4>Memory Profile Comparison</h4>
+<pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv("shopflow_orders.csv")
+
+# Measure object column memory before conversion
+obj_cols = df.select_dtypes("object").columns.tolist()
+before_mb = df[obj_cols].memory_usage(deep=True).sum() / 1_000_000
+
+df[obj_cols] = df[obj_cols].astype("category")
+
+after_mb = df[obj_cols].memory_usage(deep=True).sum() / 1_000_000
+print(f"Object → category: {before_mb:.1f} MB → {after_mb:.1f} MB")
+print(f"Reduction: {(1-after_mb/before_mb)*100:.0f}%")</code></pre>
+
+<p><strong>Exercise 3.2 — Categorical Encoding</strong></p>
+<p>Dataset: ShopFlow (cleaned)</p>
+<ol>
+<li>Create an ordered <code>pd.Categorical</code> for <code>delivery_tier</code> with the order: standard &lt; express &lt; same_day. Filter to express-or-faster orders using a <code>&gt;=</code> comparison.</li>
+<li>Run <code>groupby("delivery_tier")["order_value"].mean()</code> before and after the ordered categorical conversion. Is the output order different?</li>
+<li>Convert all low-cardinality string columns to <code>category</code> dtype. Report total memory reduction.</li>
+<li>Create a custom size-tier category: orders under ₱500 = "micro", ₱500–₱2000 = "standard", above ₱2000 = "large". Use <code>pd.cut()</code> with ordered categories.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-aggregation-grouping">Module 3.3 — Aggregation &amp; Grouping</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Modules 3.1, 3.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Produce a multi-aggregation groupby (count, mean, median, std, P95) in one <code>.agg()</code> call, plus a <code>.transform()</code> that adds a group mean column without collapsing rows.<br>
+<strong>Skip if:</strong> You use <code>resample()</code> for time-series aggregation and understand the difference between <code>agg</code> and <code>transform</code>.<br>
+<strong>Unlocks:</strong> 4.1, 4.2, 4.3</p>
+</blockquote>
+
+<h4>Multi-Aggregation GroupBy</h4>
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+
+df = pd.read_csv("shopflow_orders.csv", parse_dates=["order_date"])
+
+# --- Named aggregations (pandas &gt;= 0.25 style) ---
+summary = (
+    df.groupby("product_category")["order_value"]
+    .agg(
+        count  = "count",
+        mean   = "mean",
+        median = "median",
+        std    = "std",
+        p95    = lambda x: x.quantile(0.95),
+    )
+    .round(2)
+    .sort_values("mean", ascending=False)
+)
+print(summary)
+
+# --- .transform: add group mean without collapsing rows ---
+# Use case: flag orders above their category's mean
+df["cat_mean_value"] = df.groupby("product_category")["order_value"].transform("mean")
+df["above_cat_mean"] = df["order_value"] &gt; df["cat_mean_value"]
+print(f"Orders above category mean: {df['above_cat_mean'].sum():,}")</code></pre>
+
+<h4>Time-Series Resampling &amp; Rolling Windows</h4>
+<pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv("shopflow_orders.csv", parse_dates=["order_date"])
+daily = df.set_index("order_date")["order_value"].resample("D").sum()
+
+# Weekly total revenue
+weekly = daily.resample("W").sum().rename("weekly_revenue")
+
+# 4-week rolling average (smooths short-term noise)
+weekly["rolling_4w"] = weekly["weekly_revenue"].rolling(4).mean()
+
+# Week-over-week % change
+weekly["wow_pct"] = weekly["weekly_revenue"].pct_change() * 100
+
+print(weekly.tail(8).round(2))</code></pre>
+
+<p><strong>Exercise 3.3 — ShopFlow Aggregation Suite</strong></p>
+<p>Dataset: ShopFlow (cleaned, with ordered categoricals from 3.2)</p>
+<ol>
+<li>Produce a multi-agg <code>groupby</code> on <code>region</code>: count, mean, median, std, and P90 of <code>order_value</code> in a single call.</li>
+<li>Use <code>.transform()</code> to add a <code>region_median</code> column. Flag orders that are more than 2 standard deviations above their region's mean.</li>
+<li>Resample the daily order count to weekly. Compute a 4-week rolling average and week-over-week percentage change.</li>
+<li>Build a cross-tabulation of <code>region</code> × <code>delivery_tier</code> showing the count and row-percentage (what share of each region's orders are each tier?).</li>
+<li>Find the top 3 product categories by total revenue for each region using <code>groupby</code> + <code>.nlargest()</code>.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-shopflow">Phase 3 Capstone: Analytical Data Model</h3>
+<p><strong>Project: ShopFlow Analytical Tables</strong></p>
+<p><strong>Dataset:</strong> ShopFlow (Phase 2 cleaned output)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A <code>dim_orders</code> tidy DataFrame in long format — one row per order, correct dtypes, ordered categoricals for tier and category.</li>
+<li>A <code>agg_region_monthly</code> summary table: total revenue, order count, mean order value, and 4-week rolling average per region per month.</li>
+<li>A <code>agg_category</code> summary table: multi-agg stats per product category with an above-average flag column.</li>
+<li>A <code>dim_time</code> table extracted from <code>order_date</code>: year, month, week_of_year, day_of_week, is_weekend columns.</li>
+<li>All tables exported to CSV. Confirm all dtypes are correct on reload with a short assertion block.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-exploratory-data-analysis">Phase 4: Exploratory Data Analysis</h2>
+<h3 id="weeks-8-9">Weeks 8–9 | Goal: Produce a complete EDA notebook with publication-quality charts</h3>
+<hr />
+
+<h3 id="module-41-univariate-analysis">Module 4.1 — Univariate Analysis</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Phase 3 complete · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Produce a histogram, KDE overlay, boxplot, and QQ plot for a numeric column and state one analytical conclusion from each chart.<br>
+<strong>Skip if:</strong> You can interpret skewness and kurtosis from visual charts and explain what a QQ plot deviation means.<br>
+<strong>Unlocks:</strong> 4.2, 4.3</p>
+</blockquote>
+
+<h4>Histograms, KDE, and Boxplots</h4>
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+
+df = pd.read_csv("shopflow_cleaned.csv")
+
+fig, axes = plt.subplots(1, 3, figsize=(16, 4))
+fig.suptitle("ShopFlow — Order Value Distribution", fontsize=14, y=1.01)
+
+# Panel 1: Histogram with KDE overlay
+sns.histplot(df["order_value"], kde=True, bins=60,
+             color="#0a3d3a", ax=axes[0])
+axes[0].set_title("Histogram + KDE")
+axes[0].set_xlabel("Order Value (₱)")
+
+# Panel 2: Boxplot by delivery tier (uses ordered categorical sort)
+sns.boxplot(data=df, x="delivery_tier", y="order_value",
+            palette=["#0d7a6e", "#075249", "#ff6b47"],
+            ax=axes[1])
+axes[1].set_title("Boxplot by Delivery Tier")
+
+# Panel 3: QQ plot (log-transformed — how close to normal?)
+stats.probplot(np.log1p(df["order_value"].dropna()), plot=axes[2])
+axes[2].set_title("QQ Plot (log scale)")
+
+plt.tight_layout()
+plt.savefig("shopflow_univariate.png", dpi=150, bbox_inches="tight")
+plt.show()</code></pre>
+
+<h4>Categorical Frequency Analysis</h4>
+<pre><code class="language-python">import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv("shopflow_cleaned.csv")
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 4))
+
+# Horizontal bar: order count per product category
+cat_counts = df["product_category"].value_counts().head(10)
+cat_counts.plot(kind="barh", color="#0d7a6e", ax=axes[0])
+axes[0].set_title("Top 10 Categories by Order Count")
+axes[0].set_xlabel("Number of Orders")
+
+# Pie chart: revenue share by region
+region_rev = df.groupby("region")["order_value"].sum()
+region_rev.plot(kind="pie", autopct="%1.1f%%",
+                colors=["#075249","#0d7a6e","#1aad9c","#ff6b47","#e8f4f1"],
+                ax=axes[1])
+axes[1].set_title("Revenue Share by Region")
+axes[1].set_ylabel("")
+
+plt.tight_layout()
+plt.savefig("shopflow_categorical.png", dpi=150, bbox_inches="tight")
+plt.show()</code></pre>
+
+<p><strong>Exercise 4.1 — Univariate EDA</strong></p>
+<p>Dataset: ShopFlow (analytical model from Phase 3)</p>
+<ol>
+<li>Plot a histogram with KDE for <code>order_value</code>. What does the shape tell you about using the mean as a summary measure?</li>
+<li>Plot side-by-side boxplots of <code>order_value</code> for each <code>delivery_tier</code>. Which tier has the most outliers?</li>
+<li>Plot a QQ plot for log-transformed <code>order_value</code>. Are the tails heavier or lighter than normal?</li>
+<li>Plot a bar chart of the top 10 product categories by order count and by total revenue. Do the rankings differ?</li>
+<li>Plot a violin plot of <code>quantity</code> per <code>region</code>. Which region has the widest spread?</li>
+<li>Compute and annotate the mean and median on the histogram. Add a vertical line for each.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-bivariate-multivariate-analysis">Module 4.2 — Bivariate &amp; Multivariate Analysis</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 4.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Produce a correlation heatmap, identify the two strongest positive and negative correlations, and explain why Pearson may not be the right measure here.<br>
+<strong>Skip if:</strong> You can distinguish Pearson, Spearman, and Kendall correlation and know when to use each.<br>
+<strong>Unlocks:</strong> 5.1, 5.2</p>
+</blockquote>
+
+<h4>Correlation Matrix &amp; Heatmap</h4>
+<pre><code class="language-python">import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("shopflow_cleaned.csv")
+
+num_cols = ["order_value", "quantity", "discount_pct", "shipping_fee", "weight_kg"]
+corr_pearson  = df[num_cols].corr(method="pearson")
+corr_spearman = df[num_cols].corr(method="spearman")
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+for ax, corr, title in zip(axes,
+                            [corr_pearson, corr_spearman],
+                            ["Pearson Correlation", "Spearman Correlation"]):
+    sns.heatmap(corr, annot=True, fmt=".2f", cmap="coolwarm",
+                center=0, vmin=-1, vmax=1, ax=ax,
+                linewidths=0.5)
+    ax.set_title(title)
+
+plt.tight_layout()
+plt.savefig("shopflow_correlation.png", dpi=150, bbox_inches="tight")
+plt.show()</code></pre>
+
+<h4>Scatter Plots &amp; Pair Plots</h4>
+<pre><code class="language-python">import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("shopflow_cleaned.csv")
+
+# --- Scatter with regression line ---
+fig, ax = plt.subplots(figsize=(8, 5))
+sns.regplot(data=df.sample(3000, random_state=42),
+            x="quantity", y="order_value",
+            scatter_kws={"alpha": 0.3, "color": "#0d7a6e"},
+            line_kws={"color": "#ff6b47"}, ax=ax)
+ax.set_title("Order Value vs. Quantity (n=3,000 sample)")
+plt.tight_layout()
+plt.savefig("shopflow_scatter.png", dpi=150, bbox_inches="tight")
+plt.show()
+
+# --- Pair plot (subsample for performance) ---
+sample = df[["order_value", "quantity", "discount_pct", "shipping_fee",
+             "delivery_tier"]].sample(2000, random_state=42)
+g = sns.pairplot(sample, hue="delivery_tier",
+                 plot_kws={"alpha": 0.4},
+                 diag_kind="kde")
+g.fig.suptitle("ShopFlow Pair Plot by Delivery Tier", y=1.02)
+g.savefig("shopflow_pairplot.png", dpi=120, bbox_inches="tight")</code></pre>
+
+<p><strong>Exercise 4.2 — Bivariate Analysis</strong></p>
+<p>Dataset: ShopFlow (analytical model from Phase 3)</p>
+<ol>
+<li>Compute both Pearson and Spearman correlation matrices. Which pairs differ most between the two methods? What does that tell you?</li>
+<li>Plot a scatter of <code>quantity</code> vs. <code>order_value</code> with a regression line. Is the relationship linear?</li>
+<li>Create a pair plot with <code>delivery_tier</code> as hue. Which tier visually separates most clearly from the others?</li>
+<li>Plot a grouped boxplot of <code>order_value</code> by <code>product_category</code> (top 8 categories only). Which category has the highest variance?</li>
+<li>Build a heatmap of median order value by <code>region</code> × <code>product_category</code>. Identify the highest-value region–category combination.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-eda-for-time-series-data">Module 4.3 — EDA for Time-Series Data</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Modules 3.3, 4.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Decompose a daily time series into trend, seasonality, and residual using <code>seasonal_decompose</code> and interpret the seasonal component.<br>
+<strong>Skip if:</strong> You can identify trend, seasonality, and anomalies visually and compute a rolling average without guidance.<br>
+<strong>Unlocks:</strong> 5.1</p>
+</blockquote>
+
+<h4>Rolling Statistics &amp; Trend Visualization</h4>
+<pre><code class="language-python">import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("shopflow_cleaned.csv", parse_dates=["order_date"])
+daily = df.set_index("order_date")["order_value"].resample("D").sum()
+
+fig, axes = plt.subplots(3, 1, figsize=(14, 10), sharex=True)
+
+# Raw daily revenue + 7-day MA
+daily.plot(ax=axes[0], color="#0d7a6e", alpha=0.5, label="Daily Revenue")
+daily.rolling(7).mean().plot(ax=axes[0], color="#ff6b47", linewidth=2, label="7-day MA")
+axes[0].set_title("Daily Revenue — ShopFlow")
+axes[0].legend()
+
+# Rolling volatility (7-day std)
+daily.rolling(7).std().plot(ax=axes[1], color="#075249")
+axes[1].set_title("7-Day Rolling Volatility (Std Dev)")
+
+# Week-over-week % change
+weekly = daily.resample("W").sum()
+weekly.pct_change().mul(100).plot(ax=axes[2], kind="bar", color="#0a3d3a")
+axes[2].set_title("Week-over-Week Revenue Change (%)")
+axes[2].axhline(0, color="black", linewidth=0.8)
+
+plt.tight_layout()
+plt.savefig("shopflow_timeseries.png", dpi=150, bbox_inches="tight")
+plt.show()</code></pre>
+
+<h4>Seasonal Decomposition</h4>
+<pre><code class="language-python">import pandas as pd
+import matplotlib.pyplot as plt
+from statsmodels.tsa.seasonal import seasonal_decompose
+
+df = pd.read_csv("shopflow_cleaned.csv", parse_dates=["order_date"])
+daily = df.set_index("order_date")["order_value"].resample("D").sum().ffill()
+
+# period=7 for weekly seasonality
+result = seasonal_decompose(daily, model="additive", period=7)
+
+fig, axes = plt.subplots(4, 1, figsize=(14, 10), sharex=True)
+result.observed.plot(ax=axes[0], title="Observed",  color="#075249")
+result.trend.plot(ax=axes[1],    title="Trend",     color="#0d7a6e")
+result.seasonal.plot(ax=axes[2], title="Seasonality (weekly)", color="#ff6b47")
+result.resid.plot(ax=axes[3],    title="Residual",  color="#3a4d47", alpha=0.6)
+plt.tight_layout()
+plt.savefig("shopflow_decomposition.png", dpi=150, bbox_inches="tight")
+plt.show()</code></pre>
+
+<p><strong>Exercise 4.3 — Time-Series EDA</strong></p>
+<p>Dataset: ShopFlow (analytical model from Phase 3)</p>
+<ol>
+<li>Resample daily order revenue to weekly. Plot raw weekly revenue with a 4-week rolling average overlay.</li>
+<li>Plot week-over-week percentage change as a bar chart. Identify any weeks with unusually large spikes — these may correspond to promotions or holidays.</li>
+<li>Run <code>seasonal_decompose</code> with period=7 (weekly) and period=30 (monthly). Which seasonality is stronger?</li>
+<li>Plot daily order counts by day of week (Monday–Sunday). Which day has the highest average order count?</li>
+<li>Identify the single highest-revenue day. Look up what day/date it falls on — is there an obvious explanation?</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-shopflow">Phase 4 Capstone: ShopFlow EDA Report</h3>
+<p><strong>Project: End-to-End EDA Notebook</strong></p>
+<p><strong>Dataset:</strong> ShopFlow (analytical model from Phase 3)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A Jupyter notebook with sections for univariate, bivariate, and time-series analysis, each with at least two publication-quality charts with titles and axis labels.</li>
+<li>A correlation analysis section comparing Pearson and Spearman, with a written interpretation of the three most notable correlations.</li>
+<li>A time-series section showing trend, seasonality decomposition, and weekly revenue change chart.</li>
+<li>An "Insights" section at the end of the notebook summarizing 5–7 data-driven findings about ShopFlow's orders.</li>
+<li>All charts saved as PNG files at 150 dpi. All figures have descriptive titles and axis labels.</li>
+</ol>
+<hr />
+
+<h2 id="phase-5-statistical-inference">Phase 5: Statistical Inference</h2>
+<h3 id="weeks-10-11">Weeks 10–11 | Goal: Draw statistically sound conclusions from the ShopFlow data using hypothesis tests and regression</h3>
+<hr />
+
+<h3 id="module-51-hypothesis-testing">Module 5.1 — Hypothesis Testing</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate–Advanced · <strong>Prereqs:</strong> Module 1.3, Phase 4 complete · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Run a two-sample t-test, check the normality assumption, switch to Mann-Whitney if violated, and compute Cohen's d — all for a specific business question.<br>
+<strong>Skip if:</strong> You understand Type I/II errors, p-value interpretation, and can choose the right test for a given data structure.<br>
+<strong>Unlocks:</strong> 5.2</p>
+</blockquote>
+
+<h4>Choosing the Right Test</h4>
+<pre><code class="language-pre">HYPOTHESIS TEST SELECTION
+==========================
+Two groups — numeric outcome
+  Both normal? (n &gt; 30 or normality test passes)
+    Equal variance? → Student's t-test
+    Unequal variance? → Welch's t-test  ← default choice
+  Non-normal? → Mann-Whitney U test
+
+3+ groups — numeric outcome
+  Normal + equal variance? → One-way ANOVA
+  Non-normal? → Kruskal-Wallis test
+  Post-hoc (which pairs differ)? → Tukey HSD
+
+Two categorical variables
+  Expected frequency &gt;= 5 in all cells? → Chi-square
+  Any cell &lt; 5? → Fisher's exact test</code></pre>
+
+<h4>t-test, Effect Size, &amp; Chi-Square</h4>
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+from scipy import stats
+
+df = pd.read_csv("shopflow_cleaned.csv")
+
+# --- Business question: do express orders have higher value than standard? ---
+express  = df[df["delivery_tier"] == "express"]["order_value"].dropna()
+standard = df[df["delivery_tier"] == "standard"]["order_value"].dropna()
+
+# Normality check first (Welch's t-test is robust even if violated for large n)
+_, p_norm_exp = stats.normaltest(express.sample(min(500, len(express))))
+_, p_norm_std = stats.normaltest(standard.sample(min(500, len(standard))))
+print(f"Normality p: express={p_norm_exp:.3f}  standard={p_norm_std:.3f}")
+
+# Welch's t-test (does not assume equal variances)
+t_stat, p_val = stats.ttest_ind(express, standard, equal_var=False)
+print(f"\nWelch t-test: t={t_stat:.3f}  p={p_val:.4f}")
+print("Statistically significant at α=0.05" if p_val &lt; 0.05 else "Not significant")
+
+# Cohen's d — effect size (small: 0.2, medium: 0.5, large: 0.8)
+pooled_std = np.sqrt((express.std()**2 + standard.std()**2) / 2)
+cohens_d   = (express.mean() - standard.mean()) / pooled_std
+print(f"Cohen's d: {cohens_d:.3f}  (effect size: {'large' if abs(cohens_d) &gt;= 0.8 else 'medium' if abs(cohens_d) &gt;= 0.5 else 'small'})")
+
+# --- Chi-square: is delivery_tier independent of product_category? ---
+contingency = pd.crosstab(df["product_category"], df["delivery_tier"])
+chi2, p_chi, dof, expected = stats.chi2_contingency(contingency)
+print(f"\nChi-square: χ²={chi2:.2f}  p={p_chi:.4f}  dof={dof}")</code></pre>
+
+<h4>One-Way ANOVA &amp; Post-Hoc Testing</h4>
+<pre><code class="language-python">import pandas as pd
+from scipy import stats
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+
+df = pd.read_csv("shopflow_cleaned.csv")
+
+groups = [
+    df[df["delivery_tier"] == t]["order_value"].dropna()
+    for t in ["standard", "express", "same_day"]
+]
+
+f_stat, p_anova = stats.f_oneway(*groups)
+print(f"One-way ANOVA: F={f_stat:.3f}  p={p_anova:.4f}")
+
+# Tukey HSD: which specific pairs differ?
+tukey = pairwise_tukeyhsd(
+    endog=df["order_value"].dropna(),
+    groups=df.loc[df["order_value"].notna(), "delivery_tier"],
+    alpha=0.05
+)
+print(tukey.summary())</code></pre>
+
+<p><strong>Exercise 5.1 — Hypothesis Testing on ShopFlow</strong></p>
+<p>Dataset: ShopFlow (analytical model from Phase 3)</p>
+<ol>
+<li>Test whether mean <code>order_value</code> differs between NCR and Visayas orders using Welch's t-test. State H0 and H1 explicitly. Report t, p, and Cohen's d.</li>
+<li>Check the normality assumption for both groups. If it fails, re-run using Mann-Whitney U. Do the conclusions agree?</li>
+<li>Test whether <code>delivery_tier</code> and <code>product_category</code> are independent using chi-square. Inspect the expected frequency table — are all cells above 5?</li>
+<li>Run a one-way ANOVA across all five regions on <code>order_value</code>. If significant, run Tukey HSD to identify which region pairs differ.</li>
+<li>Apply the Bonferroni correction when running 5 simultaneous t-tests (one per region vs. NCR). How does this change your significance threshold?</li>
+</ol>
+<hr />
+
+<h3 id="module-52-regression-correlation">Module 5.2 — Regression &amp; Correlation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> Module 5.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Fit an OLS model with a categorical predictor, report R², check residual normality, and explain what a negative coefficient means.<br>
+<strong>Skip if:</strong> You can interpret an OLS summary table (coefficients, p-values, R², F-statistic) and check the four LINE assumptions.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4>Simple &amp; Multiple OLS Regression</h4>
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("shopflow_cleaned.csv").dropna(
+    subset=["order_value", "quantity", "discount_pct", "shipping_fee"]
+)
+
+# --- Simple OLS: order_value ~ quantity ---
+m1 = smf.ols("order_value ~ quantity", data=df).fit()
+print(m1.summary().tables[1])   # coefficient table
+print(f"\nR²: {m1.rsquared:.4f}")
+
+# --- Multiple OLS with categorical (C() notation) ---
+m2 = smf.ols(
+    "order_value ~ quantity + discount_pct + shipping_fee + C(delivery_tier)",
+    data=df
+).fit()
+print(f"R²: {m2.rsquared:.4f}   Adj R²: {m2.rsquared_adj:.4f}")
+print(f"F-statistic: {m2.fvalue:.2f}  p: {m2.f_pvalue:.4e}")
+
+# --- Residual diagnostics ---
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+axes[0].scatter(m2.fittedvalues, m2.resid, alpha=0.3, color="#0d7a6e")
+axes[0].axhline(0, color="red", linestyle="--")
+axes[0].set_xlabel("Fitted Values")
+axes[0].set_ylabel("Residuals")
+axes[0].set_title("Residuals vs. Fitted")
+import scipy.stats as st
+st.probplot(m2.resid, plot=axes[1])
+axes[1].set_title("QQ Plot of Residuals")
+plt.tight_layout()
+plt.savefig("shopflow_residuals.png", dpi=150, bbox_inches="tight")
+plt.show()</code></pre>
+
+<h4>Spearman &amp; Kendall Correlation</h4>
+<pre><code class="language-python">import pandas as pd
+from scipy import stats
+
+df = pd.read_csv("shopflow_cleaned.csv")
+
+# Spearman: rank-based, robust to outliers and non-linearity
+rho, p_spearman = stats.spearmanr(
+    df["order_value"].dropna(), df["quantity"].dropna()
+)
+
+# Kendall: more conservative than Spearman for small samples
+tau, p_kendall = stats.kendalltau(
+    df["order_value"].dropna(), df["quantity"].dropna()
+)
+
+print(f"Pearson  r: {df['order_value'].corr(df['quantity']):.4f}")
+print(f"Spearman ρ: {rho:.4f}  p={p_spearman:.4e}")
+print(f"Kendall  τ: {tau:.4f}  p={p_kendall:.4e}")</code></pre>
+
+<p><strong>Exercise 5.2 — Regression Analysis of ShopFlow</strong></p>
+<p>Dataset: ShopFlow (analytical model from Phase 3)</p>
+<ol>
+<li>Fit a simple OLS of <code>order_value</code> on <code>quantity</code>. Report the coefficient, R², and p-value. Is the relationship statistically significant?</li>
+<li>Fit a multiple OLS adding <code>discount_pct</code>, <code>shipping_fee</code>, and <code>C(delivery_tier)</code>. How much does R² improve?</li>
+<li>Plot residuals vs. fitted values. Do you see heteroscedasticity (fan shape)? What does that mean for the model?</li>
+<li>Plot a QQ plot of residuals. Are they normally distributed?</li>
+<li>Compare Pearson, Spearman, and Kendall correlation between <code>order_value</code> and <code>discount_pct</code>. Do they tell the same story?</li>
+<li>Add <code>region</code> as a categorical predictor. Which region has the highest coefficient (relative to the baseline region)?</li>
+</ol>
+<hr />
+
+<h3 id="phase-5-capstone-shopflow">Phase 5 Capstone: Inference Report</h3>
+<p><strong>Project: ShopFlow Statistical Inference Memo</strong></p>
+<p><strong>Dataset:</strong> ShopFlow (all phases)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A written memo (300–500 words) answering: "Which regions and product categories drive the highest-value orders, and is the difference statistically significant?"</li>
+<li>Supporting hypothesis test output: ANOVA across regions, Tukey HSD pairwise comparisons, chi-square on tier × category.</li>
+<li>An OLS regression table showing predictors of <code>order_value</code> with R², F-statistic, and coefficient interpretation.</li>
+<li>Residual diagnostic plots (residuals vs. fitted, QQ plot) with a written assessment of model assumptions.</li>
+<li>A one-paragraph limitations section noting where assumptions were violated and what that means for conclusion validity.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-shopflow">Final Capstone: ShopFlow Full Analysis</h2>
+<p><strong>Project: End-to-End Data Science Deliverable</strong></p>
+<p>Integrates all five phases. Uses the ShopFlow dataset from raw CSV to published analytical report.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li><strong>Cleaning pipeline</strong>: <code>clean_shopflow(path) -&gt; pd.DataFrame</code> function with a documented <code>cleaning_log</code>. All transformations justified in comments.</li>
+<li><strong>Analytical model</strong>: Tidy DataFrames for orders, regional aggregates, category aggregates, and a time dimension table — all with correct dtypes and ordered categoricals.</li>
+<li><strong>EDA notebook</strong>: Univariate, bivariate, and time-series sections. At least 8 figures with titles and labels. An "Insights" summary section with 5+ data-driven findings.</li>
+<li><strong>Statistical inference</strong>: ANOVA on <code>order_value</code> by region, chi-square on tier × category, OLS regression with categorical predictors. All results interpreted in plain language.</li>
+<li><strong>Executive summary</strong>: A one-page (400–600 words) business-facing report answering: "What does the data tell us about ShopFlow's customers, products, and regional performance?"</li>
+<li><strong>Reproducibility</strong>: A <code>requirements.txt</code> and a single <code>run_all.py</code> script that executes the full pipeline from raw CSV to final outputs without manual steps.</li>
+<li><strong>Assumption audit</strong>: A table listing every statistical test used, the assumptions required, whether they were met, and the robustness action taken when they were not.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Statistics with Python Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Load CSV with date parsing</td><td><code>pd.read_csv(..., parse_dates=["col"])</code></td><td>Add <code>infer_datetime_format=True</code> for mixed formats</td></tr>
+<tr><td>Full quality audit</td><td><code>df.isnull().sum()</code> + <code>df.nunique()</code> + <code>df.duplicated()</code></td><td>Wrap in a reusable <code>quality_report()</code> function</td></tr>
+<tr><td>Detect outliers (non-parametric)</td><td>IQR: <code>Q1 - 1.5*IQR</code> / <code>Q3 + 1.5*IQR</code></td><td>Default for skewed business data; Z-score assumes normality</td></tr>
+<tr><td>Cap outliers without dropping</td><td><code>df["col"].clip(lower=p01, upper=p99)</code></td><td>Winsorizing at 1st/99th percentile</td></tr>
+<tr><td>KNN imputation</td><td><code>sklearn.impute.KNNImputer(n_neighbors=5)</code></td><td>Best when missing values correlate with other columns</td></tr>
+<tr><td>Parse mixed date formats</td><td><code>pd.to_datetime(..., infer_datetime_format=True, errors="coerce")</code></td><td><code>errors="coerce"</code> turns failures into NaT</td></tr>
+<tr><td>Ordered categorical</td><td><code>pd.Categorical(col, categories=[...], ordered=True)</code></td><td>Enables <code>&gt;=</code> comparisons and correct sort order</td></tr>
+<tr><td>Wide → tidy</td><td><code>df.melt(id_vars=[...], var_name=..., value_name=...)</code></td><td>Inverse: <code>df.pivot()</code> or <code>df.unstack()</code></td></tr>
+<tr><td>Multi-agg groupby</td><td><code>df.groupby("col")["val"].agg(n="count", mean="mean", p95=lambda x: x.quantile(.95))</code></td><td>Named aggs keep column names clean</td></tr>
+<tr><td>Add group stat without collapsing</td><td><code>df.groupby("col")["val"].transform("mean")</code></td><td>Returns same-length Series aligned to original index</td></tr>
+<tr><td>Time-series resample</td><td><code>df.set_index("date")["val"].resample("W").sum()</code></td><td>"D"=daily, "W"=weekly, "M"=monthly, "Q"=quarterly</td></tr>
+<tr><td>Rolling average</td><td><code>series.rolling(7).mean()</code></td><td>Set <code>min_periods=1</code> to avoid NaN at the start</td></tr>
+<tr><td>Normality test</td><td><code>scipy.stats.normaltest(data)</code></td><td>p &lt; 0.05 → reject normality. Log-transform monetary data first</td></tr>
+<tr><td>Two-sample comparison</td><td>Welch's t-test: <code>stats.ttest_ind(a, b, equal_var=False)</code></td><td>Use Mann-Whitney U if normality fails: <code>stats.mannwhitneyu(a, b)</code></td></tr>
+<tr><td>Effect size</td><td>Cohen's d: <code>(mean_a - mean_b) / pooled_std</code></td><td>Small=0.2, Medium=0.5, Large=0.8</td></tr>
+<tr><td>ANOVA + post-hoc</td><td><code>stats.f_oneway(*groups)</code> + <code>pairwise_tukeyhsd()</code></td><td>Kruskal-Wallis for non-normal: <code>stats.kruskal(*groups)</code></td></tr>
+<tr><td>OLS regression with categoricals</td><td><code>smf.ols("y ~ x + C(cat_col)", data=df).fit()</code></td><td><code>C()</code> creates dummy variables automatically</td></tr>
+</table>
+
+<h2 id="resources">Learning Resources</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td><em>Python for Data Analysis</em> — Wes McKinney</td><td>Pandas internals, written by the creator — the definitive reference</td></tr>
+<tr><td><em>Practical Statistics for Data Scientists</em> — Bruce, Bruce &amp; Gedeck</td><td>Applied statistics with R/Python examples; strong on resampling</td></tr>
+<tr><td><em>Storytelling with Data</em> — Cole Nussbaumer Knaflic</td><td>Chart design and communicating EDA results to non-technical audiences</td></tr>
+<tr><td><em>Statistics</em> — Freedman, Pisani &amp; Purves</td><td>Conceptual foundation without heavy math — builds intuition first</td></tr>
+<tr><td><em>Hands-On Machine Learning</em> — Aurélien Géron (Part I)</td><td>Data preparation and feature engineering chapters directly applicable here</td></tr>
+</table>
+
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>Pandas documentation — User Guide</td><td>Full Pandas API with examples</td><td>The "reshaping" and "groupby" sections are essential</td></tr>
+<tr><td>SciPy Stats documentation</td><td>Every statistical test in scipy.stats</td><td>Each function page lists assumptions and references</td></tr>
+<tr><td>Statsmodels documentation</td><td>OLS, GLM, time-series models</td><td>Formula API (smf) is closest to R's lm() syntax</td></tr>
+<tr><td>Seaborn tutorial gallery</td><td>Chart type selection and aesthetics</td><td>Start with the "Figure-level vs. axes-level" guide</td></tr>
+<tr><td>StatQuest with Josh Starmer (YouTube)</td><td>Intuitive stats explanations: t-test, ANOVA, PCA, regression</td><td>Best for building intuition before diving into code</td></tr>
+<tr><td>Kaggle Learn — Pandas course</td><td>Interactive Pandas exercises</td><td>Free; 5 hours; good supplement to Modules 1–3</td></tr>
+<tr><td>Towards Data Science — EDA articles</td><td>EDA patterns and visualization ideas</td><td>Filter by "pandas" or "seaborn" for practical examples</td></tr>
+</table>
+
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>ShopFlow (shared <a href="../datasets/shopflow/">datasets folder</a>)</td><td>This guide's own benchmark — 80,400-row transaction log, csv</td></tr>
+<tr><td>Kaggle — E-Commerce Sales Dataset</td><td>Additional messy transaction data to practice cleaning techniques</td></tr>
+<tr><td>UCI Machine Learning Repository</td><td>Diverse real datasets for distribution fitting and hypothesis testing practice</td></tr>
+<tr><td>PSA (Philippine Statistics Authority) open data</td><td>Regional demographic data; pairs well with ShopFlow's regional analysis</td></tr>
+<tr><td>ydata-profiling (<code>pip install ydata-profiling</code>)</td><td>Automated one-command EDA report — use to validate your manual EDA</td></tr>
+<tr><td>missingno (<code>pip install missingno</code>)</td><td>Visual missing-data patterns — matrix and heatmap visualizations</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is session-only and resets on reload.</p></blockquote>
+
+<h4>Phase 1 — Python &amp; Statistical Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — NumPy &amp; Pandas Essentials</li>
+<li>[ ] Exercise 1.1 — First Contact with ShopFlow</li>
+<li>[ ] Module 1.2 — Descriptive Statistics in Python</li>
+<li>[ ] Exercise 1.2 — Profiling ShopFlow Order Values</li>
+<li>[ ] Module 1.3 — Probability Distributions &amp; Sampling</li>
+<li>[ ] Exercise 1.3 — Distribution Fitting on ShopFlow</li>
+<li>[ ] Capstone 1 — Statistical Profile Report</li>
+</ul>
+
+<h4>Phase 2 — Data Cleaning</h4>
+<ul>
+<li>[ ] Module 2.1 — Diagnosing Data Quality</li>
+<li>[ ] Exercise 2.1 — Quality Audit of ShopFlow</li>
+<li>[ ] Module 2.2 — Handling Missing Data</li>
+<li>[ ] Exercise 2.2 — Imputation Strategy Decisions</li>
+<li>[ ] Module 2.3 — Outlier Detection &amp; Treatment</li>
+<li>[ ] Exercise 2.3 — Outlier Detection on ShopFlow</li>
+<li>[ ] Module 2.4 — Standardization &amp; Type Coercion</li>
+<li>[ ] Exercise 2.4 — Type &amp; Format Standardization</li>
+<li>[ ] Capstone 2 — Clean ShopFlow Pipeline</li>
+</ul>
+
+<h4>Phase 3 — Correct Data Structures</h4>
+<ul>
+<li>[ ] Module 3.1 — Tidy Data &amp; Reshaping</li>
+<li>[ ] Exercise 3.1 — Reshaping ShopFlow</li>
+<li>[ ] Module 3.2 — Data Types &amp; Categoricals</li>
+<li>[ ] Exercise 3.2 — Categorical Encoding</li>
+<li>[ ] Module 3.3 — Aggregation &amp; Grouping</li>
+<li>[ ] Exercise 3.3 — ShopFlow Aggregation Suite</li>
+<li>[ ] Capstone 3 — Analytical Data Model</li>
+</ul>
+
+<h4>Phase 4 — Exploratory Data Analysis</h4>
+<ul>
+<li>[ ] Module 4.1 — Univariate Analysis</li>
+<li>[ ] Exercise 4.1 — Univariate EDA</li>
+<li>[ ] Module 4.2 — Bivariate &amp; Multivariate Analysis</li>
+<li>[ ] Exercise 4.2 — Bivariate Analysis</li>
+<li>[ ] Module 4.3 — EDA for Time-Series Data</li>
+<li>[ ] Exercise 4.3 — Time-Series EDA</li>
+<li>[ ] Capstone 4 — ShopFlow EDA Report</li>
+</ul>
+
+<h4>Phase 5 — Statistical Inference</h4>
+<ul>
+<li>[ ] Module 5.1 — Hypothesis Testing</li>
+<li>[ ] Exercise 5.1 — Hypothesis Testing on ShopFlow</li>
+<li>[ ] Module 5.2 — Regression &amp; Correlation</li>
+<li>[ ] Exercise 5.2 — Regression Analysis of ShopFlow</li>
+<li>[ ] Capstone 5 — Inference Report</li>
+</ul>
+
+<h4>Completion</h4>
+<ul>
+<li>[ ] Final Capstone — ShopFlow Full Analysis</li>
+<li>[ ] All EDA charts exported at 150 dpi</li>
+<li>[ ] run_all.py executes end-to-end without errors</li>
+</ul>
+
+<p><em>Guide Version 1.0 — Statistics with Python Track: Data Cleaning to EDA</em><br>
+<em>Non-linear modular design · Placement quiz · 15 modules · ~12 weeks part-time · hayah-ai</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

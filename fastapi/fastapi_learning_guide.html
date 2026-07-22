@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FastAPI Learning Guide — Beginner to Intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">FastAPI<br>Learning Guide</div>
+      <div class="brand-sub">Python · FastAPI · Pydantic · SQLAlchemy · JWT</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#beginner-intermediate-track" class="nav-top">Beginner–Intermediate Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+<div class="nav-group">
+<a href="#phase-1-foundations" class="nav-top nav-phase">Phase 1: Foundations</a>
+<div class="nav-children">
+<a href="#module-11-fastapi-basics" class="nav-child">Module 1.1 — FastAPI Basics</a>
+<a href="#module-12-path-query-and-body-params" class="nav-child">Module 1.2 — Path, Query &amp; Body Params</a>
+<a href="#module-13-pydantic-request-and-response-schemas" class="nav-child">Module 1.3 — Pydantic Schemas</a>
+<a href="#module-14-routers-and-application-structure" class="nav-child">Module 1.4 — Routers &amp; Structure</a>
+<a href="#phase-1-capstone-products-api" class="nav-child">Phase 1 Capstone: Products API</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-2-data-and-auth" class="nav-top nav-phase">Phase 2: Data &amp; Auth</a>
+<div class="nav-children">
+<a href="#module-21-database-integration-with-sqlalchemy" class="nav-child">Module 2.1 — Database Integration</a>
+<a href="#module-22-crud-operations" class="nav-child">Module 2.2 — CRUD Operations</a>
+<a href="#module-23-jwt-authentication-and-security" class="nav-child">Module 2.3 — JWT Authentication</a>
+<a href="#module-24-dependencies-and-dependency-injection" class="nav-child">Module 2.4 — Dependencies</a>
+<a href="#phase-2-capstone-authenticated-orders-api" class="nav-child">Phase 2 Capstone: Authenticated Orders API</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-3-production" class="nav-top nav-phase">Phase 3: Production</a>
+<div class="nav-children">
+<a href="#module-31-background-tasks-and-async" class="nav-child">Module 3.1 — Background Tasks &amp; Async</a>
+<a href="#module-32-middleware-cors-and-error-handling" class="nav-child">Module 3.2 — Middleware, CORS &amp; Errors</a>
+<a href="#module-33-testing-with-pytest-and-httpx" class="nav-child">Module 3.3 — Testing</a>
+<a href="#module-34-deployment-with-uvicorn-and-docker" class="nav-child">Module 3.4 — Deployment</a>
+<a href="#phase-3-capstone-production-ready-shopph-api" class="nav-child">Phase 3 Capstone: Production ShopPH API</a>
+</div></div>
+<a href="#final-capstone-fastapi" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="fastapi-learning-guide">FastAPI Learning Guide</h1>
+<h2 id="beginner-intermediate-track">Beginner–Intermediate Track</h2>
+<h3>Python · FastAPI · Pydantic · SQLAlchemy · JWT</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="FastAPI" xmlns="http://www.w3.org/2000/svg">
+<polygon points="150,20 80,128 126,128 106,240 176,112 130,112" fill="#0d7a6e"/>
+<polygon points="150,20 130,112 176,112" fill="#075249"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone builds the same <strong>ShopPH API</strong> — a Philippine e-commerce REST API with products, users, orders, and authentication. There's no starter code to download — see the <a href="../datasets/shopph/">ShopPH spec</a> in the shared datasets folder for the starting app shape and domain outline.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Some Python/API experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+<h3>Section A — HTTP &amp; API Basics</h3>
+<ul>
+<li>[ ] I can explain what GET, POST, PUT, and DELETE mean in a REST API.</li>
+<li>[ ] I know what an HTTP status code is and can name one for success (2xx) and one for a client error (4xx).</li>
+<li>[ ] I have called an API using <code>curl</code>, Postman, or Python <code>requests</code>.</li>
+<li>[ ] I can read a route like <code>GET /products/{id}?include_reviews=true</code> and explain every part.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.2</strong> | <strong>4 yes</strong> → Skip to <strong>Section B</strong></p>
+<h3>Section B — Python &amp; FastAPI Foundations</h3>
+<ul>
+<li>[ ] I can define a Python <code>async def</code> function and know when to use <code>await</code>.</li>
+<li>[ ] I can write a Pydantic <code>BaseModel</code> and attach it as a FastAPI request body.</li>
+<li>[ ] I can define a FastAPI route with path parameters, query parameters, and a Pydantic request body.</li>
+<li>[ ] I can run a FastAPI app with <code>uvicorn</code> and navigate the auto-generated <code>/docs</code> UI.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.2</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.4</strong> | <strong>4 yes</strong> → Skip to <strong>Section C</strong></p>
+<h3>Section C — Database &amp; Auth</h3>
+<ul>
+<li>[ ] I have used SQLAlchemy (or another ORM) to query a relational database from Python.</li>
+<li>[ ] I can write FastAPI CRUD endpoints that read and write to a database through a <code>Depends(get_db)</code> session.</li>
+<li>[ ] I understand what a JWT token is and can explain the access/refresh token pattern.</li>
+<li>[ ] I have protected a FastAPI route with a <code>Depends(get_current_user)</code> guard.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-fastapi-basics"><td>1.1</td><td>FastAPI Basics: Your First Endpoint</td><td>Beginner</td><td>Python basics</td><td>2h</td></tr>
+<tr data-href="#module-12-path-query-and-body-params"><td>1.2</td><td>Path, Query &amp; Body Parameters</td><td>Beginner</td><td>1.1</td><td>3h</td></tr>
+<tr data-href="#module-13-pydantic-request-and-response-schemas"><td>1.3</td><td>Pydantic Request &amp; Response Schemas</td><td>Beginner–Intermediate</td><td>1.2</td><td>3h</td></tr>
+<tr data-href="#module-14-routers-and-application-structure"><td>1.4</td><td>Routers &amp; Application Structure</td><td>Beginner–Intermediate</td><td>1.3</td><td>2h</td></tr>
+<tr data-href="#module-21-database-integration-with-sqlalchemy"><td>2.1</td><td>Database Integration with SQLAlchemy</td><td>Intermediate</td><td>1.4</td><td>4h</td></tr>
+<tr data-href="#module-22-crud-operations"><td>2.2</td><td>CRUD Operations</td><td>Intermediate</td><td>2.1</td><td>4h</td></tr>
+<tr data-href="#module-23-jwt-authentication-and-security"><td>2.3</td><td>JWT Authentication &amp; Security</td><td>Intermediate</td><td>2.2</td><td>4h</td></tr>
+<tr data-href="#module-24-dependencies-and-dependency-injection"><td>2.4</td><td>Dependencies &amp; Dependency Injection</td><td>Intermediate</td><td>2.1</td><td>3h</td></tr>
+<tr data-href="#module-31-background-tasks-and-async"><td>3.1</td><td>Background Tasks &amp; Async</td><td>Intermediate</td><td>2.2</td><td>3h</td></tr>
+<tr data-href="#module-32-middleware-cors-and-error-handling"><td>3.2</td><td>Middleware, CORS &amp; Error Handling</td><td>Intermediate</td><td>1.4</td><td>3h</td></tr>
+<tr data-href="#module-33-testing-with-pytest-and-httpx"><td>3.3</td><td>Testing with pytest &amp; httpx</td><td>Intermediate</td><td>2.2</td><td>4h</td></tr>
+<tr data-href="#module-34-deployment-with-uvicorn-and-docker"><td>3.4</td><td>Deployment with Uvicorn &amp; Docker</td><td>Intermediate</td><td>3.2</td><td>3h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Modules 3.1, 3.2, 3.3, and 3.4 are independent of each other — complete them in any order after finishing Phase 2. Module 2.4 can be started any time after Module 2.1.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset of the guide.</p>
+<h3 id="track-1-api-developer-essentials">Track 1 — API Developer Essentials (build and document REST endpoints fast)</h3>
+<p><code>1.1 → 1.2 → 1.3 → 1.4 → Phase 1 Capstone</code><br>
+Target outcome: <strong>Build a fully validated REST API with automatic OpenAPI documentation</strong></p>
+<h3 id="track-2-full-stack-backend">Track 2 — Full-Stack Backend (database, auth, tested endpoints)</h3>
+<p><code>1.2 → 1.3 → 1.4 → 2.1 → 2.2 → 2.3 → 2.4 → 3.3 → Phase 2 Capstone</code><br>
+Target outcome: <strong>Production-grade backend with JWT auth, SQLAlchemy database, and a full test suite</strong></p>
+<h3 id="track-3-production-ready-api">Track 3 — Production-Ready API (deploy, harden, monitor)</h3>
+<p><code>1.4 → 2.1 → 2.2 → 3.1 → 3.2 → 3.3 → 3.4 → Final Capstone</code><br>
+Target outcome: <strong>Containerized, CORS-configured, tested API deployed with Docker and Uvicorn</strong></p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Foundations        (Weeks 1–2)
+Phase 2 — Data &amp; Auth        (Weeks 3–4)
+Phase 3 — Production         (Weeks 5–6)
+Capstone Projects            (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 → 1.2 → 1.3 → 1.4 ─┬─ 2.1 → 2.2 ─┬─ 2.3 ─┐
+                         └─ 2.4        ├─ 3.1  ├─ Final Capstone
+                                       ├─ 3.3  │
+                                  3.2 ─┘  3.4 ─┘</code></pre>
+
+<h2 id="phase-1-foundations">Phase 1: Foundations</h2>
+<h3 id="weeks-1-2">Weeks 1–2 | Goal: Define endpoints, validate inputs, and ship auto-generated API docs</h3>
+<hr />
+
+<h3 id="module-11-fastapi-basics">Module 1.1 — FastAPI Basics: Your First Endpoint</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Python functions and pip · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Run a FastAPI app with two GET routes, navigate to /docs, and explain what ASGI means in one sentence.<br>
+<strong>Skip if:</strong> You have already built and run a FastAPI app locally and are comfortable with the /docs Swagger UI.<br>
+<strong>Unlocks:</strong> Module 1.2</p>
+</blockquote>
+
+<h4>What FastAPI is and why it is fast</h4>
+<p>FastAPI is a Python web framework built on Starlette (an ASGI toolkit) and Pydantic. It generates OpenAPI documentation automatically from your Python code — no separate spec file to maintain. The "fast" in the name means two things: runtime speed (Starlette's async request handling benchmarks among the fastest Python frameworks) and developer speed (full endpoint definition in one decorated function). Without an ASGI server like Uvicorn, FastAPI cannot serve requests — the framework defines routes, Uvicorn runs them.</p>
+<pre><code class="language-bash">pip install fastapi uvicorn[standard]</code></pre>
+
+<h4>Your first app</h4>
+<pre><code class="language-py">from fastapi import FastAPI
+
+app = FastAPI(
+    title="ShopPH API",
+    description="Philippine e-commerce platform API",
+    version="1.0.0"
+)
+
+@app.get("/")
+async def root() -&gt; dict:
+    return {"message": "Welcome to ShopPH API", "docs": "/docs"}
+
+@app.get("/health")
+async def health_check() -&gt; dict:
+    return {"status": "ok", "service": "shopph-api"}
+</code></pre>
+
+<h4>Running and exploring the docs</h4>
+<pre><code class="language-bash">uvicorn main:app --reload</code></pre>
+<p>Open <code>http://localhost:8000/docs</code> for the Swagger UI — every route you define appears here automatically with a try-it-out button. <code>/redoc</code> gives an alternative documentation view. <code>/openapi.json</code> returns the raw OpenAPI schema both UIs consume. The <code>--reload</code> flag restarts the server on every file save during development.</p>
+
+<h4>Sync vs. async handlers — when it matters</h4>
+<p>Define route handlers as <code>async def</code> when the function calls an async library (an async database driver, <code>httpx</code>). Define them as regular <code>def</code> for CPU-bound work or when using a blocking library — FastAPI runs blocking <code>def</code> handlers in a thread pool automatically, keeping the event loop free.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Adding <code>async def</code> to a handler that calls a synchronous, blocking function (like a standard SQLAlchemy query with no <code>await</code>) does not make it non-blocking — it blocks the entire event loop for every request. If your database driver is synchronous, use regular <code>def</code> handlers and let FastAPI run them in the thread pool.</p></blockquote>
+
+<p><strong>Exercise 1.1 — ShopPH API First Run</strong></p>
+<p>Application: ShopPH API</p>
+<ol>
+<li>Install FastAPI and Uvicorn. Create <code>main.py</code> with the app above.</li>
+<li>Add a <code>GET /version</code> route that returns <code>{"version": "1.0.0", "framework": "FastAPI"}</code>.</li>
+<li>Run the server with <code>uvicorn main:app --reload</code>. Confirm all three routes appear in <code>/docs</code>.</li>
+<li>Use the Swagger UI try-it-out button to call each route. Note the response body and HTTP status code for each.</li>
+<li>Add a <code>POST /echo</code> route that accepts a raw <code>dict</code> body and returns it unchanged. Test it in Swagger.</li>
+<li>Open <code>/openapi.json</code> in the browser. Locate the <code>paths</code> key and find your <code>/echo</code> endpoint. Identify where the request body schema is described.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-path-query-and-body-params">Module 1.2 — Path, Query &amp; Body Parameters</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Module 1.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Define a GET endpoint with a required path parameter (ge=1), two optional query parameters with constraints, and explain how FastAPI distinguishes path, query, and body parameters.<br>
+<strong>Skip if:</strong> You can use Path(), Query(), and Body() with validation constraints and have tested them in a working endpoint.<br>
+<strong>Unlocks:</strong> Module 1.3</p>
+</blockquote>
+
+<h4>Path parameters — required, part of the URL</h4>
+<p>A path parameter is declared in the route path as <code>{name}</code> and matched by a function argument of the same name. FastAPI validates the type automatically before calling your function — sending <code>/products/abc</code> to a route declared with <code>product_id: int</code> returns a 422 immediately, never reaching your handler. This prevents type errors from ever entering your business logic.</p>
+<pre><code class="language-py">from fastapi import FastAPI, Path, Query
+from typing import Optional
+
+app = FastAPI()
+
+@app.get("/products/{product_id}")
+async def get_product(
+    product_id: int = Path(ge=1, description="Unique product ID"),
+    include_reviews: bool = Query(False, description="Include reviews in response")
+) -&gt; dict:
+    return {"product_id": product_id, "include_reviews": include_reviews}
+</code></pre>
+
+<h4>Query parameters — optional, after the ?</h4>
+<p>Any function argument not present in the path template becomes a query parameter. A default value makes it optional; no default makes it required. <code>Optional[str] = None</code> explicitly declares a nullable optional — the <code>Optional</code> annotation documents intent and makes the OpenAPI spec show the field as non-required.</p>
+<pre><code class="language-py">@app.get("/products")
+async def list_products(
+    category: Optional[str] = None,
+    min_price: Optional[float] = Query(None, ge=0, description="Minimum price in PHP"),
+    max_price: Optional[float] = Query(None, ge=0, description="Maximum price in PHP"),
+    page: int = Query(1, ge=1, description="Page number"),
+    size: int = Query(20, ge=1, le=100, description="Items per page")
+) -&gt; dict:
+    return {
+        "category": category,
+        "price_range": [min_price, max_price],
+        "pagination": {"page": page, "size": size}
+    }
+</code></pre>
+
+<h4>Request body — JSON payload from the client</h4>
+<p>A Pydantic model as a function parameter tells FastAPI to parse the request body as JSON and validate it through the model. The body is completely separate from the URL — mixing them up is the most common beginner mistake when moving from Flask to FastAPI. FastAPI infers: if it is in the path, it is a path parameter; if it is a Pydantic model, it is the body; everything else is a query parameter.</p>
+<pre><code class="language-py">from pydantic import BaseModel, Field
+
+class CreateProductBody(BaseModel):
+    name: str = Field(min_length=1, max_length=200)
+    price: float = Field(gt=0, description="Price in PHP")
+    category: str
+    stock: int = Field(ge=0, default=0)
+    description: Optional[str] = None
+
+@app.post("/products")
+async def create_product(product: CreateProductBody) -&gt; dict:
+    return {"received": product.model_dump(), "status": "created"}
+</code></pre>
+
+<p><strong>Exercise 1.2 — ShopPH Endpoint Parameters</strong></p>
+<p>Application: ShopPH API</p>
+<ol>
+<li>Define <code>GET /products/{product_id}</code> with <code>Path(ge=1)</code>. Test that <code>/products/0</code> returns a 422 and <code>/products/abc</code> also returns a 422.</li>
+<li>Add <code>GET /products</code> with <code>category</code>, <code>min_price</code>, <code>max_price</code>, <code>page</code>, and <code>size</code> parameters. Call it with <code>/products?category=electronics&amp;page=2</code>.</li>
+<li>Define <code>POST /products</code> with a <code>CreateProductBody</code>. Send a body missing the required <code>name</code> field. Observe the 422 response — note how it names the exact missing field.</li>
+<li>Add <code>GET /categories/{slug}/products</code> combining a path parameter with pagination query params.</li>
+<li>Add <code>DELETE /products/{product_id}</code> and confirm it appears in <code>/docs</code> under a distinct HTTP method.</li>
+<li>Open <code>/openapi.json</code> and find the <code>parameters</code> array for <code>GET /products</code>. Verify the <code>ge=0</code> constraint for <code>min_price</code> appears as <code>"minimum": 0</code> in the JSON Schema.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-pydantic-request-and-response-schemas">Module 1.3 — Pydantic Request &amp; Response Schemas</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 1.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Define separate Create, Update, and Response Pydantic models for a product, explain why they are separate, and use response_model to strip an internal field from the output.<br>
+<strong>Skip if:</strong> You use separate request/response schemas, understand response_model filtering, and know what model_config from_attributes=True does.<br>
+<strong>Unlocks:</strong> Module 1.4</p>
+</blockquote>
+
+<h4>Separate schemas for Create, Update, and Response</h4>
+<p>Using a single model for all three operations is a common trap. The create request has no <code>id</code> (the database assigns it); the update request makes most fields optional; the response includes server-generated fields like <code>created_at</code>. One model forces the client to send fields it should not control, or exposes internal fields it should not see.</p>
+<pre><code class="language-py">from fastapi import FastAPI
+from pydantic import BaseModel, Field
+from datetime import datetime
+from typing import Optional
+from enum import Enum
+
+class CategoryEnum(str, Enum):
+    electronics = "electronics"
+    clothing = "clothing"
+    food = "food"
+    furniture = "furniture"
+
+class ProductCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=200)
+    description: Optional[str] = None
+    price: float = Field(gt=0, description="Price in PHP")
+    category: CategoryEnum
+    stock: int = Field(ge=0, default=0)
+    cost_price: float = Field(gt=0, description="Internal cost — never exposed in response")
+
+class ProductUpdate(BaseModel):
+    name: Optional[str] = Field(None, min_length=1, max_length=200)
+    description: Optional[str] = None
+    price: Optional[float] = Field(None, gt=0)
+    stock: Optional[int] = Field(None, ge=0)
+
+class ProductResponse(BaseModel):
+    id: int
+    name: str
+    price: float
+    category: CategoryEnum
+    stock: int
+    is_active: bool
+    created_at: datetime
+    model_config = {"from_attributes": True}
+</code></pre>
+
+<h4>response_model — filtering the output</h4>
+<p><code>response_model</code> on a route tells FastAPI to pass the return value through the named model before serializing it to JSON. Fields not declared on the response model are silently dropped. This is the primary mechanism for preventing data leaks — <code>cost_price</code> and <code>hashed_password</code> never reach the client if they are absent from the response schema.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> <code>response_model</code> shapes the output — it does NOT protect the route from unauthorized access. A route with <code>response_model=ProductResponse</code> still returns data to any unauthenticated caller. Never confuse response shaping with authorization — those are two separate concerns handled by different mechanisms.</p></blockquote>
+
+<pre><code class="language-py">app = FastAPI()
+
+@app.post("/products", response_model=ProductResponse, status_code=201)
+async def create_product(product: ProductCreate) -&gt; ProductResponse:
+    return ProductResponse(
+        id=1,
+        name=product.name,
+        price=product.price,
+        category=product.category,
+        stock=product.stock,
+        is_active=True,
+        created_at=datetime.now()
+    )
+    # cost_price is on ProductCreate but NOT on ProductResponse
+    # FastAPI drops it automatically — it never appears in the JSON response
+</code></pre>
+
+<h4>from_attributes — ORM row compatibility</h4>
+<p><code>model_config = {"from_attributes": True}</code> lets Pydantic construct the model from any object that has matching attributes, not just dicts — including SQLAlchemy ORM rows. Set this on response models (which receive ORM objects from the database layer); request models only ever receive dicts from JSON bodies and do not need it.</p>
+
+<p><strong>Exercise 1.3 — ShopPH Schemas</strong></p>
+<p>Application: ShopPH API</p>
+<ol>
+<li>Define <code>ProductCreate</code>, <code>ProductUpdate</code>, and <code>ProductResponse</code> as above. Wire them to <code>POST /products</code> and <code>PUT /products/{id}</code>.</li>
+<li>Confirm that <code>cost_price</code> sent in the request body does not appear in the response JSON.</li>
+<li>Define <code>UserCreate</code> (email, password), <code>UserResponse</code> (id, email, created_at — no password field). Return a dict that includes <code>hashed_password</code> through <code>response_model=UserResponse</code> and verify it is stripped.</li>
+<li>Add <code>model_config = {"from_attributes": True}</code> to <code>ProductResponse</code>. Create a plain Python object with matching attributes and confirm Pydantic accepts it.</li>
+<li>Add <code>response_model_exclude_none=True</code> to the <code>GET /products/{id}</code> route. Confirm optional fields with <code>None</code> values are omitted from the response body.</li>
+<li>Open <code>/docs</code> and confirm <code>CategoryEnum</code> appears as a dropdown in the Swagger request form for <code>POST /products</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-14-routers-and-application-structure">Module 1.4 — Routers &amp; Application Structure</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 1.3 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Split a FastAPI app into three router files with prefixes and tags, register them in main.py, and confirm /docs groups the endpoints correctly.<br>
+<strong>Skip if:</strong> You use APIRouter for organization, register routers with prefixes and tags, and structure projects with separate routes/schemas/models directories.<br>
+<strong>Unlocks:</strong> Phase 2</p>
+</blockquote>
+
+<h4>APIRouter — organizing routes into files</h4>
+<p>Putting all routes in <code>main.py</code> becomes unmanageable past about 15 endpoints. <code>APIRouter</code> lets you define routes in separate modules and register them with a shared prefix and tag. The tags drive the grouping in <code>/docs</code>, making the API self-documenting for both developers and API consumers. Missing a prefix is the most common mistake — a router without one adds routes to the root namespace, silently colliding with other routers.</p>
+<pre><code class="language-py"># routers/products.py
+from fastapi import APIRouter
+from typing import List
+from datetime import datetime
+from schemas.product import ProductCreate, ProductResponse, CategoryEnum
+
+router = APIRouter(prefix="/products", tags=["Products"])
+
+@router.get("/", response_model=List[ProductResponse])
+async def list_products() -&gt; List[ProductResponse]:
+    return []
+
+@router.get("/{product_id}", response_model=ProductResponse)
+async def get_product(product_id: int) -&gt; ProductResponse:
+    return ProductResponse(
+        id=product_id, name="Sample", price=299.0,
+        category=CategoryEnum.electronics, stock=10,
+        is_active=True, created_at=datetime.now()
+    )
+
+@router.post("/", response_model=ProductResponse, status_code=201)
+async def create_product(product: ProductCreate) -&gt; ProductResponse:
+    return ProductResponse(
+        id=1, name=product.name, price=product.price,
+        category=product.category, stock=product.stock,
+        is_active=True, created_at=datetime.now()
+    )
+</code></pre>
+
+<pre><code class="language-py"># main.py
+from fastapi import FastAPI
+from routers import products, orders, users
+
+app = FastAPI(title="ShopPH API", version="1.0.0")
+
+app.include_router(products.router)
+app.include_router(orders.router)
+app.include_router(users.router)
+
+@app.get("/health", tags=["System"])
+async def health_check() -&gt; dict:
+    return {"status": "ok"}
+</code></pre>
+
+<h4>Recommended project structure</h4>
+<pre class="artifact" data-kind="TEMPLATE"><code>shopph/
+├── main.py
+├── database.py
+├── auth.py
+├── dependencies.py
+├── routers/
+│   ├── __init__.py
+│   ├── products.py
+│   ├── orders.py
+│   └── users.py
+├── schemas/
+│   ├── __init__.py
+│   ├── product.py
+│   ├── order.py
+│   └── user.py
+├── models/
+│   ├── __init__.py
+│   ├── product.py   ← SQLAlchemy ORM models
+│   ├── order.py
+│   └── user.py
+├── crud/
+│   ├── __init__.py
+│   ├── product.py   ← database logic, no HTTP concerns
+│   └── user.py
+└── requirements.txt</code></pre>
+<p>Separating SQLAlchemy ORM models (<code>models/</code>) from Pydantic schemas (<code>schemas/</code>) avoids circular imports and keeps HTTP validation out of the database layer. The <code>crud/</code> layer ensures router functions stay thin — they call a CRUD function and return the result. Business logic belongs in <code>crud/</code>, not in the router.</p>
+
+<p><strong>Exercise 1.4 — Restructure ShopPH</strong></p>
+<p>Application: ShopPH API</p>
+<ol>
+<li>Create the directory structure above. Move all product schemas to <code>schemas/product.py</code>.</li>
+<li>Create <code>routers/products.py</code> with <code>prefix="/products"</code> and <code>tags=["Products"]</code>. Move all product routes into it.</li>
+<li>Create stub <code>routers/users.py</code> with a <code>GET /users/me</code> route returning a placeholder dict.</li>
+<li>Create stub <code>routers/orders.py</code> with a <code>GET /orders</code> route.</li>
+<li>Register all three routers in <code>main.py</code>. Open <code>/docs</code> and confirm Products, Users, and Orders appear as separate sections.</li>
+<li>Add an in-memory product store (<code>products_db: dict = {}</code>) to <code>routers/products.py</code> and wire the create/read/delete endpoints to it. Test CRUD via Swagger — this store replaces a real database for Phase 1.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-products-api">Phase 1 Capstone: Products API</h3>
+<p><strong>Project: ShopPH Product Catalog — CRUD with In-Memory Store</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) the difference between a path parameter and a query parameter, (2) why request and response schemas should be separate models, and (3) what response_model does vs. what it cannot do? If any draws a blank, re-read that module first.</p></blockquote>
+<p><strong>Application:</strong> ShopPH API</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Implement full product CRUD: <code>GET /products</code> (filtered list with pagination), <code>GET /products/{id}</code>, <code>POST /products</code>, <code>PUT /products/{id}</code>, <code>DELETE /products/{id}</code>.</li>
+<li>Use separate <code>ProductCreate</code>, <code>ProductUpdate</code>, and <code>ProductResponse</code> schemas with <code>Field</code> constraints. <code>cost_price</code> must be in <code>ProductCreate</code> but absent from <code>ProductResponse</code>.</li>
+<li>Back the API with an in-memory <code>dict</code> — no database yet. Auto-increment IDs starting from 1.</li>
+<li>Return correct HTTP status codes: 201 for create, 200 for read/update, 204 for delete, 404 when a product is not found (raise <code>HTTPException(status_code=404, detail="Product not found")</code>).</li>
+<li>Organize the project with the structure from Module 1.4: <code>routers/products.py</code> and <code>schemas/product.py</code>.</li>
+<li>Open <code>/docs</code> and demonstrate all five endpoints with their schemas, status codes, and enum constraints visible.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-data-and-auth">Phase 2: Data &amp; Auth</h2>
+<h3 id="weeks-3-4">Weeks 3–4 | Goal: Persist data with SQLAlchemy, protect routes with JWT, and wire reusable dependencies</h3>
+<hr />
+
+<h3 id="module-21-database-integration-with-sqlalchemy">Module 2.1 — Database Integration with SQLAlchemy</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 1.4 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Define a SQLAlchemy ORM model, create the table, and wire a get_db() dependency to a route that queries it.<br>
+<strong>Skip if:</strong> You can define SQLAlchemy models, create tables with Base.metadata.create_all(), and use Depends(get_db) to inject a session into a route.<br>
+<strong>Unlocks:</strong> Module 2.2, Module 2.4</p>
+</blockquote>
+
+<h4>SQLAlchemy setup: engine, session, Base</h4>
+<p>The three key objects are the <strong>engine</strong> (the connection to the database file), the <strong>session factory</strong> (creates database sessions), and <strong>Base</strong> (the parent class all ORM models inherit from, used to create tables). Calling <code>Base.metadata.create_all(engine)</code> creates every table whose ORM model inherits from <code>Base</code> — run this once at startup.</p>
+<pre><code class="language-py"># database.py
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
+
+DATABASE_URL = "sqlite:///./shopph.db"
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+class Base(DeclarativeBase):
+    pass
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+</code></pre>
+
+<h4>Defining ORM models</h4>
+<pre><code class="language-py"># models/product.py
+from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime
+from database import Base
+from datetime import datetime
+
+class Product(Base):
+    __tablename__ = "products"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False, index=True)
+    description = Column(String, nullable=True)
+    price = Column(Float, nullable=False)
+    category = Column(String, nullable=False)
+    stock = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+</code></pre>
+
+<h4>Creating tables and wiring get_db</h4>
+<pre><code class="language-py"># main.py
+from fastapi import FastAPI
+from database import engine, Base
+import models.product  # import so Base sees the model before create_all
+
+app = FastAPI(title="ShopPH API")
+
+Base.metadata.create_all(bind=engine)  # creates products table on startup
+
+# Install SQLAlchemy:  pip install sqlalchemy
+</code></pre>
+<p>The <code>get_db</code> generator yields a session and closes it in the <code>finally</code> block — ensuring the session is always returned to the pool, even if the request handler raises an exception. Forgetting the <code>finally</code> block leaks database connections under any error condition.</p>
+
+<p><strong>Exercise 2.1 — ShopPH Database Setup</strong></p>
+<p>Application: ShopPH API</p>
+<ol>
+<li>Install SQLAlchemy: <code>pip install sqlalchemy</code>. Create <code>database.py</code> as above.</li>
+<li>Create <code>models/product.py</code> with the <code>Product</code> ORM model. Create <code>models/user.py</code> with a <code>User</code> model (id, email, hashed_password, is_active, created_at).</li>
+<li>Call <code>Base.metadata.create_all(bind=engine)</code> in <code>main.py</code> and run the server. Confirm <code>shopph.db</code> is created on disk.</li>
+<li>Use a SQLite browser (e.g., DB Browser for SQLite) to inspect the tables and their column types.</li>
+<li>Add a <code>GET /db-check</code> route that uses <code>Depends(get_db)</code>, runs <code>db.execute(text("SELECT 1"))</code>, and returns <code>{"db": "ok"}</code>.</li>
+<li>Stop the server, delete <code>shopph.db</code>, restart, and verify the tables are recreated automatically.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-crud-operations">Module 2.2 — CRUD Operations</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Write a crud/product.py with get, list, create, update, and soft-delete functions, and wire them to router endpoints using Depends(get_db).<br>
+<strong>Skip if:</strong> You can write a full SQLAlchemy CRUD layer, use model_dump(exclude_none=True) for partial updates, and implement soft deletes.<br>
+<strong>Unlocks:</strong> Modules 2.3, 3.1, 3.3, Phase 2 Capstone</p>
+</blockquote>
+
+<h4>The CRUD layer — database logic separate from HTTP logic</h4>
+<p>CRUD functions live in <code>crud/</code> and receive a <code>Session</code> — they have no knowledge of HTTP, request bodies, or status codes. Router functions call CRUD functions and translate the result to an HTTP response. This separation means you can test database logic without running the web server, and change the HTTP layer without touching database queries.</p>
+<pre><code class="language-py"># crud/product.py
+from sqlalchemy.orm import Session
+from models.product import Product
+from schemas.product import ProductCreate, ProductUpdate
+from typing import List, Optional
+
+def get_product(db: Session, product_id: int) -&gt; Optional[Product]:
+    return db.query(Product).filter(
+        Product.id == product_id,
+        Product.is_active == True
+    ).first()
+
+def get_products(
+    db: Session,
+    skip: int = 0,
+    limit: int = 20,
+    category: Optional[str] = None
+) -&gt; List[Product]:
+    query = db.query(Product).filter(Product.is_active == True)
+    if category:
+        query = query.filter(Product.category == category)
+    return query.offset(skip).limit(limit).all()
+
+def create_product(db: Session, product: ProductCreate) -&gt; Product:
+    data = product.model_dump(exclude={"cost_price"})
+    db_product = Product(**data)
+    db.add(db_product)
+    db.commit()
+    db.refresh(db_product)
+    return db_product
+
+def update_product(
+    db: Session, product_id: int, product: ProductUpdate
+) -&gt; Optional[Product]:
+    db_product = get_product(db, product_id)
+    if not db_product:
+        return None
+    for field, value in product.model_dump(exclude_none=True).items():
+        setattr(db_product, field, value)
+    db.commit()
+    db.refresh(db_product)
+    return db_product
+
+def soft_delete_product(db: Session, product_id: int) -&gt; bool:
+    db_product = get_product(db, product_id)
+    if not db_product:
+        return False
+    db_product.is_active = False
+    db.commit()
+    return True
+</code></pre>
+
+<h4>Wiring CRUD to router endpoints</h4>
+<pre><code class="language-py"># routers/products.py
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+from database import get_db
+from crud import product as crud_product
+from schemas.product import ProductCreate, ProductUpdate, ProductResponse
+from typing import List, Optional
+
+router = APIRouter(prefix="/products", tags=["Products"])
+
+@router.get("/", response_model=List[ProductResponse])
+def list_products(
+    category: Optional[str] = None,
+    skip: int = 0,
+    limit: int = 20,
+    db: Session = Depends(get_db)
+) -&gt; List[ProductResponse]:
+    return crud_product.get_products(db, skip=skip, limit=limit, category=category)
+
+@router.get("/{product_id}", response_model=ProductResponse)
+def get_product(product_id: int, db: Session = Depends(get_db)) -&gt; ProductResponse:
+    product = crud_product.get_product(db, product_id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+@router.post("/", response_model=ProductResponse, status_code=201)
+def create_product(product: ProductCreate, db: Session = Depends(get_db)) -&gt; ProductResponse:
+    return crud_product.create_product(db, product)
+
+@router.put("/{product_id}", response_model=ProductResponse)
+def update_product(product_id: int, product: ProductUpdate, db: Session = Depends(get_db)) -&gt; ProductResponse:
+    updated = crud_product.update_product(db, product_id, product)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return updated
+
+@router.delete("/{product_id}", status_code=204)
+def delete_product(product_id: int, db: Session = Depends(get_db)) -&gt; None:
+    deleted = crud_product.soft_delete_product(db, product_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Product not found")
+</code></pre>
+
+<p><strong>Exercise 2.2 — ShopPH CRUD Endpoints</strong></p>
+<p>Application: ShopPH API</p>
+<ol>
+<li>Implement <code>crud/product.py</code> with all five functions above. Replace the Phase 1 in-memory store with real SQLAlchemy queries.</li>
+<li>Wire CRUD to the product router. Test all five endpoints via Swagger: create a product, list it, update its price, retrieve it, then delete it.</li>
+<li>Verify that after soft-delete, the product no longer appears in <code>GET /products</code> or <code>GET /products/{id}</code>.</li>
+<li>Add a <code>GET /products/{id}/exists</code> route that returns <code>{"exists": true/false}</code> without raising a 404.</li>
+<li>Write a <code>crud/user.py</code> with <code>get_user_by_email()</code> and <code>create_user()</code> functions — you will need these in Module 2.3.</li>
+<li>Test the PATCH-style partial update: send only <code>{"stock": 5}</code> to <code>PUT /products/{id}</code> and confirm only the stock changes, other fields are unchanged.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-jwt-authentication-and-security">Module 2.3 — JWT Authentication &amp; Security</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Implement a register endpoint, a /auth/token login endpoint using OAuth2PasswordRequestForm, and protect one route with Depends(get_current_user).<br>
+<strong>Skip if:</strong> You can implement JWT login/register, hash passwords with bcrypt, and protect routes with an OAuth2 bearer token dependency.<br>
+<strong>Unlocks:</strong> Module 2.4, Phase 2 Capstone</p>
+</blockquote>
+
+<h4>Password hashing with bcrypt</h4>
+<p>Never store plain-text passwords. <code>passlib</code> wraps bcrypt, which is deliberately slow to compute — it makes brute-force attacks against a stolen password hash database impractical. Always hash on registration and compare hashes on login; never decrypt a stored hash.</p>
+<pre><code class="language-py"># auth.py
+from datetime import datetime, timedelta
+from typing import Optional
+from jose import JWTError, jwt
+from passlib.context import CryptContext
+from pydantic import BaseModel
+
+SECRET_KEY = "change-this-to-a-random-64-char-secret-in-production"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+class TokenData(BaseModel):
+    email: Optional[str] = None
+
+def verify_password(plain: str, hashed: str) -&gt; bool:
+    return pwd_context.verify(plain, hashed)
+
+def hash_password(password: str) -&gt; str:
+    return pwd_context.hash(password)
+
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -&gt; str:
+    payload = data.copy()
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+    payload.update({"exp": expire})
+    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+
+def decode_access_token(token: str) -&gt; Optional[TokenData]:
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: Optional[str] = payload.get("sub")
+        if not email:
+            return None
+        return TokenData(email=email)
+    except JWTError:
+        return None
+</code></pre>
+<pre><code class="language-bash">pip install python-jose[cryptography] passlib[bcrypt]</code></pre>
+
+<h4>Register and login endpoints</h4>
+<p><code>OAuth2PasswordRequestForm</code> is a built-in FastAPI form dependency that reads <code>username</code> and <code>password</code> from an HTML form body (not JSON). FastAPI's Swagger UI renders the <code>/auth/token</code> endpoint with an "Authorize" button that uses this form format automatically.</p>
+<pre><code class="language-py"># routers/auth.py
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from sqlalchemy.orm import Session
+from database import get_db
+from auth import verify_password, hash_password, create_access_token
+from crud.user import get_user_by_email, create_user
+from schemas.user import UserCreate, UserResponse, Token
+
+router = APIRouter(prefix="/auth", tags=["Authentication"])
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
+
+@router.post("/register", response_model=UserResponse, status_code=201)
+def register(user: UserCreate, db: Session = Depends(get_db)) -&gt; UserResponse:
+    if get_user_by_email(db, user.email):
+        raise HTTPException(status_code=400, detail="Email already registered")
+    return create_user(db, email=user.email, hashed_password=hash_password(user.password))
+
+@router.post("/token", response_model=Token)
+def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)) -&gt; Token:
+    user = get_user_by_email(db, form.username)
+    if not user or not verify_password(form.password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+    token = create_access_token(data={"sub": user.email})
+    return Token(access_token=token, token_type="bearer")
+</code></pre>
+
+<p><em>Retrieval practice: before reading the next section, write from memory the three things that must happen for a route to be considered properly protected: (1) who creates the token, (2) how the client sends it, and (3) how the route validates it. Write it down, then compare against the dependency below.</em></p>
+
+<h4>Protecting routes</h4>
+<pre><code class="language-py"># dependencies.py
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import Session
+from database import get_db
+from auth import decode_access_token
+from crud.user import get_user_by_email
+from models.user import User
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
+
+def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    db: Session = Depends(get_db)
+) -&gt; User:
+    token_data = decode_access_token(token)
+    if not token_data:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+    user = get_user_by_email(db, token_data.email)
+    if not user:
+        raise HTTPException(status_code=401, detail="User not found")
+    return user
+</code></pre>
+
+<p><strong>Exercise 2.3 — ShopPH Auth</strong></p>
+<p>Application: ShopPH API</p>
+<ol>
+<li>Implement <code>auth.py</code>, <code>routers/auth.py</code>, and <code>dependencies.py</code> as above. Register the auth router in <code>main.py</code>.</li>
+<li>Register a new user via <code>POST /auth/register</code>, then log in via <code>POST /auth/token</code>. Copy the returned <code>access_token</code>.</li>
+<li>Add <code>Depends(get_current_user)</code> to <code>POST /products</code>. Test that calling it without a token returns a 401.</li>
+<li>Use the Swagger "Authorize" button to paste the token. Confirm <code>POST /products</code> now succeeds.</li>
+<li>Modify the token string (flip one character) and confirm the protected route returns 401.</li>
+<li>Add a <code>GET /users/me</code> route that returns the current user's profile (email, id, created_at) via <code>Depends(get_current_user)</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-dependencies-and-dependency-injection">Module 2.4 — Dependencies &amp; Dependency Injection</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Create a reusable PaginationParams dependency class, inject it into two routes, and explain what Depends() does at runtime.<br>
+<strong>Skip if:</strong> You can write dependencies as both functions and classes, chain dependencies, and use dependency_overrides in tests.<br>
+<strong>Unlocks:</strong> Phase 2 Capstone</p>
+</blockquote>
+
+<h4>What Depends() does</h4>
+<p><code>Depends(fn)</code> tells FastAPI to call <code>fn</code> before calling your route handler, and inject the return value as the parameter. If the dependency itself has parameters, FastAPI resolves those too — dependencies compose. This is how <code>get_db</code> and <code>get_current_user</code> work: they are just functions that FastAPI calls and whose return value it passes into the route.</p>
+
+<h4>Class-based dependencies — reusable parameter groups</h4>
+<pre><code class="language-py"># dependencies.py (additions)
+from fastapi import Query
+
+class PaginationParams:
+    def __init__(
+        self,
+        page: int = Query(1, ge=1, description="Page number"),
+        size: int = Query(20, ge=1, le=100, description="Items per page")
+    ):
+        self.skip = (page - 1) * size
+        self.limit = size
+
+# Usage in a router:
+# @router.get("/products", response_model=List[ProductResponse])
+# def list_products(
+#     pagination: PaginationParams = Depends(PaginationParams),
+#     db: Session = Depends(get_db)
+# ) -> List[ProductResponse]:
+#     return crud_product.get_products(db, skip=pagination.skip, limit=pagination.limit)
+</code></pre>
+
+<h4>Chaining dependencies</h4>
+<pre><code class="language-py">from fastapi import Depends, HTTPException
+from models.user import User
+from dependencies import get_current_user
+
+def get_active_user(current_user: User = Depends(get_current_user)) -&gt; User:
+    if not current_user.is_active:
+        raise HTTPException(status_code=400, detail="Inactive user account")
+    return current_user
+
+def get_admin_user(current_user: User = Depends(get_active_user)) -&gt; User:
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    return current_user
+</code></pre>
+<p>Chaining runs in order — <code>get_admin_user</code> only runs after <code>get_active_user</code> passes. This builds a validation pipeline where each layer adds one guard, keeping each function focused and testable independently.</p>
+
+<h4>dependency_overrides — swapping in tests</h4>
+<pre><code class="language-py">from fastapi.testclient import TestClient
+from main import app
+from dependencies import get_current_user
+from models.user import User
+
+def mock_current_user() -&gt; User:
+    return User(id=1, email="test@shop.ph", is_active=True)
+
+app.dependency_overrides[get_current_user] = mock_current_user
+client = TestClient(app)
+# All routes using Depends(get_current_user) now receive the mock user
+</code></pre>
+
+<p><strong>Exercise 2.4 — Reusable ShopPH Dependencies</strong></p>
+<p>Application: ShopPH API</p>
+<ol>
+<li>Create <code>PaginationParams</code> as above. Wire it to <code>GET /products</code> and <code>GET /orders</code>.</li>
+<li>Call <code>GET /products?page=3&amp;size=5</code> and verify <code>skip=10</code> and <code>limit=5</code> reach the CRUD function.</li>
+<li>Create <code>get_active_user</code> that chains on <code>get_current_user</code>. Apply it to all write endpoints (POST, PUT, DELETE).</li>
+<li>Add an <code>is_admin</code> column to the <code>User</code> model. Create <code>get_admin_user</code> and protect <code>DELETE /products/{id}</code> with it.</li>
+<li>Use <code>dependency_overrides</code> in a test to bypass authentication on a protected route. Confirm the test passes without a real JWT token.</li>
+<li>Add a router-level dependency: pass <code>dependencies=[Depends(get_active_user)]</code> to the <code>APIRouter</code> constructor for the products router. Remove the per-route <code>Depends</code> calls and confirm all routes are still protected.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-authenticated-orders-api">Phase 2 Capstone: Authenticated Orders API</h3>
+<p><strong>Project: ShopPH Orders — Authenticated CRUD with Database</strong></p>
+<p><strong>Application:</strong> ShopPH API</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Define an <code>Order</code> SQLAlchemy model (id, user_id, product_id, quantity, total_amount, status, created_at) with a foreign key to <code>users</code> and <code>products</code>.</li>
+<li>Write <code>OrderCreate</code>, <code>OrderResponse</code> Pydantic schemas. <code>user_id</code> is not in <code>OrderCreate</code> — it comes from the authenticated user.</li>
+<li>Implement <code>crud/order.py</code> with <code>create_order()</code>, <code>get_order()</code>, and <code>list_user_orders()</code> functions.</li>
+<li>Build <code>POST /orders</code> (creates order for current user, validates product exists and has stock), <code>GET /orders</code> (current user's orders), <code>GET /orders/{id}</code> (own order only — 403 if requesting another user's order).</li>
+<li>Apply <code>Depends(get_active_user)</code> to all order routes. Apply <code>PaginationParams</code> to <code>GET /orders</code>.</li>
+<li>Test the full flow: register → login → create product → create order → list orders → confirm total_amount is correct (<code>quantity × unit_price</code>).</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-production">Phase 3: Production</h2>
+<h3 id="weeks-5-6">Weeks 5–6 | Goal: Handle async work, harden the API, test it thoroughly, and ship it in a container</h3>
+<hr />
+
+<h3 id="module-31-background-tasks-and-async">Module 3.1 — Background Tasks &amp; Async</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Add a BackgroundTasks parameter to a route, enqueue a function that logs after a delay, and explain when to use BackgroundTasks vs. a task queue like Celery.<br>
+<strong>Skip if:</strong> You have used BackgroundTasks for post-response work, understand the difference between async I/O and background tasks, and know the limits of in-process background tasks.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+
+<h4>BackgroundTasks — fire-and-forget after response</h4>
+<p><code>BackgroundTasks</code> lets you enqueue a function to run after the HTTP response has been sent. The client gets its response immediately — the background function runs in the same process after. This is the right tool for lightweight post-response work like sending a confirmation email or writing an audit log. It is not a job queue — if the server process dies, the task is lost.</p>
+<pre><code class="language-py">import logging
+from fastapi import APIRouter, BackgroundTasks, Depends
+from sqlalchemy.orm import Session
+from database import get_db
+from dependencies import get_active_user
+from models.user import User
+from schemas.order import OrderCreate, OrderResponse
+from crud import order as crud_order
+
+router = APIRouter(prefix="/orders", tags=["Orders"])
+logger = logging.getLogger(__name__)
+
+def send_order_confirmation(order_id: int, customer_email: str) -&gt; None:
+    logger.info("Sending order confirmation for order %d to %s", order_id, customer_email)
+    # In production: call SendGrid, Mailchimp, or your SMTP service here.
+    logger.info("Confirmation sent to %s", customer_email)
+
+@router.post("/", response_model=OrderResponse, status_code=201)
+def create_order(
+    order: OrderCreate,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_active_user)
+) -&gt; OrderResponse:
+    db_order = crud_order.create_order(db, order, user_id=current_user.id)
+    background_tasks.add_task(
+        send_order_confirmation,
+        order_id=db_order.id,
+        customer_email=current_user.email
+    )
+    return db_order
+</code></pre>
+
+<h4>Async HTTP calls with httpx</h4>
+<p>When your route needs to call an external API (a payment gateway, a shipping provider), use <code>httpx.AsyncClient</code> for non-blocking HTTP. A synchronous <code>requests.get()</code> call inside an <code>async def</code> handler blocks the event loop for every concurrent request. Use <code>async with httpx.AsyncClient() as client:</code> and <code>await client.get()</code> instead.</p>
+<pre><code class="language-py">import httpx
+from fastapi import APIRouter
+
+router = APIRouter(prefix="/shipping", tags=["Shipping"])
+
+@router.get("/rates/{order_id}")
+async def get_shipping_rates(order_id: int) -&gt; dict:
+    async with httpx.AsyncClient() as client:
+        response = await client.get(
+            f"https://api.lalamove.com/v3/quotations",
+            headers={"Authorization": "Bearer YOUR_KEY"},
+            timeout=5.0
+        )
+        response.raise_for_status()
+        return response.json()
+
+# pip install httpx
+</code></pre>
+
+<p><strong>Exercise 3.1 — ShopPH Order Notifications</strong></p>
+<p>Application: ShopPH API</p>
+<ol>
+<li>Add a <code>send_order_confirmation()</code> background task to <code>POST /orders</code> as above. Run the server and confirm the log message appears after the response.</li>
+<li>Add a second background task <code>update_product_stock(db, product_id, quantity)</code> that decrements stock after an order is placed. Verify the stock decreases in the database.</li>
+<li>Add a <code>GET /shipping/rates/{order_id}</code> route using <code>httpx.AsyncClient</code>. Point it at a public mock API (e.g., <code>https://httpbin.org/get</code>) and return the response JSON.</li>
+<li>Test what happens when <code>httpx</code> times out (set <code>timeout=0.001</code>) — observe the exception and add a <code>try/except httpx.TimeoutException</code> handler that returns a 503.</li>
+<li>Add a background task that writes an audit log entry (order_id, user_id, timestamp) to a separate <code>audit_logs</code> table for every order created.</li>
+<li>Explain in a comment in the code when you would replace <code>BackgroundTasks</code> with Celery + Redis (hint: what happens when the server restarts mid-task?).</li>
+</ol>
+<hr />
+
+<h3 id="module-32-middleware-cors-and-error-handling">Module 3.2 — Middleware, CORS &amp; Error Handling</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 1.4 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Add CORSMiddleware with specific origins, write a custom @app.exception_handler for a domain exception, and write a request-timing middleware.<br>
+<strong>Skip if:</strong> You can configure CORS, write custom exception handlers, and add middleware to FastAPI.<br>
+<strong>Unlocks:</strong> Module 3.4, Phase 3 Capstone</p>
+</blockquote>
+
+<h4>CORS — allowing a frontend to call the API</h4>
+<p>Browsers block cross-origin requests by default. <code>CORSMiddleware</code> adds the HTTP headers that tell the browser the API permits calls from specific origins. Using <code>allow_origins=["*"]</code> permits every origin — acceptable during local development but never in production where user credentials are involved, because it allows any website to make authenticated requests on behalf of your users.</p>
+<pre><code class="language-py">from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "https://shopph.ph"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["Authorization", "Content-Type"]
+)
+</code></pre>
+
+<h4>Custom middleware — timing and logging</h4>
+<pre><code class="language-py">import time
+import logging
+from fastapi import Request
+from fastapi.responses import Response
+
+logger = logging.getLogger("shopph")
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next) -&gt; Response:
+    start = time.perf_counter()
+    response = await call_next(request)
+    duration_ms = (time.perf_counter() - start) * 1000
+    logger.info(
+        "%s %s %d %.1fms",
+        request.method, request.url.path,
+        response.status_code, duration_ms
+    )
+    return response
+</code></pre>
+
+<h4>Custom exception handlers</h4>
+<p>Raising <code>HTTPException</code> is correct for expected client errors (404, 401, 403). For domain exceptions — errors that belong to your business logic — define a custom exception class and register a handler. This keeps HTTP status codes out of your CRUD layer: CRUD raises <code>ProductNotFoundError</code>, the handler maps it to a 404.</p>
+<pre><code class="language-py">from fastapi import Request, status
+from fastapi.responses import JSONResponse
+
+class ProductNotFoundError(Exception):
+    def __init__(self, product_id: int):
+        self.product_id = product_id
+
+class InsufficientStockError(Exception):
+    def __init__(self, product_id: int, available: int, requested: int):
+        self.product_id = product_id
+        self.available = available
+        self.requested = requested
+
+@app.exception_handler(ProductNotFoundError)
+async def product_not_found_handler(request: Request, exc: ProductNotFoundError) -&gt; JSONResponse:
+    return JSONResponse(
+        status_code=status.HTTP_404_NOT_FOUND,
+        content={"error": "product_not_found", "product_id": exc.product_id}
+    )
+
+@app.exception_handler(InsufficientStockError)
+async def insufficient_stock_handler(request: Request, exc: InsufficientStockError) -&gt; JSONResponse:
+    return JSONResponse(
+        status_code=status.HTTP_409_CONFLICT,
+        content={
+            "error": "insufficient_stock",
+            "product_id": exc.product_id,
+            "available": exc.available,
+            "requested": exc.requested
+        }
+    )
+</code></pre>
+
+<p><strong>Exercise 3.2 — ShopPH Middleware &amp; Error Handling</strong></p>
+<p>Application: ShopPH API</p>
+<ol>
+<li>Add <code>CORSMiddleware</code> allowing <code>http://localhost:3000</code>. Open a browser console and make a <code>fetch()</code> call to your API — confirm it succeeds.</li>
+<li>Add the request-timing middleware. Make several API calls and observe the timing log in the server output.</li>
+<li>Define <code>ProductNotFoundError</code> and <code>InsufficientStockError</code>. Register exception handlers for both.</li>
+<li>Refactor <code>crud/product.py</code> to raise <code>ProductNotFoundError</code> instead of returning <code>None</code>. Update the router to remove the manual 404 check — the handler does it now.</li>
+<li>Raise <code>InsufficientStockError</code> in <code>crud/order.py</code> when an order quantity exceeds available stock. Test it by ordering more units than are in stock.</li>
+<li>Add a global exception handler for unhandled <code>Exception</code> that returns a 500 with <code>{"error": "internal_server_error"}</code> without leaking the stack trace to the client.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-testing-with-pytest-and-httpx">Module 3.3 — Testing with pytest &amp; httpx</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Write a pytest fixture that creates an isolated test database, override the get_db dependency, and write three tests covering create/read/delete for a product.<br>
+<strong>Skip if:</strong> You can write pytest fixtures that override FastAPI dependencies, isolate tests with a fresh database per test function, and test authenticated routes with mocked users.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+
+<h4>TestClient and isolated database fixture</h4>
+<p>FastAPI's <code>TestClient</code> runs the full application stack synchronously in tests — no running server needed. The critical pattern is overriding <code>get_db</code> with a test database dependency. Without isolation, tests share state and fail depending on execution order — the hardest kind of test bug to diagnose.</p>
+<pre><code class="language-py"># tests/conftest.py
+import pytest
+from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from database import Base, get_db
+from main import app
+
+TEST_DB_URL = "sqlite:///./test_shopph.db"
+test_engine = create_engine(TEST_DB_URL, connect_args={"check_same_thread": False})
+TestSession = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
+
+@pytest.fixture(scope="function")
+def db():
+    Base.metadata.create_all(bind=test_engine)
+    session = TestSession()
+    try:
+        yield session
+    finally:
+        session.close()
+        Base.metadata.drop_all(bind=test_engine)
+
+@pytest.fixture(scope="function")
+def client(db):
+    def override_get_db():
+        try:
+            yield db
+        finally:
+            pass
+    app.dependency_overrides[get_db] = override_get_db
+    with TestClient(app) as c:
+        yield c
+    app.dependency_overrides.clear()
+</code></pre>
+
+<h4>Writing product tests</h4>
+<pre><code class="language-py"># tests/test_products.py
+def test_create_product(client):
+    response = client.post("/products", json={
+        "name": "Wireless Earbuds",
+        "price": 1299.0,
+        "category": "electronics",
+        "stock": 50,
+        "cost_price": 600.0
+    })
+    assert response.status_code == 201
+    data = response.json()
+    assert data["name"] == "Wireless Earbuds"
+    assert data["price"] == 1299.0
+    assert "cost_price" not in data
+
+def test_get_nonexistent_product(client):
+    response = client.get("/products/99999")
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Product not found"
+
+def test_list_products_empty(client):
+    response = client.get("/products")
+    assert response.status_code == 200
+    assert response.json() == []
+
+def test_update_product_price(client):
+    create = client.post("/products", json={
+        "name": "Laptop", "price": 45000.0,
+        "category": "electronics", "stock": 5, "cost_price": 30000.0
+    })
+    product_id = create.json()["id"]
+    update = client.put(f"/products/{product_id}", json={"price": 42000.0})
+    assert update.status_code == 200
+    assert update.json()["price"] == 42000.0
+
+def test_delete_product(client):
+    create = client.post("/products", json={
+        "name": "Headphones", "price": 2500.0,
+        "category": "electronics", "stock": 10, "cost_price": 1200.0
+    })
+    product_id = create.json()["id"]
+    delete = client.delete(f"/products/{product_id}")
+    assert delete.status_code == 204
+    get = client.get(f"/products/{product_id}")
+    assert get.status_code == 404
+</code></pre>
+
+<p><strong>Exercise 3.3 — ShopPH Test Suite</strong></p>
+<p>Application: ShopPH API</p>
+<ol>
+<li>Set up <code>tests/conftest.py</code> with the database fixture above. Run <code>pytest -v</code> and confirm the isolation works (each test gets a fresh database).</li>
+<li>Write the five product tests above. Run them and confirm all pass.</li>
+<li>Add an auth fixture that registers a user and returns a <code>TestClient</code> with the <code>Authorization: Bearer &lt;token&gt;</code> header pre-set.</li>
+<li>Write two order tests: one that creates an order successfully, and one that triggers <code>InsufficientStockError</code> by ordering more than available stock.</li>
+<li>Write a test that confirms <code>cost_price</code> is never present in any product response (not just create — also GET and list).</li>
+<li>Run <code>pytest --cov=. --cov-report=term-missing</code> (install <code>pytest-cov</code>). Identify uncovered lines and add tests for at least two of them.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-deployment-with-uvicorn-and-docker">Module 3.4 — Deployment with Uvicorn &amp; Docker</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 3.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Write a Dockerfile for the ShopPH API, build and run the image, and explain what --workers does in a production uvicorn command.<br>
+<strong>Skip if:</strong> You have containerized a FastAPI app with Docker, use pydantic-settings for environment config, and have run uvicorn with multiple workers.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+
+<h4>Environment config with pydantic-settings</h4>
+<p>Hard-coded secrets in code become a security incident when the repository is accidentally public. <code>pydantic-settings</code> reads from environment variables and validates types at startup — a missing <code>SECRET_KEY</code> fails immediately with a clear error, not silently at the first token operation.</p>
+<pre><code class="language-py"># config.py
+from pydantic_settings import BaseSettings
+from typing import List
+
+class Settings(BaseSettings):
+    database_url: str
+    secret_key: str
+    access_token_expire_minutes: int = 30
+    allowed_origins: List[str] = ["http://localhost:3000"]
+    debug: bool = False
+
+    model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
+
+settings = Settings()
+</code></pre>
+
+<h4>Dockerfile</h4>
+<pre><code class="language-dockerfile">FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]</code></pre>
+<pre><code class="language-bash">docker build -t shopph-api .
+docker run -p 8000:8000 --env-file .env shopph-api</code></pre>
+
+<h4>Production requirements.txt</h4>
+<pre><code class="language-bash">fastapi==0.111.0
+uvicorn[standard]==0.29.0
+sqlalchemy==2.0.30
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+pydantic[email]==2.7.1
+pydantic-settings==2.2.1
+httpx==0.27.0</code></pre>
+<p>Pin exact versions in production. <code>uvicorn[standard]</code> includes <code>httptools</code> and <code>uvloop</code> for higher throughput. The <code>--workers</code> flag spawns multiple worker processes — use 2× CPU count as a starting rule. Running more workers than CPUs wastes memory without adding throughput.</p>
+
+<p><strong>Exercise 3.4 — ShopPH Docker Deployment</strong></p>
+<p>Application: ShopPH API</p>
+<ol>
+<li>Create <code>config.py</code> with <code>Settings</code> as above. Replace all hard-coded values in <code>auth.py</code> and <code>database.py</code> with <code>settings.database_url</code> and <code>settings.secret_key</code>.</li>
+<li>Create a <code>.env</code> file with <code>DATABASE_URL=sqlite:///./shopph.db</code> and <code>SECRET_KEY=dev-secret-key-change-this</code>.</li>
+<li>Write the Dockerfile. Build the image: <code>docker build -t shopph-api .</code>. Run it: <code>docker run -p 8000:8000 --env-file .env shopph-api</code>.</li>
+<li>Confirm <code>/docs</code> is accessible at <code>http://localhost:8000/docs</code> from the running container.</li>
+<li>Add a <code>.dockerignore</code> file excluding <code>.env</code>, <code>*.db</code>, <code>__pycache__</code>, and <code>.git</code>. Rebuild and confirm the image size decreases.</li>
+<li>Add a <code>GET /config</code> route that returns <code>{"debug": settings.debug, "workers": "configured"}</code> — but only when <code>settings.debug</code> is True. Confirm it returns 404 in production mode.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-production-ready-shopph-api">Phase 3 Capstone: Production-Ready ShopPH API</h3>
+<p><strong>Project: Hardened, Tested, and Containerized ShopPH API</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) when to use BackgroundTasks vs. a task queue, (2) why allow_origins=["*"] is dangerous with allow_credentials=True, and (3) what --workers does and how to pick the right count? If any draws a blank, re-read that module first.</p></blockquote>
+<p><strong>Application:</strong> ShopPH API</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Replace all hard-coded config with <code>pydantic-settings</code>. Secret key, DB URL, and allowed origins all come from environment variables.</li>
+<li>Add <code>CORSMiddleware</code> using <code>settings.allowed_origins</code>. Add request-timing middleware. Register exception handlers for all custom domain exceptions.</li>
+<li>Enqueue an order confirmation background task and a stock-decrement background task on every <code>POST /orders</code>.</li>
+<li>Write a test suite with at least 10 tests covering: product CRUD, auth register/login, order creation, insufficient stock error, and response_model field filtering.</li>
+<li>Write the Dockerfile and confirm the image builds and serves the API on port 8000 from a container.</li>
+<li>Run the full test suite against the containerized app using the test database and confirm all tests pass.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-fastapi">Final Capstone: The Complete ShopPH Platform</h2>
+<p><strong>Project: Production-Grade ShopPH API — All Features Integrated</strong></p>
+<p>Integrates all three phases. Builds the full ShopPH API from scratch using every concept in the guide.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Full user auth flow: register, login (JWT), <code>GET /users/me</code>, change password (<code>PUT /users/me/password</code>).</li>
+<li>Full product catalog: CRUD with pagination, category filtering, soft delete, and <code>cost_price</code> hidden from all responses.</li>
+<li>Full order flow: create order (validates stock, decrements on create), list own orders (paginated), cancel order (sets status to "cancelled", restores stock in a background task).</li>
+<li>Middleware stack: CORS with environment-driven origins, request-timing logger, and a global unhandled-exception handler that returns a sanitized 500.</li>
+<li>Custom exception hierarchy: <code>ProductNotFoundError</code>, <code>InsufficientStockError</code>, <code>OrderNotFoundError</code>, <code>UnauthorizedOrderAccessError</code> — all wired to exception handlers.</li>
+<li>Test suite with at least 15 tests covering happy paths, error paths, auth-protected routes (via <code>dependency_overrides</code>), and response schema field filtering.</li>
+<li>Dockerfile, <code>.dockerignore</code>, and a <code>docker-compose.yml</code> that runs the API with a PostgreSQL database instead of SQLite.</li>
+<li>A <code>README.md</code> documenting how to run locally, how to run tests, how to build and run the Docker image, and a table of all endpoints with their HTTP method, path, auth requirement, and a one-line description.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: FastAPI Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Decorator</th><th>Notes</th></tr>
+<tr><td>Define a route</td><td><code>@app.get/post/put/delete("/path")</code></td><td>Use <code>APIRouter</code> for multi-file organization</td></tr>
+<tr><td>Path parameter</td><td><code>param: int = Path(ge=1)</code></td><td>Declared in both path string and function signature</td></tr>
+<tr><td>Query parameter</td><td><code>param: Optional[str] = Query(None)</code></td><td>Any param not in the path template is a query param</td></tr>
+<tr><td>Request body</td><td><code>body: MyModel</code> (Pydantic parameter)</td><td>FastAPI infers body from Pydantic model type hint</td></tr>
+<tr><td>Filter response fields</td><td><code>response_model=ResponseSchema</code></td><td>Drops fields not on the response model — not an auth guard</td></tr>
+<tr><td>Set status code</td><td><code>status_code=201</code> on route decorator</td><td>Default is 200; use 201 for create, 204 for delete</td></tr>
+<tr><td>Return a 4xx error</td><td><code>raise HTTPException(status_code=404)</code></td><td>Use custom exceptions + handlers for domain errors</td></tr>
+<tr><td>Group routes</td><td><code>APIRouter(prefix="/x", tags=["X"])</code></td><td>Register with <code>app.include_router(router)</code></td></tr>
+<tr><td>Inject a dependency</td><td><code>param = Depends(fn)</code></td><td>fn is called before handler; return value is injected</td></tr>
+<tr><td>Database session</td><td><code>db: Session = Depends(get_db)</code></td><td>get_db yields and closes in finally block</td></tr>
+<tr><td>Protect a route</td><td><code>user = Depends(get_current_user)</code></td><td>Raises 401 automatically if token is missing or invalid</td></tr>
+<tr><td>Post-response work</td><td><code>background_tasks.add_task(fn, *args)</code></td><td>Runs after response; not durable — use Celery for reliability</td></tr>
+<tr><td>Add CORS</td><td><code>app.add_middleware(CORSMiddleware, ...)</code></td><td>Never use allow_origins=["*"] with allow_credentials=True</td></tr>
+<tr><td>Test override</td><td><code>app.dependency_overrides[dep] = mock</code></td><td>Clear overrides after test with <code>app.dependency_overrides.clear()</code></td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+<h3 id="glossary-core-concepts">Core Concepts</h3>
+<dl class="glossary">
+<dt>ASGI</dt>
+<dd>Asynchronous Server Gateway Interface — the Python async web server standard that FastAPI is built on. It is the async successor to WSGI (used by Flask and Django).</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing ASGI (the interface standard) with Uvicorn (an ASGI server implementation). FastAPI requires an ASGI server to run; Uvicorn is the most common choice.</dd>
+<dt>path operation</dt>
+<dd>FastAPI's term for a route decorated with <code>@app.get()</code>, <code>@app.post()</code>, etc. — the combination of an HTTP method and a URL path that maps to a Python function.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "endpoint", "route", "view" — all mean the same thing across different frameworks. This guide uses "route" for brevity, but the FastAPI docs say "path operation."</dd>
+<dt>Uvicorn</dt>
+<dd>An ASGI server that runs FastAPI applications; it listens for HTTP connections and passes requests to the FastAPI app.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing Uvicorn with FastAPI — FastAPI defines the routes and logic; Uvicorn serves them. You need both.</dd>
+<dt>OpenAPI</dt>
+<dd>A language-agnostic specification for describing REST APIs; FastAPI generates an OpenAPI document automatically at <code>/openapi.json</code> from your route definitions.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Swagger" as a synonym for the specification — Swagger is the tool that renders OpenAPI docs (at <code>/docs</code>); OpenAPI is the spec format itself.</dd>
+</dl>
+<h3 id="glossary-routing-and-requests">Routing &amp; Requests</h3>
+<dl class="glossary">
+<dt>path parameter</dt>
+<dd>A variable embedded in the URL path, declared as <code>{name}</code> in the route string and as a matching function argument; FastAPI validates and converts its type before calling the handler.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "URL parameter" — ambiguous, since query parameters are also in the URL. Use "path parameter" for <code>/products/{id}</code> and "query parameter" for <code>/products?page=2</code>.</dd>
+<dt>query parameter</dt>
+<dd>A key-value pair in the URL after <code>?</code>; any function parameter not in the path template and not a Pydantic model becomes a query parameter in FastAPI.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "GET parameter" — query parameters appear on any HTTP method, not just GET.</dd>
+<dt>request body</dt>
+<dd>The JSON payload sent by the client in POST, PUT, or PATCH requests; in FastAPI, declared by typing a parameter as a Pydantic model.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "form data" unless using <code>Form()</code> — JSON bodies and form data are different encodings and use different FastAPI declarations.</dd>
+<dt>response_model</dt>
+<dd>A route parameter that names the Pydantic model FastAPI uses to serialize and filter the handler's return value before sending it to the client.</dd>
+<dd class="avoid"><strong>Avoid:</strong> treating response_model as an authorization mechanism — it shapes output; it does not restrict who can call the route.</dd>
+</dl>
+<h3 id="glossary-auth-and-data">Auth &amp; Data</h3>
+<dl class="glossary">
+<dt>JWT (JSON Web Token)</dt>
+<dd>A compact, self-contained token that encodes a payload (e.g., the user's email) and a signature; the server validates the signature without a database lookup, making it stateless.</dd>
+<dd class="avoid"><strong>Avoid:</strong> calling it a "session token" — a session token requires server-side state; a JWT does not. They solve the same problem differently.</dd>
+<dt>OAuth2PasswordBearer</dt>
+<dd>A FastAPI security utility that extracts a Bearer token from the <code>Authorization</code> header and makes it available as a dependency parameter; it does not validate the token — that is your code's job.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing OAuth2PasswordBearer with a full OAuth2 implementation — it only handles token extraction, not the full OAuth2 protocol.</dd>
+<dt>Depends()</dt>
+<dd>A FastAPI function that declares a dependency: FastAPI calls the named function before the route handler and injects its return value as the parameter's value.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "middleware" as a synonym — middleware wraps every request; <code>Depends()</code> is route-specific and composable.</dd>
+<dt>dependency_overrides</dt>
+<dd>A dict on the FastAPI app instance that maps a dependency function to a replacement; used in tests to swap real implementations (like <code>get_db</code>) with test-isolated versions.</dd>
+<dd class="avoid"><strong>Avoid:</strong> leaving overrides set between tests — always call <code>app.dependency_overrides.clear()</code> in test teardown or the override leaks into subsequent tests.</dd>
+<dt>soft delete</dt>
+<dd>A deletion pattern where a record is marked inactive (e.g., <code>is_active = False</code>) rather than physically removed from the database, preserving audit history and foreign key integrity.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "logical delete" — same concept, but "soft delete" is the dominant term in Python/SQLAlchemy documentation.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>FastAPI — Sebastian Ramirez (official tutorial)</td><td>The canonical reference; covers every feature with complete examples</td></tr>
+<tr><td>Architecture Patterns with Python — Percival &amp; Gregory</td><td>Applying clean architecture (CRUD separation, dependency injection) to Python APIs</td></tr>
+<tr><td>Building Data Science Applications with FastAPI — Voron</td><td>FastAPI for ML pipelines, async tasks, and data-heavy workloads</td></tr>
+<tr><td>Python Concurrency with asyncio — Fowler</td><td>Deep dive into async/await foundations underlying FastAPI performance</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>fastapi.tiangolo.com</td><td>Official FastAPI documentation</td><td>The best starting point; the tutorial section alone covers Phases 1–2</td></tr>
+<tr><td>testdriven.io — FastAPI courses</td><td>FastAPI + Docker + testing in production</td><td>Paid; covers async SQLAlchemy, pytest patterns, and CI/CD</td></tr>
+<tr><td>sqlalchemy.org/en/20/</td><td>SQLAlchemy 2.0 documentation</td><td>Required reading for the ORM patterns used in Phase 2</td></tr>
+<tr><td>Real Python — FastAPI guides</td><td>Beginner-friendly FastAPI walkthroughs</td><td>Good for visual learners; all code is runnable</td></tr>
+<tr><td>python-jose readthedocs.io</td><td>JWT encoding/decoding library</td><td>Reference for the JWT functions used in Module 2.3</td></tr>
+<tr><td>docs.docker.com/guides/python/</td><td>Containerizing Python apps</td><td>Official guide covering the Dockerfile patterns in Module 3.4</td></tr>
+</table>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>httpbin.org</td><td>Test async httpx calls — returns request data as JSON</td></tr>
+<tr><td>DB Browser for SQLite</td><td>Inspect the local SQLite database during development</td></tr>
+<tr><td>Postman / Bruno</td><td>Manual API testing with saved collections and auth flows</td></tr>
+<tr><td>pytest-cov</td><td>Measure test coverage for the ShopPH API test suite</td></tr>
+<tr><td>Faker (pip install faker)</td><td>Generate realistic product names, emails, and prices for test fixtures</td></tr>
+</table>
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>FastAPI Discord (official)</td><td>Discord</td><td>Fast answers from maintainers and experienced users; check #help before posting</td></tr>
+<tr><td>r/FastAPI</td><td>Reddit</td><td>Architecture questions, real-world patterns, and production war stories</td></tr>
+<tr><td>Stack Overflow — tag: fastapi</td><td>Stack Overflow</td><td>Canonical Q&amp;A archive; most common patterns are already answered</td></tr>
+<tr><td>GitHub — tiangolo/fastapi issues</td><td>GitHub</td><td>Bug reports and deeper framework behavior questions answered by the author</td></tr>
+<tr><td>Python Discord — #web-frameworks</td><td>Discord</td><td>Broader Python web ecosystem discussion; good for comparing FastAPI with other options</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is session-only and resets on reload.</p></blockquote>
+<h4>Phase 1 — Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — FastAPI Basics: Your First Endpoint</li>
+<li>[ ] Exercise 1.1 — ShopPH API First Run</li>
+<li>[ ] Module 1.2 — Path, Query &amp; Body Parameters</li>
+<li>[ ] Exercise 1.2 — ShopPH Endpoint Parameters</li>
+<li>[ ] Module 1.3 — Pydantic Request &amp; Response Schemas</li>
+<li>[ ] Exercise 1.3 — ShopPH Schemas</li>
+<li>[ ] Module 1.4 — Routers &amp; Application Structure</li>
+<li>[ ] Exercise 1.4 — Restructure ShopPH</li>
+<li>[ ] Capstone 1 — Products API with In-Memory Store</li>
+</ul>
+<h4>Phase 2 — Data &amp; Auth</h4>
+<ul>
+<li>[ ] Module 2.1 — Database Integration with SQLAlchemy</li>
+<li>[ ] Exercise 2.1 — ShopPH Database Setup</li>
+<li>[ ] Module 2.2 — CRUD Operations</li>
+<li>[ ] Exercise 2.2 — ShopPH CRUD Endpoints</li>
+<li>[ ] Module 2.3 — JWT Authentication &amp; Security</li>
+<li>[ ] Exercise 2.3 — ShopPH Auth</li>
+<li>[ ] Module 2.4 — Dependencies &amp; Dependency Injection</li>
+<li>[ ] Exercise 2.4 — Reusable ShopPH Dependencies</li>
+<li>[ ] Capstone 2 — Authenticated Orders API</li>
+</ul>
+<h4>Phase 3 — Production</h4>
+<ul>
+<li>[ ] Module 3.1 — Background Tasks &amp; Async</li>
+<li>[ ] Exercise 3.1 — ShopPH Order Notifications</li>
+<li>[ ] Module 3.2 — Middleware, CORS &amp; Error Handling</li>
+<li>[ ] Exercise 3.2 — ShopPH Middleware &amp; Error Handling</li>
+<li>[ ] Module 3.3 — Testing with pytest &amp; httpx</li>
+<li>[ ] Exercise 3.3 — ShopPH Test Suite</li>
+<li>[ ] Module 3.4 — Deployment with Uvicorn &amp; Docker</li>
+<li>[ ] Exercise 3.4 — ShopPH Docker Deployment</li>
+<li>[ ] Capstone 3 — Production-Ready ShopPH API</li>
+</ul>
+<h4>Final Milestone</h4>
+<ul>
+<li>[ ] Final Capstone — The Complete ShopPH Platform</li>
+<li>[ ] 15+ tests passing</li>
+<li>[ ] Docker image builds and serves /docs</li>
+<li>[ ] README.md with endpoint table complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 — FastAPI Track: Beginner to Intermediate</em><br>
+<em>Non-linear modular design · Placement quiz · 12 modules · ~6 weeks part-time · hayah-ai</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>
