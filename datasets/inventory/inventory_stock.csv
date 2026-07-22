@@ -1,0 +1,1721 @@
+Product ID,Product Name,Category,Sub-Category,Warehouse,Supplier ID,Unit Cost,Lead Time Days,Avg Daily Demand,Safety Stock,Reorder Point,Beginning Stock,Current Stock,Last Restock Date
+OFF-PA-1000,Boise Paper,Office Supplies,Paper,West DC,SUP-109,14.41,3,23.89,119,191,1271,1326,2025-12-22
+OFF-LA-1001,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-112,29.43,6,26.75,374,534,1235,798,2025-11-24
+TEC-PH-1002,Apple iPhone,Technology,Phones,East DC,SUP-107,416.54,15,4.96,55,129,337,329,2025-12-01
+FUR-BO-1003,Sauder Bookcase,Furniture,Bookcases,Central DC,SUP-103,269.12,3,2.23,25,32,139,142,2025-11-24
+TEC-CO-1004,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-113,297.26,11,15.83,206,380,939,1155,2025-12-01
+OFF-PA-1005,Boise Paper,Office Supplies,Paper,West DC,SUP-107,28.49,15,6.15,37,129,319,244,2025-11-24
+TEC-CO-1006,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-109,201.86,3,10.78,75,107,803,366,2025-12-01
+OFF-ST-1007,Iris File Box,Office Supplies,Storage,South DC,SUP-100,16.09,19,12.05,133,362,644,262,2025-12-01
+OFF-PA-1008,HP Paper Ream,Office Supplies,Paper,South DC,SUP-107,21.13,15,22.92,206,550,1151,1222,2025-12-22
+TEC-AC-1009,Kensington Keyboard,Technology,Accessories,East DC,SUP-114,551.46,17,4.24,42,114,217,283,2025-11-10
+TEC-AC-1010,SanDisk Flash Drive,Technology,Accessories,West DC,SUP-111,218.06,12,10.44,63,188,673,572,2025-12-22
+TEC-CO-1011,Canon Copier,Technology,Copiers,South DC,SUP-110,420.14,14,5.63,34,113,315,444,2025-12-08
+FUR-TA-1012,Bretford Conference Table,Furniture,Tables,South DC,SUP-113,225.75,8,3.58,36,65,195,114,2025-12-08
+TEC-AC-1013,SanDisk Flash Drive,Technology,Accessories,East DC,SUP-109,378.75,5,16.56,199,282,932,177,2025-10-13
+TEC-MA-1014,Lexmark Printer,Technology,Machines,West DC,SUP-107,460.76,18,1.91,19,53,97,22,2025-11-17
+OFF-ST-1015,Fellowes Storage Box,Office Supplies,Storage,West DC,SUP-106,21.27,9,13.24,79,198,919,978,2025-12-22
+TEC-AC-1016,Kensington Keyboard,Technology,Accessories,East DC,SUP-110,497.43,17,4.56,27,105,288,191,2025-11-03
+TEC-MA-1017,Cubify 3D Printer,Technology,Machines,Central DC,SUP-104,571.22,3,3.16,22,31,166,27,2025-11-10
+TEC-CO-1018,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-112,340.75,6,6.7,67,107,467,288,2025-12-15
+FUR-FU-1019,Eldon Desk Lamp,Furniture,Furnishings,East DC,SUP-102,227.74,14,1.0,12,26,67,51,2025-11-03
+FUR-BO-1020,O'Sullivan Bookcase,Furniture,Bookcases,South DC,SUP-107,123.28,16,1.39,19,41,77,89,2025-12-22
+OFF-AR-1021,Sharpie Markers,Office Supplies,Art,West DC,SUP-101,21.05,5,6.92,62,97,386,105,2025-11-24
+FUR-FU-1022,Advantus Task Lamp,Furniture,Furnishings,South DC,SUP-111,137.77,9,1.71,9,24,96,71,2025-11-10
+FUR-TA-1023,Bretford Conference Table,Furniture,Tables,East DC,SUP-107,136.94,17,1.05,13,31,63,50,2025-12-08
+OFF-AR-1024,Sharpie Markers,Office Supplies,Art,East DC,SUP-113,23.81,8,15.2,106,228,704,455,2025-10-27
+FUR-FU-1025,Tenex Chairmat,Furniture,Furnishings,East DC,SUP-103,138.26,6,5.43,27,60,342,144,2025-10-20
+OFF-ST-1026,SimpleHouseware Bin,Office Supplies,Storage,West DC,SUP-103,15.02,6,2.72,24,40,152,73,2025-10-13
+OFF-ST-1027,Fellowes Storage Box,Office Supplies,Storage,West DC,SUP-111,17.21,12,38.63,464,928,2477,958,2025-11-10
+OFF-AR-1028,Newell Highlighters,Office Supplies,Art,Central DC,SUP-103,17.79,3,23.32,117,187,1684,1743,2025-12-08
+OFF-ST-1029,Fellowes Storage Box,Office Supplies,Storage,East DC,SUP-106,25.27,10,15.28,122,275,1090,1000,2025-12-22
+OFF-BI-1030,GBC Binding System,Office Supplies,Binders,South DC,SUP-105,27.76,18,0.78,7,21,41,29,2025-10-27
+FUR-CH-1031,Global Task Chair,Furniture,Chairs,East DC,SUP-104,255.65,2,3.28,16,23,241,99,2025-11-24
+OFF-AR-1032,Sharpie Markers,Office Supplies,Art,South DC,SUP-107,17.24,14,30.33,425,850,1794,844,2025-12-01
+TEC-CO-1033,Hewlett Packard Copier,Technology,Copiers,South DC,SUP-114,402.18,15,15.45,154,386,932,1185,2025-12-22
+OFF-AR-1034,Bic Pens,Office Supplies,Art,East DC,SUP-104,8.65,3,24.29,267,340,1487,816,2025-12-08
+OFF-ST-1035,Iris File Box,Office Supplies,Storage,South DC,SUP-100,20.7,19,31.95,351,958,1986,447,2025-11-17
+FUR-FU-1036,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-104,343.44,3,1.81,9,14,92,12,2025-11-17
+TEC-AC-1037,Logitech Mouse,Technology,Accessories,East DC,SUP-104,175.89,4,0.49,4,6,32,22,2025-12-08
+OFF-LA-1038,Avery Labels,Office Supplies,Labels,South DC,SUP-108,20.77,7,12.46,174,261,703,648,2025-12-22
+FUR-TA-1039,Chromcraft Round Table,Furniture,Tables,South DC,SUP-108,133.11,10,1.77,18,36,95,84,2025-12-22
+TEC-CO-1040,Canon Copier,Technology,Copiers,East DC,SUP-113,234.98,10,14.08,99,240,892,285,2025-12-01
+TEC-AC-1041,Logitech Mouse,Technology,Accessories,Central DC,SUP-111,210.54,9,16.51,132,281,748,814,2025-12-22
+OFF-AR-1042,Sharpie Markers,Office Supplies,Art,East DC,SUP-107,21.47,15,14.44,202,419,944,561,2025-11-03
+TEC-CO-1043,Canon Copier,Technology,Copiers,South DC,SUP-109,510.34,4,5.54,78,100,260,100,2025-11-10
+TEC-CO-1044,Hewlett Packard Copier,Technology,Copiers,Central DC,SUP-113,199.88,8,6.29,44,94,357,64,2025-11-24
+OFF-ST-1045,SimpleHouseware Bin,Office Supplies,Storage,South DC,SUP-106,16.21,9,34.66,243,555,2015,1376,2025-12-08
+OFF-LA-1046,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-113,30.5,10,11.91,119,238,565,710,2025-12-08
+TEC-AC-1047,Kensington Keyboard,Technology,Accessories,West DC,SUP-103,387.67,3,15.0,135,180,1070,1113,2025-12-01
+OFF-ST-1048,SimpleHouseware Bin,Office Supplies,Storage,East DC,SUP-102,17.7,15,8.37,109,235,457,281,2025-11-10
+OFF-ST-1049,Iris File Box,Office Supplies,Storage,West DC,SUP-105,7.94,21,13.4,67,348,889,236,2025-11-24
+OFF-PA-1050,Boise Paper,Office Supplies,Paper,South DC,SUP-113,10.81,11,21.51,151,388,1059,534,2025-12-08
+FUR-CH-1051,HON Executive Chair,Furniture,Chairs,Central DC,SUP-105,200.64,19,1.77,9,43,118,42,2025-12-08
+OFF-LA-1052,Avery Labels,Office Supplies,Labels,Central DC,SUP-114,29.76,15,11.21,90,258,521,203,2025-12-01
+OFF-LA-1053,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-114,19.51,14,44.37,222,843,3244,2466,2025-12-01
+OFF-ST-1054,Iris File Box,Office Supplies,Storage,Central DC,SUP-107,28.32,14,7.87,71,181,406,170,2025-10-20
+OFF-PA-1055,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-113,27.39,8,3.21,16,42,201,195,2025-12-15
+OFF-PA-1056,HP Paper Ream,Office Supplies,Paper,East DC,SUP-106,15.61,12,43.53,522,1044,2138,2060,2025-11-10
+OFF-PA-1057,Xerox Paper Ream,Office Supplies,Paper,Central DC,SUP-114,25.93,16,33.5,201,737,2183,2298,2025-11-24
+FUR-FU-1058,Advantus Task Lamp,Furniture,Furnishings,East DC,SUP-107,93.48,15,2.79,22,64,189,84,2025-11-24
+FUR-FU-1059,Eldon Desk Lamp,Furniture,Furnishings,South DC,SUP-101,138.63,4,1.68,17,24,114,116,2025-12-22
+OFF-ST-1060,Iris File Box,Office Supplies,Storage,Central DC,SUP-105,9.23,21,38.94,273,1091,2186,1761,2025-12-15
+OFF-ST-1061,Iris File Box,Office Supplies,Storage,Central DC,SUP-103,19.42,7,8.39,42,101,567,165,2025-12-01
+OFF-AR-1062,Newell Highlighters,Office Supplies,Art,West DC,SUP-100,26.98,19,13.56,68,326,832,428,2025-12-01
+FUR-FU-1063,Advantus Task Lamp,Furniture,Furnishings,South DC,SUP-110,300.57,15,1.21,7,25,88,19,2025-10-27
+OFF-AR-1064,Sharpie Markers,Office Supplies,Art,East DC,SUP-112,9.85,7,21.85,218,371,1097,349,2025-11-10
+TEC-PH-1065,Cisco IP Phone,Technology,Phones,Central DC,SUP-104,430.42,5,2.91,38,53,156,67,2025-10-27
+TEC-CO-1066,Canon Copier,Technology,Copiers,West DC,SUP-104,288.46,5,9.84,89,138,723,239,2025-12-08
+OFF-LA-1067,Avery Labels,Office Supplies,Labels,Central DC,SUP-108,10.12,7,15.48,170,278,810,351,2025-11-24
+OFF-PA-1068,Boise Paper,Office Supplies,Paper,East DC,SUP-109,14.51,2,17.66,212,247,1153,337,2025-11-10
+FUR-TA-1069,Bush Somerset Table,Furniture,Tables,South DC,SUP-111,157.6,9,0.93,7,15,55,30,2025-12-01
+OFF-LA-1070,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-108,12.61,10,35.8,430,788,1938,600,2025-10-13
+TEC-AC-1071,Kensington Keyboard,Technology,Accessories,South DC,SUP-106,130.33,12,34.75,486,903,1569,1284,2025-11-17
+TEC-MA-1072,Lexmark Printer,Technology,Machines,West DC,SUP-113,378.84,10,2.17,22,44,146,226,2025-12-22
+OFF-ST-1073,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-106,11.94,8,10.58,85,170,767,548,2025-12-22
+OFF-PA-1074,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-112,8.74,5,17.63,176,264,1169,381,2025-11-24
+OFF-BI-1075,Avery Binder,Office Supplies,Binders,Central DC,SUP-103,19.37,5,11.82,59,118,572,36,2025-11-17
+TEC-PH-1076,Samsung Galaxy,Technology,Phones,Central DC,SUP-106,174.17,8,4.47,54,90,251,183,2025-12-15
+TEC-PH-1077,Samsung Galaxy,Technology,Phones,West DC,SUP-113,320.07,9,5.12,56,102,256,332,2025-12-08
+OFF-ST-1078,Iris File Box,Office Supplies,Storage,East DC,SUP-111,23.55,12,6.83,61,143,497,75,2025-10-27
+TEC-PH-1079,Apple iPhone,Technology,Phones,West DC,SUP-109,332.96,4,8.03,56,88,471,466,2025-12-08
+FUR-BO-1080,Sauder Bookcase,Furniture,Bookcases,West DC,SUP-111,143.65,11,0.53,4,10,41,25,2025-12-15
+FUR-BO-1081,Sauder Bookcase,Furniture,Bookcases,East DC,SUP-111,233.88,10,0.36,4,8,29,11,2025-10-13
+TEC-CO-1082,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-109,511.4,5,12.62,151,214,712,143,2025-10-20
+OFF-AR-1083,Newell Highlighters,Office Supplies,Art,Central DC,SUP-113,16.34,9,10.65,96,192,506,585,2025-12-15
+OFF-LA-1084,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-109,25.14,5,12.51,113,176,656,529,2025-12-22
+TEC-MA-1085,Lexmark Printer,Technology,Machines,Central DC,SUP-102,191.17,13,4.57,50,109,302,120,2025-12-01
+TEC-AC-1086,Kensington Keyboard,Technology,Accessories,South DC,SUP-106,502.76,9,2.95,35,62,223,192,2025-12-01
+TEC-MA-1087,Lexmark Printer,Technology,Machines,South DC,SUP-104,189.78,3,7.54,45,68,563,269,2025-12-08
+OFF-ST-1088,SimpleHouseware Bin,Office Supplies,Storage,South DC,SUP-107,12.08,18,51.32,565,1489,3443,754,2025-10-27
+FUR-TA-1089,Bush Somerset Table,Furniture,Tables,West DC,SUP-105,240.29,22,3.4,27,102,172,98,2025-12-01
+FUR-CH-1090,Global Task Chair,Furniture,Chairs,South DC,SUP-106,263.23,12,2.93,18,53,137,131,2025-11-03
+OFF-AR-1091,Newell Highlighters,Office Supplies,Art,West DC,SUP-104,22.27,2,14.34,158,187,1037,550,2025-11-03
+OFF-LA-1092,Avery Labels,Office Supplies,Labels,South DC,SUP-112,22.34,6,9.66,77,135,546,625,2025-12-22
+OFF-PA-1093,HP Paper Ream,Office Supplies,Paper,South DC,SUP-113,19.7,9,11.65,82,187,809,170,2025-11-24
+OFF-ST-1094,Iris File Box,Office Supplies,Storage,West DC,SUP-104,12.74,2,17.4,174,209,1136,364,2025-12-01
+TEC-CO-1095,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-113,498.61,9,2.74,16,41,194,53,2025-11-10
+OFF-BI-1096,GBC Binding System,Office Supplies,Binders,West DC,SUP-101,7.95,2,2.39,22,27,144,183,2025-12-15
+FUR-BO-1097,Bush Cubix Bookcase,Furniture,Bookcases,Central DC,SUP-103,178.4,3,1.39,17,21,91,57,2025-12-22
+OFF-ST-1098,Fellowes Storage Box,Office Supplies,Storage,West DC,SUP-111,25.07,9,3.06,21,49,228,109,2025-12-15
+TEC-AC-1099,Logitech Mouse,Technology,Accessories,South DC,SUP-104,509.35,2,4.34,35,44,296,25,2025-09-29
+TEC-CO-1100,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-109,196.81,4,1.31,13,18,72,27,2025-10-13
+FUR-FU-1101,Eldon Desk Lamp,Furniture,Furnishings,South DC,SUP-108,167.2,7,1.87,19,32,115,89,2025-12-22
+OFF-BI-1102,Wilson Jones Binder,Office Supplies,Binders,South DC,SUP-104,22.32,3,15.48,170,216,903,534,2025-12-01
+OFF-BI-1103,GBC Binding System,Office Supplies,Binders,South DC,SUP-112,8.67,5,17.71,177,266,1156,997,2025-11-10
+FUR-BO-1104,Bush Cubix Bookcase,Furniture,Bookcases,West DC,SUP-108,163.92,9,0.27,4,6,20,6,2025-11-24
+FUR-FU-1105,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-114,155.97,17,2.46,17,59,158,35,2025-11-03
+OFF-PA-1106,Boise Paper,Office Supplies,Paper,East DC,SUP-111,27.76,9,11.4,57,160,780,885,2025-12-22
+OFF-BI-1107,GBC Binding System,Office Supplies,Binders,Central DC,SUP-109,26.05,2,39.5,276,355,2296,1630,2025-12-15
+OFF-PA-1108,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-106,19.79,8,17.86,107,250,1094,1275,2025-12-22
+FUR-TA-1109,Bush Somerset Table,Furniture,Tables,East DC,SUP-111,152.99,12,5.7,40,108,398,166,2025-12-01
+OFF-BI-1110,Avery Binder,Office Supplies,Binders,West DC,SUP-101,18.77,4,7.91,103,135,464,217,2025-11-17
+OFF-PA-1111,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-103,20.68,3,28.06,140,224,2053,434,2025-12-01
+FUR-BO-1112,Sauder Bookcase,Furniture,Bookcases,West DC,SUP-103,137.39,5,1.08,14,19,65,35,2025-10-27
+FUR-FU-1113,Eldon Desk Lamp,Furniture,Furnishings,South DC,SUP-104,286.91,5,3.4,34,51,189,31,2025-10-27
+OFF-ST-1114,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-101,28.15,2,16.61,216,249,752,558,2025-10-27
+TEC-PH-1115,Apple iPhone,Technology,Phones,East DC,SUP-100,429.27,17,3.31,23,79,230,71,2025-11-17
+OFF-PA-1116,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-106,12.46,8,4.25,55,89,311,185,2025-11-24
+FUR-CH-1117,Global Task Chair,Furniture,Chairs,East DC,SUP-111,345.23,12,0.61,4,11,49,6,2025-11-03
+TEC-CO-1118,Canon Copier,Technology,Copiers,West DC,SUP-107,336.42,16,2.54,28,69,170,62,2025-11-17
+FUR-BO-1119,O'Sullivan Bookcase,Furniture,Bookcases,West DC,SUP-104,328.9,2,1.88,19,23,90,99,2025-12-01
+TEC-PH-1120,Cisco IP Phone,Technology,Phones,South DC,SUP-104,324.52,6,13.96,126,210,829,440,2025-12-15
+OFF-ST-1121,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-102,10.28,13,11.89,95,250,754,74,2025-10-27
+TEC-PH-1122,Samsung Galaxy,Technology,Phones,Central DC,SUP-110,276.35,14,3.49,24,73,179,149,2025-11-10
+TEC-PH-1123,Apple iPhone,Technology,Phones,West DC,SUP-112,421.8,6,6.75,68,108,410,142,2025-11-24
+FUR-TA-1124,Chromcraft Round Table,Furniture,Tables,South DC,SUP-112,272.99,5,3.7,33,51,238,218,2025-12-15
+FUR-BO-1125,Bush Cubix Bookcase,Furniture,Bookcases,West DC,SUP-103,306.78,7,0.63,6,10,38,63,2025-12-22
+TEC-AC-1126,SanDisk Flash Drive,Technology,Accessories,Central DC,SUP-110,305.94,16,8.02,56,184,406,173,2025-11-10
+OFF-BI-1127,GBC Binding System,Office Supplies,Binders,West DC,SUP-101,30.36,4,22.84,274,365,1535,1730,2025-12-01
+FUR-FU-1128,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-107,149.62,15,1.36,11,31,93,19,2025-11-17
+FUR-CH-1129,HON Executive Chair,Furniture,Chairs,West DC,SUP-110,105.25,14,6.09,79,164,279,175,2025-11-24
+TEC-CO-1130,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-100,224.49,19,4.73,24,114,251,21,2025-10-27
+OFF-ST-1131,Iris File Box,Office Supplies,Storage,West DC,SUP-111,16.85,13,8.85,88,203,598,148,2025-11-17
+OFF-LA-1132,Avery Labels,Office Supplies,Labels,West DC,SUP-103,22.52,4,24.93,224,324,1800,600,2025-11-10
+OFF-LA-1133,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-106,23.15,11,18.42,258,461,944,1292,2025-12-15
+FUR-TA-1134,Chromcraft Round Table,Furniture,Tables,South DC,SUP-106,330.18,9,2.78,39,64,194,43,2025-11-17
+TEC-MA-1135,Lexmark Printer,Technology,Machines,East DC,SUP-107,245.5,15,1.36,12,32,68,26,2025-10-13
+OFF-ST-1136,Iris File Box,Office Supplies,Storage,West DC,SUP-107,29.25,18,4.32,30,108,247,256,2025-12-15
+OFF-ST-1137,Fellowes Storage Box,Office Supplies,Storage,South DC,SUP-106,26.36,12,8.81,115,221,604,598,2025-12-22
+FUR-TA-1138,Chromcraft Round Table,Furniture,Tables,South DC,SUP-103,109.39,3,4.62,42,56,222,282,2025-12-22
+OFF-AR-1139,Bic Pens,Office Supplies,Art,West DC,SUP-113,28.7,9,11.58,116,220,804,637,2025-11-17
+OFF-PA-1140,HP Paper Ream,Office Supplies,Paper,South DC,SUP-110,16.06,17,17.15,120,412,1240,886,2025-12-22
+OFF-BI-1141,Avery Binder,Office Supplies,Binders,Central DC,SUP-109,27.52,4,7.77,39,70,557,366,2025-11-24
+OFF-PA-1142,Xerox Paper Ream,Office Supplies,Paper,Central DC,SUP-100,7.94,20,39.46,355,1144,2452,1712,2025-11-03
+OFF-PA-1143,HP Paper Ream,Office Supplies,Paper,East DC,SUP-106,26.41,11,12.2,159,293,847,252,2025-11-17
+OFF-LA-1144,Avery Labels,Office Supplies,Labels,South DC,SUP-113,7.53,10,45.0,360,810,2300,1435,2025-11-03
+OFF-AR-1145,Newell Highlighters,Office Supplies,Art,South DC,SUP-112,26.48,5,12.32,99,161,744,378,2025-11-24
+OFF-LA-1146,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-108,17.82,10,26.08,339,600,1648,657,2025-11-24
+FUR-CH-1147,Hbada Office Chair,Furniture,Chairs,South DC,SUP-114,103.36,15,3.44,21,73,208,156,2025-11-24
+OFF-BI-1148,Avery Binder,Office Supplies,Binders,West DC,SUP-108,9.16,9,20.49,143,327,968,602,2025-11-17
+OFF-PA-1149,HP Paper Ream,Office Supplies,Paper,West DC,SUP-111,17.23,13,12.5,150,312,805,559,2025-11-24
+OFF-LA-1150,Avery Labels,Office Supplies,Labels,South DC,SUP-111,8.77,9,12.64,101,215,827,730,2025-12-01
+OFF-BI-1151,Wilson Jones Binder,Office Supplies,Binders,South DC,SUP-108,14.52,10,4.44,27,71,329,41,2025-11-17
+TEC-MA-1152,Cubify 3D Printer,Technology,Machines,Central DC,SUP-114,513.37,17,11.17,78,268,776,746,2025-12-08
+FUR-BO-1153,O'Sullivan Bookcase,Furniture,Bookcases,Central DC,SUP-108,205.47,8,0.5,4,8,29,36,2025-11-17
+OFF-BI-1154,GBC Binding System,Office Supplies,Binders,Central DC,SUP-106,18.96,11,6.0,60,126,347,111,2025-10-13
+OFF-LA-1155,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-100,16.42,20,1.74,9,44,104,59,2025-12-15
+TEC-MA-1156,Zebra Label Printer,Technology,Machines,Central DC,SUP-105,406.6,20,13.65,96,369,660,458,2025-12-08
+OFF-ST-1157,SimpleHouseware Bin,Office Supplies,Storage,East DC,SUP-103,20.92,7,24.77,198,371,1194,930,2025-12-15
+TEC-CO-1158,Canon Copier,Technology,Copiers,Central DC,SUP-108,150.7,10,11.26,90,203,782,856,2025-12-22
+TEC-PH-1159,Apple iPhone,Technology,Phones,West DC,SUP-102,510.11,13,7.49,105,202,342,220,2025-12-01
+OFF-AR-1160,Bic Pens,Office Supplies,Art,Central DC,SUP-113,28.53,11,15.59,78,249,862,275,2025-11-17
+OFF-LA-1161,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-102,12.49,16,21.25,170,510,1195,633,2025-12-01
+TEC-CO-1162,Canon Copier,Technology,Copiers,South DC,SUP-103,468.51,6,2.51,13,28,153,70,2025-11-17
+TEC-MA-1163,Cubify 3D Printer,Technology,Machines,Central DC,SUP-109,478.31,4,2.69,13,24,145,165,2025-12-01
+TEC-AC-1164,SanDisk Flash Drive,Technology,Accessories,East DC,SUP-110,493.19,16,4.75,66,142,309,218,2025-10-27
+FUR-FU-1165,Advantus Task Lamp,Furniture,Furnishings,East DC,SUP-104,85.34,2,7.0,98,112,502,464,2025-11-24
+FUR-FU-1166,Tenex Chairmat,Furniture,Furnishings,Central DC,SUP-105,336.38,19,0.72,8,22,46,25,2025-12-08
+TEC-AC-1167,SanDisk Flash Drive,Technology,Accessories,South DC,SUP-101,454.29,5,23.16,139,255,1094,897,2025-12-08
+OFF-PA-1168,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-113,14.88,8,22.69,113,295,1071,1014,2025-12-22
+FUR-BO-1169,Bush Cubix Bookcase,Furniture,Bookcases,Central DC,SUP-110,154.17,14,1.12,6,22,64,28,2025-12-01
+TEC-AC-1170,Logitech Mouse,Technology,Accessories,Central DC,SUP-113,307.77,10,8.52,60,145,465,359,2025-12-08
+OFF-AR-1171,Bic Pens,Office Supplies,Art,West DC,SUP-109,8.85,2,12.67,127,152,600,104,2025-11-03
+OFF-AR-1172,Sharpie Markers,Office Supplies,Art,Central DC,SUP-102,15.83,14,8.77,96,219,400,302,2025-11-24
+OFF-AR-1173,Newell Highlighters,Office Supplies,Art,West DC,SUP-110,30.54,14,12.23,86,257,837,521,2025-12-22
+FUR-CH-1174,Hbada Office Chair,Furniture,Chairs,South DC,SUP-114,292.51,13,3.5,35,81,194,100,2025-12-08
+OFF-ST-1175,Fellowes Storage Box,Office Supplies,Storage,West DC,SUP-101,8.42,3,56.99,342,513,3595,2110,2025-11-03
+OFF-ST-1176,SimpleHouseware Bin,Office Supplies,Storage,South DC,SUP-111,27.78,10,23.44,164,398,1435,1026,2025-11-10
+FUR-BO-1177,Bush Cubix Bookcase,Furniture,Bookcases,West DC,SUP-104,231.74,2,1.47,12,15,74,109,2025-12-08
+OFF-BI-1178,Avery Binder,Office Supplies,Binders,East DC,SUP-102,15.7,14,41.87,586,1172,3020,1311,2025-12-01
+TEC-CO-1179,Canon Copier,Technology,Copiers,West DC,SUP-106,333.99,9,14.25,142,270,931,841,2025-12-22
+OFF-LA-1180,Avery Labels,Office Supplies,Labels,West DC,SUP-103,21.88,6,15.54,202,295,813,960,2025-12-08
+TEC-MA-1181,Cubify 3D Printer,Technology,Machines,South DC,SUP-111,482.57,9,13.91,139,264,701,587,2025-11-03
+OFF-ST-1182,SimpleHouseware Bin,Office Supplies,Storage,East DC,SUP-106,7.91,9,18.27,128,292,1028,1006,2025-11-17
+OFF-ST-1183,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-109,17.55,2,15.98,128,160,868,557,2025-12-01
+FUR-BO-1184,O'Sullivan Bookcase,Furniture,Bookcases,East DC,SUP-101,297.2,4,2.58,36,46,147,55,2025-11-24
+TEC-PH-1185,Samsung Galaxy,Technology,Phones,South DC,SUP-102,151.41,17,5.06,46,132,293,233,2025-11-24
+TEC-AC-1186,Logitech Mouse,Technology,Accessories,Central DC,SUP-109,413.86,2,4.27,51,60,231,130,2025-12-15
+OFF-BI-1187,GBC Binding System,Office Supplies,Binders,West DC,SUP-100,29.0,19,15.45,201,495,731,381,2025-11-24
+FUR-TA-1188,Bush Somerset Table,Furniture,Tables,East DC,SUP-106,268.74,8,0.84,7,14,60,28,2025-12-15
+TEC-PH-1189,Samsung Galaxy,Technology,Phones,Central DC,SUP-112,240.37,6,5.63,45,79,320,461,2025-12-08
+TEC-CO-1190,Canon Copier,Technology,Copiers,Central DC,SUP-111,254.37,12,4.87,63,121,356,257,2025-12-22
+OFF-ST-1191,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-104,10.32,3,11.28,158,192,806,396,2025-10-20
+TEC-MA-1192,Zebra Label Printer,Technology,Machines,Central DC,SUP-105,504.86,21,3.92,35,117,225,120,2025-10-20
+TEC-PH-1193,Samsung Galaxy,Technology,Phones,Central DC,SUP-105,323.11,21,1.33,7,35,91,42,2025-10-27
+FUR-FU-1194,Tenex Chairmat,Furniture,Furnishings,South DC,SUP-111,253.26,9,2.47,20,42,168,43,2025-12-01
+TEC-MA-1195,Lexmark Printer,Technology,Machines,South DC,SUP-110,300.82,18,1.22,10,32,94,54,2025-11-03
+FUR-CH-1196,Global Task Chair,Furniture,Chairs,Central DC,SUP-108,266.27,8,3.23,42,68,212,98,2025-10-27
+OFF-ST-1197,SimpleHouseware Bin,Office Supplies,Storage,South DC,SUP-105,20.78,19,18.43,129,479,927,967,2025-11-17
+OFF-ST-1198,Iris File Box,Office Supplies,Storage,West DC,SUP-104,14.52,6,4.16,42,67,242,274,2025-12-08
+FUR-CH-1199,Global Task Chair,Furniture,Chairs,East DC,SUP-109,232.47,3,0.34,2,3,29,13,2025-12-22
+TEC-AC-1200,SanDisk Flash Drive,Technology,Accessories,East DC,SUP-114,182.43,14,17.81,107,356,1323,510,2025-12-08
+OFF-BI-1201,Avery Binder,Office Supplies,Binders,West DC,SUP-108,21.51,8,4.85,39,78,243,119,2025-10-13
+OFF-LA-1202,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-102,26.99,13,2.91,17,55,183,62,2025-10-27
+TEC-AC-1203,Logitech Mouse,Technology,Accessories,South DC,SUP-101,536.53,4,0.46,5,7,32,21,2025-11-24
+FUR-CH-1204,HON Executive Chair,Furniture,Chairs,Central DC,SUP-100,221.64,19,6.61,93,219,335,349,2025-11-17
+OFF-PA-1205,HP Paper Ream,Office Supplies,Paper,West DC,SUP-100,18.87,19,9.36,112,290,632,330,2025-12-01
+OFF-BI-1206,GBC Binding System,Office Supplies,Binders,Central DC,SUP-114,17.63,17,4.45,27,103,299,308,2025-12-08
+OFF-AR-1207,Sharpie Markers,Office Supplies,Art,South DC,SUP-104,21.39,4,11.05,122,166,712,201,2025-10-13
+TEC-PH-1208,Samsung Galaxy,Technology,Phones,South DC,SUP-106,353.44,11,10.49,136,251,634,526,2025-12-22
+OFF-BI-1209,GBC Binding System,Office Supplies,Binders,South DC,SUP-110,26.25,18,22.73,114,523,1414,272,2025-12-01
+TEC-CO-1210,Canon Copier,Technology,Copiers,Central DC,SUP-111,493.53,10,4.58,64,110,239,204,2025-12-01
+TEC-MA-1211,Lexmark Printer,Technology,Machines,East DC,SUP-113,302.6,9,5.66,74,125,396,147,2025-10-13
+FUR-TA-1212,Bush Somerset Table,Furniture,Tables,South DC,SUP-104,107.95,2,1.3,16,19,79,39,2025-11-17
+OFF-BI-1213,GBC Binding System,Office Supplies,Binders,Central DC,SUP-111,22.68,11,32.44,454,811,1984,1251,2025-12-08
+OFF-PA-1214,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-102,25.21,16,1.46,13,36,93,49,2025-12-01
+OFF-LA-1215,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-100,15.05,18,17.7,106,425,1049,604,2025-12-08
+OFF-LA-1216,Avery Labels,Office Supplies,Labels,East DC,SUP-112,25.31,9,21.82,175,371,1183,705,2025-10-20
+FUR-FU-1217,Tenex Chairmat,Furniture,Furnishings,East DC,SUP-108,277.45,10,1.14,11,22,56,23,2025-10-20
+OFF-PA-1218,HP Paper Ream,Office Supplies,Paper,Central DC,SUP-112,30.75,5,37.31,448,635,2132,2035,2025-11-17
+TEC-MA-1219,Lexmark Printer,Technology,Machines,West DC,SUP-102,356.49,14,18.92,170,435,1083,577,2025-11-10
+FUR-CH-1220,HON Executive Chair,Furniture,Chairs,Central DC,SUP-111,170.48,11,1.85,9,29,114,80,2025-12-22
+FUR-TA-1221,Bush Somerset Table,Furniture,Tables,West DC,SUP-101,87.22,4,1.63,16,23,95,60,2025-12-01
+FUR-CH-1222,HON Executive Chair,Furniture,Chairs,Central DC,SUP-105,260.76,21,0.7,8,23,51,13,2025-11-10
+OFF-PA-1223,Boise Paper,Office Supplies,Paper,South DC,SUP-110,18.03,17,13.82,124,359,627,749,2025-12-01
+OFF-BI-1224,Wilson Jones Binder,Office Supplies,Binders,Central DC,SUP-106,7.67,8,25.49,127,331,1815,694,2025-12-08
+TEC-AC-1225,SanDisk Flash Drive,Technology,Accessories,West DC,SUP-104,499.69,6,1.84,24,35,103,66,2025-12-15
+FUR-TA-1226,Bretford Conference Table,Furniture,Tables,East DC,SUP-100,173.01,16,4.05,20,85,244,104,2025-12-08
+TEC-PH-1227,Cisco IP Phone,Technology,Phones,Central DC,SUP-103,162.89,3,2.93,32,41,172,145,2025-11-17
+FUR-CH-1228,Global Task Chair,Furniture,Chairs,South DC,SUP-100,342.34,16,6.12,37,135,293,113,2025-11-24
+OFF-ST-1229,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-112,25.66,7,10.93,153,230,508,480,2025-12-15
+FUR-CH-1230,Hbada Office Chair,Furniture,Chairs,West DC,SUP-106,235.79,9,1.56,14,28,81,61,2025-11-03
+OFF-BI-1231,Wilson Jones Binder,Office Supplies,Binders,Central DC,SUP-101,8.46,2,14.47,101,130,671,33,2025-11-03
+OFF-ST-1232,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-109,21.57,5,17.8,196,285,1269,444,2025-11-17
+FUR-BO-1233,O'Sullivan Bookcase,Furniture,Bookcases,West DC,SUP-101,101.27,4,5.04,55,75,368,64,2025-11-10
+FUR-BO-1234,O'Sullivan Bookcase,Furniture,Bookcases,West DC,SUP-102,175.89,15,1.38,14,35,88,38,2025-11-10
+TEC-AC-1235,Kensington Keyboard,Technology,Accessories,East DC,SUP-103,353.58,4,1.72,9,16,88,87,2025-12-15
+OFF-PA-1236,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-110,19.85,16,5.83,29,122,326,79,2025-11-24
+TEC-PH-1237,Apple iPhone,Technology,Phones,Central DC,SUP-103,140.0,4,4.9,39,59,255,59,2025-09-22
+TEC-PH-1238,Apple iPhone,Technology,Phones,East DC,SUP-107,548.45,18,3.18,25,82,218,161,2025-12-15
+OFF-BI-1239,Avery Binder,Office Supplies,Binders,South DC,SUP-102,10.69,13,67.0,603,1474,3556,940,2025-10-13
+TEC-CO-1240,Canon Copier,Technology,Copiers,South DC,SUP-101,222.2,2,1.16,15,17,71,32,2025-11-03
+OFF-LA-1241,Avery Labels,Office Supplies,Labels,Central DC,SUP-111,7.31,10,20.45,123,327,1396,683,2025-11-17
+FUR-BO-1242,O'Sullivan Bookcase,Furniture,Bookcases,West DC,SUP-111,137.52,13,3.15,19,60,147,192,2025-12-08
+TEC-CO-1243,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-109,406.36,3,2.47,17,24,188,68,2025-12-08
+TEC-MA-1244,Cubify 3D Printer,Technology,Machines,East DC,SUP-108,520.44,7,5.8,70,111,324,448,2025-12-22
+OFF-ST-1245,Iris File Box,Office Supplies,Storage,Central DC,SUP-100,28.72,18,5.04,50,141,353,116,2025-11-03
+FUR-TA-1246,Bretford Conference Table,Furniture,Tables,South DC,SUP-102,229.1,14,1.7,22,46,87,31,2025-10-06
+TEC-AC-1247,Kensington Keyboard,Technology,Accessories,Central DC,SUP-109,508.63,2,12.63,101,126,687,707,2025-11-17
+FUR-CH-1248,Hbada Office Chair,Furniture,Chairs,West DC,SUP-105,220.64,21,1.49,12,43,108,38,2025-12-08
+TEC-MA-1249,Lexmark Printer,Technology,Machines,Central DC,SUP-113,160.9,8,2.27,23,41,155,68,2025-11-03
+TEC-PH-1250,Cisco IP Phone,Technology,Phones,South DC,SUP-113,563.01,11,2.44,32,59,181,50,2025-12-01
+TEC-AC-1251,Kensington Keyboard,Technology,Accessories,Central DC,SUP-101,401.75,2,1.3,16,19,65,42,2025-11-24
+OFF-ST-1252,Iris File Box,Office Supplies,Storage,South DC,SUP-110,12.9,17,4.15,58,129,283,130,2025-12-01
+FUR-BO-1253,Bush Cubix Bookcase,Furniture,Bookcases,South DC,SUP-100,124.78,20,1.07,13,34,82,47,2025-12-08
+OFF-LA-1254,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-110,17.86,14,21.65,260,563,1023,636,2025-10-27
+FUR-CH-1255,Hbada Office Chair,Furniture,Chairs,South DC,SUP-107,219.83,17,2.23,31,69,121,89,2025-12-08
+FUR-FU-1256,Tenex Chairmat,Furniture,Furnishings,West DC,SUP-114,117.87,16,3.91,35,98,263,164,2025-12-22
+FUR-TA-1257,Bretford Conference Table,Furniture,Tables,Central DC,SUP-107,106.79,17,3.85,19,84,201,145,2025-12-15
+OFF-AR-1258,Bic Pens,Office Supplies,Art,Central DC,SUP-102,8.27,17,19.85,278,615,1315,453,2025-11-03
+OFF-LA-1259,Avery Labels,Office Supplies,Labels,South DC,SUP-104,15.33,2,25.35,254,305,1273,343,2025-10-06
+FUR-BO-1260,Bush Cubix Bookcase,Furniture,Bookcases,Central DC,SUP-100,135.71,16,0.85,5,19,68,44,2025-12-22
+OFF-LA-1261,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-106,15.68,9,8.08,57,130,433,369,2025-12-08
+OFF-ST-1262,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-110,12.92,18,10.27,92,277,508,672,2025-12-15
+TEC-MA-1263,Lexmark Printer,Technology,Machines,Central DC,SUP-111,446.73,9,8.5,110,186,421,202,2025-10-06
+TEC-CO-1264,Canon Copier,Technology,Copiers,East DC,SUP-107,277.32,15,2.24,13,47,108,22,2025-11-03
+OFF-PA-1265,Boise Paper,Office Supplies,Paper,East DC,SUP-110,13.31,14,11.93,119,286,661,204,2025-10-20
+FUR-CH-1266,Global Task Chair,Furniture,Chairs,Central DC,SUP-101,306.01,5,0.93,9,14,72,58,2025-12-15
+TEC-CO-1267,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-107,517.61,17,6.78,88,203,351,167,2025-10-06
+TEC-MA-1268,Zebra Label Printer,Technology,Machines,South DC,SUP-101,462.36,5,5.33,27,54,271,52,2025-11-24
+OFF-PA-1269,HP Paper Ream,Office Supplies,Paper,Central DC,SUP-111,10.87,11,9.98,100,210,744,196,2025-11-24
+OFF-PA-1270,Xerox Paper Ream,Office Supplies,Paper,Central DC,SUP-107,23.13,14,30.2,423,846,1696,2745,2025-12-22
+FUR-FU-1271,Eldon Desk Lamp,Furniture,Furnishings,East DC,SUP-100,122.98,19,4.18,50,129,256,262,2025-11-24
+OFF-LA-1272,Avery Labels,Office Supplies,Labels,East DC,SUP-107,21.57,16,10.92,120,295,638,766,2025-12-01
+OFF-LA-1273,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-111,26.46,13,1.85,18,42,105,43,2025-12-01
+OFF-BI-1274,Wilson Jones Binder,Office Supplies,Binders,Central DC,SUP-100,25.41,17,11.8,118,319,560,433,2025-12-08
+FUR-FU-1275,Tenex Chairmat,Furniture,Furnishings,Central DC,SUP-104,196.81,2,3.34,43,50,205,255,2025-12-08
+FUR-FU-1276,Eldon Desk Lamp,Furniture,Furnishings,West DC,SUP-100,205.54,19,2.37,26,71,140,131,2025-11-24
+FUR-CH-1277,Global Task Chair,Furniture,Chairs,South DC,SUP-106,153.44,10,3.13,19,50,161,54,2025-11-03
+TEC-MA-1278,Zebra Label Printer,Technology,Machines,South DC,SUP-109,196.42,5,12.71,76,140,768,370,2025-11-03
+TEC-PH-1279,Samsung Galaxy,Technology,Phones,South DC,SUP-110,397.65,15,3.81,50,107,253,113,2025-10-06
+OFF-BI-1280,Avery Binder,Office Supplies,Binders,East DC,SUP-110,14.46,15,11.14,145,312,818,652,2025-11-24
+TEC-CO-1281,Canon Copier,Technology,Copiers,West DC,SUP-102,260.68,15,3.7,18,74,257,132,2025-11-03
+FUR-BO-1282,Sauder Bookcase,Furniture,Bookcases,East DC,SUP-100,131.31,19,6.79,68,197,385,351,2025-11-24
+TEC-MA-1283,Lexmark Printer,Technology,Machines,South DC,SUP-100,460.97,17,0.51,6,15,34,12,2025-10-27
+TEC-AC-1284,Kensington Keyboard,Technology,Accessories,East DC,SUP-102,223.53,16,5.72,29,121,354,335,2025-12-08
+FUR-TA-1285,Bush Somerset Table,Furniture,Tables,South DC,SUP-113,200.32,9,1.15,7,17,84,37,2025-12-08
+OFF-PA-1286,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-112,27.73,6,25.15,201,352,1690,703,2025-11-03
+OFF-AR-1287,Newell Highlighters,Office Supplies,Art,South DC,SUP-113,11.66,8,26.85,322,537,1804,1303,2025-12-08
+OFF-AR-1288,Sharpie Markers,Office Supplies,Art,East DC,SUP-108,12.23,8,21.83,218,393,1140,1126,2025-11-24
+FUR-BO-1289,Bush Cubix Bookcase,Furniture,Bookcases,East DC,SUP-104,198.27,6,0.53,7,10,44,10,2025-11-10
+OFF-LA-1290,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-113,8.72,12,13.61,163,326,740,669,2025-11-24
+OFF-ST-1291,SimpleHouseware Bin,Office Supplies,Storage,West DC,SUP-110,25.88,16,25.42,356,763,1200,1278,2025-10-27
+OFF-AR-1292,Newell Highlighters,Office Supplies,Art,Central DC,SUP-108,21.19,7,8.55,77,137,612,595,2025-11-24
+FUR-BO-1293,Sauder Bookcase,Furniture,Bookcases,Central DC,SUP-110,291.53,14,1.29,6,24,84,26,2025-12-01
+FUR-BO-1294,Sauder Bookcase,Furniture,Bookcases,East DC,SUP-113,100.4,8,1.94,14,30,135,71,2025-12-08
+OFF-PA-1295,HP Paper Ream,Office Supplies,Paper,South DC,SUP-105,21.44,22,30.64,245,919,1414,820,2025-11-10
+FUR-FU-1296,Tenex Chairmat,Furniture,Furnishings,East DC,SUP-105,286.16,19,2.46,27,74,182,175,2025-12-01
+OFF-BI-1297,Avery Binder,Office Supplies,Binders,South DC,SUP-107,27.9,17,14.42,101,346,784,881,2025-12-08
+OFF-BI-1298,Avery Binder,Office Supplies,Binders,South DC,SUP-101,28.17,2,8.51,102,119,490,171,2025-10-27
+OFF-LA-1299,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-100,19.56,20,5.27,26,131,316,7,2025-11-10
+FUR-FU-1300,Tenex Chairmat,Furniture,Furnishings,Central DC,SUP-107,331.78,17,2.38,26,66,153,242,2025-12-15
+FUR-FU-1301,Tenex Chairmat,Furniture,Furnishings,Central DC,SUP-108,326.2,10,0.36,4,8,27,23,2025-12-15
+TEC-CO-1302,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-101,535.89,2,18.13,254,290,1310,551,2025-11-17
+OFF-BI-1303,Avery Binder,Office Supplies,Binders,South DC,SUP-113,25.54,11,16.57,232,414,1065,974,2025-12-22
+TEC-AC-1304,Logitech Mouse,Technology,Accessories,Central DC,SUP-105,302.86,22,16.06,177,530,792,1043,2025-12-22
+FUR-TA-1305,Bretford Conference Table,Furniture,Tables,West DC,SUP-102,104.24,13,0.7,6,15,41,32,2025-12-08
+FUR-TA-1306,Bush Somerset Table,Furniture,Tables,East DC,SUP-108,173.32,9,0.99,13,22,55,61,2025-12-01
+OFF-AR-1307,Bic Pens,Office Supplies,Art,Central DC,SUP-112,19.06,7,62.46,562,999,4252,1070,2025-11-03
+OFF-PA-1308,Boise Paper,Office Supplies,Paper,West DC,SUP-111,28.48,9,2.96,36,63,165,229,2025-12-01
+OFF-ST-1309,SimpleHouseware Bin,Office Supplies,Storage,East DC,SUP-101,17.82,3,25.83,258,335,1167,1797,2025-12-15
+OFF-PA-1310,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-112,23.44,8,15.96,192,320,1090,299,2025-10-20
+TEC-CO-1311,Canon Copier,Technology,Copiers,Central DC,SUP-101,311.36,2,7.15,43,57,363,125,2025-11-24
+FUR-FU-1312,Advantus Task Lamp,Furniture,Furnishings,Central DC,SUP-106,298.82,12,1.33,15,31,77,99,2025-12-22
+OFF-PA-1313,Boise Paper,Office Supplies,Paper,South DC,SUP-112,28.26,8,2.13,28,45,131,39,2025-11-10
+OFF-AR-1314,Newell Highlighters,Office Supplies,Art,East DC,SUP-111,17.42,12,8.11,65,162,427,505,2025-12-22
+OFF-AR-1315,Sharpie Markers,Office Supplies,Art,East DC,SUP-103,19.77,6,13.18,92,171,769,350,2025-12-01
+OFF-PA-1316,Boise Paper,Office Supplies,Paper,East DC,SUP-107,18.63,14,10.56,74,222,786,75,2025-11-10
+FUR-BO-1317,Sauder Bookcase,Furniture,Bookcases,West DC,SUP-102,117.66,16,2.27,11,47,148,72,2025-12-01
+OFF-AR-1318,Bic Pens,Office Supplies,Art,South DC,SUP-102,26.12,14,22.86,206,526,1331,1500,2025-12-15
+OFF-AR-1319,Bic Pens,Office Supplies,Art,West DC,SUP-112,18.25,9,34.49,414,724,1902,1017,2025-11-10
+OFF-PA-1320,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-102,30.44,16,16.51,99,363,847,877,2025-11-10
+FUR-FU-1321,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-112,301.92,5,5.08,56,81,244,288,2025-11-10
+FUR-CH-1322,HON Executive Chair,Furniture,Chairs,South DC,SUP-108,314.28,11,4.05,57,102,252,289,2025-12-01
+FUR-BO-1323,Sauder Bookcase,Furniture,Bookcases,Central DC,SUP-112,112.77,5,1.07,12,17,55,56,2025-12-01
+OFF-LA-1324,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-114,9.32,17,16.17,194,469,1040,691,2025-11-10
+FUR-BO-1325,O'Sullivan Bookcase,Furniture,Bookcases,South DC,SUP-113,175.33,12,1.6,21,40,115,73,2025-11-24
+OFF-LA-1326,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-109,25.76,2,7.18,72,86,328,297,2025-12-15
+TEC-PH-1327,Apple iPhone,Technology,Phones,East DC,SUP-102,307.68,14,2.9,17,58,188,102,2025-11-03
+OFF-AR-1328,Newell Highlighters,Office Supplies,Art,West DC,SUP-110,14.34,16,5.19,31,114,327,223,2025-11-03
+TEC-AC-1329,SanDisk Flash Drive,Technology,Accessories,South DC,SUP-103,303.23,7,2.3,18,34,129,19,2025-11-17
+OFF-AR-1330,Sharpie Markers,Office Supplies,Art,Central DC,SUP-102,16.83,14,5.65,34,113,395,336,2025-12-01
+TEC-CO-1331,Canon Copier,Technology,Copiers,West DC,SUP-103,495.83,5,6.9,76,110,516,177,2025-11-24
+FUR-CH-1332,Global Task Chair,Furniture,Chairs,Central DC,SUP-105,310.89,18,2.42,29,73,167,49,2025-11-10
+TEC-MA-1333,Lexmark Printer,Technology,Machines,Central DC,SUP-105,162.27,19,11.16,123,335,552,355,2025-11-24
+OFF-LA-1334,Avery Labels,Office Supplies,Labels,South DC,SUP-113,29.35,11,10.97,132,253,499,298,2025-11-17
+OFF-PA-1335,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-105,18.67,21,3.71,26,104,198,359,2025-12-22
+TEC-PH-1336,Samsung Galaxy,Technology,Phones,East DC,SUP-110,427.93,15,8.12,57,179,606,73,2025-10-20
+OFF-LA-1337,Avery Labels,Office Supplies,Labels,Central DC,SUP-108,29.01,7,13.17,66,158,901,734,2025-11-17
+OFF-BI-1338,Avery Binder,Office Supplies,Binders,East DC,SUP-104,8.97,5,13.07,78,143,972,715,2025-12-01
+OFF-ST-1339,Fellowes Storage Box,Office Supplies,Storage,West DC,SUP-104,22.38,3,15.14,136,181,1080,83,2025-10-27
+TEC-MA-1340,Zebra Label Printer,Technology,Machines,Central DC,SUP-111,150.97,9,7.11,85,149,503,235,2025-11-24
+OFF-LA-1341,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-111,23.47,13,7.21,58,152,373,344,2025-11-10
+OFF-BI-1342,Wilson Jones Binder,Office Supplies,Binders,West DC,SUP-104,14.63,5,26.47,344,476,1620,478,2025-11-24
+TEC-PH-1343,Samsung Galaxy,Technology,Phones,Central DC,SUP-110,324.04,16,1.8,23,52,124,75,2025-10-27
+OFF-PA-1344,Xerox Paper Ream,Office Supplies,Paper,Central DC,SUP-113,22.25,10,17.97,234,414,1083,350,2025-10-20
+TEC-AC-1345,Logitech Mouse,Technology,Accessories,East DC,SUP-110,414.56,18,14.59,160,423,662,602,2025-11-03
+OFF-ST-1346,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-113,28.22,10,9.25,120,212,615,533,2025-11-24
+OFF-PA-1347,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-102,26.26,17,6.26,88,194,324,364,2025-12-22
+OFF-ST-1348,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-109,11.5,4,27.16,244,353,1798,192,2025-11-17
+FUR-TA-1349,Chromcraft Round Table,Furniture,Tables,South DC,SUP-106,285.17,8,1.39,10,21,79,95,2025-12-01
+FUR-FU-1350,Eldon Desk Lamp,Furniture,Furnishings,West DC,SUP-109,184.76,2,1.55,9,12,100,30,2025-12-08
+OFF-LA-1351,Avery Labels,Office Supplies,Labels,West DC,SUP-106,7.81,12,19.58,137,372,1239,1046,2025-11-24
+FUR-TA-1352,Chromcraft Round Table,Furniture,Tables,East DC,SUP-112,227.17,5,1.73,10,19,97,114,2025-12-15
+TEC-CO-1353,Canon Copier,Technology,Copiers,Central DC,SUP-104,324.87,4,6.0,42,66,443,155,2025-11-03
+TEC-CO-1354,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-114,428.97,16,2.94,38,85,158,57,2025-11-10
+FUR-CH-1355,HON Executive Chair,Furniture,Chairs,South DC,SUP-110,228.05,14,3.05,24,67,164,62,2025-10-06
+TEC-AC-1356,Logitech Mouse,Technology,Accessories,East DC,SUP-107,271.36,17,4.99,30,115,269,317,2025-12-22
+TEC-CO-1357,Canon Copier,Technology,Copiers,West DC,SUP-100,363.24,19,6.4,32,154,479,81,2025-12-01
+TEC-CO-1358,Canon Copier,Technology,Copiers,Central DC,SUP-100,550.69,20,3.27,26,91,169,56,2025-11-03
+OFF-ST-1359,Iris File Box,Office Supplies,Storage,West DC,SUP-108,29.31,7,12.12,133,218,720,947,2025-12-08
+OFF-LA-1360,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-110,7.25,15,10.9,87,251,713,609,2025-11-24
+TEC-PH-1361,Samsung Galaxy,Technology,Phones,West DC,SUP-103,292.81,5,2.56,36,49,151,74,2025-12-08
+OFF-ST-1362,SimpleHouseware Bin,Office Supplies,Storage,West DC,SUP-108,8.81,11,5.02,60,115,336,115,2025-10-13
+TEC-MA-1363,Cubify 3D Printer,Technology,Machines,Central DC,SUP-113,313.15,11,4.56,27,77,279,34,2025-11-10
+TEC-AC-1364,Kensington Keyboard,Technology,Accessories,East DC,SUP-100,174.53,18,12.3,135,356,645,228,2025-11-03
+TEC-PH-1365,Cisco IP Phone,Technology,Phones,West DC,SUP-112,202.07,7,4.37,31,62,241,155,2025-12-15
+OFF-PA-1366,Boise Paper,Office Supplies,Paper,South DC,SUP-109,14.19,2,27.7,305,360,1307,657,2025-11-17
+OFF-ST-1367,Iris File Box,Office Supplies,Storage,Central DC,SUP-100,22.66,17,29.78,238,744,1822,2122,2025-11-24
+TEC-MA-1368,Lexmark Printer,Technology,Machines,West DC,SUP-103,372.75,7,4.6,46,78,318,88,2025-11-24
+TEC-PH-1369,Apple iPhone,Technology,Phones,West DC,SUP-112,317.92,7,2.3,28,44,171,34,2025-11-17
+OFF-PA-1370,Xerox Paper Ream,Office Supplies,Paper,Central DC,SUP-100,25.85,19,19.39,194,562,1420,920,2025-12-08
+OFF-AR-1371,Bic Pens,Office Supplies,Art,Central DC,SUP-111,12.53,9,6.2,31,87,414,81,2025-10-27
+OFF-LA-1372,Avery Labels,Office Supplies,Labels,Central DC,SUP-100,29.18,19,10.09,71,263,499,583,2025-11-17
+OFF-ST-1373,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-110,11.56,16,36.24,507,1087,2361,952,2025-12-01
+OFF-BI-1374,GBC Binding System,Office Supplies,Binders,West DC,SUP-105,21.49,18,16.09,209,499,1147,956,2025-12-22
+OFF-BI-1375,Avery Binder,Office Supplies,Binders,South DC,SUP-104,30.28,5,24.68,271,394,1510,936,2025-12-15
+OFF-LA-1376,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-100,21.53,17,38.94,273,935,2341,2491,2025-12-08
+TEC-PH-1377,Apple iPhone,Technology,Phones,West DC,SUP-109,514.58,2,5.84,35,47,274,197,2025-10-27
+TEC-PH-1378,Apple iPhone,Technology,Phones,West DC,SUP-114,141.91,13,11.67,82,234,612,828,2025-12-01
+OFF-PA-1379,Boise Paper,Office Supplies,Paper,West DC,SUP-100,14.93,17,13.95,84,321,1009,508,2025-12-15
+OFF-LA-1380,Avery Labels,Office Supplies,Labels,South DC,SUP-107,23.65,14,50.63,456,1165,3093,4374,2025-12-22
+OFF-AR-1381,Newell Highlighters,Office Supplies,Art,East DC,SUP-102,9.4,16,19.67,177,492,1343,1579,2025-12-15
+FUR-TA-1382,Bush Somerset Table,Furniture,Tables,South DC,SUP-103,316.76,7,5.95,83,125,326,287,2025-12-22
+FUR-CH-1383,Global Task Chair,Furniture,Chairs,Central DC,SUP-114,277.78,17,1.29,8,30,67,54,2025-10-27
+OFF-BI-1384,Wilson Jones Binder,Office Supplies,Binders,West DC,SUP-102,24.77,16,14.43,159,390,784,663,2025-12-22
+OFF-AR-1385,Sharpie Markers,Office Supplies,Art,West DC,SUP-110,12.65,17,13.74,151,385,719,263,2025-10-20
+TEC-AC-1386,SanDisk Flash Drive,Technology,Accessories,West DC,SUP-111,347.89,13,3.6,50,97,174,88,2025-10-13
+TEC-CO-1387,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-112,544.51,5,6.42,83,115,332,247,2025-10-27
+TEC-PH-1388,Apple iPhone,Technology,Phones,Central DC,SUP-107,535.22,18,3.15,25,82,238,154,2025-12-08
+FUR-TA-1389,Bretford Conference Table,Furniture,Tables,Central DC,SUP-100,113.92,16,1.05,6,23,75,60,2025-11-17
+TEC-MA-1390,Cubify 3D Printer,Technology,Machines,Central DC,SUP-102,373.47,13,2.95,41,79,220,37,2025-11-17
+FUR-CH-1391,Global Task Chair,Furniture,Chairs,East DC,SUP-112,199.49,5,2.26,20,31,165,26,2025-10-06
+TEC-CO-1392,Canon Copier,Technology,Copiers,Central DC,SUP-103,416.67,3,2.41,19,26,164,31,2025-11-24
+FUR-FU-1393,Tenex Chairmat,Furniture,Furnishings,East DC,SUP-103,174.06,3,1.67,22,27,117,139,2025-12-22
+OFF-PA-1394,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-106,20.4,10,2.21,18,40,144,95,2025-12-08
+OFF-AR-1395,Newell Highlighters,Office Supplies,Art,Central DC,SUP-107,14.85,17,13.31,106,332,724,596,2025-12-01
+OFF-AR-1396,Bic Pens,Office Supplies,Art,Central DC,SUP-101,27.7,2,9.95,119,139,572,251,2025-11-24
+OFF-PA-1397,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-100,20.24,16,5.19,52,135,270,267,2025-12-08
+OFF-AR-1398,Newell Highlighters,Office Supplies,Art,Central DC,SUP-105,11.8,19,6.2,62,180,321,401,2025-12-22
+OFF-ST-1399,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-104,20.7,6,15.95,144,240,1185,899,2025-12-22
+OFF-AR-1000,Newell Highlighters,Office Supplies,Art,West DC,SUP-104,22.62,2,9.59,134,153,648,266,2025-11-17
+OFF-PA-1001,Boise Paper,Office Supplies,Paper,South DC,SUP-103,16.91,4,2.16,19,28,154,156,2025-12-22
+FUR-CH-1002,Hbada Office Chair,Furniture,Chairs,East DC,SUP-106,208.42,11,1.86,15,35,111,3,2025-11-03
+OFF-ST-1003,Iris File Box,Office Supplies,Storage,East DC,SUP-111,7.23,9,8.73,79,158,520,346,2025-11-17
+OFF-BI-1004,GBC Binding System,Office Supplies,Binders,Central DC,SUP-105,17.76,21,23.03,138,622,1041,430,2025-12-01
+TEC-CO-1005,Canon Copier,Technology,Copiers,South DC,SUP-111,223.05,10,3.32,43,76,217,173,2025-11-10
+OFF-PA-1006,Boise Paper,Office Supplies,Paper,East DC,SUP-114,13.38,16,13.5,135,351,977,437,2025-11-10
+TEC-AC-1007,Kensington Keyboard,Technology,Accessories,West DC,SUP-101,545.2,4,7.85,47,78,405,115,2025-12-01
+FUR-FU-1009,Eldon Desk Lamp,Furniture,Furnishings,South DC,SUP-108,309.07,8,2.46,32,52,118,94,2025-12-08
+FUR-TA-1010,Chromcraft Round Table,Furniture,Tables,West DC,SUP-109,290.16,2,3.04,33,39,172,113,2025-11-17
+FUR-BO-1011,Sauder Bookcase,Furniture,Bookcases,East DC,SUP-104,252.7,5,1.73,14,23,100,29,2025-10-06
+TEC-MA-1012,Cubify 3D Printer,Technology,Machines,Central DC,SUP-114,230.85,17,0.72,9,21,45,49,2025-12-15
+OFF-PA-1013,HP Paper Ream,Office Supplies,Paper,East DC,SUP-104,18.66,5,6.78,34,68,358,37,2025-11-17
+FUR-CH-1014,HON Executive Chair,Furniture,Chairs,Central DC,SUP-112,174.98,9,4.38,39,78,215,67,2025-10-13
+OFF-BI-1015,Wilson Jones Binder,Office Supplies,Binders,Central DC,SUP-100,26.98,19,9.78,127,313,729,221,2025-11-17
+OFF-PA-1016,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-110,10.06,18,3.74,22,89,188,152,2025-12-22
+FUR-BO-1017,O'Sullivan Bookcase,Furniture,Bookcases,South DC,SUP-109,136.15,5,2.73,25,39,169,146,2025-11-17
+FUR-TA-1018,Bretford Conference Table,Furniture,Tables,West DC,SUP-113,335.3,9,0.9,9,17,61,24,2025-10-20
+OFF-BI-1019,Avery Binder,Office Supplies,Binders,West DC,SUP-113,29.09,9,10.95,88,187,739,139,2025-10-27
+TEC-MA-1020,Lexmark Printer,Technology,Machines,Central DC,SUP-101,200.81,2,6.54,59,72,352,315,2025-12-22
+OFF-PA-1021,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-106,12.22,9,12.32,99,210,559,510,2025-12-22
+TEC-MA-1022,Lexmark Printer,Technology,Machines,South DC,SUP-104,371.18,3,1.38,10,14,81,68,2025-12-08
+TEC-AC-1023,Logitech Mouse,Technology,Accessories,West DC,SUP-104,479.17,2,5.67,34,45,396,277,2025-12-01
+TEC-MA-1024,Cubify 3D Printer,Technology,Machines,South DC,SUP-100,205.33,18,13.55,190,434,696,215,2025-11-03
+TEC-AC-1025,SanDisk Flash Drive,Technology,Accessories,Central DC,SUP-112,473.9,5,5.87,82,111,281,264,2025-12-08
+OFF-AR-1026,Newell Highlighters,Office Supplies,Art,Central DC,SUP-107,8.87,16,6.86,89,199,396,599,2025-12-08
+OFF-LA-1027,Avery Labels,Office Supplies,Labels,East DC,SUP-107,7.9,14,30.91,278,711,2292,1362,2025-11-10
+OFF-PA-1028,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-109,25.74,2,13.16,79,105,979,54,2025-11-17
+TEC-MA-1029,Lexmark Printer,Technology,Machines,East DC,SUP-100,163.34,20,12.62,63,315,863,809,2025-12-08
+OFF-AR-1030,Bic Pens,Office Supplies,Art,Central DC,SUP-112,14.98,9,43.58,567,959,2663,1903,2025-11-10
+TEC-CO-1031,Canon Copier,Technology,Copiers,East DC,SUP-102,196.14,15,1.75,23,49,115,122,2025-12-08
+OFF-AR-1033,Newell Highlighters,Office Supplies,Art,South DC,SUP-105,9.27,19,10.88,76,283,745,352,2025-11-03
+OFF-ST-1034,Iris File Box,Office Supplies,Storage,East DC,SUP-113,26.89,10,25.58,256,512,1386,782,2025-11-10
+OFF-BI-1035,Avery Binder,Office Supplies,Binders,South DC,SUP-107,16.43,18,14.37,158,417,982,1075,2025-12-01
+OFF-BI-1036,GBC Binding System,Office Supplies,Binders,South DC,SUP-101,23.84,3,19.42,214,272,957,771,2025-11-10
+OFF-ST-1037,SimpleHouseware Bin,Office Supplies,Storage,East DC,SUP-109,28.49,4,29.57,414,532,2104,517,2025-10-27
+TEC-CO-1038,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-108,169.29,7,14.06,84,182,1031,85,2025-10-27
+OFF-LA-1039,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-101,13.29,5,10.61,95,148,631,503,2025-11-24
+OFF-BI-1040,Avery Binder,Office Supplies,Binders,South DC,SUP-106,7.11,9,45.52,228,638,2964,766,2025-12-01
+OFF-PA-1041,Xerox Paper Ream,Office Supplies,Paper,Central DC,SUP-110,28.59,15,49.56,545,1288,2483,1069,2025-11-10
+FUR-BO-1042,O'Sullivan Bookcase,Furniture,Bookcases,Central DC,SUP-114,218.89,15,2.1,19,51,158,107,2025-12-15
+TEC-MA-1043,Lexmark Printer,Technology,Machines,East DC,SUP-114,503.12,15,6.65,33,133,357,247,2025-12-15
+OFF-ST-1044,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-110,26.33,16,19.52,234,546,1137,1204,2025-12-15
+FUR-BO-1045,Bush Cubix Bookcase,Furniture,Bookcases,South DC,SUP-107,131.03,15,3.87,54,112,288,192,2025-12-01
+OFF-BI-1046,GBC Binding System,Office Supplies,Binders,West DC,SUP-104,24.05,4,29.21,175,292,1699,530,2025-10-13
+OFF-ST-1047,SimpleHouseware Bin,Office Supplies,Storage,South DC,SUP-106,27.78,10,7.09,64,135,480,371,2025-12-01
+FUR-BO-1048,Bush Cubix Bookcase,Furniture,Bookcases,West DC,SUP-107,247.97,14,5.77,75,156,357,88,2025-11-10
+TEC-PH-1049,Cisco IP Phone,Technology,Phones,East DC,SUP-108,563.59,8,1.02,8,16,53,55,2025-11-17
+OFF-BI-1050,GBC Binding System,Office Supplies,Binders,South DC,SUP-112,18.28,8,28.07,253,478,1970,760,2025-12-01
+TEC-AC-1051,Logitech Mouse,Technology,Accessories,Central DC,SUP-108,204.75,8,12.07,60,157,765,362,2025-12-15
+TEC-AC-1052,Logitech Mouse,Technology,Accessories,Central DC,SUP-113,526.46,8,6.58,46,99,387,68,2025-11-24
+TEC-MA-1053,Lexmark Printer,Technology,Machines,West DC,SUP-112,431.52,8,2.76,28,50,162,45,2025-10-20
+TEC-CO-1054,Hewlett Packard Copier,Technology,Copiers,Central DC,SUP-104,487.04,5,2.99,21,36,152,200,2025-12-15
+OFF-BI-1055,GBC Binding System,Office Supplies,Binders,West DC,SUP-109,12.44,2,9.66,77,96,469,412,2025-12-08
+TEC-CO-1056,Hewlett Packard Copier,Technology,Copiers,South DC,SUP-107,494.67,18,8.03,96,241,439,118,2025-11-24
+TEC-AC-1057,Kensington Keyboard,Technology,Accessories,East DC,SUP-110,490.99,17,15.73,204,471,1138,284,2025-10-13
+FUR-TA-1058,Chromcraft Round Table,Furniture,Tables,East DC,SUP-104,218.87,6,1.19,11,18,67,15,2025-11-24
+OFF-BI-1059,Avery Binder,Office Supplies,Binders,East DC,SUP-109,30.45,2,1.96,14,18,136,142,2025-12-22
+OFF-PA-1060,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-100,17.69,19,14.18,199,468,1012,1128,2025-12-01
+OFF-AR-1061,Newell Highlighters,Office Supplies,Art,South DC,SUP-110,26.59,18,75.41,452,1809,4605,2916,2025-11-17
+TEC-CO-1062,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-112,416.43,9,3.48,17,48,242,63,2025-11-10
+OFF-BI-1063,GBC Binding System,Office Supplies,Binders,West DC,SUP-110,23.02,17,8.0,112,248,453,155,2025-11-10
+OFF-BI-1064,Avery Binder,Office Supplies,Binders,Central DC,SUP-105,29.58,22,16.04,160,513,743,1115,2025-12-15
+OFF-BI-1065,Avery Binder,Office Supplies,Binders,Central DC,SUP-111,9.23,13,14.31,157,343,678,1064,2025-12-15
+OFF-LA-1066,Avery Labels,Office Supplies,Labels,South DC,SUP-105,22.23,19,49.07,540,1472,2851,576,2025-11-24
+OFF-ST-1067,SimpleHouseware Bin,Office Supplies,Storage,East DC,SUP-109,22.82,2,23.06,300,346,1596,1226,2025-12-08
+OFF-ST-1068,Iris File Box,Office Supplies,Storage,West DC,SUP-104,25.04,6,16.66,150,250,1121,1055,2025-12-22
+FUR-FU-1069,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-102,269.57,14,3.45,21,69,188,247,2025-12-08
+FUR-TA-1070,Bush Somerset Table,Furniture,Tables,West DC,SUP-109,146.37,3,2.85,31,40,139,118,2025-12-08
+TEC-AC-1072,Logitech Mouse,Technology,Accessories,Central DC,SUP-108,372.15,8,4.91,29,68,285,357,2025-12-15
+FUR-FU-1073,Advantus Task Lamp,Furniture,Furnishings,East DC,SUP-108,338.71,11,1.43,7,23,94,7,2025-11-17
+OFF-AR-1074,Sharpie Markers,Office Supplies,Art,South DC,SUP-111,21.49,12,38.34,192,652,2075,970,2025-11-17
+TEC-MA-1075,Lexmark Printer,Technology,Machines,East DC,SUP-106,570.27,8,3.73,48,78,184,133,2025-12-01
+OFF-AR-1076,Sharpie Markers,Office Supplies,Art,Central DC,SUP-113,18.53,10,66.86,334,1003,3883,1226,2025-12-01
+OFF-BI-1077,GBC Binding System,Office Supplies,Binders,Central DC,SUP-114,8.71,15,39.47,474,1066,1821,1809,2025-11-03
+OFF-PA-1078,Boise Paper,Office Supplies,Paper,Central DC,SUP-101,24.04,5,26.24,157,288,1606,974,2025-11-24
+OFF-AR-1079,Newell Highlighters,Office Supplies,Art,South DC,SUP-114,12.32,14,2.28,27,59,119,148,2025-12-22
+TEC-MA-1080,Zebra Label Printer,Technology,Machines,South DC,SUP-110,411.13,14,0.68,4,14,55,42,2025-12-01
+FUR-FU-1081,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-103,310.94,4,0.97,8,12,64,55,2025-11-24
+TEC-AC-1082,SanDisk Flash Drive,Technology,Accessories,East DC,SUP-104,165.88,3,11.25,158,192,804,832,2025-12-01
+OFF-LA-1083,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-111,25.96,11,5.35,43,102,401,160,2025-11-10
+OFF-PA-1084,HP Paper Ream,Office Supplies,Paper,West DC,SUP-104,16.38,4,9.2,46,83,539,213,2025-12-01
+FUR-BO-1085,Sauder Bookcase,Furniture,Bookcases,East DC,SUP-104,123.53,5,3.94,32,52,249,32,2025-10-20
+OFF-BI-1086,GBC Binding System,Office Supplies,Binders,West DC,SUP-105,8.27,20,21.91,307,745,1232,947,2025-12-08
+TEC-AC-1087,SanDisk Flash Drive,Technology,Accessories,South DC,SUP-109,159.64,2,12.47,112,137,641,267,2025-11-17
+FUR-TA-1088,Bush Somerset Table,Furniture,Tables,Central DC,SUP-103,326.86,7,3.06,15,36,186,178,2025-12-08
+OFF-BI-1089,GBC Binding System,Office Supplies,Binders,West DC,SUP-106,13.67,8,18.88,151,302,873,849,2025-12-22
+FUR-BO-1090,Bush Cubix Bookcase,Furniture,Bookcases,West DC,SUP-110,246.8,16,2.15,13,47,125,78,2025-11-10
+OFF-LA-1091,Avery Labels,Office Supplies,Labels,South DC,SUP-103,14.88,4,48.08,673,865,3563,1551,2025-12-01
+OFF-BI-1092,Wilson Jones Binder,Office Supplies,Binders,Central DC,SUP-114,13.77,17,33.79,169,743,2100,662,2025-12-01
+TEC-CO-1093,Hewlett Packard Copier,Technology,Copiers,Central DC,SUP-102,160.9,13,10.19,82,214,535,353,2025-10-27
+TEC-CO-1094,Canon Copier,Technology,Copiers,Central DC,SUP-105,386.43,18,7.69,92,230,466,234,2025-11-03
+OFF-ST-1095,Iris File Box,Office Supplies,Storage,West DC,SUP-102,28.19,14,19.42,97,369,1034,483,2025-12-08
+OFF-BI-1097,GBC Binding System,Office Supplies,Binders,West DC,SUP-101,20.98,2,7.37,81,96,337,553,2025-12-08
+OFF-BI-1098,Wilson Jones Binder,Office Supplies,Binders,South DC,SUP-103,25.12,5,10.86,130,184,613,275,2025-12-08
+TEC-PH-1099,Samsung Galaxy,Technology,Phones,East DC,SUP-103,213.88,4,5.1,31,51,260,189,2025-12-22
+OFF-AR-1100,Bic Pens,Office Supplies,Art,Central DC,SUP-104,7.31,2,19.95,140,180,1401,924,2025-12-08
+OFF-ST-1101,Fellowes Storage Box,Office Supplies,Storage,East DC,SUP-104,30.17,2,36.17,181,253,2428,1048,2025-11-03
+OFF-ST-1102,SimpleHouseware Bin,Office Supplies,Storage,South DC,SUP-112,21.16,8,18.85,207,358,1136,245,2025-10-13
+OFF-AR-1103,Newell Highlighters,Office Supplies,Art,South DC,SUP-108,23.11,8,43.71,437,787,3065,3196,2025-12-22
+OFF-PA-1104,HP Paper Ream,Office Supplies,Paper,East DC,SUP-113,21.87,8,17.54,123,263,812,976,2025-12-08
+FUR-TA-1105,Bretford Conference Table,Furniture,Tables,West DC,SUP-107,121.14,15,5.36,59,139,337,247,2025-12-15
+OFF-BI-1106,Wilson Jones Binder,Office Supplies,Binders,West DC,SUP-104,17.91,3,11.85,118,154,728,358,2025-11-17
+OFF-AR-1107,Sharpie Markers,Office Supplies,Art,South DC,SUP-102,10.47,13,14.79,118,310,671,629,2025-11-10
+FUR-CH-1108,Global Task Chair,Furniture,Chairs,South DC,SUP-103,134.15,3,1.32,17,21,83,22,2025-12-01
+OFF-AR-1109,Newell Highlighters,Office Supplies,Art,West DC,SUP-101,22.51,5,13.42,107,174,931,1174,2025-12-22
+TEC-AC-1110,Logitech Mouse,Technology,Accessories,South DC,SUP-100,264.37,20,13.19,66,330,796,665,2025-12-08
+OFF-ST-1111,Iris File Box,Office Supplies,Storage,Central DC,SUP-114,22.1,16,34.67,173,728,2467,1215,2025-11-03
+TEC-PH-1112,Apple iPhone,Technology,Phones,East DC,SUP-110,343.05,14,6.79,48,143,480,393,2025-11-17
+OFF-PA-1113,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-100,11.53,19,21.56,302,712,1234,596,2025-11-17
+OFF-AR-1115,Sharpie Markers,Office Supplies,Art,Central DC,SUP-112,20.75,9,5.36,59,107,369,155,2025-10-20
+OFF-BI-1116,Wilson Jones Binder,Office Supplies,Binders,East DC,SUP-106,13.4,9,12.37,99,210,685,473,2025-12-15
+OFF-ST-1117,Iris File Box,Office Supplies,Storage,East DC,SUP-110,10.15,14,5.94,65,148,272,135,2025-12-01
+OFF-AR-1118,Bic Pens,Office Supplies,Art,Central DC,SUP-104,26.26,4,18.28,91,164,992,411,2025-12-08
+OFF-LA-1119,Avery Labels,Office Supplies,Labels,East DC,SUP-108,7.98,9,17.9,125,286,936,259,2025-11-24
+TEC-MA-1120,Cubify 3D Printer,Technology,Machines,East DC,SUP-113,201.44,10,1.88,23,42,122,56,2025-11-17
+TEC-AC-1121,Logitech Mouse,Technology,Accessories,Central DC,SUP-109,305.01,4,6.27,75,100,312,101,2025-10-20
+FUR-FU-1122,Eldon Desk Lamp,Furniture,Furnishings,East DC,SUP-102,281.9,16,2.92,38,85,166,179,2025-12-01
+OFF-AR-1123,Newell Highlighters,Office Supplies,Art,South DC,SUP-112,22.54,5,8.79,79,123,427,440,2025-12-01
+OFF-PA-1124,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-101,25.12,3,21.96,110,176,1081,586,2025-10-20
+FUR-CH-1125,HON Executive Chair,Furniture,Chairs,Central DC,SUP-109,93.81,3,1.68,13,18,91,101,2025-12-22
+FUR-CH-1126,Hbada Office Chair,Furniture,Chairs,South DC,SUP-100,90.78,18,1.56,9,37,99,26,2025-10-20
+OFF-PA-1127,HP Paper Ream,Office Supplies,Paper,South DC,SUP-114,19.51,17,47.33,237,1042,2750,3429,2025-12-22
+OFF-ST-1128,Iris File Box,Office Supplies,Storage,Central DC,SUP-100,13.51,16,11.29,102,283,660,901,2025-12-01
+FUR-BO-1129,Bush Cubix Bookcase,Furniture,Bookcases,South DC,SUP-102,302.51,13,1.25,6,22,75,49,2025-11-03
+TEC-PH-1130,Cisco IP Phone,Technology,Phones,East DC,SUP-100,349.5,20,8.67,87,260,491,238,2025-11-24
+TEC-CO-1131,Canon Copier,Technology,Copiers,East DC,SUP-114,474.84,16,1.28,9,29,86,59,2025-11-24
+TEC-PH-1132,Apple iPhone,Technology,Phones,East DC,SUP-114,142.86,13,0.51,3,10,36,18,2025-11-03
+OFF-AR-1133,Newell Highlighters,Office Supplies,Art,East DC,SUP-114,23.8,13,16.94,186,406,1157,831,2025-11-10
+TEC-PH-1134,Cisco IP Phone,Technology,Phones,East DC,SUP-113,252.43,9,8.28,50,125,469,82,2025-11-03
+OFF-ST-1135,SimpleHouseware Bin,Office Supplies,Storage,West DC,SUP-109,11.52,5,12.68,89,152,918,609,2025-11-17
+OFF-AR-1136,Bic Pens,Office Supplies,Art,East DC,SUP-103,20.21,6,22.87,183,320,1629,697,2025-10-20
+OFF-PA-1137,HP Paper Ream,Office Supplies,Paper,West DC,SUP-101,28.4,3,28.89,231,318,2027,1287,2025-12-22
+OFF-LA-1138,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-102,7.05,13,9.16,73,192,417,191,2025-10-13
+TEC-MA-1139,Zebra Label Printer,Technology,Machines,Central DC,SUP-106,307.16,12,15.2,152,334,1069,1003,2025-12-01
+OFF-BI-1140,Wilson Jones Binder,Office Supplies,Binders,South DC,SUP-104,29.91,4,10.44,104,146,778,781,2025-12-01
+TEC-AC-1141,Kensington Keyboard,Technology,Accessories,South DC,SUP-107,413.54,14,1.74,10,34,118,119,2025-12-08
+OFF-AR-1142,Newell Highlighters,Office Supplies,Art,Central DC,SUP-108,16.27,10,4.74,52,99,289,66,2025-09-29
+OFF-LA-1143,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-103,17.26,3,14.82,193,237,687,1403,2025-12-22
+TEC-PH-1144,Cisco IP Phone,Technology,Phones,Central DC,SUP-105,419.2,21,1.36,8,37,106,24,2025-10-06
+TEC-MA-1145,Lexmark Printer,Technology,Machines,West DC,SUP-106,439.34,12,3.45,38,79,195,49,2025-11-17
+OFF-PA-1146,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-113,21.7,12,18.71,168,393,1109,532,2025-10-27
+OFF-AR-1147,Newell Highlighters,Office Supplies,Art,West DC,SUP-104,23.33,3,27.23,245,327,1938,814,2025-12-15
+FUR-BO-1148,Sauder Bookcase,Furniture,Bookcases,West DC,SUP-108,221.38,11,2.98,33,66,223,26,2025-11-10
+FUR-TA-1149,Bretford Conference Table,Furniture,Tables,South DC,SUP-102,206.53,17,3.36,30,87,160,191,2025-12-22
+OFF-BI-1150,Avery Binder,Office Supplies,Binders,Central DC,SUP-104,8.07,3,17.16,154,205,1138,226,2025-10-20
+FUR-BO-1151,Sauder Bookcase,Furniture,Bookcases,South DC,SUP-106,163.54,10,4.12,54,95,298,172,2025-11-03
+OFF-ST-1152,Fellowes Storage Box,Office Supplies,Storage,West DC,SUP-113,18.21,8,29.89,269,508,1828,695,2025-11-03
+OFF-BI-1155,GBC Binding System,Office Supplies,Binders,East DC,SUP-100,19.99,17,6.14,43,147,429,514,2025-12-15
+FUR-TA-1156,Chromcraft Round Table,Furniture,Tables,South DC,SUP-100,152.49,16,1.29,15,36,99,117,2025-12-15
+OFF-LA-1157,Avery Labels,Office Supplies,Labels,East DC,SUP-105,7.73,20,2.02,26,66,152,87,2025-11-24
+FUR-CH-1158,Hbada Office Chair,Furniture,Chairs,West DC,SUP-112,339.93,9,2.06,21,40,104,125,2025-12-15
+OFF-LA-1159,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-112,24.07,8,20.14,201,362,1354,635,2025-10-27
+OFF-LA-1160,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-107,23.88,18,38.74,504,1201,2097,545,2025-11-17
+TEC-MA-1161,Cubify 3D Printer,Technology,Machines,Central DC,SUP-107,242.51,14,6.36,38,127,374,158,2025-12-01
+OFF-ST-1162,Iris File Box,Office Supplies,Storage,South DC,SUP-110,9.62,16,20.14,201,523,1052,282,2025-11-17
+OFF-PA-1163,Boise Paper,Office Supplies,Paper,East DC,SUP-104,18.26,2,5.03,45,55,352,289,2025-12-15
+OFF-ST-1164,SimpleHouseware Bin,Office Supplies,Storage,West DC,SUP-100,9.44,18,24.38,195,634,1468,995,2025-11-03
+OFF-LA-1165,Avery Labels,Office Supplies,Labels,West DC,SUP-101,9.17,4,9.27,46,83,533,263,2025-10-27
+OFF-AR-1166,Newell Highlighters,Office Supplies,Art,East DC,SUP-102,26.43,15,27.65,387,802,2023,1448,2025-12-01
+TEC-PH-1167,Cisco IP Phone,Technology,Phones,South DC,SUP-108,303.8,8,3.86,50,81,267,250,2025-11-10
+TEC-CO-1168,Hewlett Packard Copier,Technology,Copiers,Central DC,SUP-102,382.24,17,5.57,45,140,306,331,2025-11-24
+TEC-CO-1169,Canon Copier,Technology,Copiers,South DC,SUP-104,351.34,4,5.87,29,52,434,115,2025-11-03
+OFF-BI-1170,Avery Binder,Office Supplies,Binders,Central DC,SUP-107,16.38,14,13.05,65,248,710,307,2025-10-20
+TEC-AC-1171,SanDisk Flash Drive,Technology,Accessories,South DC,SUP-113,397.62,9,6.93,83,145,476,306,2025-12-01
+OFF-ST-1172,Iris File Box,Office Supplies,Storage,West DC,SUP-104,25.12,3,17.95,162,216,992,1258,2025-12-22
+OFF-BI-1173,Avery Binder,Office Supplies,Binders,East DC,SUP-111,7.13,10,49.98,350,850,3304,1333,2025-12-08
+TEC-PH-1174,Cisco IP Phone,Technology,Phones,West DC,SUP-112,391.53,7,2.68,21,40,163,114,2025-12-15
+FUR-FU-1175,Eldon Desk Lamp,Furniture,Furnishings,South DC,SUP-102,322.23,15,4.67,56,126,295,351,2025-12-01
+TEC-CO-1176,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-108,296.23,7,19.36,155,291,1399,899,2025-12-01
+TEC-PH-1177,Samsung Galaxy,Technology,Phones,Central DC,SUP-114,520.62,13,4.69,61,122,268,144,2025-11-10
+OFF-LA-1178,Avery Labels,Office Supplies,Labels,South DC,SUP-104,10.71,4,29.18,175,292,1406,714,2025-11-10
+TEC-PH-1179,Samsung Galaxy,Technology,Phones,East DC,SUP-108,205.86,7,17.13,137,257,1084,1436,2025-12-22
+TEC-PH-1180,Apple iPhone,Technology,Phones,South DC,SUP-107,258.46,16,6.91,90,201,378,710,2025-12-22
+TEC-PH-1181,Cisco IP Phone,Technology,Phones,East DC,SUP-100,280.76,19,5.66,62,170,356,121,2025-11-24
+FUR-BO-1182,Bush Cubix Bookcase,Furniture,Bookcases,South DC,SUP-105,338.42,22,3.51,32,109,212,151,2025-12-22
+OFF-AR-1183,Sharpie Markers,Office Supplies,Art,Central DC,SUP-102,15.52,14,13.39,174,361,969,536,2025-11-17
+OFF-BI-1184,Wilson Jones Binder,Office Supplies,Binders,Central DC,SUP-100,11.07,19,15.06,90,376,954,410,2025-12-01
+TEC-MA-1185,Zebra Label Printer,Technology,Machines,Central DC,SUP-110,446.01,18,2.11,13,51,132,151,2025-12-08
+FUR-BO-1186,Bush Cubix Bookcase,Furniture,Bookcases,Central DC,SUP-102,132.2,17,1.64,23,51,108,146,2025-12-01
+OFF-LA-1187,Avery Labels,Office Supplies,Labels,West DC,SUP-110,24.78,14,17.43,192,436,1155,618,2025-11-24
+TEC-CO-1188,Canon Copier,Technology,Copiers,Central DC,SUP-112,399.94,9,22.95,184,391,1382,1515,2025-12-08
+OFF-ST-1189,SimpleHouseware Bin,Office Supplies,Storage,South DC,SUP-112,22.71,7,20.83,125,271,1359,433,2025-11-17
+FUR-CH-1190,Global Task Chair,Furniture,Chairs,South DC,SUP-110,322.91,15,3.96,36,95,266,152,2025-11-10
+FUR-CH-1191,Global Task Chair,Furniture,Chairs,East DC,SUP-114,122.07,13,1.89,17,42,115,92,2025-11-03
+FUR-BO-1192,O'Sullivan Bookcase,Furniture,Bookcases,East DC,SUP-102,109.69,13,3.51,21,67,240,100,2025-12-01
+OFF-AR-1193,Bic Pens,Office Supplies,Art,South DC,SUP-100,30.72,17,18.02,234,540,1284,388,2025-11-24
+OFF-ST-1194,SimpleHouseware Bin,Office Supplies,Storage,South DC,SUP-107,14.02,15,6.04,54,145,373,185,2025-12-08
+OFF-ST-1195,SimpleHouseware Bin,Office Supplies,Storage,East DC,SUP-104,24.47,2,56.97,741,855,3822,922,2025-11-10
+OFF-BI-1196,GBC Binding System,Office Supplies,Binders,East DC,SUP-112,7.28,6,9.37,75,131,595,329,2025-12-01
+OFF-PA-1197,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-108,11.99,11,61.25,368,1042,4109,1757,2025-11-17
+OFF-BI-1198,GBC Binding System,Office Supplies,Binders,East DC,SUP-100,15.95,18,6.91,83,207,357,459,2025-12-08
+FUR-BO-1199,Bush Cubix Bookcase,Furniture,Bookcases,Central DC,SUP-104,280.01,2,2.91,17,23,220,64,2025-11-10
+OFF-AR-1200,Newell Highlighters,Office Supplies,Art,South DC,SUP-109,7.97,4,7.67,77,108,450,100,2025-10-27
+OFF-ST-1201,Fellowes Storage Box,Office Supplies,Storage,East DC,SUP-110,7.67,18,23.51,329,752,1345,1318,2025-11-10
+FUR-CH-1202,Global Task Chair,Furniture,Chairs,Central DC,SUP-105,267.02,19,1.75,9,42,127,45,2025-10-27
+OFF-LA-1203,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-112,24.67,6,19.19,115,230,907,543,2025-12-01
+OFF-AR-1204,Sharpie Markers,Office Supplies,Art,South DC,SUP-100,16.35,16,30.79,185,678,1637,1973,2025-12-15
+TEC-PH-1205,Apple iPhone,Technology,Phones,South DC,SUP-106,442.7,12,3.84,35,81,285,334,2025-12-15
+TEC-PH-1206,Cisco IP Phone,Technology,Phones,Central DC,SUP-111,151.32,12,1.4,10,27,95,64,2025-12-22
+TEC-MA-1207,Cubify 3D Printer,Technology,Machines,South DC,SUP-109,485.26,4,5.64,45,68,270,422,2025-12-15
+FUR-BO-1208,Bush Cubix Bookcase,Furniture,Bookcases,West DC,SUP-114,183.97,16,3.3,36,89,246,58,2025-09-29
+TEC-CO-1209,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-108,265.13,10,4.15,33,75,279,134,2025-11-10
+TEC-AC-1210,SanDisk Flash Drive,Technology,Accessories,West DC,SUP-109,179.42,4,9.94,70,110,482,454,2025-12-22
+TEC-AC-1211,Logitech Mouse,Technology,Accessories,South DC,SUP-111,468.15,10,14.67,147,294,709,1120,2025-12-15
+OFF-BI-1212,Avery Binder,Office Supplies,Binders,West DC,SUP-103,24.57,7,15.15,212,318,929,865,2025-11-17
+FUR-BO-1213,Sauder Bookcase,Furniture,Bookcases,Central DC,SUP-101,282.89,3,3.14,35,44,222,104,2025-11-24
+TEC-MA-1214,Lexmark Printer,Technology,Machines,East DC,SUP-106,382.36,10,2.46,27,52,172,88,2025-12-08
+TEC-AC-1215,SanDisk Flash Drive,Technology,Accessories,West DC,SUP-105,340.53,18,11.34,91,295,697,817,2025-12-15
+TEC-CO-1216,Hewlett Packard Copier,Technology,Copiers,Central DC,SUP-110,451.82,18,1.48,21,48,97,20,2025-11-03
+OFF-AR-1217,Bic Pens,Office Supplies,Art,Central DC,SUP-114,28.62,17,4.22,51,123,229,125,2025-11-03
+TEC-AC-1218,SanDisk Flash Drive,Technology,Accessories,South DC,SUP-106,145.95,8,9.31,102,176,554,225,2025-12-01
+OFF-AR-1219,Bic Pens,Office Supplies,Art,Central DC,SUP-109,13.57,3,29.21,234,322,1728,1117,2025-12-01
+FUR-TA-1220,Chromcraft Round Table,Furniture,Tables,South DC,SUP-108,350.58,7,5.27,53,90,348,244,2025-12-22
+OFF-PA-1221,HP Paper Ream,Office Supplies,Paper,East DC,SUP-110,7.89,16,25.87,285,699,1842,1666,2025-12-08
+OFF-PA-1222,HP Paper Ream,Office Supplies,Paper,West DC,SUP-109,7.06,5,25.02,300,425,1181,655,2025-10-27
+TEC-CO-1223,Hewlett Packard Copier,Technology,Copiers,Central DC,SUP-102,426.14,16,3.04,40,89,154,219,2025-12-15
+OFF-ST-1224,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-103,23.64,4,30.2,181,302,1485,214,2025-11-24
+FUR-TA-1225,Bretford Conference Table,Furniture,Tables,West DC,SUP-109,265.53,2,3.83,46,54,181,168,2025-12-08
+OFF-BI-1227,GBC Binding System,Office Supplies,Binders,Central DC,SUP-102,20.38,14,2.29,23,55,142,113,2025-12-15
+TEC-PH-1228,Apple iPhone,Technology,Phones,South DC,SUP-108,193.38,7,15.82,206,317,954,349,2025-10-06
+OFF-AR-1229,Newell Highlighters,Office Supplies,Art,Central DC,SUP-106,30.43,10,7.02,35,105,517,183,2025-11-17
+OFF-ST-1230,SimpleHouseware Bin,Office Supplies,Storage,West DC,SUP-112,15.33,8,37.63,489,790,1887,1190,2025-11-10
+TEC-PH-1231,Cisco IP Phone,Technology,Phones,East DC,SUP-103,524.27,7,12.4,136,223,650,437,2025-11-10
+OFF-LA-1232,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-102,15.39,14,20.45,164,450,1232,647,2025-11-17
+OFF-LA-1233,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-101,16.18,2,8.07,73,89,578,451,2025-11-24
+OFF-PA-1234,Boise Paper,Office Supplies,Paper,West DC,SUP-101,8.93,4,53.42,321,535,3958,1691,2025-11-24
+OFF-BI-1235,Avery Binder,Office Supplies,Binders,Central DC,SUP-113,17.25,12,15.22,183,366,888,344,2025-11-24
+OFF-AR-1236,Bic Pens,Office Supplies,Art,West DC,SUP-110,23.74,14,9.62,87,222,678,573,2025-11-24
+OFF-AR-1238,Bic Pens,Office Supplies,Art,East DC,SUP-114,15.57,17,11.04,88,276,667,985,2025-12-15
+OFF-LA-1239,Avery Labels,Office Supplies,Labels,West DC,SUP-112,10.37,5,7.49,67,104,432,306,2025-11-03
+FUR-TA-1240,Chromcraft Round Table,Furniture,Tables,Central DC,SUP-105,290.96,22,3.32,23,96,161,153,2025-12-08
+FUR-TA-1241,Bretford Conference Table,Furniture,Tables,Central DC,SUP-101,126.96,2,1.21,15,17,95,35,2025-12-01
+TEC-CO-1242,Hewlett Packard Copier,Technology,Copiers,Central DC,SUP-102,350.29,13,4.97,70,135,353,285,2025-11-24
+OFF-BI-1243,Avery Binder,Office Supplies,Binders,South DC,SUP-104,11.97,3,29.18,292,380,1697,434,2025-11-03
+OFF-PA-1244,HP Paper Ream,Office Supplies,Paper,East DC,SUP-104,9.9,4,45.89,413,597,3355,1241,2025-10-27
+OFF-BI-1245,GBC Binding System,Office Supplies,Binders,East DC,SUP-102,19.47,16,23.69,237,616,1261,1010,2025-12-15
+OFF-BI-1246,Avery Binder,Office Supplies,Binders,East DC,SUP-107,19.42,15,24.89,124,497,1822,912,2025-11-10
+OFF-LA-1247,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-111,14.39,10,31.07,435,746,1590,653,2025-11-03
+OFF-LA-1248,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-110,26.87,18,11.46,149,355,738,549,2025-12-15
+FUR-BO-1249,O'Sullivan Bookcase,Furniture,Bookcases,South DC,SUP-105,218.89,19,1.88,24,60,125,55,2025-12-01
+OFF-AR-1250,Newell Highlighters,Office Supplies,Art,West DC,SUP-108,11.09,11,22.23,111,356,1472,988,2025-11-24
+TEC-PH-1251,Apple iPhone,Technology,Phones,South DC,SUP-102,302.9,15,4.61,23,92,305,145,2025-12-15
+OFF-BI-1252,GBC Binding System,Office Supplies,Binders,West DC,SUP-108,29.76,7,17.78,142,266,841,1006,2025-12-08
+FUR-TA-1254,Bretford Conference Table,Furniture,Tables,East DC,SUP-114,259.01,13,1.28,6,23,89,17,2025-11-03
+FUR-BO-1255,Sauder Bookcase,Furniture,Bookcases,Central DC,SUP-114,191.28,13,2.8,34,70,179,208,2025-12-22
+OFF-AR-1256,Sharpie Markers,Office Supplies,Art,East DC,SUP-112,12.46,8,48.92,685,1076,3478,1290,2025-12-01
+OFF-BI-1257,GBC Binding System,Office Supplies,Binders,South DC,SUP-104,7.54,3,11.26,56,90,613,59,2025-11-10
+OFF-LA-1258,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-109,29.51,2,17.61,141,176,1044,920,2025-12-15
+OFF-ST-1259,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-102,26.78,15,1.4,11,32,89,56,2025-12-01
+OFF-LA-1260,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-105,29.07,21,32.75,458,1146,1577,446,2025-09-29
+FUR-BO-1261,Bush Cubix Bookcase,Furniture,Bookcases,South DC,SUP-112,125.74,9,4.37,31,70,298,117,2025-11-10
+FUR-FU-1263,Tenex Chairmat,Furniture,Furnishings,West DC,SUP-106,119.0,10,1.12,16,27,57,33,2025-10-27
+OFF-BI-1264,GBC Binding System,Office Supplies,Binders,South DC,SUP-100,24.7,17,29.54,384,886,1630,824,2025-11-10
+OFF-ST-1266,Fellowes Storage Box,Office Supplies,Storage,South DC,SUP-109,11.37,2,27.88,167,223,1873,718,2025-12-15
+TEC-PH-1267,Samsung Galaxy,Technology,Phones,South DC,SUP-104,558.44,5,1.99,24,34,150,122,2025-12-08
+TEC-CO-1268,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-103,291.89,5,13.98,112,182,802,228,2025-10-27
+OFF-AR-1269,Bic Pens,Office Supplies,Art,East DC,SUP-114,15.52,16,15.69,204,455,884,517,2025-11-10
+FUR-TA-1270,Bretford Conference Table,Furniture,Tables,West DC,SUP-111,223.38,12,2.55,28,59,181,87,2025-12-08
+OFF-PA-1271,HP Paper Ream,Office Supplies,Paper,Central DC,SUP-112,8.88,8,6.32,57,108,315,505,2025-12-22
+TEC-AC-1272,SanDisk Flash Drive,Technology,Accessories,East DC,SUP-107,438.87,17,12.93,116,336,910,443,2025-10-27
+FUR-FU-1273,Advantus Task Lamp,Furniture,Furnishings,East DC,SUP-112,92.71,5,0.75,10,14,61,57,2025-12-01
+OFF-PA-1274,Boise Paper,Office Supplies,Paper,South DC,SUP-101,7.12,4,13.01,104,156,968,296,2025-12-01
+OFF-AR-1275,Bic Pens,Office Supplies,Art,South DC,SUP-114,15.1,17,38.25,421,1071,2529,1945,2025-11-17
+OFF-LA-1276,Avery Labels,Office Supplies,Labels,West DC,SUP-103,15.15,6,15.49,93,186,1027,520,2025-12-15
+OFF-PA-1277,HP Paper Ream,Office Supplies,Paper,West DC,SUP-101,15.38,3,9.21,111,139,622,242,2025-12-08
+OFF-PA-1278,Boise Paper,Office Supplies,Paper,West DC,SUP-114,13.2,16,42.16,295,970,2408,1041,2025-11-17
+OFF-ST-1279,Iris File Box,Office Supplies,Storage,East DC,SUP-100,17.19,17,17.15,240,532,1051,1400,2025-12-22
+FUR-TA-1280,Bush Somerset Table,Furniture,Tables,Central DC,SUP-104,306.67,6,1.45,10,19,101,71,2025-12-15
+TEC-PH-1281,Apple iPhone,Technology,Phones,Central DC,SUP-103,392.9,3,6.24,31,50,386,318,2025-12-22
+TEC-AC-1282,Kensington Keyboard,Technology,Accessories,Central DC,SUP-109,532.68,5,4.32,39,61,286,282,2025-12-01
+FUR-BO-1283,Bush Cubix Bookcase,Furniture,Bookcases,East DC,SUP-100,95.03,19,1.67,8,40,102,16,2025-11-03
+OFF-PA-1285,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-112,25.58,9,7.92,103,174,433,183,2025-12-01
+FUR-CH-1286,Global Task Chair,Furniture,Chairs,Central DC,SUP-108,190.67,8,2.92,23,46,206,121,2025-12-15
+FUR-BO-1287,Sauder Bookcase,Furniture,Bookcases,South DC,SUP-104,208.24,5,3.26,20,36,243,49,2025-10-13
+OFF-ST-1288,Fellowes Storage Box,Office Supplies,Storage,West DC,SUP-104,14.85,3,32.7,164,262,2294,761,2025-11-10
+OFF-LA-1289,Avery Labels,Office Supplies,Labels,West DC,SUP-113,26.5,11,91.25,548,1552,4659,2613,2025-11-24
+OFF-ST-1290,Fellowes Storage Box,Office Supplies,Storage,South DC,SUP-108,13.43,8,27.0,162,378,1490,607,2025-11-03
+OFF-AR-1291,Sharpie Markers,Office Supplies,Art,South DC,SUP-114,26.08,15,20.12,101,403,1212,630,2025-11-24
+OFF-ST-1292,Iris File Box,Office Supplies,Storage,South DC,SUP-103,8.62,6,7.21,36,79,539,272,2025-11-17
+TEC-MA-1293,Zebra Label Printer,Technology,Machines,East DC,SUP-110,518.67,17,3.43,27,85,187,266,2025-12-08
+TEC-PH-1294,Samsung Galaxy,Technology,Phones,West DC,SUP-109,392.27,5,4.88,54,78,327,269,2025-12-15
+OFF-ST-1295,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-113,28.85,10,5.93,36,95,301,143,2025-11-03
+TEC-MA-1297,Lexmark Printer,Technology,Machines,Central DC,SUP-108,193.4,10,10.47,73,178,581,302,2025-11-03
+TEC-MA-1298,Zebra Label Printer,Technology,Machines,West DC,SUP-103,192.13,5,3.84,38,57,266,165,2025-12-08
+OFF-BI-1299,GBC Binding System,Office Supplies,Binders,East DC,SUP-111,27.48,12,21.99,264,528,1148,285,2025-11-17
+OFF-LA-1300,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-108,25.49,10,25.57,128,384,1309,627,2025-11-10
+TEC-PH-1301,Cisco IP Phone,Technology,Phones,West DC,SUP-114,184.72,17,0.98,7,24,53,44,2025-12-08
+OFF-ST-1302,Fellowes Storage Box,Office Supplies,Storage,South DC,SUP-103,14.07,3,14.06,70,112,877,103,2025-11-17
+OFF-LA-1303,Avery Labels,Office Supplies,Labels,West DC,SUP-111,20.7,9,24.83,248,471,1122,903,2025-12-15
+TEC-CO-1304,Canon Copier,Technology,Copiers,South DC,SUP-109,336.6,4,2.09,25,33,124,106,2025-12-15
+TEC-CO-1305,Canon Copier,Technology,Copiers,East DC,SUP-107,407.5,18,5.09,71,163,371,192,2025-12-01
+OFF-PA-1306,HP Paper Ream,Office Supplies,Paper,South DC,SUP-100,22.85,16,18.56,93,390,1044,270,2025-11-24
+TEC-PH-1307,Apple iPhone,Technology,Phones,Central DC,SUP-103,342.09,6,4.17,25,50,309,216,2025-11-10
+FUR-FU-1308,Eldon Desk Lamp,Furniture,Furnishings,West DC,SUP-105,127.9,22,0.78,7,24,60,17,2025-09-15
+FUR-CH-1309,Global Task Chair,Furniture,Chairs,South DC,SUP-112,338.15,7,4.0,20,48,293,121,2025-11-03
+OFF-LA-1310,Avery Labels,Office Supplies,Labels,East DC,SUP-107,26.07,17,33.61,235,806,2122,2122,2025-11-24
+FUR-FU-1311,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-107,129.68,17,1.3,14,36,77,33,2025-12-01
+TEC-AC-1312,Kensington Keyboard,Technology,Accessories,East DC,SUP-104,241.33,5,19.02,114,209,899,1004,2025-12-01
+OFF-ST-1313,Iris File Box,Office Supplies,Storage,East DC,SUP-110,12.69,17,24.64,123,542,1360,742,2025-11-24
+TEC-PH-1314,Apple iPhone,Technology,Phones,South DC,SUP-108,187.42,7,10.94,88,165,705,517,2025-11-10
+FUR-FU-1315,Eldon Desk Lamp,Furniture,Furnishings,East DC,SUP-105,128.19,20,2.89,17,75,147,156,2025-12-15
+TEC-CO-1316,Canon Copier,Technology,Copiers,Central DC,SUP-104,444.36,5,11.3,102,158,751,275,2025-10-27
+OFF-PA-1317,HP Paper Ream,Office Supplies,Paper,South DC,SUP-110,10.44,16,38.8,543,1164,2566,2618,2025-11-17
+OFF-ST-1318,SimpleHouseware Bin,Office Supplies,Storage,West DC,SUP-109,8.36,4,22.16,288,377,1512,572,2025-10-20
+FUR-CH-1320,Global Task Chair,Furniture,Chairs,East DC,SUP-106,295.39,9,1.1,15,25,84,101,2025-12-22
+TEC-AC-1321,Logitech Mouse,Technology,Accessories,Central DC,SUP-106,313.35,10,7.26,51,124,535,351,2025-12-08
+OFF-ST-1322,Fellowes Storage Box,Office Supplies,Storage,East DC,SUP-103,14.01,4,8.06,56,88,376,303,2025-10-27
+FUR-TA-1323,Chromcraft Round Table,Furniture,Tables,East DC,SUP-103,219.4,6,4.6,23,51,313,233,2025-11-24
+OFF-ST-1324,Iris File Box,Office Supplies,Storage,South DC,SUP-106,8.87,12,10.66,53,181,559,364,2025-12-15
+TEC-MA-1325,Zebra Label Printer,Technology,Machines,Central DC,SUP-105,321.68,20,6.17,43,166,357,257,2025-11-17
+OFF-PA-1326,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-108,29.32,8,2.21,18,36,149,57,2025-12-08
+OFF-ST-1327,SimpleHouseware Bin,Office Supplies,Storage,West DC,SUP-112,26.97,8,36.99,444,740,2409,852,2025-11-24
+TEC-MA-1329,Zebra Label Printer,Technology,Machines,South DC,SUP-108,519.06,9,2.93,38,64,143,101,2025-11-24
+FUR-CH-1330,Hbada Office Chair,Furniture,Chairs,West DC,SUP-111,292.71,13,0.67,7,16,41,21,2025-11-17
+OFF-LA-1331,Avery Labels,Office Supplies,Labels,East DC,SUP-100,17.32,18,12.56,163,389,595,584,2025-12-01
+OFF-ST-1332,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-106,20.64,9,5.34,32,80,293,148,2025-11-24
+OFF-LA-1333,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-112,12.7,8,7.95,40,104,418,353,2025-12-08
+TEC-PH-1334,Samsung Galaxy,Technology,Phones,South DC,SUP-101,206.56,3,3.0,36,45,143,36,2025-11-17
+FUR-CH-1335,Global Task Chair,Furniture,Chairs,Central DC,SUP-106,179.54,8,1.16,16,25,70,51,2025-12-01
+FUR-TA-1336,Chromcraft Round Table,Furniture,Tables,West DC,SUP-108,347.93,9,1.63,21,36,113,123,2025-12-08
+FUR-TA-1337,Bush Somerset Table,Furniture,Tables,East DC,SUP-108,161.28,9,1.12,15,25,85,46,2025-11-10
+TEC-CO-1338,Hewlett Packard Copier,Technology,Copiers,South DC,SUP-105,504.64,18,9.11,109,273,488,143,2025-10-13
+FUR-BO-1339,Sauder Bookcase,Furniture,Bookcases,West DC,SUP-114,210.85,17,1.69,19,48,96,105,2025-11-17
+OFF-AR-1340,Newell Highlighters,Office Supplies,Art,South DC,SUP-104,20.87,6,14.82,178,267,1072,903,2025-11-17
+OFF-AR-1341,Bic Pens,Office Supplies,Art,South DC,SUP-108,29.54,10,34.84,348,696,2479,1222,2025-11-24
+TEC-CO-1342,Hewlett Packard Copier,Technology,Copiers,Central DC,SUP-109,259.64,2,5.04,60,70,292,300,2025-12-15
+OFF-LA-1343,Avery Labels,Office Supplies,Labels,West DC,SUP-103,29.09,6,34.87,244,453,2237,376,2025-11-03
+OFF-BI-1344,Avery Binder,Office Supplies,Binders,Central DC,SUP-107,18.88,14,34.53,207,690,2560,1121,2025-12-01
+OFF-AR-1345,Sharpie Markers,Office Supplies,Art,West DC,SUP-112,20.64,9,27.68,194,443,1334,924,2025-12-15
+OFF-PA-1346,Xerox Paper Ream,Office Supplies,Paper,Central DC,SUP-105,29.98,20,22.86,160,617,1674,1292,2025-12-22
+OFF-ST-1347,Iris File Box,Office Supplies,Storage,South DC,SUP-111,13.2,12,16.33,229,425,1017,1279,2025-12-22
+FUR-TA-1348,Bush Somerset Table,Furniture,Tables,East DC,SUP-108,311.53,8,1.23,6,16,86,98,2025-12-22
+OFF-AR-1349,Sharpie Markers,Office Supplies,Art,East DC,SUP-107,7.33,14,25.41,254,610,1657,1304,2025-12-08
+OFF-LA-1350,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-104,17.26,4,7.0,98,126,327,216,2025-11-03
+TEC-PH-1352,Samsung Galaxy,Technology,Phones,Central DC,SUP-102,405.13,17,3.42,17,75,241,113,2025-12-15
+TEC-AC-1353,Kensington Keyboard,Technology,Accessories,South DC,SUP-109,481.04,5,4.38,31,53,298,282,2025-12-08
+TEC-AC-1354,SanDisk Flash Drive,Technology,Accessories,East DC,SUP-113,324.54,8,4.72,52,90,283,410,2025-12-22
+TEC-AC-1355,Logitech Mouse,Technology,Accessories,East DC,SUP-100,193.11,17,4.62,23,102,278,295,2025-12-01
+OFF-PA-1356,HP Paper Ream,Office Supplies,Paper,West DC,SUP-109,25.88,5,2.37,33,45,126,68,2025-10-13
+TEC-MA-1357,Lexmark Printer,Technology,Machines,West DC,SUP-103,254.1,6,2.33,23,37,142,43,2025-10-06
+TEC-MA-1358,Lexmark Printer,Technology,Machines,West DC,SUP-100,183.59,17,3.43,17,75,194,26,2025-11-17
+TEC-AC-1359,Kensington Keyboard,Technology,Accessories,West DC,SUP-110,203.25,17,1.43,19,43,88,34,2025-11-17
+FUR-FU-1360,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-100,286.75,19,1.29,8,33,98,69,2025-11-24
+TEC-AC-1361,Kensington Keyboard,Technology,Accessories,East DC,SUP-111,157.98,12,2.21,20,47,153,55,2025-11-10
+OFF-PA-1362,Boise Paper,Office Supplies,Paper,East DC,SUP-101,22.77,4,16.57,149,215,1181,190,2025-11-24
+TEC-PH-1363,Samsung Galaxy,Technology,Phones,West DC,SUP-108,225.93,7,21.78,152,304,1595,1235,2025-12-22
+OFF-PA-1364,Boise Paper,Office Supplies,Paper,West DC,SUP-107,22.55,18,6.47,58,174,464,252,2025-12-08
+TEC-MA-1365,Cubify 3D Printer,Technology,Machines,South DC,SUP-100,219.4,19,5.54,61,166,387,167,2025-12-01
+OFF-BI-1366,Avery Binder,Office Supplies,Binders,South DC,SUP-109,13.0,2,33.25,299,365,2033,1234,2025-12-22
+OFF-AR-1367,Bic Pens,Office Supplies,Art,West DC,SUP-100,15.31,20,21.97,308,747,1543,452,2025-11-24
+TEC-CO-1368,Canon Copier,Technology,Copiers,East DC,SUP-103,411.42,4,4.03,32,48,267,94,2025-11-03
+TEC-CO-1369,Canon Copier,Technology,Copiers,East DC,SUP-113,308.36,12,4.62,55,110,305,244,2025-12-08
+OFF-AR-1370,Sharpie Markers,Office Supplies,Art,South DC,SUP-104,10.88,3,6.42,77,96,345,206,2025-11-10
+OFF-ST-1371,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-109,11.62,2,17.41,174,209,1050,827,2025-12-01
+OFF-ST-1372,Iris File Box,Office Supplies,Storage,East DC,SUP-105,8.29,21,8.36,117,293,565,483,2025-11-17
+OFF-AR-1373,Bic Pens,Office Supplies,Art,East DC,SUP-103,30.16,4,3.87,19,34,241,290,2025-12-08
+OFF-AR-1375,Newell Highlighters,Office Supplies,Art,Central DC,SUP-104,29.11,5,7.21,72,108,488,108,2025-11-17
+OFF-BI-1376,Wilson Jones Binder,Office Supplies,Binders,East DC,SUP-109,24.52,4,6.37,64,89,451,181,2025-12-08
+OFF-AR-1377,Bic Pens,Office Supplies,Art,Central DC,SUP-108,30.64,9,26.45,185,423,1724,470,2025-10-27
+TEC-MA-1378,Zebra Label Printer,Technology,Machines,East DC,SUP-109,242.54,2,5.25,26,36,252,105,2025-11-10
+OFF-AR-1379,Bic Pens,Office Supplies,Art,South DC,SUP-104,17.19,4,7.11,100,128,474,273,2025-12-15
+FUR-TA-1380,Bush Somerset Table,Furniture,Tables,East DC,SUP-111,85.78,10,0.89,9,18,55,35,2025-11-24
+FUR-FU-1381,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-100,322.04,19,1.91,15,51,101,65,2025-10-20
+OFF-BI-1383,Avery Binder,Office Supplies,Binders,East DC,SUP-113,11.9,11,19.44,117,331,1094,658,2025-11-24
+OFF-LA-1384,Avery Labels,Office Supplies,Labels,West DC,SUP-105,25.42,22,15.64,188,532,740,1110,2025-12-15
+FUR-FU-1385,Eldon Desk Lamp,Furniture,Furnishings,West DC,SUP-113,309.83,12,5.45,38,103,288,139,2025-12-08
+TEC-CO-1386,Canon Copier,Technology,Copiers,East DC,SUP-106,472.33,8,6.0,66,114,317,427,2025-12-22
+TEC-MA-1387,Cubify 3D Printer,Technology,Machines,West DC,SUP-112,455.47,7,14.26,143,243,960,449,2025-11-03
+TEC-MA-1388,Zebra Label Printer,Technology,Machines,South DC,SUP-104,222.78,6,10.39,52,114,566,105,2025-11-03
+OFF-BI-1389,Wilson Jones Binder,Office Supplies,Binders,South DC,SUP-112,18.28,6,10.74,86,150,628,704,2025-12-22
+OFF-LA-1390,Avery Labels,Office Supplies,Labels,South DC,SUP-109,21.2,2,19.93,159,199,962,277,2025-10-13
+TEC-CO-1391,Canon Copier,Technology,Copiers,Central DC,SUP-110,336.49,17,5.55,67,161,410,350,2025-12-22
+TEC-MA-1392,Lexmark Printer,Technology,Machines,Central DC,SUP-101,206.1,4,5.41,76,98,254,87,2025-11-03
+OFF-PA-1393,HP Paper Ream,Office Supplies,Paper,East DC,SUP-105,18.75,22,14.0,154,462,649,456,2025-11-17
+OFF-BI-1394,Wilson Jones Binder,Office Supplies,Binders,East DC,SUP-104,28.28,4,7.09,35,63,352,53,2025-10-13
+TEC-MA-1395,Zebra Label Printer,Technology,Machines,South DC,SUP-101,355.25,4,17.35,121,190,873,885,2025-11-10
+OFF-LA-1396,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-106,22.86,11,13.44,94,242,946,77,2025-11-17
+FUR-FU-1397,Eldon Desk Lamp,Furniture,Furnishings,Central DC,SUP-105,174.7,18,1.5,10,37,91,120,2025-12-22
+FUR-TA-1398,Bush Somerset Table,Furniture,Tables,South DC,SUP-100,127.54,17,3.57,36,97,194,159,2025-12-15
+FUR-BO-1399,Bush Cubix Bookcase,Furniture,Bookcases,South DC,SUP-106,301.19,12,3.96,40,88,239,95,2025-11-03
+FUR-TA-1000,Bush Somerset Table,Furniture,Tables,Central DC,SUP-104,306.0,2,1.91,10,14,99,87,2025-12-08
+OFF-ST-1002,Iris File Box,Office Supplies,Storage,West DC,SUP-103,30.67,5,29.31,147,294,1441,528,2025-10-20
+FUR-TA-1003,Bush Somerset Table,Furniture,Tables,West DC,SUP-100,340.21,18,0.43,6,14,29,22,2025-12-15
+TEC-MA-1004,Cubify 3D Printer,Technology,Machines,West DC,SUP-102,355.83,14,11.15,56,212,585,698,2025-12-15
+FUR-BO-1005,Sauder Bookcase,Furniture,Bookcases,West DC,SUP-103,303.12,5,5.07,51,76,259,80,2025-11-24
+OFF-AR-1008,Newell Highlighters,Office Supplies,Art,East DC,SUP-110,18.06,17,7.04,56,176,449,388,2025-12-22
+FUR-BO-1009,Sauder Bookcase,Furniture,Bookcases,Central DC,SUP-107,182.29,14,1.52,11,32,96,41,2025-12-01
+FUR-CH-1010,Global Task Chair,Furniture,Chairs,West DC,SUP-107,310.84,18,0.42,4,12,36,7,2025-11-10
+OFF-PA-1011,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-104,28.34,4,6.48,91,117,426,515,2025-12-01
+OFF-LA-1012,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-110,7.48,15,13.28,106,305,642,592,2025-12-15
+TEC-CO-1013,Canon Copier,Technology,Copiers,Central DC,SUP-111,162.28,13,4.24,25,80,209,75,2025-12-01
+TEC-CO-1014,Canon Copier,Technology,Copiers,East DC,SUP-103,157.28,5,12.24,73,134,764,427,2025-11-24
+FUR-BO-1015,O'Sullivan Bookcase,Furniture,Bookcases,East DC,SUP-103,153.07,4,4.15,21,38,308,130,2025-11-24
+TEC-PH-1016,Cisco IP Phone,Technology,Phones,Central DC,SUP-112,439.78,5,10.65,96,149,495,202,2025-10-27
+OFF-LA-1017,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-100,27.05,17,14.93,90,344,737,867,2025-12-08
+OFF-ST-1019,Iris File Box,Office Supplies,Storage,East DC,SUP-111,15.54,12,7.54,106,196,367,103,2025-10-13
+TEC-AC-1021,Kensington Keyboard,Technology,Accessories,Central DC,SUP-101,451.96,3,7.45,37,59,527,306,2025-12-15
+TEC-PH-1022,Apple iPhone,Technology,Phones,West DC,SUP-104,312.87,6,14.47,159,246,801,571,2025-11-24
+OFF-BI-1024,Wilson Jones Binder,Office Supplies,Binders,West DC,SUP-101,14.33,4,1.39,14,20,88,116,2025-12-22
+OFF-PA-1025,HP Paper Ream,Office Supplies,Paper,Central DC,SUP-110,18.25,14,8.12,73,187,525,257,2025-11-10
+TEC-MA-1026,Zebra Label Printer,Technology,Machines,West DC,SUP-111,360.2,13,10.14,71,203,715,323,2025-11-03
+OFF-AR-1029,Sharpie Markers,Office Supplies,Art,Central DC,SUP-114,14.71,16,1.19,15,34,92,45,2025-12-15
+OFF-ST-1030,Fellowes Storage Box,Office Supplies,Storage,South DC,SUP-112,19.23,8,26.04,156,364,1177,854,2025-12-08
+FUR-FU-1031,Tenex Chairmat,Furniture,Furnishings,Central DC,SUP-110,89.08,18,0.89,7,23,47,7,2025-12-08
+OFF-ST-1033,Iris File Box,Office Supplies,Storage,Central DC,SUP-108,18.01,9,20.94,147,335,1324,1923,2025-12-22
+TEC-MA-1034,Cubify 3D Printer,Technology,Machines,West DC,SUP-103,216.17,4,8.3,66,99,445,79,2025-11-10
+OFF-AR-1036,Newell Highlighters,Office Supplies,Art,East DC,SUP-107,8.75,16,14.02,98,322,972,1071,2025-12-22
+FUR-CH-1037,HON Executive Chair,Furniture,Chairs,East DC,SUP-103,309.55,3,1.71,15,20,114,35,2025-11-17
+TEC-MA-1038,Cubify 3D Printer,Technology,Machines,Central DC,SUP-109,410.81,3,11.53,127,162,824,514,2025-11-24
+OFF-ST-1039,Fellowes Storage Box,Office Supplies,Storage,South DC,SUP-109,22.0,5,10.51,126,179,583,495,2025-12-22
+OFF-PA-1040,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-107,11.53,15,18.88,189,472,1062,1351,2025-11-24
+OFF-ST-1041,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-106,11.07,10,1.59,22,38,121,95,2025-11-24
+TEC-PH-1043,Samsung Galaxy,Technology,Phones,East DC,SUP-103,271.35,6,9.51,86,143,595,406,2025-12-15
+OFF-AR-1044,Sharpie Markers,Office Supplies,Art,South DC,SUP-102,8.66,13,4.98,35,100,319,444,2025-12-22
+FUR-CH-1045,Global Task Chair,Furniture,Chairs,West DC,SUP-106,319.59,12,2.54,36,66,155,171,2025-12-01
+FUR-CH-1047,Hbada Office Chair,Furniture,Chairs,West DC,SUP-103,285.25,4,0.87,10,13,45,34,2025-12-08
+FUR-TA-1048,Bretford Conference Table,Furniture,Tables,South DC,SUP-112,151.31,5,0.4,2,4,26,16,2025-11-03
+FUR-TA-1049,Chromcraft Round Table,Furniture,Tables,East DC,SUP-107,167.4,16,9.31,84,233,610,160,2025-11-03
+FUR-BO-1050,O'Sullivan Bookcase,Furniture,Bookcases,South DC,SUP-101,244.83,3,1.81,18,23,97,40,2025-11-24
+FUR-FU-1052,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-113,186.9,10,2.66,35,62,175,56,2025-11-10
+OFF-ST-1053,Iris File Box,Office Supplies,Storage,West DC,SUP-112,26.09,7,11.2,101,179,520,542,2025-12-15
+OFF-BI-1054,Wilson Jones Binder,Office Supplies,Binders,West DC,SUP-100,12.83,19,24.21,169,629,1167,796,2025-12-15
+FUR-BO-1055,Sauder Bookcase,Furniture,Bookcases,South DC,SUP-113,108.8,9,7.38,89,155,507,467,2025-12-01
+OFF-LA-1056,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-105,15.25,22,14.88,89,416,1076,987,2025-12-01
+OFF-AR-1057,Bic Pens,Office Supplies,Art,South DC,SUP-114,27.18,15,7.61,53,167,347,538,2025-12-22
+TEC-PH-1058,Cisco IP Phone,Technology,Phones,West DC,SUP-100,180.89,18,4.97,40,129,373,209,2025-12-01
+TEC-PH-1059,Cisco IP Phone,Technology,Phones,Central DC,SUP-107,308.32,16,8.42,76,211,519,383,2025-12-22
+TEC-CO-1060,Hewlett Packard Copier,Technology,Copiers,Central DC,SUP-106,327.04,10,12.65,101,227,574,542,2025-11-10
+FUR-FU-1061,Tenex Chairmat,Furniture,Furnishings,West DC,SUP-108,166.89,7,0.89,6,12,60,49,2025-11-17
+TEC-AC-1062,SanDisk Flash Drive,Technology,Accessories,West DC,SUP-101,565.28,4,3.46,38,52,223,160,2025-12-01
+TEC-AC-1063,Kensington Keyboard,Technology,Accessories,West DC,SUP-109,181.32,2,6.86,62,76,403,238,2025-11-10
+OFF-PA-1064,HP Paper Ream,Office Supplies,Paper,South DC,SUP-106,14.71,10,3.71,52,89,239,118,2025-10-06
+TEC-AC-1065,SanDisk Flash Drive,Technology,Accessories,South DC,SUP-102,383.85,16,1.81,25,54,105,159,2025-12-22
+OFF-ST-1066,Iris File Box,Office Supplies,Storage,Central DC,SUP-106,22.52,10,14.86,178,327,971,972,2025-12-22
+OFF-PA-1067,Xerox Paper Ream,Office Supplies,Paper,Central DC,SUP-108,27.78,10,46.43,511,975,3348,2395,2025-11-10
+OFF-LA-1068,Avery Labels,Office Supplies,Labels,West DC,SUP-107,13.45,18,67.63,676,1893,3251,5222,2025-12-15
+TEC-CO-1069,Canon Copier,Technology,Copiers,Central DC,SUP-113,334.87,10,1.92,23,42,134,31,2025-10-13
+OFF-PA-1070,Boise Paper,Office Supplies,Paper,West DC,SUP-113,20.03,10,44.53,312,757,3300,3812,2025-12-15
+FUR-TA-1071,Chromcraft Round Table,Furniture,Tables,South DC,SUP-111,275.38,11,1.58,16,33,79,90,2025-12-01
+FUR-CH-1072,Global Task Chair,Furniture,Chairs,Central DC,SUP-112,168.34,5,3.77,49,68,280,91,2025-10-13
+OFF-PA-1075,HP Paper Ream,Office Supplies,Paper,West DC,SUP-105,12.13,19,6.97,70,202,319,425,2025-12-15
+OFF-ST-1076,Fellowes Storage Box,Office Supplies,Storage,East DC,SUP-110,14.99,16,4.91,59,138,329,240,2025-12-08
+OFF-ST-1077,Fellowes Storage Box,Office Supplies,Storage,West DC,SUP-107,15.96,18,7.64,38,176,456,322,2025-12-22
+OFF-AR-1078,Sharpie Markers,Office Supplies,Art,East DC,SUP-112,8.24,7,5.38,54,92,339,257,2025-11-17
+OFF-LA-1079,Avery Labels,Office Supplies,Labels,Central DC,SUP-114,16.95,15,23.92,263,622,1488,539,2025-12-01
+OFF-PA-1080,Boise Paper,Office Supplies,Paper,West DC,SUP-113,18.88,9,7.5,60,128,560,540,2025-12-15
+OFF-AR-1081,Newell Highlighters,Office Supplies,Art,East DC,SUP-114,8.54,17,2.16,22,59,124,34,2025-11-10
+TEC-MA-1082,Lexmark Printer,Technology,Machines,Central DC,SUP-105,500.26,21,8.91,125,312,513,247,2025-11-17
+FUR-CH-1084,Global Task Chair,Furniture,Chairs,East DC,SUP-106,106.18,8,2.11,13,30,121,56,2025-12-01
+OFF-PA-1085,Xerox Paper Ream,Office Supplies,Paper,Central DC,SUP-109,19.06,2,23.27,163,210,1052,421,2025-11-10
+OFF-LA-1086,Avery Labels,Office Supplies,Labels,Central DC,SUP-100,27.39,20,45.24,588,1493,2855,1420,2025-12-01
+OFF-BI-1087,Avery Binder,Office Supplies,Binders,South DC,SUP-108,17.98,9,48.18,626,1060,2366,2329,2025-12-01
+FUR-FU-1088,Advantus Task Lamp,Furniture,Furnishings,South DC,SUP-104,205.66,5,2.13,28,39,148,215,2025-12-22
+TEC-MA-1089,Cubify 3D Printer,Technology,Machines,Central DC,SUP-104,239.22,2,5.28,74,85,380,127,2025-12-08
+TEC-AC-1090,Logitech Mouse,Technology,Accessories,East DC,SUP-108,544.27,9,12.25,74,184,581,185,2025-10-13
+TEC-PH-1091,Samsung Galaxy,Technology,Phones,South DC,SUP-103,475.71,5,7.74,108,147,438,228,2025-12-01
+FUR-CH-1092,Global Task Chair,Furniture,Chairs,South DC,SUP-105,268.08,22,1.8,18,58,109,146,2025-12-22
+OFF-PA-1094,Boise Paper,Office Supplies,Paper,West DC,SUP-105,29.33,20,54.2,379,1463,4016,4147,2025-12-22
+FUR-CH-1095,Global Task Chair,Furniture,Chairs,South DC,SUP-106,261.78,10,1.39,10,24,83,22,2025-11-24
+OFF-AR-1096,Bic Pens,Office Supplies,Art,South DC,SUP-101,9.92,2,31.73,412,475,2258,818,2025-12-08
+TEC-AC-1097,Logitech Mouse,Technology,Accessories,West DC,SUP-100,483.66,19,5.3,37,138,286,326,2025-12-01
+FUR-FU-1098,Advantus Task Lamp,Furniture,Furnishings,South DC,SUP-103,264.81,3,2.15,22,28,123,64,2025-12-08
+FUR-TA-1099,Bretford Conference Table,Furniture,Tables,Central DC,SUP-114,122.43,14,1.91,11,38,110,7,2025-10-27
+TEC-CO-1101,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-108,325.19,8,3.23,19,45,179,249,2025-12-22
+TEC-PH-1102,Samsung Galaxy,Technology,Phones,East DC,SUP-108,252.13,8,5.26,68,110,242,517,2025-12-22
+OFF-ST-1104,SimpleHouseware Bin,Office Supplies,Storage,South DC,SUP-108,15.07,11,2.33,12,38,117,37,2025-10-13
+OFF-ST-1105,SimpleHouseware Bin,Office Supplies,Storage,South DC,SUP-113,11.13,11,18.19,182,382,1078,1032,2025-12-01
+TEC-AC-1106,SanDisk Flash Drive,Technology,Accessories,West DC,SUP-104,425.91,4,3.87,27,42,195,11,2025-11-10
+FUR-FU-1107,Eldon Desk Lamp,Furniture,Furnishings,South DC,SUP-109,153.93,4,1.21,13,18,85,18,2025-11-03
+TEC-PH-1108,Samsung Galaxy,Technology,Phones,South DC,SUP-101,442.71,4,3.89,51,67,250,149,2025-11-10
+OFF-LA-1109,Avery Labels,Office Supplies,Labels,South DC,SUP-106,10.26,8,20.1,281,442,1271,557,2025-11-17
+OFF-LA-1110,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-101,17.37,2,7.28,87,102,405,80,2025-10-20
+FUR-FU-1112,Advantus Task Lamp,Furniture,Furnishings,Central DC,SUP-109,296.5,4,2.62,26,36,136,90,2025-12-15
+TEC-AC-1113,Kensington Keyboard,Technology,Accessories,South DC,SUP-113,478.31,11,1.34,16,31,72,66,2025-11-24
+OFF-ST-1115,Iris File Box,Office Supplies,Storage,South DC,SUP-105,19.19,21,13.51,149,433,681,286,2025-10-06
+FUR-FU-1116,Eldon Desk Lamp,Furniture,Furnishings,South DC,SUP-110,196.43,16,2.86,23,69,205,69,2025-10-20
+FUR-TA-1117,Bretford Conference Table,Furniture,Tables,South DC,SUP-110,273.11,18,1.65,18,48,96,77,2025-11-17
+OFF-LA-1120,Avery Labels,Office Supplies,Labels,Central DC,SUP-107,24.16,15,24.61,320,689,1629,369,2025-10-27
+FUR-BO-1121,O'Sullivan Bookcase,Furniture,Bookcases,East DC,SUP-109,186.42,5,1.4,20,27,79,28,2025-11-10
+FUR-BO-1122,Sauder Bookcase,Furniture,Bookcases,South DC,SUP-102,285.32,15,2.4,19,55,154,98,2025-12-01
+TEC-MA-1124,Lexmark Printer,Technology,Machines,East DC,SUP-100,332.78,18,0.94,8,25,58,24,2025-11-10
+OFF-ST-1125,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-110,8.51,16,6.66,40,147,318,322,2025-11-10
+OFF-BI-1126,Avery Binder,Office Supplies,Binders,South DC,SUP-103,18.06,5,25.2,227,353,1794,889,2025-12-15
+FUR-CH-1127,Global Task Chair,Furniture,Chairs,South DC,SUP-107,114.84,15,4.05,40,101,228,96,2025-12-08
+TEC-PH-1128,Cisco IP Phone,Technology,Phones,Central DC,SUP-103,443.49,3,6.49,52,71,485,305,2025-11-24
+OFF-LA-1129,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-105,24.52,18,5.9,83,189,412,205,2025-11-17
+FUR-TA-1130,Chromcraft Round Table,Furniture,Tables,South DC,SUP-110,315.49,17,3.33,43,100,211,256,2025-12-22
+FUR-TA-1131,Chromcraft Round Table,Furniture,Tables,West DC,SUP-113,308.39,8,3.05,15,39,203,25,2025-10-06
+OFF-ST-1132,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-102,10.3,14,3.0,15,57,155,164,2025-12-22
+OFF-BI-1133,GBC Binding System,Office Supplies,Binders,Central DC,SUP-110,27.93,15,22.2,222,555,1115,296,2025-11-03
+OFF-ST-1134,Fellowes Storage Box,Office Supplies,Storage,South DC,SUP-114,28.27,14,12.17,146,316,662,165,2025-10-20
+TEC-AC-1137,Logitech Mouse,Technology,Accessories,West DC,SUP-106,284.47,12,5.24,68,131,346,385,2025-12-08
+FUR-BO-1138,Bush Cubix Bookcase,Furniture,Bookcases,South DC,SUP-114,351.12,13,0.34,4,8,29,18,2025-12-01
+TEC-PH-1139,Samsung Galaxy,Technology,Phones,East DC,SUP-110,493.58,18,10.8,140,334,556,439,2025-11-10
+TEC-PH-1141,Apple iPhone,Technology,Phones,East DC,SUP-102,274.99,14,4.65,65,130,331,194,2025-11-17
+OFF-LA-1142,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-100,11.12,18,39.57,554,1266,2260,1205,2025-11-17
+OFF-AR-1144,Bic Pens,Office Supplies,Art,West DC,SUP-100,9.5,16,28.22,282,734,1698,1482,2025-12-08
+TEC-CO-1145,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-113,314.97,12,4.23,51,102,225,166,2025-12-15
+FUR-CH-1146,Global Task Chair,Furniture,Chairs,South DC,SUP-103,258.4,6,2.33,33,47,156,122,2025-12-08
+TEC-MA-1147,Lexmark Printer,Technology,Machines,West DC,SUP-104,540.72,3,10.65,64,96,772,64,2025-10-20
+FUR-TA-1148,Chromcraft Round Table,Furniture,Tables,West DC,SUP-108,187.77,7,0.66,7,12,41,6,2025-11-17
+TEC-MA-1149,Zebra Label Printer,Technology,Machines,East DC,SUP-105,231.21,21,1.94,17,58,137,34,2025-12-01
+TEC-MA-1150,Cubify 3D Printer,Technology,Machines,East DC,SUP-104,160.54,4,7.04,84,112,519,292,2025-12-22
+FUR-CH-1151,Hbada Office Chair,Furniture,Chairs,West DC,SUP-108,300.91,11,3.01,36,69,162,52,2025-11-10
+TEC-CO-1152,Canon Copier,Technology,Copiers,West DC,SUP-111,556.87,13,5.06,30,96,324,124,2025-10-27
+OFF-LA-1153,Avery Labels,Office Supplies,Labels,East DC,SUP-103,25.06,5,12.32,172,234,867,419,2025-11-24
+TEC-PH-1154,Apple iPhone,Technology,Phones,West DC,SUP-110,163.3,15,2.01,26,56,101,87,2025-12-22
+FUR-TA-1155,Chromcraft Round Table,Furniture,Tables,West DC,SUP-105,205.55,22,1.6,19,54,85,78,2025-11-10
+OFF-LA-1156,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-100,14.9,19,27.18,381,897,1337,961,2025-12-01
+TEC-PH-1157,Apple iPhone,Technology,Phones,Central DC,SUP-100,260.73,19,3.98,24,100,236,20,2025-11-17
+OFF-BI-1158,GBC Binding System,Office Supplies,Binders,Central DC,SUP-103,18.47,5,14.68,117,190,871,661,2025-12-01
+FUR-FU-1159,Advantus Task Lamp,Furniture,Furnishings,East DC,SUP-105,259.54,18,3.22,26,84,227,41,2025-11-03
+FUR-TA-1160,Bretford Conference Table,Furniture,Tables,South DC,SUP-112,89.28,9,2.03,18,36,121,111,2025-11-24
+TEC-AC-1161,Logitech Mouse,Technology,Accessories,West DC,SUP-112,332.04,8,4.09,20,53,287,119,2025-12-01
+TEC-PH-1162,Apple iPhone,Technology,Phones,West DC,SUP-110,412.1,15,3.75,49,105,249,223,2025-12-22
+TEC-CO-1164,Canon Copier,Technology,Copiers,South DC,SUP-111,297.22,13,8.28,66,174,477,346,2025-12-01
+FUR-BO-1166,Bush Cubix Bookcase,Furniture,Bookcases,Central DC,SUP-108,105.65,11,0.52,5,11,29,35,2025-12-22
+FUR-TA-1167,Bush Somerset Table,Furniture,Tables,Central DC,SUP-108,83.79,8,1.85,26,41,97,55,2025-11-17
+OFF-ST-1168,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-103,15.1,5,19.08,210,305,1417,438,2025-10-27
+OFF-ST-1169,Fellowes Storage Box,Office Supplies,Storage,East DC,SUP-102,20.48,14,43.14,518,1122,2464,1868,2025-11-24
+FUR-FU-1170,Eldon Desk Lamp,Furniture,Furnishings,South DC,SUP-105,88.24,21,1.51,20,52,90,57,2025-11-17
+OFF-ST-1171,Iris File Box,Office Supplies,Storage,West DC,SUP-102,27.56,13,20.31,264,528,1102,358,2025-11-17
+FUR-FU-1172,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-110,146.5,17,0.42,3,10,31,5,2025-11-03
+TEC-AC-1173,Logitech Mouse,Technology,Accessories,East DC,SUP-112,280.36,9,8.08,113,186,369,422,2025-11-03
+FUR-TA-1174,Bush Somerset Table,Furniture,Tables,South DC,SUP-104,235.08,2,6.26,31,44,287,163,2025-12-08
+OFF-PA-1175,Boise Paper,Office Supplies,Paper,South DC,SUP-109,25.17,3,9.79,59,88,475,388,2025-12-22
+TEC-MA-1177,Zebra Label Printer,Technology,Machines,West DC,SUP-112,335.66,9,5.66,28,79,294,313,2025-12-15
+FUR-CH-1178,HON Executive Chair,Furniture,Chairs,South DC,SUP-114,319.89,16,3.49,24,80,193,33,2025-09-29
+TEC-MA-1180,Zebra Label Printer,Technology,Machines,South DC,SUP-111,250.16,11,15.57,140,311,970,463,2025-10-20
+OFF-PA-1181,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-100,30.71,16,9.92,99,258,729,468,2025-11-03
+TEC-AC-1184,Kensington Keyboard,Technology,Accessories,East DC,SUP-105,300.23,22,4.83,53,159,358,115,2025-11-24
+OFF-BI-1186,Wilson Jones Binder,Office Supplies,Binders,East DC,SUP-103,26.68,5,10.72,107,161,777,345,2025-11-10
+OFF-BI-1188,Avery Binder,Office Supplies,Binders,Central DC,SUP-103,13.85,4,17.38,226,296,944,1477,2025-12-15
+FUR-TA-1189,Bush Somerset Table,Furniture,Tables,West DC,SUP-112,86.31,9,1.61,21,35,87,106,2025-12-15
+TEC-AC-1190,SanDisk Flash Drive,Technology,Accessories,South DC,SUP-112,175.68,7,17.93,179,305,1224,1403,2025-12-01
+OFF-LA-1191,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-101,11.94,4,7.43,89,119,540,266,2025-12-01
+OFF-BI-1192,GBC Binding System,Office Supplies,Binders,East DC,SUP-105,13.49,22,29.81,328,984,1734,1095,2025-11-17
+OFF-BI-1193,GBC Binding System,Office Supplies,Binders,East DC,SUP-106,26.17,8,40.98,369,697,2874,2088,2025-12-01
+OFF-AR-1194,Bic Pens,Office Supplies,Art,West DC,SUP-102,15.18,16,27.75,388,832,1781,1414,2025-12-15
+OFF-PA-1195,Boise Paper,Office Supplies,Paper,West DC,SUP-112,28.79,7,35.93,503,755,2269,1546,2025-12-01
+OFF-AR-1196,Newell Highlighters,Office Supplies,Art,Central DC,SUP-102,18.65,14,1.49,13,34,90,63,2025-11-24
+TEC-AC-1197,SanDisk Flash Drive,Technology,Accessories,Central DC,SUP-107,203.48,15,11.92,60,239,553,120,2025-11-10
+TEC-PH-1198,Cisco IP Phone,Technology,Phones,West DC,SUP-114,476.97,15,4.33,26,91,304,145,2025-10-20
+FUR-FU-1199,Eldon Desk Lamp,Furniture,Furnishings,Central DC,SUP-114,221.25,16,4.63,42,116,232,166,2025-12-01
+OFF-BI-1200,Wilson Jones Binder,Office Supplies,Binders,East DC,SUP-112,23.17,5,10.29,134,185,653,229,2025-10-06
+OFF-PA-1201,Boise Paper,Office Supplies,Paper,Central DC,SUP-113,24.44,12,10.49,73,199,708,163,2025-11-03
+FUR-FU-1202,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-111,172.27,13,6.02,36,114,318,441,2025-12-08
+FUR-FU-1203,Advantus Task Lamp,Furniture,Furnishings,Central DC,SUP-113,147.52,12,2.78,19,52,188,68,2025-12-01
+TEC-MA-1204,Cubify 3D Printer,Technology,Machines,South DC,SUP-109,153.63,3,5.71,57,74,325,54,2025-10-20
+OFF-ST-1205,Fellowes Storage Box,Office Supplies,Storage,West DC,SUP-105,26.53,21,95.47,1146,3151,4397,3554,2025-12-15
+OFF-AR-1209,Sharpie Markers,Office Supplies,Art,East DC,SUP-112,18.87,5,25.69,206,334,1187,573,2025-10-27
+OFF-PA-1210,HP Paper Ream,Office Supplies,Paper,West DC,SUP-114,11.44,15,1.44,7,29,78,105,2025-12-22
+TEC-PH-1211,Samsung Galaxy,Technology,Phones,South DC,SUP-112,566.15,9,2.19,26,46,132,40,2025-09-29
+OFF-AR-1212,Sharpie Markers,Office Supplies,Art,South DC,SUP-103,8.05,6,14.43,173,260,828,380,2025-11-24
+TEC-CO-1214,Canon Copier,Technology,Copiers,East DC,SUP-109,153.71,2,19.24,212,250,1025,722,2025-11-24
+OFF-BI-1215,Avery Binder,Office Supplies,Binders,West DC,SUP-102,29.18,13,1.25,8,24,93,11,2025-11-03
+OFF-AR-1218,Sharpie Markers,Office Supplies,Art,South DC,SUP-113,15.15,11,31.85,223,573,1597,637,2025-10-13
+TEC-CO-1219,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-100,158.89,16,7.28,51,167,420,169,2025-11-10
+TEC-AC-1222,Kensington Keyboard,Technology,Accessories,Central DC,SUP-105,251.85,19,15.2,198,487,780,1164,2025-12-22
+TEC-MA-1223,Zebra Label Printer,Technology,Machines,South DC,SUP-102,218.31,16,3.34,17,70,182,32,2025-11-10
+TEC-AC-1224,Kensington Keyboard,Technology,Accessories,West DC,SUP-100,351.6,17,6.2,81,186,383,269,2025-10-20
+OFF-AR-1225,Bic Pens,Office Supplies,Art,West DC,SUP-110,20.37,17,41.91,210,922,2729,2120,2025-11-17
+TEC-AC-1226,Kensington Keyboard,Technology,Accessories,West DC,SUP-114,207.71,13,3.48,42,87,245,124,2025-12-01
+OFF-PA-1227,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-110,29.52,14,22.68,318,636,1162,1541,2025-11-24
+FUR-BO-1228,O'Sullivan Bookcase,Furniture,Bookcases,East DC,SUP-108,194.95,9,5.34,43,91,256,232,2025-11-10
+OFF-PA-1229,Boise Paper,Office Supplies,Paper,West DC,SUP-108,22.91,8,72.81,874,1456,5175,1945,2025-12-01
+TEC-MA-1230,Cubify 3D Printer,Technology,Machines,Central DC,SUP-103,529.99,7,5.81,70,111,307,388,2025-11-24
+FUR-TA-1231,Bush Somerset Table,Furniture,Tables,East DC,SUP-100,254.54,18,1.06,11,30,69,71,2025-12-08
+TEC-PH-1233,Cisco IP Phone,Technology,Phones,South DC,SUP-112,537.55,9,8.54,85,162,534,521,2025-12-15
+FUR-TA-1234,Bush Somerset Table,Furniture,Tables,West DC,SUP-113,262.11,11,2.01,18,40,122,165,2025-12-15
+OFF-AR-1235,Bic Pens,Office Supplies,Art,East DC,SUP-105,12.42,21,12.4,87,347,848,325,2025-11-17
+TEC-PH-1236,Apple iPhone,Technology,Phones,South DC,SUP-109,362.87,2,2.21,31,35,149,118,2025-12-01
+FUR-TA-1237,Bretford Conference Table,Furniture,Tables,South DC,SUP-107,315.83,15,4.42,62,128,204,106,2025-11-24
+TEC-CO-1238,Canon Copier,Technology,Copiers,Central DC,SUP-107,496.87,14,1.54,9,31,74,79,2025-11-10
+OFF-AR-1239,Newell Highlighters,Office Supplies,Art,West DC,SUP-104,12.28,4,19.13,96,173,1095,969,2025-12-08
+OFF-AR-1240,Sharpie Markers,Office Supplies,Art,South DC,SUP-102,25.09,13,32.12,257,675,1868,552,2025-11-17
+OFF-AR-1241,Bic Pens,Office Supplies,Art,South DC,SUP-110,22.79,14,31.05,155,590,2272,1252,2025-11-17
+TEC-PH-1242,Samsung Galaxy,Technology,Phones,South DC,SUP-108,280.78,9,7.8,39,109,512,339,2025-11-10
+TEC-AC-1243,SanDisk Flash Drive,Technology,Accessories,West DC,SUP-104,171.66,2,7.88,47,63,367,279,2025-11-17
+OFF-AR-1244,Sharpie Markers,Office Supplies,Art,South DC,SUP-110,16.22,15,26.99,378,783,1786,458,2025-11-03
+FUR-TA-1245,Bretford Conference Table,Furniture,Tables,Central DC,SUP-108,177.59,10,1.57,17,33,115,64,2025-11-10
+FUR-CH-1246,Hbada Office Chair,Furniture,Chairs,West DC,SUP-109,249.59,3,1.45,14,18,112,49,2025-11-17
+FUR-CH-1249,Hbada Office Chair,Furniture,Chairs,West DC,SUP-113,113.19,11,1.83,11,31,137,139,2025-12-15
+FUR-TA-1250,Bush Somerset Table,Furniture,Tables,East DC,SUP-104,97.02,4,2.96,30,42,177,156,2025-12-01
+OFF-LA-1252,Avery Labels,Office Supplies,Labels,West DC,SUP-103,24.14,4,12.18,61,110,724,823,2025-12-08
+TEC-PH-1253,Cisco IP Phone,Technology,Phones,West DC,SUP-107,463.9,18,9.15,55,220,463,336,2025-11-03
+TEC-AC-1254,SanDisk Flash Drive,Technology,Accessories,South DC,SUP-100,565.66,16,14.09,113,338,639,596,2025-12-08
+OFF-BI-1255,Avery Binder,Office Supplies,Binders,West DC,SUP-112,30.08,6,20.94,147,273,1240,909,2025-12-01
+TEC-AC-1256,Kensington Keyboard,Technology,Accessories,East DC,SUP-100,159.97,16,5.83,64,157,378,221,2025-12-01
+TEC-MA-1257,Zebra Label Printer,Technology,Machines,West DC,SUP-114,312.24,16,4.66,51,126,261,199,2025-11-24
+OFF-ST-1258,Iris File Box,Office Supplies,Storage,West DC,SUP-110,21.2,14,6.0,66,150,395,338,2025-12-22
+TEC-AC-1259,Logitech Mouse,Technology,Accessories,Central DC,SUP-114,206.99,16,3.98,20,84,276,52,2025-10-20
+OFF-AR-1260,Newell Highlighters,Office Supplies,Art,East DC,SUP-106,7.71,9,38.64,270,618,2864,371,2025-10-06
+OFF-BI-1262,Avery Binder,Office Supplies,Binders,East DC,SUP-100,21.85,16,8.38,50,184,466,345,2025-12-15
+OFF-AR-1263,Bic Pens,Office Supplies,Art,South DC,SUP-102,11.2,14,9.56,76,210,684,109,2025-10-20
+TEC-MA-1264,Lexmark Printer,Technology,Machines,East DC,SUP-100,467.04,20,3.72,52,126,180,130,2025-12-08
+OFF-ST-1265,Iris File Box,Office Supplies,Storage,Central DC,SUP-100,15.24,19,0.74,6,20,45,12,2025-11-17
+OFF-BI-1266,Avery Binder,Office Supplies,Binders,Central DC,SUP-108,11.44,11,10.32,124,238,490,486,2025-12-15
+TEC-AC-1267,Kensington Keyboard,Technology,Accessories,West DC,SUP-101,366.71,3,26.87,161,242,1752,1470,2025-11-24
+FUR-BO-1268,O'Sullivan Bookcase,Furniture,Bookcases,West DC,SUP-114,253.77,16,1.31,13,34,81,86,2025-12-08
+FUR-FU-1269,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-108,243.12,10,0.31,2,5,23,15,2025-12-22
+OFF-AR-1270,Sharpie Markers,Office Supplies,Art,South DC,SUP-109,15.62,2,36.22,471,543,1744,1660,2025-12-22
+OFF-BI-1271,GBC Binding System,Office Supplies,Binders,East DC,SUP-110,11.19,18,31.85,255,828,1470,1067,2025-11-10
+OFF-ST-1272,Fellowes Storage Box,Office Supplies,Storage,East DC,SUP-107,17.51,16,18.14,218,508,948,461,2025-11-10
+TEC-MA-1274,Cubify 3D Printer,Technology,Machines,South DC,SUP-100,287.85,17,7.75,85,217,524,155,2025-11-03
+FUR-CH-1275,Hbada Office Chair,Furniture,Chairs,Central DC,SUP-112,272.09,8,2.07,14,31,131,10,2025-10-06
+FUR-TA-1276,Bretford Conference Table,Furniture,Tables,Central DC,SUP-105,112.56,21,1.39,17,46,91,46,2025-11-03
+FUR-CH-1278,Hbada Office Chair,Furniture,Chairs,West DC,SUP-109,84.23,5,1.59,11,19,110,70,2025-11-03
+TEC-PH-1280,Samsung Galaxy,Technology,Phones,Central DC,SUP-114,342.17,17,2.19,15,52,117,35,2025-10-06
+FUR-CH-1282,HON Executive Chair,Furniture,Chairs,East DC,SUP-108,300.94,9,1.93,17,34,148,90,2025-11-17
+OFF-PA-1283,HP Paper Ream,Office Supplies,Paper,South DC,SUP-105,26.47,18,10.63,149,340,664,774,2025-12-08
+OFF-PA-1284,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-108,26.59,11,8.57,43,137,502,425,2025-11-24
+FUR-FU-1285,Tenex Chairmat,Furniture,Furnishings,Central DC,SUP-107,335.6,15,4.02,56,116,218,276,2025-12-01
+TEC-AC-1286,Kensington Keyboard,Technology,Accessories,West DC,SUP-103,339.83,7,5.71,69,109,279,157,2025-10-20
+TEC-PH-1287,Apple iPhone,Technology,Phones,Central DC,SUP-104,467.26,3,4.34,35,48,244,117,2025-12-01
+TEC-CO-1288,Canon Copier,Technology,Copiers,West DC,SUP-106,492.42,9,13.66,109,232,620,942,2025-12-15
+OFF-AR-1289,Sharpie Markers,Office Supplies,Art,East DC,SUP-102,14.53,15,17.27,173,432,903,1303,2025-12-22
+OFF-AR-1290,Sharpie Markers,Office Supplies,Art,Central DC,SUP-106,12.7,12,32.71,229,622,1477,248,2025-11-10
+TEC-MA-1291,Cubify 3D Printer,Technology,Machines,East DC,SUP-108,562.06,8,22.73,250,432,1551,627,2025-11-10
+TEC-AC-1292,Kensington Keyboard,Technology,Accessories,East DC,SUP-107,171.26,15,6.75,61,162,471,228,2025-10-20
+OFF-AR-1293,Sharpie Markers,Office Supplies,Art,West DC,SUP-110,17.66,14,21.42,236,536,1397,1846,2025-12-15
+OFF-BI-1294,GBC Binding System,Office Supplies,Binders,West DC,SUP-114,9.59,15,22.59,203,542,1067,1314,2025-12-08
+FUR-FU-1295,Tenex Chairmat,Furniture,Furnishings,Central DC,SUP-101,318.66,3,2.16,17,23,135,52,2025-11-17
+TEC-MA-1296,Cubify 3D Printer,Technology,Machines,West DC,SUP-109,217.9,2,5.98,42,54,334,280,2025-11-10
+FUR-CH-1300,Hbada Office Chair,Furniture,Chairs,South DC,SUP-102,147.43,13,0.87,4,15,69,56,2025-11-24
+OFF-BI-1302,GBC Binding System,Office Supplies,Binders,East DC,SUP-102,28.23,17,12.63,88,303,611,661,2025-12-01
+OFF-PA-1304,HP Paper Ream,Office Supplies,Paper,South DC,SUP-108,23.38,9,10.32,93,186,707,232,2025-11-10
+OFF-PA-1305,HP Paper Ream,Office Supplies,Paper,South DC,SUP-108,21.32,7,27.39,383,575,1457,937,2025-11-10
+OFF-BI-1306,Wilson Jones Binder,Office Supplies,Binders,East DC,SUP-102,27.05,14,35.55,178,676,1711,836,2025-11-17
+OFF-ST-1307,SimpleHouseware Bin,Office Supplies,Storage,East DC,SUP-112,14.48,6,23.56,212,353,1324,1499,2025-12-08
+OFF-AR-1308,Newell Highlighters,Office Supplies,Art,South DC,SUP-112,10.18,9,6.67,93,153,325,252,2025-10-27
+TEC-AC-1309,Kensington Keyboard,Technology,Accessories,Central DC,SUP-102,177.3,16,1.53,18,42,78,105,2025-12-01
+OFF-BI-1311,Wilson Jones Binder,Office Supplies,Binders,South DC,SUP-112,16.43,8,19.01,190,342,1070,738,2025-11-03
+TEC-CO-1312,Hewlett Packard Copier,Technology,Copiers,South DC,SUP-112,470.86,6,2.9,23,40,170,50,2025-11-17
+TEC-CO-1313,Canon Copier,Technology,Copiers,East DC,SUP-101,513.06,5,10.15,91,142,715,341,2025-11-17
+FUR-CH-1315,Hbada Office Chair,Furniture,Chairs,South DC,SUP-103,306.91,7,3.53,32,57,164,66,2025-11-24
+TEC-AC-1317,SanDisk Flash Drive,Technology,Accessories,South DC,SUP-110,464.85,18,3.36,17,77,240,25,2025-10-27
+OFF-LA-1318,Avery Labels,Office Supplies,Labels,West DC,SUP-108,18.73,9,5.81,58,110,290,177,2025-10-20
+OFF-LA-1319,Avery Labels,Office Supplies,Labels,East DC,SUP-112,11.56,6,9.32,84,140,685,514,2025-12-08
+OFF-LA-1321,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-102,17.74,13,17.11,137,359,1014,288,2025-10-13
+TEC-CO-1322,Hewlett Packard Copier,Technology,Copiers,Central DC,SUP-107,273.04,15,6.95,70,174,339,215,2025-10-27
+OFF-LA-1323,Avery Labels,Office Supplies,Labels,Central DC,SUP-107,21.77,18,15.17,167,440,1052,914,2025-12-15
+OFF-AR-1324,Bic Pens,Office Supplies,Art,South DC,SUP-114,15.67,14,31.12,218,654,2059,612,2025-11-10
+OFF-ST-1325,Fellowes Storage Box,Office Supplies,Storage,South DC,SUP-104,20.59,4,11.35,68,113,516,124,2025-10-27
+OFF-ST-1326,Iris File Box,Office Supplies,Storage,Central DC,SUP-100,11.77,16,14.79,118,355,892,636,2025-12-08
+OFF-PA-1327,Boise Paper,Office Supplies,Paper,East DC,SUP-113,23.02,10,18.83,207,395,909,983,2025-12-08
+FUR-TA-1329,Bretford Conference Table,Furniture,Tables,East DC,SUP-106,279.18,11,5.32,43,102,282,361,2025-12-15
+OFF-BI-1330,Avery Binder,Office Supplies,Binders,South DC,SUP-112,25.25,5,7.73,108,147,538,517,2025-12-01
+OFF-BI-1331,GBC Binding System,Office Supplies,Binders,Central DC,SUP-111,24.11,13,45.25,588,1176,3218,1710,2025-10-27
+OFF-BI-1332,GBC Binding System,Office Supplies,Binders,Central DC,SUP-105,18.64,18,6.17,80,191,301,192,2025-10-13
+OFF-ST-1333,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-103,17.7,6,24.7,124,272,1166,1418,2025-11-17
+OFF-BI-1334,GBC Binding System,Office Supplies,Binders,South DC,SUP-111,26.86,12,7.08,35,120,401,531,2025-12-15
+OFF-BI-1335,Wilson Jones Binder,Office Supplies,Binders,South DC,SUP-101,19.33,5,21.5,280,388,1359,305,2025-11-10
+FUR-CH-1336,Global Task Chair,Furniture,Chairs,East DC,SUP-102,253.87,13,2.04,24,51,101,163,2025-12-15
+OFF-BI-1337,GBC Binding System,Office Supplies,Binders,East DC,SUP-110,18.55,14,79.26,634,1744,5236,1825,2025-11-17
+OFF-PA-1338,Xerox Paper Ream,Office Supplies,Paper,Central DC,SUP-106,18.63,9,20.29,284,467,1080,1106,2025-12-15
+TEC-MA-1339,Lexmark Printer,Technology,Machines,East DC,SUP-114,380.88,13,4.45,22,80,223,91,2025-11-03
+OFF-BI-1340,Wilson Jones Binder,Office Supplies,Binders,Central DC,SUP-108,26.88,9,15.96,207,351,963,967,2025-11-24
+FUR-FU-1341,Eldon Desk Lamp,Furniture,Furnishings,East DC,SUP-108,273.16,11,5.08,36,92,376,37,2025-10-27
+OFF-ST-1343,Iris File Box,Office Supplies,Storage,Central DC,SUP-100,8.03,19,5.66,74,182,418,418,2025-12-22
+TEC-AC-1344,Kensington Keyboard,Technology,Accessories,East DC,SUP-106,535.73,10,11.65,93,209,704,643,2025-12-08
+OFF-PA-1345,HP Paper Ream,Office Supplies,Paper,East DC,SUP-105,19.19,20,17.44,87,436,1086,690,2025-11-17
+FUR-CH-1346,Hbada Office Chair,Furniture,Chairs,West DC,SUP-105,96.66,18,3.46,24,86,240,112,2025-12-22
+FUR-CH-1347,Hbada Office Chair,Furniture,Chairs,West DC,SUP-109,205.36,2,2.05,20,24,122,47,2025-10-20
+OFF-LA-1348,Avery Labels,Office Supplies,Labels,Central DC,SUP-103,23.3,5,14.87,119,193,957,512,2025-12-01
+OFF-ST-1349,Fellowes Storage Box,Office Supplies,Storage,West DC,SUP-102,16.11,14,7.62,69,176,470,425,2025-12-15
+OFF-AR-1350,Bic Pens,Office Supplies,Art,East DC,SUP-105,27.72,22,8.17,49,229,405,591,2025-12-22
+TEC-CO-1351,Canon Copier,Technology,Copiers,Central DC,SUP-111,268.85,11,3.37,47,84,217,200,2025-12-22
+FUR-BO-1352,Sauder Bookcase,Furniture,Bookcases,Central DC,SUP-112,119.97,7,0.83,12,18,53,33,2025-11-17
+OFF-AR-1353,Sharpie Markers,Office Supplies,Art,Central DC,SUP-106,23.41,12,29.69,148,504,1757,602,2025-10-27
+OFF-LA-1354,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-100,7.58,16,2.95,27,74,150,139,2025-12-01
+OFF-LA-1355,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-113,23.08,11,13.14,79,224,767,534,2025-11-24
+TEC-MA-1356,Zebra Label Printer,Technology,Machines,West DC,SUP-100,439.2,17,1.55,16,42,89,91,2025-12-15
+OFF-PA-1357,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-110,16.0,15,35.42,496,1027,1776,2048,2025-12-15
+OFF-PA-1358,HP Paper Ream,Office Supplies,Paper,Central DC,SUP-102,13.12,17,26.85,295,751,1401,1928,2025-12-15
+TEC-CO-1359,Canon Copier,Technology,Copiers,East DC,SUP-111,380.17,12,0.61,8,15,50,14,2025-11-24
+TEC-CO-1360,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-100,228.52,18,9.7,58,233,616,274,2025-12-08
+FUR-TA-1361,Bush Somerset Table,Furniture,Tables,Central DC,SUP-114,333.17,17,2.72,35,81,136,98,2025-10-13
+OFF-AR-1362,Newell Highlighters,Office Supplies,Art,West DC,SUP-107,30.32,14,8.87,80,204,599,663,2025-12-22
+TEC-AC-1363,SanDisk Flash Drive,Technology,Accessories,South DC,SUP-100,295.85,19,1.21,16,39,88,68,2025-11-10
+OFF-BI-1364,Avery Binder,Office Supplies,Binders,Central DC,SUP-114,8.27,17,14.08,70,309,991,859,2025-11-24
+TEC-AC-1365,Logitech Mouse,Technology,Accessories,Central DC,SUP-114,196.26,13,7.22,65,159,395,581,2025-12-15
+OFF-AR-1368,Bic Pens,Office Supplies,Art,West DC,SUP-101,29.85,5,4.29,60,81,219,135,2025-11-17
+OFF-LA-1369,Avery Labels,Office Supplies,Labels,Central DC,SUP-108,29.62,11,9.39,131,234,690,292,2025-11-10
+OFF-ST-1370,Iris File Box,Office Supplies,Storage,West DC,SUP-110,28.52,16,30.31,212,697,1763,1822,2025-12-08
+TEC-CO-1372,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-111,322.31,11,10.23,61,174,742,333,2025-11-24
+FUR-FU-1373,Advantus Task Lamp,Furniture,Furnishings,Central DC,SUP-100,343.7,19,1.27,8,32,77,54,2025-12-15
+TEC-PH-1374,Samsung Galaxy,Technology,Phones,East DC,SUP-100,352.6,18,0.7,4,17,37,58,2025-12-15
+OFF-AR-1376,Sharpie Markers,Office Supplies,Art,East DC,SUP-111,15.56,10,31.3,313,626,2071,648,2025-11-24
+OFF-BI-1377,Avery Binder,Office Supplies,Binders,Central DC,SUP-107,7.4,16,14.78,103,339,877,617,2025-11-24
+TEC-AC-1379,Logitech Mouse,Technology,Accessories,West DC,SUP-109,159.25,2,4.29,26,35,275,64,2025-12-01
+FUR-CH-1380,HON Executive Chair,Furniture,Chairs,East DC,SUP-100,343.54,16,2.32,12,49,137,44,2025-12-01
+TEC-PH-1381,Samsung Galaxy,Technology,Phones,West DC,SUP-102,486.83,17,5.2,62,150,286,376,2025-12-01
+TEC-PH-1382,Cisco IP Phone,Technology,Phones,East DC,SUP-103,487.26,6,4.15,29,54,283,40,2025-10-20
+FUR-BO-1384,O'Sullivan Bookcase,Furniture,Bookcases,South DC,SUP-101,235.67,3,0.61,3,5,35,31,2025-12-22
+TEC-PH-1385,Cisco IP Phone,Technology,Phones,West DC,SUP-102,330.3,13,11.12,67,212,772,376,2025-12-08
+OFF-ST-1386,Iris File Box,Office Supplies,Storage,Central DC,SUP-109,23.27,3,15.66,172,219,960,651,2025-12-22
+OFF-BI-1387,GBC Binding System,Office Supplies,Binders,West DC,SUP-100,16.17,17,11.33,113,306,673,823,2025-12-15
+FUR-CH-1388,Hbada Office Chair,Furniture,Chairs,West DC,SUP-112,212.48,9,0.87,12,20,60,66,2025-12-01
+TEC-MA-1389,Zebra Label Printer,Technology,Machines,Central DC,SUP-103,356.82,5,2.52,35,48,164,93,2025-12-08
+TEC-PH-1391,Apple iPhone,Technology,Phones,West DC,SUP-104,341.52,3,3.43,45,55,231,51,2025-11-24
+TEC-AC-1392,SanDisk Flash Drive,Technology,Accessories,South DC,SUP-108,153.66,7,3.21,32,54,233,77,2025-10-20
+OFF-ST-1393,Iris File Box,Office Supplies,Storage,West DC,SUP-105,22.88,18,59.8,718,1794,4012,941,2025-10-20
+TEC-MA-1394,Cubify 3D Printer,Technology,Machines,West DC,SUP-104,430.98,5,0.47,5,7,40,43,2025-12-15
+OFF-ST-1397,Iris File Box,Office Supplies,Storage,West DC,SUP-109,17.76,5,15.63,125,203,865,829,2025-11-10
+OFF-PA-1398,HP Paper Ream,Office Supplies,Paper,South DC,SUP-110,20.54,17,15.39,139,401,759,275,2025-10-27
+TEC-AC-1399,Logitech Mouse,Technology,Accessories,Central DC,SUP-101,325.65,2,6.75,81,95,369,343,2025-11-17
+TEC-MA-1001,Cubify 3D Printer,Technology,Machines,East DC,SUP-101,565.03,2,0.78,8,10,52,22,2025-12-01
+TEC-MA-1003,Cubify 3D Printer,Technology,Machines,East DC,SUP-102,374.2,15,13.39,67,268,701,717,2025-12-15
+TEC-PH-1004,Apple iPhone,Technology,Phones,West DC,SUP-109,230.04,2,11.76,141,165,687,712,2025-12-15
+TEC-AC-1005,Kensington Keyboard,Technology,Accessories,Central DC,SUP-107,136.13,17,4.85,63,145,345,273,2025-12-08
+OFF-BI-1006,GBC Binding System,Office Supplies,Binders,West DC,SUP-100,9.31,20,21.77,109,544,1093,475,2025-11-10
+TEC-PH-1007,Apple iPhone,Technology,Phones,Central DC,SUP-108,424.9,7,9.1,100,164,624,410,2025-12-22
+TEC-PH-1009,Samsung Galaxy,Technology,Phones,Central DC,SUP-100,169.19,20,10.96,66,285,630,279,2025-12-08
+TEC-PH-1010,Samsung Galaxy,Technology,Phones,South DC,SUP-111,391.24,13,8.3,83,191,594,650,2025-12-01
+FUR-BO-1012,Bush Cubix Bookcase,Furniture,Bookcases,South DC,SUP-104,288.12,5,1.68,15,23,116,27,2025-11-17
+FUR-CH-1013,Global Task Chair,Furniture,Chairs,Central DC,SUP-101,89.11,4,3.4,27,41,243,135,2025-11-10
+TEC-AC-1014,Kensington Keyboard,Technology,Accessories,West DC,SUP-101,549.74,4,8.07,97,129,497,413,2025-11-10
+TEC-AC-1015,SanDisk Flash Drive,Technology,Accessories,Central DC,SUP-107,143.52,16,4.76,67,143,238,317,2025-11-10
+OFF-LA-1016,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-106,9.01,9,33.88,271,576,1530,1202,2025-12-01
+FUR-TA-1017,Bretford Conference Table,Furniture,Tables,East DC,SUP-109,168.81,5,1.03,11,16,73,63,2025-11-17
+FUR-BO-1018,Sauder Bookcase,Furniture,Bookcases,South DC,SUP-105,247.92,21,4.85,34,136,364,254,2025-12-15
+FUR-BO-1019,O'Sullivan Bookcase,Furniture,Bookcases,East DC,SUP-107,225.45,17,2.62,34,79,139,99,2025-11-10
+OFF-BI-1020,Avery Binder,Office Supplies,Binders,East DC,SUP-103,11.64,5,2.7,22,36,159,171,2025-12-15
+FUR-FU-1021,Advantus Task Lamp,Furniture,Furnishings,South DC,SUP-111,85.62,11,5.36,27,86,343,50,2025-11-17
+OFF-ST-1023,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-104,27.36,6,9.47,123,180,573,300,2025-11-17
+OFF-ST-1024,Iris File Box,Office Supplies,Storage,East DC,SUP-106,7.9,10,9.87,69,168,518,286,2025-11-17
+FUR-TA-1025,Chromcraft Round Table,Furniture,Tables,East DC,SUP-114,279.57,17,1.6,18,45,111,79,2025-12-22
+FUR-BO-1026,Sauder Bookcase,Furniture,Bookcases,East DC,SUP-101,161.53,5,2.34,12,24,138,58,2025-10-27
+TEC-MA-1027,Lexmark Printer,Technology,Machines,East DC,SUP-103,396.41,4,10.38,114,156,711,465,2025-11-17
+TEC-MA-1028,Lexmark Printer,Technology,Machines,Central DC,SUP-108,321.34,11,2.74,22,52,153,57,2025-11-17
+TEC-CO-1029,Canon Copier,Technology,Copiers,South DC,SUP-113,174.02,12,14.98,105,285,994,1065,2025-12-01
+FUR-TA-1030,Bush Somerset Table,Furniture,Tables,Central DC,SUP-103,181.78,7,0.71,10,15,53,25,2025-10-20
+OFF-PA-1031,HP Paper Ream,Office Supplies,Paper,West DC,SUP-108,28.75,11,40.13,482,923,2413,3470,2025-12-15
+TEC-AC-1032,Kensington Keyboard,Technology,Accessories,East DC,SUP-100,189.19,17,3.96,28,95,211,130,2025-11-03
+OFF-PA-1033,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-101,11.93,3,34.57,242,346,2321,1422,2025-12-08
+FUR-FU-1035,Advantus Task Lamp,Furniture,Furnishings,South DC,SUP-104,260.02,4,3.32,33,46,168,117,2025-12-15
+TEC-PH-1036,Samsung Galaxy,Technology,Phones,East DC,SUP-106,152.58,8,8.93,63,134,550,684,2025-12-08
+TEC-PH-1037,Apple iPhone,Technology,Phones,Central DC,SUP-114,296.19,14,8.73,70,192,476,518,2025-11-24
+OFF-PA-1038,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-104,23.85,6,30.03,270,450,1446,2239,2025-12-22
+TEC-MA-1039,Cubify 3D Printer,Technology,Machines,Central DC,SUP-108,396.78,11,5.76,52,115,276,266,2025-12-01
+FUR-BO-1040,O'Sullivan Bookcase,Furniture,Bookcases,East DC,SUP-102,166.61,14,0.72,4,14,47,51,2025-12-01
+TEC-PH-1041,Apple iPhone,Technology,Phones,Central DC,SUP-105,199.32,18,4.16,54,129,275,35,2025-11-10
+FUR-TA-1042,Chromcraft Round Table,Furniture,Tables,East DC,SUP-113,342.42,12,1.14,8,22,88,43,2025-11-03
+FUR-FU-1043,Eldon Desk Lamp,Furniture,Furnishings,South DC,SUP-102,319.57,15,1.53,14,37,86,41,2025-11-03
+OFF-PA-1045,HP Paper Ream,Office Supplies,Paper,East DC,SUP-113,29.07,12,6.66,60,140,425,409,2025-12-15
+FUR-BO-1046,Sauder Bookcase,Furniture,Bookcases,East DC,SUP-110,207.82,14,3.01,24,66,210,140,2025-11-24
+OFF-AR-1047,Sharpie Markers,Office Supplies,Art,Central DC,SUP-112,12.71,5,2.18,13,24,131,82,2025-11-10
+OFF-AR-1049,Sharpie Markers,Office Supplies,Art,East DC,SUP-103,23.72,7,2.81,25,45,176,243,2025-12-22
+OFF-ST-1051,Iris File Box,Office Supplies,Storage,West DC,SUP-105,16.74,18,32.98,264,858,2083,1225,2025-12-01
+TEC-MA-1052,Lexmark Printer,Technology,Machines,West DC,SUP-111,427.43,11,13.84,69,221,808,409,2025-12-08
+OFF-AR-1054,Bic Pens,Office Supplies,Art,South DC,SUP-102,11.3,14,25.58,358,716,1335,1501,2025-12-15
+TEC-PH-1055,Samsung Galaxy,Technology,Phones,West DC,SUP-111,463.25,12,10.87,130,260,733,373,2025-10-27
+OFF-ST-1056,SimpleHouseware Bin,Office Supplies,Storage,East DC,SUP-109,19.06,5,40.17,362,563,2696,513,2025-10-27
+FUR-CH-1057,Global Task Chair,Furniture,Chairs,West DC,SUP-112,333.46,6,0.41,5,7,35,14,2025-10-20
+OFF-BI-1058,Wilson Jones Binder,Office Supplies,Binders,Central DC,SUP-114,10.16,14,23.02,276,598,1501,1779,2025-12-01
+TEC-CO-1059,Hewlett Packard Copier,Technology,Copiers,South DC,SUP-110,373.65,15,5.22,63,141,318,114,2025-11-10
+TEC-PH-1061,Cisco IP Phone,Technology,Phones,Central DC,SUP-112,343.11,5,4.39,31,53,290,185,2025-12-15
+FUR-FU-1062,Advantus Task Lamp,Furniture,Furnishings,South DC,SUP-101,149.96,3,3.34,20,30,192,37,2025-10-06
+FUR-BO-1063,Sauder Bookcase,Furniture,Bookcases,South DC,SUP-101,210.0,3,1.66,15,20,86,151,2025-12-22
+OFF-LA-1065,Avery Labels,Office Supplies,Labels,East DC,SUP-112,7.17,5,21.24,170,276,1343,297,2025-11-24
+OFF-AR-1066,Newell Highlighters,Office Supplies,Art,East DC,SUP-106,18.34,8,35.43,496,779,2521,2175,2025-12-22
+OFF-BI-1067,GBC Binding System,Office Supplies,Binders,West DC,SUP-100,18.91,16,7.21,79,194,481,208,2025-11-03
+TEC-MA-1069,Lexmark Printer,Technology,Machines,South DC,SUP-103,251.2,3,5.91,47,65,419,171,2025-12-15
+TEC-MA-1070,Cubify 3D Printer,Technology,Machines,Central DC,SUP-107,295.21,16,20.96,231,566,1409,476,2025-12-01
+TEC-MA-1071,Lexmark Printer,Technology,Machines,South DC,SUP-101,366.05,5,7.08,35,70,387,243,2025-10-20
+TEC-PH-1072,Apple iPhone,Technology,Phones,Central DC,SUP-112,384.16,8,0.97,8,16,51,19,2025-11-03
+OFF-LA-1073,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-101,7.18,5,24.34,219,341,1806,1027,2025-11-17
+OFF-ST-1074,Fellowes Storage Box,Office Supplies,Storage,South DC,SUP-105,10.8,20,4.07,57,138,188,112,2025-10-13
+OFF-AR-1075,Bic Pens,Office Supplies,Art,Central DC,SUP-106,19.79,11,6.05,60,127,362,87,2025-11-24
+TEC-CO-1077,Canon Copier,Technology,Copiers,West DC,SUP-110,414.53,14,14.03,140,336,777,378,2025-11-03
+TEC-MA-1078,Lexmark Printer,Technology,Machines,South DC,SUP-103,186.64,3,5.27,53,69,390,168,2025-12-08
+OFF-ST-1079,Iris File Box,Office Supplies,Storage,Central DC,SUP-110,29.98,17,6.58,72,184,393,119,2025-11-17
+OFF-ST-1081,Iris File Box,Office Supplies,Storage,Central DC,SUP-102,7.99,17,16.29,114,391,836,452,2025-12-01
+OFF-BI-1082,Wilson Jones Binder,Office Supplies,Binders,East DC,SUP-113,9.76,12,23.61,212,495,1280,456,2025-11-24
+OFF-BI-1083,Wilson Jones Binder,Office Supplies,Binders,West DC,SUP-110,22.6,18,6.85,62,185,354,337,2025-12-22
+OFF-BI-1084,GBC Binding System,Office Supplies,Binders,East DC,SUP-101,23.82,2,31.18,281,343,1689,1245,2025-12-15
+FUR-TA-1085,Bush Somerset Table,Furniture,Tables,East DC,SUP-103,142.24,4,2.62,16,26,162,171,2025-12-22
+OFF-AR-1086,Sharpie Markers,Office Supplies,Art,West DC,SUP-106,20.83,10,7.31,95,168,334,296,2025-10-27
+OFF-PA-1087,Boise Paper,Office Supplies,Paper,West DC,SUP-101,27.01,2,15.82,79,111,1176,812,2025-12-15
+TEC-MA-1088,Lexmark Printer,Technology,Machines,East DC,SUP-103,152.97,3,13.57,109,150,914,162,2025-11-24
+OFF-ST-1089,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-109,23.16,3,33.65,437,538,1755,1282,2025-11-03
+TEC-MA-1090,Zebra Label Printer,Technology,Machines,East DC,SUP-113,199.11,9,4.75,28,71,304,266,2025-12-01
+TEC-CO-1091,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-102,401.54,15,3.37,17,68,254,66,2025-12-01
+OFF-AR-1093,Sharpie Markers,Office Supplies,Art,South DC,SUP-111,20.87,11,12.32,99,235,904,526,2025-11-03
+FUR-FU-1094,Eldon Desk Lamp,Furniture,Furnishings,Central DC,SUP-100,138.6,20,3.61,40,112,261,300,2025-12-15
+OFF-PA-1095,Boise Paper,Office Supplies,Paper,Central DC,SUP-111,20.12,11,5.28,63,121,385,233,2025-11-03
+TEC-AC-1096,Logitech Mouse,Technology,Accessories,South DC,SUP-104,546.04,5,4.56,32,55,333,117,2025-11-10
+TEC-CO-1097,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-101,337.55,3,3.03,33,42,184,60,2025-11-24
+OFF-PA-1100,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-114,11.39,17,8.03,40,177,503,306,2025-12-22
+FUR-CH-1101,HON Executive Chair,Furniture,Chairs,East DC,SUP-106,338.14,9,1.92,15,32,145,63,2025-11-24
+FUR-CH-1102,Global Task Chair,Furniture,Chairs,South DC,SUP-101,177.54,5,2.52,28,41,189,77,2025-11-10
+TEC-MA-1103,Lexmark Printer,Technology,Machines,Central DC,SUP-112,361.35,9,3.87,50,85,229,123,2025-11-24
+TEC-MA-1104,Lexmark Printer,Technology,Machines,South DC,SUP-102,445.15,17,4.32,35,108,217,193,2025-12-22
+TEC-PH-1105,Cisco IP Phone,Technology,Phones,East DC,SUP-113,534.08,11,8.49,76,169,540,809,2025-12-22
+OFF-PA-1107,HP Paper Ream,Office Supplies,Paper,Central DC,SUP-108,18.32,10,25.38,254,508,1172,1091,2025-10-27
+OFF-BI-1109,GBC Binding System,Office Supplies,Binders,West DC,SUP-101,10.98,2,47.84,335,431,3449,1374,2025-10-27
+FUR-FU-1110,Tenex Chairmat,Furniture,Furnishings,South DC,SUP-105,267.57,20,1.01,13,33,55,90,2025-12-22
+TEC-CO-1111,Canon Copier,Technology,Copiers,Central DC,SUP-102,147.56,16,6.29,38,139,376,218,2025-11-03
+FUR-TA-1112,Bretford Conference Table,Furniture,Tables,West DC,SUP-114,257.69,16,3.04,40,89,181,92,2025-11-17
+FUR-TA-1113,Bretford Conference Table,Furniture,Tables,East DC,SUP-101,195.06,4,6.63,33,60,449,439,2025-12-15
+OFF-BI-1114,Wilson Jones Binder,Office Supplies,Binders,East DC,SUP-102,12.93,17,2.03,24,59,127,120,2025-11-17
+FUR-FU-1115,Tenex Chairmat,Furniture,Furnishings,West DC,SUP-109,203.01,2,1.46,18,21,112,103,2025-12-22
+FUR-TA-1116,Bretford Conference Table,Furniture,Tables,Central DC,SUP-112,101.7,5,9.45,76,123,459,787,2025-12-22
+OFF-PA-1117,HP Paper Ream,Office Supplies,Paper,South DC,SUP-112,25.59,9,2.61,26,49,180,145,2025-11-17
+OFF-BI-1119,Wilson Jones Binder,Office Supplies,Binders,East DC,SUP-105,28.86,21,11.54,127,369,536,824,2025-12-15
+OFF-BI-1121,Avery Binder,Office Supplies,Binders,Central DC,SUP-100,28.23,16,23.13,301,671,1069,923,2025-12-01
+OFF-PA-1122,Boise Paper,Office Supplies,Paper,Central DC,SUP-102,12.63,17,12.18,85,292,833,1063,2025-12-22
+FUR-TA-1123,Chromcraft Round Table,Furniture,Tables,South DC,SUP-105,283.5,22,6.54,78,222,371,525,2025-12-22
+TEC-PH-1124,Apple iPhone,Technology,Phones,East DC,SUP-113,250.01,10,3.77,30,68,220,96,2025-10-20
+OFF-LA-1125,Avery Labels,Office Supplies,Labels,Central DC,SUP-112,19.66,9,35.88,215,538,2050,898,2025-11-10
+TEC-MA-1126,Lexmark Printer,Technology,Machines,Central DC,SUP-108,332.59,7,12.14,158,243,794,599,2025-12-15
+FUR-BO-1128,Bush Cubix Bookcase,Furniture,Bookcases,Central DC,SUP-111,300.2,12,2.74,16,49,161,143,2025-12-15
+TEC-AC-1130,Kensington Keyboard,Technology,Accessories,South DC,SUP-107,278.77,15,11.02,88,253,787,310,2025-11-10
+TEC-AC-1132,Kensington Keyboard,Technology,Accessories,Central DC,SUP-111,407.32,9,11.69,129,234,589,378,2025-11-24
+OFF-BI-1135,Wilson Jones Binder,Office Supplies,Binders,South DC,SUP-100,14.92,17,7.59,106,235,498,134,2025-10-13
+FUR-TA-1136,Bretford Conference Table,Furniture,Tables,East DC,SUP-107,131.48,16,1.79,21,50,96,159,2025-12-15
+TEC-MA-1137,Lexmark Printer,Technology,Machines,West DC,SUP-105,472.32,22,16.24,195,552,914,1182,2025-12-15
+OFF-LA-1140,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-113,7.51,8,13.79,124,234,832,1278,2025-12-22
+FUR-CH-1141,Global Task Chair,Furniture,Chairs,West DC,SUP-100,244.47,17,2.02,20,54,96,133,2025-12-01
+OFF-ST-1142,Fellowes Storage Box,Office Supplies,Storage,East DC,SUP-110,14.9,17,4.75,52,133,333,275,2025-12-15
+OFF-ST-1143,Fellowes Storage Box,Office Supplies,Storage,East DC,SUP-102,26.3,17,17.76,195,497,1071,717,2025-11-24
+TEC-PH-1145,Cisco IP Phone,Technology,Phones,South DC,SUP-110,480.63,15,2.54,33,71,193,47,2025-10-06
+TEC-CO-1147,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-111,528.39,11,3.94,51,94,281,165,2025-10-27
+FUR-FU-1150,Tenex Chairmat,Furniture,Furnishings,West DC,SUP-107,349.88,14,4.17,38,96,226,151,2025-12-01
+OFF-AR-1151,Newell Highlighters,Office Supplies,Art,East DC,SUP-111,20.87,10,11.59,93,209,839,417,2025-11-10
+TEC-AC-1152,SanDisk Flash Drive,Technology,Accessories,West DC,SUP-111,291.04,13,1.64,18,39,90,36,2025-10-27
+OFF-BI-1153,GBC Binding System,Office Supplies,Binders,Central DC,SUP-109,10.87,5,7.15,79,115,384,504,2025-12-01
+OFF-LA-1154,Avery Labels,Office Supplies,Labels,Central DC,SUP-111,13.74,10,14.93,105,254,722,477,2025-10-27
+OFF-AR-1156,Bic Pens,Office Supplies,Art,West DC,SUP-110,25.93,16,13.58,190,407,861,353,2025-11-10
+OFF-BI-1159,GBC Binding System,Office Supplies,Binders,Central DC,SUP-111,19.49,9,8.68,87,165,621,275,2025-11-24
+TEC-PH-1160,Cisco IP Phone,Technology,Phones,Central DC,SUP-101,266.86,5,1.81,24,33,101,89,2025-11-10
+OFF-PA-1161,Boise Paper,Office Supplies,Paper,East DC,SUP-104,9.2,5,10.99,99,154,631,404,2025-11-03
+FUR-TA-1162,Bretford Conference Table,Furniture,Tables,Central DC,SUP-109,250.19,2,2.98,15,21,154,37,2025-11-17
+FUR-TA-1163,Bush Somerset Table,Furniture,Tables,East DC,SUP-108,112.57,8,5.07,71,112,324,312,2025-12-22
+FUR-BO-1164,O'Sullivan Bookcase,Furniture,Bookcases,East DC,SUP-106,142.34,9,1.78,16,32,126,30,2025-10-06
+OFF-BI-1165,Wilson Jones Binder,Office Supplies,Binders,East DC,SUP-108,30.05,7,9.86,89,158,636,192,2025-11-10
+OFF-PA-1166,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-108,16.41,10,9.94,89,188,532,584,2025-11-10
+TEC-CO-1167,Canon Copier,Technology,Copiers,West DC,SUP-114,552.88,14,10.68,107,257,603,401,2025-11-17
+OFF-LA-1168,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-106,13.63,8,15.71,173,299,1120,844,2025-12-15
+OFF-LA-1169,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-102,15.71,13,9.93,89,218,511,257,2025-11-17
+OFF-AR-1170,Sharpie Markers,Office Supplies,Art,West DC,SUP-104,23.89,5,16.53,149,232,1162,545,2025-12-15
+OFF-BI-1171,Avery Binder,Office Supplies,Binders,Central DC,SUP-102,29.81,13,2.32,19,49,116,125,2025-11-17
+TEC-AC-1172,Logitech Mouse,Technology,Accessories,East DC,SUP-110,298.5,17,5.53,44,138,326,403,2025-12-01
+TEC-MA-1173,Lexmark Printer,Technology,Machines,East DC,SUP-101,253.03,2,4.11,25,33,206,224,2025-11-24
+TEC-MA-1174,Cubify 3D Printer,Technology,Machines,Central DC,SUP-105,350.07,19,10.62,96,298,589,501,2025-11-24
+FUR-TA-1177,Bush Somerset Table,Furniture,Tables,West DC,SUP-102,289.57,15,3.96,36,95,235,51,2025-11-03
+TEC-MA-1178,Cubify 3D Printer,Technology,Machines,South DC,SUP-107,229.8,16,6.68,73,180,392,241,2025-11-24
+OFF-AR-1179,Newell Highlighters,Office Supplies,Art,East DC,SUP-113,20.58,8,10.89,54,141,626,176,2025-11-10
+OFF-ST-1180,Fellowes Storage Box,Office Supplies,Storage,East DC,SUP-106,30.73,10,21.05,126,336,1184,731,2025-10-27
+FUR-FU-1181,Eldon Desk Lamp,Furniture,Furnishings,East DC,SUP-108,345.63,11,1.18,17,30,78,107,2025-12-15
+OFF-LA-1182,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-102,28.8,15,3.61,25,79,250,272,2025-12-22
+OFF-AR-1184,Newell Highlighters,Office Supplies,Art,Central DC,SUP-109,24.22,5,29.62,148,296,1693,694,2025-11-10
+OFF-BI-1185,Avery Binder,Office Supplies,Binders,South DC,SUP-108,21.03,8,6.92,83,138,351,405,2025-12-15
+TEC-PH-1187,Apple iPhone,Technology,Phones,Central DC,SUP-107,155.91,16,5.43,76,163,260,148,2025-12-01
+TEC-AC-1189,SanDisk Flash Drive,Technology,Accessories,East DC,SUP-103,171.09,3,9.61,67,96,524,329,2025-12-01
+FUR-TA-1190,Chromcraft Round Table,Furniture,Tables,Central DC,SUP-108,306.2,10,2.54,15,40,129,137,2025-11-10
+OFF-ST-1192,Fellowes Storage Box,Office Supplies,Storage,South DC,SUP-110,14.83,14,18.43,221,479,853,809,2025-12-22
+FUR-FU-1193,Tenex Chairmat,Furniture,Furnishings,West DC,SUP-106,322.23,9,0.59,7,12,36,30,2025-12-01
+OFF-BI-1195,Avery Binder,Office Supplies,Binders,Central DC,SUP-113,8.25,8,18.22,237,383,971,946,2025-11-03
+TEC-CO-1196,Hewlett Packard Copier,Technology,Copiers,South DC,SUP-105,277.22,21,5.18,41,150,383,421,2025-12-08
+TEC-MA-1197,Lexmark Printer,Technology,Machines,East DC,SUP-111,166.38,13,2.63,26,60,155,142,2025-12-15
+TEC-AC-1198,Kensington Keyboard,Technology,Accessories,South DC,SUP-105,328.53,18,2.8,25,75,195,62,2025-12-01
+OFF-BI-1199,GBC Binding System,Office Supplies,Binders,West DC,SUP-104,7.93,3,7.32,102,124,495,79,2025-11-10
+OFF-LA-1200,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-114,17.56,15,11.33,57,227,605,263,2025-11-10
+FUR-FU-1201,Eldon Desk Lamp,Furniture,Furnishings,East DC,SUP-102,329.58,17,2.57,28,72,164,128,2025-11-10
+TEC-AC-1202,SanDisk Flash Drive,Technology,Accessories,South DC,SUP-102,513.28,17,4.48,27,103,265,300,2025-12-08
+TEC-PH-1203,Apple iPhone,Technology,Phones,East DC,SUP-114,291.07,13,6.49,32,116,368,91,2025-10-13
+OFF-PA-1206,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-105,8.57,20,1.91,13,51,106,99,2025-12-22
+TEC-CO-1207,Hewlett Packard Copier,Technology,Copiers,South DC,SUP-103,503.21,3,12.37,62,99,859,473,2025-12-01
+TEC-PH-1209,Samsung Galaxy,Technology,Phones,East DC,SUP-113,150.59,12,5.9,47,118,271,301,2025-11-24
+TEC-MA-1210,Zebra Label Printer,Technology,Machines,South DC,SUP-104,412.46,6,4.05,36,60,199,53,2025-10-20
+OFF-ST-1211,Fellowes Storage Box,Office Supplies,Storage,East DC,SUP-107,25.69,15,18.19,236,509,842,1404,2025-12-22
+FUR-CH-1212,HON Executive Chair,Furniture,Chairs,Central DC,SUP-111,318.52,10,4.02,20,60,222,35,2025-10-06
+FUR-FU-1213,Advantus Task Lamp,Furniture,Furnishings,Central DC,SUP-105,187.83,19,5.38,43,145,290,52,2025-10-13
+OFF-BI-1214,Wilson Jones Binder,Office Supplies,Binders,West DC,SUP-101,14.19,4,11.21,67,112,745,276,2025-11-24
+FUR-CH-1215,Global Task Chair,Furniture,Chairs,South DC,SUP-114,157.4,17,4.75,57,138,333,150,2025-10-20
+FUR-FU-1216,Eldon Desk Lamp,Furniture,Furnishings,East DC,SUP-113,342.01,8,3.81,50,80,230,364,2025-12-22
+TEC-MA-1217,Zebra Label Printer,Technology,Machines,South DC,SUP-112,136.7,5,2.64,24,37,129,63,2025-11-17
+OFF-ST-1218,SimpleHouseware Bin,Office Supplies,Storage,East DC,SUP-111,7.04,10,32.66,261,588,2030,1393,2025-12-01
+OFF-PA-1219,Boise Paper,Office Supplies,Paper,Central DC,SUP-103,20.9,6,7.08,71,113,331,551,2025-12-22
+FUR-CH-1221,Hbada Office Chair,Furniture,Chairs,East DC,SUP-100,261.31,17,2.9,20,69,170,155,2025-12-15
+OFF-LA-1222,Avery Labels,Office Supplies,Labels,South DC,SUP-111,12.97,12,6.31,88,164,327,134,2025-10-20
+FUR-BO-1223,Sauder Bookcase,Furniture,Bookcases,Central DC,SUP-106,343.57,12,1.38,8,25,77,71,2025-12-08
+FUR-FU-1225,Eldon Desk Lamp,Furniture,Furnishings,East DC,SUP-105,212.98,19,2.61,37,87,130,148,2025-11-24
+TEC-MA-1226,Lexmark Printer,Technology,Machines,East DC,SUP-103,324.55,3,8.88,89,116,529,536,2025-12-08
+OFF-AR-1227,Newell Highlighters,Office Supplies,Art,Central DC,SUP-105,26.77,22,37.46,487,1311,2590,1551,2025-12-01
+OFF-PA-1228,Xerox Paper Ream,Office Supplies,Paper,Central DC,SUP-103,20.48,5,11.97,84,144,843,349,2025-12-08
+FUR-BO-1230,Bush Cubix Bookcase,Furniture,Bookcases,Central DC,SUP-104,321.98,6,0.67,3,7,53,3,2025-10-27
+OFF-ST-1231,Iris File Box,Office Supplies,Storage,East DC,SUP-102,24.0,13,9.71,78,204,568,209,2025-12-01
+TEC-AC-1232,Logitech Mouse,Technology,Accessories,South DC,SUP-103,427.35,4,0.49,4,6,37,32,2025-12-22
+OFF-ST-1234,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-105,21.39,21,20.81,125,562,1045,1308,2025-12-22
+TEC-MA-1235,Lexmark Printer,Technology,Machines,South DC,SUP-113,313.96,9,15.46,216,355,1041,1004,2025-12-01
+OFF-BI-1236,Avery Binder,Office Supplies,Binders,East DC,SUP-105,27.18,21,47.09,565,1554,3160,897,2025-11-17
+OFF-BI-1237,Wilson Jones Binder,Office Supplies,Binders,South DC,SUP-110,23.22,18,8.2,74,222,399,368,2025-12-22
+OFF-ST-1238,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-104,17.58,2,15.5,140,171,857,747,2025-11-17
+OFF-PA-1239,Boise Paper,Office Supplies,Paper,East DC,SUP-113,25.6,9,20.81,146,333,1462,444,2025-12-01
+OFF-ST-1240,Iris File Box,Office Supplies,Storage,West DC,SUP-113,9.83,8,1.78,21,35,135,52,2025-10-20
+OFF-PA-1241,HP Paper Ream,Office Supplies,Paper,East DC,SUP-110,11.3,18,35.32,283,919,2619,1667,2025-11-24
+OFF-ST-1242,SimpleHouseware Bin,Office Supplies,Storage,West DC,SUP-109,11.93,5,41.56,291,499,2208,1863,2025-12-01
+OFF-AR-1243,Sharpie Markers,Office Supplies,Art,South DC,SUP-109,29.03,5,7.71,85,124,522,214,2025-12-01
+FUR-BO-1244,Bush Cubix Bookcase,Furniture,Bookcases,Central DC,SUP-106,247.02,8,1.85,15,30,90,122,2025-12-15
+TEC-PH-1245,Samsung Galaxy,Technology,Phones,East DC,SUP-109,527.21,4,5.89,82,106,417,510,2025-12-08
+OFF-ST-1246,Fellowes Storage Box,Office Supplies,Storage,West DC,SUP-101,27.67,2,7.52,75,90,373,76,2025-11-24
+OFF-ST-1247,Iris File Box,Office Supplies,Storage,Central DC,SUP-105,14.62,22,32.85,230,953,2305,2272,2025-11-24
+TEC-AC-1248,Kensington Keyboard,Technology,Accessories,West DC,SUP-102,280.78,17,9.62,48,212,553,179,2025-11-17
+TEC-PH-1249,Samsung Galaxy,Technology,Phones,West DC,SUP-110,309.72,17,6.88,34,151,473,253,2025-11-10
+TEC-CO-1251,Canon Copier,Technology,Copiers,South DC,SUP-103,257.88,4,12.85,64,115,815,712,2025-12-15
+OFF-BI-1254,Wilson Jones Binder,Office Supplies,Binders,West DC,SUP-107,19.09,16,13.81,138,359,626,777,2025-12-22
+OFF-LA-1255,Avery Labels,Office Supplies,Labels,West DC,SUP-100,9.27,16,3.9,31,93,239,175,2025-12-08
+TEC-CO-1256,Canon Copier,Technology,Copiers,South DC,SUP-106,364.94,11,21.64,173,411,1022,908,2025-12-01
+OFF-PA-1258,Boise Paper,Office Supplies,Paper,West DC,SUP-105,17.71,22,10.88,141,380,593,659,2025-12-22
+TEC-CO-1261,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-110,160.4,14,6.97,63,161,465,441,2025-12-08
+OFF-PA-1262,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-105,29.66,18,17.43,227,541,789,369,2025-11-03
+TEC-PH-1263,Apple iPhone,Technology,Phones,East DC,SUP-111,184.61,12,5.95,65,136,273,497,2025-12-22
+OFF-PA-1264,HP Paper Ream,Office Supplies,Paper,East DC,SUP-108,9.32,10,45.67,320,777,2563,2069,2025-11-03
+FUR-CH-1265,HON Executive Chair,Furniture,Chairs,Central DC,SUP-104,141.28,5,1.09,11,16,71,39,2025-12-22
+OFF-PA-1266,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-107,22.5,16,23.87,334,716,1461,1697,2025-11-24
+TEC-MA-1267,Lexmark Printer,Technology,Machines,East DC,SUP-101,376.79,5,8.51,102,145,575,402,2025-12-01
+OFF-PA-1268,HP Paper Ream,Office Supplies,Paper,East DC,SUP-105,14.91,18,11.68,164,374,729,390,2025-11-24
+FUR-BO-1270,Sauder Bookcase,Furniture,Bookcases,West DC,SUP-105,91.78,19,2.85,17,71,145,202,2025-12-08
+TEC-PH-1272,Samsung Galaxy,Technology,Phones,East DC,SUP-113,182.78,8,7.16,57,114,356,191,2025-12-01
+TEC-AC-1273,Kensington Keyboard,Technology,Accessories,East DC,SUP-110,144.33,18,5.96,54,161,375,253,2025-11-17
+OFF-BI-1275,Wilson Jones Binder,Office Supplies,Binders,West DC,SUP-108,17.93,10,2.69,32,59,139,45,2025-10-27
+TEC-MA-1277,Zebra Label Printer,Technology,Machines,Central DC,SUP-101,217.9,4,4.84,48,67,339,249,2025-11-17
+TEC-PH-1278,Apple iPhone,Technology,Phones,Central DC,SUP-110,460.37,15,4.27,43,107,227,295,2025-12-15
+TEC-CO-1279,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-103,546.72,6,2.86,17,34,199,175,2025-12-08
+OFF-AR-1280,Newell Highlighters,Office Supplies,Art,Central DC,SUP-102,17.92,13,11.64,93,244,703,777,2025-11-24
+OFF-PA-1282,Boise Paper,Office Supplies,Paper,South DC,SUP-101,24.94,3,14.95,209,254,1096,220,2025-11-17
+FUR-TA-1283,Chromcraft Round Table,Furniture,Tables,Central DC,SUP-105,318.24,20,3.29,16,82,193,147,2025-12-08
+OFF-LA-1285,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-105,26.25,19,18.71,168,523,1202,262,2025-11-24
+TEC-PH-1286,Samsung Galaxy,Technology,Phones,South DC,SUP-102,174.7,13,4.63,42,102,320,184,2025-12-22
+FUR-FU-1288,Eldon Desk Lamp,Furniture,Furnishings,South DC,SUP-109,302.84,2,5.01,50,60,286,79,2025-11-03
+OFF-BI-1289,Avery Binder,Office Supplies,Binders,West DC,SUP-105,26.52,20,5.99,36,156,424,58,2025-11-03
+OFF-BI-1290,Wilson Jones Binder,Office Supplies,Binders,East DC,SUP-109,18.49,3,7.25,44,66,411,449,2025-12-08
+TEC-AC-1291,Logitech Mouse,Technology,Accessories,South DC,SUP-112,267.37,9,5.12,26,72,246,415,2025-12-08
+TEC-CO-1292,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-103,270.26,4,5.2,31,52,338,48,2025-11-10
+OFF-PA-1294,Boise Paper,Office Supplies,Paper,West DC,SUP-113,13.67,10,14.31,143,286,1035,1257,2025-12-15
+OFF-BI-1296,Wilson Jones Binder,Office Supplies,Binders,East DC,SUP-110,7.45,14,9.97,100,240,663,385,2025-10-27
+TEC-CO-1298,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-110,399.95,17,1.5,14,40,74,69,2025-10-13
+TEC-CO-1299,Canon Copier,Technology,Copiers,South DC,SUP-101,390.29,2,22.74,273,318,1142,471,2025-11-10
+OFF-AR-1300,Sharpie Markers,Office Supplies,Art,West DC,SUP-103,13.43,3,21.93,175,241,1365,134,2025-11-17
+TEC-AC-1301,SanDisk Flash Drive,Technology,Accessories,Central DC,SUP-100,514.88,18,6.37,45,160,381,232,2025-12-15
+TEC-MA-1303,Lexmark Printer,Technology,Machines,West DC,SUP-112,522.63,5,12.55,138,201,921,424,2025-12-15
+OFF-BI-1304,Avery Binder,Office Supplies,Binders,Central DC,SUP-106,23.08,11,24.97,275,550,1678,1108,2025-12-15
+FUR-BO-1305,Sauder Bookcase,Furniture,Bookcases,West DC,SUP-109,274.72,3,1.7,19,24,92,124,2025-12-15
+FUR-BO-1307,Bush Cubix Bookcase,Furniture,Bookcases,Central DC,SUP-113,198.25,8,1.69,15,29,81,121,2025-12-22
+TEC-AC-1308,SanDisk Flash Drive,Technology,Accessories,South DC,SUP-113,334.83,12,1.71,12,33,97,59,2025-11-17
+FUR-FU-1309,Advantus Task Lamp,Furniture,Furnishings,South DC,SUP-105,255.12,19,0.62,8,20,37,29,2025-12-01
+TEC-MA-1310,Cubify 3D Printer,Technology,Machines,South DC,SUP-112,175.84,7,10.57,106,180,576,486,2025-11-24
+TEC-AC-1311,Logitech Mouse,Technology,Accessories,East DC,SUP-100,382.03,20,2.12,30,72,132,42,2025-10-06
+OFF-ST-1312,SimpleHouseware Bin,Office Supplies,Storage,South DC,SUP-103,14.43,5,20.98,147,252,1558,200,2025-11-24
+OFF-LA-1313,Avery Labels,Office Supplies,Labels,West DC,SUP-111,11.84,10,5.55,72,128,260,97,2025-10-13
+TEC-MA-1315,Zebra Label Printer,Technology,Machines,East DC,SUP-107,354.54,16,1.93,10,41,125,59,2025-11-10
+OFF-AR-1317,Bic Pens,Office Supplies,Art,West DC,SUP-109,8.22,4,5.76,81,104,333,215,2025-10-27
+TEC-PH-1318,Cisco IP Phone,Technology,Phones,East DC,SUP-104,455.0,6,7.36,81,125,358,144,2025-11-17
+TEC-PH-1319,Samsung Galaxy,Technology,Phones,Central DC,SUP-111,407.84,11,25.27,152,430,1167,223,2025-11-24
+TEC-MA-1320,Lexmark Printer,Technology,Machines,East DC,SUP-114,568.01,15,4.33,30,95,304,93,2025-12-01
+OFF-ST-1321,Iris File Box,Office Supplies,Storage,West DC,SUP-100,17.24,16,8.36,50,184,415,337,2025-12-15
+OFF-AR-1322,Bic Pens,Office Supplies,Art,East DC,SUP-110,10.18,16,19.21,134,441,1292,557,2025-11-24
+TEC-MA-1323,Zebra Label Printer,Technology,Machines,West DC,SUP-114,212.49,15,14.95,105,329,1111,919,2025-12-15
+FUR-FU-1324,Eldon Desk Lamp,Furniture,Furnishings,East DC,SUP-106,329.79,12,4.78,24,81,301,271,2025-12-22
+OFF-AR-1325,Newell Highlighters,Office Supplies,Art,East DC,SUP-114,12.2,13,8.69,87,200,622,305,2025-12-15
+TEC-MA-1326,Lexmark Printer,Technology,Machines,East DC,SUP-113,531.3,11,10.69,53,171,582,593,2025-12-08
+FUR-CH-1327,Global Task Chair,Furniture,Chairs,Central DC,SUP-102,93.39,16,0.57,3,12,37,41,2025-12-08
+OFF-PA-1328,HP Paper Ream,Office Supplies,Paper,South DC,SUP-102,26.76,15,13.73,165,371,788,251,2025-10-27
+FUR-BO-1329,O'Sullivan Bookcase,Furniture,Bookcases,Central DC,SUP-107,338.84,17,0.88,12,27,67,41,2025-12-22
+TEC-CO-1330,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-109,487.23,2,1.83,11,15,126,65,2025-12-22
+OFF-PA-1331,Boise Paper,Office Supplies,Paper,South DC,SUP-103,21.03,6,7.53,53,98,547,120,2025-11-10
+OFF-PA-1332,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-102,17.02,17,1.83,22,53,124,65,2025-10-20
+OFF-PA-1333,HP Paper Ream,Office Supplies,Paper,Central DC,SUP-112,20.62,9,9.7,87,174,480,193,2025-10-06
+FUR-CH-1334,Hbada Office Chair,Furniture,Chairs,East DC,SUP-103,235.09,5,5.59,56,84,346,198,2025-12-15
+TEC-CO-1336,Canon Copier,Technology,Copiers,South DC,SUP-114,550.78,16,4.44,58,129,249,77,2025-11-03
+OFF-PA-1337,HP Paper Ream,Office Supplies,Paper,East DC,SUP-106,14.34,12,9.32,65,177,583,366,2025-12-22
+OFF-AR-1338,Sharpie Markers,Office Supplies,Art,South DC,SUP-101,15.58,2,23.27,303,350,1192,261,2025-11-24
+FUR-TA-1339,Chromcraft Round Table,Furniture,Tables,Central DC,SUP-114,112.41,14,3.8,38,91,271,252,2025-12-22
+TEC-CO-1340,Hewlett Packard Copier,Technology,Copiers,Central DC,SUP-104,467.7,2,7.18,86,100,450,336,2025-12-08
+OFF-ST-1341,SimpleHouseware Bin,Office Supplies,Storage,West DC,SUP-114,20.11,17,23.13,185,578,1508,1157,2025-11-17
+OFF-ST-1342,Fellowes Storage Box,Office Supplies,Storage,South DC,SUP-106,22.75,10,26.91,215,484,1727,894,2025-10-20
+TEC-MA-1343,Zebra Label Printer,Technology,Machines,East DC,SUP-108,277.75,9,6.76,61,122,316,152,2025-12-01
+TEC-MA-1344,Cubify 3D Printer,Technology,Machines,South DC,SUP-113,147.46,8,4.14,50,83,274,127,2025-11-24
+OFF-LA-1345,Avery Labels,Office Supplies,Labels,East DC,SUP-109,22.98,4,12.56,151,201,633,249,2025-11-10
+TEC-AC-1346,Kensington Keyboard,Technology,Accessories,West DC,SUP-112,473.38,8,5.36,64,107,294,156,2025-10-20
+OFF-PA-1348,Boise Paper,Office Supplies,Paper,West DC,SUP-102,19.91,13,11.08,155,299,803,361,2025-11-03
+TEC-MA-1349,Cubify 3D Printer,Technology,Machines,West DC,SUP-103,528.08,3,3.24,39,49,186,145,2025-12-08
+TEC-AC-1350,Kensington Keyboard,Technology,Accessories,East DC,SUP-103,569.34,7,8.54,60,120,466,454,2025-12-08
+OFF-AR-1352,Sharpie Markers,Office Supplies,Art,East DC,SUP-111,13.28,10,13.22,145,277,719,312,2025-11-24
+OFF-BI-1353,GBC Binding System,Office Supplies,Binders,South DC,SUP-113,28.85,12,29.65,415,771,1843,1265,2025-12-01
+OFF-AR-1354,Sharpie Markers,Office Supplies,Art,Central DC,SUP-106,20.9,12,20.68,103,351,1349,1192,2025-12-15
+OFF-ST-1355,Iris File Box,Office Supplies,Storage,South DC,SUP-108,25.82,10,27.09,271,542,1955,1573,2025-11-24
+OFF-ST-1356,Fellowes Storage Box,Office Supplies,Storage,South DC,SUP-109,12.24,5,28.48,370,512,1429,1196,2025-11-10
+FUR-FU-1357,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-112,185.0,8,1.43,11,22,109,40,2025-11-03
+OFF-AR-1358,Sharpie Markers,Office Supplies,Art,South DC,SUP-101,12.33,2,11.11,133,155,727,346,2025-12-08
+OFF-LA-1359,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-114,8.53,16,10.72,139,311,745,1052,2025-12-22
+OFF-AR-1360,Sharpie Markers,Office Supplies,Art,South DC,SUP-111,21.75,10,29.15,321,613,1492,440,2025-11-17
+OFF-ST-1361,Fellowes Storage Box,Office Supplies,Storage,East DC,SUP-106,15.14,11,13.94,167,320,730,666,2025-11-03
+OFF-LA-1362,Avery Labels,Office Supplies,Labels,West DC,SUP-103,18.6,4,16.4,82,148,759,381,2025-11-17
+FUR-CH-1363,Hbada Office Chair,Furniture,Chairs,West DC,SUP-114,86.72,16,2.94,29,76,211,77,2025-11-17
+OFF-AR-1364,Newell Highlighters,Office Supplies,Art,East DC,SUP-112,23.72,8,14.17,128,241,1025,602,2025-11-17
+TEC-MA-1366,Lexmark Printer,Technology,Machines,South DC,SUP-111,163.76,13,14.3,186,372,935,566,2025-12-01
+FUR-CH-1367,Global Task Chair,Furniture,Chairs,South DC,SUP-113,109.2,8,4.51,54,90,258,172,2025-12-15
+OFF-ST-1369,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-104,20.37,2,12.94,65,91,820,637,2025-11-17
+FUR-FU-1370,Eldon Desk Lamp,Furniture,Furnishings,South DC,SUP-111,295.91,12,2.24,11,38,166,19,2025-11-03
+OFF-AR-1372,Sharpie Markers,Office Supplies,Art,South DC,SUP-107,21.5,18,44.76,492,1298,2064,1847,2025-11-10
+FUR-TA-1373,Bush Somerset Table,Furniture,Tables,East DC,SUP-102,144.94,14,0.3,3,7,19,8,2025-12-22
+OFF-PA-1374,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-110,8.68,14,16.5,116,347,863,1009,2025-11-17
+FUR-BO-1376,O'Sullivan Bookcase,Furniture,Bookcases,South DC,SUP-114,195.71,17,1.07,6,24,68,43,2025-12-22
+FUR-FU-1377,Advantus Task Lamp,Furniture,Furnishings,South DC,SUP-110,87.08,15,1.06,12,28,79,14,2025-09-22
+OFF-AR-1378,Bic Pens,Office Supplies,Art,East DC,SUP-105,8.6,19,10.15,102,295,563,546,2025-11-10
+OFF-AR-1380,Newell Highlighters,Office Supplies,Art,Central DC,SUP-107,16.59,18,24.18,290,725,1649,1355,2025-12-15
+FUR-BO-1381,Bush Cubix Bookcase,Furniture,Bookcases,West DC,SUP-107,189.21,16,3.35,20,74,219,234,2025-12-08
+OFF-AR-1382,Newell Highlighters,Office Supplies,Art,West DC,SUP-111,26.01,13,13.2,79,251,797,608,2025-12-15
+TEC-PH-1383,Apple iPhone,Technology,Phones,South DC,SUP-112,465.17,8,8.64,86,155,541,552,2025-12-08
+TEC-MA-1384,Zebra Label Printer,Technology,Machines,West DC,SUP-105,423.96,19,21.13,169,570,1209,1230,2025-11-24
+OFF-BI-1385,Wilson Jones Binder,Office Supplies,Binders,South DC,SUP-100,7.82,17,12.17,146,353,772,546,2025-11-24
+FUR-TA-1386,Chromcraft Round Table,Furniture,Tables,East DC,SUP-110,214.57,15,2.19,18,51,154,30,2025-10-13
+TEC-AC-1387,Kensington Keyboard,Technology,Accessories,West DC,SUP-107,414.84,15,1.96,14,43,128,133,2025-12-01
+OFF-LA-1388,Avery Labels,Office Supplies,Labels,West DC,SUP-103,10.87,3,15.26,137,183,768,237,2025-10-27
+FUR-FU-1389,Advantus Task Lamp,Furniture,Furnishings,South DC,SUP-101,286.67,4,0.53,4,6,35,27,2025-12-22
+OFF-LA-1392,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-109,13.31,2,29.62,267,326,1753,1361,2025-12-08
+TEC-MA-1393,Zebra Label Printer,Technology,Machines,West DC,SUP-100,334.71,18,13.28,186,425,988,760,2025-12-22
+OFF-AR-1394,Sharpie Markers,Office Supplies,Art,Central DC,SUP-111,16.96,10,47.07,424,895,2264,605,2025-09-29
+OFF-PA-1395,HP Paper Ream,Office Supplies,Paper,West DC,SUP-109,9.41,5,8.16,57,98,568,119,2025-11-24
+OFF-PA-1396,HP Paper Ream,Office Supplies,Paper,East DC,SUP-109,24.69,2,17.61,194,229,868,779,2025-12-01
+OFF-BI-1397,GBC Binding System,Office Supplies,Binders,Central DC,SUP-109,19.59,5,53.04,477,742,3028,958,2025-10-27
+FUR-FU-1398,Tenex Chairmat,Furniture,Furnishings,South DC,SUP-112,235.7,8,2.09,10,27,147,32,2025-09-22
+FUR-FU-1399,Tenex Chairmat,Furniture,Furnishings,South DC,SUP-101,234.27,2,2.24,20,24,124,20,2025-11-24
+TEC-AC-1000,Logitech Mouse,Technology,Accessories,East DC,SUP-113,358.72,12,4.61,65,120,291,250,2025-12-01
+OFF-BI-1001,Wilson Jones Binder,Office Supplies,Binders,Central DC,SUP-102,18.71,17,22.1,309,685,1198,733,2025-12-08
+OFF-AR-1002,Bic Pens,Office Supplies,Art,East DC,SUP-111,22.57,11,30.7,246,584,1939,1297,2025-11-17
+OFF-PA-1003,HP Paper Ream,Office Supplies,Paper,Central DC,SUP-112,24.32,6,35.05,210,420,1863,452,2025-10-27
+TEC-PH-1006,Cisco IP Phone,Technology,Phones,Central DC,SUP-109,134.4,4,10.26,92,133,467,176,2025-12-01
+OFF-BI-1007,GBC Binding System,Office Supplies,Binders,South DC,SUP-102,7.14,15,3.46,45,97,226,154,2025-11-03
+FUR-TA-1008,Chromcraft Round Table,Furniture,Tables,South DC,SUP-101,123.94,5,7.98,72,112,540,87,2025-10-27
+FUR-TA-1009,Bush Somerset Table,Furniture,Tables,West DC,SUP-113,105.41,8,1.36,19,30,80,120,2025-12-08
+TEC-AC-1011,Logitech Mouse,Technology,Accessories,East DC,SUP-109,268.67,4,4.56,36,54,228,91,2025-11-10
+OFF-BI-1012,GBC Binding System,Office Supplies,Binders,East DC,SUP-105,8.89,18,5.32,48,144,244,71,2025-11-10
+OFF-ST-1013,Iris File Box,Office Supplies,Storage,Central DC,SUP-109,24.34,3,20.78,187,249,1460,705,2025-12-01
+OFF-BI-1014,Wilson Jones Binder,Office Supplies,Binders,South DC,SUP-114,7.86,16,35.3,176,741,2052,2384,2025-12-01
+TEC-PH-1015,Cisco IP Phone,Technology,Phones,South DC,SUP-114,242.0,17,1.15,15,35,85,94,2025-12-22
+TEC-CO-1016,Canon Copier,Technology,Copiers,East DC,SUP-101,511.64,3,3.29,36,46,212,218,2025-12-15
+OFF-AR-1017,Bic Pens,Office Supplies,Art,East DC,SUP-104,20.33,6,25.94,285,441,1406,1706,2025-12-15
+TEC-AC-1018,SanDisk Flash Drive,Technology,Accessories,South DC,SUP-110,504.56,17,3.3,30,86,190,194,2025-12-22
+OFF-BI-1022,Wilson Jones Binder,Office Supplies,Binders,West DC,SUP-111,21.18,10,23.86,119,358,1150,950,2025-10-27
+OFF-BI-1023,Avery Binder,Office Supplies,Binders,East DC,SUP-101,28.03,4,2.89,14,26,190,137,2025-12-08
+OFF-PA-1024,HP Paper Ream,Office Supplies,Paper,South DC,SUP-109,13.26,2,13.27,106,133,615,350,2025-12-08
+OFF-BI-1025,Avery Binder,Office Supplies,Binders,Central DC,SUP-105,28.22,22,6.09,79,213,401,198,2025-12-08
+OFF-LA-1026,Avery Labels,Office Supplies,Labels,Central DC,SUP-108,28.52,10,47.99,576,1056,3028,2510,2025-12-22
+OFF-AR-1027,Newell Highlighters,Office Supplies,Art,Central DC,SUP-104,8.96,2,15.58,171,202,753,1080,2025-12-08
+OFF-PA-1029,Boise Paper,Office Supplies,Paper,West DC,SUP-113,29.07,12,6.4,45,122,331,167,2025-12-01
+OFF-AR-1031,Newell Highlighters,Office Supplies,Art,Central DC,SUP-102,15.67,17,26.35,237,685,1797,1149,2025-11-24
+FUR-CH-1032,HON Executive Chair,Furniture,Chairs,Central DC,SUP-102,186.12,15,4.58,55,124,316,122,2025-11-10
+OFF-LA-1034,Avery Labels,Office Supplies,Labels,Central DC,SUP-114,13.23,15,13.42,134,335,850,650,2025-12-01
+TEC-MA-1035,Lexmark Printer,Technology,Machines,Central DC,SUP-105,415.81,18,11.28,79,282,648,119,2025-11-24
+OFF-AR-1037,Sharpie Markers,Office Supplies,Art,East DC,SUP-105,7.92,21,39.47,316,1145,2176,485,2025-10-20
+TEC-MA-1040,Cubify 3D Printer,Technology,Machines,Central DC,SUP-109,219.66,4,8.41,42,76,484,53,2025-11-24
+TEC-MA-1041,Zebra Label Printer,Technology,Machines,West DC,SUP-101,164.96,2,1.97,14,18,147,14,2025-09-22
+TEC-CO-1042,Hewlett Packard Copier,Technology,Copiers,South DC,SUP-100,331.65,18,4.25,30,106,264,82,2025-11-24
+TEC-AC-1043,SanDisk Flash Drive,Technology,Accessories,East DC,SUP-105,465.25,20,3.28,16,82,241,124,2025-12-22
+TEC-MA-1044,Lexmark Printer,Technology,Machines,South DC,SUP-108,218.04,7,2.62,37,55,191,45,2025-11-24
+TEC-CO-1046,Hewlett Packard Copier,Technology,Copiers,Central DC,SUP-102,270.94,14,12.88,167,347,585,757,2025-12-01
+TEC-PH-1050,Samsung Galaxy,Technology,Phones,Central DC,SUP-105,428.74,22,8.33,75,258,538,148,2025-11-03
+TEC-MA-1051,Cubify 3D Printer,Technology,Machines,South DC,SUP-112,167.77,9,9.08,100,182,659,313,2025-11-03
+OFF-PA-1052,Boise Paper,Office Supplies,Paper,West DC,SUP-114,30.23,13,17.06,239,461,892,859,2025-11-03
+OFF-AR-1060,Bic Pens,Office Supplies,Art,West DC,SUP-106,21.6,9,28.11,141,394,1720,1018,2025-12-08
+OFF-PA-1061,Boise Paper,Office Supplies,Paper,West DC,SUP-114,22.25,16,13.33,147,360,778,712,2025-12-01
+OFF-BI-1062,Wilson Jones Binder,Office Supplies,Binders,West DC,SUP-107,15.86,14,26.96,216,593,1569,220,2025-11-10
+TEC-CO-1063,Canon Copier,Technology,Copiers,Central DC,SUP-100,136.82,17,8.37,92,234,616,436,2025-12-22
+FUR-TA-1065,Chromcraft Round Table,Furniture,Tables,West DC,SUP-108,153.54,8,0.74,4,10,44,16,2025-11-03
+TEC-CO-1067,Hewlett Packard Copier,Technology,Copiers,West DC,SUP-103,422.17,6,4.8,43,72,235,151,2025-12-15
+FUR-BO-1068,Bush Cubix Bookcase,Furniture,Bookcases,East DC,SUP-110,331.44,16,5.01,60,140,255,277,2025-12-15
+FUR-CH-1069,HON Executive Chair,Furniture,Chairs,West DC,SUP-113,136.76,12,6.2,81,155,327,483,2025-12-22
+OFF-BI-1070,Wilson Jones Binder,Office Supplies,Binders,West DC,SUP-111,10.46,11,11.2,134,257,823,257,2025-11-10
+TEC-PH-1071,Apple iPhone,Technology,Phones,Central DC,SUP-114,415.97,15,8.81,79,211,578,400,2025-12-22
+FUR-TA-1072,Chromcraft Round Table,Furniture,Tables,Central DC,SUP-110,214.73,16,3.16,22,73,179,61,2025-12-01
+FUR-CH-1076,Global Task Chair,Furniture,Chairs,West DC,SUP-109,172.14,2,3.83,27,35,250,144,2025-12-15
+TEC-AC-1078,Logitech Mouse,Technology,Accessories,Central DC,SUP-101,177.43,2,12.85,167,193,879,720,2025-12-15
+FUR-TA-1079,Bush Somerset Table,Furniture,Tables,Central DC,SUP-105,248.57,21,5.87,76,199,392,598,2025-12-22
+TEC-AC-1080,Logitech Mouse,Technology,Accessories,West DC,SUP-110,290.76,16,11.03,143,319,579,381,2025-11-10
+TEC-PH-1081,Samsung Galaxy,Technology,Phones,East DC,SUP-112,407.95,8,5.32,64,107,308,157,2025-11-17
+OFF-PA-1082,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-101,19.0,3,11.17,134,168,519,732,2025-12-22
+OFF-BI-1085,Avery Binder,Office Supplies,Binders,East DC,SUP-107,15.08,16,8.53,60,196,491,628,2025-12-22
+TEC-MA-1086,Zebra Label Printer,Technology,Machines,South DC,SUP-112,338.96,6,2.78,39,56,208,259,2025-12-22
+OFF-PA-1088,HP Paper Ream,Office Supplies,Paper,Central DC,SUP-114,15.11,17,10.32,144,319,521,585,2025-12-15
+FUR-FU-1090,Advantus Task Lamp,Furniture,Furnishings,West DC,SUP-111,169.45,10,0.94,7,16,54,47,2025-12-22
+TEC-AC-1091,Logitech Mouse,Technology,Accessories,Central DC,SUP-101,413.65,2,11.8,106,130,701,628,2025-12-15
+OFF-PA-1092,HP Paper Ream,Office Supplies,Paper,South DC,SUP-113,18.76,9,41.49,456,829,2245,1420,2025-12-08
+FUR-CH-1093,Global Task Chair,Furniture,Chairs,West DC,SUP-106,142.35,10,2.16,17,39,115,100,2025-12-22
+TEC-MA-1094,Cubify 3D Printer,Technology,Machines,West DC,SUP-104,489.8,4,11.01,121,165,820,794,2025-12-22
+OFF-LA-1096,Avery Labels,Office Supplies,Labels,Central DC,SUP-104,15.24,4,24.56,123,221,1577,917,2025-11-03
+OFF-PA-1097,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-106,29.86,10,10.61,74,180,514,228,2025-11-03
+OFF-AR-1098,Newell Highlighters,Office Supplies,Art,East DC,SUP-114,27.67,14,9.79,59,196,563,398,2025-12-08
+TEC-CO-1099,Canon Copier,Technology,Copiers,South DC,SUP-109,225.23,2,17.67,124,159,924,239,2025-12-01
+OFF-PA-1101,Boise Paper,Office Supplies,Paper,West DC,SUP-101,25.45,4,10.44,146,188,725,290,2025-12-08
+FUR-CH-1105,Hbada Office Chair,Furniture,Chairs,East DC,SUP-113,233.87,10,1.3,16,29,89,52,2025-10-20
+OFF-ST-1107,Iris File Box,Office Supplies,Storage,South DC,SUP-107,9.09,18,20.95,293,670,990,851,2025-12-22
+TEC-AC-1108,SanDisk Flash Drive,Technology,Accessories,East DC,SUP-104,303.06,3,16.0,208,256,981,447,2025-11-10
+TEC-PH-1110,Cisco IP Phone,Technology,Phones,Central DC,SUP-102,438.88,16,8.98,54,198,427,363,2025-12-08
+TEC-AC-1112,Kensington Keyboard,Technology,Accessories,South DC,SUP-113,341.24,12,7.87,94,188,587,598,2025-12-15
+TEC-CO-1113,Canon Copier,Technology,Copiers,West DC,SUP-108,364.9,9,14.69,206,338,828,255,2025-11-24
+OFF-PA-1114,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-111,23.35,13,9.89,119,248,598,449,2025-11-24
+OFF-LA-1116,Hon Label Maker Tape,Office Supplies,Labels,West DC,SUP-111,10.47,9,6.5,52,110,447,353,2025-11-10
+TEC-CO-1117,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-103,162.31,4,5.91,35,59,383,250,2025-12-22
+FUR-TA-1118,Chromcraft Round Table,Furniture,Tables,West DC,SUP-100,261.47,16,3.5,18,74,225,127,2025-11-03
+OFF-AR-1119,Sharpie Markers,Office Supplies,Art,East DC,SUP-108,24.62,8,28.15,169,394,1807,845,2025-11-24
+TEC-CO-1120,Canon Copier,Technology,Copiers,Central DC,SUP-103,559.14,5,8.8,44,88,656,391,2025-12-15
+FUR-TA-1121,Chromcraft Round Table,Furniture,Tables,Central DC,SUP-104,349.81,4,3.74,45,60,177,216,2025-12-22
+OFF-ST-1122,SimpleHouseware Bin,Office Supplies,Storage,Central DC,SUP-109,27.82,4,3.29,39,52,166,39,2025-11-03
+FUR-CH-1123,Global Task Chair,Furniture,Chairs,East DC,SUP-107,324.61,14,2.89,20,60,213,238,2025-12-08
+OFF-AR-1124,Newell Highlighters,Office Supplies,Art,South DC,SUP-100,21.14,17,17.78,124,426,983,225,2025-11-24
+TEC-PH-1126,Apple iPhone,Technology,Phones,Central DC,SUP-111,302.44,10,4.95,50,100,371,246,2025-12-15
+TEC-PH-1127,Samsung Galaxy,Technology,Phones,East DC,SUP-105,490.62,18,12.04,157,374,836,113,2025-11-24
+OFF-PA-1128,HP Paper Ream,Office Supplies,Paper,West DC,SUP-114,11.97,16,5.58,50,139,345,132,2025-12-01
+TEC-CO-1129,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-112,455.87,9,6.88,69,131,432,98,2025-11-10
+TEC-MA-1130,Lexmark Printer,Technology,Machines,East DC,SUP-112,379.72,9,19.55,274,450,943,548,2025-12-01
+OFF-PA-1131,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-114,11.3,13,25.86,181,517,1919,1507,2025-12-01
+OFF-AR-1132,Sharpie Markers,Office Supplies,Art,South DC,SUP-104,9.81,2,10.37,73,94,721,418,2025-12-08
+TEC-CO-1134,Hewlett Packard Copier,Technology,Copiers,Central DC,SUP-109,266.0,5,5.34,37,64,267,177,2025-12-08
+FUR-CH-1136,Hbada Office Chair,Furniture,Chairs,Central DC,SUP-109,194.09,5,4.38,26,48,303,34,2025-11-03
+OFF-AR-1138,Bic Pens,Office Supplies,Art,South DC,SUP-106,10.86,10,10.54,116,221,701,237,2025-10-20
+TEC-AC-1139,Logitech Mouse,Technology,Accessories,Central DC,SUP-104,255.6,6,3.78,30,53,198,230,2025-12-15
+TEC-CO-1140,Hewlett Packard Copier,Technology,Copiers,Central DC,SUP-101,389.22,3,11.57,81,116,734,308,2025-12-15
+OFF-AR-1141,Bic Pens,Office Supplies,Art,Central DC,SUP-111,11.71,12,19.91,259,498,1140,316,2025-11-24
+TEC-PH-1142,Cisco IP Phone,Technology,Phones,East DC,SUP-111,205.59,10,3.35,17,51,159,191,2025-11-10
+OFF-BI-1143,GBC Binding System,Office Supplies,Binders,West DC,SUP-112,18.88,6,6.35,38,76,297,134,2025-11-10
+FUR-TA-1144,Bush Somerset Table,Furniture,Tables,Central DC,SUP-102,132.44,15,1.1,8,24,60,29,2025-12-01
+OFF-PA-1145,HP Paper Ream,Office Supplies,Paper,West DC,SUP-110,10.97,17,23.81,143,548,1362,1735,2025-12-22
+OFF-AR-1146,Newell Highlighters,Office Supplies,Art,Central DC,SUP-110,10.74,18,14.31,200,458,692,179,2025-11-24
+OFF-LA-1147,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-102,25.68,14,49.99,350,1050,3504,1446,2025-11-10
+OFF-ST-1148,SimpleHouseware Bin,Office Supplies,Storage,West DC,SUP-107,26.29,14,17.63,176,423,1292,1408,2025-12-22
+OFF-BI-1149,Wilson Jones Binder,Office Supplies,Binders,Central DC,SUP-101,20.74,5,1.26,15,21,97,57,2025-10-27
+OFF-PA-1151,Boise Paper,Office Supplies,Paper,West DC,SUP-113,8.19,11,3.94,55,98,261,52,2025-11-24
+OFF-PA-1152,HP Paper Ream,Office Supplies,Paper,East DC,SUP-107,13.15,18,14.47,174,434,729,249,2025-11-10
+FUR-FU-1153,Advantus Task Lamp,Furniture,Furnishings,Central DC,SUP-101,123.88,5,4.97,50,75,244,204,2025-10-27
+OFF-AR-1154,Newell Highlighters,Office Supplies,Art,South DC,SUP-104,7.9,3,20.12,161,221,931,522,2025-12-15
+OFF-PA-1155,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-109,20.11,2,17.47,210,245,913,703,2025-11-17
+OFF-ST-1156,Fellowes Storage Box,Office Supplies,Storage,East DC,SUP-108,9.52,10,22.01,110,330,1260,1471,2025-12-01
+TEC-CO-1157,Canon Copier,Technology,Copiers,West DC,SUP-104,360.38,5,3.86,42,61,248,281,2025-12-01
+TEC-MA-1158,Cubify 3D Printer,Technology,Machines,South DC,SUP-109,260.31,3,9.73,68,97,637,389,2025-11-03
+OFF-PA-1159,Boise Paper,Office Supplies,Paper,Central DC,SUP-112,16.0,8,10.96,132,220,608,740,2025-12-01
+TEC-AC-1160,Logitech Mouse,Technology,Accessories,South DC,SUP-109,367.32,2,3.31,33,40,190,35,2025-10-20
+FUR-FU-1161,Advantus Task Lamp,Furniture,Furnishings,Central DC,SUP-105,121.95,20,5.03,40,141,257,310,2025-12-08
+OFF-AR-1162,Newell Highlighters,Office Supplies,Art,Central DC,SUP-114,10.17,13,16.6,149,365,785,1130,2025-12-01
+TEC-CO-1163,Canon Copier,Technology,Copiers,West DC,SUP-105,462.75,20,4.3,26,112,310,106,2025-12-01
+OFF-PA-1165,Boise Paper,Office Supplies,Paper,Central DC,SUP-108,14.47,9,15.28,168,306,1059,692,2025-12-22
+FUR-BO-1167,Sauder Bookcase,Furniture,Bookcases,East DC,SUP-106,199.44,8,0.9,7,14,48,67,2025-12-22
+TEC-MA-1168,Cubify 3D Printer,Technology,Machines,Central DC,SUP-108,367.43,11,14.41,144,303,970,657,2025-12-08
+FUR-CH-1170,Global Task Chair,Furniture,Chairs,South DC,SUP-101,242.73,4,2.57,18,28,146,25,2025-11-24
+FUR-CH-1172,Hbada Office Chair,Furniture,Chairs,West DC,SUP-108,302.64,10,0.79,7,15,41,24,2025-11-17
+OFF-PA-1173,HP Paper Ream,Office Supplies,Paper,East DC,SUP-100,30.62,16,20.89,292,626,1008,363,2025-10-13
+OFF-PA-1178,HP Paper Ream,Office Supplies,Paper,South DC,SUP-107,23.94,14,22.8,114,433,1419,1090,2025-11-10
+FUR-BO-1179,Bush Cubix Bookcase,Furniture,Bookcases,Central DC,SUP-104,332.36,6,0.78,5,10,58,6,2025-10-20
+FUR-FU-1180,Tenex Chairmat,Furniture,Furnishings,Central DC,SUP-102,87.73,13,2.07,10,37,106,40,2025-11-24
+TEC-CO-1182,Canon Copier,Technology,Copiers,West DC,SUP-104,494.02,3,6.47,71,90,303,138,2025-12-01
+OFF-PA-1184,Boise Paper,Office Supplies,Paper,East DC,SUP-110,12.19,16,28.3,283,736,1816,2030,2025-11-24
+OFF-AR-1186,Newell Highlighters,Office Supplies,Art,West DC,SUP-101,21.93,2,18.71,243,280,1165,327,2025-12-01
+OFF-ST-1187,SimpleHouseware Bin,Office Supplies,Storage,South DC,SUP-110,20.23,17,21.33,149,512,1199,1123,2025-11-24
+OFF-AR-1188,Sharpie Markers,Office Supplies,Art,East DC,SUP-106,25.14,9,21.47,301,494,1508,399,2025-11-10
+OFF-BI-1189,GBC Binding System,Office Supplies,Binders,West DC,SUP-107,11.34,18,18.86,226,565,1042,378,2025-11-24
+TEC-MA-1190,Cubify 3D Printer,Technology,Machines,East DC,SUP-109,188.42,3,5.03,70,85,317,87,2025-11-17
+TEC-MA-1191,Zebra Label Printer,Technology,Machines,West DC,SUP-100,364.35,20,5.96,30,149,297,484,2025-12-22
+OFF-PA-1192,Boise Paper,Office Supplies,Paper,East DC,SUP-114,30.08,13,26.18,157,497,1183,328,2025-11-17
+TEC-MA-1193,Zebra Label Printer,Technology,Machines,Central DC,SUP-107,508.98,14,2.17,24,54,150,62,2025-11-24
+OFF-PA-1196,HP Paper Ream,Office Supplies,Paper,South DC,SUP-112,20.8,7,3.53,49,74,217,101,2025-11-10
+OFF-AR-1197,Newell Highlighters,Office Supplies,Art,South DC,SUP-102,18.86,13,27.15,217,570,1227,1037,2025-11-03
+FUR-TA-1198,Bush Somerset Table,Furniture,Tables,West DC,SUP-112,180.67,6,0.69,7,11,53,35,2025-12-15
+TEC-PH-1200,Samsung Galaxy,Technology,Phones,West DC,SUP-107,506.61,15,4.2,38,101,270,57,2025-11-03
+FUR-TA-1201,Bush Somerset Table,Furniture,Tables,East DC,SUP-111,162.29,10,2.56,36,62,156,105,2025-12-08
+TEC-MA-1202,Lexmark Printer,Technology,Machines,East DC,SUP-100,171.11,20,7.68,77,231,466,152,2025-10-06
+OFF-PA-1203,Boise Paper,Office Supplies,Paper,West DC,SUP-113,21.19,12,41.7,542,1042,1923,2885,2025-12-15
+OFF-LA-1205,Avery Labels,Office Supplies,Labels,West DC,SUP-111,7.29,11,7.94,95,182,529,323,2025-10-27
+TEC-AC-1206,Logitech Mouse,Technology,Accessories,South DC,SUP-107,318.73,17,2.39,26,67,136,58,2025-11-17
+OFF-BI-1208,GBC Binding System,Office Supplies,Binders,Central DC,SUP-110,14.34,14,10.32,124,268,511,384,2025-12-08
+OFF-PA-1212,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-103,24.0,5,19.2,115,211,1080,1225,2025-12-01
+TEC-PH-1213,Apple iPhone,Technology,Phones,East DC,SUP-106,333.86,10,4.1,29,70,251,96,2025-11-17
+FUR-FU-1214,Tenex Chairmat,Furniture,Furnishings,South DC,SUP-104,180.98,5,5.53,39,67,326,139,2025-12-08
+TEC-AC-1216,Logitech Mouse,Technology,Accessories,Central DC,SUP-103,424.6,4,6.19,74,99,395,469,2025-12-15
+OFF-PA-1217,Boise Paper,Office Supplies,Paper,East DC,SUP-101,8.78,3,9.79,69,98,641,38,2025-11-17
+FUR-TA-1218,Bretford Conference Table,Furniture,Tables,Central DC,SUP-102,92.12,15,4.13,50,112,298,257,2025-12-15
+OFF-AR-1220,Bic Pens,Office Supplies,Art,West DC,SUP-111,13.93,10,9.54,86,181,682,661,2025-12-22
+FUR-BO-1221,Bush Cubix Bookcase,Furniture,Bookcases,East DC,SUP-108,295.52,8,7.55,53,113,428,71,2025-10-06
+OFF-ST-1222,Fellowes Storage Box,Office Supplies,Storage,West DC,SUP-110,29.4,16,16.79,185,454,1096,736,2025-11-10
+OFF-LA-1223,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-101,16.05,5,59.05,709,1004,4198,4188,2025-12-22
+OFF-AR-1224,Newell Highlighters,Office Supplies,Art,Central DC,SUP-103,7.55,5,24.64,320,443,1508,1398,2025-11-17
+OFF-LA-1226,Avery Labels,Office Supplies,Labels,West DC,SUP-100,22.32,17,9.54,105,267,530,493,2025-12-08
+TEC-CO-1227,Canon Copier,Technology,Copiers,West DC,SUP-112,327.36,6,5.53,39,72,342,202,2025-12-01
+OFF-LA-1228,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-109,11.62,3,9.75,98,127,453,276,2025-12-08
+OFF-AR-1231,Newell Highlighters,Office Supplies,Art,West DC,SUP-100,12.34,17,12.41,161,372,663,1240,2025-12-22
+OFF-BI-1232,Avery Binder,Office Supplies,Binders,East DC,SUP-104,22.73,3,14.07,70,112,1046,198,2025-11-24
+TEC-CO-1233,Hewlett Packard Copier,Technology,Copiers,East DC,SUP-109,276.13,3,1.22,16,20,87,61,2025-11-17
+OFF-AR-1234,Bic Pens,Office Supplies,Art,South DC,SUP-111,29.87,10,16.85,168,336,1218,1501,2025-12-15
+OFF-ST-1235,Iris File Box,Office Supplies,Storage,East DC,SUP-101,8.36,3,25.49,280,356,1764,1038,2025-12-15
+OFF-LA-1237,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-108,19.03,9,8.64,112,190,402,237,2025-10-20
+OFF-ST-1239,Iris File Box,Office Supplies,Storage,Central DC,SUP-109,28.52,2,26.1,261,313,1493,578,2025-11-03
+TEC-PH-1240,Cisco IP Phone,Technology,Phones,South DC,SUP-114,183.55,13,1.13,9,24,60,88,2025-12-01
+TEC-CO-1241,Canon Copier,Technology,Copiers,Central DC,SUP-108,352.34,11,15.19,76,243,840,524,2025-11-17
+TEC-MA-1242,Lexmark Printer,Technology,Machines,West DC,SUP-113,299.22,11,10.46,84,199,549,574,2025-12-15
+FUR-BO-1245,Bush Cubix Bookcase,Furniture,Bookcases,West DC,SUP-112,267.42,9,1.29,10,22,75,17,2025-11-03
+TEC-PH-1246,Samsung Galaxy,Technology,Phones,Central DC,SUP-107,171.99,14,2.04,12,41,156,98,2025-10-27
+FUR-TA-1248,Bush Somerset Table,Furniture,Tables,South DC,SUP-110,303.78,15,1.88,9,37,114,102,2025-12-01
+OFF-PA-1249,Boise Paper,Office Supplies,Paper,West DC,SUP-108,13.44,11,29.06,407,727,1749,923,2025-10-20
+FUR-CH-1250,HON Executive Chair,Furniture,Chairs,East DC,SUP-105,230.16,20,1.52,12,42,75,107,2025-11-24
+OFF-BI-1251,GBC Binding System,Office Supplies,Binders,Central DC,SUP-108,18.88,8,3.37,20,47,204,80,2025-12-01
+FUR-BO-1254,O'Sullivan Bookcase,Furniture,Bookcases,Central DC,SUP-104,138.09,6,4.48,27,54,337,286,2025-12-15
+TEC-AC-1255,Kensington Keyboard,Technology,Accessories,South DC,SUP-112,396.34,9,3.71,33,66,216,237,2025-12-08
+OFF-LA-1256,Avery Labels,Office Supplies,Labels,East DC,SUP-111,8.82,13,4.64,37,97,283,35,2025-10-27
+FUR-BO-1257,O'Sullivan Bookcase,Furniture,Bookcases,Central DC,SUP-107,137.91,17,1.11,10,29,73,65,2025-12-15
+TEC-AC-1258,Kensington Keyboard,Technology,Accessories,East DC,SUP-109,143.85,3,5.86,64,82,368,61,2025-11-17
+TEC-PH-1259,Samsung Galaxy,Technology,Phones,East DC,SUP-109,336.09,3,10.54,95,127,658,113,2025-10-13
+OFF-PA-1261,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-114,25.84,13,10.03,70,200,456,204,2025-10-27
+FUR-TA-1262,Bretford Conference Table,Furniture,Tables,Central DC,SUP-105,226.73,21,1.36,7,36,69,46,2025-12-15
+FUR-CH-1263,Hbada Office Chair,Furniture,Chairs,West DC,SUP-101,245.44,3,1.85,15,21,110,35,2025-10-27
+OFF-AR-1264,Newell Highlighters,Office Supplies,Art,West DC,SUP-100,9.09,16,7.82,94,219,443,353,2025-12-22
+FUR-FU-1266,Advantus Task Lamp,Furniture,Furnishings,Central DC,SUP-114,205.99,16,1.18,8,27,91,18,2025-10-20
+FUR-FU-1267,Advantus Task Lamp,Furniture,Furnishings,Central DC,SUP-108,281.6,11,0.28,2,5,23,14,2025-12-01
+FUR-CH-1268,HON Executive Chair,Furniture,Chairs,West DC,SUP-105,109.76,21,2.41,24,75,113,74,2025-11-03
+TEC-AC-1269,Kensington Keyboard,Technology,Accessories,West DC,SUP-108,396.63,10,6.13,61,122,311,325,2025-11-03
+OFF-BI-1270,GBC Binding System,Office Supplies,Binders,Central DC,SUP-103,30.31,7,22.65,159,318,1591,1024,2025-12-01
+OFF-ST-1274,Iris File Box,Office Supplies,Storage,Central DC,SUP-101,18.59,2,11.97,72,96,855,123,2025-10-06
+TEC-PH-1275,Samsung Galaxy,Technology,Phones,South DC,SUP-113,467.54,11,2.79,33,64,131,120,2025-11-24
+OFF-PA-1276,HP Paper Ream,Office Supplies,Paper,West DC,SUP-108,21.48,8,25.36,178,381,1552,755,2025-11-24
+OFF-LA-1277,Avery Labels,Office Supplies,Labels,Central DC,SUP-111,14.03,10,15.87,175,334,973,745,2025-11-24
+TEC-AC-1278,Logitech Mouse,Technology,Accessories,Central DC,SUP-105,165.24,21,10.83,76,303,579,668,2025-12-22
+TEC-MA-1279,Zebra Label Printer,Technology,Machines,East DC,SUP-112,219.54,8,9.15,64,137,682,96,2025-09-29
+FUR-CH-1280,Hbada Office Chair,Furniture,Chairs,Central DC,SUP-100,297.58,18,1.53,17,45,112,81,2025-12-01
+OFF-AR-1281,Newell Highlighters,Office Supplies,Art,Central DC,SUP-100,26.34,19,6.56,46,171,399,61,2025-10-06
+OFF-AR-1282,Newell Highlighters,Office Supplies,Art,West DC,SUP-106,27.23,8,13.33,160,267,885,1188,2025-12-15
+OFF-BI-1283,Avery Binder,Office Supplies,Binders,Central DC,SUP-103,28.17,6,22.49,112,247,1534,678,2025-10-27
+TEC-MA-1284,Zebra Label Printer,Technology,Machines,South DC,SUP-112,492.66,5,6.75,61,95,471,121,2025-10-20
+TEC-PH-1285,Cisco IP Phone,Technology,Phones,West DC,SUP-101,157.36,5,12.47,175,237,753,266,2025-12-01
+TEC-MA-1286,Lexmark Printer,Technology,Machines,Central DC,SUP-104,417.34,3,6.29,88,107,439,370,2025-12-15
+OFF-PA-1287,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-101,21.91,3,17.75,124,177,804,364,2025-11-10
+FUR-TA-1288,Bush Somerset Table,Furniture,Tables,East DC,SUP-101,140.99,2,4.72,61,70,274,229,2025-11-17
+TEC-AC-1289,SanDisk Flash Drive,Technology,Accessories,Central DC,SUP-110,550.85,14,13.01,143,325,629,288,2025-11-17
+FUR-FU-1290,Eldon Desk Lamp,Furniture,Furnishings,Central DC,SUP-110,152.97,15,0.76,10,21,39,54,2025-12-01
+FUR-CH-1291,Global Task Chair,Furniture,Chairs,East DC,SUP-110,220.41,18,0.47,2,10,26,2,2025-10-27
+OFF-BI-1292,GBC Binding System,Office Supplies,Binders,West DC,SUP-105,13.09,19,8.84,97,265,429,424,2025-11-17
+TEC-CO-1297,Canon Copier,Technology,Copiers,West DC,SUP-103,485.72,4,11.34,136,181,742,836,2025-12-01
+OFF-PA-1298,Xerox Paper Ream,Office Supplies,Paper,Central DC,SUP-112,20.98,9,13.41,188,309,944,699,2025-11-17
+FUR-FU-1299,Eldon Desk Lamp,Furniture,Furnishings,Central DC,SUP-105,140.43,19,2.98,30,87,154,206,2025-11-24
+OFF-PA-1300,Xerox Paper Ream,Office Supplies,Paper,East DC,SUP-112,16.74,9,56.94,626,1138,3877,2550,2025-11-24
+OFF-ST-1301,Fellowes Storage Box,Office Supplies,Storage,West DC,SUP-109,11.47,2,12.29,86,111,878,251,2025-11-17
+FUR-FU-1302,Tenex Chairmat,Furniture,Furnishings,Central DC,SUP-103,145.32,5,2.67,19,32,136,102,2025-10-27
+OFF-PA-1303,Xerox Paper Ream,Office Supplies,Paper,Central DC,SUP-106,23.49,11,21.75,239,478,1049,761,2025-11-24
+OFF-AR-1304,Sharpie Markers,Office Supplies,Art,Central DC,SUP-102,27.63,13,1.77,23,46,127,83,2025-12-15
+OFF-AR-1305,Sharpie Markers,Office Supplies,Art,Central DC,SUP-107,23.2,18,23.62,331,756,1092,834,2025-12-15
+TEC-PH-1306,Cisco IP Phone,Technology,Phones,Central DC,SUP-114,213.78,13,4.58,60,120,335,147,2025-11-24
+TEC-PH-1309,Apple iPhone,Technology,Phones,West DC,SUP-101,339.89,3,7.3,51,73,487,332,2025-12-22
+OFF-BI-1310,Wilson Jones Binder,Office Supplies,Binders,West DC,SUP-105,14.83,21,9.69,48,251,489,303,2025-12-15
+OFF-PA-1311,Boise Paper,Office Supplies,Paper,West DC,SUP-110,21.11,17,16.43,82,361,1073,251,2025-11-24
+FUR-CH-1312,Hbada Office Chair,Furniture,Chairs,South DC,SUP-103,316.27,5,0.65,6,9,35,27,2025-12-22
+TEC-PH-1313,Samsung Galaxy,Technology,Phones,East DC,SUP-101,424.82,2,9.35,94,113,659,207,2025-12-01
+FUR-FU-1314,Advantus Task Lamp,Furniture,Furnishings,East DC,SUP-103,143.14,4,1.77,18,25,132,110,2025-11-24
+OFF-ST-1316,Iris File Box,Office Supplies,Storage,West DC,SUP-106,29.34,9,9.54,95,181,596,426,2025-11-03
+TEC-MA-1317,Zebra Label Printer,Technology,Machines,West DC,SUP-108,292.08,8,5.18,62,103,337,450,2025-12-15
+OFF-PA-1318,Xerox Paper Ream,Office Supplies,Paper,Central DC,SUP-105,15.62,21,42.83,300,1199,3089,1927,2025-12-08
+OFF-PA-1319,Boise Paper,Office Supplies,Paper,East DC,SUP-105,28.53,18,2.72,33,82,165,256,2025-12-15
+OFF-AR-1320,Sharpie Markers,Office Supplies,Art,East DC,SUP-106,18.08,12,36.55,366,805,2417,939,2025-11-03
+FUR-FU-1322,Advantus Task Lamp,Furniture,Furnishings,South DC,SUP-111,92.41,13,1.54,18,38,105,51,2025-11-10
+OFF-BI-1323,GBC Binding System,Office Supplies,Binders,South DC,SUP-113,13.03,12,16.82,202,404,762,590,2025-12-15
+OFF-BI-1324,Wilson Jones Binder,Office Supplies,Binders,East DC,SUP-110,28.23,14,6.96,84,181,437,327,2025-12-22
+FUR-CH-1325,Hbada Office Chair,Furniture,Chairs,West DC,SUP-101,133.16,2,6.87,62,76,383,292,2025-12-22
+FUR-FU-1326,Tenex Chairmat,Furniture,Furnishings,South DC,SUP-104,157.82,5,2.34,19,31,155,73,2025-12-15
+TEC-CO-1327,Hewlett Packard Copier,Technology,Copiers,South DC,SUP-100,490.66,18,1.91,19,53,102,41,2025-10-06
+OFF-LA-1328,Hon Label Maker Tape,Office Supplies,Labels,East DC,SUP-113,29.79,10,53.02,742,1272,3133,2079,2025-12-01
+OFF-PA-1330,Xerox Paper Ream,Office Supplies,Paper,South DC,SUP-111,21.72,12,8.55,77,180,518,450,2025-12-15
+TEC-PH-1331,Samsung Galaxy,Technology,Phones,South DC,SUP-111,131.01,11,1.78,16,36,112,16,2025-11-03
+TEC-AC-1332,Kensington Keyboard,Technology,Accessories,Central DC,SUP-102,487.93,13,1.56,8,28,100,47,2025-10-27
+TEC-CO-1333,Canon Copier,Technology,Copiers,Central DC,SUP-101,166.36,5,7.59,46,84,377,97,2025-11-17
+TEC-MA-1334,Zebra Label Printer,Technology,Machines,South DC,SUP-109,302.79,5,10.06,70,120,649,286,2025-10-20
+OFF-PA-1336,Xerox Paper Ream,Office Supplies,Paper,West DC,SUP-104,9.27,2,14.02,182,210,916,624,2025-11-17
+TEC-MA-1337,Zebra Label Printer,Technology,Machines,Central DC,SUP-104,252.61,5,9.69,126,174,577,304,2025-12-01
+FUR-BO-1340,Sauder Bookcase,Furniture,Bookcases,Central DC,SUP-113,123.9,8,5.35,75,118,256,253,2025-11-03
+TEC-MA-1341,Lexmark Printer,Technology,Machines,Central DC,SUP-108,494.14,9,5.45,33,82,381,475,2025-12-22
+FUR-TA-1342,Bush Somerset Table,Furniture,Tables,Central DC,SUP-111,314.25,11,3.52,49,88,199,100,2025-12-08
+OFF-ST-1344,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-105,22.57,20,5.38,43,151,312,187,2025-12-01
+TEC-MA-1346,Lexmark Printer,Technology,Machines,South DC,SUP-111,206.69,10,7.61,99,175,545,417,2025-11-24
+OFF-LA-1349,Hon Label Maker Tape,Office Supplies,Labels,South DC,SUP-100,24.99,19,22.99,276,713,1223,692,2025-12-01
+FUR-CH-1350,Hbada Office Chair,Furniture,Chairs,South DC,SUP-105,278.52,18,4.01,36,108,214,96,2025-11-10
+TEC-CO-1352,Hewlett Packard Copier,Technology,Copiers,South DC,SUP-108,465.52,7,4.97,40,75,258,294,2025-12-01
+OFF-PA-1353,Boise Paper,Office Supplies,Paper,West DC,SUP-108,23.25,10,18.41,203,387,944,471,2025-10-27
+OFF-ST-1354,SimpleHouseware Bin,Office Supplies,Storage,South DC,SUP-112,25.0,8,4.3,26,60,323,158,2025-11-24
+FUR-FU-1356,Tenex Chairmat,Furniture,Furnishings,Central DC,SUP-110,220.5,18,1.5,14,41,75,22,2025-10-27
+OFF-LA-1358,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-114,12.91,17,20.76,104,457,1230,911,2025-12-22
+FUR-TA-1359,Chromcraft Round Table,Furniture,Tables,South DC,SUP-101,198.07,3,3.33,43,53,211,66,2025-11-03
+FUR-TA-1360,Bush Somerset Table,Furniture,Tables,West DC,SUP-104,146.59,5,1.21,12,18,75,75,2025-12-01
+TEC-MA-1361,Zebra Label Printer,Technology,Machines,East DC,SUP-106,496.35,12,18.9,94,321,1309,1173,2025-12-08
+TEC-CO-1363,Canon Copier,Technology,Copiers,West DC,SUP-105,532.34,18,4.26,34,111,269,42,2025-12-01
+OFF-ST-1364,Fellowes Storage Box,Office Supplies,Storage,Central DC,SUP-113,9.82,8,5.95,30,78,386,471,2025-12-15
+OFF-LA-1365,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-101,7.85,2,5.67,74,85,323,122,2025-11-24
+OFF-LA-1367,Avery Labels,Office Supplies,Labels,West DC,SUP-103,20.9,5,5.14,72,98,370,184,2025-12-08
+OFF-LA-1368,Avery Labels,Office Supplies,Labels,South DC,SUP-103,24.68,4,10.35,72,113,667,282,2025-12-15
+TEC-MA-1370,Lexmark Printer,Technology,Machines,East DC,SUP-103,322.43,5,4.57,50,73,243,374,2025-12-08
+TEC-AC-1371,Kensington Keyboard,Technology,Accessories,East DC,SUP-107,534.31,14,1.87,26,52,110,24,2025-11-17
+FUR-BO-1372,Bush Cubix Bookcase,Furniture,Bookcases,South DC,SUP-106,278.82,8,2.41,24,43,135,41,2025-11-17
+FUR-CH-1373,HON Executive Chair,Furniture,Chairs,Central DC,SUP-107,324.8,15,0.68,6,16,45,38,2025-12-22
+FUR-BO-1374,Sauder Bookcase,Furniture,Bookcases,West DC,SUP-114,89.56,13,1.73,24,46,123,69,2025-11-24
+OFF-PA-1375,Boise Paper,Office Supplies,Paper,South DC,SUP-104,26.69,6,19.68,236,354,1146,553,2025-11-17
+FUR-TA-1376,Bush Somerset Table,Furniture,Tables,Central DC,SUP-100,332.28,18,5.27,42,137,395,99,2025-11-17
+FUR-FU-1378,Tenex Chairmat,Furniture,Furnishings,Central DC,SUP-106,131.01,9,1.54,18,32,97,87,2025-11-24
+FUR-BO-1379,Sauder Bookcase,Furniture,Bookcases,West DC,SUP-113,280.78,12,3.44,48,89,177,65,2025-11-17
+OFF-LA-1381,Avery Labels,Office Supplies,Labels,Central DC,SUP-104,28.96,6,14.72,88,176,756,816,2025-12-22
+OFF-LA-1382,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-106,7.71,8,22.32,201,380,1411,1250,2025-11-10
+TEC-MA-1383,Zebra Label Printer,Technology,Machines,West DC,SUP-105,398.42,21,2.48,15,67,131,120,2025-11-17
+OFF-AR-1384,Newell Highlighters,Office Supplies,Art,West DC,SUP-101,22.34,5,15.44,170,247,808,788,2025-11-10
+OFF-ST-1385,SimpleHouseware Bin,Office Supplies,Storage,East DC,SUP-113,10.63,8,11.58,58,151,792,815,2025-12-08
+FUR-CH-1386,Global Task Chair,Furniture,Chairs,Central DC,SUP-103,201.74,7,1.64,8,19,100,35,2025-10-13
+OFF-ST-1387,Fellowes Storage Box,Office Supplies,Storage,West DC,SUP-102,18.54,15,7.5,38,150,365,375,2025-11-24
+FUR-FU-1388,Tenex Chairmat,Furniture,Furnishings,South DC,SUP-109,228.35,2,3.92,55,63,185,236,2025-12-22
+TEC-PH-1389,Apple iPhone,Technology,Phones,West DC,SUP-100,302.21,20,14.39,72,360,1027,913,2025-11-24
+OFF-BI-1390,Wilson Jones Binder,Office Supplies,Binders,West DC,SUP-113,13.51,12,12.65,76,228,865,613,2025-12-08
+TEC-AC-1391,Kensington Keyboard,Technology,Accessories,West DC,SUP-100,361.27,16,14.51,102,334,745,419,2025-10-13
+OFF-LA-1393,Hon Label Maker Tape,Office Supplies,Labels,Central DC,SUP-107,11.6,16,7.38,66,184,359,190,2025-12-01
+TEC-AC-1394,SanDisk Flash Drive,Technology,Accessories,West DC,SUP-104,498.8,6,2.98,30,48,202,129,2025-12-08
+TEC-PH-1395,Cisco IP Phone,Technology,Phones,Central DC,SUP-114,557.96,17,2.64,26,71,177,95,2025-12-08
+TEC-CO-1396,Canon Copier,Technology,Copiers,East DC,SUP-110,179.7,18,1.9,13,47,138,55,2025-11-17
+OFF-LA-1397,Avery Labels,Office Supplies,Labels,West DC,SUP-104,18.3,5,13.59,177,245,712,375,2025-12-08
+TEC-MA-1398,Lexmark Printer,Technology,Machines,West DC,SUP-100,525.01,19,11.45,57,275,761,982,2025-12-22
+OFF-AR-1399,Bic Pens,Office Supplies,Art,East DC,SUP-102,11.75,13,32.08,160,577,1930,202,2025-10-13

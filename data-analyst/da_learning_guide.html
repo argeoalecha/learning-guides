@@ -1,0 +1,3723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Analyst Learning Guide — Beginner to Intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Power BI module ────────────────────────────────────── */
+.bi-day-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem .8rem;margin:.8rem 0}
+.bi-day-row{display:flex;gap:.5rem;font-size:.82rem;align-items:flex-start}
+.bi-day-num{font-family:var(--mono);font-size:.68rem;font-weight:700;color:var(--coral);
+  min-width:32px;padding-top:.08rem;flex-shrink:0}
+
+@media(max-width:900px){.bi-day-grid{grid-template-columns:1fr}}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Data Analyst<br>Learning Guide</div>
+      <div class="brand-sub">Excel · PQ · DAX · Python · SQL</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-intermediate-track" class="nav-top">Beginner to Intermediate Track</a>
+<a href="#quick-start-three-ways-to-use-this-guide" class="nav-top">Quick Start: Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index-jump-anywhere" class="nav-top">Module Index</a>
+<a href="#learning-tracks-curated-paths" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+<div class="nav-group">
+<a href="#phase-1-foundations" class="nav-top nav-phase">Foundations</a>
+<div class="nav-children">
+<a href="#module-11-data-analyst-fundamentals" class="nav-child">Module 1.1 — Data Analyst Fundamentals</a>
+<a href="#module-12-excel-fundamentals" class="nav-child">Module 1.2 — Excel Fundamentals</a>
+<a href="#module-13-excel-tables-structured-data" class="nav-child">Module 1.3 — Excel Tables &amp; Structured Data</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-2-core-tools" class="nav-top nav-phase">Core Tools</a>
+<div class="nav-children">
+<a href="#module-21-power-query-etl-in-excel" class="nav-child">Module 2.1 — Power Query (ETL in Excel)</a>
+<a href="#module-22-power-pivot-data-modeling" class="nav-child">Module 2.2 — Power Pivot &amp; Data Modeling</a>
+<a href="#module-23-advanced-excel-analytics" class="nav-child">Module 2.3 — Advanced Excel Analytics</a>
+<a href="#module-24-power-bi-desktop" class="nav-child">Module 2.4 — Power BI Desktop</a>
+<a href="#phase-2-capstone-excel-power-query-power-pivot-dashboard" class="nav-child">Phase 2 Capstone: Excel + Power Query + Power Pivot Dashboard</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-3-python-for-data-analysis" class="nav-top nav-phase">Python for Data Analysis</a>
+<div class="nav-children">
+<a href="#module-31-python-basics-for-analysts" class="nav-child">Module 3.1 — Python Basics for Analysts</a>
+<a href="#module-32-pandas-data-cleaning-manipulation" class="nav-child">Module 3.2 — Pandas: Data Cleaning &amp; Manipulation</a>
+<a href="#module-33-statistics-for-data-analysts" class="nav-child">Module 3.3 — Statistics for Data Analysts</a>
+<a href="#module-34-eda-exploratory-data-analysis" class="nav-child">Module 3.4 — EDA: Exploratory Data Analysis</a>
+<a href="#module-35-machine-learning-data-science-basics" class="nav-child">Module 3.5 — Machine Learning &amp; Data Science Basics</a>
+<a href="#phase-3-capstone-python-eda-ml-report" class="nav-child">Phase 3 Capstone: Python EDA + ML Report</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-4-sql-mastery" class="nav-top nav-phase">SQL Mastery</a>
+<div class="nav-children">
+<a href="#module-41-sql-fundamentals" class="nav-child">Module 4.1 — SQL Fundamentals</a>
+<a href="#module-42-intermediate-sql" class="nav-child">Module 4.2 — Intermediate SQL</a>
+<a href="#phase-4-capstone-sql-business-intelligence-queries" class="nav-child">Phase 4 Capstone: SQL Business Intelligence Queries</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-5-integration" class="nav-top nav-phase">Integration</a>
+<div class="nav-children">
+<a href="#module-51-python-sql-integration" class="nav-child">Module 5.1 — Python + SQL Integration</a>
+<a href="#module-52-end-to-end-pipeline-pattern" class="nav-child">Module 5.2 — End-to-End Pipeline Pattern</a>
+<a href="#module-53-analyst-portfolio-setup" class="nav-child">Module 5.3 — Analyst Portfolio Setup</a>
+</div></div>
+<a href="#final-capstone-end-to-end-sales-inventory-analytics-project" class="nav-top">Final Capstone: End-to-End Sales &amp; Inventory Analytics Project</a>
+<a href="#quick-reference-tool-task-matrix" class="nav-top">Quick Reference: Tool-Task Matrix</a>
+<a href="#certification-roadmap" class="nav-top">Certification Roadmap</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#learning-resources-master-list" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<h1 id="data-analyst-learning-guide">Data Analyst Learning Guide</h1>
+<h2 id="beginner-to-intermediate-track">Beginner to Intermediate Track</h2>
+<h3 id="tools-excel-power-query-power-pivot-python-sql">Tools: Excel · Power Query · Power Pivot · Python · SQL</h3>
+<hr />
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Each module header tells you what you must already know, how to test out of it, and what it unlocks. All capstone datasets are standard <strong>Sales &amp; Inventory</strong> scenarios — realistic, reusable, and interview-relevant. Download the <strong>Superstore Sales</strong> dataset (flat CSV, <code>.xlsx</code>, and the star-schema tables used in Module 2.2+) from the shared <a href="../datasets/superstore-sales/">datasets folder</a>.</p>
+</blockquote>
+<hr />
+<h2 id="quick-start-three-ways-to-use-this-guide">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Some experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill or certification</strong> → Jump via the <strong>Module Index</strong> or the <strong>Certification Roadmap</strong>, and use <strong>Learning Tracks</strong> to follow a curated subset.</li>
+</ol>
+<hr />
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+<h3 id="section-a-excel-modules-1223">Section A — Excel (Modules 1.2–2.3)</h3>
+<ul>
+<li>[ ] I can write VLOOKUP/XLOOKUP and nested IF formulas without looking them up</li>
+<li>[ ] I build Pivot Tables with slicers and calculated fields regularly</li>
+<li>[ ] I use SUMIFS/COUNTIFS and structured Table references (<code>Table[Column]</code>)</li>
+<li>[ ] I know dynamic array functions (FILTER, SORT, UNIQUE)</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.2</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.1</strong> | <strong>4 yes</strong> → Skip to <strong>Module 2.2</strong></p>
+<h3 id="section-b-power-query-power-pivot-modules-2122">Section B — Power Query / Power Pivot (Modules 2.1–2.2)</h3>
+<ul>
+<li>[ ] I have combined multiple files with Get Data &gt; From Folder</li>
+<li>[ ] I can merge and append queries (joins in Power Query)</li>
+<li>[ ] I have built a star schema with relationships</li>
+<li>[ ] I can write DAX measures using CALCULATE and time intelligence</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.2</strong> | <strong>4 yes</strong> → Skip to <strong>Module 2.4 (Power BI)</strong> or <strong>Phase 3</strong></p>
+<h3 id="section-c-python-modules-3135">Section C — Python (Modules 3.1–3.5)</h3>
+<ul>
+<li>[ ] I write Python functions, loops, and list comprehensions comfortably</li>
+<li>[ ] I clean data in Pandas (nulls, dtypes, groupby, merge)</li>
+<li>[ ] I run statistical tests (t-test, correlation) and interpret p-values</li>
+<li>[ ] I have trained a scikit-learn model and evaluated it</li>
+</ul>
+<p><strong>0 yes</strong> → Start <strong>Module 3.1</strong> | <strong>1 yes</strong> → Start <strong>Module 3.2</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.3 or 3.5</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+<h3 id="section-d-sql-modules-4142">Section D — SQL (Modules 4.1–4.2)</h3>
+<ul>
+<li>[ ] I write JOINs across 3+ tables and use GROUP BY/HAVING</li>
+<li>[ ] I use CASE WHEN and subqueries</li>
+<li>[ ] I use window functions (ROW_NUMBER, LAG, running totals)</li>
+<li>[ ] I write CTEs and do data profiling in SQL</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 5</strong></p>
+<blockquote class="callout">
+<p><strong>Rule of thumb:</strong> If you can already complete a module's <strong>Exercise</strong> without studying it, skip the module. The exercise <em>is</em> the test-out.</p>
+</blockquote>
+<hr />
+<h2 id="module-index-jump-anywhere">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr>
+<th>Module</th>
+<th>Topic</th>
+<th>Level</th>
+<th>Prereqs</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-data-analyst-fundamentals">
+<td>1.1</td>
+<td>Data Analyst Fundamentals</td>
+<td>Beginner</td>
+<td>None</td>
+<td>3h</td>
+</tr>
+<tr data-href="#module-12-excel-fundamentals">
+<td>1.2</td>
+<td>Excel Fundamentals</td>
+<td>Beginner</td>
+<td>None</td>
+<td>12h</td>
+</tr>
+<tr data-href="#module-13-excel-tables-structured-data">
+<td>1.3</td>
+<td>Excel Tables &amp; Structured Data</td>
+<td>Beginner</td>
+<td>1.2</td>
+<td>3h</td>
+</tr>
+<tr data-href="#module-21-power-query-etl-in-excel">
+<td>2.1</td>
+<td>Power Query (ETL)</td>
+<td>Beginner–Int</td>
+<td>1.3</td>
+<td>14h</td>
+</tr>
+<tr data-href="#module-22-power-pivot-data-modeling">
+<td>2.2</td>
+<td>Power Pivot &amp; DAX</td>
+<td>Intermediate</td>
+<td>2.1</td>
+<td>18h</td>
+</tr>
+<tr data-href="#module-23-advanced-excel-analytics">
+<td>2.3</td>
+<td>Advanced Excel Analytics</td>
+<td>Intermediate</td>
+<td>1.2</td>
+<td>8h</td>
+</tr>
+<tr data-href="#module-24-power-bi-desktop">
+<td>2.4</td>
+<td>Power BI Desktop</td>
+<td>Intermediate</td>
+<td>2.1, 2.2</td>
+<td>20h</td>
+</tr>
+<tr data-href="#module-31-python-basics-for-analysts">
+<td>3.1</td>
+<td>Python Basics for Analysts</td>
+<td>Beginner</td>
+<td>None</td>
+<td>12h</td>
+</tr>
+<tr data-href="#module-32-pandas-data-cleaning-manipulation">
+<td>3.2</td>
+<td>Pandas — Cleaning &amp; Manipulation</td>
+<td>Beginner–Int</td>
+<td>3.1</td>
+<td>20h</td>
+</tr>
+<tr data-href="#module-33-statistics-for-data-analysts">
+<td>3.3</td>
+<td>Statistics for Analysts</td>
+<td>Intermediate</td>
+<td>3.2</td>
+<td>14h</td>
+</tr>
+<tr data-href="#module-34-eda-exploratory-data-analysis">
+<td>3.4</td>
+<td>EDA Framework</td>
+<td>Intermediate</td>
+<td>3.2</td>
+<td>12h</td>
+</tr>
+<tr data-href="#module-35-machine-learning-data-science-basics">
+<td>3.5</td>
+<td>Machine Learning &amp; DS Basics</td>
+<td>Intermediate</td>
+<td>3.2, 3.3</td>
+<td>18h</td>
+</tr>
+<tr data-href="#module-41-sql-fundamentals">
+<td>4.1</td>
+<td>SQL Fundamentals</td>
+<td>Beginner</td>
+<td>None</td>
+<td>14h</td>
+</tr>
+<tr data-href="#module-42-intermediate-sql">
+<td>4.2</td>
+<td>Intermediate SQL (Windows, CTEs)</td>
+<td>Intermediate</td>
+<td>4.1</td>
+<td>16h</td>
+</tr>
+<tr data-href="#module-51-python-sql-integration">
+<td>5.1</td>
+<td>Python + SQL Integration</td>
+<td>Intermediate</td>
+<td>3.2, 4.1</td>
+<td>6h</td>
+</tr>
+<tr data-href="#module-52-end-to-end-pipeline-pattern">
+<td>5.2</td>
+<td>End-to-End Pipeline</td>
+<td>Intermediate</td>
+<td>Phases 2–4</td>
+<td>6h</td>
+</tr>
+<tr data-href="#module-53-analyst-portfolio-setup">
+<td>5.3</td>
+<td>Portfolio Setup</td>
+<td>All</td>
+<td>Any capstone</td>
+<td>4h</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="callout">
+<p><strong>Note:</strong> The three tool tracks (Excel/Power BI, Python, SQL) are <strong>independent</strong>. You can do Phase 4 (SQL) before Phase 3 (Python), or run them in parallel. Only <strong>Phase 5</strong> requires multiple tracks complete.</p>
+</blockquote>
+<hr />
+<h2 id="learning-tracks-curated-paths">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset — you don't need everything.</p>
+<h3 id="track-1-excelpower-bi-analyst-fastest-to-employable">Track 1 — Excel/Power BI Analyst (fastest to employable)</h3>
+<p><code>1.1 → 1.2 → 1.3 → 2.1 → 2.2 → 2.3 → 2.4 → Capstone 2</code>
+Target cert: <strong>Microsoft PL-300 (Power BI Data Analyst Associate)</strong></p>
+<h3 id="track-2-python-data-analyst">Track 2 — Python Data Analyst</h3>
+<p><code>3.1 → 3.2 → 3.3 → 3.4 → 3.5 → Capstone 3</code>
+Target cert: <strong>Microsoft DP-100</strong> (entry) or <strong>DataCamp Data Analyst in Python</strong></p>
+<h3 id="track-3-sql-data-analyst-bi-focus">Track 3 — SQL / Data Analyst (BI focus)</h3>
+<p><code>4.1 → 4.2 → 5.1 → Capstone 4</code>
+Target cert: <strong>Microsoft DP-900</strong> + <strong>Oracle/PostgreSQL</strong> associate</p>
+<h3 id="track-4-full-data-analyst-all-tools-most-complete">Track 4 — Full Data Analyst (all tools, most complete)</h3>
+<p><code>All phases → Final Capstone</code>
+Target cert: <strong>Google Data Analytics Certificate</strong> + <strong>PL-300</strong> + <strong>DP-900</strong></p>
+<h3 id="track-5-career-switcher-sprint-12-weeks-employable-minimum">Track 5 — Career-Switcher Sprint (12 weeks, employable minimum)</h3>
+<p><code>1.1 → 1.2 → 2.1 → 2.2 → 4.1 → 4.2 → 3.2 → 3.4 → Capstone 2 → Capstone 4</code>
+Skips: deep Python ML, integration phase. Add later.</p>
+<hr />
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Foundations         (Weeks 1–6)
+Phase 2 — Core Tools          (Weeks 7–16)
+Phase 3 — Python for DA       (Weeks 17–26)   [independent of Phase 4]
+Phase 4 — SQL Mastery         (Weeks 27–32)   [independent of Phase 3]
+Phase 5 — Integration         (Weeks 33–36)   [requires Phases 2–4]
+Capstone Projects             (Ongoing)
+</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ─┬─ 1.2 ── 1.3 ── 2.1 ── 2.2 ─┬─ 2.3        ┐
+     │                            └─ 2.4         ├─ 5.2 ── 5.3
+     ├─ 3.1 ── 3.2 ─┬─ 3.3 ── 3.5               │
+     │              └─ 3.4 ─────────────────────┤
+     └─ 4.1 ── 4.2 ──────────────────── 5.1 ────┘
+</code></pre>
+<h2 id="phase-1-foundations">Phase 1: Foundations</h2>
+<h3 id="weeks-16-goal-build-the-data-mindset-and-excel-fundamentals">Weeks 1–6 | Goal: Build the data mindset and Excel fundamentals</h3>
+<hr />
+<h3 id="module-11-data-analyst-fundamentals">Module 1.1 — Data Analyst Fundamentals</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~3h
+<strong>Skip if:</strong> you can already explain the data analysis lifecycle and the difference between descriptive/diagnostic/predictive analytics.
+<strong>Unlocks:</strong> context for every later module. Safe to skim if you have any analytics exposure.</p>
+</blockquote>
+<p><strong>What is a Data Analyst?</strong></p>
+<p>A Data Analyst translates raw data into actionable business insights. Core responsibilities:
+- Data collection and extraction
+- Data cleaning and validation
+- Exploratory analysis and summarization
+- Visualization and reporting
+- Communicating findings to stakeholders</p>
+<p><strong>The Data Analysis Process</strong></p>
+<pre><code>Define Question → Collect Data → Clean Data → Analyze → Visualize → Communicate
+</code></pre>
+<p><strong>Key Concepts</strong>
+- Structured vs. unstructured data
+- Quantitative vs. qualitative data
+- Descriptive vs. diagnostic vs. predictive analytics
+- Data types: nominal, ordinal, interval, ratio
+- The difference between correlation and causation</p>
+<p><strong>Tools Introduction</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Primary Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Excel</td>
+<td>Data entry, formulas, basic analysis</td>
+</tr>
+<tr>
+<td>Power Query</td>
+<td>ETL — import, transform, clean</td>
+</tr>
+<tr>
+<td>Power Pivot</td>
+<td>Data modeling, DAX calculations</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>Automation, statistics, ML</td>
+</tr>
+<tr>
+<td>SQL</td>
+<td>Database querying and manipulation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Resources</strong>
+- Google's free Data Analytics Certificate (Coursera) — audit for free
+- "Storytelling with Data" by Cole Nussbaumer Knaflic (first 3 chapters)</p>
+<p><strong>Exercise 1.1</strong>
+Download the Superstore Sales dataset (available free on Kaggle). Open in Excel. Answer:
+1. How many rows and columns are there?
+2. What data type is each column?
+3. List 3 business questions this dataset could answer.</p>
+<hr />
+<h3 id="module-12-excel-fundamentals">Module 1.2 — Excel Fundamentals</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~12h
+<strong>Skip-check (test-out):</strong> Complete Exercise 1.2 cold. If you can do all 8 tasks, skip to Module 2.1.
+<strong>Skip if:</strong> you fluently use XLOOKUP/INDEX-MATCH, SUMIFS/COUNTIFS, and Pivot Tables with slicers.
+<strong>Unlocks:</strong> 1.3, 2.1, 2.3.</p>
+</blockquote>
+<h4 id="121-navigation-structure">1.2.1 Navigation &amp; Structure</h4>
+<ul>
+<li>Workbook vs. worksheet vs. cell</li>
+<li>Named ranges</li>
+<li>Absolute (<code>$A$1</code>), relative (<code>A1</code>), and mixed (<code>$A1</code>, <code>A$1</code>) references</li>
+<li>Data entry best practices: one variable per column, no merged cells in data tables</li>
+</ul>
+<h4 id="122-essential-formulas">1.2.2 Essential Formulas</h4>
+<p><strong>Lookup &amp; Reference</strong></p>
+<pre><code class="language-excel">=VLOOKUP(lookup_value, table_array, col_index, FALSE)
+=XLOOKUP(lookup_value, lookup_array, return_array, [not_found])
+=INDEX(array, MATCH(lookup_value, lookup_array, 0))
+=INDIRECT(&quot;Sheet1!A&quot;&amp;ROW())
+</code></pre>
+<p><strong>Logical</strong></p>
+<pre><code class="language-excel">=IF(condition, value_if_true, value_if_false)
+=IFS(condition1, val1, condition2, val2, ...)
+=AND(condition1, condition2)
+=OR(condition1, condition2)
+=IFERROR(formula, &quot;Error message&quot;)
+=ISBLANK(cell)
+</code></pre>
+<p><strong>Text</strong></p>
+<pre><code class="language-excel">=TRIM(text)           -- removes extra spaces
+=CLEAN(text)          -- removes non-printable characters
+=UPPER/LOWER/PROPER(text)
+=LEFT(text, n)
+=RIGHT(text, n)
+=MID(text, start, n)
+=FIND(search_text, within_text)
+=SUBSTITUTE(text, old, new)
+=CONCATENATE(text1, text2)  -- or =text1&amp;&quot; &quot;&amp;text2
+=TEXT(value, &quot;format&quot;)      -- e.g., =TEXT(A1,&quot;MM/DD/YYYY&quot;)
+</code></pre>
+<p><strong>Math &amp; Statistical</strong></p>
+<pre><code class="language-excel">=SUM / SUMIF / SUMIFS
+=COUNT / COUNTA / COUNTIF / COUNTIFS
+=AVERAGE / AVERAGEIF / AVERAGEIFS
+=MAX / MIN / LARGE / SMALL
+=ROUND / ROUNDUP / ROUNDDOWN
+=STDEV / VAR
+=PERCENTILE(array, k)
+=RANK(number, ref, order)
+</code></pre>
+<p><strong>Date &amp; Time</strong></p>
+<pre><code class="language-excel">=TODAY()
+=NOW()
+=DATE(year, month, day)
+=DATEDIF(start, end, &quot;D&quot;/&quot;M&quot;/&quot;Y&quot;)
+=EOMONTH(date, months)
+=WEEKDAY(date, return_type)
+=YEAR / MONTH / DAY / WEEKNUM
+</code></pre>
+<h4 id="123-pivot-tables">1.2.3 Pivot Tables</h4>
+<ul>
+<li>Creating a Pivot Table from a table</li>
+<li>Rows, Columns, Values, Filters</li>
+<li>Value field settings: Sum, Count, Average, % of Total</li>
+<li>Grouping dates (by month, quarter, year)</li>
+<li>Slicers and timelines</li>
+<li>Calculated fields</li>
+</ul>
+<p><strong>Pivot Table Best Practices</strong>
+- Always use structured Excel Tables (Ctrl+T) as your source — auto-expands
+- Refresh pivot after data updates (Alt+F5)
+- Use "Show values as" for % of grand total, running total, difference from</p>
+<h4 id="124-charts-visualization">1.2.4 Charts &amp; Visualization</h4>
+<ul>
+<li>When to use: bar, column, line, scatter, pie, combo</li>
+<li>Chart formatting: titles, axis labels, data labels, gridlines</li>
+<li>Sparklines for inline trends</li>
+<li>Dynamic charts using named ranges or Tables</li>
+</ul>
+<h4 id="125-sort-filter">1.2.5 Sort &amp; Filter</h4>
+<ul>
+<li><strong>Sort</strong>: single-column (Data &gt; Sort A→Z / Z→A), multi-level sort (sort by Region, then by Sales descending)</li>
+<li><strong>AutoFilter</strong>: Data &gt; Filter — dropdown on each column header. Filter by value, color, or custom condition</li>
+<li><strong>Advanced Filter</strong>: Data &gt; Advanced — filter in place or copy to another location using a criteria range
+<ul>
+<li>Criteria range: header row + condition rows (same-row = AND, separate rows = OR)</li>
+<li>Use case: extract unique records, or filter with conditions not available in AutoFilter</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-excel">-- Advanced Filter example criteria range:
+-- Row 1 (headers): Region  | Sales
+-- Row 2 (AND):     East    | &gt;1000
+-- Row 3 (OR):      West    |
+-- Result: East orders over 1000 OR any West order
+</code></pre>
+
+<h4 id="126-data-validation-quality-in-excel">1.2.6 Data Validation &amp; Quality in Excel</h4>
+<ul>
+<li>Data Validation rules (dropdown lists, number ranges, date limits)</li>
+<li>Conditional Formatting for visual QC</li>
+<li>Remove Duplicates</li>
+<li>Find &amp; Replace with wildcards (<code>*</code> = any chars, <code>?</code> = single char)</li>
+<li><strong>Flash Fill</strong> (Ctrl+E): auto-detects a pattern from examples and fills the column — extracts first names, reformats dates, combines fields without formulas</li>
+<li>Text to Columns: split a single column by delimiter or fixed width</li>
+</ul>
+<p><strong>Exercise 1.2 — Excel Sales Analysis</strong></p>
+<p>Dataset: Superstore Sales (Excel)</p>
+<p>Tasks:
+1. Create a structured Table (Ctrl+T)
+2. Add a <code>Profit Margin %</code> calculated column: <code>=Profit/Sales</code>
+3. Use SUMIFS to calculate total sales by Region and Category
+4. Use COUNTIFS to count orders where Profit &lt; 0
+5. Build a Pivot Table: Sales by Category by Year
+6. Add a slicer for Region
+7. Create a bar chart of top 10 products by sales
+8. Use XLOOKUP to pull a customer's total orders by Customer ID</p>
+<hr />
+<h3 id="module-13-excel-tables-structured-data">Module 1.3 — Excel Tables &amp; Structured Data</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~3h
+<strong>Skip if:</strong> you already use <code>Ctrl+T</code> Tables and structured references (<code>Table[Column]</code>) by default.
+<strong>Unlocks:</strong> 2.1 (Power Query ingests Tables cleanly).</p>
+</blockquote>
+<ul>
+<li>Excel Table (Ctrl+T): why it matters for data work</li>
+<li>Structured references: <code>=Table1[Sales]</code> vs. <code>=$B:$B</code></li>
+<li>Auto-expansion behavior</li>
+<li>Table Design tab options</li>
+<li>Converting flat data vs. summary tables</li>
+<li>Preparing data for Power Query ingestion</li>
+</ul>
+<p><strong>Data Layout Rules for Analysis</strong></p>
+<pre><code>DO:                              DON'T:
+✓ One header row                 ✗ Merged cells in headers
+✓ One data point per cell        ✗ Totals row inside the data
+✓ Consistent data types          ✗ Mixed text and numbers in one column
+✓ No blank rows within data      ✗ Multiple tables on one sheet
+✓ ISO date format (YYYY-MM-DD)   ✗ Dates stored as text
+</code></pre>
+<hr />
+<h2 id="phase-2-core-tools">Phase 2: Core Tools</h2>
+<h3 id="weeks-716-goal-power-query-power-pivot-and-intermediate-excel">Weeks 7–16 | Goal: Power Query, Power Pivot, and intermediate Excel</h3>
+<hr />
+<h3 id="module-21-power-query-etl-in-excel">Module 2.1 — Power Query (ETL in Excel)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~14h
+<strong>Skip-check (test-out):</strong> Complete Exercise 2.1. If you can combine a folder of CSVs, merge a lookup, and load to the model, skip to 2.2.
+<strong>Skip if:</strong> you build refreshable Power Query pipelines with merge/append and basic M edits.
+<strong>Unlocks:</strong> 2.2, 5.2. Transferable directly to Power BI (same engine).</p>
+</blockquote>
+<p>Power Query is Excel's built-in ETL engine. It handles data import, transformation, and loading — all without formulas, and with a reproducible, step-by-step pipeline. Without that pipeline, every data refresh means repeating the same cleaning steps by hand — one skipped step silently corrupts every analysis built on top of it.</p>
+<h4 id="211-data-sources">2.1.1 Data Sources</h4>
+<ul>
+<li>Import from: Excel file, CSV, folder (multiple files), SQL Server, Web, SharePoint</li>
+<li>Get Data &gt; From Folder (combine multiple CSVs automatically)</li>
+<li>Refreshing queries after source data updates</li>
+</ul>
+<h4 id="212-the-query-editor-interface">2.1.2 The Query Editor Interface</h4>
+<ul>
+<li>Applied Steps pane (every transformation is recorded)</li>
+<li>Column headers (data types, rename, reorder, remove)</li>
+<li>Filter rows</li>
+<li>Formula bar (M language expressions)</li>
+</ul>
+<h4 id="213-core-transformations">2.1.3 Core Transformations</h4>
+<p><strong>Column Operations</strong></p>
+<pre><code>- Change Type (Text, Number, Date, Logical)
+- Rename Column
+- Remove Column / Keep Column
+- Split Column by Delimiter, by Number of Characters
+- Merge Columns
+- Add Column from Examples
+- Extract: First N chars, Last N chars, Text Between Delimiters
+</code></pre>
+<p><strong>Row Operations</strong></p>
+<pre><code>- Filter Rows (equals, contains, is null, is not null)
+- Remove Duplicates
+- Remove Blank Rows
+- Keep / Remove Top N Rows
+- Sort Ascending / Descending
+</code></pre>
+<p><strong>Transform Operations</strong></p>
+<pre><code>- Trim / Clean (removes whitespace and non-printable characters)
+- UPPER / LOWER / Capitalize Each Word
+- Replace Values
+- Replace Errors
+- Fill Down / Fill Up (fill null cells with nearest non-null)
+- Unpivot Columns (wide → long format)
+- Pivot Column (long → wide format)
+- Transpose
+- Group By (aggregate: sum, count, min, max, average)
+</code></pre>
+<p><strong>Date Operations</strong></p>
+<pre><code>- Date &gt; Year / Month / Quarter / Week Number / Day of Week
+- Duration &gt; Total Days between dates
+</code></pre>
+<h4 id="214-combining-queries">2.1.4 Combining Queries</h4>
+<p><strong>Append Queries</strong> — stack rows (same columns, different time periods)</p>
+<pre><code>Home &gt; Append Queries &gt; Two tables or More tables
+Use case: Monthly sales files from Jan, Feb, Mar → combined full-year table
+</code></pre>
+<p><strong>Merge Queries</strong> — join tables (like SQL JOIN)</p>
+<pre><code>Home &gt; Merge Queries &gt; Select join column + join type
+Join types: Left Outer, Right Outer, Inner, Full Outer, Left Anti, Right Anti
+Use case: Add product category from a product lookup table
+</code></pre>
+<h4 id="215-m-language-basics">2.1.5 M Language Basics</h4>
+<pre><code class="language-m">// Each step creates a new table variable
+let
+    Source = Excel.Workbook(File.Contents(&quot;sales.xlsx&quot;), null, true),
+    Sheet1 = Source{[Item=&quot;Sheet1&quot;,Kind=&quot;Sheet&quot;]}[Data],
+    PromotedHeaders = Table.PromoteHeaders(Sheet1, [PromoteAllScalars=true]),
+    TypedColumns = Table.TransformColumnTypes(PromotedHeaders,{
+        {&quot;OrderDate&quot;, type date},
+        {&quot;Sales&quot;, type number},
+        {&quot;Region&quot;, type text}
+    }),
+    FilteredRows = Table.SelectRows(TypedColumns, each [Sales] &gt; 0),
+    AddedMargin = Table.AddColumn(FilteredRows, &quot;Margin%&quot;, 
+        each [Profit] / [Sales], Percentage.Type)
+in
+    AddedMargin
+</code></pre>
+<p><strong>Key M functions to know</strong></p>
+<pre><code class="language-m">Table.SelectRows(table, each [Column] = &quot;Value&quot;)
+Table.AddColumn(table, &quot;NewCol&quot;, each [A] + [B])
+Table.TransformColumns(table, {{&quot;Col&quot;, Text.Upper}})
+Table.Group(table, {&quot;Category&quot;}, {{&quot;Total&quot;, each List.Sum([Sales]), type number}})
+Table.NestedJoin(table1, &quot;Key&quot;, table2, &quot;Key&quot;, &quot;NewCol&quot;, JoinKind.LeftOuter)
+Text.Trim([Column])
+Date.Year([DateColumn])
+</code></pre>
+<h4 id="216-power-query-best-practices">2.1.6 Power Query Best Practices</h4>
+<ul>
+<li>Always rename steps to be descriptive ("Remove null rows" not "Filtered Rows3")</li>
+<li>Disable Load for staging queries (right-click &gt; uncheck "Enable Load")</li>
+<li>Use <code>Table.Buffer()</code> on frequently referenced tables</li>
+<li>Never hardcode file paths — use parameters instead</li>
+<li>Document transformations in query descriptions</li>
+</ul>
+<p><strong>Exercise 2.1 — Power Query Sales ETL</strong></p>
+<p>Dataset: 12 monthly CSV files of sales data (create or download)</p>
+<p>Tasks:
+1. Combine all 12 CSVs using Get Data &gt; From Folder
+2. Promote headers and set correct data types
+3. Remove blank rows and duplicates
+4. Add a <code>Year</code> and <code>Month</code> column from the Order Date
+5. Merge with a product lookup table to add Category and Subcategory
+6. Add a calculated column: <code>Revenue = Quantity * Unit Price</code>
+7. Group by Category to get total Revenue per Category
+8. Load the final clean table to the Excel data model</p>
+<hr />
+<h3 id="module-22-power-pivot-data-modeling">Module 2.2 — Power Pivot &amp; Data Modeling</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~18h
+<strong>Skip-check (test-out):</strong> Complete Exercise 2.2. If you can build a star schema and write CALCULATE + time-intelligence measures, skip to 2.3 or Phase 3.
+<strong>Skip if:</strong> you write DAX measures (CALCULATE, SAMEPERIODLASTYEAR, TOTALYTD) and understand filter context.
+<strong>Unlocks:</strong> Capstone 2, Power BI PL-300 prep. <strong>This is the highest-leverage Excel-track module for certification.</strong></p>
+</blockquote>
+<p>Power Pivot extends Excel with a columnar in-memory database (xVelocity engine) and the DAX formula language. This is the foundation of modern Excel BI.</p>
+<h4 id="221-the-data-model">2.2.1 The Data Model</h4>
+<ul>
+<li>What is a data model: multiple tables connected by relationships</li>
+<li>Star schema vs. snowflake schema</li>
+<li>Fact tables vs. dimension tables</li>
+</ul>
+<p><strong>Star Schema (standard pattern)</strong></p>
+<pre><code>                  dim_Product
+                      |
+dim_Date ── fact_Sales ── dim_Customer
+                      |
+                  dim_Region
+</code></pre>
+<ul>
+<li><strong>Fact table</strong>: transactional data — Sales, Orders, Payments</li>
+<li><strong>Dimension tables</strong>: descriptive context — Products, Customers, Dates, Regions</li>
+</ul>
+<h4 id="222-relationships">2.2.2 Relationships</h4>
+<ul>
+<li>One-to-many (most common): one Product → many Sales rows</li>
+<li>Cross-filter direction: Single vs. Both</li>
+<li>Creating relationships in Diagram View</li>
+<li>Active vs. inactive relationships</li>
+<li><strong>Never</strong> use VLOOKUP between tables once you're in the data model — use relationships instead</li>
+</ul>
+<h4 id="223-dax-data-analysis-expressions">2.2.3 DAX — Data Analysis Expressions</h4>
+<p><strong>DAX Concepts</strong>
+- <strong>Calculated Columns</strong>: row-by-row computation, stored in the model
+- <strong>Measures</strong>: aggregation computed at query time, respects filter context
+- <strong>Filter Context</strong>: the active filters from slicers, pivot rows/columns
+- <strong>Row Context</strong>: the current row being evaluated (in calculated columns and iterators)</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Using a Calculated Column when you need a Measure. A calculated column computes once per row at refresh and is fixed — it ignores slicers entirely. A Measure re-evaluates on every query in the current filter context. Using a calculated column for KPIs produces static, un-filterable numbers that look correct until a slicer is applied.</p></blockquote>
+<p><strong>DAX Syntax Structure</strong></p>
+<pre><code class="language-dax">Measure Name = FUNCTION(arguments)
+</code></pre>
+<p><strong>Basic Aggregation Measures</strong></p>
+<pre><code class="language-dax">Total Sales = SUM(fact_Sales[Revenue])
+Total Orders = COUNTROWS(fact_Sales)
+Avg Order Value = AVERAGE(fact_Sales[Revenue])
+Unique Customers = DISTINCTCOUNT(fact_Sales[CustomerID])
+Max Sale = MAX(fact_Sales[Revenue])
+</code></pre>
+<p><strong>Logical Functions</strong></p>
+<pre><code class="language-dax">Profitable Orders = 
+    CALCULATE(
+        COUNTROWS(fact_Sales),
+        fact_Sales[Profit] &gt; 0
+    )
+</code></pre>
+<p><strong>CALCULATE</strong> — the most important DAX function</p>
+<pre><code class="language-dax">-- CALCULATE modifies filter context
+Sales in East = CALCULATE([Total Sales], dim_Region[Region] = &quot;East&quot;)
+
+Sales Excluding Furniture = 
+    CALCULATE([Total Sales], dim_Product[Category] &lt;&gt; &quot;Furniture&quot;)
+
+-- ALL() removes all filters
+Sales All Time = CALCULATE([Total Sales], ALL(dim_Date))
+</code></pre>
+<p><strong>Time Intelligence</strong></p>
+<pre><code class="language-dax">-- Requires a proper Date dimension table with contiguous dates
+Sales LY = CALCULATE([Total Sales], SAMEPERIODLASTYEAR(dim_Date[Date]))
+
+Sales YTD = TOTALYTD([Total Sales], dim_Date[Date])
+
+Sales MTD = TOTALMTD([Total Sales], dim_Date[Date])
+
+YoY Growth % = 
+    DIVIDE([Total Sales] - [Sales LY], [Sales LY], BLANK())
+
+Rolling 3M Sales = 
+    CALCULATE([Total Sales], DATESINPERIOD(dim_Date[Date], LASTDATE(dim_Date[Date]), -3, MONTH))
+</code></pre>
+<p><strong>Iterator Functions (X functions)</strong></p>
+<pre><code class="language-dax">-- SUMX evaluates an expression per row, then sums
+Total Revenue = SUMX(fact_Sales, fact_Sales[Quantity] * fact_Sales[UnitPrice])
+
+-- AVERAGEX
+Avg Profit Per Order = AVERAGEX(fact_Sales, fact_Sales[Profit])
+
+-- RANKX
+Product Sales Rank = RANKX(ALL(dim_Product), [Total Sales],, DESC, Dense)
+</code></pre>
+<p><strong>Filter Functions</strong></p>
+<pre><code class="language-dax">-- FILTER returns a table
+Top 10 Products = 
+    CALCULATE([Total Sales], TOPN(10, dim_Product, [Total Sales], DESC))
+
+-- RELATED pulls from related dimension
+Category Sales = CALCULATE([Total Sales], RELATED(dim_Product[Category]))
+
+-- VALUES returns distinct values in current filter context
+Categories In View = CONCATENATEX(VALUES(dim_Product[Category]), dim_Product[Category], &quot;, &quot;)
+</code></pre>
+<h4 id="224-date-dimension-table">2.2.4 Date Dimension Table</h4>
+<p>A proper date dimension is mandatory for time intelligence.</p>
+<pre><code class="language-dax">-- Create in Power Query (M)
+let
+    StartDate = #date(2020, 1, 1),
+    EndDate = #date(2025, 12, 31),
+    DateList = List.Dates(StartDate, Duration.Days(EndDate - StartDate) + 1, #duration(1,0,0,0)),
+    DateTable = Table.FromList(DateList, Splitter.SplitByNothing(), {&quot;Date&quot;}),
+    TypedDate = Table.TransformColumnTypes(DateTable, {{&quot;Date&quot;, type date}}),
+    AddYear    = Table.AddColumn(TypedDate, &quot;Year&quot;, each Date.Year([Date]), Int64.Type),
+    AddMonth   = Table.AddColumn(AddYear, &quot;MonthNo&quot;, each Date.Month([Date]), Int64.Type),
+    AddMonthName = Table.AddColumn(AddMonth, &quot;MonthName&quot;, each Date.ToText([Date], &quot;MMMM&quot;), type text),
+    AddQtr     = Table.AddColumn(AddMonthName, &quot;Quarter&quot;, each &quot;Q&quot; &amp; Text.From(Date.QuarterOfYear([Date])), type text),
+    AddWkNo    = Table.AddColumn(AddQtr, &quot;WeekNo&quot;, each Date.WeekOfYear([Date]), Int64.Type),
+    AddDayName = Table.AddColumn(AddWkNo, &quot;DayName&quot;, each Date.ToText([Date], &quot;dddd&quot;), type text),
+    AddIsWeekend = Table.AddColumn(AddDayName, &quot;IsWeekend&quot;, 
+        each Date.DayOfWeek([Date], Day.Monday) &gt;= 5, type logical)
+in
+    AddIsWeekend
+</code></pre>
+<h4 id="225-power-pivot-kpi-dashboard-design-pattern">2.2.5 Power Pivot KPI Dashboard — Design Pattern</h4>
+<pre><code>Data Model:
+  fact_Sales  ── dim_Product
+             ── dim_Customer
+             ── dim_Date (mark as Date Table)
+             ── dim_Region
+
+Key Measures:
+  [Total Sales]        -- base measure
+  [Total Cost]         -- base measure
+  [Gross Profit]       -- = [Total Sales] - [Total Cost]
+  [Profit Margin %]    -- = DIVIDE([Gross Profit], [Total Sales])
+  [Sales LY]           -- time intelligence
+  [YoY Growth %]       -- = DIVIDE([Total Sales] - [Sales LY], [Sales LY])
+  [Sales YTD]          -- running year total
+  [Avg Transaction]    -- = DIVIDE([Total Sales], [Total Orders])
+</code></pre>
+<p><strong>Exercise 2.2 — Power Pivot Sales Data Model</strong></p>
+<p><em>Retrieval practice: before step 4, write from memory the difference between a Measure and a Calculated Column — which one respects slicers and why? Draft your answer first, then check the DAX Concepts section above.</em></p>
+<p>Dataset: Superstore Sales (multi-table version)</p>
+<p>Tasks:
+1. Load fact_Sales, dim_Product, dim_Customer, dim_Region, dim_Date into Power Pivot
+2. Build the star schema with correct relationships
+3. Mark dim_Date as Date Table
+4. Write these measures: Total Sales, Total Orders, Profit Margin %, Sales LY, YoY Growth %, Sales YTD
+5. Build a Pivot Table with: Year on columns, Category on rows, Total Sales as value
+6. Add slicers for Region and Category
+7. Add a KPI: flag if Profit Margin % is below 15%</p>
+<hr />
+<h3 id="module-23-advanced-excel-analytics">Module 2.3 — Advanced Excel Analytics</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~8h
+<strong>Skip if:</strong> you use dynamic arrays (FILTER/SORT/UNIQUE), statistical functions, and What-If analysis.
+<strong>Unlocks:</strong> Capstone 2. <strong>Optional</strong> — can be done any time after 1.2; not required for Phase 3+.</p>
+</blockquote>
+<h4 id="231-dynamic-arrays-excel-365">2.3.1 Dynamic Arrays (Excel 365)</h4>
+<pre><code class="language-excel">=UNIQUE(range)              -- unique values from a range
+=SORT(range, col, order)    -- sorted array
+=FILTER(range, condition)   -- filtered rows
+=SORTBY(range, by_range)    -- sort by another column
+=SEQUENCE(rows, cols, start, step)
+=RANDARRAY(rows, cols)
+
+-- Example: Top 5 products by sales
+=TAKE(SORT(product_sales, 2, -1), 5)
+
+-- Example: Filter orders with profit &lt; 0
+=FILTER(orders_table, orders_table[Profit] &lt; 0)
+</code></pre>
+<h4 id="232-statistical-functions-for-analysts">2.3.2 Statistical Functions for Analysts</h4>
+<pre><code class="language-excel">=CORREL(array1, array2)          -- correlation coefficient
+=FORECAST.LINEAR(x, known_y, known_x)
+=TREND(known_y, known_x, new_x)
+=STDEV.S / STDEV.P
+=VAR.S / VAR.P
+=NORM.DIST(x, mean, stdev, cumulative)
+=CONFIDENCE.NORM(alpha, stdev, n)
+=QUARTILE(array, quart)          -- Q1, Q2, Q3
+=PERCENTRANK.INC(array, x)
+</code></pre>
+<h4 id="233-what-if-analysis">2.3.3 What-If Analysis</h4>
+<ul>
+<li>Goal Seek: reverse-solve for input given desired output</li>
+<li>Scenario Manager: compare multiple input scenarios</li>
+<li>Data Table (1-variable and 2-variable): sensitivity analysis grid</li>
+</ul>
+
+<h4 id="234-data-analysis-toolpak">2.3.4 Data Analysis ToolPak</h4>
+<p>Enable via <strong>File &gt; Options &gt; Add-ins &gt; Excel Add-ins &gt; Analysis ToolPak</strong>. Adds a <em>Data Analysis</em> button under the Data tab.</p>
+<p><strong>Key tools in the ToolPak:</strong></p>
+<ul>
+<li><strong>Descriptive Statistics</strong>: generates mean, median, mode, std dev, min, max, kurtosis, skewness for a range in one click</li>
+<li><strong>Histogram</strong>: frequency distribution with bin ranges — useful for quick distributions before using Python charts</li>
+<li><strong>Correlation</strong>: produces a full correlation matrix across multiple columns</li>
+<li><strong>Regression</strong>: linear regression output (coefficients, R², F-stat, residuals) — good for quick sanity checks</li>
+<li><strong>t-Test (two-sample)</strong>: tests if two groups have different means</li>
+<li><strong>ANOVA: Single Factor</strong>: tests if 3+ groups have different means</li>
+<li><strong>Moving Average</strong>: calculates rolling averages for time series smoothing</li>
+<li><strong>Sampling</strong>: draws a random or periodic sample from a data range</li>
+</ul>
+<blockquote class="callout">
+<p><strong>ToolPak vs. formulas:</strong> ToolPak outputs are static — they don't recalculate when data changes. Use it for one-off analysis; use formulas (<code>=STDEV</code>, <code>=CORREL</code>, <code>=FORECAST</code>) when you need live results.</p>
+</blockquote>
+
+<p><strong>Exercise 2.3 — Advanced Analysis</strong></p>
+<p>Dataset: Superstore Sales</p>
+<p>Tasks:
+1. Use FILTER + SORT to build a dynamic "Top 10 Customers by Profit" table
+2. Use CORREL to find the correlation between Discount and Profit
+3. Use FORECAST.LINEAR to project next 3 months of sales
+4. Build a 2-variable Data Table: profit at different Discount rates × Sales volumes</p>
+<hr />
+<h3 id="module-24-power-bi-desktop">Module 2.4 — Power BI Desktop</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1, 2.2 · <strong>Time:</strong> ~20h
+<strong>Skip-check (test-out):</strong> Build a 3-page Power BI report from scratch — star schema model, 5 DAX measures, slicers, drill-through, and publish to the service. If straightforward, skip to Phase 3.
+<strong>Skip if:</strong> you publish Power BI reports to the service regularly and understand RLS + refresh schedules.
+<strong>Unlocks:</strong> Capstone 2 (extended to Power BI), PL-300 exam (~80% coverage). <strong>The Power Query and DAX skills from 2.1–2.2 transfer directly — this module covers the Power BI Desktop interface and Service.</strong></p>
+</blockquote>
+<p>Power BI Desktop uses the same Power Query engine and DAX language as Excel Power Pivot — the key difference is the visualization layer, publishing to the cloud, and collaboration features.</p>
+
+<h4 id="241-power-bi-desktop-interface">2.4.1 Power BI Desktop Interface</h4>
+<p>Three views in Power BI Desktop:</p>
+<ul>
+<li><strong>Report view</strong> — canvas where you build pages, visuals, and interactions</li>
+<li><strong>Data view</strong> — browse tables row by row, add calculated columns</li>
+<li><strong>Model view</strong> — diagram of relationships between tables (same as Power Pivot diagram view)</li>
+</ul>
+<p>Key panes: Fields, Visualizations, Filters, Format (each visual selected).</p>
+
+<h4 id="242-connecting-data">2.4.2 Connecting Data Sources</h4>
+<pre><code>Home > Get Data > (choose source):
+  - Excel workbook
+  - CSV / Text
+  - SQL Server / PostgreSQL
+  - Web (URL scraping)
+  - SharePoint / OneDrive
+  - Dataverse / Azure
+  - DirectQuery mode: live connection, no import (for large datasets)
+  - Import mode: snapshot loaded into model (default — best for most analyst work)
+</code></pre>
+
+<h4 id="243-power-query-in-power-bi">2.4.3 Power Query in Power BI</h4>
+<p>Identical to Module 2.1 — all M language and transformation steps apply. Additional Power BI-specific features:</p>
+<ul>
+<li><strong>Parameters</strong>: make data source paths dynamic (e.g., switch between dev/prod DB)</li>
+<li><strong>Incremental refresh</strong>: only refresh new/changed rows in large tables</li>
+<li><strong>Dataflows</strong>: reusable Power Query pipelines shared across reports in the Service</li>
+</ul>
+
+<h4 id="244-data-model-in-power-bi">2.4.4 Data Model in Power BI</h4>
+<p>Same star schema principles as Module 2.2. Power BI-specific additions:</p>
+<ul>
+<li>Mark a table as <strong>Date Table</strong> (required for time intelligence)</li>
+<li>Bidirectional relationships — use sparingly; prefer single-direction</li>
+<li>Many-to-many relationships (composite models)</li>
+<li>Calculation groups (advanced — reusable time intelligence patterns)</li>
+</ul>
+
+<h4 id="245-dax-in-power-bi">2.4.5 DAX in Power BI</h4>
+<p>All DAX from Module 2.2 applies directly. Power BI adds the <strong>DAX query view</strong> for writing and testing DAX queries interactively. Common patterns specific to Power BI reporting:</p>
+<pre><code class="language-dax">-- Dynamic title based on slicer selection
+Selected Region = SELECTEDVALUE(dim_Region[Region], "All Regions")
+
+-- Conditional formatting measure (returns hex color)
+Margin Color = IF([Profit Margin %] &gt;= 0.15, "#0d7a6e", "#e0613a")
+
+-- What-if parameter (creates a slicer-driven numeric input)
+-- Created via Modeling > New Parameter in the UI
+-- Generates: Parameter[Parameter Value] measure automatically
+</code></pre>
+
+<h4 id="246-visuals">2.4.6 Visuals — Core Chart Types</h4>
+<div class="bi-day-grid">
+  <div class="bi-day-row"><span class="bi-day-num">Table</span>Tabular data, sortable columns, conditional formatting</div>
+  <div class="bi-day-row"><span class="bi-day-num">Matrix</span>Pivot-table style — row/column hierarchy + totals</div>
+  <div class="bi-day-row"><span class="bi-day-num">Card</span>Single KPI value — clean, prominent display</div>
+  <div class="bi-day-row"><span class="bi-day-num">KPI</span>Value vs. target with trend indicator</div>
+  <div class="bi-day-row"><span class="bi-day-num">Bar/Col</span>Category comparisons — horizontal (bar) or vertical (column)</div>
+  <div class="bi-day-row"><span class="bi-day-num">Line</span>Trends over time; use for continuous date axis</div>
+  <div class="bi-day-row"><span class="bi-day-num">Area</span>Cumulative trend; stacked area for composition over time</div>
+  <div class="bi-day-row"><span class="bi-day-num">Scatter</span>Relationship between two measures; size = third measure</div>
+  <div class="bi-day-row"><span class="bi-day-num">Pie/Donut</span>Part-to-whole; max 5–6 slices, use sparingly</div>
+  <div class="bi-day-row"><span class="bi-day-num">Map</span>Geographic data — requires location field</div>
+  <div class="bi-day-row"><span class="bi-day-num">Gauge</span>Progress toward a target (e.g., quota attainment)</div>
+  <div class="bi-day-row"><span class="bi-day-num">Waterfall</span>Running contribution — show what drove a total up/down</div>
+</div>
+<p><strong>Visual interactions</strong>: by default, clicking a slice in one visual cross-filters all others on the page. Control with <em>Format &gt; Edit interactions</em> to set filter, highlight, or none.</p>
+
+<h4 id="247-slicers-filters-bookmarks">2.4.7 Slicers, Filters &amp; Bookmarks</h4>
+<ul>
+<li><strong>Slicers</strong>: on-canvas interactive filters. Types: list, dropdown, date range, relative date ("last 30 days")</li>
+<li><strong>Filter pane</strong>: visual-level, page-level, or report-level filters — hidden from end users</li>
+<li><strong>Bookmarks</strong>: save the current state of the report page (filters, visual visibility). Use for "reset filters" button, toggle views, guided navigation</li>
+<li><strong>Drill-through</strong>: right-click a data point → navigate to a detail page pre-filtered to that item</li>
+<li><strong>Tooltips</strong>: hover over a visual → show a custom page with rich detail</li>
+</ul>
+
+<h4 id="248-power-bi-service">2.4.8 Power BI Service (cloud)</h4>
+<pre><code>Publish from Desktop: Home > Publish > select workspace
+URL: app.powerbi.com
+
+Service concepts:
+  - Workspaces: team collaboration areas
+  - Datasets: the data model (shared, refreshable)
+  - Reports: visuals built on a dataset
+  - Dashboards: pinned visuals from multiple reports (read-only canvas)
+  - Apps: packaged workspace content for end users
+
+Data refresh:
+  - Scheduled refresh: up to 8x/day (free), 48x/day (Premium)
+  - Requires gateway for on-premise sources (Excel files on local drives)
+  - Cloud sources (SQL Azure, SharePoint Online) refresh without a gateway
+</code></pre>
+
+<h4 id="249-row-level-security">2.4.9 Row Level Security (RLS)</h4>
+<pre><code class="language-dax">-- Define an RLS role in Power BI Desktop: Modeling > Manage Roles
+-- Example: each salesperson only sees their own region
+
+-- In role "Region Filter", add DAX filter on dim_Region table:
+[SalespersonEmail] = USERPRINCIPALNAME()
+
+-- After publish: assign users to the role in Power BI Service (dataset settings)
+</code></pre>
+
+<h4 id="2410-pl-300-exam-alignment">2.4.10 PL-300 Exam Alignment</h4>
+<table>
+<thead><tr><th>Exam Domain</th><th>Weight</th><th>Covered By</th></tr></thead>
+<tbody>
+<tr><td>Prepare the data</td><td>25–30%</td><td>Module 2.1 (Power Query)</td></tr>
+<tr><td>Model the data</td><td>25–30%</td><td>Module 2.2 (DAX, star schema)</td></tr>
+<tr><td>Visualize &amp; analyze</td><td>25–30%</td><td>Module 2.4 sections 2.4.6–2.4.7</td></tr>
+<tr><td>Deploy &amp; maintain</td><td>15–20%</td><td>Module 2.4 sections 2.4.8–2.4.9</td></tr>
+</tbody>
+</table>
+
+<p><strong>Exercise 2.4 — Power BI Sales Dashboard</strong></p>
+<p>Dataset: Superstore Sales</p>
+<p>Tasks:
+1. Connect to the Superstore CSV in Power BI Desktop
+2. Use Power Query to clean data and build the same transformations as Exercise 2.1
+3. Build the star schema in Model view — same as Exercise 2.2
+4. Write 6 DAX measures: Total Sales, Profit Margin %, YoY Growth %, Sales YTD, Top Category, Running Total
+5. Build a 3-page report:
+   - Page 1: Executive Summary (KPI cards, trend line, category bar)
+   - Page 2: Regional Analysis (map, bar by region, slicer drill-down)
+   - Page 3: Product Detail (table with conditional formatting, drill-through)
+6. Add slicers for Year, Region, Category
+7. Add a bookmark for "Reset All Filters"
+8. Configure drill-through from product name to a detail page
+9. Publish to Power BI Service and set up a scheduled refresh</p>
+
+<hr />
+<h3 id="phase-2-capstone-excel-power-query-power-pivot-dashboard">Phase 2 Capstone: Excel + Power Query + Power Pivot Dashboard</h3>
+<p><strong>Project: Retail Sales Performance Dashboard</strong></p>
+<p><strong>Dataset:</strong> Superstore Sales (Kaggle) — multi-year, multi-region, multi-category</p>
+<p><strong>Deliverable:</strong> A single Excel workbook with:
+1. A Power Query pipeline that cleans and loads the raw data
+2. A star schema data model in Power Pivot (fact + 4 dimensions)
+3. A Date dimension created in Power Query
+4. The following measures in Power Pivot:
+   - Total Sales, Total Profit, Profit Margin %
+   - YoY Sales Growth %, Sales YTD, Rolling 12-Month Sales
+   - Top Category by Sales (using RANKX)
+5. An interactive dashboard sheet with:
+   - KPI cards (Total Sales, Profit, Orders, Margin %)
+   - Monthly sales trend line chart
+   - Sales by Category bar chart
+   - Top 10 Products table
+   - Regional performance map or filled map chart
+   - Slicers: Year, Region, Category
+6. A documentation sheet describing your data model and DAX measures</p>
+<blockquote class="callout">
+<p><strong>Power BI variant:</strong> If you completed Module 2.4, build this same dashboard in Power BI Desktop instead of (or in addition to) Excel — it satisfies Exercise 2.4 and is stronger portfolio material for PL-300. The Power Query pipeline, star schema, and DAX measures transfer unchanged; only the visualization layer differs.</p>
+</blockquote>
+<hr />
+<h2 id="phase-3-python-for-data-analysis">Phase 3: Python for Data Analysis</h2>
+<h3 id="weeks-1726-goal-end-to-end-data-work-in-python">Weeks 17–26 | Goal: End-to-end data work in Python</h3>
+<hr />
+<h3 id="module-31-python-basics-for-analysts">Module 3.1 — Python Basics for Analysts</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None (separate track) · <strong>Time:</strong> ~12h
+<strong>Skip-check (test-out):</strong> Write a function that reads a CSV, filters rows, and returns a summary dict. If trivial, skip to 3.2.
+<strong>Skip if:</strong> you know Python syntax — functions, loops, comprehensions, dicts — and basic file I/O.
+<strong>Unlocks:</strong> 3.2, 3.3, 3.4, 3.5.</p>
+</blockquote>
+<p>This module covers only what's relevant to data work — not general software engineering.</p>
+<h4 id="311-setup">3.1.1 Setup</h4>
+<pre><code class="language-bash"># Recommended setup
+python -m venv da-env
+source da-env/bin/activate  # Windows: da-env\Scripts\activate
+pip install pandas numpy matplotlib seaborn scipy scikit-learn jupyter
+
+# Launch Jupyter
+jupyter lab
+</code></pre>
+<h4 id="312-python-fundamentals">3.1.2 Python Fundamentals</h4>
+<pre><code class="language-python"># Data types
+x = 42          # int
+y = 3.14        # float
+s = &quot;hello&quot;     # str
+b = True        # bool
+n = None        # NoneType
+
+# Collections
+lst = [1, 2, 3]               # list — mutable, ordered
+tpl = (1, 2, 3)               # tuple — immutable
+dct = {&quot;key&quot;: &quot;value&quot;}        # dict — key-value pairs
+st  = {1, 2, 3}               # set — unique values
+
+# Control flow
+for item in lst:
+    print(item)
+
+if x &gt; 10:
+    print(&quot;big&quot;)
+elif x &gt; 5:
+    print(&quot;medium&quot;)
+else:
+    print(&quot;small&quot;)
+
+# List comprehension (Pythonic pattern)
+squares = [x**2 for x in range(10)]
+evens   = [x for x in range(20) if x % 2 == 0]
+
+# Functions
+def calculate_margin(sales, cost):
+    &quot;&quot;&quot;Returns gross profit margin as a decimal.&quot;&quot;&quot;
+    if sales == 0:
+        return 0
+    return (sales - cost) / sales
+
+# Lambda
+margin_fn = lambda s, c: (s - c) / s if s != 0 else 0
+</code></pre>
+<h4 id="313-file-io">3.1.3 File I/O</h4>
+<pre><code class="language-python">import pandas as pd
+
+# Read
+df = pd.read_csv(&quot;sales.csv&quot;)
+df = pd.read_excel(&quot;sales.xlsx&quot;, sheet_name=&quot;Sheet1&quot;)
+df = pd.read_json(&quot;sales.json&quot;)
+
+# Write
+df.to_csv(&quot;output.csv&quot;, index=False)
+df.to_excel(&quot;output.xlsx&quot;, index=False, sheet_name=&quot;Results&quot;)
+
+# Read with options
+df = pd.read_csv(&quot;sales.csv&quot;,
+    parse_dates=[&quot;OrderDate&quot;],
+    dtype={&quot;PostalCode&quot;: str},
+    encoding=&quot;utf-8&quot;,
+    na_values=[&quot;N/A&quot;, &quot;null&quot;, &quot;-&quot;]
+)
+</code></pre>
+<hr />
+<h3 id="module-32-pandas-data-cleaning-manipulation">Module 3.2 — Pandas: Data Cleaning &amp; Manipulation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~20h
+<strong>Skip-check (test-out):</strong> Complete Exercise 3.2. If you can audit nulls, fix dtypes, engineer features, groupby-aggregate, and merge, skip to 3.3/3.4.
+<strong>Skip if:</strong> Pandas is already your daily driver for tabular work.
+<strong>Unlocks:</strong> 3.3, 3.4, 3.5, 5.1. <strong>Core dependency for the entire Python track.</strong></p>
+</blockquote>
+<p>Pandas is the primary Python library for tabular data. Master this before anything else. Every downstream step — statistics, EDA, ML, SQL pipelines — depends on a clean DataFrame; a gap here compounds into every module that follows.</p>
+<h4 id="321-dataframe-fundamentals">3.2.1 DataFrame Fundamentals</h4>
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+
+df = pd.read_csv(&quot;sales.csv&quot;, parse_dates=[&quot;OrderDate&quot;])
+
+# Inspection
+df.shape           # (rows, cols)
+df.dtypes          # column data types
+df.info()          # full summary: dtypes + null counts
+df.describe()      # statistical summary of numeric columns
+df.head(5)         # first 5 rows
+df.tail(5)         # last 5 rows
+df.sample(5)       # random 5 rows
+df.columns.tolist()
+df[&quot;Category&quot;].unique()
+df[&quot;Category&quot;].value_counts()
+df[&quot;Category&quot;].nunique()
+</code></pre>
+<h4 id="322-selecting-data">3.2.2 Selecting Data</h4>
+<pre><code class="language-python"># Column selection
+df[&quot;Sales&quot;]              # single column → Series
+df[[&quot;Sales&quot;, &quot;Profit&quot;]]  # multiple columns → DataFrame
+
+# Row selection by index
+df.iloc[0]               # first row
+df.iloc[0:5]             # first 5 rows
+df.iloc[0:5, 2:4]        # rows 0–4, columns 2–3
+
+# Row selection by label
+df.loc[0, &quot;Sales&quot;]
+df.loc[0:5, [&quot;Sales&quot;, &quot;Profit&quot;]]
+
+# Boolean filtering
+df[df[&quot;Profit&quot;] &lt; 0]
+df[(df[&quot;Category&quot;] == &quot;Furniture&quot;) &amp; (df[&quot;Profit&quot;] &lt; 0)]
+df[df[&quot;Region&quot;].isin([&quot;East&quot;, &quot;West&quot;])]
+df[df[&quot;ProductName&quot;].str.contains(&quot;Chair&quot;, case=False)]
+
+# query() method (readable alternative)
+df.query(&quot;Profit &lt; 0 and Category == 'Furniture'&quot;)
+df.query(&quot;Sales &gt; @threshold&quot;)  # use @ to reference Python variables
+</code></pre>
+<h4 id="323-data-cleaning">3.2.3 Data Cleaning</h4>
+<pre><code class="language-python"># ── Null Handling ──────────────────────────────────────────────────────────
+df.isnull().sum()               # null count per column
+df.isnull().sum() / len(df)     # null % per column
+
+df.dropna()                     # drop rows with any null
+df.dropna(subset=[&quot;Sales&quot;])     # drop rows where Sales is null
+df.dropna(how=&quot;all&quot;)            # drop rows that are entirely null
+df.dropna(thresh=5)             # keep rows with at least 5 non-null values
+
+df[&quot;PostalCode&quot;].fillna(&quot;Unknown&quot;, inplace=True)
+df[&quot;Sales&quot;].fillna(df[&quot;Sales&quot;].median(), inplace=True)
+df[&quot;Sales&quot;].fillna(method=&quot;ffill&quot;, inplace=True)    # forward fill
+
+# ── Duplicates ────────────────────────────────────────────────────────────
+df.duplicated().sum()
+df.duplicated(subset=[&quot;OrderID&quot;]).sum()
+df.drop_duplicates(inplace=True)
+df.drop_duplicates(subset=[&quot;OrderID&quot;], keep=&quot;first&quot;, inplace=True)
+
+# ── Data Types ────────────────────────────────────────────────────────────
+df[&quot;OrderDate&quot;] = pd.to_datetime(df[&quot;OrderDate&quot;])
+df[&quot;Sales&quot;] = pd.to_numeric(df[&quot;Sales&quot;], errors=&quot;coerce&quot;)
+df[&quot;Category&quot;] = df[&quot;Category&quot;].astype(&quot;category&quot;)
+df[&quot;OrderID&quot;] = df[&quot;OrderID&quot;].astype(str)
+
+# ── String Cleaning ───────────────────────────────────────────────────────
+df[&quot;CustomerName&quot;] = df[&quot;CustomerName&quot;].str.strip()
+df[&quot;CustomerName&quot;] = df[&quot;CustomerName&quot;].str.title()
+df[&quot;City&quot;] = df[&quot;City&quot;].str.upper()
+df[&quot;ProductName&quot;] = df[&quot;ProductName&quot;].str.replace(r&quot;\s+&quot;, &quot; &quot;, regex=True)
+
+# Extract parts of strings
+df[&quot;FirstName&quot;] = df[&quot;CustomerName&quot;].str.split(&quot; &quot;).str[0]
+df[&quot;Domain&quot;] = df[&quot;Email&quot;].str.extract(r&quot;@(.+)$&quot;)
+
+# ── Outlier Detection ─────────────────────────────────────────────────────
+Q1 = df[&quot;Sales&quot;].quantile(0.25)
+Q3 = df[&quot;Sales&quot;].quantile(0.75)
+IQR = Q3 - Q1
+lower = Q1 - 1.5 * IQR
+upper = Q3 + 1.5 * IQR
+outliers = df[(df[&quot;Sales&quot;] &lt; lower) | (df[&quot;Sales&quot;] &gt; upper)]
+df_clean = df[(df[&quot;Sales&quot;] &gt;= lower) &amp; (df[&quot;Sales&quot;] &lt;= upper)]
+
+# ── Renaming &amp; Reordering ─────────────────────────────────────────────────
+df.rename(columns={&quot;Row ID&quot;: &quot;row_id&quot;, &quot;Order ID&quot;: &quot;order_id&quot;}, inplace=True)
+df.columns = df.columns.str.lower().str.replace(&quot; &quot;, &quot;_&quot;)
+
+# Reorder columns
+cols = [&quot;order_id&quot;, &quot;order_date&quot;, &quot;customer_name&quot;, &quot;sales&quot;, &quot;profit&quot;]
+df = df[cols]
+</code></pre>
+<h4 id="324-feature-engineering">3.2.4 Feature Engineering</h4>
+<pre><code class="language-python"># ── Date Features ─────────────────────────────────────────────────────────
+df[&quot;year&quot;]     = df[&quot;order_date&quot;].dt.year
+df[&quot;month&quot;]    = df[&quot;order_date&quot;].dt.month
+df[&quot;month_name&quot;] = df[&quot;order_date&quot;].dt.strftime(&quot;%B&quot;)
+df[&quot;quarter&quot;]  = df[&quot;order_date&quot;].dt.quarter
+df[&quot;day_name&quot;] = df[&quot;order_date&quot;].dt.day_name()
+df[&quot;week_no&quot;]  = df[&quot;order_date&quot;].dt.isocalendar().week
+df[&quot;days_to_ship&quot;] = (df[&quot;ship_date&quot;] - df[&quot;order_date&quot;]).dt.days
+
+# ── Derived Metrics ───────────────────────────────────────────────────────
+df[&quot;profit_margin&quot;] = df[&quot;profit&quot;] / df[&quot;sales&quot;]
+df[&quot;revenue&quot;]       = df[&quot;quantity&quot;] * df[&quot;unit_price&quot;]
+df[&quot;discount_amount&quot;] = df[&quot;sales&quot;] * df[&quot;discount&quot;]
+
+# ── Binning / Categorization ──────────────────────────────────────────────
+df[&quot;sales_tier&quot;] = pd.cut(df[&quot;sales&quot;],
+    bins=[0, 100, 500, 1000, float(&quot;inf&quot;)],
+    labels=[&quot;Low&quot;, &quot;Medium&quot;, &quot;High&quot;, &quot;Premium&quot;]
+)
+
+df[&quot;profit_flag&quot;] = np.where(df[&quot;profit&quot;] &gt;= 0, &quot;Profitable&quot;, &quot;Loss&quot;)
+
+# ── Encoding Categorical Variables ───────────────────────────────────────
+df_dummies = pd.get_dummies(df, columns=[&quot;region&quot;, &quot;category&quot;], drop_first=True)
+
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+df[&quot;region_encoded&quot;] = le.fit_transform(df[&quot;region&quot;])
+</code></pre>
+<h4 id="325-groupby-aggregation">3.2.5 GroupBy &amp; Aggregation</h4>
+<pre><code class="language-python"># Basic groupby
+df.groupby(&quot;category&quot;)[&quot;sales&quot;].sum()
+df.groupby([&quot;category&quot;, &quot;region&quot;])[&quot;sales&quot;].sum()
+
+# Multiple aggregations
+summary = df.groupby(&quot;category&quot;).agg(
+    total_sales=(&quot;sales&quot;, &quot;sum&quot;),
+    total_profit=(&quot;profit&quot;, &quot;sum&quot;),
+    avg_margin=(&quot;profit_margin&quot;, &quot;mean&quot;),
+    order_count=(&quot;order_id&quot;, &quot;count&quot;),
+    unique_customers=(&quot;customer_id&quot;, &quot;nunique&quot;)
+).reset_index()
+
+# Named aggregation with custom functions
+df.groupby(&quot;category&quot;).agg(
+    sales_q3=(&quot;sales&quot;, lambda x: x.quantile(0.75))
+)
+
+# Transform: add group-level aggregate back to row level
+df[&quot;category_total_sales&quot;] = df.groupby(&quot;category&quot;)[&quot;sales&quot;].transform(&quot;sum&quot;)
+df[&quot;pct_of_category&quot;]      = df[&quot;sales&quot;] / df[&quot;category_total_sales&quot;]
+
+# Pivot table equivalent
+df.pivot_table(
+    values=&quot;sales&quot;,
+    index=&quot;category&quot;,
+    columns=&quot;region&quot;,
+    aggfunc=&quot;sum&quot;,
+    fill_value=0,
+    margins=True
+)
+</code></pre>
+<h4 id="326-merging-joining">3.2.6 Merging &amp; Joining</h4>
+<pre><code class="language-python"># Merge (SQL JOIN equivalent)
+merged = pd.merge(df_orders, df_products, on=&quot;product_id&quot;, how=&quot;left&quot;)
+merged = pd.merge(df_orders, df_customers, left_on=&quot;customer_id&quot;, right_on=&quot;cust_id&quot;, how=&quot;inner&quot;)
+
+# Merge validation
+pd.merge(df1, df2, on=&quot;id&quot;, how=&quot;left&quot;, validate=&quot;m:1&quot;)  # catches bad joins
+
+# Concatenate (stack rows)
+df_all = pd.concat([df_2022, df_2023, df_2024], ignore_index=True)
+df_all = pd.concat([df_2022, df_2023], axis=0, ignore_index=True)
+
+# Check for unmatched keys after left join
+merged[merged[&quot;product_name&quot;].isnull()]  # rows from left with no match
+</code></pre>
+<p><strong>Exercise 3.2 — Python Data Cleaning</strong></p>
+<p><em>Retrieval practice: before starting task 1, write from memory the three Pandas methods that reveal null counts, data types, and statistical shape. Run them before reading any results.</em></p>
+<p>Dataset: Superstore Sales CSV (with intentional dirty data)</p>
+<p>Tasks:
+1. Load the CSV and run a full null/dtype audit
+2. Fix all date columns to datetime type
+3. Standardize all text columns: strip, titlecase, remove extra spaces
+4. Remove duplicate orders (by OrderID)
+5. Add calculated columns: <code>profit_margin</code>, <code>days_to_ship</code>, <code>quarter</code>, <code>sales_tier</code>
+6. Detect and flag outliers in <code>sales</code> using IQR method
+7. Create a summary table: total sales, profit, order count, avg margin by category
+8. Export clean dataset to CSV and Excel</p>
+<hr />
+<h3 id="module-33-statistics-for-data-analysts">Module 3.3 — Statistics for Data Analysts</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.2 · <strong>Time:</strong> ~14h
+<strong>Skip if:</strong> you confidently run and interpret t-tests, ANOVA, chi-square, and correlation, and know Type I/II error.
+<strong>Unlocks:</strong> 3.5 (ML rests on these foundations). Can be studied alongside 3.4.</p>
+</blockquote>
+<h4 id="331-descriptive-statistics">3.3.1 Descriptive Statistics</h4>
+<pre><code class="language-python">import numpy as np
+from scipy import stats
+import pandas as pd
+
+sales = df[&quot;sales&quot;]
+
+# Central tendency
+mean   = sales.mean()
+median = sales.median()
+mode   = sales.mode()[0]
+
+# Spread
+std    = sales.std()
+var    = sales.var()
+rng    = sales.max() - sales.min()
+iqr    = sales.quantile(0.75) - sales.quantile(0.25)
+
+# Shape
+skewness = sales.skew()      # &gt;0 right-skewed, &lt;0 left-skewed
+kurtosis = sales.kurtosis()  # &gt;0 heavy tails, &lt;0 light tails
+
+# Percentiles
+p25, p50, p75, p90, p95 = np.percentile(sales.dropna(), [25, 50, 75, 90, 95])
+
+print(f&quot;Mean: {mean:.2f} | Median: {median:.2f} | Std: {std:.2f}&quot;)
+print(f&quot;Skewness: {skewness:.3f} | Kurtosis: {kurtosis:.3f}&quot;)
+</code></pre>
+<h4 id="332-distributions">3.3.2 Distributions</h4>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+
+# Visualize distribution
+fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+axes[0].hist(df[&quot;sales&quot;], bins=50, edgecolor=&quot;black&quot;)
+axes[0].set_title(&quot;Histogram&quot;)
+
+stats.probplot(df[&quot;sales&quot;], dist=&quot;norm&quot;, plot=axes[1])
+axes[1].set_title(&quot;Q-Q Plot&quot;)
+
+axes[2].boxplot(df[&quot;sales&quot;])
+axes[2].set_title(&quot;Box Plot&quot;)
+plt.tight_layout()
+plt.show()
+
+# Test for normality
+stat, p = stats.shapiro(df[&quot;sales&quot;].sample(50))
+print(f&quot;Shapiro-Wilk: stat={stat:.4f}, p={p:.4f}&quot;)
+# p &lt; 0.05 → reject H0 (not normally distributed)
+</code></pre>
+<h4 id="333-correlation-relationships">3.3.3 Correlation &amp; Relationships</h4>
+<pre><code class="language-python"># Pearson correlation (linear, continuous)
+r, p = stats.pearsonr(df[&quot;discount&quot;], df[&quot;profit&quot;])
+print(f&quot;Pearson r: {r:.3f}, p-value: {p:.4f}&quot;)
+
+# Spearman correlation (monotonic, robust to outliers)
+rho, p = stats.spearmanr(df[&quot;discount&quot;], df[&quot;profit&quot;])
+
+# Full correlation matrix
+corr_matrix = df[[&quot;sales&quot;, &quot;profit&quot;, &quot;discount&quot;, &quot;quantity&quot;]].corr()
+sns.heatmap(corr_matrix, annot=True, cmap=&quot;coolwarm&quot;, fmt=&quot;.2f&quot;)
+plt.title(&quot;Correlation Matrix&quot;)
+plt.show()
+</code></pre>
+<h4 id="334-hypothesis-testing">3.3.4 Hypothesis Testing</h4>
+<pre><code class="language-python">from scipy import stats
+
+# Two-sample t-test: Is sales different between East and West?
+east  = df[df[&quot;region&quot;] == &quot;East&quot;][&quot;sales&quot;]
+west  = df[df[&quot;region&quot;] == &quot;West&quot;][&quot;sales&quot;]
+t_stat, p_value = stats.ttest_ind(east, west)
+print(f&quot;t={t_stat:.3f}, p={p_value:.4f}&quot;)
+print(&quot;Significant difference&quot; if p_value &lt; 0.05 else &quot;No significant difference&quot;)
+
+# ANOVA: Is profit different across all 4 regions?
+groups = [df[df[&quot;region&quot;] == r][&quot;profit&quot;] for r in df[&quot;region&quot;].unique()]
+f_stat, p_value = stats.f_oneway(*groups)
+print(f&quot;ANOVA: F={f_stat:.3f}, p={p_value:.4f}&quot;)
+
+# Chi-square: Is there an association between Category and Region?
+contingency = pd.crosstab(df[&quot;category&quot;], df[&quot;region&quot;])
+chi2, p, dof, expected = stats.chi2_contingency(contingency)
+print(f&quot;Chi2={chi2:.3f}, p={p:.4f}, dof={dof}&quot;)
+</code></pre>
+<h4 id="335-key-statistical-concepts">3.3.5 Key Statistical Concepts</h4>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Definition</th>
+<th>Practical Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Central Limit Theorem</td>
+<td>Sample means are normally distributed for large n</td>
+<td>Justifies using t-tests even on non-normal data</td>
+</tr>
+<tr>
+<td>p-value</td>
+<td>Probability of results given null hypothesis is true</td>
+<td>p &lt; 0.05 = statistically significant</td>
+</tr>
+<tr>
+<td>Confidence Interval</td>
+<td>Range likely to contain true population parameter</td>
+<td>95% CI: "we're 95% confident the mean falls here"</td>
+</tr>
+<tr>
+<td>Effect Size</td>
+<td>Magnitude of difference (Cohen's d)</td>
+<td>Statistical significance ≠ practical importance</td>
+</tr>
+<tr>
+<td>Type I Error</td>
+<td>False positive (rejecting true H0)</td>
+<td>alpha = 0.05 means 5% chance of false positive</td>
+</tr>
+<tr>
+<td>Type II Error</td>
+<td>False negative (failing to reject false H0)</td>
+<td>Controlled by statistical power</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="module-34-eda-exploratory-data-analysis">Module 3.4 — EDA: Exploratory Data Analysis</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.2 · <strong>Time:</strong> ~12h
+<strong>Skip-check (test-out):</strong> Complete Exercise 3.4 — full 6-step EDA with 5 documented findings.
+<strong>Skip if:</strong> you have a repeatable EDA workflow and produce univariate/bivariate/multivariate visuals fluently.
+<strong>Unlocks:</strong> Capstone 3. Pairs naturally with 3.3.</p>
+</blockquote>
+<p>EDA is a systematic approach to understanding a new dataset before modeling. The goal is to generate hypotheses, not prove them.</p>
+<h4 id="341-eda-framework">3.4.1 EDA Framework</h4>
+<pre><code>1. Understand the data structure (shape, types, source)
+2. Check data quality (nulls, duplicates, outliers, format issues)
+3. Univariate analysis (each column independently)
+4. Bivariate analysis (column pairs, relationships)
+5. Multivariate analysis (3+ variables together)
+6. Business insight extraction (summarize what you found)
+</code></pre>
+<h4 id="342-automated-eda">3.4.2 Automated EDA</h4>
+<pre><code class="language-python"># ydata-profiling generates a full HTML report
+from ydata_profiling import ProfileReport
+
+profile = ProfileReport(df, title=&quot;Sales EDA Report&quot;, explorative=True)
+profile.to_file(&quot;eda_report.html&quot;)
+</code></pre>
+<h4 id="343-manual-eda-with-matplotlib-seaborn">3.4.3 Manual EDA with Matplotlib &amp; Seaborn</h4>
+<p><strong>Univariate Plots</strong></p>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import seaborn as sns
+
+fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+fig.suptitle(&quot;Sales Data — Univariate Analysis&quot;, fontsize=16)
+
+# Histogram
+axes[0,0].hist(df[&quot;sales&quot;], bins=40, color=&quot;steelblue&quot;, edgecolor=&quot;white&quot;)
+axes[0,0].set_title(&quot;Sales Distribution&quot;)
+
+# Box plot
+sns.boxplot(y=df[&quot;profit&quot;], ax=axes[0,1], color=&quot;salmon&quot;)
+axes[0,1].set_title(&quot;Profit Distribution&quot;)
+
+# Count plot (categorical)
+sns.countplot(data=df, x=&quot;category&quot;, ax=axes[0,2], palette=&quot;Set2&quot;)
+axes[0,2].set_title(&quot;Orders by Category&quot;)
+
+# KDE plot
+df[&quot;profit_margin&quot;].plot.kde(ax=axes[1,0], color=&quot;green&quot;)
+axes[1,0].set_title(&quot;Profit Margin Density&quot;)
+
+# Pie chart (use sparingly)
+df[&quot;category&quot;].value_counts().plot.pie(ax=axes[1,1], autopct=&quot;%1.1f%%&quot;)
+axes[1,1].set_title(&quot;Category Share&quot;)
+
+plt.tight_layout()
+plt.savefig(&quot;univariate_eda.png&quot;, dpi=150, bbox_inches=&quot;tight&quot;)
+plt.show()
+</code></pre>
+<p><strong>Bivariate Plots</strong></p>
+<pre><code class="language-python">fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+
+# Scatter: Sales vs. Profit
+sns.scatterplot(data=df, x=&quot;sales&quot;, y=&quot;profit&quot;, hue=&quot;category&quot;, ax=axes[0,0], alpha=0.6)
+axes[0,0].set_title(&quot;Sales vs. Profit by Category&quot;)
+
+# Box by group: Sales by Region
+sns.boxplot(data=df, x=&quot;region&quot;, y=&quot;sales&quot;, ax=axes[0,1], palette=&quot;Set3&quot;)
+axes[0,1].set_title(&quot;Sales Distribution by Region&quot;)
+
+# Line: Sales trend over time
+monthly = df.groupby(df[&quot;order_date&quot;].dt.to_period(&quot;M&quot;))[&quot;sales&quot;].sum()
+monthly.plot(ax=axes[1,0], color=&quot;navy&quot;, linewidth=2)
+axes[1,0].set_title(&quot;Monthly Sales Trend&quot;)
+
+# Heatmap: Avg Sales by Category x Region
+pivot = df.pivot_table(values=&quot;sales&quot;, index=&quot;category&quot;, columns=&quot;region&quot;, aggfunc=&quot;mean&quot;)
+sns.heatmap(pivot, annot=True, fmt=&quot;.0f&quot;, cmap=&quot;Blues&quot;, ax=axes[1,1])
+axes[1,1].set_title(&quot;Avg Sales: Category × Region&quot;)
+
+plt.tight_layout()
+plt.show()
+</code></pre>
+<p><strong>Multivariate: Pair Plot</strong></p>
+<pre><code class="language-python">numeric_cols = [&quot;sales&quot;, &quot;profit&quot;, &quot;discount&quot;, &quot;quantity&quot;]
+sns.pairplot(df[numeric_cols + [&quot;category&quot;]], hue=&quot;category&quot;, diag_kind=&quot;kde&quot;)
+plt.suptitle(&quot;Pairplot — Numeric Features&quot;, y=1.02)
+plt.show()
+</code></pre>
+<h4 id="344-eda-findings-template">3.4.4 EDA Findings Template</h4>
+<pre><code class="language-markdown">## EDA Summary: [Dataset Name]
+
+### Dataset Overview
+- Rows: X | Columns: Y
+- Date range: YYYY-MM to YYYY-MM
+- Key entities: [list]
+
+### Data Quality Issues Found
+- [Issue 1]: [Count affected rows] — [Action taken]
+- [Issue 2]: ...
+
+### Key Findings
+
+**Finding 1:** [Category] drives [X%] of revenue but only [Y%] of orders
+- Evidence: [chart / stat]
+- Business implication: [...]
+
+**Finding 2:** Discount rate above [X%] is associated with negative profit
+- Evidence: Pearson r = [X], p = [Y]
+- Business implication: [...]
+
+**Finding 3:** [Region] shows declining sales over the last 6 months
+- Evidence: [MoM trend]
+- Business implication: [...]
+
+### Hypotheses for Further Testing
+1. ...
+2. ...
+</code></pre>
+<p><strong>Exercise 3.4 — Full EDA</strong></p>
+<p>Dataset: Superstore Sales</p>
+<p>Tasks:
+1. Conduct full EDA following the 6-step framework
+2. Produce all univariate and bivariate plots
+3. Identify and document at least 5 data quality issues
+4. Write 5 business findings with evidence
+5. State 3 hypotheses you would test with more data or modeling</p>
+<hr />
+<h3 id="module-35-machine-learning-data-science-basics">Module 3.5 — Machine Learning &amp; Data Science Basics</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.2, 3.3 · <strong>Time:</strong> ~18h
+<strong>Skip-check (test-out):</strong> Complete Exercise 3.5 — train+evaluate a regressor, a classifier, run K-Means, and forecast.
+<strong>Skip if:</strong> you build and evaluate scikit-learn models and know the regression/classification metric families.
+<strong>Unlocks:</strong> Capstone 3, DP-100 prep. <strong>Optional for pure BI/analyst roles; required for DS-leaning roles.</strong></p>
+</blockquote>
+<p>This module focuses on the techniques most relevant to business data analysts — not deep learning or research ML.</p>
+<h4 id="351-ml-concepts">3.5.1 ML Concepts</h4>
+<p><strong>Types of ML</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Goal</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Supervised — Regression</td>
+<td>Predict a number</td>
+<td>Sales forecasting, price prediction</td>
+</tr>
+<tr>
+<td>Supervised — Classification</td>
+<td>Predict a category</td>
+<td>Churn prediction, fraud detection</td>
+</tr>
+<tr>
+<td>Unsupervised — Clustering</td>
+<td>Find natural groups</td>
+<td>Customer segmentation</td>
+</tr>
+<tr>
+<td>Time Series</td>
+<td>Forecast over time</td>
+<td>Inventory demand forecasting</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The ML Workflow</strong></p>
+<pre><code>1. Define problem and target variable
+2. Prepare data (clean, encode, scale)
+3. Split: train / test (typically 80/20)
+4. Train model
+5. Evaluate performance
+6. Interpret and communicate results
+</code></pre>
+<h4 id="352-ml-setup-with-scikit-learn">3.5.2 ML Setup with Scikit-learn</h4>
+<pre><code class="language-python">from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import (mean_absolute_error, mean_squared_error,
+                              r2_score, classification_report,
+                              confusion_matrix, accuracy_score)
+import numpy as np
+</code></pre>
+<h4 id="353-regression-predicting-sales">3.5.3 Regression: Predicting Sales</h4>
+<p><strong>Linear Regression</strong></p>
+<pre><code class="language-python">from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error, r2_score
+import pandas as pd
+
+# Feature engineering
+features = [&quot;quantity&quot;, &quot;discount&quot;, &quot;region_encoded&quot;, &quot;category_encoded&quot;]
+target   = &quot;sales&quot;
+
+X = df[features]
+y = df[target]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+
+print(f&quot;R²:  {r2_score(y_test, y_pred):.4f}&quot;)
+print(f&quot;MAE: {mean_absolute_error(y_test, y_pred):.2f}&quot;)
+print(f&quot;RMSE: {np.sqrt(mean_squared_error(y_test, y_pred)):.2f}&quot;)
+
+# Coefficients
+coef_df = pd.DataFrame({
+    &quot;feature&quot;: features,
+    &quot;coefficient&quot;: model.coef_
+}).sort_values(&quot;coefficient&quot;, key=abs, ascending=False)
+print(coef_df)
+</code></pre>
+<p><strong>Random Forest Regressor</strong></p>
+<pre><code class="language-python">from sklearn.ensemble import RandomForestRegressor
+
+rf = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)
+rf.fit(X_train, y_train)
+y_pred_rf = rf.predict(X_test)
+
+print(f&quot;RF R²:  {r2_score(y_test, y_pred_rf):.4f}&quot;)
+print(f&quot;RF MAE: {mean_absolute_error(y_test, y_pred_rf):.2f}&quot;)
+
+# Feature importance
+feat_importance = pd.Series(rf.feature_importances_, index=features).sort_values(ascending=False)
+feat_importance.plot.bar(title=&quot;Feature Importance&quot;, figsize=(8, 4))
+</code></pre>
+<h4 id="354-classification-predicting-profitable-orders">3.5.4 Classification: Predicting Profitable Orders</h4>
+<pre><code class="language-python">from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+import seaborn as sns
+
+# Target: 1 = profitable, 0 = loss
+df[&quot;is_profitable&quot;] = (df[&quot;profit&quot;] &gt; 0).astype(int)
+
+features = [&quot;sales&quot;, &quot;quantity&quot;, &quot;discount&quot;, &quot;region_encoded&quot;, &quot;category_encoded&quot;]
+target   = &quot;is_profitable&quot;
+
+X = df[features]
+y = df[target]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,
+    random_state=42, stratify=y)
+
+# Logistic Regression
+lr = LogisticRegression(max_iter=1000, random_state=42)
+lr.fit(X_train, y_train)
+y_pred_lr = lr.predict(X_test)
+print(classification_report(y_test, y_pred_lr))
+
+# Confusion Matrix
+cm = confusion_matrix(y_test, y_pred_lr)
+sns.heatmap(cm, annot=True, fmt=&quot;d&quot;, cmap=&quot;Blues&quot;,
+            xticklabels=[&quot;Loss&quot;, &quot;Profit&quot;], yticklabels=[&quot;Loss&quot;, &quot;Profit&quot;])
+plt.title(&quot;Confusion Matrix&quot;)
+plt.show()
+
+# Gradient Boosting (better performance)
+gb = GradientBoostingClassifier(n_estimators=100, random_state=42)
+gb.fit(X_train, y_train)
+print(f&quot;GB Accuracy: {accuracy_score(y_test, gb.predict(X_test)):.4f}&quot;)
+</code></pre>
+<p><strong>Classification Metrics Explained</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Formula</th>
+<th>When to Prioritize</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accuracy</td>
+<td>Correct / Total</td>
+<td>Balanced classes</td>
+</tr>
+<tr>
+<td>Precision</td>
+<td>TP / (TP+FP)</td>
+<td>Cost of false positives is high</td>
+</tr>
+<tr>
+<td>Recall</td>
+<td>TP / (TP+FN)</td>
+<td>Cost of false negatives is high</td>
+</tr>
+<tr>
+<td>F1-Score</td>
+<td>2<em>(P</em>R)/(P+R)</td>
+<td>Imbalanced classes</td>
+</tr>
+<tr>
+<td>AUC-ROC</td>
+<td>Area under ROC curve</td>
+<td>Probabilistic ranking quality</td>
+</tr>
+</tbody>
+</table>
+<h4 id="355-clustering-customer-segmentation">3.5.5 Clustering: Customer Segmentation</h4>
+<pre><code class="language-python">from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+
+# Build customer-level features
+customer_summary = df.groupby(&quot;customer_id&quot;).agg(
+    total_sales   = (&quot;sales&quot;, &quot;sum&quot;),
+    order_count   = (&quot;order_id&quot;, &quot;count&quot;),
+    avg_order_val = (&quot;sales&quot;, &quot;mean&quot;),
+    profit_total  = (&quot;profit&quot;, &quot;sum&quot;),
+    avg_discount  = (&quot;discount&quot;, &quot;mean&quot;)
+).reset_index()
+
+features = [&quot;total_sales&quot;, &quot;order_count&quot;, &quot;avg_order_val&quot;, &quot;avg_discount&quot;]
+X = customer_summary[features]
+
+# Scale
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Elbow method to find optimal k
+inertias = []
+k_range = range(2, 11)
+for k in k_range:
+    km = KMeans(n_clusters=k, random_state=42, n_init=10)
+    km.fit(X_scaled)
+    inertias.append(km.inertia_)
+
+plt.plot(k_range, inertias, &quot;bo-&quot;)
+plt.xlabel(&quot;Number of Clusters (k)&quot;)
+plt.ylabel(&quot;Inertia&quot;)
+plt.title(&quot;Elbow Method&quot;)
+plt.show()
+
+# Fit with optimal k (e.g., k=4)
+km = KMeans(n_clusters=4, random_state=42, n_init=10)
+customer_summary[&quot;segment&quot;] = km.fit_predict(X_scaled)
+
+# Profile segments
+segment_profile = customer_summary.groupby(&quot;segment&quot;)[features].mean().round(2)
+print(segment_profile)
+</code></pre>
+<h4 id="356-time-series-forecasting-basic">3.5.6 Time Series Forecasting (Basic)</h4>
+<pre><code class="language-python">from sklearn.linear_model import LinearRegression
+import numpy as np
+import pandas as pd
+
+# Aggregate to monthly
+monthly = (df.groupby(df[&quot;order_date&quot;].dt.to_period(&quot;M&quot;))[&quot;sales&quot;]
+             .sum()
+             .reset_index()
+             .rename(columns={&quot;order_date&quot;: &quot;period&quot;, &quot;sales&quot;: &quot;total_sales&quot;}))
+monthly[&quot;period_int&quot;] = range(len(monthly))
+
+# Features: time index, seasonal indicators
+monthly[&quot;month&quot;] = monthly[&quot;period&quot;].dt.month
+monthly[&quot;sin_month&quot;] = np.sin(2 * np.pi * monthly[&quot;month&quot;] / 12)
+monthly[&quot;cos_month&quot;] = np.cos(2 * np.pi * monthly[&quot;month&quot;] / 12)
+
+features = [&quot;period_int&quot;, &quot;sin_month&quot;, &quot;cos_month&quot;]
+X = monthly[features]
+y = monthly[&quot;total_sales&quot;]
+
+# Train on all history, forecast next 6 months
+model = LinearRegression()
+model.fit(X, y)
+
+future_periods = range(len(monthly), len(monthly) + 6)
+future_df = pd.DataFrame({
+    &quot;period_int&quot;: future_periods,
+    &quot;month&quot;: [(p % 12) + 1 for p in future_periods],
+})
+future_df[&quot;sin_month&quot;] = np.sin(2 * np.pi * future_df[&quot;month&quot;] / 12)
+future_df[&quot;cos_month&quot;] = np.cos(2 * np.pi * future_df[&quot;month&quot;] / 12)
+
+forecast = model.predict(future_df[features])
+print(&quot;6-Month Forecast:&quot;, forecast.round(0))
+</code></pre>
+<p><strong>Exercise 3.5 — ML Workflow</strong></p>
+<p>Dataset: Superstore Sales</p>
+<p>Tasks:
+1. Train a Linear Regression model to predict <code>Sales</code> from order features
+2. Train a Gradient Boosting Classifier to predict <code>is_profitable</code>
+3. Evaluate both models with appropriate metrics
+4. Segment customers into 4 groups using K-Means
+5. Profile each customer segment with business labels (e.g., "High Value", "At Risk")
+6. Produce a monthly sales forecast for the next 6 months</p>
+<hr />
+<h3 id="phase-3-capstone-python-eda-ml-report">Phase 3 Capstone: Python EDA + ML Report</h3>
+<p><strong>Project: Sales &amp; Inventory Analytics in Python</strong></p>
+<p><strong>Dataset:</strong> Superstore Sales + a synthetic <a href="../datasets/inventory/">Inventory dataset</a> (stock levels, reorder points, supplier lead times)</p>
+<p><strong>Deliverables:</strong>
+1. Jupyter Notebook with full EDA (all 6 steps)
+2. Data quality report (null analysis, outlier flags, DQ issues)
+3. Regression model: predict <code>Sales</code> — compare Linear Regression vs. Random Forest
+4. Classification model: predict <code>is_profitable</code> — compare Logistic Regression vs. Gradient Boosting
+5. Clustering: 4-segment customer analysis with business labels
+6. 6-month sales forecast per product category
+7. Inventory reorder alert: flag products where current stock &lt; reorder point + lead-time demand
+8. Final summary: 5 business recommendations backed by data</p>
+<hr />
+<h2 id="phase-4-sql-mastery">Phase 4: SQL Mastery</h2>
+<h3 id="weeks-2732-goal-production-grade-querying-etl-support-and-data-modeling">Weeks 27–32 | Goal: Production-grade querying, ETL support, and data modeling</h3>
+<hr />
+<h3 id="module-41-sql-fundamentals">Module 4.1 — SQL Fundamentals</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None (separate track) · <strong>Time:</strong> ~14h
+<strong>Skip-check (test-out):</strong> Write a 3-table JOIN with GROUP BY, HAVING, and a CASE expression. If easy, skip to 4.2.
+<strong>Skip if:</strong> you write multi-table JOINs, aggregations, and subqueries comfortably.
+<strong>Unlocks:</strong> 4.2, 5.1. <strong>Highest ROI for analyst job interviews</strong> — most live tests are SQL.</p>
+</blockquote>
+<h4 id="411-setup">4.1.1 Setup</h4>
+<pre><code class="language-bash"># PostgreSQL (recommended)
+# Install: postgresql.org or via Docker
+docker run --name pg-da -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres
+
+# GUI: DBeaver (free), pgAdmin, TablePlus
+# Online practice: sqlfiddle.com, db-fiddle.com, PostgreSQL on Supabase (free tier)
+</code></pre>
+<h4 id="412-database-table-basics">4.1.2 Database &amp; Table Basics</h4>
+<p><strong>Key objects in a relational database:</strong></p>
+<ul>
+<li><strong>Database</strong>: a named container of schemas and tables</li>
+<li><strong>Schema</strong>: a namespace within a database (e.g., <code>public</code>, <code>sales</code>, <code>analytics</code>)</li>
+<li><strong>Table</strong>: rows (records) × columns (fields); every column has a fixed data type</li>
+<li><strong>Primary Key</strong>: unique identifier for each row — no duplicates, no NULLs</li>
+<li><strong>Foreign Key</strong>: column that references the primary key of another table — enforces referential integrity</li>
+<li><strong>Index</strong>: lookup structure that speeds queries on large tables (see Module 4.2.9)</li>
+</ul>
+<pre><code class="language-sql">-- Create a simple table
+CREATE TABLE customers (
+    customer_id   TEXT        PRIMARY KEY,
+    customer_name TEXT        NOT NULL,
+    region        TEXT,
+    joined_date   DATE        DEFAULT CURRENT_DATE
+);
+
+-- Common data types in PostgreSQL
+-- TEXT / VARCHAR(n)  — strings
+-- INTEGER / BIGINT   — whole numbers
+-- NUMERIC(p,s)       — exact decimal (use for money: NUMERIC(12,2))
+-- DATE               — calendar date (no time)
+-- TIMESTAMP          — date + time
+-- BOOLEAN            — true/false
+-- UUID               — globally unique ID
+
+-- Inspect a table's structure
+\d orders            -- psql command
+SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'orders';
+</code></pre>
+
+<h4 id="413-core-sql-select">4.1.3 Core SQL — SELECT</h4>
+<pre><code class="language-sql">-- Basic SELECT
+SELECT order_id, customer_name, sales, profit
+FROM   orders
+WHERE  profit &lt; 0
+ORDER  BY sales DESC
+LIMIT  10;
+
+-- Aliases
+SELECT
+    o.order_id,
+    c.customer_name,
+    o.sales,
+    o.profit,
+    o.profit / o.sales AS profit_margin
+FROM   orders  o
+JOIN   customers c ON o.customer_id = c.customer_id
+WHERE  o.order_date &gt;= '2023-01-01';
+
+-- DISTINCT
+SELECT DISTINCT region, category FROM orders;
+
+-- Wildcards
+SELECT * FROM products WHERE product_name LIKE '%Chair%';
+SELECT * FROM customers WHERE email LIKE '%@gmail.com';
+
+-- NULL handling
+SELECT * FROM orders WHERE ship_date IS NULL;
+SELECT order_id, COALESCE(discount, 0) AS discount FROM orders;
+</code></pre>
+<h4 id="414-filtering-conditions">4.1.4 Filtering &amp; Conditions</h4>
+<pre><code class="language-sql">-- Comparison operators
+WHERE sales &gt; 500
+WHERE profit BETWEEN -100 AND 0
+WHERE order_date BETWEEN '2023-01-01' AND '2023-12-31'
+WHERE region IN ('East', 'West')
+WHERE region NOT IN ('Central')
+
+-- Compound conditions
+WHERE profit &lt; 0 AND category = 'Furniture'
+WHERE region = 'East' OR region = 'West'
+WHERE NOT (category = 'Technology')
+
+-- CASE WHEN
+SELECT
+    order_id,
+    sales,
+    CASE
+        WHEN sales &gt;= 1000 THEN 'Premium'
+        WHEN sales &gt;= 500  THEN 'High'
+        WHEN sales &gt;= 100  THEN 'Medium'
+        ELSE 'Low'
+    END AS sales_tier
+FROM orders;
+</code></pre>
+<h4 id="415-aggregation-group-by">4.1.5 Aggregation &amp; GROUP BY</h4>
+<pre><code class="language-sql">-- Basic aggregation
+SELECT
+    category,
+    COUNT(*)                        AS total_orders,
+    SUM(sales)                      AS total_sales,
+    SUM(profit)                     AS total_profit,
+    AVG(profit / NULLIF(sales, 0))  AS avg_margin,
+    MIN(sales)                      AS min_sale,
+    MAX(sales)                      AS max_sale
+FROM   orders
+GROUP  BY category
+ORDER  BY total_sales DESC;
+
+-- HAVING (filter after aggregation)
+SELECT
+    customer_id,
+    COUNT(*)     AS order_count,
+    SUM(sales)   AS lifetime_value
+FROM   orders
+GROUP  BY customer_id
+HAVING SUM(sales) &gt; 5000
+ORDER  BY lifetime_value DESC;
+
+-- GROUP BY ROLLUP (subtotals + grand total)
+SELECT
+    COALESCE(region, 'ALL REGIONS')     AS region,
+    COALESCE(category, 'ALL CATEGORIES') AS category,
+    SUM(sales)                           AS total_sales
+FROM   orders
+GROUP  BY ROLLUP(region, category)
+ORDER  BY region, category;
+</code></pre>
+<h4 id="416-joins">4.1.6 JOINs</h4>
+<pre><code class="language-sql">-- INNER JOIN: only matching rows
+SELECT o.order_id, o.sales, p.product_name, p.category
+FROM   orders o
+INNER JOIN products p ON o.product_id = p.product_id;
+
+-- LEFT JOIN: all left rows, nulls where no match
+SELECT
+    c.customer_id,
+    c.customer_name,
+    COUNT(o.order_id) AS order_count
+FROM   customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.customer_name
+ORDER BY order_count DESC NULLS LAST;
+
+-- RIGHT JOIN: all right rows, nulls where no match (rare — prefer LEFT JOIN with tables swapped)
+SELECT
+    o.order_id,
+    p.product_name,
+    o.sales
+FROM   orders    o
+RIGHT JOIN products p ON o.product_id = p.product_id;
+-- Returns all products even if never ordered (o.* columns are NULL)
+
+-- FULL OUTER JOIN: all rows from both sides, nulls where no match
+SELECT
+    o.order_id,
+    c.customer_id,
+    o.sales
+FROM   orders    o
+FULL OUTER JOIN customers c ON o.customer_id = c.customer_id;
+-- Use case: find orders with no customer record AND customers with no orders
+
+-- Multiple joins
+SELECT
+    o.order_id,
+    o.order_date,
+    c.customer_name,
+    p.product_name,
+    p.category,
+    r.region_name,
+    o.sales,
+    o.profit
+FROM   orders       o
+JOIN   customers    c ON o.customer_id   = c.customer_id
+JOIN   products     p ON o.product_id    = p.product_id
+JOIN   regions      r ON o.region_id     = r.region_id;
+
+-- Self join: compare rows within same table
+SELECT
+    a.order_id,
+    a.customer_id,
+    a.order_date,
+    b.order_date AS prev_order_date
+FROM   orders a
+JOIN   orders b
+    ON  a.customer_id = b.customer_id
+    AND b.order_date  = (
+        SELECT MAX(order_date)
+        FROM orders
+        WHERE customer_id = a.customer_id
+          AND order_date   &lt; a.order_date
+    );
+</code></pre>
+<hr />
+<h3 id="module-42-intermediate-sql">Module 4.2 — Intermediate SQL</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~16h
+<strong>Skip-check (test-out):</strong> Complete Exercise 4.2. If you can write window functions, CTEs, and SQL profiling queries, skip to Phase 5.
+<strong>Skip if:</strong> window functions (ROW_NUMBER, LAG, running totals) and chained CTEs are second nature.
+<strong>Unlocks:</strong> Capstone 4, 5.1. <strong>Window functions are the #1 SQL interview differentiator.</strong></p>
+</blockquote>
+<h4 id="421-window-functions">4.2.1 Window Functions</h4>
+<p>Window functions are the single most powerful tool in analytical SQL. They compute aggregates over a "window" of rows without collapsing the result set.</p>
+<pre><code class="language-sql">-- Syntax
+function() OVER (
+    PARTITION BY column    -- reset per group (optional)
+    ORDER BY column        -- order within window (required for running calcs)
+    ROWS/RANGE BETWEEN ... -- frame (optional)
+)
+
+-- ROW_NUMBER, RANK, DENSE_RANK
+SELECT
+    order_id,
+    customer_id,
+    sales,
+    ROW_NUMBER()  OVER (PARTITION BY customer_id ORDER BY sales DESC) AS row_num,
+    RANK()        OVER (PARTITION BY customer_id ORDER BY sales DESC) AS rnk,
+    DENSE_RANK()  OVER (PARTITION BY customer_id ORDER BY sales DESC) AS dense_rnk
+FROM orders;
+
+-- Running totals and moving averages
+SELECT
+    order_date,
+    sales,
+    SUM(sales)  OVER (ORDER BY order_date) AS running_total,
+    AVG(sales)  OVER (ORDER BY order_date
+                      ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS rolling_7d_avg
+FROM orders;
+
+-- LAG / LEAD: compare to previous or next row
+SELECT
+    order_date,
+    sales,
+    LAG(sales, 1, 0)  OVER (ORDER BY order_date) AS prev_sales,
+    sales - LAG(sales, 1, 0) OVER (ORDER BY order_date) AS sales_change,
+    LEAD(sales, 1, 0) OVER (ORDER BY order_date) AS next_sales
+FROM (
+    SELECT DATE_TRUNC('month', order_date) AS order_date,
+           SUM(sales) AS sales
+    FROM orders
+    GROUP BY 1
+) monthly;
+
+-- FIRST_VALUE / LAST_VALUE / NTH_VALUE
+SELECT
+    customer_id,
+    order_id,
+    order_date,
+    sales,
+    FIRST_VALUE(order_date) OVER (PARTITION BY customer_id ORDER BY order_date) AS first_order,
+    LAST_VALUE(sales)       OVER (PARTITION BY customer_id ORDER BY order_date
+                                  ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_sale
+FROM orders;
+
+-- NTILE: divide into quartiles
+SELECT
+    customer_id,
+    SUM(sales) AS total_sales,
+    NTILE(4) OVER (ORDER BY SUM(sales) DESC) AS sales_quartile
+FROM orders
+GROUP BY customer_id;
+
+-- PERCENT_RANK and CUME_DIST
+SELECT
+    product_id,
+    SUM(sales)                                 AS product_sales,
+    PERCENT_RANK() OVER (ORDER BY SUM(sales))  AS pct_rank,
+    CUME_DIST()    OVER (ORDER BY SUM(sales))  AS cumulative_dist
+FROM orders
+GROUP BY product_id;
+</code></pre>
+<h4 id="422-ctes-common-table-expressions">4.2.2 CTEs (Common Table Expressions)</h4>
+<pre><code class="language-sql">-- Basic CTE
+WITH monthly_sales AS (
+    SELECT
+        DATE_TRUNC('month', order_date) AS month,
+        SUM(sales)   AS total_sales,
+        SUM(profit)  AS total_profit
+    FROM   orders
+    GROUP  BY 1
+)
+SELECT
+    month,
+    total_sales,
+    total_profit,
+    total_sales - LAG(total_sales) OVER (ORDER BY month) AS mom_change
+FROM monthly_sales
+ORDER BY month;
+
+-- Chained CTEs
+WITH
+customer_orders AS (
+    SELECT
+        customer_id,
+        COUNT(*)    AS order_count,
+        SUM(sales)  AS lifetime_value
+    FROM   orders
+    GROUP  BY customer_id
+),
+customer_segments AS (
+    SELECT
+        customer_id,
+        order_count,
+        lifetime_value,
+        NTILE(4) OVER (ORDER BY lifetime_value DESC) AS value_quartile
+    FROM customer_orders
+)
+SELECT
+    value_quartile,
+    COUNT(*)             AS customer_count,
+    AVG(lifetime_value)  AS avg_ltv,
+    SUM(lifetime_value)  AS total_revenue
+FROM customer_segments
+GROUP BY value_quartile
+ORDER BY value_quartile;
+</code></pre>
+<h4 id="423-subqueries">4.2.3 Subqueries</h4>
+<pre><code class="language-sql">-- Scalar subquery
+SELECT
+    order_id,
+    sales,
+    (SELECT AVG(sales) FROM orders) AS overall_avg,
+    sales - (SELECT AVG(sales) FROM orders) AS diff_from_avg
+FROM orders;
+
+-- Correlated subquery (references outer query)
+SELECT
+    customer_id,
+    customer_name,
+    (SELECT SUM(sales)
+     FROM orders o
+     WHERE o.customer_id = c.customer_id) AS total_spent
+FROM customers c;
+
+-- EXISTS
+SELECT customer_id, customer_name
+FROM customers c
+WHERE EXISTS (
+    SELECT 1
+    FROM orders o
+    WHERE o.customer_id = c.customer_id
+      AND o.profit &lt; 0
+);
+
+-- IN with subquery
+SELECT * FROM products
+WHERE product_id IN (
+    SELECT product_id
+    FROM orders
+    WHERE sales &gt; 1000
+);
+</code></pre>
+<h4 id="424-date-functions-postgresql">4.2.4 Date Functions (PostgreSQL)</h4>
+<pre><code class="language-sql">-- Date truncation and extraction
+SELECT
+    order_date,
+    DATE_TRUNC('month',   order_date) AS month_start,
+    DATE_TRUNC('quarter', order_date) AS quarter_start,
+    DATE_TRUNC('year',    order_date) AS year_start,
+    EXTRACT(YEAR    FROM order_date)  AS year,
+    EXTRACT(MONTH   FROM order_date)  AS month,
+    EXTRACT(QUARTER FROM order_date)  AS quarter,
+    EXTRACT(DOW     FROM order_date)  AS day_of_week,  -- 0=Sunday
+    TO_CHAR(order_date, 'Mon YYYY')   AS month_label
+FROM orders;
+
+-- Date arithmetic
+SELECT
+    order_id,
+    order_date,
+    ship_date,
+    ship_date - order_date               AS days_to_ship,
+    order_date + INTERVAL '30 days'      AS due_date,
+    CURRENT_DATE - order_date            AS days_since_order
+FROM orders;
+
+-- Date filtering
+WHERE order_date &gt;= DATE_TRUNC('year', CURRENT_DATE)         -- YTD
+WHERE order_date &gt;= DATE_TRUNC('month', CURRENT_DATE)        -- MTD
+WHERE order_date &gt;= CURRENT_DATE - INTERVAL '90 days'        -- last 90 days
+WHERE EXTRACT(MONTH FROM order_date) = EXTRACT(MONTH FROM CURRENT_DATE)  -- this month
+</code></pre>
+<h4 id="425-data-profiling-in-sql">4.2.5 Data Profiling in SQL</h4>
+<pre><code class="language-sql">-- Null audit
+SELECT
+    COUNT(*)                                                   AS total_rows,
+    SUM(CASE WHEN customer_id IS NULL THEN 1 ELSE 0 END)      AS null_customer_id,
+    SUM(CASE WHEN order_date IS NULL THEN 1 ELSE 0 END)       AS null_order_date,
+    SUM(CASE WHEN sales IS NULL THEN 1 ELSE 0 END)            AS null_sales,
+    SUM(CASE WHEN profit IS NULL THEN 1 ELSE 0 END)           AS null_profit
+FROM orders;
+
+-- Duplicate check
+SELECT order_id, COUNT(*) AS dup_count
+FROM   orders
+GROUP  BY order_id
+HAVING COUNT(*) &gt; 1;
+
+-- Value distribution
+SELECT
+    category,
+    COUNT(*)                   AS row_count,
+    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS pct_of_total
+FROM orders
+GROUP BY category
+ORDER BY row_count DESC;
+
+-- Outlier detection using IQR
+WITH stats AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY sales) AS q1,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY sales) AS q3
+    FROM orders
+),
+bounds AS (
+    SELECT
+        q1 - 1.5 * (q3 - q1) AS lower_bound,
+        q3 + 1.5 * (q3 - q1) AS upper_bound
+    FROM stats
+)
+SELECT o.*
+FROM orders o, bounds b
+WHERE o.sales &lt; b.lower_bound OR o.sales &gt; b.upper_bound;
+</code></pre>
+<h4 id="426-union-and-union-all">4.2.6 UNION and UNION ALL</h4>
+<pre><code class="language-sql">-- UNION: stack result sets vertically, removing duplicates
+SELECT customer_id, 'active'  AS status FROM orders WHERE order_date >= CURRENT_DATE - INTERVAL '90 days'
+UNION
+SELECT customer_id, 'churned' AS status FROM orders WHERE order_date <  CURRENT_DATE - INTERVAL '90 days';
+
+-- UNION ALL: stack without deduplication (faster — use when you know there are no dupes)
+SELECT product_id, sales FROM orders_2023
+UNION ALL
+SELECT product_id, sales FROM orders_2024;
+
+-- Rules: same number of columns, compatible data types, column names from first SELECT
+-- UNION is to rows what JOIN is to columns
+</code></pre>
+
+<h4 id="427-data-modification-dml">4.2.7 Data Modification (DML)</h4>
+<pre><code class="language-sql">-- INSERT: add rows
+INSERT INTO orders (order_id, customer_id, order_date, sales)
+VALUES ('ORD-9999', 'CUST-001', '2024-01-15', 450.00);
+
+-- INSERT from SELECT (copy rows between tables)
+INSERT INTO orders_archive
+SELECT * FROM orders WHERE order_date < '2022-01-01';
+
+-- UPDATE: modify existing rows
+UPDATE orders
+SET    discount = 0.10, updated_at = CURRENT_TIMESTAMP
+WHERE  order_id = 'ORD-9999';
+
+-- UPDATE with JOIN (PostgreSQL syntax)
+UPDATE orders o
+SET    category = p.category
+FROM   products p
+WHERE  o.product_id = p.product_id
+  AND  o.category IS NULL;
+
+-- DELETE: remove rows (always use WHERE — a bare DELETE removes everything)
+DELETE FROM orders WHERE order_date < '2019-01-01';
+
+-- TRUNCATE: remove all rows instantly, cannot be filtered (use with caution)
+TRUNCATE TABLE staging_orders;
+</code></pre>
+<blockquote class="callout">
+<p><strong>Safety rule:</strong> Before running UPDATE or DELETE, run the equivalent SELECT first to confirm affected rows. Wrap in a transaction (<code>BEGIN; … ROLLBACK;</code>) to preview without committing.</p>
+</blockquote>
+
+<h4 id="428-views">4.2.8 Views</h4>
+<pre><code class="language-sql">-- CREATE VIEW: save a query as a reusable virtual table
+CREATE OR REPLACE VIEW vw_monthly_sales AS
+SELECT
+    DATE_TRUNC('month', order_date) AS month,
+    region,
+    category,
+    SUM(sales)   AS total_sales,
+    SUM(profit)  AS total_profit,
+    COUNT(*)     AS order_count
+FROM   orders
+GROUP  BY 1, 2, 3;
+
+-- Query a view exactly like a table
+SELECT * FROM vw_monthly_sales WHERE region = 'East' ORDER BY month;
+
+-- Drop a view
+DROP VIEW IF EXISTS vw_monthly_sales;
+
+-- MATERIALIZED VIEW (PostgreSQL): stores the result physically — fast reads, manual refresh
+CREATE MATERIALIZED VIEW mvw_customer_ltv AS
+SELECT customer_id, COUNT(*) AS orders, SUM(sales) AS lifetime_value
+FROM   orders GROUP BY customer_id;
+
+REFRESH MATERIALIZED VIEW mvw_customer_ltv;  -- update the cached data
+</code></pre>
+
+<h4 id="429-indexes-basics">4.2.9 Indexes</h4>
+<pre><code class="language-sql">-- Index: a lookup structure that speeds up WHERE, JOIN, and ORDER BY on large tables
+-- Without index: full table scan (O(n))
+-- With index: B-tree lookup (O(log n))
+
+-- Create a basic B-tree index
+CREATE INDEX idx_orders_customer_id ON orders(customer_id);
+CREATE INDEX idx_orders_date        ON orders(order_date);
+
+-- Composite index (useful when you always filter on both columns together)
+CREATE INDEX idx_orders_region_date ON orders(region, order_date);
+
+-- Unique index (also enforces uniqueness)
+CREATE UNIQUE INDEX idx_orders_order_id ON orders(order_id);
+
+-- Check if a query uses an index
+EXPLAIN ANALYZE
+SELECT * FROM orders WHERE customer_id = 'CUST-001';
+-- Look for "Index Scan" vs "Seq Scan" in the output
+
+-- Drop an index
+DROP INDEX IF EXISTS idx_orders_customer_id;
+</code></pre>
+<blockquote class="callout">
+<p><strong>Index guidelines for analysts:</strong> Index every foreign key column, every column used in WHERE filters on large tables, and every column used in frequent ORDER BY. Don't over-index — each index slows INSERT/UPDATE. Most query tuning starts with <code>EXPLAIN ANALYZE</code>, not guessing.</p>
+</blockquote>
+
+<p><strong>Exercise 4.2 — SQL Analytics Queries</strong></p>
+<p><em>Retrieval practice: before writing query 1, sketch from memory the syntax for a window function using LAG — what clause specifies the ordering, and what clause partitions by group? Draft first, then check Module 4.2.</em></p>
+<p>Dataset: Load Superstore Sales into PostgreSQL</p>
+<p>Write queries to answer:
+1. Monthly sales trend with MoM growth % (use LAG + window function)
+2. Top 5 customers by lifetime value, with their order count and avg order value
+3. Products where profit margin &lt; 0, ranked by total loss amount
+4. Customer cohort: first purchase month and total orders per cohort (CTE + window)
+5. Running inventory balance by product (start stock + receipts - shipments)
+6. Find customers who placed orders in 2023 but not in 2024 (EXISTS / EXCEPT)
+7. Sales YTD vs same period last year by category (date functions + CASE)
+8. Identify orders shipped more than 5 days after order date (date arithmetic)</p>
+<hr />
+<h3 id="phase-4-capstone-sql-business-intelligence-queries">Phase 4 Capstone: SQL Business Intelligence Queries</h3>
+<p><strong>Project: SQL-Driven Sales &amp; Inventory Intelligence</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) the difference between a window function and a GROUP BY aggregate, (2) how a CTE differs from a subquery, and (3) why <code>= NULL</code> never returns true in SQL? If any draws a blank, re-read Module 4.2 before attempting the deliverables.</p></blockquote>
+<p><strong>Setup:</strong> Load Superstore Sales + <a href="../datasets/inventory/">Inventory dataset</a> into PostgreSQL</p>
+<p><strong>Deliverables (all in SQL):</strong></p>
+<ol>
+<li><strong>Data Quality Audit Query</strong> — null counts, duplicate checks, outlier flags for all key tables</li>
+<li><strong>Sales Performance Dashboard Queries:</strong>
+   - Monthly sales with MoM and YoY growth
+   - Sales by Category × Region (pivot using CASE WHEN)
+   - Top 10 products by revenue and profit
+   - Bottom 10 products by profit margin</li>
+<li><strong>Customer Analytics Queries:</strong>
+   - Customer lifetime value segmentation (NTILE quartiles)
+   - Customer retention: active vs. churned (no orders in last 90 days)
+   - Average days between orders per customer</li>
+<li><strong>Inventory Intelligence Queries:</strong>
+   - Current stock vs. reorder point per product
+   - Estimated days of stock remaining (stock / avg daily sales)
+   - Products with no orders in the last 60 days (dead stock)</li>
+<li><strong>Views:</strong> Create 3 reusable SQL views for reporting</li>
+<li><strong>Documentation:</strong> SQL comments explaining each query's business purpose</li>
+</ol>
+<hr />
+<h2 id="phase-5-integration">Phase 5: Integration</h2>
+<h3 id="weeks-3336-goal-connect-all-tools-into-an-end-to-end-workflow">Weeks 33–36 | Goal: Connect all tools into an end-to-end workflow</h3>
+<hr />
+<h3 id="module-51-python-sql-integration">Module 5.1 — Python + SQL Integration</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.2, 4.1 · <strong>Time:</strong> ~6h
+<strong>Skip if:</strong> you already read/write between Pandas and a SQL database via SQLAlchemy.
+<strong>Unlocks:</strong> 5.2, Final Capstone.</p>
+</blockquote>
+<pre><code class="language-python">import pandas as pd
+from sqlalchemy import create_engine, text
+
+# Connect to PostgreSQL
+engine = create_engine(&quot;postgresql://user:password@localhost:5432/sales_db&quot;)
+
+# Read SQL into DataFrame
+df = pd.read_sql(&quot;SELECT * FROM orders WHERE order_date &gt;= '2023-01-01'&quot;, engine)
+
+# Write DataFrame to database
+df_clean.to_sql(&quot;orders_clean&quot;, engine, if_exists=&quot;replace&quot;, index=False, chunksize=1000)
+
+# Parameterized query
+region = &quot;East&quot;
+df = pd.read_sql(
+    text(&quot;SELECT * FROM orders WHERE region = :region&quot;),
+    engine,
+    params={&quot;region&quot;: region}
+)
+</code></pre>
+<h3 id="module-52-end-to-end-pipeline-pattern">Module 5.2 — End-to-End Pipeline Pattern</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Phases 2–4 · <strong>Time:</strong> ~6h
+<strong>Skip if:</strong> you have shipped a raw-to-dashboard pipeline end to end.
+<strong>Unlocks:</strong> Final Capstone, portfolio.</p>
+</blockquote>
+<pre><code>Raw CSV Files
+    ↓ Power Query (clean, standardize, combine)
+Excel Data Model
+    ↓ Export to PostgreSQL via Python
+SQL Database
+    ↓ Python EDA &amp; ML analysis
+Jupyter Notebook (findings + models)
+    ↓ Power BI / Excel Dashboard
+Business Dashboard (stakeholder-ready)
+</code></pre>
+<h3 id="module-53-analyst-portfolio-setup">Module 5.3 — Analyst Portfolio Setup</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> All · <strong>Prereqs:</strong> Any completed capstone · <strong>Time:</strong> ~4h
+<strong>Do this once you have ≥1 capstone done — regardless of which track.</strong> Portfolio matters more than certificates to most employers.</p>
+</blockquote>
+<p><strong>Essential portfolio components:</strong>
+- GitHub repository with at least 3 projects
+- Each project: README with business context, methods, findings
+- Jupyter notebooks with clean markdown explanations
+- SQL scripts with comments
+- Power BI or Excel dashboard screenshots</p>
+<p><strong>README Template for DA Projects</strong></p>
+<pre><code class="language-markdown">## Project: [Title]
+
+**Business Question:** [One sentence]
+
+**Dataset:** [Name, source, size, date range]
+
+**Tools Used:** Python (Pandas, Scikit-learn), SQL (PostgreSQL), Excel/Power BI
+
+**Key Findings:**
+1. [Finding with metric]
+2. [Finding with metric]
+3. [Finding with metric]
+
+**Methods:** EDA → Data Cleaning → [Analysis type] → [Model/Dashboard]
+
+**Files:**
+- `notebook.ipynb` — full analysis
+- `queries.sql` — SQL analytics queries
+- `dashboard.pbix` — Power BI dashboard
+
+**How to Run:** [brief instructions]
+</code></pre>
+<hr />
+<h2 id="final-capstone-end-to-end-sales-inventory-analytics-project">Final Capstone: End-to-End Sales &amp; Inventory Analytics Project</h2>
+<h3 id="project-brief">Project Brief</h3>
+<p><strong>Business Context:</strong>
+You are a Data Analyst at a mid-size retail company. Management needs a complete analysis of sales performance and inventory health to make decisions for the upcoming quarter.</p>
+<p><strong>Datasets:</strong>
+- Superstore Sales (orders, customers, products, regions)
+- <a href="../datasets/inventory/">Inventory data</a> (stock levels, reorder points, supplier lead times, receipts)</p>
+<hr />
+<h3 id="deliverable-1-data-pipeline-power-query-python">Deliverable 1: Data Pipeline (Power Query + Python)</h3>
+<ul>
+<li>Ingest raw CSVs via Power Query and Python</li>
+<li>Document all transformation steps</li>
+<li>Load clean data into PostgreSQL</li>
+</ul>
+<h3 id="deliverable-2-sql-analytics-layer">Deliverable 2: SQL Analytics Layer</h3>
+<p>Write and document SQL for:
+- Sales performance: revenue, profit, YoY growth, top/bottom performers
+- Customer analytics: LTV segmentation, retention, cohort analysis
+- Inventory health: stock levels, reorder alerts, dead stock identification</p>
+<h3 id="deliverable-3-python-eda-ml">Deliverable 3: Python EDA &amp; ML</h3>
+<ul>
+<li>Full 6-step EDA with all visualizations</li>
+<li>Profit prediction model (regression — Gradient Boosting)</li>
+<li>Profitability classification model (Logistic Regression vs. GBM)</li>
+<li>Customer segmentation (K-Means, 4 segments with business labels)</li>
+<li>Demand forecast: 3-month forecast per category</li>
+</ul>
+<h3 id="deliverable-4-excel-power-pivot-dashboard">Deliverable 4: Excel + Power Pivot Dashboard</h3>
+<ul>
+<li>Star schema data model: fact_Sales + 4 dimensions</li>
+<li>8 DAX measures including time intelligence (YoY, YTD, Rolling 12M)</li>
+<li>Interactive dashboard with slicers for Year, Region, Category</li>
+</ul>
+<h3 id="deliverable-5-insights-presentation">Deliverable 5: Insights Presentation</h3>
+<p>A 10-slide summary covering:
+1. Executive summary (3 key findings)
+2. Sales performance overview
+3. Top/bottom product analysis
+4. Customer segmentation findings
+5. Inventory risk summary
+6. Demand forecast
+7. Business recommendations (min 5, each backed by data)
+8. Methodology and data quality notes</p>
+<hr />
+<h2 id="quick-reference-tool-task-matrix">Quick Reference: Tool-Task Matrix</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th style="text-align: center;">Excel</th>
+<th style="text-align: center;">Power Query</th>
+<th style="text-align: center;">Power Pivot (DAX)</th>
+<th style="text-align: center;">Power BI</th>
+<th style="text-align: center;">Python</th>
+<th style="text-align: center;">SQL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Import CSV files</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓</td>
+</tr>
+<tr>
+<td>Clean &amp; standardize data</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+</tr>
+<tr>
+<td>Combine multiple files</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+</tr>
+<tr>
+<td>Pivot / aggregate</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+</tr>
+<tr>
+<td>Time intelligence (YTD, YoY)</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓✓</td>
+</tr>
+<tr>
+<td>Statistical analysis</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓</td>
+</tr>
+<tr>
+<td>Machine learning</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Interactive dashboards</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Large datasets (1M+ rows)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+</tr>
+<tr>
+<td>Ad hoc querying</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓✓</td>
+</tr>
+<tr>
+<td>Data profiling / DQ audit</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+</tr>
+<tr>
+<td>Reproducible pipeline</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+<td style="text-align: center;">✓✓</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="certification-roadmap">Certification Roadmap</h2>
+<p>Certifications are <strong>optional</strong> — a strong portfolio (Module 5.3) usually outweighs them — but recognized credentials help with ATS screening, career switches, and markets/employers that filter on them. Below is what each major certification covers, which modules prepare you, and the official exam requirements.</p>
+<blockquote class="callout">
+<p><strong>Honest guidance:</strong> For most analyst roles, prioritize in this order: (1) portfolio projects, (2) SQL fluency, (3) one BI tool cert (PL-300 or Tableau), (4) a foundations cert (DP-900) for résumé signaling. Don't collect certificates for their own sake.</p>
+</blockquote>
+<hr />
+<h3 id="tier-1-entry-foundational">Tier 1 — Entry / Foundational</h3>
+<h4 id="google-data-analytics-professional-certificate">Google Data Analytics Professional Certificate</h4>
+<ul>
+<li><strong>Provider:</strong> Google (via Coursera) · <strong>Cost:</strong> Coursera subscription (~$49/mo, ~3–6 months) · <strong>Prerequisites:</strong> None</li>
+<li><strong>Format:</strong> 8 self-paced courses + hands-on labs; no proctored exam — completion-based</li>
+<li><strong>Covers:</strong> Data lifecycle, spreadsheets, SQL basics, R, Tableau, data cleaning, basic analysis</li>
+<li><strong>This guide prepares you via:</strong> 1.1, 1.2, 4.1, 3.4 (note: Google cert uses <strong>R</strong>, not Python — this guide uses Python; the concepts transfer)</li>
+<li><strong>Best for:</strong> Complete beginners and career switchers who want a structured, recognized starting credential</li>
+<li><strong>Recognition:</strong> High brand recognition; entry-level. Not a deep technical filter.</li>
+</ul>
+<h4 id="microsoft-certified-azure-data-fundamentals-dp-900">Microsoft Certified: Azure Data Fundamentals (DP-900)</h4>
+<ul>
+<li><strong>Provider:</strong> Microsoft · <strong>Cost:</strong> ~$99 USD exam fee · <strong>Prerequisites:</strong> None</li>
+<li><strong>Format:</strong> Proctored exam, ~40–60 questions, ~45–60 min, pass mark 700/1000</li>
+<li><strong>Covers:</strong> Core data concepts, relational vs. non-relational data, analytics workloads on Azure</li>
+<li><strong>This guide prepares you via:</strong> 1.1, 4.1 (relational concepts), 2.2 (analytics/modeling concepts)</li>
+<li><strong>Best for:</strong> Résumé signaling, foundation before PL-300 or DP-100</li>
+<li><strong>Recognition:</strong> Strong in Microsoft-shop employers; widely recognized globally</li>
+</ul>
+<hr />
+<h3 id="tier-2-core-analyst-the-ones-that-matter-most">Tier 2 — Core Analyst (the ones that matter most)</h3>
+<h4 id="microsoft-certified-power-bi-data-analyst-associate-pl-300">Microsoft Certified: Power BI Data Analyst Associate (PL-300)</h4>
+<ul>
+<li><strong>Provider:</strong> Microsoft · <strong>Cost:</strong> ~$165 USD exam fee · <strong>Prerequisites:</strong> None official; DP-900 recommended</li>
+<li><strong>Format:</strong> Proctored, ~40–60 questions incl. case studies, ~100 min, pass mark 700/1000</li>
+<li><strong>Exam domains:</strong></li>
+<li>Prepare the data (~25–30%) — <strong>this guide: Module 2.1 Power Query</strong></li>
+<li>Model the data (~25–30%) — <strong>this guide: Module 2.2 Power Pivot/DAX, star schema, date dimension</strong></li>
+<li>Visualize &amp; analyze (~25–30%) — <strong>this guide: Capstone 2 dashboard work</strong> (supplement with Power BI Desktop practice)</li>
+<li>Deploy &amp; maintain (~15–20%) — <strong>supplement:</strong> Power BI Service (workspaces, refresh, RLS) — not fully covered here</li>
+<li><strong>This guide prepares you via:</strong> 2.1, 2.2, 2.3, 2.4, Capstone 2 (covers ~85–90%)</li>
+<li><strong>Gap to close independently:</strong> Power BI Service advanced admin (capacity, data lineage). Module 2.4 now covers the Desktop interface, RLS, and Service publishing directly.</li>
+<li><strong>Best for:</strong> The single most employable analyst cert in Microsoft-heavy markets (incl. Philippines/SEA)</li>
+<li><strong>Official prep:</strong> Microsoft Learn PL-300 learning path (free)</li>
+</ul>
+<h4 id="tableau-desktop-specialist">Tableau Desktop Specialist</h4>
+<ul>
+<li><strong>Provider:</strong> Tableau (Salesforce) · <strong>Cost:</strong> ~$100 USD · <strong>Prerequisites:</strong> None · <strong>No expiration</strong> (Specialist tier)</li>
+<li><strong>Format:</strong> ~45 questions, ~60 min, pass mark ~750/1000</li>
+<li><strong>Covers:</strong> Connecting to data, building visualizations, calculations, dashboards, Tableau-specific functions</li>
+<li><strong>This guide prepares you via:</strong> Visualization concepts in 3.4 and Capstone 2 transfer; <strong>Tableau tool itself is not taught here</strong> — pair with Tableau Public (free)</li>
+<li><strong>Best for:</strong> Markets/employers standardized on Tableau rather than Power BI</li>
+<li><strong>Recognition:</strong> Industry standard for the Tableau ecosystem</li>
+</ul>
+<hr />
+<h3 id="tier-3-specialist-advanced">Tier 3 — Specialist / Advanced</h3>
+<h4 id="microsoft-certified-azure-data-scientist-associate-dp-100">Microsoft Certified: Azure Data Scientist Associate (DP-100)</h4>
+<ul>
+<li><strong>Provider:</strong> Microsoft · <strong>Cost:</strong> ~$165 USD · <strong>Prerequisites:</strong> DP-900 recommended; Python + ML fundamentals expected</li>
+<li><strong>Format:</strong> Proctored, case studies + questions, ~100–120 min</li>
+<li><strong>Covers:</strong> ML experiment design, model training/tuning, deployment on Azure ML</li>
+<li><strong>This guide prepares you via:</strong> 3.2, 3.3, 3.5 (ML foundations + scikit-learn). <strong>Gap:</strong> Azure ML Studio platform specifics — study independently</li>
+<li><strong>Best for:</strong> Analysts moving toward data science / ML engineering roles</li>
+<li><strong>Recognition:</strong> Strong, but more than most analyst roles require</li>
+</ul>
+<h4 id="databricks-snowflake-dbt-certifications">Databricks / Snowflake / dbt Certifications</h4>
+<ul>
+<li><strong>Databricks Certified Data Analyst Associate</strong> — SQL + Lakehouse analytics; ~$200; for modern data-stack roles</li>
+<li><strong>SnowPro Core (Snowflake)</strong> — cloud data warehouse; ~$175; high demand in data-engineering-adjacent analyst roles</li>
+<li><strong>dbt Analytics Engineering Certification</strong> — SQL-based transformation; ~$200; for analytics engineering track</li>
+<li><strong>This guide prepares you via:</strong> Module 4.1, 4.2 (SQL is the foundation for all three). Platform-specific features studied separately.</li>
+<li><strong>Best for:</strong> Analysts targeting modern data-stack companies; pursue <strong>after</strong> core SQL mastery</li>
+</ul>
+<h4 id="oracle-database-sql-certified-associate-1z0-071">Oracle Database SQL Certified Associate (1Z0-071)</h4>
+<ul>
+<li><strong>Provider:</strong> Oracle · <strong>Cost:</strong> ~$245 USD · <strong>Format:</strong> ~78 questions, proctored</li>
+<li><strong>Covers:</strong> SQL querying, DDL/DML, joins, subqueries, functions (Oracle SQL dialect)</li>
+<li><strong>This guide prepares you via:</strong> 4.1, 4.2 (this guide uses PostgreSQL; ~90% of SQL transfers; Oracle dialect differences are minor)</li>
+<li><strong>Best for:</strong> Enterprises running Oracle databases</li>
+</ul>
+<hr />
+<h3 id="certification-to-module-map">Certification-to-Module Map</h3>
+<table>
+<thead>
+<tr>
+<th>Certification</th>
+<th>Tier</th>
+<th>Modules That Prepare You</th>
+<th>Coverage</th>
+<th>Independent Study Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google Data Analytics</td>
+<td>1</td>
+<td>1.1, 1.2, 4.1, 3.4</td>
+<td>~70%</td>
+<td>R language, Tableau basics</td>
+</tr>
+<tr>
+<td>DP-900 (Data Fundamentals)</td>
+<td>1</td>
+<td>1.1, 2.2, 4.1</td>
+<td>~75%</td>
+<td>Azure-specific services</td>
+</tr>
+<tr>
+<td>PL-300 (Power BI)</td>
+<td>2</td>
+<td>2.1, 2.2, 2.3, 2.4, Capstone 2</td>
+<td>~85%</td>
+<td>Power BI Service advanced admin, capacity</td>
+</tr>
+<tr>
+<td>Tableau Desktop Specialist</td>
+<td>2</td>
+<td>3.4, Capstone 2 (concepts)</td>
+<td>~40%</td>
+<td>Tableau tool (use Tableau Public)</td>
+</tr>
+<tr>
+<td>DP-100 (Data Scientist)</td>
+<td>3</td>
+<td>3.2, 3.3, 3.5</td>
+<td>~60%</td>
+<td>Azure ML platform</td>
+</tr>
+<tr>
+<td>SnowPro / Databricks / dbt</td>
+<td>3</td>
+<td>4.1, 4.2</td>
+<td>~50%</td>
+<td>Platform-specific features</td>
+</tr>
+<tr>
+<td>Oracle SQL Associate</td>
+<td>3</td>
+<td>4.1, 4.2</td>
+<td>~85%</td>
+<td>Oracle dialect specifics</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="recommended-certification-sequence-by-track">Recommended Certification Sequence by Track</h3>
+<pre><code>EXCEL/BI TRACK:     DP-900 → PL-300                (foundation → flagship)
+PYTHON/DS TRACK:    DP-900 → DP-100                (foundation → specialist)
+SQL/DATA TRACK:     DP-900 → Oracle SQL or SnowPro (foundation → platform)
+GENERALIST:         Google Cert → PL-300 → DP-900  (recognized starter → BI → signaling)
+</code></pre>
+<blockquote class="callout">
+<p><strong>Cost-conscious path:</strong> Microsoft Learn provides <strong>free</strong> official prep for all Microsoft exams. Tableau Public and PostgreSQL are free. You can prepare for every certification above using free official materials + this guide; only the exam fees are unavoidable. Watch for Microsoft's periodic <strong>free exam vouchers</strong> (via Microsoft events, Virtual Training Days).</p>
+</blockquote>
+<hr />
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-data-foundations">Data Foundations</h3>
+<dl class="glossary">
+<dt>Grain</dt>
+<dd>The level of detail at which a fact table records one row — per order, per order-line item, per day. The grain must be defined before building any data model; the wrong grain makes every aggregate built on the table incorrect.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "granularity," "row level" — grain is the precise term for the unit of measurement in a fact table.</dd>
+
+<dt>Structured Data</dt>
+<dd>Data organized in a fixed schema with named columns and consistent types — spreadsheets and relational databases. Structured data can still be dirty (nulls, typos, wrong types).</dd>
+<dd class="avoid"><strong>Avoid:</strong> "clean data" (structured data can be unclean); "tabular data" (less standard in formal data contexts).</dd>
+
+<dt>Descriptive Analytics</dt>
+<dd>Analysis that summarizes what happened over a historical period — counts, sums, averages, trends. Most dashboard and reporting work is descriptive analytics.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "reporting" (reporting is an output format, not an analytics type); conflating with diagnostic or predictive analytics.</dd>
+
+<dt>Correlation</dt>
+<dd>A statistical measure of how strongly two variables move together. Correlation does not imply causation — a shared cause or coincidence can produce high correlation with no direct link between the variables.</dd>
+<dd class="avoid"><strong>Avoid:</strong> using "correlation" to imply causation — this is the single most common analytical error in business reporting.</dd>
+
+<dt>Outlier</dt>
+<dd>A data point that falls far outside the typical range of a variable. Outliers may be data quality errors (fix them) or genuine extreme events (retain them and flag them). The appropriate response depends on the cause, not the value alone.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "bad data" — outliers are not automatically wrong; automatically removing them without investigation is an analysis error.</dd>
+</dl>
+
+<h3 id="glossary-excel-etl">Excel &amp; ETL</h3>
+<dl class="glossary">
+<dt>ETL (Extract, Transform, Load)</dt>
+<dd>The three-step process of pulling data from a source, cleaning and reshaping it, and loading it into a destination. In Excel, Power Query is the ETL engine; in data engineering, dedicated tools (dbt, Airflow) handle ETL at scale.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "data prep," "data wrangling" (informal); "ELT" (a separate pattern where data is loaded first and transformed in the destination — used in cloud warehouses).</dd>
+
+<dt>Power Query</dt>
+<dd>Excel's built-in ETL engine — connects to external sources, records every transformation as a named, reproducible step, and loads clean data to the workbook or data model. The same engine powers Power BI's data transformation layer.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Get &amp; Transform" (the deprecated UI label no longer used in current Excel versions).</dd>
+
+<dt>Measure</dt>
+<dd>A DAX calculation that is evaluated at query time in the current filter context — it re-computes every time a slicer, pivot row, or CALCULATE modifies the filter. Measures are the standard way to define KPIs in Power Pivot and Power BI.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "calculated field" (the Excel pivot table term); "calculated column" — a calculated column is stored per row at refresh and does not respond to the current filter context.</dd>
+
+<dt>Star Schema</dt>
+<dd>A data model with one central fact table (transactions) connected to multiple dimension tables (Products, Customers, Dates, Regions) via one-to-many relationships. The standard pattern for Power Pivot and Power BI models.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "data model" alone (too vague); "snowflake schema" (snowflakes normalize dimension tables further — useful for storage but slower for interactive analysis).</dd>
+
+<dt>Filter Context</dt>
+<dd>The set of active filters — from slicers, pivot rows and columns, and CALCULATE — that determines which rows a DAX measure evaluates. Misunderstanding filter context is the root cause of most DAX calculation bugs.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing with Row Context — row context applies only inside calculated columns and DAX iterator functions (SUMX, AVERAGEX); filter context applies to measures.</dd>
+</dl>
+
+<h3 id="glossary-python-analysis">Python &amp; Analysis</h3>
+<dl class="glossary">
+<dt>DataFrame</dt>
+<dd>Pandas' primary two-dimensional data structure — a labeled table of rows and columns that can hold mixed data types (strings, numbers, dates). All tabular data work in Python flows through DataFrames.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "table," "matrix" — a NumPy matrix is numeric-only; a DataFrame holds mixed types and has labeled axes.</dd>
+
+<dt>EDA (Exploratory Data Analysis)</dt>
+<dd>An open-ended process of understanding a new dataset — distributions, missing values, outliers, correlations — before building any model or visualization. EDA reveals what the data contains, not what you expect it to contain.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "data exploration," "preliminary analysis" — EDA is a specific, structured approach (coined by Tukey) with established techniques, not an informal look at the data.</dd>
+
+<dt>NaN (Not a Number)</dt>
+<dd>Pandas' representation of a missing value. NaN propagates silently through calculations — <code>5 + NaN = NaN</code> — so every missing value must be handled explicitly before analysis.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "null," "blank," "empty" — those are SQL and Excel terms; in Pandas the missing value representation is NaN, and the detection functions are <code>isna()</code> / <code>notna()</code>.</dd>
+
+<dt>Overfitting</dt>
+<dd>When a model fits the training data too closely — memorizing noise instead of learning patterns — and fails to generalize to new data. Detected as a high training score paired with a significantly lower test score.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "the model is too accurate" — high accuracy on training data is a warning sign, not a success; the test score is the true measure.</dd>
+</dl>
+
+<h3 id="glossary-sql">SQL</h3>
+<dl class="glossary">
+<dt>JOIN</dt>
+<dd>A SQL operation that combines rows from two or more tables based on a matching key column. The most common types are INNER JOIN (only matching rows), LEFT JOIN (all rows from the left table, matched or not), and FULL OUTER JOIN.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "merge" — merge is the Pandas and Power Query term for the same operation; in SQL the operation is always JOIN.</dd>
+
+<dt>Window Function</dt>
+<dd>A SQL function that computes a result across a set of rows related to the current row — without collapsing them into a group. Unlike GROUP BY, the original rows are preserved. Examples: SUM OVER, LAG, RANK, NTILE.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "aggregate function" — standard aggregates with GROUP BY collapse rows into one per group; window functions keep all rows and add a computed column alongside them.</dd>
+
+<dt>CTE (Common Table Expression)</dt>
+<dd>A named temporary result set defined with <code>WITH</code> that makes a complex query readable by breaking it into named, sequential steps. A CTE can be referenced multiple times within the same statement.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "subquery" — a subquery is embedded inline inside another query; a CTE is named, defined at the top, and is reusable — the two have different readability and debugging profiles.</dd>
+
+<dt>NULL</dt>
+<dd>A SQL marker meaning "no value recorded" — not zero, not empty string, but the absence of a value. Any comparison involving NULL (including <code>= NULL</code>) returns NULL, not true or false. Use <code>IS NULL</code> and <code>IS NOT NULL</code> instead.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "zero," "empty," "blank" — NULL is a distinct third logical state; treating it as zero or empty produces silent calculation errors.</dd>
+</dl>
+
+<h2 id="learning-resources-master-list">Learning Resources &amp; Communities</h2>
+<h3 id="free-resources">Free Resources</h3>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Tool</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ExcelJet</td>
+<td>Excel</td>
+<td>exceljet.net</td>
+</tr>
+<tr>
+<td>Microsoft Learn</td>
+<td>Power Query / Power BI</td>
+<td>learn.microsoft.com</td>
+</tr>
+<tr>
+<td>SQLBI — DAX Guide</td>
+<td>DAX / Power Pivot</td>
+<td>dax.guide</td>
+</tr>
+<tr>
+<td>SQLZoo</td>
+<td>SQL</td>
+<td>sqlzoo.net</td>
+</tr>
+<tr>
+<td>Mode SQL Tutorial</td>
+<td>SQL</td>
+<td>mode.com/sql-tutorial</td>
+</tr>
+<tr>
+<td>LeetCode SQL</td>
+<td>SQL</td>
+<td>leetcode.com/problemset/database</td>
+</tr>
+<tr>
+<td>Python for Everybody</td>
+<td>Python</td>
+<td>coursera.org (audit free)</td>
+</tr>
+<tr>
+<td>Kaggle Learn</td>
+<td>Python / Pandas / ML</td>
+<td>kaggle.com/learn</td>
+</tr>
+<tr>
+<td>ydata-profiling docs</td>
+<td>Python EDA</td>
+<td>docs.profiling.ydata.ai</td>
+</tr>
+<tr>
+<td>Pandas documentation</td>
+<td>Python</td>
+<td>pandas.pydata.org/docs</td>
+</tr>
+<tr>
+<td>Scikit-learn User Guide</td>
+<td>Python ML</td>
+<td>scikit-learn.org/stable/user_guide</td>
+</tr>
+<tr>
+<td>Real Python</td>
+<td>Python</td>
+<td>realpython.com</td>
+</tr>
+</tbody>
+</table>
+<h3 id="free-certification-prep-resources">Free Certification Prep Resources</h3>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Certification</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Microsoft Learn — PL-300 path</td>
+<td>PL-300 (Power BI)</td>
+<td>learn.microsoft.com/training</td>
+</tr>
+<tr>
+<td>Microsoft Learn — DP-900 path</td>
+<td>DP-900 (Fundamentals)</td>
+<td>learn.microsoft.com/training</td>
+</tr>
+<tr>
+<td>Microsoft Learn — DP-100 path</td>
+<td>DP-100 (Data Scientist)</td>
+<td>learn.microsoft.com/training</td>
+</tr>
+<tr>
+<td>Tableau Public</td>
+<td>Tableau Desktop Specialist</td>
+<td>public.tableau.com</td>
+</tr>
+<tr>
+<td>Tableau eLearning (free tier)</td>
+<td>Tableau Desktop Specialist</td>
+<td>tableau.com/learn/training</td>
+</tr>
+<tr>
+<td>Google Data Analytics (audit)</td>
+<td>Google DA Certificate</td>
+<td>coursera.org</td>
+</tr>
+<tr>
+<td>Oracle SQL practice (Live SQL)</td>
+<td>Oracle 1Z0-071</td>
+<td>livesql.oracle.com</td>
+</tr>
+<tr>
+<td>Microsoft Virtual Training Days</td>
+<td>Free exam vouchers</td>
+<td>microsoft.com/en-us/trainingdays</td>
+</tr>
+</tbody>
+</table>
+<h3 id="recommended-datasets-all-free-on-kaggle">Recommended Datasets (All Free on Kaggle)</h3>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">This guide's own benchmark — <strong>Superstore Sales</strong>, as flat CSV, <code>.xlsx</code>, and star-schema tables — is pre-generated in the shared <a href="../datasets/superstore-sales/">datasets folder</a>. The Kaggle sources below are alternatives if you want the original public version or the additional datasets for extra practice.</p>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>Primary Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Superstore Sales</td>
+<td>Sales analytics, EDA, ML</td>
+</tr>
+<tr>
+<td>Brazilian E-Commerce (Olist)</td>
+<td>SQL joins, customer analytics</td>
+</tr>
+<tr>
+<td>Online Retail II (UCI)</td>
+<td>RFM analysis, cohort analysis</td>
+</tr>
+<tr>
+<td>AdventureWorks</td>
+<td>SQL server, full business schema</td>
+</tr>
+<tr>
+<td>Northwind (SQLite)</td>
+<td>Classic OLTP schema practice</td>
+</tr>
+</tbody>
+</table>
+<h3 id="books-optional-but-high-impact">Books (Optional but High-Impact)</h3>
+<table>
+<thead>
+<tr>
+<th>Book</th>
+<th>Focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>Storytelling with Data</em> — Knaflic</td>
+<td>Data visualization</td>
+</tr>
+<tr>
+<td><em>Python for Data Analysis</em> — McKinney</td>
+<td>Pandas deep dive</td>
+</tr>
+<tr>
+<td><em>Practical Statistics for Data Scientists</em> — Bruce</td>
+<td>Applied statistics</td>
+</tr>
+<tr>
+<td><em>The Data Warehouse Toolkit</em> — Kimball</td>
+<td>Dimensional modeling</td>
+</tr>
+<tr>
+<td><em>SQL for Data Analysis</em> — Cathy Tanimura</td>
+<td>Advanced SQL patterns</td>
+</tr>
+</tbody>
+</table>
+<h3 id="communities">Communities</h3>
+<table>
+<thead>
+<tr>
+<th>Community</th>
+<th>Platform</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>r/dataanalysis</td>
+<td>Reddit</td>
+<td>Career advice, tool comparisons, job prep questions from working analysts</td>
+</tr>
+<tr>
+<td>r/SQL</td>
+<td>Reddit</td>
+<td>Query help, window function practice, interview prep — very active</td>
+</tr>
+<tr>
+<td>Kaggle Community</td>
+<td>Kaggle</td>
+<td>Competitions, notebooks, dataset discussion — practice alongside real data scientists</td>
+</tr>
+<tr>
+<td>Power BI Community</td>
+<td>Microsoft Community</td>
+<td>DAX, Power Query, and Power BI questions answered by MVPs and Microsoft engineers</td>
+</tr>
+<tr>
+<td>DataTalks.Club</td>
+<td>Slack / Web</td>
+<td>Data engineering and analytics community — free courses, study groups, job board</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is session-only and resets on reload.</p></blockquote>
+<h4>Phase 1 — Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — Data Analyst Fundamentals</li>
+<li>[ ] Module 1.2 — Excel Fundamentals</li>
+<li>[ ] Module 1.3 — Excel Tables &amp; Structured Data</li>
+<li>[ ] Exercise 1.1 — Dataset exploration</li>
+<li>[ ] Exercise 1.2 — Excel Sales Analysis</li>
+</ul>
+<h4>Phase 2 — Core Tools</h4>
+<ul>
+<li>[ ] Module 2.1 — Power Query (ETL in Excel)</li>
+<li>[ ] Module 2.2 — Power Pivot &amp; DAX</li>
+<li>[ ] Module 2.3 — Advanced Excel Analytics</li>
+<li>[ ] Module 2.4 — Power BI Desktop</li>
+<li>[ ] Exercise 2.1 — Power Query ETL</li>
+<li>[ ] Exercise 2.2 — Power Pivot Data Model</li>
+<li>[ ] Exercise 2.3 — Advanced Analysis</li>
+<li>[ ] Exercise 2.4 — Power BI Sales Dashboard</li>
+<li>[ ] Capstone 2 — Retail Sales Performance Dashboard</li>
+</ul>
+<h4>Phase 3 — Python for Data Analysis (independent track)</h4>
+<ul>
+<li>[ ] Module 3.1 — Python Basics for Analysts</li>
+<li>[ ] Module 3.2 — Pandas: Data Cleaning &amp; Manipulation</li>
+<li>[ ] Module 3.3 — Statistics for Data Analysts</li>
+<li>[ ] Module 3.4 — EDA: Exploratory Data Analysis</li>
+<li>[ ] Module 3.5 — Machine Learning &amp; Data Science Basics</li>
+<li>[ ] Exercise 3.2 — Python Data Cleaning</li>
+<li>[ ] Exercise 3.4 — Full EDA</li>
+<li>[ ] Exercise 3.5 — ML Workflow</li>
+<li>[ ] Capstone 3 — Python EDA + ML Report</li>
+</ul>
+<h4>Phase 4 — SQL Mastery (independent track)</h4>
+<ul>
+<li>[ ] Module 4.1 — SQL Fundamentals</li>
+<li>[ ] Module 4.2 — Intermediate SQL (Window Functions, CTEs)</li>
+<li>[ ] Exercise 4.2 — SQL Analytics Queries</li>
+<li>[ ] Capstone 4 — SQL BI Queries</li>
+</ul>
+<h4>Phase 5 — Integration</h4>
+<ul>
+<li>[ ] Module 5.1 — Python + SQL Integration</li>
+<li>[ ] Module 5.2 — End-to-End Pipeline Pattern</li>
+<li>[ ] Module 5.3 — Analyst Portfolio Setup</li>
+<li>[ ] Final Capstone — End-to-End Sales &amp; Inventory Project</li>
+</ul>
+<h3 id="certification-tracker-optional">Certification Tracker (Optional)</h3>
+<ul>
+<li>[ ] DP-900 — Azure Data Fundamentals (after 1.1, 2.2, 4.1)</li>
+<li>[ ] PL-300 — Power BI Data Analyst (after Phase 2 + Capstone 2)</li>
+<li>[ ] Tableau Desktop Specialist (after 3.4 + Tableau Public practice)</li>
+<li>[ ] DP-100 — Azure Data Scientist (after 3.2, 3.3, 3.5)</li>
+<li>[ ] Google Data Analytics Certificate (parallel, any time)</li>
+<li>[ ] SQL Cert Oracle 1Z0-071 / SnowPro Core (after Phase 4)</li>
+</ul>
+<hr />
+<p><em>Guide Version 3.0 — Data Analyst Track: Beginner to Intermediate + 90-Day Challenge</em>
+<em>Non-linear modular design · Placement quiz · 90-Day Challenge · Power BI module · Certification roadmap</em>
+<em>Target: 36 weeks part-time (8–12 hrs/week) or 18 weeks full-time — or 90 days via Challenge Track — or any subset via Learning Tracks</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>
