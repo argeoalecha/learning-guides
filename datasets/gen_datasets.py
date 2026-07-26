@@ -452,3 +452,247 @@ print("inventory_receipts:", receipts.shape)
 print("inventory_suppliers:", suppliers.shape)
 below_reorder = (inv_products["Current Stock"] < inv_products["Reorder Point"]).mean().round(3)
 print("  share below reorder point:", below_reorder)
+
+# ============================================================
+# 6. TINDAHUB ORDERS  (excel guide — every module and capstone)
+#    Flat 5,000-row order register + Products/Customers masters +
+#    two deliberately messy sheets + three raw monthly CSVs for the
+#    Power Query capstone. Distinct from datasets/tindahub/ (the
+#    normalized SQL schema used by the postgresql-metabase guide).
+# ============================================================
+ph_locations = {
+    "NCR": [("Metro Manila", "Quezon City"), ("Metro Manila", "Manila"),
+            ("Metro Manila", "Makati"), ("Metro Manila", "Pasig")],
+    "Central Luzon": [("Pampanga", "Angeles City"), ("Bulacan", "Malolos"),
+                       ("Tarlac", "Tarlac City")],
+    "CALABARZON": [("Cavite", "Dasmarinas"), ("Laguna", "Calamba"),
+                    ("Batangas", "Batangas City")],
+    "Central Visayas": [("Cebu", "Cebu City"), ("Cebu", "Mandaue"),
+                         ("Bohol", "Tagbilaran")],
+    "Davao Region": [("Davao del Sur", "Davao City"), ("Davao del Norte", "Tagum")],
+    "Western Visayas": [("Iloilo", "Iloilo City"), ("Negros Occidental", "Bacolod")],
+}
+th_regions = list(ph_locations.keys())
+barangay_pool = ["Poblacion", "San Jose", "San Isidro", "Santo Nino", "Bagong Silang",
+                  "San Antonio", "Malinta", "Del Pilar", "Rizal", "Bagumbayan"]
+
+th_categories = {
+    "Beverages": [("Coca-Cola 1.5L", 65.0), ("Nescafe 3-in-1 Sachet", 8.0),
+                   ("C2 Green Tea 500ml", 22.0), ("Milo Sachet", 9.0)],
+    "Snacks": [("Piattos 85g", 32.0), ("Boy Bawang 100g", 18.0),
+                ("SkyFlakes Crackers", 15.0), ("Nova Multigrain 78g", 30.0)],
+    "Noodles & Canned Goods": [("Lucky Me Pancit Canton Noodles", 14.0),
+                                 ("Lucky Me Beef Sotanghon", 13.0),
+                                 ("Nissin Cup Noodles", 20.0),
+                                 ("Argentina Corned Beef", 35.0),
+                                 ("CDO Corned Beef", 33.0),
+                                 ("555 Sardines", 22.0)],
+    "Personal Care": [("Safeguard Soap Bar", 28.0), ("Head & Shoulders Sachet", 7.0),
+                        ("Colgate Toothpaste 75ml", 45.0), ("Palmolive Shampoo Sachet", 6.0)],
+    "Household Care": [("Surf Powder Sachet", 8.0), ("Joy Dishwashing Liquid 250ml", 38.0),
+                         ("Domex Toilet Cleaner", 55.0), ("Zonrox Bleach 500ml", 32.0)],
+    "School & Office Supplies": [("Yellow Pad Paper", 12.0), ("ILUV Ballpen", 10.0),
+                                    ("Sterling Notebook", 18.0), ("Sta. Maria Crayons", 40.0)],
+}
+th_products = [(name, cat, price) for cat, items in th_categories.items() for name, price in items]
+
+payment_methods = ["Cash", "GCash", "COD", "Maya", "Bank Transfer"]
+payment_p = [0.28, 0.24, 0.30, 0.12, 0.06]
+statuses = ["Delivered", "Pending", "Cancelled", "Returned"]
+status_p = [0.70, 0.10, 0.12, 0.08]
+
+th_first = ["Juan", "Maria", "Jose", "Ana", "Pedro", "Rosa", "Antonio", "Cristina", "Ramon",
+             "Luz", "Ricardo", "Elena", "Manuel", "Teresa", "Fernando", "Carmen", "Roberto",
+             "Josefina", "Eduardo", "Corazon"]
+th_last = ["Santos", "Reyes", "Cruz", "Bautista", "Ocampo", "Garcia", "Mendoza", "Torres",
+            "Flores", "Ramos", "Villanueva", "Castillo", "Aquino", "Del Rosario", "Pascual"]
+
+# --- Customers master (200) ---
+n_cust_th = 200
+cust_rows = []
+for i in range(n_cust_th):
+    region = rng.choice(th_regions)
+    province, city = ph_locations[region][rng.integers(0, len(ph_locations[region]))]
+    barangay = rng.choice(barangay_pool)
+    name = f"{rng.choice(th_first)} {rng.choice(th_last)}"
+    mobile = f"09{rng.integers(100000000, 999999999)}"
+    join_date = pd.Timestamp("2024-01-01") + timedelta(days=int(rng.integers(0, 700)))
+    cust_rows.append({
+        "CustomerID": f"CUST-{1000+i}", "Name": name, "Mobile": mobile,
+        "Barangay": barangay, "City": city, "Province": province, "Region": region,
+        "JoinDate": join_date.strftime("%Y-%m-%d"),
+    })
+th_customers = pd.DataFrame(cust_rows)
+
+# --- Products master ---
+th_products_df = pd.DataFrame(
+    [{"Product": name, "Category": cat, "UnitPrice": price} for name, cat, price in th_products]
+)
+
+# --- Orders (5,000 rows, Jan-Jun 2026) ---
+order_date_pool = pd.date_range("2026-01-01", "2026-06-30", freq="D")
+n_orders_th = 5000
+order_ids = [f"ORD-{20260000+i}" for i in range(n_orders_th)]
+order_rows = []
+for i in range(n_orders_th):
+    cust_idx = int(rng.integers(0, n_cust_th))
+    cust = th_customers.iloc[cust_idx]
+    prod_idx = int(rng.integers(0, len(th_products)))
+    product, category, unit_price = th_products[prod_idx]
+    qty = int(rng.integers(1, 21))
+    amount = round(qty * unit_price, 2)
+    order_date = pd.Timestamp(rng.choice(order_date_pool))
+    status = rng.choice(statuses, p=status_p)
+    if status in ("Delivered", "Returned"):
+        lead_days = int(rng.integers(1, 11))
+        delivered_date = order_date + timedelta(days=lead_days)
+    else:
+        delivered_date = None
+    order_rows.append({
+        "OrderID": order_ids[i], "OrderDate": order_date, "Customer": cust["Name"],
+        "Barangay": cust["Barangay"], "City": cust["City"], "Province": cust["Province"],
+        "Region": cust["Region"], "Product": product, "Category": category, "Qty": qty,
+        "UnitPrice": unit_price, "Amount": amount,
+        "PaymentMethod": rng.choice(payment_methods, p=payment_p), "Status": status,
+        "DeliveredDate": delivered_date,
+    })
+th_orders = pd.DataFrame(order_rows)
+
+# Seed 3 LineCheck mismatches (Amount != Qty * UnitPrice) for Module 1.3 Exercise
+mismatch_idx = rng.choice(th_orders.index, size=3, replace=False)
+for j, idx in enumerate(mismatch_idx):
+    th_orders.loc[idx, "Amount"] = round(th_orders.loc[idx, "Amount"] + 50 + j * 25, 2)
+
+# Seed 8 duplicate OrderIDs (repeat an existing ID on a later row) for the
+# duplicate-OrderID conditional-formatting exercise
+dup_targets = rng.choice(th_orders.index[:-8], size=8, replace=False)
+for k, idx in enumerate(dup_targets):
+    th_orders.loc[len(th_orders) - 1 - k, "OrderID"] = th_orders.loc[idx, "OrderID"]
+
+# ImportedDates: same calendar date as OrderDate, seeded as TEXT (dd/mm/yyyy, PH-common
+# ambiguous format) so the whole column needs conversion in Module 2.2's exercise
+th_orders["ImportedDates"] = th_orders["OrderDate"].dt.strftime("%d/%m/%Y")
+
+th_orders["OrderDate"] = th_orders["OrderDate"].dt.strftime("%Y-%m-%d")
+th_orders["DeliveredDate"] = th_orders["DeliveredDate"].apply(
+    lambda d: d.strftime("%Y-%m-%d") if pd.notna(d) else ""
+)
+th_orders = th_orders[["OrderID", "OrderDate", "Customer", "Barangay", "City", "Province",
+                        "Region", "Product", "Category", "Qty", "UnitPrice", "Amount",
+                        "PaymentMethod", "Status", "DeliveredDate", "ImportedDates"]]
+
+th_orders.to_csv(f"{BASE}/tindahub-orders/tindahub_orders.csv", index=False)
+th_customers.to_csv(f"{BASE}/tindahub-orders/tindahub_customers.csv", index=False)
+th_products_df.to_csv(f"{BASE}/tindahub-orders/tindahub_products.csv", index=False)
+
+# --- RawContacts (60 rows, jammed + messy, for TEXTSPLIT/REGEXTEST practice) ---
+n_raw = 60
+raw_rows = []
+for i in range(n_raw):
+    region = rng.choice(th_regions)
+    _, city = ph_locations[region][rng.integers(0, len(ph_locations[region]))]
+    first = rng.choice(th_first)
+    last = rng.choice(th_last)
+    case_fn = rng.choice([str.upper, str.lower, str.title])
+    pad = " " * int(rng.integers(0, 3))
+    raw_entry = f"{pad}{case_fn(last)}, {case_fn(first)}{pad} | {case_fn(city)}"
+    if rng.uniform() < 0.8:
+        mobile = f"09{rng.integers(100000000, 999999999)}"
+    else:
+        mobile = rng.choice([
+            f"+639{rng.integers(10000000, 99999999)}",
+            f"9{rng.integers(100000000, 999999999)}",
+            f"09{rng.integers(10000000, 99999999)}",  # one digit short
+            "0917-abc-defg",
+        ])
+    raw_rows.append({"RawEntry": raw_entry, "Mobile": mobile})
+th_raw_contacts = pd.DataFrame(raw_rows)
+th_raw_contacts.to_csv(f"{BASE}/tindahub-orders/tindahub_raw_contacts.csv", index=False)
+
+# --- MessyImport (500 rows, seeded defects for Module 4.1) ---
+n_messy = 500
+messy_rows = []
+city_variants = {"Quezon City": ["Quezon City", "QC", "quezon city"],
+                   "Manila": ["Manila", "manila", " Manila"],
+                   "Cebu City": ["Cebu City", "cebu city", "Cebu  City"]}
+for i in range(n_messy):
+    cust_idx = int(rng.integers(0, n_cust_th))
+    cust = th_customers.iloc[cust_idx]
+    prod_idx = int(rng.integers(0, len(th_products)))
+    product, category, unit_price = th_products[prod_idx]
+    qty = int(rng.integers(1, 21))
+    amount = round(qty * unit_price, 2)
+    order_date = pd.Timestamp(rng.choice(order_date_pool))
+    if rng.uniform() < 0.03:  # seeded future-order violations
+        order_date = pd.Timestamp("2026-12-01") + timedelta(days=int(rng.integers(0, 60)))
+    city = cust["City"]
+    if city in city_variants and rng.uniform() < 0.4:
+        city = rng.choice(city_variants[city])
+    customer_name = cust["Name"]
+    if rng.uniform() < 0.25:
+        customer_name = f"  {customer_name.upper()}  "
+    amount_val = str(amount) if rng.uniform() < 0.15 else amount  # text-number defect
+    mobile = f"09{rng.integers(100000000, 999999999)}" if rng.uniform() < 0.85 else "091234"
+    messy_rows.append({
+        "OrderID": f"ORD-{20260000+i}", "OrderDate": order_date.strftime("%Y-%m-%d"),
+        "Customer": customer_name, "City": city, "Region": cust["Region"],
+        "Product": product, "Qty": qty, "UnitPrice": unit_price, "Amount": amount_val,
+        "Mobile": mobile,
+        "PaymentMethod": rng.choice(payment_methods, p=payment_p),
+        "Status": rng.choice(statuses, p=status_p),
+    })
+th_messy = pd.DataFrame(messy_rows)
+# Seed 15 duplicate OrderIDs (audit-then-fix exercise) with a known ground-truth count
+dup_rows_idx = rng.choice(th_messy.index[:-15], size=15, replace=False)
+for k, idx in enumerate(dup_rows_idx):
+    th_messy.loc[len(th_messy) - 1 - k, "OrderID"] = th_messy.loc[idx, "OrderID"]
+th_messy.to_csv(f"{BASE}/tindahub-orders/tindahub_messy_import.csv", index=False)
+
+# --- Monthly raw CSV extracts (Apr/May/Jun 2026) for the Power Query capstone ---
+# No Category column (learners merge it in from Products); dd/mm/yyyy text dates
+# (PH locale, "Changed Type with Locale" teaching point); a few Status="Test" rows
+# to filter out; a few duplicate OrderIDs to dedupe on append.
+for month, n_month in [("2026-04", 320), ("2026-05", 345), ("2026-06", 360)]:
+    month_start = pd.Timestamp(f"{month}-01")
+    month_days = pd.date_range(month_start, month_start + pd.offsets.MonthEnd(0), freq="D")
+    rows = []
+    for i in range(n_month):
+        cust_idx = int(rng.integers(0, n_cust_th))
+        cust = th_customers.iloc[cust_idx]
+        prod_idx = int(rng.integers(0, len(th_products)))
+        product, category, unit_price = th_products[prod_idx]
+        qty = int(rng.integers(1, 21))
+        amount = round(qty * unit_price, 2)
+        order_date = pd.Timestamp(rng.choice(month_days))
+        city = cust["City"]
+        if city in city_variants and rng.uniform() < 0.3:
+            city = rng.choice(city_variants[city])
+        status = "Test" if rng.uniform() < 0.02 else rng.choice(statuses, p=status_p)
+        rows.append({
+            "OrderID": f"ORD-M{month.replace('-', '')}-{1000+i}",
+            "OrderDate": order_date.strftime("%d/%m/%Y"), "Customer": cust["Name"].strip(),
+            "City": city, "Region": cust["Region"], "Product": product, "Qty": qty,
+            "UnitPrice": unit_price, "Amount": amount,
+            "PaymentMethod": rng.choice(payment_methods, p=payment_p), "Status": status,
+        })
+    month_df = pd.DataFrame(rows)
+    # seed 4 duplicate OrderIDs within the file
+    dup_idx = rng.choice(month_df.index[:-4], size=4, replace=False)
+    for k, idx in enumerate(dup_idx):
+        month_df.loc[len(month_df) - 1 - k, "OrderID"] = month_df.loc[idx, "OrderID"]
+    month_df.to_csv(f"{BASE}/tindahub-orders/tindahub_{month}.csv", index=False)
+
+# --- Ship a single .xlsx workbook: every sheet a plain range (learners build the
+#     Tables, formulas, and formatting themselves per the guide's exercises) ---
+with pd.ExcelWriter(f"{BASE}/tindahub-orders/TindaHub_Orders.xlsx", engine="openpyxl") as xw:
+    th_orders.to_excel(xw, sheet_name="Orders", index=False)
+    th_products_df.to_excel(xw, sheet_name="Products", index=False)
+    th_customers.to_excel(xw, sheet_name="Customers", index=False)
+    th_raw_contacts.to_excel(xw, sheet_name="RawContacts", index=False)
+    th_messy.to_excel(xw, sheet_name="MessyImport", index=False)
+
+print("tindahub_orders:", th_orders.shape)
+print("tindahub_customers:", th_customers.shape)
+print("tindahub_products:", th_products_df.shape)
+print("tindahub_raw_contacts:", th_raw_contacts.shape)
+print("tindahub_messy_import:", th_messy.shape)

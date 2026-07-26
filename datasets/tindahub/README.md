@@ -4,6 +4,8 @@ Used by: **[PostgreSQL & Metabase guide](../../postgresql-metabase/postgresql-me
 
 A Philippine online marketplace schema (COD, peso-priced) — six normalized tables covering categories, customers, products, orders, order items, and payments.
 
+Same fictional business as [`tindahub-orders/`](../tindahub-orders/) (used by the Excel guide), flattened differently — that one is a single 5,000-row order register for Tables/lookups/PivotTables, not a normalized schema for joins.
+
 ## Files
 
 | File | Use |

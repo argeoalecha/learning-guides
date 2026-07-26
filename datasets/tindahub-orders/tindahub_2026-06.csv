@@ -1,0 +1,361 @@
+OrderID,OrderDate,Customer,City,Region,Product,Qty,UnitPrice,Amount,PaymentMethod,Status
+ORD-M202606-1000,01/06/2026,Josefina Flores,Iloilo City,Western Visayas,Joy Dishwashing Liquid 250ml,3,38.0,114.0,COD,Delivered
+ORD-M202606-1001,26/06/2026,Fernando Pascual,Dasmarinas,CALABARZON,Domex Toilet Cleaner,20,55.0,1100.0,Cash,Delivered
+ORD-M202606-1002,16/06/2026,Ana Del Rosario,Manila,NCR,ILUV Ballpen,19,10.0,190.0,COD,Delivered
+ORD-M202606-1003,11/06/2026,Eduardo Mendoza,Cebu  City,Central Visayas,Boy Bawang 100g,3,18.0,54.0,COD,Delivered
+ORD-M202606-1004,09/06/2026,Josefina Pascual,Manila,NCR,555 Sardines,5,22.0,110.0,COD,Delivered
+ORD-M202606-1005,22/06/2026,Eduardo Pascual,Tarlac City,Central Luzon,Yellow Pad Paper,15,12.0,180.0,Bank Transfer,Delivered
+ORD-M202606-1006,02/06/2026,Eduardo Del Rosario,Iloilo City,Western Visayas,Head & Shoulders Sachet,6,7.0,42.0,Cash,Delivered
+ORD-M202606-1007,12/06/2026,Pedro Del Rosario,Pasig,NCR,Surf Powder Sachet,1,8.0,8.0,Cash,Test
+ORD-M202606-1008,13/06/2026,Luz Torres,Mandaue,Central Visayas,Boy Bawang 100g,12,18.0,216.0,GCash,Cancelled
+ORD-M202606-1009,02/06/2026,Roberto Santos,Bacolod,Western Visayas,Head & Shoulders Sachet,16,7.0,112.0,COD,Delivered
+ORD-M202606-1010,23/06/2026,Ana Ocampo,Mandaue,Central Visayas,Sterling Notebook,9,18.0,162.0,Cash,Delivered
+ORD-M202606-1011,02/06/2026,Maria Cruz,Tagbilaran,Central Visayas,Lucky Me Pancit Canton Noodles,9,14.0,126.0,COD,Delivered
+ORD-M202606-1012,15/06/2026,Jose Ocampo,Dasmarinas,CALABARZON,Yellow Pad Paper,11,12.0,132.0,Maya,Delivered
+ORD-M202606-1013,04/06/2026,Jose Castillo,Bacolod,Western Visayas,Lucky Me Beef Sotanghon,3,13.0,39.0,COD,Delivered
+ORD-M202606-1014,29/06/2026,Josefina Ramos,Cebu City,Central Visayas,Head & Shoulders Sachet,4,7.0,28.0,Cash,Delivered
+ORD-M202606-1015,06/06/2026,Pedro Ocampo,Manila,NCR,Yellow Pad Paper,5,12.0,60.0,Bank Transfer,Returned
+ORD-M202606-1016,26/06/2026,Pedro Castillo,Cebu City,Central Visayas,Head & Shoulders Sachet,1,7.0,7.0,Maya,Delivered
+ORD-M202606-1017,11/06/2026,Rosa Castillo,Angeles City,Central Luzon,Zonrox Bleach 500ml,19,32.0,608.0,COD,Pending
+ORD-M202606-1018,07/06/2026,Fernando Mendoza,Quezon City,NCR,SkyFlakes Crackers,20,15.0,300.0,COD,Pending
+ORD-M202606-1019,18/06/2026,Juan Villanueva,Iloilo City,Western Visayas,C2 Green Tea 500ml,14,22.0,308.0,GCash,Delivered
+ORD-M202606-1020,09/06/2026,Josefina Torres,Tagum,Davao Region,Piattos 85g,14,32.0,448.0,Cash,Delivered
+ORD-M202606-1021,27/06/2026,Manuel Santos,Tagum,Davao Region,Nova Multigrain 78g,20,30.0,600.0,COD,Delivered
+ORD-M202606-1022,23/06/2026,Pedro Cruz,Cebu City,Central Visayas,Colgate Toothpaste 75ml,5,45.0,225.0,GCash,Delivered
+ORD-M202606-1023,10/06/2026,Jose Ocampo,Mandaue,Central Visayas,Piattos 85g,19,32.0,608.0,COD,Cancelled
+ORD-M202606-1024,18/06/2026,Manuel Santos,Mandaue,Central Visayas,Safeguard Soap Bar,3,28.0,84.0,Maya,Delivered
+ORD-M202606-1025,14/06/2026,Antonio Santos,Iloilo City,Western Visayas,Domex Toilet Cleaner,14,55.0,770.0,Cash,Delivered
+ORD-M202606-1026,17/06/2026,Ramon Mendoza,Tagum,Davao Region,Sterling Notebook,6,18.0,108.0,Bank Transfer,Delivered
+ORD-M202606-1027,29/06/2026,Manuel Santos,Mandaue,Central Visayas,Zonrox Bleach 500ml,8,32.0,256.0,GCash,Delivered
+ORD-M202606-1028,15/06/2026,Cristina Garcia,Dasmarinas,CALABARZON,Yellow Pad Paper,8,12.0,96.0,Cash,Delivered
+ORD-M202606-1029,03/06/2026,Rosa Pascual, Manila,NCR,Safeguard Soap Bar,14,28.0,392.0,Maya,Delivered
+ORD-M202606-1030,01/06/2026,Ana Cruz,Manila,NCR,Nova Multigrain 78g,20,30.0,600.0,COD,Cancelled
+ORD-M202606-1031,16/06/2026,Carmen Pascual,Bacolod,Western Visayas,Piattos 85g,9,32.0,288.0,Cash,Delivered
+ORD-M202606-1032,28/06/2026,Jose Garcia,Malolos,Central Luzon,Lucky Me Pancit Canton Noodles,11,14.0,154.0,Cash,Test
+ORD-M202606-1033,30/06/2026,Josefina Reyes,Dasmarinas,CALABARZON,Sterling Notebook,10,18.0,180.0,Cash,Returned
+ORD-M202606-1034,23/06/2026,Pedro Ocampo, Manila,NCR,Surf Powder Sachet,8,8.0,64.0,Maya,Delivered
+ORD-M202606-1035,21/06/2026,Ana Ramos,Malolos,Central Luzon,Nescafe 3-in-1 Sachet,3,8.0,24.0,Cash,Delivered
+ORD-M202606-1036,22/06/2026,Josefina Pascual,Tarlac City,Central Luzon,Milo Sachet,2,9.0,18.0,COD,Cancelled
+ORD-M202606-1037,19/06/2026,Ana Villanueva,Tarlac City,Central Luzon,Sta. Maria Crayons,11,40.0,440.0,COD,Delivered
+ORD-M202606-1038,11/06/2026,Pedro Reyes,Tarlac City,Central Luzon,Piattos 85g,20,32.0,640.0,Maya,Delivered
+ORD-M202606-1039,01/06/2026,Roberto Aquino,Cebu  City,Central Visayas,Coca-Cola 1.5L,13,65.0,845.0,GCash,Delivered
+ORD-M202606-1040,26/06/2026,Juan Reyes,Quezon City,NCR,Argentina Corned Beef,3,35.0,105.0,GCash,Delivered
+ORD-M202606-1041,17/06/2026,Rosa Pascual,Manila,NCR,Nissin Cup Noodles,17,20.0,340.0,GCash,Delivered
+ORD-M202606-1042,25/06/2026,Cristina Castillo,Mandaue,Central Visayas,Zonrox Bleach 500ml,2,32.0,64.0,Cash,Delivered
+ORD-M202606-1043,04/06/2026,Ricardo Flores,Iloilo City,Western Visayas,Nissin Cup Noodles,17,20.0,340.0,GCash,Delivered
+ORD-M202606-1044,19/06/2026,Luz Reyes,Dasmarinas,CALABARZON,Head & Shoulders Sachet,18,7.0,126.0,GCash,Delivered
+ORD-M202606-1045,05/06/2026,Carmen Villanueva,Tarlac City,Central Luzon,Colgate Toothpaste 75ml,1,45.0,45.0,GCash,Delivered
+ORD-M202606-1046,25/06/2026,Maria Santos,Tagum,Davao Region,Palmolive Shampoo Sachet,4,6.0,24.0,COD,Delivered
+ORD-M202606-1047,10/06/2026,Luz Reyes,Tarlac City,Central Luzon,Argentina Corned Beef,2,35.0,70.0,COD,Pending
+ORD-M202606-1048,15/06/2026,Rosa Del Rosario,Angeles City,Central Luzon,Piattos 85g,14,32.0,448.0,COD,Delivered
+ORD-M202606-1049,20/06/2026,Roberto Bautista,Calamba,CALABARZON,Zonrox Bleach 500ml,2,32.0,64.0,Cash,Delivered
+ORD-M202606-1050,19/06/2026,Rosa Reyes,Iloilo City,Western Visayas,SkyFlakes Crackers,18,15.0,270.0,GCash,Pending
+ORD-M202606-1051,01/06/2026,Teresa Del Rosario,Malolos,Central Luzon,ILUV Ballpen,14,10.0,140.0,COD,Delivered
+ORD-M202606-1052,19/06/2026,Maria Villanueva,Calamba,CALABARZON,Piattos 85g,15,32.0,480.0,COD,Delivered
+ORD-M202606-1053,19/06/2026,Elena Garcia,Davao City,Davao Region,Safeguard Soap Bar,13,28.0,364.0,GCash,Delivered
+ORD-M202606-1054,30/06/2026,Carmen Flores,Davao City,Davao Region,Piattos 85g,11,32.0,352.0,GCash,Pending
+ORD-M202606-1055,01/06/2026,Eduardo Mendoza,Cebu City,Central Visayas,Milo Sachet,16,9.0,144.0,Cash,Delivered
+ORD-M202606-1056,27/06/2026,Luz Torres,Mandaue,Central Visayas,Sta. Maria Crayons,16,40.0,640.0,COD,Delivered
+ORD-M202606-1057,09/06/2026,Corazon Ramos,Pasig,NCR,Coca-Cola 1.5L,14,65.0,910.0,GCash,Cancelled
+ORD-M202606-1058,15/06/2026,Josefina Castillo,Tagbilaran,Central Visayas,ILUV Ballpen,7,10.0,70.0,GCash,Cancelled
+ORD-M202606-1059,19/06/2026,Pedro Castillo,Cebu City,Central Visayas,Sta. Maria Crayons,16,40.0,640.0,Maya,Cancelled
+ORD-M202606-1060,17/06/2026,Roberto Del Rosario,Malolos,Central Luzon,ILUV Ballpen,8,10.0,80.0,GCash,Returned
+ORD-M202606-1061,22/06/2026,Jose Santos,Cebu City,Central Visayas,Zonrox Bleach 500ml,20,32.0,640.0,COD,Delivered
+ORD-M202606-1062,05/06/2026,Jose Reyes,Tagum,Davao Region,Colgate Toothpaste 75ml,13,45.0,585.0,COD,Delivered
+ORD-M202606-1063,20/06/2026,Maria Cruz,Tagbilaran,Central Visayas,Sta. Maria Crayons,4,40.0,160.0,Cash,Cancelled
+ORD-M202606-1064,16/06/2026,Luz Garcia,Tagum,Davao Region,Domex Toilet Cleaner,13,55.0,715.0,Maya,Delivered
+ORD-M202606-1065,20/06/2026,Rosa Del Rosario,Pasig,NCR,Domex Toilet Cleaner,4,55.0,220.0,GCash,Delivered
+ORD-M202606-1066,18/06/2026,Jose Bautista,Calamba,CALABARZON,Milo Sachet,6,9.0,54.0,GCash,Returned
+ORD-M202606-1067,20/06/2026,Teresa Pascual,Tagum,Davao Region,Nescafe 3-in-1 Sachet,10,8.0,80.0,COD,Delivered
+ORD-M202606-1068,05/06/2026,Josefina Ramos,Cebu City,Central Visayas,Zonrox Bleach 500ml,20,32.0,640.0,Cash,Delivered
+ORD-M202606-1069,15/06/2026,Ana Torres,Pasig,NCR,Boy Bawang 100g,9,18.0,162.0,Bank Transfer,Returned
+ORD-M202606-1070,19/06/2026,Juan Ramos,Manila,NCR,Colgate Toothpaste 75ml,3,45.0,135.0,Cash,Delivered
+ORD-M202606-1071,17/06/2026,Josefina Cruz,Makati,NCR,Yellow Pad Paper,17,12.0,204.0,COD,Cancelled
+ORD-M202606-1072,19/06/2026,Juan Bautista,Angeles City,Central Luzon,Nissin Cup Noodles,7,20.0,140.0,Cash,Cancelled
+ORD-M202606-1073,13/06/2026,Antonio Santos,Iloilo City,Western Visayas,Yellow Pad Paper,4,12.0,48.0,Cash,Delivered
+ORD-M202606-1074,06/06/2026,Eduardo Aquino,Tarlac City,Central Luzon,SkyFlakes Crackers,4,15.0,60.0,GCash,Cancelled
+ORD-M202606-1075,25/06/2026,Antonio Flores,Manila,NCR,Nescafe 3-in-1 Sachet,3,8.0,24.0,COD,Delivered
+ORD-M202606-1076,25/06/2026,Pedro Del Rosario,Pasig,NCR,Safeguard Soap Bar,12,28.0,336.0,Cash,Cancelled
+ORD-M202606-1077,12/06/2026,Josefina Mendoza,Angeles City,Central Luzon,Domex Toilet Cleaner,9,55.0,495.0,GCash,Pending
+ORD-M202606-1078,15/06/2026,Rosa Aquino,Pasig,NCR,Coca-Cola 1.5L,4,65.0,260.0,COD,Cancelled
+ORD-M202606-1079,28/06/2026,Corazon Aquino,Tagum,Davao Region,Safeguard Soap Bar,19,28.0,532.0,GCash,Delivered
+ORD-M202606-1080,18/06/2026,Ana Ramos,Tarlac City,Central Luzon,Surf Powder Sachet,17,8.0,136.0,GCash,Delivered
+ORD-M202606-1081,29/06/2026,Antonio Flores, Manila,NCR,Sterling Notebook,3,18.0,54.0,COD,Delivered
+ORD-M202606-1082,08/06/2026,Corazon Bautista,Davao City,Davao Region,555 Sardines,3,22.0,66.0,COD,Delivered
+ORD-M202606-1083,29/06/2026,Jose Reyes,Tagum,Davao Region,CDO Corned Beef,8,33.0,264.0,Cash,Delivered
+ORD-M202606-1084,15/06/2026,Jose Garcia,Malolos,Central Luzon,SkyFlakes Crackers,13,15.0,195.0,COD,Cancelled
+ORD-M202606-1085,28/06/2026,Juan Flores,Iloilo City,Western Visayas,Colgate Toothpaste 75ml,5,45.0,225.0,Cash,Cancelled
+ORD-M202606-1086,22/06/2026,Luz Aquino,Tarlac City,Central Luzon,Sta. Maria Crayons,14,40.0,560.0,Maya,Pending
+ORD-M202606-1087,05/06/2026,Roberto Santos,Bacolod,Western Visayas,Yellow Pad Paper,4,12.0,48.0,Cash,Delivered
+ORD-M202606-1088,14/06/2026,Luz Aquino,Tarlac City,Central Luzon,Coca-Cola 1.5L,7,65.0,455.0,COD,Delivered
+ORD-M202606-1089,27/06/2026,Maria Castillo,Malolos,Central Luzon,Argentina Corned Beef,17,35.0,595.0,Cash,Delivered
+ORD-M202606-1090,11/06/2026,Cristina Torres,Quezon City,NCR,Head & Shoulders Sachet,18,7.0,126.0,COD,Delivered
+ORD-M202606-1091,08/06/2026,Maria Mendoza,Manila,NCR,Surf Powder Sachet,6,8.0,48.0,COD,Delivered
+ORD-M202606-1092,21/06/2026,Teresa Villanueva,Malolos,Central Luzon,SkyFlakes Crackers,8,15.0,120.0,GCash,Delivered
+ORD-M202606-1093,21/06/2026,Josefina Santos,Pasig,NCR,Palmolive Shampoo Sachet,9,6.0,54.0,Cash,Cancelled
+ORD-M202606-1094,02/06/2026,Pedro Castillo,Cebu City,Central Visayas,ILUV Ballpen,13,10.0,130.0,GCash,Delivered
+ORD-M202606-1095,05/06/2026,Roberto Del Rosario,Malolos,Central Luzon,C2 Green Tea 500ml,19,22.0,418.0,COD,Delivered
+ORD-M202606-1096,23/06/2026,Fernando Ramos,Iloilo City,Western Visayas,Zonrox Bleach 500ml,3,32.0,96.0,COD,Delivered
+ORD-M202606-1097,10/06/2026,Josefina Ramos,cebu city,Central Visayas,CDO Corned Beef,7,33.0,231.0,COD,Delivered
+ORD-M202606-1098,27/06/2026,Elena Garcia,Davao City,Davao Region,CDO Corned Beef,4,33.0,132.0,COD,Delivered
+ORD-M202606-1099,06/06/2026,Maria Villanueva,Calamba,CALABARZON,ILUV Ballpen,16,10.0,160.0,Cash,Delivered
+ORD-M202606-1100,18/06/2026,Fernando Ramos,Iloilo City,Western Visayas,Joy Dishwashing Liquid 250ml,11,38.0,418.0,GCash,Delivered
+ORD-M202606-1101,29/06/2026,Ricardo Pascual,Tarlac City,Central Luzon,Colgate Toothpaste 75ml,8,45.0,360.0,COD,Delivered
+ORD-M202606-1102,22/06/2026,Manuel Flores,Angeles City,Central Luzon,Palmolive Shampoo Sachet,18,6.0,108.0,COD,Delivered
+ORD-M202606-1103,26/06/2026,Roberto Del Rosario,Malolos,Central Luzon,Milo Sachet,3,9.0,27.0,COD,Delivered
+ORD-M202606-1104,06/06/2026,Fernando Garcia,Iloilo City,Western Visayas,ILUV Ballpen,12,10.0,120.0,GCash,Delivered
+ORD-M202606-1105,13/06/2026,Manuel Villanueva,Tarlac City,Central Luzon,Milo Sachet,11,9.0,99.0,COD,Delivered
+ORD-M202606-1106,18/06/2026,Jose Castillo,Malolos,Central Luzon,Zonrox Bleach 500ml,12,32.0,384.0,Maya,Delivered
+ORD-M202606-1107,22/06/2026,Jose Cruz,Angeles City,Central Luzon,555 Sardines,6,22.0,132.0,COD,Returned
+ORD-M202606-1108,08/06/2026,Antonio Mendoza,Calamba,CALABARZON,CDO Corned Beef,4,33.0,132.0,Maya,Delivered
+ORD-M202606-1109,03/06/2026,Luz Cruz,Makati,NCR,Nissin Cup Noodles,10,20.0,200.0,COD,Delivered
+ORD-M202606-1110,11/06/2026,Maria Castillo,Malolos,Central Luzon,Lucky Me Pancit Canton Noodles,17,14.0,238.0,Cash,Delivered
+ORD-M202606-1111,18/06/2026,Luz Pascual,Cebu City,Central Visayas,ILUV Ballpen,11,10.0,110.0,Bank Transfer,Delivered
+ORD-M202606-1112,14/06/2026,Maria Castillo,Malolos,Central Luzon,Nova Multigrain 78g,6,30.0,180.0,Cash,Delivered
+ORD-M202606-1113,19/06/2026,Roberto Garcia,Manila,NCR,Palmolive Shampoo Sachet,8,6.0,48.0,Maya,Pending
+ORD-M202606-1114,23/06/2026,Pedro Cruz,Manila,NCR,Sta. Maria Crayons,9,40.0,360.0,Cash,Delivered
+ORD-M202606-1115,11/06/2026,Roberto Bautista,Tagum,Davao Region,Boy Bawang 100g,9,18.0,162.0,Cash,Delivered
+ORD-M202606-1116,03/06/2026,Josefina Reyes,Dasmarinas,CALABARZON,Lucky Me Pancit Canton Noodles,9,14.0,126.0,Maya,Delivered
+ORD-M202606-1117,20/06/2026,Antonio Cruz,Mandaue,Central Visayas,Joy Dishwashing Liquid 250ml,19,38.0,722.0,GCash,Delivered
+ORD-M202606-1118,17/06/2026,Rosa Reyes,Iloilo City,Western Visayas,Zonrox Bleach 500ml,2,32.0,64.0,COD,Returned
+ORD-M202606-1119,12/06/2026,Luz Pascual,Cebu City,Central Visayas,Milo Sachet,7,9.0,63.0,GCash,Returned
+ORD-M202606-1120,16/06/2026,Carmen Mendoza,Malolos,Central Luzon,Nescafe 3-in-1 Sachet,11,8.0,88.0,Cash,Delivered
+ORD-M202606-1121,01/06/2026,Cristina Torres,Quezon City,NCR,C2 Green Tea 500ml,13,22.0,286.0,GCash,Delivered
+ORD-M202606-1122,14/06/2026,Pedro Torres,Tarlac City,Central Luzon,Zonrox Bleach 500ml,1,32.0,32.0,COD,Test
+ORD-M202606-1123,18/06/2026,Teresa Santos,Davao City,Davao Region,CDO Corned Beef,15,33.0,495.0,COD,Cancelled
+ORD-M202606-1124,12/06/2026,Ricardo Cruz,Manila,NCR,Yellow Pad Paper,18,12.0,216.0,Cash,Delivered
+ORD-M202606-1125,27/06/2026,Josefina Cruz,Bacolod,Western Visayas,Nova Multigrain 78g,1,30.0,30.0,Bank Transfer,Delivered
+ORD-M202606-1126,24/06/2026,Eduardo Mendoza,Batangas City,CALABARZON,Sta. Maria Crayons,5,40.0,200.0,COD,Delivered
+ORD-M202606-1127,21/06/2026,Josefina Pascual,Manila,NCR,Nescafe 3-in-1 Sachet,17,8.0,136.0,GCash,Delivered
+ORD-M202606-1128,08/06/2026,Teresa Castillo,Batangas City,CALABARZON,Joy Dishwashing Liquid 250ml,8,38.0,304.0,GCash,Delivered
+ORD-M202606-1129,21/06/2026,Jose Del Rosario,Tagbilaran,Central Visayas,Yellow Pad Paper,14,12.0,168.0,Maya,Delivered
+ORD-M202606-1130,27/06/2026,Ana Cruz,Quezon City,NCR,Argentina Corned Beef,6,35.0,210.0,Cash,Delivered
+ORD-M202606-1131,29/06/2026,Pedro Reyes,Tagum,Davao Region,Joy Dishwashing Liquid 250ml,4,38.0,152.0,Cash,Delivered
+ORD-M202606-1132,07/06/2026,Juan Villanueva,Iloilo City,Western Visayas,ILUV Ballpen,12,10.0,120.0,GCash,Pending
+ORD-M202606-1133,19/06/2026,Roberto Santos,Bacolod,Western Visayas,Domex Toilet Cleaner,9,55.0,495.0,Cash,Delivered
+ORD-M202606-1134,16/06/2026,Ana Villanueva,Tarlac City,Central Luzon,Nissin Cup Noodles,14,20.0,280.0,Bank Transfer,Delivered
+ORD-M202606-1135,08/06/2026,Fernando Pascual,Quezon City,NCR,ILUV Ballpen,20,10.0,200.0,COD,Delivered
+ORD-M202606-1136,18/06/2026,Antonio Santos,Bacolod,Western Visayas,Safeguard Soap Bar,12,28.0,336.0,Cash,Pending
+ORD-M202606-1137,13/06/2026,Eduardo Garcia,Tarlac City,Central Luzon,Nescafe 3-in-1 Sachet,5,8.0,40.0,Cash,Delivered
+ORD-M202606-1138,29/06/2026,Ricardo Bautista,Manila,NCR,Sterling Notebook,13,18.0,234.0,Bank Transfer,Delivered
+ORD-M202606-1139,28/06/2026,Maria Castillo,Tagum,Davao Region,Safeguard Soap Bar,7,28.0,196.0,Cash,Cancelled
+ORD-M202606-1140,25/06/2026,Juan Flores,Iloilo City,Western Visayas,ILUV Ballpen,19,10.0,190.0,Cash,Delivered
+ORD-M202606-1141,30/06/2026,Maria Villanueva,Malolos,Central Luzon,ILUV Ballpen,15,10.0,150.0,Cash,Delivered
+ORD-M202606-1142,11/06/2026,Ramon Ocampo,Davao City,Davao Region,Zonrox Bleach 500ml,18,32.0,576.0,GCash,Returned
+ORD-M202606-1143,04/06/2026,Antonio Cruz,Mandaue,Central Visayas,555 Sardines,12,22.0,264.0,COD,Delivered
+ORD-M202606-1144,19/06/2026,Ricardo Flores,Tagbilaran,Central Visayas,Sterling Notebook,16,18.0,288.0,GCash,Delivered
+ORD-M202606-1145,27/06/2026,Rosa Aquino,Pasig,NCR,Lucky Me Beef Sotanghon,4,13.0,52.0,GCash,Cancelled
+ORD-M202606-1146,01/06/2026,Josefina Torres,Tagbilaran,Central Visayas,Boy Bawang 100g,15,18.0,270.0,COD,Delivered
+ORD-M202606-1147,29/06/2026,Teresa Castillo,Batangas City,CALABARZON,Palmolive Shampoo Sachet,4,6.0,24.0,Bank Transfer,Cancelled
+ORD-M202606-1148,19/06/2026,Pedro Reyes,Tarlac City,Central Luzon,Sterling Notebook,13,18.0,234.0,COD,Delivered
+ORD-M202606-1149,03/06/2026,Fernando Pascual,Dasmarinas,CALABARZON,Nova Multigrain 78g,18,30.0,540.0,Bank Transfer,Pending
+ORD-M202606-1150,08/06/2026,Pedro Torres,Cebu City,Central Visayas,Boy Bawang 100g,8,18.0,144.0,COD,Delivered
+ORD-M202606-1151,16/06/2026,Ricardo Ocampo,Pasig,NCR,555 Sardines,1,22.0,22.0,Bank Transfer,Test
+ORD-M202606-1152,15/06/2026,Corazon Ocampo,Iloilo City,Western Visayas,Nescafe 3-in-1 Sachet,15,8.0,120.0,COD,Delivered
+ORD-M202606-1153,02/06/2026,Ana Ramos,Tarlac City,Central Luzon,ILUV Ballpen,10,10.0,100.0,Bank Transfer,Delivered
+ORD-M202606-1154,01/06/2026,Pedro Reyes,Tagum,Davao Region,Lucky Me Beef Sotanghon,7,13.0,91.0,Cash,Delivered
+ORD-M202606-1155,30/06/2026,Juan Villanueva,Iloilo City,Western Visayas,Coca-Cola 1.5L,10,65.0,650.0,Cash,Delivered
+ORD-M202606-1156,01/06/2026,Rosa Aquino,Pasig,NCR,Joy Dishwashing Liquid 250ml,19,38.0,722.0,COD,Delivered
+ORD-M202606-1157,20/06/2026,Jose Castillo,Malolos,Central Luzon,Nova Multigrain 78g,1,30.0,30.0,COD,Delivered
+ORD-M202606-1158,17/06/2026,Roberto Torres,Tarlac City,Central Luzon,Coca-Cola 1.5L,6,65.0,390.0,Cash,Delivered
+ORD-M202606-1159,17/06/2026,Maria Santos,Bacolod,Western Visayas,Nova Multigrain 78g,20,30.0,600.0,GCash,Delivered
+ORD-M202606-1160,25/06/2026,Ramon Mendoza,Tagum,Davao Region,Palmolive Shampoo Sachet,18,6.0,108.0,GCash,Delivered
+ORD-M202606-1161,26/06/2026,Carmen Flores,Davao City,Davao Region,Safeguard Soap Bar,2,28.0,56.0,GCash,Delivered
+ORD-M202606-1162,22/06/2026,Teresa Villanueva,Iloilo City,Western Visayas,Sta. Maria Crayons,4,40.0,160.0,Cash,Delivered
+ORD-M202606-1163,02/06/2026,Teresa Villanueva,Iloilo City,Western Visayas,SkyFlakes Crackers,4,15.0,60.0,Maya,Delivered
+ORD-M202606-1164,21/06/2026,Roberto Aquino,Cebu City,Central Visayas,Lucky Me Beef Sotanghon,15,13.0,195.0,Cash,Delivered
+ORD-M202606-1165,21/06/2026,Carmen Villanueva,Tarlac City,Central Luzon,Nescafe 3-in-1 Sachet,1,8.0,8.0,Cash,Delivered
+ORD-M202606-1166,24/06/2026,Corazon Bautista,Bacolod,Western Visayas,Piattos 85g,13,32.0,416.0,COD,Delivered
+ORD-M202606-1167,07/06/2026,Antonio Flores,Manila,NCR,Joy Dishwashing Liquid 250ml,14,38.0,532.0,Cash,Delivered
+ORD-M202606-1168,02/06/2026,Fernando Garcia,Iloilo City,Western Visayas,Coca-Cola 1.5L,5,65.0,325.0,COD,Cancelled
+ORD-M202606-1169,03/06/2026,Antonio Castillo,Angeles City,Central Luzon,Coca-Cola 1.5L,18,65.0,1170.0,Maya,Cancelled
+ORD-M202606-1170,28/06/2026,Roberto Santos,Bacolod,Western Visayas,Yellow Pad Paper,6,12.0,72.0,Cash,Pending
+ORD-M202606-1171,21/06/2026,Antonio Flores,Angeles City,Central Luzon,Nova Multigrain 78g,18,30.0,540.0,Cash,Delivered
+ORD-M202606-1172,21/06/2026,Ana Del Rosario,Manila,NCR,Domex Toilet Cleaner,6,55.0,330.0,COD,Delivered
+ORD-M202606-1173,07/06/2026,Ana Ocampo,Mandaue,Central Visayas,Nissin Cup Noodles,17,20.0,340.0,COD,Delivered
+ORD-M202606-1174,05/06/2026,Eduardo Del Rosario,Malolos,Central Luzon,555 Sardines,16,22.0,352.0,GCash,Returned
+ORD-M202606-1175,05/06/2026,Juan Villanueva,Pasig,NCR,Piattos 85g,20,32.0,640.0,COD,Returned
+ORD-M202606-1176,19/06/2026,Eduardo Mendoza,Batangas City,CALABARZON,Milo Sachet,11,9.0,99.0,Maya,Cancelled
+ORD-M202606-1177,06/06/2026,Maria Mendoza,Manila,NCR,Surf Powder Sachet,8,8.0,64.0,GCash,Delivered
+ORD-M202606-1178,21/06/2026,Josefina Reyes,Dasmarinas,CALABARZON,Joy Dishwashing Liquid 250ml,8,38.0,304.0,GCash,Delivered
+ORD-M202606-1179,23/06/2026,Corazon Villanueva,Makati,NCR,Lucky Me Beef Sotanghon,3,13.0,39.0,GCash,Delivered
+ORD-M202606-1180,06/06/2026,Manuel Flores,Angeles City,Central Luzon,Colgate Toothpaste 75ml,9,45.0,405.0,COD,Pending
+ORD-M202606-1181,30/06/2026,Pedro Reyes,Tagum,Davao Region,Lucky Me Pancit Canton Noodles,12,14.0,168.0,GCash,Delivered
+ORD-M202606-1182,20/06/2026,Maria Santos,Tagum,Davao Region,Nissin Cup Noodles,14,20.0,280.0,GCash,Delivered
+ORD-M202606-1183,04/06/2026,Corazon Villanueva,Makati,NCR,ILUV Ballpen,5,10.0,50.0,GCash,Delivered
+ORD-M202606-1184,02/06/2026,Eduardo Ocampo,Tagum,Davao Region,Surf Powder Sachet,8,8.0,64.0,GCash,Delivered
+ORD-M202606-1185,23/06/2026,Josefina Pascual,Manila,NCR,Nescafe 3-in-1 Sachet,6,8.0,48.0,Maya,Delivered
+ORD-M202606-1186,13/06/2026,Roberto Torres,Tarlac City,Central Luzon,Surf Powder Sachet,20,8.0,160.0,COD,Delivered
+ORD-M202606-1187,07/06/2026,Antonio Santos,Iloilo City,Western Visayas,Head & Shoulders Sachet,19,7.0,133.0,GCash,Delivered
+ORD-M202606-1188,13/06/2026,Teresa Santos,Davao City,Davao Region,555 Sardines,18,22.0,396.0,COD,Returned
+ORD-M202606-1189,25/06/2026,Carmen Flores,Tarlac City,Central Luzon,Nescafe 3-in-1 Sachet,15,8.0,120.0,Bank Transfer,Delivered
+ORD-M202606-1190,28/06/2026,Maria Flores,Makati,NCR,Milo Sachet,14,9.0,126.0,COD,Cancelled
+ORD-M202606-1191,25/06/2026,Elena Torres,Tarlac City,Central Luzon,Head & Shoulders Sachet,18,7.0,126.0,Cash,Pending
+ORD-M202606-1192,15/06/2026,Corazon Ocampo,Iloilo City,Western Visayas,ILUV Ballpen,9,10.0,90.0,COD,Delivered
+ORD-M202606-1193,18/06/2026,Roberto Ocampo,Iloilo City,Western Visayas,Sterling Notebook,10,18.0,180.0,Bank Transfer,Delivered
+ORD-M202606-1194,27/06/2026,Juan Flores,Iloilo City,Western Visayas,Sterling Notebook,9,18.0,162.0,COD,Returned
+ORD-M202606-1195,29/06/2026,Ricardo Flores,Tagbilaran,Central Visayas,Colgate Toothpaste 75ml,17,45.0,765.0,Cash,Delivered
+ORD-M202606-1196,13/06/2026,Roberto Santos,Bacolod,Western Visayas,Joy Dishwashing Liquid 250ml,6,38.0,228.0,GCash,Delivered
+ORD-M202606-1197,13/06/2026,Roberto Torres,Tarlac City,Central Luzon,Sterling Notebook,6,18.0,108.0,GCash,Delivered
+ORD-M202606-1198,29/06/2026,Ricardo Bautista,Tagum,Davao Region,Piattos 85g,7,32.0,224.0,GCash,Delivered
+ORD-M202606-1199,13/06/2026,Jose Ocampo,Dasmarinas,CALABARZON,Yellow Pad Paper,16,12.0,192.0,COD,Delivered
+ORD-M202606-1200,19/06/2026,Corazon Villanueva,Makati,NCR,Nova Multigrain 78g,10,30.0,300.0,Cash,Delivered
+ORD-M202606-1201,19/06/2026,Cristina Ocampo,Mandaue,Central Visayas,Lucky Me Beef Sotanghon,14,13.0,182.0,COD,Delivered
+ORD-M202606-1202,07/06/2026,Ana Mendoza,Tagum,Davao Region,Lucky Me Beef Sotanghon,7,13.0,91.0,COD,Delivered
+ORD-M202606-1203,27/06/2026,Antonio Santos,Iloilo City,Western Visayas,Lucky Me Beef Sotanghon,19,13.0,247.0,COD,Delivered
+ORD-M202606-1204,08/06/2026,Manuel Villanueva,Tagbilaran,Central Visayas,ILUV Ballpen,16,10.0,160.0,Maya,Delivered
+ORD-M202606-1205,26/06/2026,Rosa Del Rosario,Angeles City,Central Luzon,ILUV Ballpen,5,10.0,50.0,Cash,Delivered
+ORD-M202606-1206,11/06/2026,Ana Ramos,Tarlac City,Central Luzon,Joy Dishwashing Liquid 250ml,20,38.0,760.0,COD,Delivered
+ORD-M202606-1207,05/06/2026,Cristina Castillo,Mandaue,Central Visayas,Milo Sachet,4,9.0,36.0,Cash,Delivered
+ORD-M202606-1208,14/06/2026,Josefina Bautista,Calamba,CALABARZON,Head & Shoulders Sachet,6,7.0,42.0,Maya,Cancelled
+ORD-M202606-1209,06/06/2026,Eduardo Bautista,Cebu City,Central Visayas,SkyFlakes Crackers,15,15.0,225.0,GCash,Delivered
+ORD-M202606-1210,06/06/2026,Pedro Torres,Tarlac City,Central Luzon,Milo Sachet,1,9.0,9.0,GCash,Cancelled
+ORD-M202606-1211,04/06/2026,Rosa Cruz,Tarlac City,Central Luzon,Milo Sachet,13,9.0,117.0,COD,Delivered
+ORD-M202606-1212,30/06/2026,Luz Aquino,Tarlac City,Central Luzon,Nova Multigrain 78g,6,30.0,180.0,Maya,Delivered
+ORD-M202606-1213,05/06/2026,Corazon Ramos,Pasig,NCR,Yellow Pad Paper,18,12.0,216.0,Cash,Delivered
+ORD-M202606-1214,07/06/2026,Manuel Santos,Mandaue,Central Visayas,Coca-Cola 1.5L,6,65.0,390.0,COD,Cancelled
+ORD-M202606-1215,10/06/2026,Ricardo Garcia,Batangas City,CALABARZON,Argentina Corned Beef,7,35.0,245.0,Cash,Delivered
+ORD-M202606-1216,24/06/2026,Jose Reyes,QC,NCR,Nescafe 3-in-1 Sachet,13,8.0,104.0,COD,Delivered
+ORD-M202606-1217,19/06/2026,Josefina Ramos,Cebu City,Central Visayas,Head & Shoulders Sachet,4,7.0,28.0,COD,Pending
+ORD-M202606-1218,18/06/2026,Jose Cruz,Angeles City,Central Luzon,Boy Bawang 100g,10,18.0,180.0,Cash,Delivered
+ORD-M202606-1219,17/06/2026,Manuel Villanueva,Tarlac City,Central Luzon,Surf Powder Sachet,19,8.0,152.0,GCash,Returned
+ORD-M202606-1220,18/06/2026,Josefina Santos,Tagbilaran,Central Visayas,Sterling Notebook,8,18.0,144.0,GCash,Delivered
+ORD-M202606-1221,18/06/2026,Ana Ramos,Malolos,Central Luzon,ILUV Ballpen,7,10.0,70.0,Cash,Delivered
+ORD-M202606-1222,23/06/2026,Jose Ocampo,Mandaue,Central Visayas,Boy Bawang 100g,18,18.0,324.0,Bank Transfer,Delivered
+ORD-M202606-1223,24/06/2026,Maria Villanueva,Malolos,Central Luzon,Zonrox Bleach 500ml,12,32.0,384.0,GCash,Delivered
+ORD-M202606-1224,18/06/2026,Manuel Aquino,Bacolod,Western Visayas,Sterling Notebook,15,18.0,270.0,Maya,Delivered
+ORD-M202606-1225,04/06/2026,Ana Ocampo,Mandaue,Central Visayas,Nova Multigrain 78g,11,30.0,330.0,Cash,Delivered
+ORD-M202606-1226,28/06/2026,Rosa Del Rosario,Pasig,NCR,Piattos 85g,13,32.0,416.0,Cash,Cancelled
+ORD-M202606-1227,02/06/2026,Maria Castillo,Tagum,Davao Region,Nissin Cup Noodles,6,20.0,120.0,GCash,Delivered
+ORD-M202606-1228,04/06/2026,Fernando Pascual,Dasmarinas,CALABARZON,Safeguard Soap Bar,13,28.0,364.0,COD,Delivered
+ORD-M202606-1229,16/06/2026,Eduardo Santos,Pasig,NCR,Yellow Pad Paper,6,12.0,72.0,COD,Delivered
+ORD-M202606-1230,19/06/2026,Cristina Torres,Quezon City,NCR,Sta. Maria Crayons,7,40.0,280.0,COD,Delivered
+ORD-M202606-1231,11/06/2026,Ramon Santos,Dasmarinas,CALABARZON,Argentina Corned Beef,8,35.0,280.0,Cash,Delivered
+ORD-M202606-1232,08/06/2026,Eduardo Santos,Pasig,NCR,Coca-Cola 1.5L,13,65.0,845.0,GCash,Delivered
+ORD-M202606-1233,11/06/2026,Josefina Mendoza,Angeles City,Central Luzon,Argentina Corned Beef,19,35.0,665.0,GCash,Returned
+ORD-M202606-1234,23/06/2026,Josefina Santos,Pasig,NCR,Lucky Me Beef Sotanghon,6,13.0,78.0,GCash,Delivered
+ORD-M202606-1235,03/06/2026,Luz Castillo,Calamba,CALABARZON,Palmolive Shampoo Sachet,16,6.0,96.0,Maya,Returned
+ORD-M202606-1236,06/06/2026,Corazon Reyes,Calamba,CALABARZON,555 Sardines,7,22.0,154.0,Cash,Delivered
+ORD-M202606-1237,10/06/2026,Ana Del Rosario,Manila,NCR,CDO Corned Beef,15,33.0,495.0,GCash,Delivered
+ORD-M202606-1238,27/06/2026,Josefina Cruz,Makati,NCR,Boy Bawang 100g,16,18.0,288.0,GCash,Delivered
+ORD-M202606-1239,28/06/2026,Teresa Villanueva,Malolos,Central Luzon,ILUV Ballpen,7,10.0,70.0,Cash,Delivered
+ORD-M202606-1240,02/06/2026,Carmen Reyes,Tagbilaran,Central Visayas,Colgate Toothpaste 75ml,4,45.0,180.0,COD,Delivered
+ORD-M202606-1241,12/06/2026,Cristina Ocampo,Mandaue,Central Visayas,Coca-Cola 1.5L,14,65.0,910.0,GCash,Cancelled
+ORD-M202606-1242,08/06/2026,Corazon Bautista,Davao City,Davao Region,Zonrox Bleach 500ml,5,32.0,160.0,GCash,Delivered
+ORD-M202606-1243,07/06/2026,Juan Reyes,Quezon City,NCR,Colgate Toothpaste 75ml,6,45.0,270.0,Cash,Returned
+ORD-M202606-1244,05/06/2026,Maria Flores,Makati,NCR,555 Sardines,14,22.0,308.0,Maya,Delivered
+ORD-M202606-1245,10/06/2026,Ricardo Aquino,Cebu City,Central Visayas,Sta. Maria Crayons,10,40.0,400.0,COD,Cancelled
+ORD-M202606-1246,17/06/2026,Ricardo Flores,Tagbilaran,Central Visayas,Argentina Corned Beef,11,35.0,385.0,GCash,Delivered
+ORD-M202606-1247,01/06/2026,Fernando Garcia,Tagbilaran,Central Visayas,Nova Multigrain 78g,14,30.0,420.0,COD,Delivered
+ORD-M202606-1248,02/06/2026,Josefina Pascual,Tarlac City,Central Luzon,Lucky Me Pancit Canton Noodles,20,14.0,280.0,GCash,Pending
+ORD-M202606-1249,29/06/2026,Elena Aquino,Iloilo City,Western Visayas,C2 Green Tea 500ml,13,22.0,286.0,COD,Delivered
+ORD-M202606-1250,21/06/2026,Maria Cruz,Tagbilaran,Central Visayas,Surf Powder Sachet,18,8.0,144.0,GCash,Delivered
+ORD-M202606-1251,28/06/2026,Cristina Torres,QC,NCR,Boy Bawang 100g,10,18.0,180.0,Cash,Cancelled
+ORD-M202606-1252,02/06/2026,Roberto Bautista,Calamba,CALABARZON,Domex Toilet Cleaner,13,55.0,715.0,Maya,Delivered
+ORD-M202606-1253,19/06/2026,Ana Cruz, Manila,NCR,C2 Green Tea 500ml,15,22.0,330.0,COD,Delivered
+ORD-M202606-1254,03/06/2026,Carmen Villanueva,Tarlac City,Central Luzon,Coca-Cola 1.5L,2,65.0,130.0,Cash,Delivered
+ORD-M202606-1255,14/06/2026,Corazon Bautista,Davao City,Davao Region,Sta. Maria Crayons,14,40.0,560.0,Maya,Delivered
+ORD-M202606-1256,29/06/2026,Eduardo Pascual,Tarlac City,Central Luzon,C2 Green Tea 500ml,20,22.0,440.0,GCash,Delivered
+ORD-M202606-1257,23/06/2026,Fernando Ramos,Iloilo City,Western Visayas,Yellow Pad Paper,13,12.0,156.0,COD,Cancelled
+ORD-M202606-1258,26/06/2026,Pedro Cruz,Manila,NCR,Lucky Me Pancit Canton Noodles,10,14.0,140.0,Cash,Cancelled
+ORD-M202606-1259,22/06/2026,Jose Castillo,Bacolod,Western Visayas,Colgate Toothpaste 75ml,8,45.0,360.0,Maya,Delivered
+ORD-M202606-1260,26/06/2026,Fernando Pascual,Quezon City,NCR,Palmolive Shampoo Sachet,13,6.0,78.0,GCash,Delivered
+ORD-M202606-1261,21/06/2026,Juan Villanueva,Pasig,NCR,555 Sardines,12,22.0,264.0,COD,Delivered
+ORD-M202606-1262,24/06/2026,Pedro Del Rosario,Pasig,NCR,Nescafe 3-in-1 Sachet,12,8.0,96.0,Cash,Delivered
+ORD-M202606-1263,21/06/2026,Juan Villanueva,Iloilo City,Western Visayas,CDO Corned Beef,20,33.0,660.0,GCash,Delivered
+ORD-M202606-1264,19/06/2026,Rosa Aquino,Pasig,NCR,Sterling Notebook,5,18.0,90.0,Maya,Delivered
+ORD-M202606-1265,11/06/2026,Josefina Cruz,Bacolod,Western Visayas,Nissin Cup Noodles,16,20.0,320.0,GCash,Delivered
+ORD-M202606-1266,17/06/2026,Elena Torres,Angeles City,Central Luzon,Argentina Corned Beef,3,35.0,105.0,COD,Delivered
+ORD-M202606-1267,10/06/2026,Maria Cruz,Tagbilaran,Central Visayas,CDO Corned Beef,15,33.0,495.0,COD,Delivered
+ORD-M202606-1268,29/06/2026,Rosa Pascual,Manila,NCR,Nova Multigrain 78g,2,30.0,60.0,Cash,Delivered
+ORD-M202606-1269,19/06/2026,Rosa Aquino,Pasig,NCR,Milo Sachet,2,9.0,18.0,Cash,Pending
+ORD-M202606-1270,10/06/2026,Ana Del Rosario,Manila,NCR,Domex Toilet Cleaner,11,55.0,605.0,COD,Cancelled
+ORD-M202606-1271,18/06/2026,Rosa Reyes,Iloilo City,Western Visayas,Milo Sachet,17,9.0,153.0,Cash,Delivered
+ORD-M202606-1272,25/06/2026,Maria Cruz,Tagbilaran,Central Visayas,555 Sardines,17,22.0,374.0,Maya,Delivered
+ORD-M202606-1273,08/06/2026,Corazon Villanueva,Angeles City,Central Luzon,555 Sardines,15,22.0,330.0,GCash,Returned
+ORD-M202606-1274,04/06/2026,Antonio Bautista,Davao City,Davao Region,Domex Toilet Cleaner,14,55.0,770.0,Cash,Returned
+ORD-M202606-1275,18/06/2026,Eduardo Del Rosario,Iloilo City,Western Visayas,Yellow Pad Paper,1,12.0,12.0,COD,Delivered
+ORD-M202606-1276,06/06/2026,Antonio Cruz,Mandaue,Central Visayas,CDO Corned Beef,5,33.0,165.0,Cash,Cancelled
+ORD-M202606-1277,20/06/2026,Roberto Garcia,Manila,NCR,555 Sardines,8,22.0,176.0,GCash,Delivered
+ORD-M202606-1278,21/06/2026,Maria Santos,Bacolod,Western Visayas,Coca-Cola 1.5L,6,65.0,390.0,COD,Returned
+ORD-M202606-1279,16/06/2026,Luz Aquino,Tarlac City,Central Luzon,Surf Powder Sachet,8,8.0,64.0,COD,Cancelled
+ORD-M202606-1280,25/06/2026,Carmen Mendoza,Malolos,Central Luzon,Colgate Toothpaste 75ml,18,45.0,810.0,Cash,Pending
+ORD-M202606-1281,09/06/2026,Josefina Mendoza,Angeles City,Central Luzon,C2 Green Tea 500ml,4,22.0,88.0,Cash,Pending
+ORD-M202606-1282,21/06/2026,Rosa Aquino,Pasig,NCR,Piattos 85g,11,32.0,352.0,COD,Delivered
+ORD-M202606-1283,08/06/2026,Josefina Santos,Pasig,NCR,555 Sardines,2,22.0,44.0,Maya,Cancelled
+ORD-M202606-1284,11/06/2026,Roberto Aquino,Cebu City,Central Visayas,555 Sardines,12,22.0,264.0,COD,Cancelled
+ORD-M202606-1285,14/06/2026,Teresa Villanueva,Iloilo City,Western Visayas,Head & Shoulders Sachet,8,7.0,56.0,Maya,Delivered
+ORD-M202606-1286,08/06/2026,Josefina Torres,Tagum,Davao Region,SkyFlakes Crackers,13,15.0,195.0,Cash,Delivered
+ORD-M202606-1287,26/06/2026,Rosa Aquino,Pasig,NCR,Nova Multigrain 78g,7,30.0,210.0,COD,Cancelled
+ORD-M202606-1288,22/06/2026,Josefina Santos,Tagbilaran,Central Visayas,Piattos 85g,15,32.0,480.0,COD,Delivered
+ORD-M202606-1289,16/06/2026,Antonio Castillo,Angeles City,Central Luzon,Lucky Me Pancit Canton Noodles,17,14.0,238.0,GCash,Delivered
+ORD-M202606-1290,08/06/2026,Pedro Castillo,Cebu City,Central Visayas,Safeguard Soap Bar,14,28.0,392.0,GCash,Delivered
+ORD-M202606-1291,06/06/2026,Fernando Ocampo,Tagum,Davao Region,Surf Powder Sachet,9,8.0,72.0,GCash,Delivered
+ORD-M202606-1292,02/06/2026,Ricardo Flores,Iloilo City,Western Visayas,Colgate Toothpaste 75ml,9,45.0,405.0,COD,Pending
+ORD-M202606-1293,13/06/2026,Josefina Santos,Tagum,Davao Region,Safeguard Soap Bar,5,28.0,140.0,GCash,Delivered
+ORD-M202606-1294,02/06/2026,Josefina Cruz,Bacolod,Western Visayas,Domex Toilet Cleaner,9,55.0,495.0,Cash,Delivered
+ORD-M202606-1295,03/06/2026,Cristina Torres,Quezon City,NCR,Palmolive Shampoo Sachet,13,6.0,78.0,COD,Returned
+ORD-M202606-1296,17/06/2026,Josefina Pascual,Tarlac City,Central Luzon,555 Sardines,3,22.0,66.0,COD,Pending
+ORD-M202606-1297,08/06/2026,Eduardo Garcia,Tarlac City,Central Luzon,Safeguard Soap Bar,14,28.0,392.0,Cash,Delivered
+ORD-M202606-1298,02/06/2026,Eduardo Pascual,Tarlac City,Central Luzon,Domex Toilet Cleaner,10,55.0,550.0,Maya,Delivered
+ORD-M202606-1299,07/06/2026,Josefina Torres,Tagum,Davao Region,Head & Shoulders Sachet,20,7.0,140.0,Cash,Delivered
+ORD-M202606-1300,01/06/2026,Ricardo Garcia,Batangas City,CALABARZON,Piattos 85g,7,32.0,224.0,COD,Delivered
+ORD-M202606-1301,07/06/2026,Teresa Villanueva,Iloilo City,Western Visayas,Nova Multigrain 78g,4,30.0,120.0,Maya,Delivered
+ORD-M202606-1302,10/06/2026,Roberto Bautista,Tagum,Davao Region,555 Sardines,14,22.0,308.0,COD,Delivered
+ORD-M202606-1303,15/06/2026,Eduardo Del Rosario,Malolos,Central Luzon,Head & Shoulders Sachet,12,7.0,84.0,COD,Cancelled
+ORD-M202606-1304,19/06/2026,Corazon Ocampo,Iloilo City,Western Visayas,Milo Sachet,15,9.0,135.0,GCash,Delivered
+ORD-M202606-1305,04/06/2026,Jose Santos,Cebu City,Central Visayas,CDO Corned Beef,9,33.0,297.0,Cash,Delivered
+ORD-M202606-1306,18/06/2026,Antonio Bautista,Tarlac City,Central Luzon,Domex Toilet Cleaner,11,55.0,605.0,Maya,Delivered
+ORD-M202606-1307,24/06/2026,Elena Aquino,Iloilo City,Western Visayas,Palmolive Shampoo Sachet,18,6.0,108.0,Cash,Delivered
+ORD-M202606-1308,29/06/2026,Juan Villanueva,Iloilo City,Western Visayas,C2 Green Tea 500ml,1,22.0,22.0,Cash,Delivered
+ORD-M202606-1309,21/06/2026,Josefina Torres,Tagum,Davao Region,Boy Bawang 100g,19,18.0,342.0,GCash,Delivered
+ORD-M202606-1310,15/06/2026,Jose Torres,Dasmarinas,CALABARZON,Lucky Me Pancit Canton Noodles,8,14.0,112.0,GCash,Pending
+ORD-M202606-1311,28/06/2026,Roberto Santos,Bacolod,Western Visayas,Nissin Cup Noodles,8,20.0,160.0,Cash,Delivered
+ORD-M202606-1312,27/06/2026,Jose Del Rosario,Tagbilaran,Central Visayas,Nova Multigrain 78g,15,30.0,450.0,Cash,Delivered
+ORD-M202606-1313,01/06/2026,Cristina Ocampo,Mandaue,Central Visayas,Surf Powder Sachet,15,8.0,120.0,COD,Delivered
+ORD-M202606-1314,26/06/2026,Antonio Castillo,Angeles City,Central Luzon,Palmolive Shampoo Sachet,20,6.0,120.0,GCash,Cancelled
+ORD-M202606-1315,29/06/2026,Pedro Reyes,Tagum,Davao Region,CDO Corned Beef,3,33.0,99.0,Maya,Cancelled
+ORD-M202606-1316,28/06/2026,Jose Ocampo,Dasmarinas,CALABARZON,C2 Green Tea 500ml,17,22.0,374.0,COD,Delivered
+ORD-M202606-1317,18/06/2026,Pedro Reyes,Tagum,Davao Region,Boy Bawang 100g,5,18.0,90.0,COD,Returned
+ORD-M202606-1318,16/06/2026,Fernando Pascual,Quezon City,NCR,Sta. Maria Crayons,4,40.0,160.0,Maya,Returned
+ORD-M202606-1319,04/06/2026,Jose Ocampo,Mandaue,Central Visayas,CDO Corned Beef,15,33.0,495.0,Bank Transfer,Pending
+ORD-M202606-1320,12/06/2026,Ana Villanueva,Tarlac City,Central Luzon,SkyFlakes Crackers,3,15.0,45.0,Bank Transfer,Returned
+ORD-M202606-1321,19/06/2026,Ana Torres,Pasig,NCR,Sterling Notebook,7,18.0,126.0,Maya,Pending
+ORD-M202606-1322,05/06/2026,Corazon Ocampo,Iloilo City,Western Visayas,Yellow Pad Paper,1,12.0,12.0,Cash,Delivered
+ORD-M202606-1323,15/06/2026,Cristina Garcia,Dasmarinas,CALABARZON,Zonrox Bleach 500ml,9,32.0,288.0,Cash,Delivered
+ORD-M202606-1324,07/06/2026,Antonio Cruz,Mandaue,Central Visayas,Palmolive Shampoo Sachet,18,6.0,108.0,COD,Delivered
+ORD-M202606-1325,27/06/2026,Elena Torres,Tarlac City,Central Luzon,Sterling Notebook,19,18.0,342.0,GCash,Delivered
+ORD-M202606-1326,25/06/2026,Luz Ocampo,Bacolod,Western Visayas,Sta. Maria Crayons,14,40.0,560.0,Cash,Delivered
+ORD-M202606-1327,27/06/2026,Fernando Santos,Bacolod,Western Visayas,Nescafe 3-in-1 Sachet,4,8.0,32.0,Bank Transfer,Cancelled
+ORD-M202606-1328,05/06/2026,Cristina Ocampo,Mandaue,Central Visayas,Zonrox Bleach 500ml,18,32.0,576.0,Cash,Delivered
+ORD-M202606-1329,01/06/2026,Manuel Flores,Angeles City,Central Luzon,Lucky Me Pancit Canton Noodles,3,14.0,42.0,GCash,Pending
+ORD-M202606-1330,28/06/2026,Pedro Ocampo,Cebu City,Central Visayas,Zonrox Bleach 500ml,9,32.0,288.0,COD,Delivered
+ORD-M202606-1331,26/06/2026,Josefina Torres,Tagbilaran,Central Visayas,555 Sardines,14,22.0,308.0,Cash,Delivered
+ORD-M202606-1332,17/06/2026,Rosa Del Rosario,Angeles City,Central Luzon,Domex Toilet Cleaner,20,55.0,1100.0,Cash,Pending
+ORD-M202606-1333,13/06/2026,Manuel Villanueva,Tagbilaran,Central Visayas,Milo Sachet,19,9.0,171.0,GCash,Delivered
+ORD-M202606-1334,15/06/2026,Roberto Aquino,Cebu City,Central Visayas,Lucky Me Beef Sotanghon,9,13.0,117.0,GCash,Pending
+ORD-M202606-1335,28/06/2026,Pedro Ocampo,Cebu  City,Central Visayas,Surf Powder Sachet,20,8.0,160.0,Maya,Delivered
+ORD-M202606-1336,20/06/2026,Josefina Santos,Bacolod,Western Visayas,Domex Toilet Cleaner,7,55.0,385.0,COD,Returned
+ORD-M202606-1337,15/06/2026,Cristina Flores,Quezon City,NCR,Milo Sachet,1,9.0,9.0,COD,Returned
+ORD-M202606-1338,25/06/2026,Josefina Cruz,Makati,NCR,Piattos 85g,4,32.0,128.0,Cash,Delivered
+ORD-M202606-1339,16/06/2026,Corazon Bautista,Davao City,Davao Region,Nova Multigrain 78g,3,30.0,90.0,GCash,Delivered
+ORD-M202606-1340,20/06/2026,Teresa Santos,Davao City,Davao Region,Palmolive Shampoo Sachet,18,6.0,108.0,GCash,Delivered
+ORD-M202606-1341,15/06/2026,Carmen Flores,Davao City,Davao Region,Argentina Corned Beef,10,35.0,350.0,Cash,Test
+ORD-M202606-1342,02/06/2026,Cristina Castillo,Mandaue,Central Visayas,Nissin Cup Noodles,6,20.0,120.0,COD,Delivered
+ORD-M202606-1343,04/06/2026,Antonio Aquino,Dasmarinas,CALABARZON,Surf Powder Sachet,17,8.0,136.0,Cash,Delivered
+ORD-M202606-1344,10/06/2026,Cristina Castillo,Mandaue,Central Visayas,Yellow Pad Paper,8,12.0,96.0,COD,Cancelled
+ORD-M202606-1345,20/06/2026,Elena Torres,Tarlac City,Central Luzon,Nissin Cup Noodles,19,20.0,380.0,Cash,Returned
+ORD-M202606-1346,14/06/2026,Pedro Ocampo,Manila,NCR,Argentina Corned Beef,8,35.0,280.0,Cash,Delivered
+ORD-M202606-1347,13/06/2026,Josefina Torres,Tagum,Davao Region,Nescafe 3-in-1 Sachet,12,8.0,96.0,Cash,Returned
+ORD-M202606-1348,30/06/2026,Ana Cruz,Manila,NCR,Lucky Me Pancit Canton Noodles,7,14.0,98.0,Maya,Pending
+ORD-M202606-1349,24/06/2026,Fernando Villanueva,Bacolod,Western Visayas,ILUV Ballpen,10,10.0,100.0,Cash,Delivered
+ORD-M202606-1350,25/06/2026,Teresa Torres,Tagum,Davao Region,Joy Dishwashing Liquid 250ml,1,38.0,38.0,Bank Transfer,Delivered
+ORD-M202606-1351,08/06/2026,Maria Pascual,Tagum,Davao Region,C2 Green Tea 500ml,13,22.0,286.0,Maya,Delivered
+ORD-M202606-1352,03/06/2026,Eduardo Mendoza,Cebu City,Central Visayas,Boy Bawang 100g,10,18.0,180.0,Maya,Delivered
+ORD-M202606-1353,28/06/2026,Pedro Torres,Tarlac City,Central Luzon,SkyFlakes Crackers,13,15.0,195.0,COD,Cancelled
+ORD-M202606-1354,18/06/2026,Maria Mendoza,Manila,NCR,Boy Bawang 100g,17,18.0,306.0,Maya,Pending
+ORD-M202606-1355,04/06/2026,Maria Bautista,Mandaue,Central Visayas,Nescafe 3-in-1 Sachet,10,8.0,80.0,Cash,Delivered
+ORD-M202606-1273,04/06/2026,Jose Ocampo,Mandaue,Central Visayas,Piattos 85g,2,32.0,64.0,Cash,Pending
+ORD-M202606-1136,01/06/2026,Josefina Flores,Iloilo City,Western Visayas,Piattos 85g,7,32.0,224.0,COD,Delivered
+ORD-M202606-1070,09/06/2026,Ricardo Bautista, Manila,NCR,Boy Bawang 100g,16,18.0,288.0,GCash,Returned
+ORD-M202606-1157,07/06/2026,Luz Reyes,Tarlac City,Central Luzon,SkyFlakes Crackers,15,15.0,225.0,GCash,Delivered

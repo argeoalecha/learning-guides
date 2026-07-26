@@ -1,0 +1,201 @@
+CustomerID,Name,Mobile,Barangay,City,Province,Region,JoinDate
+CUST-1000,Manuel Santos,09447786936,Del Pilar,Mandaue,Cebu,Central Visayas,2024-09-09
+CUST-1001,Ana Ramos,09140231924,San Antonio,Malolos,Bulacan,Central Luzon,2025-11-12
+CUST-1002,Fernando Mendoza,09713239008,Santo Nino,Quezon City,Metro Manila,NCR,2025-07-24
+CUST-1003,Ricardo Cruz,09973664091,San Antonio,Manila,Metro Manila,NCR,2024-03-25
+CUST-1004,Luz Ocampo,09803453400,San Antonio,Bacolod,Negros Occidental,Western Visayas,2024-03-13
+CUST-1005,Antonio Santos,09710299717,Del Pilar,Iloilo City,Iloilo,Western Visayas,2025-09-27
+CUST-1006,Corazon Villanueva,09876635891,San Isidro,Makati,Metro Manila,NCR,2024-06-29
+CUST-1007,Roberto Garcia,09206503986,Rizal,Manila,Metro Manila,NCR,2024-03-21
+CUST-1008,Corazon Villanueva,09368154121,San Jose,Makati,Metro Manila,NCR,2024-10-03
+CUST-1009,Jose Reyes,09233036819,Bagumbayan,Quezon City,Metro Manila,NCR,2025-04-18
+CUST-1010,Corazon Aquino,09483213195,San Antonio,Tagum,Davao del Norte,Davao Region,2024-06-03
+CUST-1011,Corazon Bautista,09479604869,Bagong Silang,Davao City,Davao del Sur,Davao Region,2025-07-11
+CUST-1012,Josefina Santos,09916131780,Bagumbayan,Tagbilaran,Bohol,Central Visayas,2025-09-01
+CUST-1013,Jose Cruz,09486770075,Santo Nino,Angeles City,Pampanga,Central Luzon,2025-06-15
+CUST-1014,Josefina Ramos,09556357001,San Isidro,Cebu City,Cebu,Central Visayas,2024-07-04
+CUST-1015,Josefina Flores,09983073231,Bagumbayan,Iloilo City,Iloilo,Western Visayas,2024-12-27
+CUST-1016,Juan Reyes,09218900696,Poblacion,Quezon City,Metro Manila,NCR,2025-11-09
+CUST-1017,Jose Del Rosario,09734768460,Rizal,Tagbilaran,Bohol,Central Visayas,2024-08-10
+CUST-1018,Luz Castillo,09737976601,Bagumbayan,Calamba,Laguna,CALABARZON,2024-07-03
+CUST-1019,Luz Torres,09127931626,Rizal,Mandaue,Cebu,Central Visayas,2024-02-23
+CUST-1020,Carmen Pascual,09745557876,Poblacion,Bacolod,Negros Occidental,Western Visayas,2024-06-16
+CUST-1021,Ricardo Ocampo,09465650474,San Jose,Pasig,Metro Manila,NCR,2024-11-09
+CUST-1022,Teresa Villanueva,09477798843,San Antonio,Iloilo City,Iloilo,Western Visayas,2025-03-22
+CUST-1023,Luz Garcia,09165751155,San Isidro,Tagum,Davao del Norte,Davao Region,2025-04-28
+CUST-1024,Manuel Flores,09558389492,San Antonio,Angeles City,Pampanga,Central Luzon,2025-05-31
+CUST-1025,Corazon Reyes,09408949717,Malinta,Calamba,Laguna,CALABARZON,2025-11-11
+CUST-1026,Carmen Villanueva,09668842555,San Antonio,Tarlac City,Tarlac,Central Luzon,2024-02-03
+CUST-1027,Pedro Pascual,09185529327,San Isidro,Manila,Metro Manila,NCR,2025-06-08
+CUST-1028,Luz Reyes,09710817999,San Jose,Tarlac City,Tarlac,Central Luzon,2025-11-03
+CUST-1029,Pedro Garcia,09232212793,Poblacion,Pasig,Metro Manila,NCR,2024-04-01
+CUST-1030,Antonio Bautista,09779429920,Del Pilar,Tarlac City,Tarlac,Central Luzon,2025-06-14
+CUST-1031,Josefina Pascual,09688473211,Poblacion,Manila,Metro Manila,NCR,2025-11-30
+CUST-1032,Ramon Santos,09901618552,Rizal,Dasmarinas,Cavite,CALABARZON,2025-10-01
+CUST-1033,Ana Flores,09880594715,Poblacion,Tagum,Davao del Norte,Davao Region,2024-10-21
+CUST-1034,Luz Aquino,09787061901,Bagong Silang,Tarlac City,Tarlac,Central Luzon,2024-12-06
+CUST-1035,Pedro Castillo,09642948681,Santo Nino,Cebu City,Cebu,Central Visayas,2024-06-13
+CUST-1036,Pedro Ocampo,09589361337,Santo Nino,Cebu City,Cebu,Central Visayas,2025-04-05
+CUST-1037,Ricardo Flores,09892834180,San Isidro,Iloilo City,Iloilo,Western Visayas,2025-02-06
+CUST-1038,Fernando Garcia,09177750198,Del Pilar,Iloilo City,Iloilo,Western Visayas,2024-02-25
+CUST-1039,Teresa Santos,09349709561,Del Pilar,Davao City,Davao del Sur,Davao Region,2024-06-19
+CUST-1040,Josefina Reyes,09774506557,Poblacion,Dasmarinas,Cavite,CALABARZON,2024-03-11
+CUST-1041,Josefina Cruz,09762847403,Poblacion,Bacolod,Negros Occidental,Western Visayas,2025-02-18
+CUST-1042,Jose Ocampo,09633656584,Bagumbayan,Mandaue,Cebu,Central Visayas,2025-03-22
+CUST-1043,Rosa Pascual,09931677905,San Isidro,Manila,Metro Manila,NCR,2024-11-08
+CUST-1044,Jose Ocampo,09255322647,Malinta,Dasmarinas,Cavite,CALABARZON,2025-05-05
+CUST-1045,Cristina Garcia,09531680358,Del Pilar,Dasmarinas,Cavite,CALABARZON,2025-05-03
+CUST-1046,Juan Torres,09843647825,Poblacion,Pasig,Metro Manila,NCR,2025-09-15
+CUST-1047,Josefina Castillo,09743912844,Poblacion,Tagbilaran,Bohol,Central Visayas,2024-09-07
+CUST-1048,Maria Pascual,09842830048,Bagumbayan,Tagum,Davao del Norte,Davao Region,2024-11-22
+CUST-1049,Cristina Ocampo,09200107340,Rizal,Mandaue,Cebu,Central Visayas,2024-02-26
+CUST-1050,Fernando Ramos,09417478730,Santo Nino,Iloilo City,Iloilo,Western Visayas,2024-05-01
+CUST-1051,Manuel Villanueva,09518944700,Bagumbayan,Tagbilaran,Bohol,Central Visayas,2024-07-28
+CUST-1052,Maria Cruz,09628710699,Del Pilar,Iloilo City,Iloilo,Western Visayas,2025-04-30
+CUST-1053,Josefina Ocampo,09826073798,San Antonio,Davao City,Davao del Sur,Davao Region,2025-02-06
+CUST-1054,Maria Mendoza,09399154891,Del Pilar,Manila,Metro Manila,NCR,2025-07-26
+CUST-1055,Juan Villanueva,09836046160,Rizal,Iloilo City,Iloilo,Western Visayas,2024-12-20
+CUST-1056,Fernando Santos,09599398149,San Antonio,Bacolod,Negros Occidental,Western Visayas,2024-08-05
+CUST-1057,Pedro Torres,09410533068,San Jose,Tarlac City,Tarlac,Central Luzon,2024-04-06
+CUST-1058,Elena Aquino,09375808350,Malinta,Iloilo City,Iloilo,Western Visayas,2024-10-15
+CUST-1059,Eduardo Garcia,09589212750,Poblacion,Tarlac City,Tarlac,Central Luzon,2024-12-24
+CUST-1060,Pedro Reyes,09729007051,Bagumbayan,Tagum,Davao del Norte,Davao Region,2024-03-02
+CUST-1061,Pedro Del Rosario,09712810409,Rizal,Pasig,Metro Manila,NCR,2025-08-16
+CUST-1062,Rosa Cruz,09453415226,San Isidro,Tarlac City,Tarlac,Central Luzon,2025-04-20
+CUST-1063,Jose Bautista,09675666480,Del Pilar,Calamba,Laguna,CALABARZON,2024-01-18
+CUST-1064,Cristina Pascual,09207175092,Rizal,Davao City,Davao del Sur,Davao Region,2024-07-01
+CUST-1065,Eduardo Santos,09960807983,San Isidro,Pasig,Metro Manila,NCR,2025-07-28
+CUST-1066,Eduardo Bautista,09667936224,San Jose,Cebu City,Cebu,Central Visayas,2024-11-16
+CUST-1067,Carmen Reyes,09956375503,San Jose,Tagbilaran,Bohol,Central Visayas,2024-09-10
+CUST-1068,Cristina Flores,09859986920,Del Pilar,Quezon City,Metro Manila,NCR,2025-11-25
+CUST-1069,Roberto Aquino,09869037032,San Antonio,Cebu City,Cebu,Central Visayas,2024-05-24
+CUST-1070,Jose Castillo,09138573792,Malinta,Bacolod,Negros Occidental,Western Visayas,2025-09-06
+CUST-1071,Fernando Pascual,09433987257,Rizal,Quezon City,Metro Manila,NCR,2025-01-20
+CUST-1072,Teresa Mendoza,09526144974,San Isidro,Cebu City,Cebu,Central Visayas,2024-07-08
+CUST-1073,Fernando Pascual,09809245782,Bagong Silang,Dasmarinas,Cavite,CALABARZON,2024-04-17
+CUST-1074,Corazon Ramos,09417600725,San Jose,Pasig,Metro Manila,NCR,2025-10-24
+CUST-1075,Maria Castillo,09184200381,San Antonio,Malolos,Bulacan,Central Luzon,2024-02-26
+CUST-1076,Teresa Pascual,09685787687,Bagong Silang,Tagum,Davao del Norte,Davao Region,2024-01-29
+CUST-1077,Josefina Bautista,09666153270,Malinta,Calamba,Laguna,CALABARZON,2025-04-30
+CUST-1078,Carmen Flores,09215616040,Del Pilar,Davao City,Davao del Sur,Davao Region,2024-04-13
+CUST-1079,Manuel Flores,09444091005,Poblacion,Dasmarinas,Cavite,CALABARZON,2024-01-20
+CUST-1080,Ricardo Bautista,09353913833,Del Pilar,Manila,Metro Manila,NCR,2025-09-03
+CUST-1081,Josefina Mendoza,09599305833,San Antonio,Angeles City,Pampanga,Central Luzon,2025-02-27
+CUST-1082,Carmen Flores,09531034423,Del Pilar,Tarlac City,Tarlac,Central Luzon,2025-05-31
+CUST-1083,Josefina Torres,09652723890,Malinta,Tagum,Davao del Norte,Davao Region,2025-01-12
+CUST-1084,Jose Flores,09411594396,Bagumbayan,Bacolod,Negros Occidental,Western Visayas,2024-04-26
+CUST-1085,Eduardo Pascual,09780044885,Bagong Silang,Tarlac City,Tarlac,Central Luzon,2025-03-08
+CUST-1086,Ramon Ocampo,09790702525,Malinta,Davao City,Davao del Sur,Davao Region,2025-06-17
+CUST-1087,Teresa Torres,09533775991,San Antonio,Tagum,Davao del Norte,Davao Region,2025-02-20
+CUST-1088,Corazon Torres,09493609143,Bagumbayan,Cebu City,Cebu,Central Visayas,2025-11-25
+CUST-1089,Eduardo Mendoza,09741612382,San Isidro,Tagum,Davao del Norte,Davao Region,2024-02-08
+CUST-1090,Fernando Villanueva,09100023110,Bagumbayan,Bacolod,Negros Occidental,Western Visayas,2025-04-27
+CUST-1091,Ricardo Garcia,09803093895,Santo Nino,Batangas City,Batangas,CALABARZON,2024-10-13
+CUST-1092,Maria Santos,09953979525,Bagumbayan,Bacolod,Negros Occidental,Western Visayas,2024-06-15
+CUST-1093,Pedro Torres,09665271222,San Isidro,Dasmarinas,Cavite,CALABARZON,2024-03-17
+CUST-1094,Josefina Santos,09801140943,Rizal,Pasig,Metro Manila,NCR,2025-04-05
+CUST-1095,Pedro Aquino,09256947990,Rizal,Malolos,Bulacan,Central Luzon,2024-08-17
+CUST-1096,Maria Flores,09212522722,San Isidro,Makati,Metro Manila,NCR,2024-09-02
+CUST-1097,Corazon Bautista,09748787016,Bagumbayan,Bacolod,Negros Occidental,Western Visayas,2024-07-06
+CUST-1098,Manuel Villanueva,09258155794,Malinta,Tarlac City,Tarlac,Central Luzon,2024-09-07
+CUST-1099,Elena Garcia,09106941966,Poblacion,Davao City,Davao del Sur,Davao Region,2024-12-02
+CUST-1100,Ana Ramos,09261685580,Bagumbayan,Tarlac City,Tarlac,Central Luzon,2025-06-27
+CUST-1101,Juan Villanueva,09904938602,Bagumbayan,Pasig,Metro Manila,NCR,2025-04-02
+CUST-1102,Ricardo Pascual,09523681318,Santo Nino,Tarlac City,Tarlac,Central Luzon,2024-04-16
+CUST-1103,Rosa Del Rosario,09278753340,Bagumbayan,Angeles City,Pampanga,Central Luzon,2024-06-05
+CUST-1104,Elena Cruz,09373698819,Santo Nino,Angeles City,Pampanga,Central Luzon,2025-01-14
+CUST-1105,Juan Flores,09869398961,Rizal,Iloilo City,Iloilo,Western Visayas,2025-04-09
+CUST-1106,Ricardo Flores,09768412426,San Jose,Tagbilaran,Bohol,Central Visayas,2024-06-26
+CUST-1107,Maria Santos,09765957386,Poblacion,Tagum,Davao del Norte,Davao Region,2024-08-28
+CUST-1108,Ricardo Aquino,09569852595,San Isidro,Cebu City,Cebu,Central Visayas,2025-10-04
+CUST-1109,Ana Cruz,09864514425,Santo Nino,Manila,Metro Manila,NCR,2025-07-06
+CUST-1110,Antonio Bautista,09255228717,Rizal,Davao City,Davao del Sur,Davao Region,2024-01-24
+CUST-1111,Elena Villanueva,09326436468,Poblacion,Malolos,Bulacan,Central Luzon,2025-04-28
+CUST-1112,Rosa Del Rosario,09585666493,Bagumbayan,Pasig,Metro Manila,NCR,2025-07-07
+CUST-1113,Manuel Aquino,09133207758,Malinta,Bacolod,Negros Occidental,Western Visayas,2024-12-01
+CUST-1114,Eduardo Ocampo,09619988576,San Antonio,Tagum,Davao del Norte,Davao Region,2024-06-24
+CUST-1115,Josefina Cruz,09959602501,San Antonio,Makati,Metro Manila,NCR,2024-05-03
+CUST-1116,Roberto Ocampo,09225955058,San Isidro,Iloilo City,Iloilo,Western Visayas,2024-06-14
+CUST-1117,Antonio Cruz,09240020725,Bagumbayan,Mandaue,Cebu,Central Visayas,2025-09-19
+CUST-1118,Elena Aquino,09197751835,Santo Nino,Bacolod,Negros Occidental,Western Visayas,2025-06-12
+CUST-1119,Eduardo Del Rosario,09110999966,Bagong Silang,Malolos,Bulacan,Central Luzon,2025-01-14
+CUST-1120,Roberto Bautista,09523728406,Del Pilar,Tagum,Davao del Norte,Davao Region,2024-04-21
+CUST-1121,Rosa Reyes,09131300483,Malinta,Iloilo City,Iloilo,Western Visayas,2025-11-09
+CUST-1122,Fernando Garcia,09884508748,Bagong Silang,Tagbilaran,Bohol,Central Visayas,2024-08-27
+CUST-1123,Antonio Santos,09213712552,San Isidro,Bacolod,Negros Occidental,Western Visayas,2025-02-24
+CUST-1124,Luz Cruz,09741086235,San Antonio,Makati,Metro Manila,NCR,2024-12-31
+CUST-1125,Ana Cruz,09591033862,Poblacion,Quezon City,Metro Manila,NCR,2025-10-01
+CUST-1126,Teresa Reyes,09907763364,Poblacion,Calamba,Laguna,CALABARZON,2024-03-15
+CUST-1127,Jose Reyes,09854425076,Rizal,Tagum,Davao del Norte,Davao Region,2025-10-12
+CUST-1128,Pedro Ocampo,09520394009,San Isidro,Manila,Metro Manila,NCR,2025-02-15
+CUST-1129,Ana Del Rosario,09899881895,Santo Nino,Manila,Metro Manila,NCR,2025-06-10
+CUST-1130,Corazon Ocampo,09676988803,Malinta,Iloilo City,Iloilo,Western Visayas,2024-06-07
+CUST-1131,Ricardo Cruz,09822135179,San Isidro,Calamba,Laguna,CALABARZON,2025-08-18
+CUST-1132,Elena Torres,09484379357,Malinta,Tarlac City,Tarlac,Central Luzon,2024-11-14
+CUST-1133,Rosa Aquino,09546278487,Bagumbayan,Pasig,Metro Manila,NCR,2025-11-03
+CUST-1134,Josefina Santos,09378820215,San Jose,Bacolod,Negros Occidental,Western Visayas,2025-01-24
+CUST-1135,Teresa Villanueva,09802296383,Santo Nino,Malolos,Bulacan,Central Luzon,2025-01-26
+CUST-1136,Maria Villanueva,09639332448,Malinta,Calamba,Laguna,CALABARZON,2024-07-31
+CUST-1137,Ramon Mendoza,09570594192,San Jose,Tagum,Davao del Norte,Davao Region,2025-05-19
+CUST-1138,Antonio Aquino,09833796707,Del Pilar,Dasmarinas,Cavite,CALABARZON,2025-01-24
+CUST-1139,Manuel Reyes,09394076870,Rizal,Quezon City,Metro Manila,NCR,2024-10-23
+CUST-1140,Rosa Castillo,09493347534,San Antonio,Angeles City,Pampanga,Central Luzon,2025-11-21
+CUST-1141,Juan Del Rosario,09155533556,Poblacion,Davao City,Davao del Sur,Davao Region,2025-03-02
+CUST-1142,Antonio Flores,09792028758,Bagumbayan,Angeles City,Pampanga,Central Luzon,2024-09-25
+CUST-1143,Pedro Reyes,09906037020,Poblacion,Tarlac City,Tarlac,Central Luzon,2025-10-26
+CUST-1144,Corazon Villanueva,09518693734,Rizal,Angeles City,Pampanga,Central Luzon,2024-10-28
+CUST-1145,Teresa Castillo,09213632646,Bagumbayan,Batangas City,Batangas,CALABARZON,2025-11-27
+CUST-1146,Ana Villanueva,09553623500,San Antonio,Tarlac City,Tarlac,Central Luzon,2025-10-19
+CUST-1147,Cristina Santos,09327995785,Poblacion,Makati,Metro Manila,NCR,2024-07-10
+CUST-1148,Maria Castillo,09566735195,Rizal,Tagum,Davao del Norte,Davao Region,2024-08-31
+CUST-1149,Ricardo Ocampo,09771952746,Bagong Silang,Quezon City,Metro Manila,NCR,2025-03-15
+CUST-1150,Cristina Castillo,09236009097,Santo Nino,Mandaue,Cebu,Central Visayas,2024-02-27
+CUST-1151,Eduardo Aquino,09332099553,Bagong Silang,Tarlac City,Tarlac,Central Luzon,2025-01-13
+CUST-1152,Jose Castillo,09109937907,Del Pilar,Malolos,Bulacan,Central Luzon,2024-03-22
+CUST-1153,Teresa Torres,09442248077,Rizal,Mandaue,Cebu,Central Visayas,2024-10-07
+CUST-1154,Juan Bautista,09456866655,San Jose,Angeles City,Pampanga,Central Luzon,2024-04-06
+CUST-1155,Pedro Santos,09278198028,Del Pilar,Iloilo City,Iloilo,Western Visayas,2024-11-18
+CUST-1156,Elena Torres,09828509679,San Jose,Angeles City,Pampanga,Central Luzon,2025-07-02
+CUST-1157,Teresa Reyes,09250273234,Rizal,Iloilo City,Iloilo,Western Visayas,2024-12-23
+CUST-1158,Eduardo Mendoza,09147806216,San Isidro,Cebu City,Cebu,Central Visayas,2024-03-29
+CUST-1159,Maria Villanueva,09962168393,Bagong Silang,Malolos,Bulacan,Central Luzon,2024-05-20
+CUST-1160,Manuel Santos,09130670607,Del Pilar,Tagum,Davao del Norte,Davao Region,2025-08-28
+CUST-1161,Roberto Del Rosario,09179829839,San Isidro,Malolos,Bulacan,Central Luzon,2024-09-17
+CUST-1162,Fernando Pascual,09205873148,Malinta,Malolos,Bulacan,Central Luzon,2025-08-06
+CUST-1163,Elena Garcia,09282404564,San Antonio,Mandaue,Cebu,Central Visayas,2024-05-08
+CUST-1164,Eduardo Del Rosario,09913656454,Santo Nino,Iloilo City,Iloilo,Western Visayas,2024-02-22
+CUST-1165,Pedro Torres,09823039951,Bagong Silang,Cebu City,Cebu,Central Visayas,2025-02-09
+CUST-1166,Fernando Ocampo,09835037788,Del Pilar,Tagum,Davao del Norte,Davao Region,2024-07-17
+CUST-1167,Luz Reyes,09295349207,Poblacion,Dasmarinas,Cavite,CALABARZON,2025-08-07
+CUST-1168,Ricardo Bautista,09714355838,Bagong Silang,Tagum,Davao del Norte,Davao Region,2025-10-07
+CUST-1169,Manuel Mendoza,09802774907,Poblacion,Mandaue,Cebu,Central Visayas,2025-06-23
+CUST-1170,Antonio Flores,09673663238,Del Pilar,Manila,Metro Manila,NCR,2024-12-23
+CUST-1171,Antonio Mendoza,09381636047,San Isidro,Calamba,Laguna,CALABARZON,2024-12-11
+CUST-1172,Roberto Bautista,09548336487,San Jose,Calamba,Laguna,CALABARZON,2024-07-31
+CUST-1173,Josefina Pascual,09941718117,San Jose,Tarlac City,Tarlac,Central Luzon,2024-04-27
+CUST-1174,Manuel Mendoza,09536230375,Poblacion,Tagbilaran,Bohol,Central Visayas,2024-01-08
+CUST-1175,Ana Ocampo,09519598331,Bagumbayan,Mandaue,Cebu,Central Visayas,2024-05-10
+CUST-1176,Ana Torres,09275343894,San Antonio,Pasig,Metro Manila,NCR,2024-08-12
+CUST-1177,Eduardo Mendoza,09438936976,Bagong Silang,Batangas City,Batangas,CALABARZON,2025-05-06
+CUST-1178,Jose Garcia,09417712380,San Antonio,Malolos,Bulacan,Central Luzon,2025-01-21
+CUST-1179,Maria Bautista,09485778608,San Antonio,Mandaue,Cebu,Central Visayas,2025-11-16
+CUST-1180,Pedro Cruz,09162870538,Santo Nino,Manila,Metro Manila,NCR,2025-04-19
+CUST-1181,Roberto Flores,09886299524,Malinta,Dasmarinas,Cavite,CALABARZON,2024-07-31
+CUST-1182,Manuel Ramos,09682297265,Rizal,Tagbilaran,Bohol,Central Visayas,2025-08-17
+CUST-1183,Juan Ramos,09128557986,Bagumbayan,Manila,Metro Manila,NCR,2025-05-08
+CUST-1184,Teresa Del Rosario,09949553327,San Jose,Malolos,Bulacan,Central Luzon,2025-05-28
+CUST-1185,Elena Ramos,09571750225,Malinta,Tarlac City,Tarlac,Central Luzon,2024-02-16
+CUST-1186,Carmen Mendoza,09454634138,Santo Nino,Malolos,Bulacan,Central Luzon,2025-04-05
+CUST-1187,Roberto Santos,09258959572,Del Pilar,Bacolod,Negros Occidental,Western Visayas,2025-01-22
+CUST-1188,Pedro Cruz,09923522625,San Antonio,Cebu City,Cebu,Central Visayas,2025-08-14
+CUST-1189,Luz Pascual,09557443380,Santo Nino,Cebu City,Cebu,Central Visayas,2025-01-27
+CUST-1190,Josefina Torres,09945083140,San Isidro,Tagbilaran,Bohol,Central Visayas,2025-01-14
+CUST-1191,Pedro Garcia,09778983484,Bagong Silang,Manila,Metro Manila,NCR,2025-02-01
+CUST-1192,Cristina Torres,09675189384,San Antonio,Quezon City,Metro Manila,NCR,2024-01-14
+CUST-1193,Maria Cruz,09221526202,Santo Nino,Tagbilaran,Bohol,Central Visayas,2024-12-21
+CUST-1194,Jose Santos,09124374587,San Jose,Cebu City,Cebu,Central Visayas,2024-12-25
+CUST-1195,Roberto Torres,09766786731,Del Pilar,Tarlac City,Tarlac,Central Luzon,2024-05-06
+CUST-1196,Jose Torres,09411839224,San Antonio,Dasmarinas,Cavite,CALABARZON,2025-11-15
+CUST-1197,Ana Mendoza,09871238413,Del Pilar,Tagum,Davao del Norte,Davao Region,2024-07-30
+CUST-1198,Antonio Castillo,09248870462,Rizal,Angeles City,Pampanga,Central Luzon,2024-07-20
+CUST-1199,Josefina Santos,09415993851,Santo Nino,Tagum,Davao del Norte,Davao Region,2024-11-24
