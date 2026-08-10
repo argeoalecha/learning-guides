@@ -630,10 +630,10 @@ Final Capstone — The ShopSense AI Support Copilot      (Ongoing)</code></pre>
 <p><strong>Exercise 1.1 — Path Length and Parallelism, by Hand</strong></p>
 <p>Dataset: ShopSense — use the ticket text below as your token sequence.</p>
 <ol>
-<li>Take the ticket "Paano ko ma-track ang order ko na late na" (8 tokens). For a single-layer RNN, write out the sequential dependency chain token-by-token and count the minimum number of sequential steps needed to connect token 1 and token 8.</li>
-<li>Repeat for a self-attention layer over the same 8 tokens: how many sequential steps does it take to connect token 1 and token 8 directly?</li>
-<li>Using the table's formulas, compute the per-layer complexity <code>O(n²·d)</code> vs. <code>O(n·d²)</code> for n=8, d=512, for self-attention and a recurrent layer. Which term is larger at this sequence length?</li>
-<li>Now recompute for n=4000 (a long support-ticket thread). Solve <code>n·d = d²</code> for n to find the crossover point where self-attention's <code>O(n²·d)</code> starts costing more per layer than a recurrent layer's <code>O(n·d²)</code>, at d=512.</li>
+<li>Take the ticket "Paano ko ma-track ang order ko na late na" (9 tokens, splitting on whitespace). For a single-layer RNN, write out the sequential dependency chain token-by-token and count the minimum number of sequential steps needed to connect token 1 and token 9.</li>
+<li>Repeat for a self-attention layer over the same 9 tokens: how many sequential steps does it take to connect token 1 and token 9 directly?</li>
+<li>Using the table's formulas, compute the per-layer complexity <code>O(n²·d)</code> vs. <code>O(n·d²)</code> for n=9, d=512, for self-attention and a recurrent layer. Which term is larger at this sequence length?</li>
+<li>Now recompute both for n=4000 (a long support-ticket thread). Then set the two costs equal — <code>n²·d = n·d²</code> — and solve for n to find the crossover sequence length at which self-attention starts costing more per layer than a recurrent layer. What is that crossover value at d=512, and which side of it does a typical support ticket fall on?</li>
 <li>In 2–3 sentences, explain in your own words why the paper calls sequential computation the "fundamental constraint" that self-attention was designed to remove.</li>
 </ol>
 <hr />
@@ -649,7 +649,7 @@ Final Capstone — The ShopSense AI Support Copilot      (Ongoing)</code></pre>
 <h4>The Attention Function: Query, Key, Value</h4>
 <p>An attention function maps a query and a set of key-value pairs to an output. Think of the query as "what this position is looking for," the key as "what each candidate position offers for matching," and the value as "what actually gets returned if that candidate is selected." The paper's formula:</p>
 <pre><code class="language-python"># Attention(Q, K, V) = softmax(Q K^T / sqrt(d_k)) V</code></pre>
-<p>Q, K, and V are packed into matrices so the function runs on a whole sequence at once instead of position-by-position. Why divide by √d<sub>k</sub>: for large d<sub>k</sub>, the dot products between Q and K grow large in magnitude — assuming components with mean 0 and variance 1, the dot product itself has variance d<sub>k</sub> — which pushes softmax into a region where its gradient is extremely small. Skip the scaling and, at d<sub>k</sub>=64, attention weights tend to collapse onto whichever token happened to produce the largest raw score, almost regardless of true relevance, because softmax has already saturated before training even gets underway.</p>
+<p>Q, K, and V are packed into matrices so the function runs on a whole sequence at once instead of position-by-position. Why divide by √d<sub>k</sub>: for large d<sub>k</sub>, the dot products between Q and K grow large in magnitude — assuming components with mean 0 and variance 1, the dot product itself has variance d<sub>k</sub> — which pushes softmax into a region where its gradient is extremely small. At d<sub>k</sub>=64 the unscaled dot products have a standard deviation of 8, so score gaps between tokens are wide enough that softmax is already near-saturated — one weight close to 1, the rest close to 0 — before training has learned anything. A saturated softmax passes almost no gradient back to Q and K, so those projections barely update and learning stalls. Dividing by √d<sub>k</sub> pulls the score variance back to roughly 1, keeping softmax in a responsive range where gradients still flow.</p>
 <pre><code class="language-python">import numpy as np
 
 def softmax(x, axis=-1):
@@ -671,7 +671,14 @@ def scaled_dot_product_attention(Q, K, V, mask=None):
 <pre><code class="language-python"># MultiHead(Q, K, V) = Concat(head_1, ..., head_h) W^O
 # head_i = Attention(Q W_i^Q, K W_i^K, V W_i^V)</code></pre>
 <p>The paper uses h=8 heads with d<sub>k</sub>=d<sub>v</sub>=d<sub>model</sub>/h=64, so the total computational cost stays similar to single-head attention at full dimensionality. Why bother: a single attention head produces one weighted average per query position, and averaging inherently blends together different relationship types a sentence might contain — which word a pronoun refers to, which word an adjective modifies, which clause a conjunction connects. One softmax distribution can't cleanly represent multiple distinct relationship types at once without mushing them together. Multiple heads let each one specialize.</p>
-<pre><code class="language-python">def multi_head_attention(Q, K, V, num_heads):
+<pre><code class="language-python">def multi_head_attention(Q, K, V, num_heads, W_q, W_k, W_v, W_o):
+    """W_q, W_k, W_v, W_o are all (d_model, d_model) learned projections.
+
+    Each head's individual W_i^Q from the formula above is the i-th
+    (d_model, d_k) column-slice of the single W_q matrix -- projecting once
+    and then splitting is mathematically identical to h separate smaller
+    projections, and is how every real implementation does it.
+    """
     d_model = Q.shape[-1]
     d_k = d_model // num_heads
 
@@ -679,12 +686,16 @@ def scaled_dot_product_attention(Q, K, V, mask=None):
         n = x.shape[0]
         return x.reshape(n, num_heads, d_k).transpose(1, 0, 2)  # (h, n, d_k)
 
-    Qh, Kh, Vh = split_heads(Q), split_heads(K), split_heads(V)
+    # Project first (the W_i^Q, W_i^K, W_i^V of the formula), then split.
+    Qh, Kh, Vh = split_heads(Q @ W_q), split_heads(K @ W_k), split_heads(V @ W_v)
+
     heads = []
     for h in range(num_heads):
         out, _ = scaled_dot_product_attention(Qh[h], Kh[h], Vh[h])
         heads.append(out)
-    return np.concatenate(heads, axis=-1)  # (n, d_model), before output projection W^O</code></pre>
+
+    concat = np.concatenate(heads, axis=-1)   # (n, d_model)
+    return concat @ W_o                        # final output projection W^O</code></pre>
 
 <h4>Masking: Preventing the Decoder From Cheating</h4>
 <p>In a decoder's self-attention, positions must not attend to subsequent positions — predictions for position i can only depend on known outputs at positions less than i. This is implemented by setting illegal connections to <code>-inf</code> before the softmax, so their weight becomes 0. Why it matters: without masking, the model would learn during training to "peek" at the very token it's supposed to predict, producing a model whose training loss looks perfect but that is useless at inference, when future tokens genuinely don't exist yet.</p>
@@ -692,13 +703,13 @@ def scaled_dot_product_attention(Q, K, V, mask=None):
 <p><em>Retrieval practice: before re-reading the formula above, write <code>Attention(Q, K, V)</code> from memory, including the scaling term, then check it against the formula in this section.</em></p>
 
 <p><strong>Exercise 1.2 — Implement Attention From the Formula</strong></p>
-<p>Dataset: ShopSense — the ticket "Order is very late and courier not responding" (7 tokens).</p>
+<p>Dataset: ShopSense — the ticket "Order is very late and courier not responding" (8 tokens, splitting on whitespace).</p>
 <ol>
-<li>Implement <code>scaled_dot_product_attention</code> for this 7-token sequence with random d_k=8 Q, K, V matrices; print the resulting attention weight matrix.</li>
+<li>Implement <code>scaled_dot_product_attention</code> for this 8-token sequence with random d_k=8 Q, K, V matrices; print the resulting attention weight matrix.</li>
 <li>Verify every row of the weight matrix sums to 1 (the softmax property).</li>
 <li>Re-run without dividing by √d_k; compare the entropy of the weight distribution before and after removing the scaling factor. What happens to how "peaked" the distribution is?</li>
-<li>Extend to <code>multi_head_attention</code> with h=2 heads over the same sequence; confirm the output shape matches d_model.</li>
-<li>Build a causal mask for this same 7-token sequence and re-run attention with masking; confirm token 1's attention weights are entirely on itself.</li>
+<li>Extend to <code>multi_head_attention</code> with h=2 heads over the same sequence, passing random <code>W_q</code>, <code>W_k</code>, <code>W_v</code>, <code>W_o</code> projections; confirm the output shape matches d_model.</li>
+<li>Build a causal mask for this same 8-token sequence and re-run attention with masking; confirm token 1's attention weights are entirely on itself.</li>
 </ol>
 <hr />
 
@@ -780,7 +791,7 @@ def positional_encoding(seq_len, d_model):
 <p>The original Transformer is encoder-decoder: one sequence in, a genuinely different sequence out (translation). Modern LLMs do one thing — predict the next token given everything before it — which is exactly what a decoder does. Decoder-only models keep masked self-attention (Module 1.2) as the <em>only</em> attention pattern: no cross-attention, no unmasked encoder self-attention. That simplification is also what makes decoder-only models trivial to train on almost any text at all: predicting the next token needs no paired input/output data, unlike translation's parallel sentence pairs. Why this matters more than it sounds: paired parallel data is scarce; raw text is not. Decoder-only architecture unlocked training on the scale of the open internet, which has been a bigger driver of modern LLM capability than any single architectural tweak since 2017.</p>
 
 <h4>Tokenization: Byte-Pair Encoding and Vocabulary Design</h4>
-<p>The original paper's own training used byte-pair encoding for its shared ~37,000-token English-German vocabulary and word-piece encoding for its larger ~32,000-token English-French vocabulary. Byte-Pair Encoding (BPE) starts from individual characters or bytes and greedily merges the most frequent adjacent pair into a new token, repeating until reaching a target vocabulary size. Modern LLMs — GPT via tiktoken, Claude, Llama — all use a BPE variant. Why tokenization is not cosmetic: it directly sets context-window cost, and a Filipino word or a ₱ symbol can tokenize into more pieces than an English word of similar length — directly relevant to a Philippines-market product where prompts mix English and Filipino. It also explains counterintuitive failures like a model being bad at counting letters within a word: the model never sees individual characters, only whole subword tokens.</p>
+<p>The original paper's own training used byte-pair encoding with a shared source-target vocabulary of about 37,000 tokens for English-German, and word-piece encoding with a 32,000-token vocabulary for English-French — note the English-French run used a <em>smaller</em> vocabulary despite training on a far larger dataset (36M sentence pairs vs. 4.5M), a reminder that vocabulary size is a design choice independent of corpus size. Byte-Pair Encoding (BPE) starts from individual characters or bytes and greedily merges the most frequent adjacent pair into a new token, repeating until reaching a target vocabulary size. Modern LLMs — GPT via tiktoken, Claude, Llama — all use a BPE variant. Why tokenization is not cosmetic: it directly sets context-window cost, and a Filipino word or a ₱ symbol can tokenize into more pieces than an English word of similar length — directly relevant to a Philippines-market product where prompts mix English and Filipino. It also explains counterintuitive failures like a model being bad at counting letters within a word: the model never sees individual characters, only whole subword tokens.</p>
 <pre><code class="language-python">from collections import Counter
 
 def get_pair_counts(tokens_list):
@@ -907,7 +918,7 @@ for step in range(5):
 </blockquote>
 
 <h4>The Message Roles: System, User, Assistant</h4>
-<p>A system prompt sets persistent behavior, constraints, and persona, sent once and applying to the whole conversation. User messages are the actual request. Assistant messages are the model's prior turns, fed back in on every call so the model has conversation history — because the model itself is stateless between calls. Every API call is independent; "memory" in a chat product is just you re-sending the prior turns each time, which is also why context-window size directly bounds how long a conversation can run.</p>
+<p>A system prompt sets persistent behavior, constraints, and persona. It is passed in its own field, separate from the conversation turns, and governs the whole conversation — but "persistent" describes its scope, not its delivery: you re-send it on every single API call, which is exactly why prompt caching (Module 3.3) saves real money. User messages are the actual request. Assistant messages are the model's prior turns, fed back in on every call so the model has conversation history — because the model itself is stateless between calls. Every API call is independent; "memory" in a chat product is just you re-sending the prior turns each time, which is also why context-window size directly bounds how long a conversation can run.</p>
 
 <h4>Few-Shot Examples and Structured Output</h4>
 <p>Showing 2–4 concrete input→output example pairs in the prompt steers format and tone far more reliably than describing the format in prose alone, because the model is completing a pattern rather than following an abstract instruction. Prose-only instructions fail more often because describing "respond in JSON with these fields" leaves edge cases underspecified — numbers as strings or as numbers? nulls or omitted keys? — while a concrete example resolves that ambiguity by demonstration.</p>
@@ -1180,29 +1191,44 @@ def get_order_status(order_id: str) -> dict:
     # In production this queries your real orders table.
     return {"order_id": order_id, "status": "out_for_delivery", "eta_days": 1}
 
+# Dispatch by tool name, so adding a second tool needs no loop changes.
+TOOL_REGISTRY = {"get_order_status": get_order_status}
+
+MAX_TURNS = 6  # hard stop: never let the loop run unbounded
+
 def run_with_tools(user_message: str) -> str:
     messages = [{"role": "user", "content": user_message}]
     response = client.messages.create(
         model="claude-sonnet-5", max_tokens=500, tools=tools, messages=messages
     )
 
-    while response.stop_reason == "tool_use":
-        tool_call = next(b for b in response.content if b.type == "tool_use")
-        result = get_order_status(**tool_call.input)
-        messages.append({"role": "assistant", "content": response.content})
-        messages.append({
-            "role": "user",
-            "content": [{
+    for _ in range(MAX_TURNS):
+        if response.stop_reason != "tool_use":
+            break
+
+        # The model may request SEVERAL tools in one turn. Every tool_use
+        # block must get its own tool_result, or the next call errors out.
+        tool_results = []
+        for block in response.content:
+            if block.type != "tool_use":
+                continue
+            fn = TOOL_REGISTRY[block.name]
+            result = fn(**block.input)
+            tool_results.append({
                 "type": "tool_result",
-                "tool_use_id": tool_call.id,
+                "tool_use_id": block.id,
                 "content": json.dumps(result),
-            }],
-        })
+            })
+
+        messages.append({"role": "assistant", "content": response.content})
+        messages.append({"role": "user", "content": tool_results})
         response = client.messages.create(
             model="claude-sonnet-5", max_tokens=500, tools=tools, messages=messages
         )
 
-    return response.content[0].text</code></pre>
+    # The final answer may not be the first content block, so find the text.
+    text = "".join(b.text for b in response.content if b.type == "text")
+    return text</code></pre>
 
 <h4>Guardrails at the Execution Boundary</h4>
 <p>Every tool your application exposes is a capability the model can decide to invoke — treat each one like an API endpoint with its own authorization and validation, not like a harmless suggestion. A <code>get_order_status</code> lookup is low-risk; a tool that issues refunds or cancels subscriptions needs explicit checks — amount limits, human confirmation for high-value cases, audit logging — before your code actually executes it, regardless of how confident the model's request looks.</p>
@@ -1211,7 +1237,7 @@ def run_with_tools(user_message: str) -> str:
 <p>Dataset: ShopSense</p>
 <ol>
 <li>Write tool schemas for 2 ShopSense actions: <code>get_order_status</code> (read-only) and <code>issue_partial_refund</code> (state-changing, capped at ₱2,000 without human approval).</li>
-<li>Implement the request/response loop, as in the code block, for <code>get_order_status</code>; test it against 5 order-tracking questions.</li>
+<li>Implement the request/response loop, as in the code block, registering both tools in <code>TOOL_REGISTRY</code>; test it against 5 order-tracking questions.</li>
 <li>For <code>issue_partial_refund</code>, add a validation check in your application code — not the prompt — that rejects any model-requested refund above ₱2,000 without a separate human-approval flag; write 2–3 sentences on why that check belongs in code rather than in the system prompt.</li>
 <li>Trigger a case where the model calls a tool with a malformed or out-of-range argument; observe what happens and adjust your schema or validation to handle it gracefully.</li>
 </ol>
@@ -1226,7 +1252,7 @@ def run_with_tools(user_message: str) -> str:
 </blockquote>
 
 <h4>From Single Tool Call to Agentic Loop</h4>
-<p>Module 4.3's loop calls one tool, gets one result, produces a final answer. An agent extends that into an open-ended loop: the model plans a next step, acts by calling a tool, observes the result, and decides whether to act again or conclude — potentially many rounds, with the model itself deciding when the task is done rather than your code hard-coding the step count. This is a meaningfully different engineering problem: an agent can get stuck looping, call tools in an order that produces inconsistent state, or run up cost and latency with no natural stopping point — it needs its own guardrails, such as max-turn limits, cost budgets, and explicit termination conditions, on top of the per-tool guardrails from Module 4.3.</p>
+<p>Module 4.3's loop is bounded and reactive: it services whatever tool calls the model requests, then returns an answer, and <em>you</em> fixed the ceiling with <code>MAX_TURNS</code>. An agent extends that into a genuinely open-ended loop: the model plans a next step, acts by calling a tool, observes the result, and decides whether to act again or conclude — potentially many rounds, with the model itself deciding when the task is done rather than your code hard-coding the step count. This is a meaningfully different engineering problem: an agent can get stuck looping, call tools in an order that produces inconsistent state, or run up cost and latency with no natural stopping point — it needs its own guardrails, such as max-turn limits, cost budgets, and explicit termination conditions, on top of the per-tool guardrails from Module 4.3.</p>
 
 <h4>The Model Context Protocol (MCP)</h4>
 <p>MCP is the open standard, current spec dated 2026-07-28, for connecting a model or agent to external tools and data sources through a common protocol, instead of every application writing bespoke integration code per tool. As of 2026, MCP has seen enormous adoption — well over a billion combined SDK downloads and production use at companies of every size — because a tool can be built once as an "MCP server" and used by any MCP-compatible client, the same way a REST API decouples a service from any one specific caller. Recent spec revisions moved the protocol to a stateless core with multi-round-trip requests and formal authorization, addressing earlier versions' scaling and security limitations for production deployments. Rather than hand-writing a tool schema (Module 4.3) for every internal system your agent touches, you can expose that system as an MCP server once and reuse it across every agent or client you build.</p>
