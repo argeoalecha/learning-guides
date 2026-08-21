@@ -1237,17 +1237,21 @@ JOIN payment p ON c.customer_id = p.customer_id
 GROUP BY c.customer_id, c.first_name, c.last_name
 ORDER BY total_spent DESC
 LIMIT 10;</code></pre>
-<pre><code>Limit  (cost=1250.34..1250.36 rows=10 width=64) (actual time=18.221..18.224 rows=10 loops=1)
-  ->  Sort  (cost=1250.34..1257.84 rows=3000 width=64) (actual time=18.219..18.220 rows=10 loops=1)
+<pre><code>Limit  (cost=1848.70..1848.72 rows=10 width=64) (actual time=41.902..41.906 rows=10 loops=1)
+  ->  Sort  (cost=1848.70..1851.20 rows=999 width=64) (actual time=41.900..41.901 rows=10 loops=1)
         Sort Key: (sum(p.amount)) DESC
-        ->  HashAggregate  (cost=1100.00..1180.00 rows=3000 width=64) (actual time=15.900..17.100 rows=599 loops=1)
+        ->  HashAggregate  (cost=1780.40..1790.39 rows=999 width=64) (actual time=38.850..40.510 rows=999 loops=1)
               Group Key: c.customer_id
-              ->  Hash Join  (cost=85.50..950.00 rows=16000 width=24) (actual time=1.200..12.500 rows=16044 loops=1)
+              ->  Hash Join  (cost=95.99..1600.15 rows=51061 width=24) (actual time=1.510..30.220 rows=51061 loops=1)
                     Hash Cond: (p.customer_id = c.customer_id)
-                    ->  Seq Scan on payment p  (cost=0.00..750.00 rows=16000 width=10) (actual time=0.010..5.200 rows=16044 loops=1)
-                    ->  Hash  (cost=60.99..60.99 rows=599 width=18) (actual time=1.100..1.101 rows=599 loops=1)
-                          ->  Seq Scan on customer c  (cost=0.00..60.99 rows=599 width=18) (actual time=0.005..0.450 rows=599 loops=1)</code></pre>
-<p>Read plans <strong>from the innermost/bottom node outward</strong> — that's the order execution actually happens in, even though the outermost node (here, <code>Limit</code>) is printed first. Here, estimated and actual row counts on <code>Seq Scan on payment</code> match almost exactly (16000 vs 16044) — the planner's statistics are accurate, so this plan is trustworthy. A large mismatch would be the signal to run <code>ANALYZE payment;</code> to refresh statistics before trusting anything else in the plan.</p>
+                    ->  Append  (cost=0.00..1350.20 rows=51061 width=10) (actual time=0.015..18.400 rows=51061 loops=55)
+                          ->  Seq Scan on payment_p2022_01 p_1  (cost=0.00..24.50 rows=920 width=10) (actual time=0.014..0.210 rows=918 loops=1)
+                          ->  Seq Scan on payment_p2022_02 p_2  (cost=0.00..22.10 rows=880 width=10) (actual time=0.008..0.190 rows=875 loops=1)
+                          ->  ...                                (53 more monthly partitions — pagila-schema.sql range-partitions payment by month)
+                    ->  Hash  (cost=70.99..70.99 rows=999 width=18) (actual time=1.400..1.401 rows=999 loops=1)
+                          ->  Seq Scan on customer c  (cost=0.00..70.99 rows=999 width=18) (actual time=0.005..0.520 rows=999 loops=1)</code></pre>
+<p>Read plans <strong>from the innermost/bottom node outward</strong> — that's the order execution actually happens in, even though the outermost node (here, <code>Limit</code>) is printed first. Here, estimated and actual row counts on <code>customer</code> and on the <code>payment</code> partitions match almost exactly (999 vs 999, 51061 vs 51061 total) — the planner's statistics are accurate, so this plan is trustworthy. A large mismatch would be the signal to run <code>ANALYZE payment;</code> to refresh statistics before trusting anything else in the plan.</p>
+<p>Notice <code>payment</code> itself never appears as a single scan node — it's range-partitioned by month into 55 child tables (<code>payment_p2022_01</code> … <code>payment_p2026_07</code>), which is exactly how the vendored <a href="../datasets/pagila/">Pagila dataset</a> in this repo ships it. The <code>Append</code> node is what stitches every partition's scan back into one logical result; querying the parent <code>payment</code> table is fully transparent to you as the query author (no rewrite needed), but reading its plan means recognizing an Append-of-many-scans as "one table," not a bug.</p>
 
 <h4>Join algorithms: nested loop, hash, merge</h4>
 <ul>
