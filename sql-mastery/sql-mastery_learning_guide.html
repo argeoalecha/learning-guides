@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Mastery Learning Guide — Beginner to Advanced</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — expert guided learning">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">expert guided learning</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">SQL Mastery<br>Learning Guide</div>
+      <div class="brand-sub">PostgreSQL 18 · MySQL 8.4 · SQL Server 2025 · SQLite</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-advanced-track" class="nav-top">Beginner to Advanced Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-relational-foundations-theory" class="nav-top nav-phase">Phase 1: Relational Foundations &amp; Theory</a>
+<div class="nav-children">
+<a href="#module-11-set-theory-the-relational-model" class="nav-child">Module 1.1 — Set Theory &amp; the Relational Model</a>
+<a href="#module-12-normalization-functional-dependencies" class="nav-child">Module 1.2 — Normalization &amp; Functional Dependencies</a>
+<a href="#phase-1-capstone-normalize-the-rental-log" class="nav-child">Phase 1 Capstone: Normalize the Rental Log</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-core-querying" class="nav-top nav-phase">Phase 2: Core Querying</a>
+<div class="nav-children">
+<a href="#module-21-select-filtering-sorting-set-operations" class="nav-child">Module 2.1 — SELECT, Filtering, Sorting &amp; Set Operations</a>
+<a href="#module-22-joins-deep-dive" class="nav-child">Module 2.2 — Joins Deep Dive</a>
+<a href="#module-23-aggregation-grouping" class="nav-child">Module 2.3 — Aggregation &amp; Grouping</a>
+<a href="#phase-2-capstone-business-question-query-pack" class="nav-child">Phase 2 Capstone: Business-Question Query Pack</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-advanced-querying-patterns" class="nav-top nav-phase">Phase 3: Advanced Querying Patterns</a>
+<div class="nav-children">
+<a href="#module-31-subqueries-ctes" class="nav-child">Module 3.1 — Subqueries &amp; CTEs</a>
+<a href="#module-32-window-functions-mastery" class="nav-child">Module 3.2 — Window Functions Mastery</a>
+<a href="#module-33-pivoting-gaps-islands-deduplication" class="nav-child">Module 3.3 — Pivoting, Gaps &amp; Islands, Deduplication</a>
+<a href="#phase-3-capstone-cohort-retention-sessions-analysis" class="nav-child">Phase 3 Capstone: Cohort Retention &amp; Sessions Analysis</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-query-optimization-execution-reasoning" class="nav-top nav-phase">Phase 4: Query Optimization &amp; Execution Reasoning</a>
+<div class="nav-children">
+<a href="#module-41-how-the-query-planner-thinks" class="nav-child">Module 4.1 — How the Query Planner Thinks</a>
+<a href="#module-42-indexing-strategy" class="nav-child">Module 4.2 — Indexing Strategy</a>
+<a href="#module-43-transactions-isolation-concurrency" class="nav-child">Module 4.3 — Transactions, Isolation &amp; Concurrency</a>
+<a href="#phase-4-capstone-diagnose-and-fix-three-slow-queries" class="nav-child">Phase 4 Capstone: Diagnose &amp; Fix Three Slow Queries</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-5-sql-across-dialects-modern-sql" class="nav-top nav-phase">Phase 5: SQL Across Dialects &amp; Modern SQL</a>
+<div class="nav-children">
+<a href="#module-51-dialect-portability" class="nav-child">Module 5.1 — Dialect Portability</a>
+<a href="#module-52-modern-sql-features" class="nav-child">Module 5.2 — Modern SQL Features</a>
+<a href="#module-53-serverless-cloud-sql-patterns" class="nav-child">Module 5.3 — Serverless &amp; Cloud SQL Patterns</a>
+<a href="#phase-5-capstone-port-the-analytics-pack" class="nav-child">Phase 5 Capstone: Port the Analytics Pack</a>
+</div></div>
+
+<a href="#final-capstone-sql-portfolio-project" class="nav-top">Final Capstone: SQL Portfolio Project</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="sql-mastery-learning-guide">SQL Mastery Learning Guide</h1>
+<h2 id="beginner-to-advanced-track">Beginner to Advanced Track</h2>
+<h3>PostgreSQL · MySQL · SQL Server · SQLite</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="SQL / Database" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="128" cy="60" rx="86" ry="30" fill="none" stroke="#075249" stroke-width="11"/>
+  <path d="M42 60 L42 196 A86 30 0 0 0 214 196 L214 60" fill="none" stroke="#075249" stroke-width="11" stroke-linecap="round"/>
+  <path d="M42 128 A86 30 0 0 0 214 128" fill="none" stroke="#0d7a6e" stroke-width="11" stroke-linecap="round"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same benchmark database: <strong>Pagila</strong>, the PostgreSQL DVD-rental sample dataset.</p>
+</blockquote>
+<p>This guide treats SQL as a language and a way of thinking, not as a feature of PostgreSQL. If you've already worked through a Postgres-as-a-system track (setup, schema design, indexes, JSONB, Metabase dashboards), this is the deep dive on <em>querying and reasoning</em> that sits alongside it: relational theory, advanced query patterns, how the engine actually executes what you write, and what changes when the engine underneath you isn't Postgres at all. Examples run in PostgreSQL syntax by default — you already have PostgreSQL installed — with explicit callouts wherever MySQL, SQL Server, or SQLite diverge.</p>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Some experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3 id="quiz-relational-theory-design">A. Relational Theory &amp; Design</h3>
+<ul>
+<li>[ ] I can explain what a "relation" is in set-theoretic terms, distinct from what a spreadsheet row/column looks like</li>
+<li>[ ] I can name a functional dependency in a table and say which normal form it violates</li>
+<li>[ ] I can normalize a flat, spreadsheet-style export into a clean 3NF schema without guessing</li>
+<li>[ ] I can argue, with a concrete example, when denormalizing on purpose is the right call</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3 id="quiz-core-querying">B. Core Querying</h3>
+<ul>
+<li>[ ] I can write a multi-table JOIN and explain the difference between INNER, LEFT, and FULL</li>
+<li>[ ] I know why <code>UNION</code> deduplicates and <code>UNION ALL</code> doesn't, and when that distinction matters</li>
+<li>[ ] I can write GROUP BY queries with HAVING and explain why HAVING isn't just "WHERE, but later"</li>
+<li>[ ] I can write a self-join and explain when a query needs one</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3 id="quiz-advanced-querying-window-functions">C. Advanced Querying &amp; Window Functions</h3>
+<ul>
+<li>[ ] I can write a recursive CTE to walk a hierarchy (org chart, category tree)</li>
+<li>[ ] I can explain the difference between <code>ROWS</code> and <code>RANGE</code> in a window frame clause</li>
+<li>[ ] I can write a gaps-and-islands query to find consecutive-date streaks</li>
+<li>[ ] I can pivot rows into columns using conditional aggregation without a vendor-specific PIVOT keyword</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.2</strong> or <strong>3.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3 id="quiz-optimization-modern-portable-sql">D. Optimization &amp; Modern/Portable SQL</h3>
+<ul>
+<li>[ ] I can read an <code>EXPLAIN ANALYZE</code> plan and identify where estimated and actual row counts diverge</li>
+<li>[ ] I can reason about composite index column order without running a benchmark first</li>
+<li>[ ] I can explain the practical difference between READ COMMITTED and SERIALIZABLE isolation</li>
+<li>[ ] I can rewrite a pagination or upsert query from PostgreSQL syntax into MySQL or SQL Server syntax</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.2</strong> or <strong>5.1</strong> | <strong>4 yes</strong> → Skip to the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-set-theory-the-relational-model"><td>1.1</td><td>Set Theory &amp; the Relational Model</td><td>Beginner</td><td>None</td><td>4h</td></tr>
+<tr data-href="#module-12-normalization-functional-dependencies"><td>1.2</td><td>Normalization &amp; Functional Dependencies</td><td>Beginner–Intermediate</td><td>1.1</td><td>5h</td></tr>
+<tr data-href="#module-21-select-filtering-sorting-set-operations"><td>2.1</td><td>SELECT, Filtering, Sorting &amp; Set Operations</td><td>Beginner</td><td>None</td><td>3h</td></tr>
+<tr data-href="#module-22-joins-deep-dive"><td>2.2</td><td>Joins Deep Dive</td><td>Beginner–Intermediate</td><td>2.1</td><td>4h</td></tr>
+<tr data-href="#module-23-aggregation-grouping"><td>2.3</td><td>Aggregation &amp; Grouping</td><td>Beginner–Intermediate</td><td>2.1</td><td>4h</td></tr>
+<tr data-href="#module-31-subqueries-ctes"><td>3.1</td><td>Subqueries &amp; CTEs</td><td>Intermediate</td><td>2.2, 2.3</td><td>5h</td></tr>
+<tr data-href="#module-32-window-functions-mastery"><td>3.2</td><td>Window Functions Mastery</td><td>Intermediate</td><td>2.3</td><td>6h</td></tr>
+<tr data-href="#module-33-pivoting-gaps-islands-deduplication"><td>3.3</td><td>Pivoting, Gaps &amp; Islands, Deduplication</td><td>Intermediate</td><td>3.2</td><td>5h</td></tr>
+<tr data-href="#module-41-how-the-query-planner-thinks"><td>4.1</td><td>How the Query Planner Thinks</td><td>Advanced</td><td>2.2, 2.3</td><td>5h</td></tr>
+<tr data-href="#module-42-indexing-strategy"><td>4.2</td><td>Indexing Strategy</td><td>Advanced</td><td>4.1</td><td>5h</td></tr>
+<tr data-href="#module-43-transactions-isolation-concurrency"><td>4.3</td><td>Transactions, Isolation &amp; Concurrency</td><td>Advanced</td><td>1.2</td><td>5h</td></tr>
+<tr data-href="#module-51-dialect-portability"><td>5.1</td><td>Dialect Portability</td><td>Intermediate</td><td>2.1, 2.2</td><td>4h</td></tr>
+<tr data-href="#module-52-modern-sql-features"><td>5.2</td><td>Modern SQL Features</td><td>Intermediate</td><td>3.1</td><td>4h</td></tr>
+<tr data-href="#module-53-serverless-cloud-sql-patterns"><td>5.3</td><td>Serverless &amp; Cloud SQL Patterns</td><td>Advanced</td><td>4.3, 5.1</td><td>4h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1–4 form a mostly linear spine (theory → querying → advanced patterns → optimization). Phase 5 (dialects &amp; modern SQL) is <strong>independent</strong> and can be studied in parallel with Phase 3 or 4 once Phase 2 is done — it doesn't require optimization knowledge, just query fluency.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+<h3 id="track-1-query-fluency-fast">Track 1 — Query Fluency Fast (interview prep)</h3>
+<p><code>2.1 → 2.2 → 2.3 → 3.1 → 3.2 → Phase 2 Capstone → Phase 3 Capstone</code><br>
+Target outcome: <strong>pass live SQL interview rounds</strong> — joins, aggregation, subqueries, and window functions are the four patterns that dominate practical SQL interviews.</p>
+<h3 id="track-2-schema-design-theory">Track 2 — Schema Design &amp; Theory</h3>
+<p><code>1.1 → 1.2 → Phase 1 Capstone → 4.3</code><br>
+Target outcome: <strong>design defensible schemas</strong> — for anyone about to model a new database from scratch rather than query an existing one.</p>
+<h3 id="track-3-performance-optimization">Track 3 — Performance &amp; Optimization</h3>
+<p><code>4.1 → 4.2 → 4.3 → Phase 4 Capstone</code><br>
+Target outcome: <strong>diagnose and fix slow queries</strong> — for engineers already comfortable writing SQL who need to reason about what the database does with it.</p>
+<h3 id="track-4-polyglot-sql-cloud-native">Track 4 — Polyglot SQL / Cloud-Native</h3>
+<p><code>5.1 → 5.2 → 5.3 → Phase 5 Capstone</code><br>
+Target outcome: <strong>write SQL that survives a database migration</strong> and understand modern serverless deployment patterns (Neon-style branching, scale-to-zero).</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Relational Foundations &amp; Theory        (Weeks 1–2)
+Phase 2 — Core Querying                           (Weeks 3–4)
+Phase 3 — Advanced Querying Patterns              (Weeks 5–6)
+Phase 4 — Query Optimization &amp; Execution         (Weeks 7–8)   [independent of Phase 5]
+Phase 5 — SQL Across Dialects &amp; Modern SQL       (Weeks 9–10)  [independent of Phase 4]
+Final Capstone — SQL Portfolio Project            (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ── 1.2 ─┐
+            ├─ 2.1 ── 2.2 ── 2.3 ─┬─ 3.1 ── 3.2 ── 3.3 ─┐
+            │                     │                      ├─ Final Capstone
+            └───────────────────  ├─ 4.1 ── 4.2 ── 4.3 ─┤
+                                   └─ 5.1 ── 5.2 ── 5.3 ─┘</code></pre>
+
+<h2 id="phase-1-relational-foundations-theory">Phase 1: Relational Foundations &amp; Theory</h2>
+<h3 id="weeks-1-2">Weeks 1–2 | Goal: understand the theoretical bedrock beneath every SQL query you'll ever write</h3>
+<hr />
+
+<h3 id="module-11-set-theory-the-relational-model">Module 1.1 — Set Theory &amp; the Relational Model</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Explain, without notes, why a SQL table with duplicate rows and no primary key is not a true "relation" in the mathematical sense.<br>
+<strong>Skip if:</strong> You've studied relational algebra or discrete math and can map SELECT/JOIN/UNION to their algebraic operators from memory.<br>
+<strong>Unlocks:</strong> 1.2, 2.1</p>
+</blockquote>
+
+<h4>Why SQL looks the way it does</h4>
+<p>SQL is an implementation of the <strong>relational model</strong>, a theory Edgar Codd published in 1970 that treats data as <strong>relations</strong> — sets of tuples over named attributes. A "relation" is not the same thing as a database table: a true relation has no duplicate rows (it's a <em>set</em>) and no meaningful row order, because set membership doesn't care about order or repetition. SQL tables relax both rules for practical reasons — but every time a query behaves in a way that surprises you (duplicate rows surviving a query you expected to deduplicate, row order changing between runs), it's usually because SQL is quietly reverting to its set-theoretic roots or exposing where it diverges from them. Knowing the theory tells you which behavior to expect instead of discovering it by trial and error in production.</p>
+<p>A <strong>tuple</strong> is one row: an ordered set of values, one per attribute. An <strong>attribute</strong> is a named column bound to a <strong>domain</strong> — the set of legal values it can hold (e.g., the domain of <code>rental_rate</code> is "positive decimal with 2 places"). SQL's <code>NOT NULL</code>, <code>CHECK</code>, and type constraints are how a table enforces its declared domains; without them, the column accepts anything the storage engine can hold, which is a much larger domain than the business actually intends.</p>
+
+<h4>Relational algebra: the five primitive operators</h4>
+<p>Every SQL query, however complex, decomposes into combinations of five primitive operators from relational algebra. Recognizing them makes unfamiliar SQL readable, because you're pattern-matching against five shapes instead of memorizing syntax:</p>
+<ul>
+<li><strong>Selection (σ)</strong> — filter rows by a predicate → SQL's <code>WHERE</code></li>
+<li><strong>Projection (π)</strong> — choose a subset of columns → SQL's column list after <code>SELECT</code></li>
+<li><strong>Union (∪)</strong> — combine two relations of the same shape → SQL's <code>UNION</code></li>
+<li><strong>Set Difference (−)</strong> — rows in A not in B → SQL's <code>EXCEPT</code></li>
+<li><strong>Cartesian Product (×)</strong> — every row of A paired with every row of B → SQL's <code>CROSS JOIN</code>, and implicitly the basis every other join type is built from</li>
+</ul>
+<p>Everything else — <code>INNER JOIN</code>, <code>GROUP BY</code>, <code>INTERSECT</code> — is a derived operator expressible in terms of these five. A JOIN, for instance, is a Cartesian product followed by a selection on the join predicate; the query planner doesn't literally compute the full product (that would be catastrophically slow on real data), but the algebra explains <em>why</em> a join without a proper condition silently degenerates into a Cartesian product instead of erroring — SQL has no way to distinguish "I forgot the ON clause" from "I meant to cross every row."</p>
+
+<pre><code class="language-sql">-- Selection + Projection: which columns, which rows
+SELECT first_name, last_name, email
+FROM customer
+WHERE activebool = true;
+
+-- Cartesian product made explicit (rarely what you want directly,
+-- but this is the operator every JOIN is built on top of)
+SELECT c.first_name, s.store_id
+FROM customer c
+CROSS JOIN store s;   -- every customer paired with every store
+
+-- Set difference: customers who have never rented
+SELECT customer_id FROM customer
+EXCEPT
+SELECT customer_id FROM rental;</code></pre>
+
+<h4>NULL and three-valued logic</h4>
+<p>The relational model as originally conceived has no place for "unknown" — every attribute either has a value from its domain or the tuple doesn't exist. SQL's <code>NULL</code> is a practical compromise that breaks ordinary two-valued (true/false) logic into <strong>three-valued logic</strong>: TRUE, FALSE, and UNKNOWN. <code>NULL = NULL</code> evaluates to UNKNOWN, not TRUE — which is why <code>WHERE column = NULL</code> silently returns zero rows instead of erroring, a mistake that costs beginners hours of "why is my filter empty" debugging. The correct predicate is <code>WHERE column IS NULL</code>.</p>
+<pre><code class="language-sql">-- Wrong: always returns zero rows, no error, no warning
+SELECT * FROM customer WHERE email = NULL;
+
+-- Correct: IS NULL / IS NOT NULL are the only predicates that
+-- treat NULL as a first-class comparison target
+SELECT * FROM customer WHERE email IS NULL;
+
+-- COALESCE substitutes a default when a value is NULL — useful
+-- in both filters and computed columns
+SELECT customer_id, COALESCE(email, 'no-email-on-file') AS email
+FROM customer;</code></pre>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Assuming <code>NOT IN (SELECT ... )</code> behaves like <code>NOT EXISTS</code>. If the subquery returns even one <code>NULL</code>, three-valued logic makes the entire <code>NOT IN</code> comparison UNKNOWN for every row, and the outer query silently returns zero rows — a notorious, hard-to-spot bug covered in depth in Module 3.1.</p></blockquote>
+
+<p><strong>Exercise 1.1 — Relational Algebra by Hand</strong></p>
+<p>Dataset: Pagila (PostgreSQL DVD-rental sample database) — install it locally against your existing PostgreSQL instance before starting Phase 1's exercises.</p>
+<ol>
+<li>Install Pagila from <a href="https://github.com/devrimgunduz/pagila" target="_blank" rel="noopener">github.com/devrimgunduz/pagila</a> against your local PostgreSQL.</li>
+<li>Write a query that is <em>only</em> a selection + projection on the <code>film</code> table (title and rental_rate of films rated 'PG').</li>
+<li>Write the same query's logic as prose relational algebra: <code>π title, rental_rate (σ rating='PG' (film))</code>.</li>
+<li>Write a query using <code>EXCEPT</code> to find customers who have an account but have never made a payment.</li>
+<li>Deliberately write a query with <code>WHERE deleted_date = NULL</code> against a hypothetical soft-deleted table, run it, and explain in one sentence why it returns nothing even on a table you know has NULL deleted_date values.</li>
+<li><em>Retrieval practice: before checking the answer key, predict from memory what <code>SELECT NULL = NULL</code> evaluates to, and why it isn't simply an error.</em></li>
+</ol>
+<hr />
+
+<h3 id="module-12-normalization-functional-dependencies">Module 1.2 — Normalization &amp; Functional Dependencies</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Given a flat, spreadsheet-style table, identify every functional dependency and decompose it into 3NF without prompting.<br>
+<strong>Skip if:</strong> You've formally normalized a schema to at least 3NF and can defend a denormalization decision with a specific tradeoff.<br>
+<strong>Unlocks:</strong> Phase 1 Capstone, 4.3</p>
+</blockquote>
+
+<h4>Functional dependencies: the atom of normalization</h4>
+<p>A <strong>functional dependency</strong> (FD) exists between attributes A and B, written A → B, when knowing the value of A always determines the value of B. <code>customer_id → email</code> is a functional dependency — one customer has exactly one email on file. Normalization is nothing more than systematically finding functional dependencies that don't depend on the <em>whole</em> primary key, and moving them into their own table. Skipping this step is why "just add more columns" schemas rot: every FD you leave un-normalized is a fact stored in more than one place, and facts stored in more than one place inevitably go out of sync when only one copy gets updated.</p>
+
+<h4>1NF through BCNF, with a concrete before/after</h4>
+<p>Consider a single flat table exported from a spreadsheet, modeling the same rental-store domain Pagila represents normalized:</p>
+<pre><code class="language-sql">-- The messy starting point: one flat table, several repeating groups
+-- and functional dependencies buried inside it
+CREATE TABLE rental_log_flat (
+  rental_id      INT,
+  customer_name  TEXT,
+  customer_email TEXT,
+  film_title     TEXT,
+  film_rating    TEXT,
+  actor_names    TEXT,   -- 'PENELOPE GUINESS, CHRISTIAN GABLE' — repeating group
+  rental_date    DATE,
+  return_date    DATE,
+  staff_name     TEXT,
+  store_address  TEXT
+);</code></pre>
+<ul>
+<li><strong>1NF (First Normal Form)</strong> — every column holds a single atomic value; no repeating groups. <code>actor_names</code> violates 1NF outright — it packs an unbounded list into one text field, which makes "find every rental of a film starring this actor" require string parsing instead of a join.</li>
+<li><strong>2NF</strong> — 1NF, plus every non-key attribute depends on the <em>whole</em> primary key, not part of it. This only matters with composite keys: if the key were (rental_id, actor_name), then <code>film_title</code> would depend only on rental_id, not on actor_name — a partial dependency that violates 2NF.</li>
+<li><strong>3NF</strong> — 2NF, plus no <strong>transitive dependencies</strong>: a non-key attribute must depend on the key, not on another non-key attribute. Here, <code>film_rating</code> depends on <code>film_title</code>, not directly on <code>rental_id</code> — a transitive dependency. Update one film's rating and, in the flat table, you must find and fix it in every rental row that mentions that film, or the copies drift apart.</li>
+<li><strong>BCNF (Boyce-Codd Normal Form)</strong> — a stricter 3NF that also handles cases where a non-candidate-key attribute determines part of a composite candidate key. It matters mainly in schemas with multiple overlapping candidate keys; most business schemas that reach 3NF are already in BCNF.</li>
+</ul>
+<pre><code class="language-sql">-- Normalized: this is (a simplified view of) what Pagila's actual
+-- schema looks like — each fact stored exactly once
+CREATE TABLE customer (
+  customer_id  SERIAL PRIMARY KEY,
+  first_name   TEXT NOT NULL,
+  last_name    TEXT NOT NULL,
+  email        TEXT
+);
+
+CREATE TABLE film (
+  film_id      SERIAL PRIMARY KEY,
+  title        TEXT NOT NULL,
+  rating       TEXT   -- depends only on film_id now — no transitive dependency
+);
+
+CREATE TABLE actor (
+  actor_id     SERIAL PRIMARY KEY,
+  first_name   TEXT NOT NULL,
+  last_name    TEXT NOT NULL
+);
+
+CREATE TABLE film_actor (          -- resolves the repeating-group / many-to-many
+  film_id   INT REFERENCES film(film_id),
+  actor_id  INT REFERENCES actor(actor_id),
+  PRIMARY KEY (film_id, actor_id)
+);
+
+CREATE TABLE rental (
+  rental_id     SERIAL PRIMARY KEY,
+  rental_date   TIMESTAMP NOT NULL,
+  return_date   TIMESTAMP,
+  customer_id   INT REFERENCES customer(customer_id),
+  staff_id      INT REFERENCES staff(staff_id)
+);</code></pre>
+
+<h4>When to denormalize on purpose</h4>
+<p>Normalization optimizes for write-safety and storage economy, not read speed — every join you add back at query time costs something. Denormalizing (deliberately storing a derived or duplicated value) is a legitimate engineering tradeoff when a value is read far more often than it changes and the join cost is measurable, for example caching a <code>film_title</code> onto a reporting table that's queried thousands of times per minute. The rule that keeps this safe: denormalize <em>data warehouses and read replicas</em> freely, but keep the <em>system of record</em> normalized — otherwise you've reintroduced the update-anomaly problem 3NF exists to prevent, just one layer down.</p>
+
+<blockquote class="callout"><p><strong>Disambiguation:</strong> "Normalization" (schema design discipline) is unrelated to "data normalization" in statistics/ML (rescaling numeric ranges to 0–1 or z-scores). Same word, two different fields — context always disambiguates which one a source means.</p></blockquote>
+
+<p><strong>Exercise 1.2 — Functional Dependency Audit</strong></p>
+<p>Dataset: the flat <code>rental_log_flat</code> table above, populated by hand-writing 10 representative rows that model real Pagila data (reuse customer/film names you've already seen from Exercise 1.1's queries).</p>
+<ol>
+<li>List every functional dependency you can find in <code>rental_log_flat</code>, written as <code>A → B</code>.</li>
+<li>For each dependency, state which normal form (1NF/2NF/3NF) it violates and why.</li>
+<li>Decompose the table into normalized tables (you may check your answer against Pagila's actual schema afterward).</li>
+<li>Write the <code>CREATE TABLE</code> statements for your decomposition, including foreign keys.</li>
+<li>Pick one column you would deliberately denormalize back onto a hypothetical reporting table, and write two sentences justifying it against the update-anomaly risk.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-normalize-the-rental-log">Phase 1 Capstone: Normalize the Rental Log</h3>
+<p><strong>Project: From Flat File to 3NF Schema</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you state the difference between a functional dependency and a transitive dependency, and explain why NULL breaks two-valued logic? If either draws a blank, re-read 1.1 or 1.2 before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> Pagila (PostgreSQL DVD-rental sample database), approached via its own pre-normalized flat-file form.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A single flat CSV export (produce it yourself with a join across 6+ Pagila tables) that represents the rental-store domain as one denormalized table.</li>
+<li>A written functional-dependency analysis of that flat export, listing every FD found.</li>
+<li>A normalized schema (ERD, hand-drawn or in any tool) decomposed to at least 3NF, annotated with which FD each decomposition resolves.</li>
+<li><code>CREATE TABLE</code> DDL for your schema, with primary and foreign keys declared.</li>
+<li>A one-page justification memo: where would you deliberately denormalize for a reporting layer, and why is that safe there but not in the transactional schema?</li>
+<li>A comparison paragraph: how closely does your schema match Pagila's actual design, and where did you diverge — and was your divergence a mistake or a legitimate alternative?</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-core-querying">Phase 2: Core Querying</h2>
+<h3 id="weeks-3-4">Weeks 3–4 | Goal: read and write correct SQL against a real relational schema with confidence</h3>
+<hr />
+
+<h3 id="module-21-select-filtering-sorting-set-operations">Module 2.1 — SELECT, Filtering, Sorting &amp; Set Operations</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None (1.1 recommended but not required) · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Write a query that filters, sorts, deduplicates, and combines two result sets with a set operator, with no reference material.<br>
+<strong>Skip if:</strong> You use SELECT/WHERE/ORDER BY/UNION comfortably in daily work.<br>
+<strong>Unlocks:</strong> 2.2, 2.3</p>
+</blockquote>
+
+<h4>Logical query processing order</h4>
+<p>SQL is declarative — you state what you want, not the steps to get it — but the engine still processes clauses in a fixed logical order that does <em>not</em> match the order you type them in. Knowing this order explains otherwise-confusing errors, like why a column alias defined in <code>SELECT</code> can't be used in <code>WHERE</code>:</p>
+<pre><code>FROM  →  WHERE  →  GROUP BY  →  HAVING  →  SELECT  →  ORDER BY  →  LIMIT/OFFSET</code></pre>
+<p><code>WHERE</code> runs before <code>SELECT</code>, so a <code>SELECT</code>-defined alias doesn't exist yet when <code>WHERE</code> evaluates — this is why <code>WHERE full_price * 0.9 AS discounted &lt; 5</code> is illegal, but repeating the expression in <code>WHERE</code> directly works.</p>
+<pre><code class="language-sql">-- ORDER BY runs LAST, so it's the one clause allowed to reference
+-- a SELECT-list alias
+SELECT customer_id, amount * 0.9 AS discounted_amount
+FROM payment
+WHERE amount > 2.00              -- can't say "WHERE discounted_amount > 1.8" here
+ORDER BY discounted_amount DESC  -- but CAN order by it here
+LIMIT 10;</code></pre>
+
+<h4>Filtering and sorting precisely</h4>
+<pre><code class="language-sql">-- Multi-condition filtering with explicit parentheses — never rely on
+-- AND/OR precedence being "obvious"; it silently changes results
+SELECT film_id, title, rental_rate, rating
+FROM film
+WHERE (rating = 'PG' OR rating = 'G')
+  AND rental_rate <= 2.99
+ORDER BY rental_rate DESC, title ASC;
+
+-- Pattern matching: LIKE for simple wildcards, ILIKE for case-insensitive
+-- (PostgreSQL-specific; standard SQL uses LOWER(col) LIKE '...')
+SELECT title FROM film WHERE title ILIKE 'star%';
+
+-- LIMIT/OFFSET for pagination (PostgreSQL/MySQL/SQLite syntax —
+-- SQL Server differs; see Module 5.1)
+SELECT title FROM film ORDER BY title LIMIT 20 OFFSET 40;</code></pre>
+
+<h4>Set operations: combining result sets as sets</h4>
+<p><code>UNION</code>, <code>INTERSECT</code>, and <code>EXCEPT</code> require both queries to return the same number of columns with compatible types — this isn't a stylistic convention, it's what makes the two result sets a valid pair of relations to combine under set theory (Module 1.1). <code>UNION</code> deduplicates by default because a mathematical set can't contain the same element twice; <code>UNION ALL</code> skips that dedup pass and is almost always faster when you know the inputs are already disjoint.</p>
+<pre><code class="language-sql">-- Customers who are either active OR have rented in the last 30 days
+-- (UNION, deduplicated automatically)
+SELECT customer_id FROM customer WHERE activebool = true
+UNION
+SELECT customer_id FROM rental WHERE rental_date > NOW() - INTERVAL '30 days';
+
+-- Customers present in BOTH the active list and the recent-renter list
+SELECT customer_id FROM customer WHERE activebool = true
+INTERSECT
+SELECT customer_id FROM rental WHERE rental_date > NOW() - INTERVAL '30 days';
+
+-- UNION ALL when you already know there's no overlap and want to skip
+-- the (costly) deduplication pass
+SELECT 'store_1' AS source, customer_id FROM customer WHERE store_id = 1
+UNION ALL
+SELECT 'store_2' AS source, customer_id FROM customer WHERE store_id = 2;</code></pre>
+
+<p><strong>Exercise 2.1 — Filtering &amp; Set Practice on Pagila</strong></p>
+<p>Dataset: Pagila.</p>
+<ol>
+<li>List every film with a rental rate between $2 and $4, sorted by rate descending then title ascending.</li>
+<li>Find customers active in store 1 but not store 2, using a set operator (not a JOIN).</li>
+<li>Write a query using <code>ILIKE</code> to find every film with "love" anywhere in the title.</li>
+<li>Explain, in your own words, why the logical processing order makes <code>SELECT amount*0.9 AS d WHERE d > 1</code> invalid but <code>... ORDER BY d</code> valid.</li>
+<li>Rewrite a UNION query as UNION ALL, verify the row count changes, and explain why.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-joins-deep-dive">Module 2.2 — Joins Deep Dive</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Write INNER, LEFT, FULL, and a self-join from scratch against an unfamiliar schema, correctly predicting NULL behavior in each.<br>
+<strong>Skip if:</strong> You can explain, without running the query, exactly which rows a LEFT JOIN with a WHERE filter on the right table will silently drop.<br>
+<strong>Unlocks:</strong> 2.3, 3.1</p>
+</blockquote>
+
+<h4>Join types as relational algebra with a predicate</h4>
+<p>Every join is conceptually a Cartesian product (Module 1.1) filtered by a join predicate — the type of join only changes what happens to rows that <em>don't</em> find a match.</p>
+<ul>
+<li><strong>INNER JOIN</strong> — keep only rows where the predicate matches on both sides. Unmatched rows from either side vanish entirely.</li>
+<li><strong>LEFT JOIN</strong> — keep every row from the left table; unmatched rows get NULLs for every right-table column.</li>
+<li><strong>RIGHT JOIN</strong> — the mirror of LEFT; rarely used in practice because you can always rewrite it as a LEFT JOIN by swapping table order, and consistent style beats having two equivalent syntaxes in a codebase.</li>
+<li><strong>FULL (OUTER) JOIN</strong> — keep every row from both sides, NULL-filling whichever side has no match. SQLite lacks native FULL JOIN support; Module 5.1 covers the UNION-based workaround.</li>
+<li><strong>CROSS JOIN</strong> — the raw Cartesian product, no predicate at all. Legitimate for generating combinations (e.g., every date × every store), dangerous when it happens by accident.</li>
+<li><strong>SELF JOIN</strong> — not a distinct join type, just a table joined to itself under different aliases, for hierarchical or peer relationships within one table (e.g., an employee's manager, also an employee).</li>
+</ul>
+
+<pre><code class="language-sql">-- INNER JOIN: only rentals with a matching customer AND film survive
+SELECT r.rental_id, c.first_name, f.title
+FROM rental r
+JOIN customer c ON r.customer_id = c.customer_id
+JOIN inventory i ON r.inventory_id = i.inventory_id
+JOIN film f ON i.film_id = f.film_id;
+
+-- LEFT JOIN: every customer appears, even those with zero rentals —
+-- rental columns are NULL for them
+SELECT c.customer_id, c.first_name, r.rental_id
+FROM customer c
+LEFT JOIN rental r ON c.customer_id = r.customer_id;
+
+-- The classic trap: putting a right-table filter in WHERE instead of ON
+-- silently turns a LEFT JOIN back into an INNER JOIN
+SELECT c.customer_id, r.rental_id
+FROM customer c
+LEFT JOIN rental r ON c.customer_id = r.customer_id
+WHERE r.rental_date > '2026-01-01';   -- drops every customer with r.rental_id NULL —
+                                       -- NULL > '2026-01-01' is UNKNOWN, not TRUE
+
+-- Fixed: move the condition into the ON clause so it only narrows
+-- the RIGHT side, not the whole result
+SELECT c.customer_id, r.rental_id
+FROM customer c
+LEFT JOIN rental r
+  ON c.customer_id = r.customer_id AND r.rental_date > '2026-01-01';
+
+-- SELF JOIN: staff members who report to the same manager (hypothetical
+-- manager_id column added to staff for illustration)
+SELECT a.first_name AS staff, b.first_name AS coworker
+FROM staff a
+JOIN staff b ON a.manager_id = b.manager_id AND a.staff_id &lt;&gt; b.staff_id;</code></pre>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Filtering a LEFT JOIN's outer table in <code>WHERE</code> instead of <code>ON</code>. Because <code>WHERE</code> runs after the join (logical processing order, Module 2.1), a condition on the right table's columns silently discards the NULL-filled rows the LEFT JOIN existed to keep — turning it into an INNER JOIN with no error raised.</p></blockquote>
+
+<p><strong>Exercise 2.2 — Join Patterns on Pagila</strong></p>
+<p>Dataset: Pagila.</p>
+<ol>
+<li>Write an INNER JOIN chain (customer → rental → inventory → film) to list every rental with customer name and film title.</li>
+<li>Write a LEFT JOIN to find every customer who has <em>never</em> rented anything (rental columns NULL).</li>
+<li>Deliberately write the WHERE-instead-of-ON trap from above, run it, then fix it, and explain the row-count difference you observe.</li>
+<li>Write a self-join on <code>film</code> to find pairs of films that share the same <code>rating</code> and <code>rental_duration</code> but different titles.</li>
+<li>Write a CROSS JOIN generating every combination of <code>store</code> × the last 7 calendar days, useful as a scaffold for a daily-per-store report.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-aggregation-grouping">Module 2.3 — Aggregation &amp; Grouping</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Write a GROUP BY query with HAVING and a FILTER clause, and explain why an ungrouped non-aggregate column in the SELECT list is a query error.<br>
+<strong>Skip if:</strong> GROUP BY/HAVING/aggregate functions are already second nature.<br>
+<strong>Unlocks:</strong> 3.1, 3.2</p>
+</blockquote>
+
+<h4>GROUP BY collapses rows into sets — literally</h4>
+<p><code>GROUP BY</code> partitions rows into groups sharing the same value(s) in the grouping column(s), then collapses each group into one output row. Every column in the <code>SELECT</code> list must therefore be either a grouping column or wrapped in an aggregate function (<code>COUNT</code>, <code>SUM</code>, <code>AVG</code>, <code>MIN</code>, <code>MAX</code>) — the engine has no rule for picking which of many possible values an ungrouped column should show for a collapsed group, so standard SQL rejects the query outright rather than guess. (MySQL historically allowed this and picked an arbitrary row's value — a well-known footgun fixed by <code>ONLY_FULL_GROUP_BY</code> mode, on by default since MySQL 5.7.)</p>
+
+<h4>WHERE vs. HAVING: different points in the pipeline</h4>
+<p>Per the logical processing order (Module 2.1), <code>WHERE</code> filters rows <em>before</em> grouping; <code>HAVING</code> filters groups <em>after</em> aggregation. <code>WHERE</code> can't reference an aggregate (the aggregate doesn't exist yet at that stage); <code>HAVING</code> can't cheaply filter on a non-aggregated, non-grouped column. Using <code>HAVING</code> where <code>WHERE</code> would work wastes effort — it forces the engine to aggregate rows it could have discarded first.</p>
+<pre><code class="language-sql">-- Revenue per film category, only categories over $500 total,
+-- restricted to 2026 payments (WHERE narrows rows first; HAVING
+-- narrows the resulting groups)
+SELECT cat.name AS category, SUM(p.amount) AS total_revenue
+FROM payment p
+JOIN rental r ON p.rental_id = r.rental_id
+JOIN inventory i ON r.inventory_id = i.inventory_id
+JOIN film_category fc ON i.film_id = fc.film_id
+JOIN category cat ON fc.category_id = cat.category_id
+WHERE p.payment_date >= '2026-01-01'
+GROUP BY cat.name
+HAVING SUM(p.amount) > 500
+ORDER BY total_revenue DESC;</code></pre>
+
+<h4>GROUPING SETS, ROLLUP, CUBE, and FILTER</h4>
+<p>A single <code>GROUP BY</code> produces one grouping granularity. <code>ROLLUP</code> and <code>CUBE</code> compute multiple granularities — including subtotals and a grand total — in one query instead of a UNION of several separate GROUP BY queries, which is both more concise and lets the engine share the underlying scan.</p>
+<pre><code class="language-sql">-- ROLLUP: revenue by store, then by store+staff, then a grand total —
+-- three granularities in one pass
+SELECT store_id, staff_id, SUM(amount) AS revenue
+FROM payment p JOIN staff s USING (staff_id)
+GROUP BY ROLLUP (store_id, staff_id);
+
+-- FILTER: compute two differently-filtered aggregates in one row,
+-- without two separate queries or a CASE-inside-SUM workaround
+SELECT
+  cat.name,
+  COUNT(*) FILTER (WHERE f.rating = 'PG')  AS pg_count,
+  COUNT(*) FILTER (WHERE f.rating = 'R')   AS r_count
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category cat ON fc.category_id = cat.category_id
+GROUP BY cat.name;</code></pre>
+
+<p><strong>Exercise 2.3 — Aggregation on Pagila</strong></p>
+<p>Dataset: Pagila.</p>
+<ol>
+<li>Total revenue per store, filtered to payments made in the most recent full month present in the data.</li>
+<li>Average rental duration per film category, only categories with more than 20 rentals (HAVING).</li>
+<li>A ROLLUP query giving revenue by store, by store+film-category, and a grand total.</li>
+<li>A single query using two <code>FILTER</code> clauses to compare rental counts for 'G'-rated vs 'R'-rated films per store.</li>
+<li>Deliberately write a GROUP BY query with an ungrouped, non-aggregated column in the SELECT list, run it, read the error, and explain in one sentence why the engine refuses rather than guessing.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-business-question-query-pack">Phase 2 Capstone: Business-Question Query Pack</h3>
+<p><strong>Project: Answer Ten Real Business Questions About the Rental Store</strong></p>
+<p><strong>Dataset:</strong> Pagila.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Top 10 customers by lifetime spend, with store and email.</li>
+<li>Revenue by film category by month, for the last 6 months of data present.</li>
+<li>Every customer who rented in month 1 of the dataset but not in the final month (a simple churn signal, using set operations from 2.1).</li>
+<li>Average, min, and max rental duration by rating, filtered to categories with over 15 films (GROUP BY + HAVING).</li>
+<li>A single query joining at least 5 tables that returns rental_id, customer name, film title, category, and store address.</li>
+<li>A short written note (3–5 sentences) on which join type you used for each query above and why a different join type would have produced a wrong or incomplete answer.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-advanced-querying-patterns">Phase 3: Advanced Querying Patterns</h2>
+<h3 id="weeks-5-6">Weeks 5–6 | Goal: express complex analytical logic in a single, correct query</h3>
+<hr />
+
+<h3 id="module-31-subqueries-ctes">Module 3.1 — Subqueries &amp; CTEs</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2, 2.3 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Write a correlated subquery and a recursive CTE from scratch, and explain the NOT IN / NULL trap without looking it up.<br>
+<strong>Skip if:</strong> Recursive CTEs and correlated subqueries are already part of your regular toolkit.<br>
+<strong>Unlocks:</strong> 3.2, 5.2</p>
+</blockquote>
+
+<h4>Scalar, row, and correlated subqueries</h4>
+<p>A <strong>scalar subquery</strong> returns exactly one row, one column, and can be used anywhere a single value is expected. A <strong>correlated subquery</strong> references a column from the outer query, so it conceptually re-runs once per outer row — powerful, but potentially slow if the planner can't rewrite it into a join (Module 4.1 covers how to check).</p>
+<pre><code class="language-sql">-- Scalar subquery: single value, used inline
+SELECT title, rental_rate,
+  rental_rate - (SELECT AVG(rental_rate) FROM film) AS vs_avg
+FROM film;
+
+-- Correlated subquery: references the outer row (f.film_id) —
+-- "how many times has THIS film been rented"
+SELECT f.title,
+  (SELECT COUNT(*) FROM inventory i JOIN rental r ON r.inventory_id = i.inventory_id
+   WHERE i.film_id = f.film_id) AS times_rented
+FROM film f;
+
+-- EXISTS vs IN: EXISTS stops at the first match and is NULL-safe;
+-- prefer it over IN/NOT IN when the subquery might return NULLs
+SELECT c.customer_id, c.first_name
+FROM customer c
+WHERE EXISTS (
+  SELECT 1 FROM rental r WHERE r.customer_id = c.customer_id
+);
+
+-- The NOT IN / NULL trap from Module 1.1, concretely: if ANY row
+-- in the subquery has a NULL customer_id, this returns ZERO rows —
+-- not "customers with no rental," but nothing at all
+SELECT c.customer_id FROM customer c
+WHERE c.customer_id NOT IN (SELECT customer_id FROM rental);  -- risky
+
+-- NOT EXISTS is the NULL-safe equivalent — always prefer it for
+-- "not in" logic over a subquery you don't fully control
+SELECT c.customer_id FROM customer c
+WHERE NOT EXISTS (
+  SELECT 1 FROM rental r WHERE r.customer_id = c.customer_id
+);</code></pre>
+
+<h4>CTEs: named, readable subqueries</h4>
+<p>A <strong>Common Table Expression</strong> (<code>WITH</code>) names a subquery so it can be referenced once and read top-to-bottom, which matters more for maintainability than performance — in PostgreSQL 12+, MySQL 8+, and SQL Server, a non-recursive CTE is generally inlined by the optimizer exactly like an equivalent subquery, so choosing a CTE over a nested subquery is a readability decision, not a speed one.</p>
+<pre><code class="language-sql">WITH monthly_revenue AS (
+  SELECT DATE_TRUNC('month', payment_date) AS month, SUM(amount) AS revenue
+  FROM payment
+  GROUP BY 1
+)
+SELECT month, revenue,
+  revenue - LAG(revenue) OVER (ORDER BY month) AS change_from_prior_month
+FROM monthly_revenue
+ORDER BY month;</code></pre>
+
+<h4>Recursive CTEs: walking a hierarchy</h4>
+<p>A recursive CTE has an <strong>anchor</strong> query (the base case) UNIONed with a <strong>recursive</strong> query that references the CTE's own name, repeating until the recursive part returns zero rows. This is the standard SQL way to walk trees and graphs — org charts, category hierarchies, bill-of-materials — without procedural loops.</p>
+<pre><code class="language-sql">-- Walk a hypothetical category tree (Pagila's real category table is
+-- flat, so this models a self-referencing parent_category_id you'd
+-- add for a richer taxonomy)
+WITH RECURSIVE category_tree AS (
+  -- Anchor: top-level categories (no parent)
+  SELECT category_id, name, parent_category_id, 1 AS depth
+  FROM category
+  WHERE parent_category_id IS NULL
+
+  UNION ALL
+
+  -- Recursive step: join children to the rows found so far
+  SELECT c.category_id, c.name, c.parent_category_id, ct.depth + 1
+  FROM category c
+  JOIN category_tree ct ON c.parent_category_id = ct.category_id
+)
+SELECT * FROM category_tree ORDER BY depth, name;</code></pre>
+
+<p><em>Retrieval practice: before running the recursive CTE above, trace through two iterations by hand on paper — write down what rows the anchor produces, then what the first recursive pass adds. Comparing your trace to the actual output reveals whether you've genuinely internalized how the recursion terminates.</em></p>
+
+<p><strong>Exercise 3.1 — Subqueries &amp; CTEs on Pagila</strong></p>
+<p>Dataset: Pagila.</p>
+<ol>
+<li>Write a correlated subquery giving each customer their total spend, without a GROUP BY.</li>
+<li>Rewrite question 1 using a CTE + JOIN instead, and compare readability.</li>
+<li>Deliberately trigger the NOT IN / NULL trap by inserting one NULL-customer_id row into a copy of rental, then fix the query with NOT EXISTS.</li>
+<li>Write a recursive CTE that generates a calendar of dates for the full range present in the payment table (a common recursive-CTE use case unrelated to hierarchies).</li>
+<li>Use EXISTS to find every film that has never appeared in any inventory row at any store.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-window-functions-mastery">Module 3.2 — Window Functions Mastery</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.3 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Write a query using PARTITION BY, an explicit ROWS frame, and both RANK and ROW_NUMBER in the same statement, correctly explaining when their outputs diverge.<br>
+<strong>Skip if:</strong> You already reach for window functions by default over self-joins or correlated subqueries for ranking and running-total problems.<br>
+<strong>Unlocks:</strong> 3.3, Phase 3 Capstone</p>
+</blockquote>
+
+<h4>OVER, PARTITION BY: aggregation without collapsing rows</h4>
+<p>A window function computes a value across a set of related rows — the "window" — without collapsing the result set the way <code>GROUP BY</code> does. This is the single biggest advantage over a plain aggregate: you keep every original row <em>and</em> get group-level context on each one, which is exactly what "rank within category," "% of category total," or "compare to previous row" questions need.</p>
+<pre><code class="language-sql">-- Every film alongside its rank within its own rating category —
+-- one row per film, not one row per category
+SELECT title, rating, rental_rate,
+  RANK() OVER (PARTITION BY rating ORDER BY rental_rate DESC) AS price_rank_in_rating
+FROM film;</code></pre>
+
+<h4>The ranking family: RANK, DENSE_RANK, ROW_NUMBER — they diverge on ties</h4>
+<ul>
+<li><strong>ROW_NUMBER()</strong> — always unique, 1, 2, 3, 4… even for exact ties. Use when you need exactly one row per rank position (e.g., "pick exactly one row per group" deduplication, Module 3.3).</li>
+<li><strong>RANK()</strong> — ties share a rank, but the next rank skips (1, 1, 3, 4). Matches how sports leaderboards usually work.</li>
+<li><strong>DENSE_RANK()</strong> — ties share a rank, no gap (1, 1, 2, 3). Use when you want a compact "how many distinct tiers exist" count.</li>
+</ul>
+<p>Picking the wrong one silently changes downstream counts — a "top 3 films per category" query using <code>RANK()</code> can return more than 3 rows per category when there's a tie for 3rd place, which is correct behavior for a leaderboard but a bug if the requirement was strictly "at most 3 rows."</p>
+
+<h4>Frame clauses: ROWS vs. RANGE vs. GROUPS</h4>
+<p>The frame clause controls exactly which rows within a partition participate in the calculation for the <em>current</em> row — this is where most window-function bugs actually live, because the default frame is easy to get wrong silently.</p>
+<pre><code class="language-sql">-- Running total: ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+-- is the physical-row interpretation — exactly the prior rows, by position
+SELECT payment_date, amount,
+  SUM(amount) OVER (ORDER BY payment_date
+                     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_total
+FROM payment;
+
+-- RANGE differs from ROWS when ORDER BY values tie: RANGE includes
+-- ALL rows with the same ORDER BY value in the frame, not just the
+-- physically-preceding ones — this changes results whenever the
+-- ordering column has duplicates (e.g., multiple payments same date)
+SELECT payment_date, amount,
+  SUM(amount) OVER (ORDER BY payment_date
+                     RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_total_range
+FROM payment;
+
+-- A moving 3-row average — frame relative to the current row, not
+-- an absolute range
+SELECT payment_date, amount,
+  AVG(amount) OVER (ORDER BY payment_date
+                     ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS moving_avg_3
+FROM payment;</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Omitting the frame clause entirely. With an <code>ORDER BY</code> present but no explicit frame, the default is <code>RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</code> — which silently produces wrong running totals the moment two rows share the same ORDER BY value, because RANGE folds every tied row into one step instead of accumulating them one at a time. Always write the frame clause explicitly for running totals.</p></blockquote>
+
+<h4>LAG, LEAD, and first/last value</h4>
+<pre><code class="language-sql">-- Compare each payment to the customer's previous payment
+SELECT customer_id, payment_date, amount,
+  LAG(amount) OVER (PARTITION BY customer_id ORDER BY payment_date) AS prev_amount,
+  amount - LAG(amount) OVER (PARTITION BY customer_id ORDER BY payment_date) AS change
+FROM payment;
+
+-- FIRST_VALUE: each customer's very first payment amount, shown
+-- alongside every subsequent row
+SELECT customer_id, payment_date, amount,
+  FIRST_VALUE(amount) OVER (PARTITION BY customer_id ORDER BY payment_date
+                             ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS first_payment
+FROM payment;</code></pre>
+
+<p><strong>Exercise 3.2 — Window Functions on Pagila</strong></p>
+<p>Dataset: Pagila.</p>
+<ol>
+<li>Rank films within each category by rental_rate using all three ranking functions in one query; identify a category with a tie and explain how each function's output differs there.</li>
+<li>Write a running-total of daily revenue with an explicit ROWS frame.</li>
+<li>Reproduce the RANGE-vs-ROWS divergence deliberately: find (or construct) two payments on the same date and show the running-total results differ between the two frame types.</li>
+<li>Use LAG to compute month-over-month revenue change per store.</li>
+<li>Write a query returning, for every customer, their first and most recent rental date side by side using FIRST_VALUE/LAST_VALUE.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-pivoting-gaps-islands-deduplication">Module 3.3 — Pivoting, Gaps &amp; Islands, Deduplication</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.2 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Solve a gaps-and-islands problem and a duplicate-row cleanup using only conditional aggregation and window functions, no vendor-specific keywords.<br>
+<strong>Skip if:</strong> These three patterns are already automatic when the shape of a problem calls for them.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+
+<h4>Pivoting with conditional aggregation</h4>
+<p>Standard SQL has no universal <code>PIVOT</code> keyword — SQL Server and Oracle have vendor-specific syntax, PostgreSQL requires the <code>tablefunc</code> extension's <code>crosstab()</code>. The portable technique that works identically on every dialect is <strong>conditional aggregation</strong>: a <code>CASE</code> expression inside an aggregate function, once per target column.</p>
+<pre><code class="language-sql">-- Pivot: one row per store, one column per rating, counts of films
+-- rented — portable across every SQL dialect, no PIVOT keyword needed
+SELECT
+  i.store_id,
+  COUNT(*) FILTER (WHERE f.rating = 'G')  AS g_rentals,
+  COUNT(*) FILTER (WHERE f.rating = 'PG') AS pg_rentals,
+  COUNT(*) FILTER (WHERE f.rating = 'R')  AS r_rentals
+FROM rental r
+JOIN inventory i ON r.inventory_id = i.inventory_id
+JOIN film f ON i.film_id = f.film_id
+GROUP BY i.store_id;
+
+-- The universally-portable equivalent using CASE instead of FILTER
+-- (FILTER is PostgreSQL/SQL:2023; CASE-in-SUM works everywhere,
+-- including older MySQL and SQL Server)
+SELECT
+  i.store_id,
+  SUM(CASE WHEN f.rating = 'G'  THEN 1 ELSE 0 END) AS g_rentals,
+  SUM(CASE WHEN f.rating = 'PG' THEN 1 ELSE 0 END) AS pg_rentals,
+  SUM(CASE WHEN f.rating = 'R'  THEN 1 ELSE 0 END) AS r_rentals
+FROM rental r
+JOIN inventory i ON r.inventory_id = i.inventory_id
+JOIN film f ON i.film_id = f.film_id
+GROUP BY i.store_id;</code></pre>
+
+<h4>Gaps and islands: finding consecutive runs</h4>
+<p>"Gaps and islands" describes any problem where you need to find consecutive runs (islands) or breaks in sequence (gaps) — consecutive login days, a customer's continuous rental streak, uninterrupted stretches of a sensor reading. The canonical technique subtracts a <code>ROW_NUMBER()</code> from the actual date; within one unbroken run, that difference is constant, which gives you a free grouping key for the island.</p>
+<pre><code class="language-sql">-- Find each customer's longest streak of consecutive rental-days
+WITH rental_days AS (
+  SELECT DISTINCT customer_id, rental_date::date AS rental_day
+  FROM rental
+),
+numbered AS (
+  SELECT customer_id, rental_day,
+    ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY rental_day) AS rn
+  FROM rental_days
+),
+islands AS (
+  SELECT customer_id, rental_day,
+    rental_day - (rn * INTERVAL '1 day') AS island_key   -- constant within a streak
+  FROM numbered
+)
+SELECT customer_id, MIN(rental_day) AS streak_start, MAX(rental_day) AS streak_end,
+  COUNT(*) AS streak_length
+FROM islands
+GROUP BY customer_id, island_key
+ORDER BY streak_length DESC;</code></pre>
+
+<h4>Deduplication with ROW_NUMBER</h4>
+<p>When duplicate rows exist without a natural unique key to <code>DISTINCT</code> on (e.g., a messy import with true duplicates plus rows that differ only in an unimportant timestamp), <code>ROW_NUMBER()</code> partitioned by the logical dedup key and filtered to <code>rn = 1</code> is the portable, precise way to keep exactly one row per group — and unlike <code>DISTINCT</code>, it lets you control <em>which</em> duplicate survives via the <code>ORDER BY</code>.</p>
+<pre><code class="language-sql">-- Keep only the most recent payment per (customer_id, rental_id) pair,
+-- discarding older duplicate/corrected rows
+WITH ranked AS (
+  SELECT *,
+    ROW_NUMBER() OVER (PARTITION BY customer_id, rental_id
+                        ORDER BY payment_date DESC) AS rn
+  FROM payment
+)
+SELECT * FROM ranked WHERE rn = 1;</code></pre>
+
+<p><strong>Exercise 3.3 — Advanced Patterns on Pagila</strong></p>
+<p>Dataset: Pagila.</p>
+<ol>
+<li>Pivot rental counts per store into columns by film category (pick 4 categories) using conditional aggregation.</li>
+<li>Find every customer's longest consecutive-day rental streak using the gaps-and-islands technique above.</li>
+<li>Manually duplicate 5 rows in a copy of the payment table, then write a ROW_NUMBER()-based query that removes the duplicates, keeping the latest payment_date per duplicate group.</li>
+<li>Rewrite your pivot query from question 1 using PostgreSQL's <code>FILTER</code> clause, and compare against the CASE-based version for readability.</li>
+<li>Explain in 2–3 sentences why <code>DISTINCT ON</code> (a PostgreSQL-only extension) would solve question 3 more concisely, but why the ROW_NUMBER() approach is still worth knowing.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-cohort-retention-sessions-analysis">Phase 3 Capstone: Cohort Retention &amp; Sessions Analysis</h3>
+<p><strong>Project: Customer Retention Cohorts + Rental "Sessions"</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain the difference between ROWS and RANGE frames, and describe the ROW_NUMBER subtraction trick used for gaps and islands? If either draws a blank, re-read Module 3.2 or 3.3 first.</p></blockquote>
+<p><strong>Dataset:</strong> Pagila.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A cohort table: customers grouped by the month of their first rental, showing what percentage of each cohort was still renting in each subsequent month (CTE + window functions).</li>
+<li>A "session" definition for rental activity: group each customer's rentals into sessions where a gap of 14+ days between rentals starts a new session (gaps-and-islands).</li>
+<li>Average session length and average rentals-per-session, by customer.</li>
+<li>A recursive CTE generating a full calendar spine so months with zero activity still appear in the cohort table (not silently missing).</li>
+<li>A single ranked query showing, per cohort month, the top 3 highest-spending customers using RANK() with documented tie-handling.</li>
+<li>A short write-up (4–6 sentences) on which of RANK/DENSE_RANK/ROW_NUMBER you chose for the top-3 query and why the alternatives would have been wrong for this specific requirement.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-query-optimization-execution-reasoning">Phase 4: Query Optimization &amp; Execution Reasoning</h2>
+<h3 id="weeks-7-8">Weeks 7–8 | Goal: reason about what the engine actually does with a query, not just what it returns</h3>
+<hr />
+
+<h3 id="module-41-how-the-query-planner-thinks">Module 4.1 — How the Query Planner Thinks</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 2.2, 2.3 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Read an unfamiliar EXPLAIN ANALYZE plan and correctly identify the single biggest cost driver without assistance.<br>
+<strong>Skip if:</strong> You already read EXPLAIN ANALYZE output as a matter of habit before optimizing a query.<br>
+<strong>Unlocks:</strong> 4.2, Phase 4 Capstone</p>
+</blockquote>
+
+<h4>Declarative SQL, procedural execution</h4>
+<p>You write <em>what</em> you want; the <strong>query planner</strong> (also called the optimizer) decides <em>how</em> to get it — which indexes to use, which join algorithm, what order to join tables in. Two queries that return identical results can execute completely differently, and the same query can execute differently on different days as table statistics change. This is precisely why "it worked fine yesterday" is a real phenomenon and not user error: the planner re-decides its strategy based on current statistics, not the query text alone.</p>
+
+<h4>EXPLAIN vs. EXPLAIN ANALYZE</h4>
+<p><code>EXPLAIN</code> shows the planner's <em>intended</em> plan and its cost <em>estimates</em>, without running the query. <code>EXPLAIN ANALYZE</code> actually executes the query and shows real elapsed time and real row counts alongside the estimates — the gap between estimated and actual rows is often the single most useful diagnostic signal in performance work, because a large gap means the planner's statistics are stale or its assumptions about your data's distribution are wrong, and every downstream decision (join algorithm, memory allocation) was made on bad information.</p>
+<pre><code class="language-sql">EXPLAIN ANALYZE
+SELECT c.first_name, c.last_name, SUM(p.amount) AS total_spent
+FROM customer c
+JOIN payment p ON c.customer_id = p.customer_id
+GROUP BY c.customer_id, c.first_name, c.last_name
+ORDER BY total_spent DESC
+LIMIT 10;</code></pre>
+<pre><code>Limit  (cost=1250.34..1250.36 rows=10 width=64) (actual time=18.221..18.224 rows=10 loops=1)
+  ->  Sort  (cost=1250.34..1257.84 rows=3000 width=64) (actual time=18.219..18.220 rows=10 loops=1)
+        Sort Key: (sum(p.amount)) DESC
+        ->  HashAggregate  (cost=1100.00..1180.00 rows=3000 width=64) (actual time=15.900..17.100 rows=599 loops=1)
+              Group Key: c.customer_id
+              ->  Hash Join  (cost=85.50..950.00 rows=16000 width=24) (actual time=1.200..12.500 rows=16044 loops=1)
+                    Hash Cond: (p.customer_id = c.customer_id)
+                    ->  Seq Scan on payment p  (cost=0.00..750.00 rows=16000 width=10) (actual time=0.010..5.200 rows=16044 loops=1)
+                    ->  Hash  (cost=60.99..60.99 rows=599 width=18) (actual time=1.100..1.101 rows=599 loops=1)
+                          ->  Seq Scan on customer c  (cost=0.00..60.99 rows=599 width=18) (actual time=0.005..0.450 rows=599 loops=1)</code></pre>
+<p>Read plans <strong>from the innermost/bottom node outward</strong> — that's the order execution actually happens in, even though the outermost node (here, <code>Limit</code>) is printed first. Here, estimated and actual row counts on <code>Seq Scan on payment</code> match almost exactly (16000 vs 16044) — the planner's statistics are accurate, so this plan is trustworthy. A large mismatch would be the signal to run <code>ANALYZE payment;</code> to refresh statistics before trusting anything else in the plan.</p>
+
+<h4>Join algorithms: nested loop, hash, merge</h4>
+<ul>
+<li><strong>Nested Loop</strong> — for each row of the outer table, scan the inner table (or probe an index). Efficient when one side is small or a good index exists on the join column; catastrophic on two large unindexed tables because cost grows with the product of both sizes.</li>
+<li><strong>Hash Join</strong> — builds an in-memory hash table on the smaller input, then probes it once per row of the larger input. Excellent for large equi-joins (<code>=</code> conditions) when the smaller side fits comfortably in memory.</li>
+<li><strong>Merge Join</strong> — both inputs sorted on the join key, then merged in one pass. Efficient when both sides are already sorted (e.g., via an index) or the data is naturally ordered, avoiding a separate hash-build step entirely.</li>
+</ul>
+<p>You rarely force a join algorithm directly — the planner picks based on estimated table sizes, available indexes, and available memory (<code>work_mem</code> in PostgreSQL). Recognizing which one is chosen tells you what to fix: a nested loop where you expected a hash join usually means the planner thinks one side is smaller than it actually is, which traces back to stale statistics or a missing index.</p>
+
+<p><strong>Exercise 4.1 — Reading Plans on Pagila</strong></p>
+<p>Dataset: Pagila.</p>
+<ol>
+<li>Run EXPLAIN ANALYZE on the 5-table join from your Phase 2 capstone. Identify the join algorithm chosen at each step.</li>
+<li>Find one query in your work so far where estimated and actual row counts diverge by more than 2x, and run <code>ANALYZE</code> on the relevant table to see if it changes the plan.</li>
+<li>Force a sequential scan with <code>SET enable_indexscan = off;</code> (session-scoped) on a query that normally uses an index, compare the EXPLAIN ANALYZE timing, then re-enable it.</li>
+<li>Write, in your own words, the difference between what EXPLAIN estimates and what EXPLAIN ANALYZE measures, and why you'd reach for each in different situations (e.g., a query that's too destructive/slow to actually run yet).</li>
+</ol>
+<hr />
+
+<h3 id="module-42-indexing-strategy">Module 4.2 — Indexing Strategy</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Given an unfamiliar query and table, propose a composite index with correctly-reasoned column order, and identify a case where adding an index would hurt.<br>
+<strong>Skip if:</strong> You already reason about column order and selectivity before creating an index, rather than by trial and error.<br>
+<strong>Unlocks:</strong> Phase 4 Capstone</p>
+</blockquote>
+<p>This module is about the <em>reasoning</em> behind indexing decisions — portable across engines — not <code>CREATE INDEX</code> syntax or PostgreSQL-specific index types, which a dedicated Postgres-administration track covers in depth.</p>
+
+<h4>B-tree mechanics, briefly</h4>
+<p>The default index type on every major relational engine is a <strong>B-tree</strong> — a balanced, sorted tree structure that turns "find rows matching X" from a full table scan (O(n)) into a small number of page reads (O(log n)). This is why an index helps equality and range predicates (<code>=</code>, <code>&lt;</code>, <code>BETWEEN</code>, <code>ORDER BY</code>) but does nothing for a predicate that can't be expressed as a sorted-tree lookup, like <code>WHERE column % 2 = 0</code> or a leading-wildcard <code>LIKE '%term'</code> — the tree is sorted on the column's raw value, and neither of those predicates can be answered by walking a sorted structure without touching every row anyway.</p>
+
+<h4>Composite index column order matters — a lot</h4>
+<p>A composite (multi-column) index is one sorted structure across several columns, in the order you declare them — not several independent single-column indexes glued together. The tree is sorted by the <em>first</em> column, then by the second within each value of the first, and so on. This has a direct practical consequence: a composite index on <code>(a, b)</code> can serve queries filtering on <code>a</code> alone or on <code>a AND b</code>, but generally cannot efficiently serve a query filtering on <code>b</code> alone — the tree isn't sorted by <code>b</code> at the top level, so the engine can't jump straight to the relevant rows.</p>
+<p>The standard heuristic: put the column with an <strong>equality</strong> predicate before columns with a <strong>range</strong> predicate, and put higher-<strong>selectivity</strong> columns (those that narrow the result set the most) earlier when several columns are all filtered by equality. Selectivity is the fraction of rows a predicate eliminates — a column like <code>customer_id</code> (thousands of distinct values) is highly selective; a column like <code>rating</code> (5 distinct values) barely narrows anything and gains little from being first in a composite index.</p>
+<pre><code class="language-sql">-- Query: filter by customer_id (equality) AND a payment_date range
+SELECT * FROM payment
+WHERE customer_id = 42 AND payment_date >= '2026-01-01';
+
+-- Good composite index: equality column first, range column second —
+-- the tree can jump straight to customer_id=42, then scan a contiguous
+-- sorted range of dates within that
+CREATE INDEX idx_payment_customer_date ON payment (customer_id, payment_date);
+
+-- A composite index in the WRONG order (range column first) can only
+-- use payment_date to narrow the scan, then must check customer_id
+-- row-by-row within that broader range — far less effective</code></pre>
+
+<h4>Covering indexes and index-only scans</h4>
+<p>When an index contains every column a query needs — both the filtered columns and the selected columns — the engine can answer the query entirely from the index without touching the underlying table at all. This is an <strong>index-only scan</strong>, and it's often the single biggest optimization available for a hot, narrow, frequently-run query, because it eliminates a whole layer of random-access disk/page reads.</p>
+
+<h4>When an index hurts</h4>
+<p>Every index costs write throughput (every <code>INSERT</code>/<code>UPDATE</code>/<code>DELETE</code> must also update the index) and storage. An index is actively counterproductive when: the column has very low selectivity (a boolean flag with a 90/10 split gains little), the table is small enough that a sequential scan is already fast, or the table is write-heavy with few reads against that column. "Add an index" is not a free action — the right question is always whether the read-time savings outweigh the write-time and storage cost for <em>this specific table's</em> access pattern, not a blanket rule.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Indexing every foreign key "just in case." Foreign keys used only for referential integrity checks and never filtered/joined on in actual queries gain nothing from an index but still pay the full write-time cost — index the columns your queries actually touch, verified with EXPLAIN, not the columns that merely look important in the schema.</p></blockquote>
+
+<p><strong>Exercise 4.2 — Indexing Strategy on Pagila</strong></p>
+<p>Dataset: Pagila.</p>
+<ol>
+<li>For the query <code>WHERE customer_id = X AND rental_date > Y</code> against <code>rental</code>, propose a composite index with justified column order, then verify with EXPLAIN ANALYZE before and after creating it.</li>
+<li>Identify one column in Pagila where an index would likely hurt more than help, and justify why using the selectivity/write-cost reasoning above.</li>
+<li>Design a covering index for a specific narrow, hot query of your choosing, and confirm with EXPLAIN that it produces an index-only scan.</li>
+<li>Drop an index you created, re-run the same EXPLAIN ANALYZE, and quantify the cost difference in your own words.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-transactions-isolation-concurrency">Module 4.3 — Transactions, Isolation &amp; Concurrency</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Given a concurrent-access scenario, name the specific anomaly (dirty read, non-repeatable read, phantom read) it risks and the minimum isolation level that prevents it.<br>
+<strong>Skip if:</strong> You can already justify an isolation-level choice for a given workload with a specific tradeoff, not just a default.<br>
+<strong>Unlocks:</strong> Phase 4 Capstone, 5.3</p>
+</blockquote>
+
+<h4>ACID, briefly and precisely</h4>
+<p><strong>Atomicity</strong> — a transaction's statements all succeed or all roll back together, never partially. <strong>Consistency</strong> — a transaction moves the database from one valid state to another, respecting every constraint. <strong>Isolation</strong> — concurrent transactions don't see each other's uncommitted work (to a degree controlled by isolation level — see below). <strong>Durability</strong> — once committed, a transaction survives a crash. Isolation is the one engineers most often get wrong in practice, because unlike the other three it's not all-or-nothing — it's a dial with real tradeoffs at every setting.</p>
+
+<h4>Concurrency anomalies</h4>
+<ul>
+<li><strong>Dirty read</strong> — reading another transaction's uncommitted changes, which might later roll back, leaving you having acted on data that never actually existed.</li>
+<li><strong>Non-repeatable read</strong> — reading the same row twice in one transaction and getting different values because another transaction committed a change in between.</li>
+<li><strong>Phantom read</strong> — re-running the same query twice in one transaction and getting a different <em>set of rows</em> (not just different values), because another transaction inserted or deleted rows matching your predicate in between.</li>
+</ul>
+
+<h4>The standard isolation levels</h4>
+<table>
+<tr><th>Level</th><th>Dirty Read</th><th>Non-Repeatable Read</th><th>Phantom Read</th><th>Typical Default</th></tr>
+<tr><td>READ UNCOMMITTED</td><td>Possible</td><td>Possible</td><td>Possible</td><td>SQL Server (rare in practice)</td></tr>
+<tr><td>READ COMMITTED</td><td>Prevented</td><td>Possible</td><td>Possible</td><td>PostgreSQL, SQL Server, Oracle</td></tr>
+<tr><td>REPEATABLE READ</td><td>Prevented</td><td>Prevented</td><td>Possible (standard) / Prevented (Postgres, MySQL InnoDB)</td><td>MySQL InnoDB</td></tr>
+<tr><td>SERIALIZABLE</td><td>Prevented</td><td>Prevented</td><td>Prevented</td><td>Rarely the default — opt-in</td></tr>
+</table>
+<p>PostgreSQL and MySQL's InnoDB engine both strengthen REPEATABLE READ beyond the SQL standard's minimum guarantee to also prevent phantom reads in most cases (via MVCC snapshotting, below) — a detail worth confirming against current docs per engine, since it's a common source of cross-database surprises when porting application logic.</p>
+
+<h4>MVCC vs. locking: how "isolation" actually gets implemented</h4>
+<p>PostgreSQL, MySQL/InnoDB, and Oracle implement isolation primarily through <strong>MVCC</strong> (Multi-Version Concurrency Control): instead of blocking readers behind writers, the engine keeps multiple versions of a row and gives each transaction a consistent snapshot as of when it started. This is why, in these engines, <strong>readers never block writers and writers never block readers</strong> under the default isolation level — a genuinely different experience from older lock-based systems where a long-running read could stall writes across the whole table. Writers still block other writers on the same row (via row-level locks), which is where <strong>deadlocks</strong> come from: two transactions each holding a lock the other needs, resolved by the engine detecting the cycle and forcibly aborting one transaction.</p>
+<pre><code class="language-sql">-- Choosing isolation level explicitly for a transaction that must
+-- see a fully consistent view for its entire duration (e.g., a
+-- financial reconciliation report that reads several tables)
+BEGIN;
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+SELECT SUM(amount) FROM payment WHERE payment_date < '2026-06-01';
+-- ... more reads across other tables, all seeing the same snapshot ...
+COMMIT;
+
+-- SERIALIZABLE for a case where correctness under concurrent writes
+-- genuinely matters more than throughput — e.g., checking then
+-- decrementing available inventory without a race condition
+BEGIN;
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+SELECT quantity FROM inventory WHERE inventory_id = 501 FOR UPDATE;
+-- ... application checks quantity > 0, then updates ...
+COMMIT;</code></pre>
+<p>The practical rule: default to READ COMMITTED for ordinary OLTP work — it's fast and prevents the anomaly (dirty reads) most likely to cause real damage. Reach for REPEATABLE READ or SERIALIZABLE only for the specific operations where a race condition would cause a correctness bug (double-booking, double-spending, double-decrementing inventory) — the stronger the isolation level, the more transactions abort-and-retry under contention, so applying it everywhere by default trades away throughput you didn't need to give up.</p>
+
+<p><strong>Exercise 4.3 — Isolation Levels on Pagila</strong></p>
+<p>Dataset: Pagila.</p>
+<ol>
+<li>Open two <code>psql</code> sessions. In session A, start a transaction, update a payment amount, but don't commit. In session B, query that row under READ COMMITTED, then under READ UNCOMMITTED (if your engine allows it) — observe the difference.</li>
+<li>Reproduce a non-repeatable read: in session A, read a row twice inside one REPEATABLE READ transaction while session B commits a change in between; confirm session A's two reads still match.</li>
+<li>Design (in prose, not necessarily executed) a checkout flow for renting the last available copy of a film, specifying which isolation level or explicit locking (<code>FOR UPDATE</code>) prevents two customers from renting the same last copy simultaneously.</li>
+<li>Explain, in your own words, why MVCC lets a long-running analytics query run against Pagila without blocking concurrent rental inserts.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-diagnose-and-fix-three-slow-queries">Phase 4 Capstone: Diagnose &amp; Fix Three Slow Queries</h3>
+<p><strong>Project: Query Optimization Report</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you name the three concurrency anomalies and the isolation level that first prevents each? If you draw a blank, re-read Module 4.3 before starting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> Pagila.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Three deliberately inefficient queries against Pagila (a missing-index scan, a bad join order forced by a CROSS JOIN or Cartesian mistake, and a correlated subquery that could be a join) — write these yourself as a "before" state.</li>
+<li>An EXPLAIN ANALYZE plan for each, with the specific bottleneck node identified and quoted.</li>
+<li>An optimized rewrite of each query (index, rewrite, or both), with a new EXPLAIN ANALYZE showing the improvement.</li>
+<li>A one-paragraph justification per query: was the fix an index, a rewrite, or both — and why wasn't the other option sufficient alone?</li>
+<li>A short isolation-level recommendation for a hypothetical checkout endpoint against this schema, citing the specific anomaly you're guarding against.</li>
+</ol>
+<hr />
+
+<h2 id="phase-5-sql-across-dialects-modern-sql">Phase 5: SQL Across Dialects &amp; Modern SQL</h2>
+<h3 id="weeks-9-10">Weeks 9–10 | Goal: write portable SQL and know what changes when you deploy to a different engine or a modern serverless platform</h3>
+<hr />
+
+<h3 id="module-51-dialect-portability">Module 5.1 — Dialect Portability</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1, 2.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Rewrite a pagination query and an upsert from PostgreSQL syntax into both MySQL and SQL Server syntax without a reference table.<br>
+<strong>Skip if:</strong> You've shipped SQL against at least two of these four engines in production.<br>
+<strong>Unlocks:</strong> 5.2, 5.3</p>
+</blockquote>
+<p>Every dialect here implements the same relational model and mostly the same core SQL (SELECT/JOIN/GROUP BY are near-identical everywhere) — the divergence is concentrated in a small, learnable set of areas: pagination, upserts, string/date functions, identity columns, and identifier quoting.</p>
+
+<table>
+<tr><th>Task</th><th>PostgreSQL 18</th><th>MySQL 8.4</th><th>SQL Server 2025</th><th>SQLite</th></tr>
+<tr><td>Pagination</td><td><code>LIMIT n OFFSET m</code></td><td><code>LIMIT n OFFSET m</code></td><td><code>OFFSET m ROWS FETCH NEXT n ROWS ONLY</code> (or legacy <code>TOP n</code>, no OFFSET)</td><td><code>LIMIT n OFFSET m</code></td></tr>
+<tr><td>Auto-incrementing ID</td><td><code>GENERATED ALWAYS AS IDENTITY</code> (or <code>SERIAL</code>)</td><td><code>AUTO_INCREMENT</code></td><td><code>IDENTITY(1,1)</code></td><td><code>INTEGER PRIMARY KEY</code> (rowid alias)</td></tr>
+<tr><td>String concatenation</td><td><code>\|\|</code></td><td><code>CONCAT(a,b)</code> (<code>\|\|</code> is logical OR unless PIPES_AS_CONCAT mode is set)</td><td><code>+</code></td><td><code>\|\|</code></td></tr>
+<tr><td>Upsert</td><td><code>INSERT ... ON CONFLICT (col) DO UPDATE SET ...</code></td><td><code>INSERT ... ON DUPLICATE KEY UPDATE ...</code></td><td><code>MERGE ... WHEN MATCHED ... WHEN NOT MATCHED ...</code></td><td><code>INSERT ... ON CONFLICT (col) DO UPDATE SET ...</code></td></tr>
+<tr><td>Current timestamp</td><td><code>NOW()</code> / <code>CURRENT_TIMESTAMP</code></td><td><code>NOW()</code></td><td><code>GETDATE()</code> / <code>SYSDATETIME()</code></td><td><code>CURRENT_TIMESTAMP</code></td></tr>
+<tr><td>Identifier quoting</td><td>double quotes <code>"col"</code></td><td>backticks <code>`col`</code></td><td>square brackets <code>[col]</code></td><td>double quotes <code>"col"</code></td></tr>
+</table>
+
+<pre><code class="language-sql">-- PostgreSQL / SQLite pagination
+SELECT title FROM film ORDER BY title LIMIT 20 OFFSET 40;
+
+-- SQL Server: standard-SQL OFFSET/FETCH (SQL:2008+) — requires ORDER BY
+SELECT title FROM film ORDER BY title OFFSET 40 ROWS FETCH NEXT 20 ROWS ONLY;</code></pre>
+
+<pre><code class="language-sql">-- Upsert: PostgreSQL / SQLite
+INSERT INTO customer (customer_id, email)
+VALUES (1, 'new@example.com')
+ON CONFLICT (customer_id) DO UPDATE SET email = EXCLUDED.email;
+
+-- Upsert: MySQL
+INSERT INTO customer (customer_id, email)
+VALUES (1, 'new@example.com')
+ON DUPLICATE KEY UPDATE email = VALUES(email);
+
+-- Upsert: SQL Server (and any SQL:2023-conformant engine) — MERGE is
+-- the only one of the four that's part of the actual SQL standard;
+-- the other three are vendor extensions that predate a standard upsert
+MERGE customer AS target
+USING (SELECT 1 AS customer_id, 'new@example.com' AS email) AS source
+  ON target.customer_id = source.customer_id
+WHEN MATCHED THEN UPDATE SET email = source.email
+WHEN NOT MATCHED THEN INSERT (customer_id, email) VALUES (source.customer_id, source.email);</code></pre>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Assuming FULL OUTER JOIN exists everywhere. SQLite has no native FULL JOIN — the portable workaround is a LEFT JOIN UNIONed with a second LEFT JOIN (tables swapped) filtered to only the non-matching rows, which is worth knowing even on engines that do support FULL JOIN natively, since it makes the underlying semantics (every unmatched row from both sides) concrete.</p></blockquote>
+
+<p><strong>Exercise 5.1 — Dialect Translation</strong></p>
+<p>Dataset: Pagila (write in PostgreSQL first, then hand-translate — you don't need MySQL/SQL Server installed to do this exercise correctly, precision in the translation is the point).</p>
+<ol>
+<li>Write a paginated query (page 3, 20 rows per page) against <code>film</code> in PostgreSQL syntax, then translate it to SQL Server's OFFSET/FETCH syntax.</li>
+<li>Write an upsert against <code>customer</code> in all three vendor-specific forms (Postgres/SQLite, MySQL, SQL Server).</li>
+<li>Write the SQLite-compatible FULL JOIN workaround for <code>customer LEFT JOIN payment</code> / <code>payment LEFT JOIN customer</code> combined via UNION.</li>
+<li>List every identifier-quoting difference you'd need to fix if porting a Postgres script with double-quoted column names to MySQL.</li>
+</ol>
+<hr />
+
+<h3 id="module-52-modern-sql-features">Module 5.2 — Modern SQL Features</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Write a JSON path query and a generated column definition, and name two features SQL:2023 added.<br>
+<strong>Skip if:</strong> You already reach for JSONB/JSON functions and generated columns without checking documentation.<br>
+<strong>Unlocks:</strong> 5.3, Final Capstone</p>
+</blockquote>
+
+<h4>SQL:2023: the current standard</h4>
+<p>SQL:2023 (ISO/IEC 9075:2023), adopted June 2023, is the current edition of the SQL standard — the first update since SQL:2016. Its headline addition is a proper <strong>JSON data type</strong> with a simplified dot-notation query syntax, plus new scalar/aggregate functions including <code>GREATEST</code>, <code>LEAST</code>, <code>ANY_VALUE</code>, and padding/trim functions (<code>RPAD</code>, <code>LPAD</code>, <code>RTRIM</code>, <code>LTRIM</code>). It also introduced SQL/PGQ, a property-graph query sublanguage layered on top of relational tables — a sign that graph-shaped querying is being pulled into mainstream SQL rather than staying a specialty NoSQL feature. Engine adoption of SQL:2023 features varies and is still catching up as of 2026; check current release notes per engine before relying on a specific feature being available.</p>
+
+<h4>JSON/JSONB across engines</h4>
+<p>Every major engine now supports storing and querying JSON documents inside relational tables — useful for genuinely semi-structured data (an API payload, user preferences) without forcing a schema onto data that doesn't have one, but the query syntax still diverges sharply by vendor.</p>
+<pre><code class="language-sql">-- PostgreSQL: -> for JSON, ->> for text extraction, jsonb_path_query
+-- for more complex paths. JSONB (binary JSON) is generally preferred
+-- over plain JSON — it's indexable and doesn't preserve key order/whitespace
+SELECT customer_id, preferences->>'newsletter' AS newsletter_opt_in
+FROM customer_prefs
+WHERE preferences @> '{"newsletter": true}';
+
+-- MySQL: JSON_EXTRACT / the -> shorthand, ->> for unquoted text
+SELECT customer_id, preferences->>'$.newsletter' AS newsletter_opt_in
+FROM customer_prefs
+WHERE JSON_EXTRACT(preferences, '$.newsletter') = true;
+
+-- SQL Server: JSON_VALUE for scalar extraction, JSON_QUERY for objects/arrays
+SELECT customer_id, JSON_VALUE(preferences, '$.newsletter') AS newsletter_opt_in
+FROM customer_prefs
+WHERE JSON_VALUE(preferences, '$.newsletter') = 'true';</code></pre>
+
+<h4>Generated (computed) columns</h4>
+<p>A generated column is computed automatically from other columns in the same row, either on read (<code>VIRTUAL</code>) or stored on write (<code>STORED</code>) — useful for derived values you want to filter/index without duplicating write logic across every application code path that inserts a row.</p>
+<pre><code class="language-sql">-- PostgreSQL / MySQL / SQLite: STORED generated column
+ALTER TABLE payment ADD COLUMN amount_with_tax NUMERIC
+  GENERATED ALWAYS AS (amount * 1.12) STORED;
+
+-- SQL Server: computed column (PERSISTED is the STORED equivalent)
+ALTER TABLE payment ADD amount_with_tax AS (amount * 1.12) PERSISTED;</code></pre>
+
+<h4>MERGE: the SQL:2023-standard upsert</h4>
+<p>Unlike the vendor-specific upserts in Module 5.1, <code>MERGE</code> is part of the SQL standard itself (since SQL:2003, refined since) and is the most portable way to express "insert or update" logic once your target engine supports it — PostgreSQL added <code>MERGE</code> in version 15, so on a current Postgres 18 install you can use either <code>ON CONFLICT</code> or standard <code>MERGE</code>, with <code>MERGE</code> being the more portable choice if the same logic needs to run against SQL Server too.</p>
+
+<p><strong>Exercise 5.2 — Modern SQL on Pagila</strong></p>
+<p>Dataset: Pagila, extended with a hypothetical JSONB column.</p>
+<ol>
+<li>Add a JSONB column to a copy of <code>customer</code> storing a preferences object, populate a few rows, and write a query filtering on a nested key.</li>
+<li>Add a STORED generated column to a copy of <code>payment</code> computing a tax-inclusive amount.</li>
+<li>Rewrite one of your Module 5.1 upsert exercises using standard <code>MERGE</code> syntax on PostgreSQL 18, and compare it against the <code>ON CONFLICT</code> version.</li>
+<li>Name two SQL:2023 features beyond JSON and MERGE, and explain in one sentence each what problem they solve.</li>
+</ol>
+<hr />
+
+<h3 id="module-53-serverless-cloud-sql-patterns">Module 5.3 — Serverless &amp; Cloud SQL Patterns</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 4.3, 5.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Explain database branching, connection pooling, and scale-to-zero to someone unfamiliar with any of them, using a concrete workflow example.<br>
+<strong>Skip if:</strong> You've already used a branch-per-environment Postgres workflow (Neon, or an equivalent) in a real project.<br>
+<strong>Unlocks:</strong> Phase 5 Capstone, Final Capstone</p>
+</blockquote>
+
+<h4>Storage/compute separation: what "serverless Postgres" actually means</h4>
+<p>Traditional Postgres couples storage and compute on the same machine — the database process and its data files live together, so scaling either one means resizing the whole instance. Modern serverless Postgres platforms (Neon is the clearest current example) separate the two: storage is a durable, versioned layer; compute is a stateless process that can start, stop, and scale independently against that storage. This single architectural choice is what makes the rest of this module's features possible — none of them are Postgres-the-language features, they're deployment-layer capabilities built on top of standard Postgres.</p>
+
+<h4>Database branching: schema changes without shared-environment risk</h4>
+<p>Because storage is copy-on-write, creating a full copy of a database — every table, every row — becomes a near-instant, cheap metadata operation instead of a multi-hour <code>pg_dump</code>/restore. The practical workflow this enables: <strong>a fresh database branch per pull request</strong>, seeded from a copy of production or staging data, so a migration or a risky query can be tested against realistic data without touching the shared environment at all. This directly changes how you'd validate the optimization work from Phase 4 in a team setting — you test the index/rewrite on a branch with production-scale data, not on a shared staging database other engineers are also using, and not on a synthetic dataset too small to reveal the real performance problem.</p>
+
+<h4>Scale-to-zero and autoscaling</h4>
+<p>Because compute is decoupled from storage, an idle branch's compute can pause completely — no queries running, no cost accruing — and resume automatically within seconds when a new connection arrives. This changes the economics of preview/test environments specifically: a database-per-PR pattern that would be wasteful with always-on compute becomes close to free when idle branches cost nothing.</p>
+
+<h4>Connection pooling</h4>
+<p>Postgres connections are relatively expensive (each is a full OS process), which becomes a real constraint under high-concurrency, short-lived-connection workloads — classically, serverless application functions that each open a fresh connection per invocation. A <strong>connection pooler</strong> (PgBouncer is the standard, and most serverless Postgres platforms run an equivalent transparently) sits between the application and the database, reusing a small pool of real backend connections across many logical client connections. The practical implication: an application deployed to a serverless/edge runtime should connect through the platform's pooled connection string, not the direct database connection string, or it risks exhausting the database's connection limit under bursty traffic.</p>
+
+<h4>Read replicas and OLTP vs. OLAP</h4>
+<p>A <strong>read replica</strong> is a continuously-updated copy of the database that serves read-only queries, offloading reporting/analytics load from the primary so it doesn't compete with transactional (OLTP) writes for resources. This is the deployment-layer answer to a tension every Phase 4 optimization discussion eventually runs into: a heavy analytical query and a latency-sensitive transactional query have genuinely different resource profiles, and at scale the fix is often architectural (route reads to a replica, or to a purpose-built analytical engine like DuckDB for genuinely OLAP-shaped workloads) rather than purely a better index.</p>
+
+<p><strong>Exercise 5.3 — Designing a Branch-Per-PR Workflow</strong></p>
+<p>Dataset: Pagila, used as the "production" dataset in this design exercise.</p>
+<ol>
+<li>Sketch (in prose or a diagram) a workflow where opening a pull request that modifies the schema automatically creates a database branch seeded from a production-like copy of Pagila.</li>
+<li>Specify what the CI pipeline should run against that branch before merge (e.g., the migration itself, plus a query from your Phase 4 capstone to confirm performance didn't regress).</li>
+<li>Explain, for this specific workflow, why scale-to-zero matters for cost — estimate roughly how many branches might exist at once across an active team, and what that would cost with always-on compute versus scale-to-zero.</li>
+<li>Identify one query type from your work in this guide that belongs on a read replica rather than the primary, and justify it in terms of OLTP vs. OLAP resource contention.</li>
+</ol>
+<hr />
+
+<h3 id="phase-5-capstone-port-the-analytics-pack">Phase 5 Capstone: Port the Analytics Pack</h3>
+<p><strong>Project: Cross-Dialect Analytics Pack + Branching Design</strong></p>
+<p><strong>Dataset:</strong> Pagila.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Take 5 queries from your Phase 2/3 capstones and rewrite each in MySQL and SQL Server syntax, documenting every change required.</li>
+<li>A table summarizing which of the 5 queries needed zero changes, minor changes, or a structurally different approach per engine, and why.</li>
+<li>A JSON column addition and query (Module 5.2) ported across at least PostgreSQL and MySQL syntax.</li>
+<li>A written database-branching workflow design (building on Module 5.3's exercise) for safely testing schema migrations against this schema.</li>
+<li>A one-page recommendation memo: for a new project targeting the Philippines market with variable, spiky traffic (a plausible profile for a small e-commerce or booking app), would you recommend a serverless Postgres platform over a traditional always-on instance — and what's the one condition under which you'd recommend the opposite?</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-sql-portfolio-project">Final Capstone: SQL Portfolio Project</h2>
+<p><strong>Project: End-to-End SQL Mastery Portfolio</strong></p>
+<p>Integrates all five phases. Uses Pagila throughout, from its flat pre-normalized form through to a fully optimized, cross-dialect-documented analytics layer.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A normalized schema design document (Phase 1) with ERD and functional-dependency justification.</li>
+<li>A business-question query pack of at least 8 queries covering filtering, joins, aggregation, subqueries, CTEs, and window functions (Phases 2–3).</li>
+<li>A cohort/retention or sessions analysis using gaps-and-islands or recursive CTEs (Phase 3).</li>
+<li>An optimization report: at least 3 queries diagnosed via EXPLAIN ANALYZE, with indexing or rewrite fixes and before/after evidence (Phase 4).</li>
+<li>An isolation-level recommendation for one write-heavy, concurrency-sensitive operation in the schema, naming the specific anomaly it guards against (Phase 4).</li>
+<li>A dialect-portability appendix: at least 5 queries translated across PostgreSQL, MySQL, and SQL Server, with a summary of what changed (Phase 5).</li>
+<li>A short design note on database branching / serverless deployment for this schema, including a scale-to-zero cost estimate (Phase 5).</li>
+<li>A one-page reflection: which phase changed how you think about SQL the most, and one specific query-writing habit you've changed as a result.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: SQL Task-Tool Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Filter rows</td><td><code>WHERE</code></td><td>Runs before <code>SELECT</code> in logical order — can't reference a SELECT-list alias</td></tr>
+<tr><td>Filter groups</td><td><code>HAVING</code></td><td>Runs after <code>GROUP BY</code> — use for aggregate conditions only, not for anything WHERE can already do</td></tr>
+<tr><td>Rank rows within a group</td><td><code>RANK()</code> / <code>DENSE_RANK()</code> / <code>ROW_NUMBER()</code> <code>OVER (PARTITION BY ... ORDER BY ...)</code></td><td>Pick based on how ties should behave — Module 3.2</td></tr>
+<tr><td>Top-N per group</td><td><code>ROW_NUMBER()</code> in a CTE, filtered to <code>rn &lt;= N</code></td><td>Portable across Postgres/MySQL 8+/SQL Server; SQLite needs 3.25+</td></tr>
+<tr><td>Running total</td><td><code>SUM(x) OVER (ORDER BY ... ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)</code></td><td>Always specify <code>ROWS</code> explicitly — the default RANGE frame breaks on tied ORDER BY values</td></tr>
+<tr><td>Walk a hierarchy</td><td><code>WITH RECURSIVE</code></td><td>Standard SQL; SQL Server and MySQL 8+ support the same syntax</td></tr>
+<tr><td>Upsert (insert-or-update)</td><td><code>ON CONFLICT</code> (Postgres/SQLite) / <code>ON DUPLICATE KEY UPDATE</code> (MySQL) / <code>MERGE</code> (standard, all engines)</td><td>Syntax diverges sharply by vendor — Module 5.1</td></tr>
+<tr><td>Paginate results</td><td><code>LIMIT/OFFSET</code> (Postgres/MySQL/SQLite) / <code>OFFSET...FETCH</code> (SQL Server, standard)</td><td>Module 5.1</td></tr>
+<tr><td>Query JSON</td><td><code>-&gt;</code>/<code>-&gt;&gt;</code> (Postgres) / <code>JSON_EXTRACT</code> (MySQL) / <code>JSON_VALUE</code> (SQL Server)</td><td>Module 5.2</td></tr>
+<tr><td>See what the planner will do</td><td><code>EXPLAIN</code> / <code>EXPLAIN ANALYZE</code></td><td>Always prefer ANALYZE when the query is safe to actually run — estimates alone can mislead</td></tr>
+<tr><td>Choose composite index order</td><td>Equality columns before range columns; higher selectivity first</td><td>Module 4.2</td></tr>
+<tr><td>Detect consecutive-date streaks</td><td>Gaps-and-islands: <code>date - (ROW_NUMBER() * INTERVAL '1 day')</code> as a stable group key</td><td>Module 3.3</td></tr>
+<tr><td>Pivot rows to columns</td><td>Conditional aggregation (<code>SUM(CASE WHEN...)</code> or <code>FILTER</code>)</td><td>Portable — no vendor PIVOT keyword needed. Module 3.3</td></tr>
+<tr><td>Remove duplicate rows precisely</td><td><code>ROW_NUMBER()</code> partitioned by dedup key, filter <code>rn = 1</code></td><td>Lets you control which duplicate survives, unlike plain DISTINCT — Module 3.3</td></tr>
+<tr><td>Choose an isolation level</td><td>READ COMMITTED default; SERIALIZABLE only where a race condition is a correctness bug</td><td>Module 4.3</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-relational-theory-design">Relational Theory &amp; Design</h3>
+<dl class="glossary">
+<dt>Relation</dt>
+<dd>A set of tuples sharing the same attributes — the mathematical object a SQL table approximates, but with no duplicate rows and no inherent order.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "table" as a strict synonym — a SQL table can have duplicate rows and a physical storage order, which a true relation cannot.</dd>
+<dt>Tuple</dt>
+<dd>One element of a relation — an ordered set of attribute values, corresponding to one row.</dd>
+<dd class="avoid"><strong>Avoid:</strong> using "record" and "tuple" interchangeably in a theory context — "record" is a storage-layer term, "tuple" is the algebra term.</dd>
+<dt>Attribute</dt>
+<dd>A named element of a relation's structure, bound to a domain of legal values — corresponds to a column.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "field" — common in application/ORM code, but not the relational-theory term.</dd>
+<dt>Relational Algebra</dt>
+<dd>The formal set of operators (selection, projection, union, difference, Cartesian product, and derived operators like join) that any relational query, including SQL, decomposes into.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing with "algebraic" in the loose everyday sense — this refers specifically to Codd's five primitive operators and their derivatives.</dd>
+<dt>Functional Dependency</dt>
+<dd>A constraint A → B meaning the value of A always determines the value of B within a relation — the atomic unit normalization theory reasons about.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "correlation" — a functional dependency is a strict, always-true determination, not a statistical association.</dd>
+<dt>Normal Form (1NF–BCNF)</dt>
+<dd>A named level of guarantee against a specific class of update anomaly, achieved by progressively removing partial and transitive functional dependencies from a table.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "normalization" (statistics/ML rescaling) — an unrelated concept from a different field that happens to share the word.</dd>
+<dt>Denormalization</dt>
+<dd>A deliberate departure from a fully normalized schema, storing a derived or duplicated value to avoid a join at read time.</dd>
+<dd class="avoid"><strong>Avoid:</strong> treating this as a mistake by default — it's a legitimate tradeoff when applied deliberately to reporting/read layers, not the system of record.</dd>
+<dt>Primary Key vs. Candidate Key</dt>
+<dd>A candidate key is any minimal set of attributes that uniquely identifies a tuple; the primary key is the one candidate key a schema designates as the official identifier.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming a table has only one candidate key — most tables have several (e.g., both an auto-increment ID and a unique email), and only one becomes "primary" by choice, not necessity.</dd>
+<dt>Foreign Key</dt>
+<dd>An attribute (or set of attributes) in one relation whose value must match a candidate key value in another relation (or be NULL), enforcing referential integrity between them.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "reference" as a strict synonym in DDL contexts — application code loosely says "reference" for any pointer-like relationship, but a foreign key is a specifically enforced database constraint.</dd>
+<dt>Entity-Relationship Model</dt>
+<dd>A conceptual modeling notation (entities, attributes, relationships, cardinality) used to design a schema before translating it into relational tables.</dd>
+<dd class="avoid"><strong>Avoid:</strong> conflating with the finished relational schema itself — an ER diagram is a design artifact, not the physical table structure.</dd>
+</dl>
+
+<h3 id="glossary-querying">Querying</h3>
+<dl class="glossary">
+<dt>Predicate</dt>
+<dd>A boolean-valued (in SQL: true/false/unknown) expression used to filter rows, as in a WHERE, HAVING, JOIN ON, or window PARTITION BY clause.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "condition" is fine informally, but "predicate" is the precise term used in query-plan output and formal discussion.</dd>
+<dt>Join</dt>
+<dd>A relational operator combining rows from two relations based on a predicate — derived from a Cartesian product filtered by that predicate.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming "join" implies "INNER JOIN" by default in every context — always specify the join type when precision matters.</dd>
+<dt>Cartesian Product</dt>
+<dd>The result of pairing every row of one relation with every row of another, with no filtering predicate applied.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "cross join" as a purely negative term — it's a legitimate operator for generating combinations, only a bug when it happens unintentionally via a missing join predicate.</dd>
+<dt>Subquery (Scalar / Correlated)</dt>
+<dd>A query nested inside another; scalar means it returns exactly one value, correlated means it references a column from the enclosing query and conceptually re-evaluates per outer row.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "nested query" as a precise synonym — informally fine, but doesn't distinguish scalar from correlated, which matters for both correctness and performance reasoning.</dd>
+<dt>CTE (Common Table Expression)</dt>
+<dd>A named, WITH-declared subquery, referenceable once (or, if recursive, referenceable within its own definition) within the statement that declares it.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming a CTE is always materialized separately from the main query — in most current engines a non-recursive CTE is typically inlined by the optimizer like an ordinary subquery.</dd>
+<dt>Window Function</dt>
+<dd>A function computing a value across a set of related rows (a "window," defined by PARTITION BY and a frame clause) without collapsing the result set, unlike GROUP BY.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "aggregate function" as a strict synonym — an aggregate function collapses rows; the same function used with OVER() does not.</dd>
+<dt>Frame Clause</dt>
+<dd>The part of a window function's OVER() clause (ROWS/RANGE/GROUPS BETWEEN ...) that defines exactly which rows within the current partition participate in the calculation for the current row.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming the default frame is always "all rows in the partition" — with an ORDER BY present, the implicit default is RANGE UNBOUNDED PRECEDING TO CURRENT ROW, a common source of silent bugs.</dd>
+<dt>Set Operation</dt>
+<dd>UNION, INTERSECT, or EXCEPT — an operator that combines two result sets treated as true sets, requiring matching column count and compatible types.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing with a JOIN — set operations combine result sets vertically (more rows, same columns); joins combine tables horizontally (same rows, more columns).</dd>
+<dt>Aggregate Function</dt>
+<dd>A function (COUNT, SUM, AVG, MIN, MAX) that collapses a group of rows into a single summary value.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming every aggregate ignores NULLs identically — COUNT(*) counts NULL rows, COUNT(column) does not, and most other aggregates skip NULLs in their input silently.</dd>
+<dt>NULL / Three-Valued Logic</dt>
+<dd>SQL's representation of an unknown or missing value, which makes every comparison against it evaluate to UNKNOWN rather than TRUE or FALSE.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "zero" or "empty string" as equivalents — NULL specifically means "no value/unknown," a distinct concept from any actual value in the column's domain.</dd>
+</dl>
+
+<h3 id="glossary-optimization-execution">Optimization &amp; Execution</h3>
+<dl class="glossary">
+<dt>Query Plan</dt>
+<dd>The concrete sequence of operations (scans, joins, sorts, aggregations) the engine will execute, or did execute, to answer a query — shown by EXPLAIN / EXPLAIN ANALYZE.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming the same query always produces the same plan — the planner re-decides based on current statistics, which change as data changes.</dd>
+<dt>Cost-Based Optimizer</dt>
+<dd>The component that estimates the resource cost of multiple possible execution strategies for a query and selects the cheapest one it can find.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming "cheapest" means "fastest in every case" — cost estimates depend on statistics that can be stale or wrong, producing a plan that's cheapest in theory but slow in practice.</dd>
+<dt>Cardinality Estimation</dt>
+<dd>The optimizer's prediction of how many rows a given step in a query plan will produce, based on table statistics.</dd>
+<dd class="avoid"><strong>Avoid:</strong> treating EXPLAIN's estimated row counts as ground truth — EXPLAIN ANALYZE's actual counts are the only reliable check.</dd>
+<dt>Index</dt>
+<dd>A separate, ordered data structure (typically a B-tree) that lets the engine locate rows matching a predicate without scanning the entire table.</dd>
+<dd class="avoid"><strong>Avoid:</strong> treating an index as a free performance upgrade — every index adds write-time and storage cost.</dd>
+<dt>B-Tree Index</dt>
+<dd>The default index structure on every major relational engine: a balanced, sorted tree enabling O(log n) lookups for equality and range predicates.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming a B-tree helps every predicate type — it does nothing for predicates that can't be expressed as a sorted-tree lookup, like a leading-wildcard LIKE.</dd>
+<dt>Covering Index / Index-Only Scan</dt>
+<dd>An index containing every column a query needs (filtered and selected), letting the engine answer the query without touching the underlying table at all.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming any index that happens to include the right columns automatically produces an index-only scan — engine-specific visibility/freshness rules can still force a table lookup.</dd>
+<dt>Selectivity</dt>
+<dd>The fraction of rows a predicate eliminates — a high-selectivity predicate (or column) narrows the result set sharply; a low-selectivity one barely narrows it at all.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing with "specificity" in a general-English sense — selectivity is a precise, statistics-driven quantity the optimizer computes.</dd>
+<dt>Join Algorithm</dt>
+<dd>The specific method (nested loop, hash join, merge join) the engine uses to physically combine two row sets during execution, chosen by the optimizer per query.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "join type" as a synonym — join <em>type</em> (INNER/LEFT/etc.) is what you write in SQL; join <em>algorithm</em> is how the engine executes it, chosen independently of the type.</dd>
+<dt>Transaction</dt>
+<dd>A sequence of one or more statements executed as a single atomic unit — either all effects commit, or none do.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming every statement outside an explicit BEGIN/COMMIT block is transaction-free — most engines wrap each individual statement in an implicit transaction by default.</dd>
+<dt>Isolation Level</dt>
+<dd>A configurable setting controlling which concurrency anomalies (dirty read, non-repeatable read, phantom read) a transaction is protected against.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming a stricter isolation level is always better — stronger isolation increases abort/retry rates under contention, a real throughput cost.</dd>
+<dt>MVCC (Multi-Version Concurrency Control)</dt>
+<dd>A concurrency-control technique where the engine keeps multiple versions of a row so readers see a consistent snapshot without blocking concurrent writers.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "locking" as a synonym — MVCC is specifically designed to avoid the reader/writer blocking that pure lock-based concurrency control causes.</dd>
+</dl>
+
+<h3 id="glossary-modern-portable-sql">Modern &amp; Portable SQL</h3>
+<dl class="glossary">
+<dt>Dialect</dt>
+<dd>A specific engine's implementation of SQL, including its extensions beyond and deviations from the ANSI/ISO standard.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming "standard SQL" is a complete, directly-runnable language on its own — every real engine is a dialect with its own extensions layered on the standard core.</dd>
+<dt>SQL Standard (ANSI/ISO SQL:2023)</dt>
+<dd>The formally published specification (ISO/IEC 9075) that defines core SQL syntax and semantics; SQL:2023 is the current edition as of 2026.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming every engine implements the full current standard — conformance is partial and varies significantly by engine and by feature.</dd>
+<dt>Upsert</dt>
+<dd>A single operation that inserts a row if it doesn't exist or updates it if it does, keyed on a uniqueness constraint.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming upsert syntax is portable — it's one of the sharpest dialect divergence points in SQL (Module 5.1).</dd>
+<dt>JSON / JSONB</dt>
+<dd>Semi-structured document data stored inside a relational column; JSONB (PostgreSQL-specific) is a parsed binary representation that supports indexing, unlike plain-text JSON.</dd>
+<dd class="avoid"><strong>Avoid:</strong> using JSON/JSONB as a substitute for proper normalization of genuinely structured, frequently-queried data — it's suited to sparse or truly variable-shape data, not a shortcut around schema design.</dd>
+<dt>Generated Column</dt>
+<dd>A column whose value is computed automatically from other columns in the same row, either on read or stored on write.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "computed column" as a universal term — it's the correct SQL Server term specifically; other engines call the same concept a generated column.</dd>
+<dt>Serverless Database</dt>
+<dd>A database deployment model where compute is decoupled from storage and can scale independently, including down to zero when idle.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming "serverless" means "no server exists" — it means server management and scaling are abstracted away, not that there's no underlying compute.</dd>
+<dt>Database Branching</dt>
+<dd>Creating a full, independent, cheaply-copied instance of a database (typically via copy-on-write storage) for isolated testing, most commonly one branch per pull request.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing with a read replica — a branch is independently writable and diverges from its source; a replica stays in lockstep, read-only.</dd>
+<dt>Connection Pooling</dt>
+<dd>Reusing a small set of real database connections across many logical client connections, to avoid exhausting the database's connection limit under high concurrency.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming connection pooling is only relevant to serverless deployments — any high-concurrency application benefits, serverless just makes it unavoidable.</dd>
+<dt>Read Replica</dt>
+<dd>A continuously-updated, read-only copy of a database used to offload read/reporting traffic from the primary write instance.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "database branch" as a synonym — a replica is read-only and stays synchronized; a branch is writable and diverges once created.</dd>
+<dt>OLTP vs. OLAP</dt>
+<dd>OLTP (Online Transaction Processing) describes many small, fast read/write operations typical of application databases; OLAP (Online Analytical Processing) describes fewer, larger, read-heavy analytical queries typical of reporting/BI.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming one engine configuration serves both workloads equally well at scale — the resource profiles genuinely conflict, which is why read replicas and dedicated analytical engines exist.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>Learning SQL, 3rd ed. (2020) — Alan Beaulieu</td><td>Full-language beginner-to-intermediate tour; pairs well with Phase 1–2</td></tr>
+<tr><td>Database Design and Relational Theory, 2nd ed. (2019) — C.J. Date</td><td>Rigorous treatment of normalization and functional dependencies; Phase 1</td></tr>
+<tr><td>SQL Cookbook, 2nd ed. (2020) — Anthony Molinaro &amp; Robert de Graaf</td><td>Recipe-style advanced query patterns, including window functions and gaps-and-islands; Phase 3</td></tr>
+<tr><td>SQL Performance Explained — Markus Winand</td><td>Indexing and query-optimization intuition, engine-agnostic; Phase 4. Free companion site: use-the-index-luke.com</td></tr>
+<tr><td>SQL Antipatterns (2010) — Bill Karwin</td><td>Catalog of common schema and query anti-patterns; principles remain current despite its age. Phase 1/3</td></tr>
+<tr><td>Designing Data-Intensive Applications, 2nd ed. (2026) — Martin Kleppmann &amp; Chris Riccomini</td><td>Systems-level companion covering execution engines, replication, and modern data platforms; Phase 4–5</td></tr>
+</table>
+
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>PostgreSQL 18 Official Docs</td><td>Reference for every module's PostgreSQL syntax</td><td>postgresql.org/docs/current — always check the version selector matches your install</td></tr>
+<tr><td>Use The Index, Luke!</td><td>Indexing intuition, free companion to SQL Performance Explained</td><td>use-the-index-luke.com — engine-agnostic, directly supports Phase 4</td></tr>
+<tr><td>Modern SQL</td><td>SQL:2023 standard tracking and per-engine feature support</td><td>modern-sql.com — the best current source for "does my engine support X yet"</td></tr>
+<tr><td>PostgreSQL Exercises</td><td>Hands-on drills against a sample schema</td><td>pgexercises.com — good supplementary practice alongside Pagila exercises</td></tr>
+<tr><td>Mode SQL Tutorial</td><td>Interactive beginner-to-intermediate querying tutorial</td><td>mode.com/sql-tutorial — free, browser-based, no install required</td></tr>
+<tr><td>DB Fiddle</td><td>Cross-dialect scratchpad</td><td>db-fiddle.com — run the same query against Postgres/MySQL/SQL Server/SQLite side by side; directly supports Phase 5</td></tr>
+<tr><td>Neon Docs</td><td>Serverless Postgres branching and scale-to-zero patterns</td><td>neon.tech/docs — primary reference for Module 5.3</td></tr>
+<tr><td>Pagila (GitHub)</td><td>The benchmark dataset used throughout this guide</td><td>github.com/devrimgunduz/pagila — actively maintained, tested against current PostgreSQL releases</td></tr>
+</table>
+
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>Pagila</td><td>Primary benchmark database for this guide (PostgreSQL port of MySQL's Sakila)</td></tr>
+<tr><td>Sakila</td><td>MySQL's original version of the same schema — use for Phase 5 dialect-porting exercises</td></tr>
+<tr><td>psql</td><td>PostgreSQL's official command-line client, already available with your local install</td></tr>
+<tr><td>DBeaver</td><td>Free, universal cross-engine SQL client — useful across Phase 5's multi-dialect work</td></tr>
+<tr><td>explain.dalibo.com</td><td>Visual EXPLAIN ANALYZE plan reader for PostgreSQL — pastes plan text, renders a readable tree; Phase 4</td></tr>
+</table>
+
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>r/SQL</td><td>Reddit</td><td>General beginner-to-intermediate Q&amp;A, dialect-agnostic</td></tr>
+<tr><td>r/PostgreSQL</td><td>Reddit</td><td>Postgres-specific troubleshooting and version/feature discussion</td></tr>
+<tr><td>Database Administrators Stack Exchange</td><td>Stack Exchange</td><td>Rigorous, citation-quality answers on optimization and theory questions — best for Phase 4</td></tr>
+<tr><td>PostgreSQL Slack / Discord</td><td>Slack / Discord</td><td>Real-time help from practitioners; good for stuck-on-a-plan situations</td></tr>
+<tr><td>Modern SQL newsletter</td><td>Web / email</td><td>Tracks SQL standard evolution and cross-engine feature adoption — keeps Phase 5 current after you finish this guide</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
+
+<h4>Phase 1 — Relational Foundations &amp; Theory</h4>
+<ul>
+<li>[ ] Module 1.1 — Set Theory &amp; the Relational Model</li>
+<li>[ ] Exercise 1.1 — Relational Algebra by Hand</li>
+<li>[ ] Module 1.2 — Normalization &amp; Functional Dependencies</li>
+<li>[ ] Exercise 1.2 — Functional Dependency Audit</li>
+<li>[ ] Capstone 1 — Normalize the Rental Log</li>
+</ul>
+
+<h4>Phase 2 — Core Querying</h4>
+<ul>
+<li>[ ] Module 2.1 — SELECT, Filtering, Sorting &amp; Set Operations</li>
+<li>[ ] Exercise 2.1 — Filtering &amp; Set Practice</li>
+<li>[ ] Module 2.2 — Joins Deep Dive</li>
+<li>[ ] Exercise 2.2 — Join Patterns</li>
+<li>[ ] Module 2.3 — Aggregation &amp; Grouping</li>
+<li>[ ] Exercise 2.3 — Aggregation Practice</li>
+<li>[ ] Capstone 2 — Business-Question Query Pack</li>
+</ul>
+
+<h4>Phase 3 — Advanced Querying Patterns</h4>
+<ul>
+<li>[ ] Module 3.1 — Subqueries &amp; CTEs</li>
+<li>[ ] Exercise 3.1 — Subqueries &amp; CTEs Practice</li>
+<li>[ ] Module 3.2 — Window Functions Mastery</li>
+<li>[ ] Exercise 3.2 — Window Functions Practice</li>
+<li>[ ] Module 3.3 — Pivoting, Gaps &amp; Islands, Deduplication</li>
+<li>[ ] Exercise 3.3 — Advanced Patterns Practice</li>
+<li>[ ] Capstone 3 — Cohort Retention &amp; Sessions Analysis</li>
+</ul>
+
+<h4>Phase 4 — Query Optimization &amp; Execution Reasoning</h4>
+<ul>
+<li>[ ] Module 4.1 — How the Query Planner Thinks</li>
+<li>[ ] Exercise 4.1 — Reading Plans</li>
+<li>[ ] Module 4.2 — Indexing Strategy</li>
+<li>[ ] Exercise 4.2 — Indexing Strategy Practice</li>
+<li>[ ] Module 4.3 — Transactions, Isolation &amp; Concurrency</li>
+<li>[ ] Exercise 4.3 — Isolation Levels Practice</li>
+<li>[ ] Capstone 4 — Diagnose &amp; Fix Three Slow Queries</li>
+</ul>
+
+<h4>Phase 5 — SQL Across Dialects &amp; Modern SQL</h4>
+<ul>
+<li>[ ] Module 5.1 — Dialect Portability</li>
+<li>[ ] Exercise 5.1 — Dialect Translation</li>
+<li>[ ] Module 5.2 — Modern SQL Features</li>
+<li>[ ] Exercise 5.2 — Modern SQL Practice</li>
+<li>[ ] Module 5.3 — Serverless &amp; Cloud SQL Patterns</li>
+<li>[ ] Exercise 5.3 — Branch-Per-PR Workflow Design</li>
+<li>[ ] Capstone 5 — Port the Analytics Pack</li>
+</ul>
+
+<h4>Final Capstone &amp; Outcomes</h4>
+<ul>
+<li>[ ] Final Capstone — SQL Portfolio Project complete</li>
+<li>[ ] Comfortable writing and defending a normalized schema from scratch</li>
+<li>[ ] Comfortable reading an EXPLAIN ANALYZE plan and proposing a fix</li>
+<li>[ ] Comfortable porting a query across PostgreSQL, MySQL, and SQL Server</li>
+</ul>
+
+<p><em>Guide Version 1.0 — SQL Mastery Track: Beginner to Advanced</em><br>
+<em>Non-linear modular design · Placement quiz · 14 modules · ~100h estimated study time (~10–12 weeks part-time) · hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-08-22</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               plsql:"pl/pgsql",tsql:"t-sql",};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>
