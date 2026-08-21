@@ -13,6 +13,7 @@ One folder for every benchmark dataset/project/scenario referenced across the `l
 | [`shopflow/`](shopflow/) | [Statistics with Python](../statistics-with-python/statistics-with-python_learning_guide.html) | 80,400-row PH e-commerce transaction log, seeded with nulls/duplicates/skew |
 | [`tindahub/`](tindahub/) | [PostgreSQL & Metabase](../postgresql-metabase/postgresql-metabase_learning_guide.html) | `schema.sql` + `seed.sql` — 6-table normalized marketplace schema |
 | [`tindahub-orders/`](tindahub-orders/) | [Excel](../excel/excel_learning_guide.html) | Flat 5,000-order register + Products/Customers masters + 2 messy sheets + 3 monthly CSVs — same fictional business as `tindahub/`, flattened for Tables/lookups/PivotTables instead of joins |
+| [`pagila/`](pagila/) | [SQL Mastery](../sql-mastery/sql-mastery_learning_guide.html) | `pagila-schema.sql` + `pagila-data.sql` — the standard PostgreSQL DVD-rental sample database (15-table normalized schema), trimmed from the upstream [devrimgunduz/pagila](https://github.com/devrimgunduz/pagila) clone (no Docker/pgAdmin files, no nested `.git`) |
 
 Regenerate the six synthetic CSV datasets (superstore-sales, shopsphere, ecommerce-orders, shopflow, inventory, tindahub-orders) with:
 

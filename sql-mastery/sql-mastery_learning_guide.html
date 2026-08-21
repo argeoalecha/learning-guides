@@ -634,7 +634,7 @@ FROM customer;</code></pre>
 <p><strong>Exercise 1.1 — Relational Algebra by Hand</strong></p>
 <p>Dataset: Pagila (PostgreSQL DVD-rental sample database) — install it locally against your existing PostgreSQL instance before starting Phase 1's exercises.</p>
 <ol>
-<li>Install Pagila from <a href="https://github.com/devrimgunduz/pagila" target="_blank" rel="noopener">github.com/devrimgunduz/pagila</a> against your local PostgreSQL.</li>
+<li>Load Pagila into your local PostgreSQL: run <code>psql -d pagila -f pagila-schema.sql</code> then <code>psql -d pagila -f pagila-data.sql</code> from <a href="../datasets/pagila/">../datasets/pagila/</a> (trimmed from the upstream <a href="https://github.com/devrimgunduz/pagila" target="_blank" rel="noopener">devrimgunduz/pagila</a> repo — schema and data only, no Docker/pgAdmin files).</li>
 <li>Write a query that is <em>only</em> a selection + projection on the <code>film</code> table (title and rental_rate of films rated 'PG').</li>
 <li>Write the same query's logic as prose relational algebra: <code>π title, rental_rate (σ rating='PG' (film))</code>.</li>
 <li>Write a query using <code>EXCEPT</code> to find customers who have an account but have never made a payment.</li>
@@ -1744,7 +1744,7 @@ ALTER TABLE payment ADD amount_with_tax AS (amount * 1.12) PERSISTED;</code></pr
 <tr><td>Mode SQL Tutorial</td><td>Interactive beginner-to-intermediate querying tutorial</td><td>mode.com/sql-tutorial — free, browser-based, no install required</td></tr>
 <tr><td>DB Fiddle</td><td>Cross-dialect scratchpad</td><td>db-fiddle.com — run the same query against Postgres/MySQL/SQL Server/SQLite side by side; directly supports Phase 5</td></tr>
 <tr><td>Neon Docs</td><td>Serverless Postgres branching and scale-to-zero patterns</td><td>neon.tech/docs — primary reference for Module 5.3</td></tr>
-<tr><td>Pagila (GitHub)</td><td>The benchmark dataset used throughout this guide</td><td>github.com/devrimgunduz/pagila — actively maintained, tested against current PostgreSQL releases</td></tr>
+<tr><td>Pagila</td><td>The benchmark dataset used throughout this guide</td><td><a href="../datasets/pagila/">datasets/pagila/</a> in this repo (schema + data SQL only) — trimmed from <a href="https://github.com/devrimgunduz/pagila" target="_blank" rel="noopener">github.com/devrimgunduz/pagila</a>, actively maintained and tested against current PostgreSQL releases</td></tr>
 </table>
 
 <h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
