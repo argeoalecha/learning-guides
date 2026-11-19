@@ -473,7 +473,7 @@ This guide is built to be <strong>non-linear</strong>. Each module is self-conta
 <h3>Section B — Tool Use &amp; Structured Outputs</h3>
 <ul>
 <li>[ ] I can define a tool schema and handle <code>tool_use</code> / <code>tool_result</code> message blocks.</li>
-<li>[ ] I can get Claude to output valid JSON reliably using tool schemas and <code>tool_choice</code>.</li>
+<li>[ ] I can get Claude to output valid JSON reliably using structured outputs (<code>messages.parse()</code> / <code>output_config.format</code>).</li>
 <li>[ ] I have built a multi-turn conversation loop that includes tool calls.</li>
 <li>[ ] I understand how to pass images or PDFs to Claude via the Messages API.</li>
 </ul>
@@ -548,50 +548,64 @@ Capstone Projects            (Ongoing)</code></pre>
 </blockquote>
 
 <h4>The Messages API Shape</h4>
-<p>Claude exposes a single endpoint — <code>POST /v1/messages</code> — that accepts a <code>model</code>, a <code>max_tokens</code> budget, an optional <code>system</code> prompt, and a <code>messages</code> array of alternating user/assistant turns. Every response carries a <code>stop_reason</code> (<code>end_turn</code>, <code>max_tokens</code>, or <code>tool_use</code>) that tells you why Claude stopped generating. Ignoring <code>stop_reason</code> means you can silently ship truncated responses in production — always check it.</p>
+<p>Claude exposes a single endpoint — <code>POST /v1/messages</code> — that accepts a <code>model</code>, a <code>max_tokens</code> budget, an optional <code>system</code> prompt, and a <code>messages</code> array of alternating user/assistant turns. Every response carries a <code>stop_reason</code> (<code>end_turn</code>, <code>max_tokens</code>, <code>tool_use</code>, or <code>refusal</code> when a safety classifier declines the request) that tells you why Claude stopped generating. Ignoring <code>stop_reason</code> means you can silently ship truncated or empty responses in production — always check it.</p>
 <pre><code class="language-py">import anthropic
 
 client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from env
 
+MODEL = "claude-sonnet-5-5"       # SkillBot's everyday model
+FAST_MODEL = "claude-haiku-5-5"   # classification, routing, grading
+
+def text_of(response) -&gt; str:
+    """Return the reply text. Current models put a thinking block before the text,
+    so response.content[0] is not always text — select the block by type."""
+    if response.stop_reason == "refusal":
+        raise RuntimeError("Request declined by Claude's safety classifiers")
+    return next(b.text for b in response.content if b.type == "text")
+
 response = client.messages.create(
-    model="claude-sonnet-4-6",
-    max_tokens=1024,
+    model=MODEL,
+    max_tokens=16000,
     system="You are a concise technical mentor. Answer in plain English.",
     messages=[
         {"role": "user", "content": "What is the difference between a process and a thread?"}
     ]
 )
 
-print(response.content[0].text)
+print(text_of(response))
 print("Stop reason:", response.stop_reason)
 print("Input tokens:", response.usage.input_tokens)
 print("Output tokens:", response.usage.output_tokens)
 </code></pre>
+<p>Current Claude models think before they answer (<em>adaptive thinking</em>, on by default), so the response's <code>content</code> list can start with a <code>thinking</code> block. Code written for older models that reads <code>response.content[0].text</code> crashes with an <code>AttributeError</code> the first time a thinking block comes first — every example in this guide uses <code>text_of()</code> instead.</p>
 
 <h4>Model Selection</h4>
-<p>Choose the model by matching capability to cost: <code>claude-haiku-4-5-20251001</code> for high-volume, low-latency tasks (classification, routing, extraction); <code>claude-sonnet-4-6</code> as the default for most product features; <code>claude-opus-4-8</code> for complex reasoning where quality outweighs cost. Using Opus for every call is the fastest way to exhaust your budget — always benchmark the smallest model that meets your quality bar first, then scale up only where needed.</p>
+<p>Choose the model by matching capability to cost: <code>claude-haiku-5-5</code> ($0.10 / $0.50 per million input/output tokens) for high-volume, low-latency tasks (classification, routing, extraction, grading); <code>claude-sonnet-5-5</code> ($2 / $10) for everyday product features; <code>claude-opus-5-5</code> ($4 / $20) — Anthropic's recommended default — for complex reasoning where quality outweighs cost; and <code>claude-fable-5-2</code> ($8 / $40) only when you need the most capable model available. Benchmark the cheapest model that meets your quality bar first, then scale up only where needed. Use the exact model ID strings — never append a date suffix you remember from older tutorials.</p>
 
-<h4>Token Budgeting</h4>
-<p><code>max_tokens</code> sets the ceiling on the response, not a target. If Claude reaches it, the response is incomplete — always set this at least 20% above your expected response length. Input tokens (your prompt + history) and output tokens (Claude's reply) are billed separately; a large system prompt costs real money on every single request, so keep system prompts tight.</p>
-<pre><code class="language-py">def ask_claude(question: str, max_tokens: int = 512) -&gt; str:
+<h4>Token Budgeting and Effort</h4>
+<p><code>max_tokens</code> sets the ceiling on the response, not a target — and on current models it covers Claude's thinking <em>and</em> its visible answer. Set it too low and the call stops with <code>stop_reason == "max_tokens"</code> before the answer is written. Default to <code>~16000</code> for non-streaming calls (larger values need streaming — Module 3.4); you are only billed for tokens actually generated. To trade depth for speed and cost, lower the <strong>effort</strong> instead: <code>output_config={"effort": "low"}</code> (levels <code>low</code>, <code>medium</code>, <code>high</code>, <code>xhigh</code>, <code>max</code>). Input tokens (your prompt + history) and output tokens (thinking + reply) are billed separately; a large system prompt costs real money on every single request, so keep system prompts tight.</p>
+<pre><code class="language-py">def ask_claude(question: str, max_tokens: int = 16000) -&gt; str:
     response = client.messages.create(
-        model="claude-haiku-4-5-20251001",
+        model=FAST_MODEL,
         max_tokens=max_tokens,
+        output_config={"effort": "low"},
         messages=[{"role": "user", "content": question}]
     )
     if response.stop_reason == "max_tokens":
         raise ValueError("Response truncated — increase max_tokens")
-    return response.content[0].text
+    return text_of(response)
 </code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Copying <code>temperature</code>, <code>top_p</code>, or <code>budget_tokens</code> from an older tutorial. Current models reject them with a 400 error — sampling parameters are removed, and the fixed thinking budget is replaced by adaptive thinking plus <code>effort</code>. Control output with the prompt, structured outputs (Module 2.2), and effort instead.</p></blockquote>
 
 <p><strong>Exercise 1.1 — SkillBot First Call</strong></p>
 <p>Benchmark: SkillBot — an AI learning coach built progressively across all modules.</p>
 <ol>
 <li>Install the <code>anthropic</code> Python package and set <code>ANTHROPIC_API_KEY</code> in your environment.</li>
-<li>Write a function <code>ask_skillbot(topic: str) -&gt; str</code> that calls <code>claude-haiku-4-5-20251001</code> and returns the response text.</li>
+<li>Write a function <code>ask_skillbot(topic: str) -&gt; str</code> that calls <code>claude-haiku-5-5</code> and returns the response text using <code>text_of()</code>.</li>
 <li>Call it with <code>"Explain Python list comprehensions to a beginner"</code> and print the result.</li>
-<li>Add a guard that raises a <code>ValueError</code> if <code>stop_reason == "max_tokens"</code>.</li>
-<li>Print the token counts for each call and estimate the cost at $0.80 per million input tokens.</li>
+<li>Add a guard that raises a <code>ValueError</code> if <code>stop_reason == "max_tokens"</code>, then trigger it deliberately with <code>max_tokens=50</code> and note how much of the budget went to thinking.</li>
+<li>Print the token counts for each call and estimate the cost at $0.10 per million input and $0.50 per million output tokens.</li>
+<li>Re-run the same call with <code>effort</code> set to <code>low</code> and then <code>high</code>; compare output tokens and answer quality.</li>
 </ol>
 <hr />
 
@@ -624,17 +638,16 @@ You do NOT answer questions outside this scope — redirect the user politely.
 </code></pre>
 
 <h4>Message Role Semantics</h4>
-<p>The <code>messages</code> array must strictly alternate between <code>user</code> and <code>assistant</code> roles. Injecting an <code>assistant</code> prefill — providing the opening characters of Claude's response — constrains the output format because Claude continues from that point. This is a reliable way to force JSON or structured responses. The API rejects arrays with two consecutive same-role messages, so always verify alternation before sending.</p>
+<p>The <code>messages</code> array must start with a <code>user</code> turn; <code>user</code> and <code>assistant</code> turns then take turns, and if you send two same-role messages in a row the API merges them into one turn. Older tutorials teach <em>assistant prefill</em> — ending the array with a partial <code>assistant</code> message so Claude continues from it — to force a format. <strong>Current models reject prefill with a 400 error.</strong> Put format rules in the system prompt's Output Format layer instead, and when you need machine-readable output, use structured outputs (Module 2.2), which guarantee the shape rather than nudging it.</p>
 <pre><code class="language-py">response = client.messages.create(
-    model="claude-sonnet-4-6",
-    max_tokens=512,
-    system=SKILLBOT_SYSTEM_PROMPT,
+    model=MODEL,
+    max_tokens=16000,
+    system=SKILLBOT_SYSTEM_PROMPT + "\n\nStart every explanation by bolding the term being explained.",
     messages=[
         {"role": "user", "content": "Explain async/await in Python."},
-        {"role": "assistant", "content": "**async/await** is Python's built-in syntax for"},
     ]
 )
-# Claude continues from the prefill — already committed to the bold-term format
+print(text_of(response))  # format comes from the system prompt, not a prefill
 </code></pre>
 
 <h4>Prompt Layering Order</h4>
@@ -646,7 +659,7 @@ You do NOT answer questions outside this scope — redirect the user politely.
 <li>Write a structured system prompt using the Role / Scope / Output Format / Refusal Rules template above.</li>
 <li>Test three messages that should succeed: a Python question, a Git question, and a data structures question.</li>
 <li>Test two messages that should trigger refusals: an off-topic request (e.g., a recipe) and a request for exploit code.</li>
-<li>Add a prefill of <code>"Here is a step-by-step explanation:\n\n1."</code> and verify Claude always opens with a numbered list.</li>
+<li>Add an Output Format rule requiring every explanation to open with a numbered list of steps, and verify Claude follows it — then try the old prefill technique once and read the 400 error it returns.</li>
 <li>Iterate until all 5 test cases pass consistently across 3 separate calls each.</li>
 </ol>
 <hr />
@@ -677,16 +690,18 @@ Respond with exactly one word: Python, JavaScript, or Other."""
 
 def classify_question(question: str) -&gt; str:
     response = client.messages.create(
-        model="claude-haiku-4-5-20251001",
-        max_tokens=10,
+        model=FAST_MODEL,
+        max_tokens=1024,                  # room for brief thinking before the one-word label
+        output_config={"effort": "low"},  # a label needs little reasoning
         system=FEW_SHOT_SYSTEM,
         messages=[{"role": "user", "content": f"Q: {question}"}],
     )
-    return response.content[0].text.strip()
+    return text_of(response).strip()
 </code></pre>
+<p>The old habit of <code>max_tokens=10</code> for a one-word label breaks on current models: thinking counts against <code>max_tokens</code>, so the call stops before the label is written. Keep the budget generous and lower <code>effort</code> instead — you pay only for the tokens actually produced.</p>
 
 <h4>Chain-of-Thought Prompting</h4>
-<p>Chain-of-thought prompting asks Claude to reason step-by-step before giving a final answer. Adding "Think step by step" or "Let's reason through this carefully" to the user message triggers CoT. For multi-step reasoning tasks — math, logic, debugging — CoT reliably reduces errors because mistakes in intermediate steps become visible and correctable. For simple classification or retrieval, CoT wastes tokens without improving accuracy.</p>
+<p>Chain-of-thought prompting asks Claude to reason step-by-step before giving a final answer. Current models already reason internally through adaptive thinking — raise <code>effort</code> to get deeper reasoning. Asking for <em>visible</em> reasoning in the reply is still useful when the reasoning itself is the product: for debugging, a learner seeing the steps is the lesson, and mistakes in intermediate steps become visible and correctable. For simple classification or retrieval, visible reasoning wastes tokens without improving accuracy.</p>
 <pre><code class="language-py">COT_SYSTEM = """You are a debugging assistant.
 When shown a code error, reason through it step by step before suggesting a fix.
 Format your response as: Reasoning: ... | Fix: ..."""
@@ -694,12 +709,12 @@ Format your response as: Reasoning: ... | Fix: ..."""
 def debug_with_cot(error_message: str, code_snippet: str) -&gt; str:
     prompt = f"Error: {error_message}\n\nCode:\n```python\n{code_snippet}\n```"
     response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=1024,
+        model=MODEL,
+        max_tokens=16000,
         system=COT_SYSTEM,
         messages=[{"role": "user", "content": prompt}],
     )
-    return response.content[0].text
+    return text_of(response)
 </code></pre>
 
 <blockquote class="callout"><p><strong>Common mistake:</strong> Treating chain-of-thought as always better. On tasks where the answer is direct (e.g., "What is the capital of France?"), forcing reasoning wastes tokens and sometimes causes Claude to second-guess a correct first instinct. Reserve CoT for multi-step reasoning tasks where the reasoning chain itself has diagnostic value.</p></blockquote>
@@ -733,8 +748,8 @@ def debug_with_cot(error_message: str, code_snippet: str) -&gt; str:
 @dataclass
 class ConversationManager:
     system: str
-    model: str = "claude-sonnet-4-6"
-    max_tokens: int = 1024
+    model: str = MODEL
+    max_tokens: int = 16000
     history: list[dict] = field(default_factory=list)
 
     def chat(self, user_message: str) -&gt; str:
@@ -745,23 +760,23 @@ class ConversationManager:
             system=self.system,
             messages=self.history,
         )
-        assistant_text = response.content[0].text
+        assistant_text = text_of(response)
         self.history.append({"role": "assistant", "content": assistant_text})
         return assistant_text
 </code></pre>
 
 <h4>Context Window Management</h4>
-<p>Every model has a context window limit (200k tokens for Claude 3+ models). Requests that exceed it fail with an API error. The practical limit is lower — very long contexts slow responses and dilute attention on the current question. The standard mitigation is summary compression: ask Claude to summarize older history before dropping it. This preserves semantics far better than truncation, at the cost of one extra API call per compression event.</p>
+<p>Every model has a context window limit — 1M tokens on the current Haiku, Sonnet, Opus, and Fable models. Requests that exceed it fail with an API error. The practical limit is far lower — very long contexts cost more on every turn, slow responses, and dilute attention on the current question. The standard mitigation is summary compression: ask Claude to summarize older history before dropping it. This preserves semantics far better than truncation, at the cost of one extra API call per compression event. Building it yourself (below) teaches the mechanics; in production you can also turn on the API's server-side <strong>compaction</strong> (beta), which summarizes earlier context automatically once it nears a threshold — as long as you append the full <code>response.content</code> back to history, not just the text.</p>
 <pre><code class="language-py">MAX_HISTORY_TOKENS = 40_000
 
 def compress_history(history: list[dict]) -&gt; list[dict]:
     summary_response = client.messages.create(
-        model="claude-haiku-4-5-20251001",
-        max_tokens=512,
+        model=FAST_MODEL,
+        max_tokens=4096,
         system="Summarize the conversation history below in 200 words. Preserve key facts and decisions.",
         messages=[{"role": "user", "content": str(history)}],
     )
-    summary = summary_response.content[0].text
+    summary = text_of(summary_response)
     return [{"role": "user", "content": f"[Earlier context summary]: {summary}"}]
 
 def safe_chat(manager: ConversationManager, user_message: str) -&gt; str:
@@ -847,29 +862,33 @@ def run_tool_loop(user_message: str) -&gt; str:
 
     while True:
         response = client.messages.create(
-            model="claude-sonnet-4-6",
-            max_tokens=1024,
+            model=MODEL,
+            max_tokens=16000,
             system=SKILLBOT_SYSTEM_PROMPT,
             tools=[SEARCH_TOOL],
             messages=messages,
         )
 
         if response.stop_reason == "end_turn":
-            return response.content[0].text
+            return text_of(response)
 
-        if response.stop_reason == "tool_use":
-            messages.append({"role": "assistant", "content": response.content})
-            tool_results = []
-            for block in response.content:
-                if block.type == "tool_use":
-                    result = search_knowledge_base(**block.input)
-                    tool_results.append({
-                        "type": "tool_result",
-                        "tool_use_id": block.id,
-                        "content": result,
-                    })
-            messages.append({"role": "user", "content": tool_results})
+        if response.stop_reason != "tool_use":
+            # refusal or max_tokens: re-sending the same request would loop forever
+            raise RuntimeError(f"Unexpected stop_reason: {response.stop_reason}")
+
+        messages.append({"role": "assistant", "content": response.content})
+        tool_results = []
+        for block in response.content:
+            if block.type == "tool_use":
+                result = search_knowledge_base(**block.input)
+                tool_results.append({
+                    "type": "tool_result",
+                    "tool_use_id": block.id,
+                    "content": result,
+                })
+        messages.append({"role": "user", "content": tool_results})
 </code></pre>
+<p>Two details matter here. Append the <em>whole</em> <code>response.content</code> as the assistant turn — it carries the thinking and <code>tool_use</code> blocks the API needs to see again on the next request, so stripping it down to text breaks the loop. And handle every stop reason: a loop that only checks <code>end_turn</code> and <code>tool_use</code> spins forever, re-sending the same request, the first time it hits <code>refusal</code> or <code>max_tokens</code>.</p>
 
 <p><strong>Exercise 2.1 — SkillBot Search Tool</strong></p>
 <p>Benchmark: SkillBot.</p>
@@ -885,49 +904,13 @@ def run_tool_loop(user_message: str) -&gt; str:
 <h3 id="module-22-structured-outputs">Module 2.2 — Structured Outputs</h3>
 <blockquote class="module-meta">
 <p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~4h<br>
-<strong>Skip-check (test-out):</strong> Use a forced tool call to reliably extract a structured object (is_correct, score, explanation) from unstructured text across 10 diverse inputs with zero parsing failures.<br>
-<strong>Skip if:</strong> You routinely use tool schemas as output constraints to guarantee JSON from Claude.<br>
+<strong>Skip-check (test-out):</strong> Use structured outputs to reliably extract a structured object (is_correct, score, explanation) from unstructured text across 10 diverse inputs with zero parsing failures.<br>
+<strong>Skip if:</strong> You routinely use <code>messages.parse()</code> or <code>output_config.format</code> to guarantee JSON from Claude.<br>
 <strong>Unlocks:</strong> 2.3</p>
 </blockquote>
 
-<h4>Tool Schema as Output Constraint</h4>
-<p>The most reliable way to get structured JSON from Claude is to define a tool whose schema IS the output format you want, and force Claude to call it with <code>tool_choice={"type": "tool", "name": "..."}</code>. This is significantly more reliable than instructing Claude in prose to "output valid JSON" — the API validates the output against the schema before returning it. Parsing raw text JSON from prose instructions fails on edge cases (markdown code fences, trailing commentary) far more often than forced tool calls do.</p>
-<pre><code class="language-py">ASSESSMENT_TOOL = {
-    "name": "record_assessment",
-    "description": "Record a structured assessment of the learner's answer.",
-    "input_schema": {
-        "type": "object",
-        "properties": {
-            "is_correct": {"type": "boolean"},
-            "score": {"type": "integer", "minimum": 0, "maximum": 10},
-            "explanation": {"type": "string"},
-            "concepts_to_review": {
-                "type": "array",
-                "items": {"type": "string"}
-            }
-        },
-        "required": ["is_correct", "score", "explanation", "concepts_to_review"]
-    }
-}
-
-def assess_answer(question: str, correct_answer: str, user_answer: str) -&gt; dict:
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=512,
-        system="You assess learner answers for correctness and provide structured feedback.",
-        tools=[ASSESSMENT_TOOL],
-        tool_choice={"type": "tool", "name": "record_assessment"},
-        messages=[{
-            "role": "user",
-            "content": f"Question: {question}\nCorrect: {correct_answer}\nLearner: {user_answer}"
-        }]
-    )
-    tool_block = next(b for b in response.content if b.type == "tool_use")
-    return tool_block.input  # already a parsed dict — no json.loads() needed
-</code></pre>
-
-<h4>Pydantic Validation Layer</h4>
-<p>Even with a tool schema, add a Pydantic model as a validation gate before the output reaches your application. Schema validation at the API level catches type errors; Pydantic catches domain logic violations (e.g., a score of 11 that the schema technically allows but your rubric doesn't). Defense in depth here prevents silent data quality bugs from propagating downstream — and it gives you a typed object rather than a raw dictionary to work with.</p>
+<h4>Structured Outputs: the Schema Is the Contract</h4>
+<p>The reliable way to get structured JSON from Claude is <strong>structured outputs</strong>: you hand the API a schema and the response is constrained to match it. In Python the cleanest form is <code>client.messages.parse()</code> with a Pydantic model — the SDK turns the model into the schema, sends it as the output format, and returns a validated, typed object. This is far more reliable than instructing Claude in prose to "output valid JSON": prose instructions fail on edge cases (markdown code fences, trailing commentary) that a constrained output cannot produce.</p>
 <pre><code class="language-py">from pydantic import BaseModel, Field
 
 class Assessment(BaseModel):
@@ -936,16 +919,32 @@ class Assessment(BaseModel):
     explanation: str
     concepts_to_review: list[str]
 
-def assess_answer_validated(question: str, correct: str, user: str) -&gt; Assessment:
-    raw = assess_answer(question, correct, user)
-    return Assessment(**raw)
+def assess_answer(question: str, correct_answer: str, user_answer: str) -&gt; Assessment:
+    response = client.messages.parse(
+        model=MODEL,
+        max_tokens=16000,
+        system="You assess learner answers for correctness and provide structured feedback.",
+        messages=[{
+            "role": "user",
+            "content": f"Question: {question}\nCorrect: {correct_answer}\nLearner: {user_answer}"
+        }],
+        output_format=Assessment,
+    )
+    if response.stop_reason != "end_turn":
+        raise RuntimeError(f"No assessment produced: {response.stop_reason}")
+    return response.parsed_output  # a validated Assessment instance
 </code></pre>
+<p>Without the Python SDK helper, the same thing is the raw <code>output_config={"format": {"type": "json_schema", "schema": {...}}}</code> parameter on <code>messages.create()</code>; the first text block is then guaranteed to be valid JSON. (The older top-level <code>output_format</code> parameter on <code>messages.create()</code> is deprecated.)</p>
+
+<h4>Why Not a Forced Tool Call?</h4>
+<p>Older guides got JSON by defining a tool whose schema was the output format and forcing it with <code>tool_choice={"type": "tool", "name": "..."}</code>. <strong>Current Sonnet and Opus models reject forced <code>tool_choice</code> (<code>"any"</code> or a named tool) with a 400 error.</strong> Use structured outputs when you want an answer shaped as JSON. When you genuinely want Claude to <em>call a tool</em> with schema-valid arguments, mark the tool <code>"strict": True</code> (its schema must set <code>"additionalProperties": False</code>), leave <code>tool_choice</code> on its default <code>auto</code>, and name the tool in the prompt.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Treating the Pydantic model as only a type hint. Domain rules such as <code>score</code> being 0–10 belong in the model — the parsed result is validated against it, so a rubric violation surfaces as an error at the boundary instead of a silent bad score in your database.</p></blockquote>
 
 <p><strong>Exercise 2.2 — SkillBot Answer Grader</strong></p>
 <p>Benchmark: SkillBot.</p>
 <ol>
-<li>Define the <code>ASSESSMENT_TOOL</code> schema and the <code>Assessment</code> Pydantic model above.</li>
-<li>Implement <code>assess_answer_validated</code> and verify it returns a typed <code>Assessment</code> object.</li>
+<li>Define the <code>Assessment</code> Pydantic model above.</li>
+<li>Implement <code>assess_answer</code> with <code>client.messages.parse()</code> and verify it returns a typed <code>Assessment</code> object.</li>
 <li>Create a dataset of 5 question→answer pairs: one correct, two partially correct, and two wrong.</li>
 <li>Run the grader on all 5 and assert that <code>is_correct</code> and <code>score</code> values match expectations.</li>
 <li>Add a <code>concepts_to_review</code> aggregator: after 3 wrong assessments in a session, surface a deduplicated list of weak concepts to the user.</li>
@@ -1044,8 +1043,8 @@ def image_to_base64(path: str) -&gt; str:
 
 def analyze_code_screenshot(image_path: str, question: str) -&gt; str:
     response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=1024,
+        model=MODEL,
+        max_tokens=16000,
         messages=[{
             "role": "user",
             "content": [
@@ -1061,16 +1060,16 @@ def analyze_code_screenshot(image_path: str, question: str) -&gt; str:
             ]
         }]
     )
-    return response.content[0].text
+    return text_of(response)
 </code></pre>
 
 <h4>Document (PDF) Input</h4>
-<p>PDFs are passed as <code>type: "document"</code> content blocks. Claude reads the full text and layout of the document. For SkillBot, this lets learners upload a textbook page or a code spec and ask questions about it directly — without building a separate extraction pipeline. Documents have a 32-page limit per call; very long PDFs should be chunked or pre-processed with a text extractor before passing to Claude.</p>
+<p>PDFs are passed as <code>type: "document"</code> content blocks, placed before the question text. Claude reads the full text and the page images, so tables, charts, and layout come through. For SkillBot, this lets learners upload a textbook page or a code spec and ask questions about it directly — without building a separate extraction pipeline. A request can carry up to 32 MB and up to 600 pages; long documents are still worth chunking, because every page costs input tokens on every call. For a document you query repeatedly, upload it once with the Files API and reference its <code>file_id</code> instead of re-sending the base64 each time.</p>
 <pre><code class="language-py">def ask_about_document(pdf_path: str, question: str) -&gt; str:
     pdf_data = base64.standard_b64encode(Path(pdf_path).read_bytes()).decode("utf-8")
     response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=2048,
+        model=MODEL,
+        max_tokens=16000,
         messages=[{
             "role": "user",
             "content": [
@@ -1086,7 +1085,7 @@ def analyze_code_screenshot(image_path: str, question: str) -&gt; str:
             ]
         }]
     )
-    return response.content[0].text
+    return text_of(response)
 </code></pre>
 
 <p><strong>Exercise 2.4 — SkillBot Document Q&amp;A</strong></p>
@@ -1136,8 +1135,8 @@ def run_agent(task: str, tools: list, system: str) -&gt; str:
 
     while steps &lt; MAX_AGENT_STEPS:
         response = client.messages.create(
-            model="claude-sonnet-4-6",
-            max_tokens=2048,
+            model=MODEL,
+            max_tokens=16000,
             system=system,
             tools=tools,
             messages=messages,
@@ -1145,23 +1144,26 @@ def run_agent(task: str, tools: list, system: str) -&gt; str:
         steps += 1
 
         if response.stop_reason == "end_turn":
-            return response.content[0].text
+            return text_of(response)
 
-        if response.stop_reason == "tool_use":
-            messages.append({"role": "assistant", "content": response.content})
-            tool_results = []
-            for block in response.content:
-                if block.type == "tool_use":
-                    result = dispatch_tool(block.name, block.input)
-                    tool_results.append({
-                        "type": "tool_result",
-                        "tool_use_id": block.id,
-                        "content": str(result),
-                    })
-            messages.append({"role": "user", "content": tool_results})
+        if response.stop_reason != "tool_use":
+            raise RuntimeError(f"Agent stopped: {response.stop_reason}")
+
+        messages.append({"role": "assistant", "content": response.content})
+        tool_results = []
+        for block in response.content:
+            if block.type == "tool_use":
+                result = dispatch_tool(block.name, block.input)
+                tool_results.append({
+                    "type": "tool_result",
+                    "tool_use_id": block.id,
+                    "content": str(result),
+                })
+        messages.append({"role": "user", "content": tool_results})
 
     return "Agent reached step limit — task may be incomplete."
 </code></pre>
+<blockquote class="callout"><p><strong>Build it once, then reach for the managed versions.</strong> Writing this loop by hand is how you learn what an agent actually is. In production you have two shortcuts that run the same cycle for you: the SDK's <strong>tool runner</strong> (<code>client.beta.messages.tool_runner(...)</code> with <code>@beta_tool</code>-decorated Python functions), which handles the request → execute → append loop on your own infrastructure; and <strong>Claude Managed Agents</strong> (beta), where Anthropic hosts both the agent loop and a sandbox for its tools, so you configure an agent once and start sessions against it. Both are distinct from the <em>Claude Agent SDK</em> (<code>claude-agent-sdk</code>), which packages Claude Code's own harness — built-in file, shell, and search tools — as a library.</p></blockquote>
 
 <h4>Human-in-the-Loop Interrupts</h4>
 <p>For high-stakes actions (sending email, writing to a database, processing a payment), inject a confirmation step before executing the tool. Check the tool name against an "approval required" set before dispatching. Without this gate, an agent that misunderstands a task can take irreversible actions autonomously — which is why human-in-the-loop approval is standard in any agent that touches external state with side effects.</p>
@@ -1290,12 +1292,13 @@ Respond with exactly PASS or FAIL."""
 
 def grade_response(question: str, ideal: str, actual: str) -&gt; bool:
     response = client.messages.create(
-        model="claude-haiku-4-5-20251001",
-        max_tokens=10,
+        model=FAST_MODEL,
+        max_tokens=1024,
+        output_config={"effort": "low"},
         system=GRADER_SYSTEM,
         messages=[{"role": "user", "content": f"Q: {question} | Ideal: {ideal} | Actual: {actual}"}]
     )
-    return response.content[0].text.strip() == "PASS"
+    return text_of(response).strip() == "PASS"
 
 def run_evals(prompt_fn: callable, cases: list[EvalCase]) -&gt; dict:
     results = [grade_response(c.input, c.expected, prompt_fn(c.input)) for c in cases]
@@ -1313,12 +1316,13 @@ Respond with exactly: SAFE or INJECTION."""
 
 def is_safe_input(user_message: str) -&gt; bool:
     response = client.messages.create(
-        model="claude-haiku-4-5-20251001",
-        max_tokens=10,
+        model=FAST_MODEL,
+        max_tokens=1024,
+        output_config={"effort": "low"},
         system=INJECTION_DETECTOR_SYSTEM,
         messages=[{"role": "user", "content": user_message}]
     )
-    return response.content[0].text.strip() == "SAFE"
+    return text_of(response).strip() == "SAFE"
 </code></pre>
 
 <p><strong>Exercise 3.3 — SkillBot Eval Suite</strong></p>
@@ -1345,8 +1349,8 @@ def is_safe_input(user_message: str) -&gt; bool:
 <p>For user-facing features, streaming dramatically improves perceived latency — the user sees words appearing immediately rather than waiting for the full response. Use the <code>.stream()</code> context manager from the Anthropic SDK. In a web app, forward each text delta to the client over SSE (Server-Sent Events) or a WebSocket. Never buffer the entire stream before forwarding — that defeats the purpose of streaming entirely and makes your app feel slower than a non-streaming implementation would.</p>
 <pre><code class="language-py">def stream_response(question: str) -&gt; None:
     with client.messages.stream(
-        model="claude-sonnet-4-6",
-        max_tokens=1024,
+        model=MODEL,
+        max_tokens=64000,
         system=SKILLBOT_SYSTEM_PROMPT,
         messages=[{"role": "user", "content": question}],
     ) as stream:
@@ -1357,19 +1361,22 @@ def is_safe_input(user_message: str) -&gt; bool:
     print(f"Stop reason: {final.stop_reason}")
     print(f"Tokens: {final.usage.input_tokens} in / {final.usage.output_tokens} out")
 </code></pre>
+<p>Streaming is also how you use large <code>max_tokens</code> values safely — the SDK requires it for very long outputs to avoid HTTP timeouts. One thing will surprise you the first time: <code>text_stream</code> yields only the answer, and by default thinking streams with empty text, so a hard question shows a pause before the first word. If you want learners to watch the reasoning, request it with <code>thinking={"type": "adaptive", "display": "summarized"}</code> and render the thinking deltas.</p>
 
 <h4>Retries with Exponential Backoff</h4>
-<p>The Claude API returns <code>429 RateLimitError</code> when you exceed requests-per-minute and <code>529 OverloadedError</code> during peak load. Both are transient and should be retried. Exponential backoff doubles the wait time on each retry up to a cap, preventing you from hammering the API and worsening the overload. The Anthropic SDK has a built-in <code>max_retries</code> parameter, but building your own gives you control over which errors to retry, what to log, and when to surface the failure to the user.</p>
+<p>The Claude API returns <code>429 RateLimitError</code> when you exceed requests-per-minute and <code>529 OverloadedError</code> during peak load. Both are transient and should be retried. Exponential backoff doubles the wait time on each retry up to a cap, preventing you from hammering the API and worsening the overload. The Anthropic SDK already retries connection errors, 408, 409, 429, and 5xx (including 529) with backoff — twice by default, tunable with <code>max_retries</code>. Usually that is enough. Build your own loop only when you need control over which errors to retry, what to log, and when to surface the failure — and then turn the SDK's retries off for that call, or the two layers multiply into far more attempts than you intended.</p>
 <pre><code class="language-py">import time
 import anthropic
+
+raw_client = client.with_options(max_retries=0)  # this wrapper owns retries
 
 def call_with_retry(messages: list[dict], max_retries: int = 4) -&gt; anthropic.types.Message:
     delay = 1.0
     for attempt in range(max_retries):
         try:
-            return client.messages.create(
-                model="claude-sonnet-4-6",
-                max_tokens=1024,
+            return raw_client.messages.create(
+                model=MODEL,
+                max_tokens=16000,
                 messages=messages,
             )
         except anthropic.RateLimitError:
@@ -1386,14 +1393,30 @@ def call_with_retry(messages: list[dict], max_retries: int = 4) -&gt; anthropic.
     raise RuntimeError("Max retries exceeded")
 </code></pre>
 
+<h4>Refusals and Fallbacks</h4>
+<p>A <code>refusal</code> is not an error: the API returns HTTP 200 with <code>stop_reason == "refusal"</code> and a <code>stop_details.category</code> explaining which safety classifier declined. Retrying the identical request on the same model will not help. On current Sonnet, Opus, and Fable models you can ask the API to re-run a declined request on a fallback model inside the same call — opt in with the server-side <code>fallbacks</code> parameter (beta), where <code>"default"</code> lets Anthropic route by refusal category so you never maintain a model list. A tutoring bot fielding questions about security or chemistry is exactly where a false-positive refusal would otherwise strand a learner.</p>
+<pre><code class="language-py">response = client.beta.messages.create(
+    model=MODEL,
+    max_tokens=16000,
+    betas=["server-side-fallback-2026-07-01"],
+    fallbacks="default",
+    system=SKILLBOT_SYSTEM_PROMPT,
+    messages=[{"role": "user", "content": question}],
+)
+if response.stop_reason == "refusal":  # the whole fallback chain declined
+    print("Declined:", response.stop_details.category)
+</code></pre>
+
 <h4>Cost Tracking</h4>
-<p>Every response includes <code>usage.input_tokens</code> and <code>usage.output_tokens</code>. Track these per-request and aggregate per session. Without cost tracking, you cannot detect runaway agents (a stuck loop calling Claude 100 times), enforce per-user budgets, or understand which prompts are expensive enough to warrant optimization.</p>
+<p>Every response includes <code>usage.input_tokens</code> and <code>usage.output_tokens</code> (output includes thinking tokens). Track these per-request and aggregate per session. Without cost tracking, you cannot detect runaway agents (a stuck loop calling Claude 100 times), enforce per-user budgets, or understand which prompts are expensive enough to warrant optimization.</p>
 <pre><code class="language-py">from dataclasses import dataclass
 
+# USD per million tokens, standard rates (check the pricing page before relying on these)
 PRICING = {
-    "claude-haiku-4-5-20251001": {"input": 0.80,  "output": 4.00},
-    "claude-sonnet-4-6":         {"input": 3.00,  "output": 15.00},
-    "claude-opus-4-8":           {"input": 15.00, "output": 75.00},
+    "claude-haiku-5-5":  {"input": 0.10, "output": 0.50},   # prompts up to 100K tokens
+    "claude-sonnet-5-5": {"input": 2.00, "output": 10.00},
+    "claude-opus-5-5":   {"input": 4.00, "output": 20.00},
+    "claude-fable-5-2":  {"input": 8.00, "output": 40.00},
 }
 
 @dataclass
@@ -1458,21 +1481,24 @@ class CostTracker:
 <h2 id="quick-reference">Quick Reference: Claude Design Tool-Task Matrix</h2>
 <table>
 <tr><th>Task</th><th>Tool / Pattern</th><th>Notes</th></tr>
-<tr><td>Basic API call</td><td><code>client.messages.create()</code></td><td>Always check <code>stop_reason</code></td></tr>
+<tr><td>Basic API call</td><td><code>client.messages.create()</code></td><td>Always check <code>stop_reason</code>; read text by block type, not <code>content[0]</code></td></tr>
+<tr><td>Pick a model</td><td><code>claude-haiku-5-5</code> · <code>claude-sonnet-5-5</code> · <code>claude-opus-5-5</code> · <code>claude-fable-5-2</code></td><td>Cheapest model that passes your evals; exact IDs, no date suffix</td></tr>
+<tr><td>Trade depth for speed/cost</td><td><code>output_config={"effort": "low"}</code></td><td>Replaces <code>budget_tokens</code>; <code>temperature</code>/<code>top_p</code> are rejected</td></tr>
 <tr><td>Define persona &amp; scope</td><td>Structured system prompt (Role / Scope / Format / Refusal)</td><td>4 layers, not one wall of text</td></tr>
-<tr><td>Force output format</td><td>Tool schema + <code>tool_choice={"type":"tool","name":"..."}</code></td><td>More reliable than prose JSON instructions</td></tr>
-<tr><td>Multi-step reasoning</td><td>Chain-of-thought ("Think step by step")</td><td>Reserve for multi-step tasks — wastes tokens on simple ones</td></tr>
+<tr><td>Force output format</td><td><code>client.messages.parse(output_format=PydanticModel)</code></td><td>Structured outputs; forced <code>tool_choice</code> and prefill both 400 on current models</td></tr>
+<tr><td>Multi-step reasoning</td><td>Adaptive thinking + higher <code>effort</code>; visible CoT when the steps are the product</td><td>Reserve visible reasoning for multi-step tasks — wastes tokens on simple ones</td></tr>
 <tr><td>Classification / routing</td><td>Few-shot examples in system prompt</td><td>2–5 diverse examples per class</td></tr>
-<tr><td>Context management</td><td>Summary compression via Haiku</td><td>Trigger at ~40k estimated tokens; use Haiku to keep cost low</td></tr>
+<tr><td>Context management</td><td>Summary compression via Haiku, or server-side compaction (beta)</td><td>Trigger at ~40k estimated tokens; use Haiku to keep cost low</td></tr>
 <tr><td>Call external functions</td><td>Tool use loop: <code>tool_use</code> → execute → <code>tool_result</code></td><td>Always return all <code>tool_result</code> blocks in one message</td></tr>
 <tr><td>Parallel tool execution</td><td>Multiple <code>tool_use</code> blocks in one response</td><td>Return all results in one user message keyed by <code>tool_use_id</code></td></tr>
 <tr><td>Image input</td><td><code>type: "image"</code> content block (base64)</td><td>~1,600 tokens per 1024×1024; compress before sending</td></tr>
-<tr><td>PDF input</td><td><code>type: "document"</code> content block</td><td>32-page limit per call; chunk longer documents</td></tr>
-<tr><td>Autonomous agent</td><td>Agentic loop + hard step limit</td><td>Hard cap at 10–20 steps; log every step number</td></tr>
+<tr><td>PDF input</td><td><code>type: "document"</code> content block</td><td>Up to 32 MB / 600 pages per request; Files API for reused documents</td></tr>
+<tr><td>Autonomous agent</td><td>Agentic loop + hard step limit, or SDK tool runner / Managed Agents</td><td>Hard cap at 10–20 steps; handle every <code>stop_reason</code></td></tr>
 <tr><td>Multi-agent system</td><td>Orchestrator + subagent tools</td><td>Pass context explicitly — each subagent starts cold</td></tr>
 <tr><td>Measure prompt quality</td><td>Model-graded eval suite (Haiku as grader)</td><td>Calibrate grader with few-shot examples to reduce drift</td></tr>
 <tr><td>Block prompt injection</td><td>Separate injection classifier (Haiku, no tools)</td><td>Run before main agent; minimal system prompt is harder to jailbreak</td></tr>
-<tr><td>Handle rate limits</td><td>Exponential backoff on 429 / 529</td><td>Cap delay at 60s; log every retry attempt</td></tr>
+<tr><td>Handle rate limits</td><td>SDK <code>max_retries</code>, or own backoff with SDK retries off</td><td>Cap delay at 60s; log every retry attempt</td></tr>
+<tr><td>Recover from refusals</td><td><code>fallbacks="default"</code> (beta <code>server-side-fallback-2026-07-01</code>)</td><td>Refusal is HTTP 200 + <code>stop_reason == "refusal"</code>, not an exception</td></tr>
 <tr><td>Streaming responses</td><td><code>client.messages.stream()</code></td><td>Forward deltas immediately over SSE — never buffer the full stream</td></tr>
 </table>
 
@@ -1486,16 +1512,24 @@ class CostTracker:
 <dd class="avoid"><strong>Avoid:</strong> "Claude API", "chat API" — these are informal shorthand that obscure which endpoint you are calling and which parameters it accepts.</dd>
 
 <dt>stop_reason</dt>
-<dd>A field in every API response describing why Claude stopped generating: <code>end_turn</code> (natural completion), <code>max_tokens</code> (hit the token budget — response is incomplete), or <code>tool_use</code> (requesting a function call).</dd>
+<dd>A field in every API response describing why Claude stopped generating: <code>end_turn</code> (natural completion), <code>max_tokens</code> (hit the token budget — response is incomplete), <code>tool_use</code> (requesting a function call), <code>refusal</code> (a safety classifier declined — see <code>stop_details</code>), <code>pause_turn</code> (a long server-tool turn paused and can be resumed), or <code>stop_sequence</code>.</dd>
 <dd class="avoid"><strong>Avoid:</strong> "finish reason", "completion reason" — borrowed from OpenAI's API vocabulary and confusing when reading Claude documentation.</dd>
 
 <dt>System Prompt</dt>
 <dd>An optional top-level string sent before any user message that defines the model's persona, task scope, output format rules, and refusal conditions for the entire session.</dd>
 <dd class="avoid"><strong>Avoid:</strong> "instruction prompt", "meta-prompt" — neither precisely describes the positional role the system prompt plays in the message array.</dd>
 
-<dt>Prefill</dt>
-<dd>An initial string placed in the first <code>assistant</code> message that forces Claude to continue from a specific point, constraining its opening format or committing it to a particular response structure.</dd>
-<dd class="avoid"><strong>Avoid:</strong> "assistant start", "priming" — "priming" is a psychology term that means something different; "assistant start" is informal and imprecise.</dd>
+<dt>Adaptive Thinking</dt>
+<dd>The reasoning current Claude models do before answering, on by default; depth is controlled with <code>effort</code> and the reasoning arrives as <code>thinking</code> content blocks ahead of the answer text.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "extended thinking budget", <code>budget_tokens</code> — the fixed thinking budget is removed on current models; use <code>effort</code>.</dd>
+
+<dt>Effort</dt>
+<dd>A request setting (<code>output_config.effort</code>: <code>low</code> → <code>max</code>) that trades reasoning depth and token spend against speed and cost.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "temperature" — temperature controlled randomness and is rejected on current models; effort controls how hard Claude works.</dd>
+
+<dt>Prefill (legacy)</dt>
+<dd>An older technique of ending the <code>messages</code> array with a partial <code>assistant</code> message so Claude continues from it; current models reject it with a 400 error.</dd>
+<dd class="avoid"><strong>Avoid:</strong> reaching for it to force a format — use the system prompt or structured outputs.</dd>
 
 <dt>Context Window</dt>
 <dd>The maximum total tokens (input plus output combined) a model can process in a single request. Requests that exceed it fail with an API error; approaching it degrades response quality and speed.</dd>
@@ -1516,9 +1550,13 @@ class CostTracker:
 <dd>A content block your code sends back to Claude (inside a <code>user</code> message) containing the execution result of a tool call, keyed to the originating <code>tool_use_id</code>.</dd>
 <dd class="avoid"><strong>Avoid:</strong> "function return", "callback result" — these imply execution happens inside Claude rather than in your application code.</dd>
 
-<dt>Forced Tool Call</dt>
-<dd>Using <code>tool_choice={"type": "tool", "name": "..."}</code> to require Claude to call a specific named tool regardless of whether it would otherwise choose to. Used to guarantee a structured output format.</dd>
-<dd class="avoid"><strong>Avoid:</strong> "tool override", "mandatory tool" — be specific about the API parameter that achieves this behavior.</dd>
+<dt>Structured Outputs</dt>
+<dd>A response format constraint (<code>output_config.format</code> with a JSON schema, or <code>messages.parse()</code> with a Pydantic model in Python) that guarantees Claude's answer matches the schema.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "JSON mode" or a forced tool call — forced <code>tool_choice</code> is rejected by current Sonnet and Opus models.</dd>
+
+<dt>Strict Tool</dt>
+<dd>A tool definition with <code>"strict": true</code> (and <code>additionalProperties: false</code> in its schema) whose <code>tool_use</code> arguments are guaranteed to validate against the schema.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing it with forcing the call — strict guarantees valid arguments, not that the tool gets called.</dd>
 </dl>
 
 <h3 id="glossary-agents-evals">Agents &amp; Evals</h3>
@@ -1550,25 +1588,25 @@ class CostTracker:
 <tr><th>Title</th><th>Focus</th></tr>
 <tr><td>The Prompt Report (Schulhoff et al., 2024)</td><td>Comprehensive academic survey of prompt engineering techniques — the most thorough reference available as of 2024</td></tr>
 <tr><td>AI Engineering (Chip Huyen, 2025)</td><td>System design for LLM-based products — covers evals, context management, and deployment at scale</td></tr>
-<tr><td>Building LLM Applications (Srivastava, 2024)</td><td>Practical guide to building production LLM-powered apps including tool use and RAG patterns</td></tr>
+<tr><td>Building LLM Powered Applications (Valentina Alto), Packt (2024)</td><td>Practical guide to building production LLM-powered apps including tool use and RAG patterns</td></tr>
 <tr><td>Designing Machine Learning Systems (Chip Huyen, 2022)</td><td>Foundational ML systems thinking — applies directly to designing reliable AI pipelines and eval frameworks</td></tr>
 </table>
 <h3 id="online-resources">Online Resources</h3>
 <table>
 <tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
 <tr><td>Anthropic Docs — Prompt Engineering</td><td>Prompting techniques</td><td>First-party documentation covering CoT, few-shot, XML structuring, and role prompting</td></tr>
-<tr><td>Anthropic Docs — Tool Use</td><td>Function calling</td><td>Reference for tool schemas, <code>tool_choice</code>, and parallel tool call patterns</td></tr>
-<tr><td>Anthropic Docs — Model Overview</td><td>Model selection</td><td>Up-to-date latency, cost, and capability comparison for all Claude models</td></tr>
+<tr><td>Claude Platform Docs (platform.claude.com/docs) — Tool Use &amp; Structured Outputs</td><td>Function calling</td><td>Reference for tool schemas, strict tools, structured outputs, and parallel tool calls</td></tr>
+<tr><td>Claude Platform Docs — Models Overview &amp; Migration Guide</td><td>Model selection</td><td>Current model IDs, pricing, and what changes when you move code to a newer model</td></tr>
 <tr><td>Anthropic Cookbook (GitHub)</td><td>Code examples</td><td>Production-ready notebooks covering tool use, RAG, multi-agent patterns, and evals</td></tr>
 <tr><td>Weights &amp; Biases Prompting Guide</td><td>Prompting best practices</td><td>Excellent visual explanations of few-shot and CoT with worked examples across models</td></tr>
-<tr><td>LMSYS Chatbot Arena</td><td>Model comparison</td><td>Human preference leaderboard — useful for choosing between models on specific task types</td></tr>
+<tr><td>Arena (arena.ai — formerly LMSYS Chatbot Arena / LMArena)</td><td>Model comparison</td><td>Human preference leaderboard — useful for choosing between models on specific task types</td></tr>
 </table>
 <h3 id="tools-and-templates">Tools &amp; Templates</h3>
 <table>
 <tr><th>Item</th><th>Primary Use</th></tr>
 <tr><td>Anthropic Python SDK (<code>anthropic</code>)</td><td>Official Python client — built-in retry, streaming, async support, and type stubs</td></tr>
 <tr><td>Anthropic TypeScript SDK (<code>@anthropic-ai/sdk</code>)</td><td>Official TypeScript client — same capability surface as the Python SDK</td></tr>
-<tr><td>Pydantic v2</td><td>Validate structured outputs from forced tool calls — see the Pydantic Learning Guide for depth</td></tr>
+<tr><td>Pydantic v2</td><td>Define structured-output schemas for <code>messages.parse()</code> — see the Pydantic Learning Guide for depth</td></tr>
 <tr><td>Braintrust</td><td>Hosted eval platform — run, store, and compare eval results across prompt versions over time</td></tr>
 <tr><td>LangSmith</td><td>Tracing and observability for LLM calls — essential for debugging multi-agent loop behavior</td></tr>
 </table>
@@ -1583,7 +1621,7 @@ class CostTracker:
 </table>
 
 <h2 id="progress-tracker">Progress Tracker</h2>
-<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is session-only and resets on reload.</p></blockquote>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
 <h4>Phase 1 — Foundations</h4>
 <ul>
 <li>[ ] Module 1.1 — API Basics</li>
@@ -1627,8 +1665,9 @@ class CostTracker:
 <li>[ ] Production API integration with streaming, retries, and cost tracking operational</li>
 </ul>
 
-<p><em>Guide Version 1.0 — Claude Design Track: Beginner to Advanced</em><br>
-<em>Non-linear modular design · Placement quiz · 12 modules · ~8 weeks part-time · hayah-ai</em></p>
+<p><em>Guide Version 1.1 — Claude Design Track: Beginner to Advanced</em><br>
+<em>Non-linear modular design · Placement quiz · 12 modules · ~8 weeks part-time · hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-11-19</em></p>
     </article>
   </main>
 </div>
