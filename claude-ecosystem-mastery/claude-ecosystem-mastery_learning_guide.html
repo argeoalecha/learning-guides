@@ -877,7 +877,7 @@ Confirm the update by showing the row for id $0.</code></pre>
 <p>The Model Context Protocol is an open standard for connecting AI tools to external systems — databases, issue trackers, design tools, your own scripts. Without it, "ask Claude about the ticket" means you copy-pasting the ticket into chat by hand, every time, and Claude working from whatever you thought to paste rather than the live source of truth. An MCP server closes that gap: Claude reads and acts on the system directly.</p>
 
 <h4>Three transports, one deprecated</h4>
-<p><strong>Stdio</strong> servers run as a local child process that Claude Code spawns and talks to over standard input/output — the simplest setup, ideal for tools needing direct filesystem or system access, and what you'll build in Phase 4. <strong>HTTP</strong> (Streamable HTTP) is the recommended transport for remote, cloud-hosted servers — a single endpoint, works with OAuth, and is the most widely supported transport for hosted services. <strong>SSE</strong> is deprecated — the MCP spec moved to Streamable HTTP, and most servers that used to support SSE now support HTTP on the same URL, so a new server should skip SSE entirely and an existing <code>--transport sse</code> connection error is usually fixed by switching to <code>--transport http</code>.</p>
+<p><strong>Stdio</strong> servers run as a local child process that Claude Code spawns and talks to over standard input/output — the simplest setup, ideal for tools needing direct filesystem or system access, and what you'll build in Phase 4. <strong>HTTP</strong> (Streamable HTTP) is the recommended transport for remote, cloud-hosted servers — a single endpoint, works with OAuth, and is the most widely supported transport for hosted services. <strong>SSE</strong> is deprecated — the MCP spec moved to Streamable HTTP, and most servers that used to support SSE now support HTTP on the same URL, so a new server should skip SSE entirely and an existing <code>--transport sse</code> connection error is usually fixed by switching to <code>--transport http</code>. The current spec revision, <strong>2026-07-28</strong>, also made the protocol stateless: there is no initialize handshake or <code>Mcp-Session-Id</code> header any more — protocol version and client capabilities ride along on each request — which is what makes remote HTTP servers easy to scale behind a load balancer.</p>
 <pre><code class="language-bash"># Remote HTTP server (recommended default for hosted services)
 claude mcp add --transport http notion https://mcp.notion.com/mcp
 
@@ -1039,72 +1039,71 @@ Compare @postgres:schema://users with @docs:file://database/user-model</code></p
 <h4>Project setup (TypeScript)</h4>
 <pre><code class="language-bash">mkdir leads-tracker-mcp &amp;&amp; cd leads-tracker-mcp
 npm init -y
-npm install @modelcontextprotocol/sdk zod@3 better-sqlite3
+npm pkg set type=module
+npm install @modelcontextprotocol/server zod better-sqlite3
 npm install -D @types/node @types/better-sqlite3 typescript
 mkdir src</code></pre>
+<p>This is the v2 TypeScript SDK (Node.js 20+, ES modules only — hence <code>type=module</code>). v2 split the old single <code>@modelcontextprotocol/sdk</code> package into separate server and client packages and moved schemas to Zod v4; most tutorials written before August 2026 still show the v1 imports.</p>
 <pre><code class="language-typescript">// src/index.ts
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { z } from "zod";
+import { McpServer } from "@modelcontextprotocol/server";
+import { serveStdio } from "@modelcontextprotocol/server/stdio";
+import * as z from "zod/v4";
 import Database from "better-sqlite3";
 
 const db = new Database("leads.db");
 
-const server = new McpServer({ name: "leads-tracker", version: "1.0.0" });
+function createServer() {
+  const server = new McpServer({ name: "leads-tracker", version: "1.0.0" });
 
-server.registerTool(
-  "query_leads",
-  {
-    description: "List leads, optionally filtered by status (new, contacted, closed)",
-    inputSchema: {
-      status: z.string().optional().describe("Filter by lead status"),
+  server.registerTool(
+    "query_leads",
+    {
+      description: "List leads, optionally filtered by status (new, contacted, closed)",
+      inputSchema: z.object({
+        status: z.string().optional().describe("Filter by lead status"),
+      }),
     },
-  },
-  async ({ status }) => {
-    const rows = status
-      ? db.prepare("SELECT id, name, company, status FROM leads WHERE status = ?").all(status)
-      : db.prepare("SELECT id, name, company, status FROM leads").all();
-    return { content: [{ type: "text", text: JSON.stringify(rows, null, 2) }] };
-  },
-);
-
-server.registerTool(
-  "add_lead_note",
-  {
-    description: "Append a note to a lead's record by ID. This is a write operation.",
-    inputSchema: {
-      id: z.number().describe("Lead ID"),
-      note: z.string().describe("Note text to append"),
+    async ({ status }) =&gt; {
+      const rows = status
+        ? db.prepare("SELECT id, name, company, status FROM leads WHERE status = ?").all(status)
+        : db.prepare("SELECT id, name, company, status FROM leads").all();
+      return { content: [{ type: "text", text: JSON.stringify(rows, null, 2) }] };
     },
-  },
-  async ({ id, note }) => {
-    db.prepare(
-      "UPDATE leads SET notes = COALESCE(notes || ' | ', '') || ? WHERE id = ?",
-    ).run(note, id);
-    const row = db.prepare("SELECT * FROM leads WHERE id = ?").get(id);
-    return { content: [{ type: "text", text: JSON.stringify(row, null, 2) }] };
-  },
-);
+  );
 
-async function main() {
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
-  console.error("leads-tracker MCP server running on stdio");
+  server.registerTool(
+    "add_lead_note",
+    {
+      description: "Append a note to a lead's record by ID. This is a write operation.",
+      inputSchema: z.object({
+        id: z.number().describe("Lead ID"),
+        note: z.string().describe("Note text to append"),
+      }),
+    },
+    async ({ id, note }) =&gt; {
+      db.prepare(
+        "UPDATE leads SET notes = COALESCE(notes || ' | ', '') || ? WHERE id = ?",
+      ).run(note, id);
+      const row = db.prepare("SELECT * FROM leads WHERE id = ?").get(id);
+      return { content: [{ type: "text", text: JSON.stringify(row, null, 2) }] };
+    },
+  );
+
+  return server;
 }
 
-main().catch((error) => {
-  console.error("Fatal error in main():", error);
-  process.exit(1);
-});</code></pre>
+console.error("leads-tracker MCP server running on stdio");
+void serveStdio(createServer);</code></pre>
+<p><code>serveStdio</code> takes a <em>factory</em> that builds the server rather than a server instance — v2 rejects sharing one server object across connections, so the factory shape is the pattern to learn now.</p>
 
-<h4>The same server in Python with FastMCP</h4>
-<p><code>FastMCP</code> reads your type hints and docstring to generate the tool schema automatically, which is why the Python version below needs no explicit JSON Schema — it's inferred instead of hand-written like the Zod version above.</p>
+<h4>The same server in Python with <code>MCPServer</code></h4>
+<p><code>MCPServer</code> (called <code>FastMCP</code> before the v2 Python SDK, with no compatibility alias — <code>from mcp.server.fastmcp import FastMCP</code> now fails with <code>ModuleNotFoundError</code>) reads your type hints and docstring to generate the tool schema automatically, which is why the Python version below needs no explicit JSON Schema — it's inferred instead of hand-written like the Zod version above. Requires Python 3.11+.</p>
 <pre><code class="language-bash">uv init leads-tracker-mcp &amp;&amp; cd leads-tracker-mcp
 uv add "mcp[cli]"</code></pre>
 <pre><code class="language-python">import sqlite3
-from mcp.server.fastmcp import FastMCP
+from mcp.server import MCPServer
 
-mcp = FastMCP("leads-tracker")
+mcp = MCPServer("leads-tracker")
 
 def get_db():
     return sqlite3.connect("leads.db")
@@ -1144,7 +1143,7 @@ def add_lead_note(id: int, note: str) -> str:
     return str(row)
 
 if __name__ == "__main__":
-    mcp.run(transport="stdio")</code></pre>
+    mcp.run()  # stdio is the default transport</code></pre>
 <blockquote class="callout"><p><strong>Common mistake:</strong> Both versions open <code>leads.db</code> with a relative path, which resolves against the server process's working directory — not where the file lives. When Claude Code spawns the server from <code>leads-tracker/</code> it happens to work, but run it under the Inspector from <code>leads-tracker-mcp/</code> and you'll query an empty, freshly-created database and wonder where your leads went. Harden it with an absolute path, or read <code>CLAUDE_PROJECT_DIR</code> (which Claude Code sets in the spawned server's environment: <code>process.env.CLAUDE_PROJECT_DIR</code> in Node, <code>os.environ["CLAUDE_PROJECT_DIR"]</code> in Python) with a fallback for non-Claude clients.</p></blockquote>
 
 <p><strong>Exercise 4.2 — Build one, understand both</strong></p>
@@ -1425,12 +1424,12 @@ claude plugin marketplace add your-org/hayah-ai-tools
 <dd class="avoid"><strong>Avoid:</strong> "chat" — the docs and CLI consistently say "session."</dd>
 <dt>Background agent</dt>
 <dd>A session started with <code>--bg</code> that runs without occupying your terminal, managed via <code>claude agents</code>/<code>logs</code>/<code>attach</code>/<code>stop</code>.</dd>
-<dd class="avoid"><strong>Avoid:</strong> confusing this with a "subagent" (a Task-tool delegate within one session) — a background agent is a whole separate top-level session.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing this with a "subagent" (an Agent-tool delegate within one session) — a background agent is a whole separate top-level session.</dd>
 <dt>Effort level</dt>
 <dd>A per-request reasoning-depth setting (<code>low</code> through <code>max</code>) that trades latency and cost against how much the model reasons before answering.</dd>
 <dd class="avoid"><strong>Avoid:</strong> "temperature" or "creativity" — effort controls reasoning depth, not randomness.</dd>
 <dt>Permission mode</dt>
-<dd>The policy governing whether tool calls need your approval (<code>default</code>, <code>acceptEdits</code>, <code>plan</code>, <code>bypassPermissions</code>, etc.), settable per-run with <code>--permission-mode</code>.</dd>
+<dd>The policy governing whether tool calls need your approval (<code>default</code>, <code>acceptEdits</code>, <code>plan</code>, <code>auto</code>, <code>dontAsk</code>, or <code>bypassPermissions</code>), settable per-run with <code>--permission-mode</code>.</dd>
 <dd class="avoid"><strong>Avoid:</strong> treating <code>--dangerously-skip-permissions</code> as a normal permission mode — it's an escape hatch, not a default choice.</dd>
 <dt>Native installer</dt>
 <dd>The <code>curl | bash</code> / <code>irm | iex</code> install method that self-updates in the background.</dd>
@@ -1544,7 +1543,8 @@ claude plugin marketplace add your-org/hayah-ai-tools
 <table>
 <tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
 <tr><td>code.claude.com/docs</td><td>Claude Code CLI, Skills, MCP, Plugins</td><td>The canonical, actively-updated reference — start here for anything version-specific.</td></tr>
-<tr><td>modelcontextprotocol.io/docs</td><td>MCP specification &amp; SDK guides</td><td>Protocol fundamentals independent of any one client; TypeScript and Python quickstarts.</td></tr>
+<tr><td>modelcontextprotocol.io/docs</td><td>MCP specification &amp; SDK guides</td><td>Protocol fundamentals independent of any one client; current spec revision 2026-07-28.</td></tr>
+<tr><td>ts.sdk.modelcontextprotocol.io/v2 · py.sdk.modelcontextprotocol.io/v2</td><td>MCP SDK v2 docs</td><td>TypeScript and Python v2 guides, including v1→v2 migration notes.</td></tr>
 <tr><td>agentskills.io</td><td>Agent Skills open standard</td><td>The cross-tool spec Claude Code skills implement; also hosts the skill-evaluation guide.</td></tr>
 <tr><td>github.com/modelcontextprotocol/servers</td><td>Reference &amp; community MCP servers</td><td>Includes the zero-auth "everything" test server used in Module 3.1.</td></tr>
 <tr><td>claude.ai/directory</td><td>Reviewed MCP connectors</td><td>Where to find (and eventually submit) hosted MCP servers.</td></tr>
@@ -1557,7 +1557,7 @@ claude plugin marketplace add your-org/hayah-ai-tools
 <tr><td>MCP Inspector (<code>@modelcontextprotocol/inspector</code>)</td><td>Test and debug an MCP server without a full LLM client in the loop.</td></tr>
 <tr><td><code>mcp-server-dev</code> plugin</td><td>Scaffolds a new MCP server (stdio or HTTP) interactively from inside Claude Code.</td></tr>
 <tr><td><code>skill-creator</code> plugin</td><td>Automates skill evaluation: test cases, benchmarking, description tuning.</td></tr>
-<tr><td>Zod (TypeScript) / Pydantic-style type hints (Python)</td><td>Input schema definition for MCP tools.</td></tr>
+<tr><td>Zod v4 (TypeScript, imported as <code>zod/v4</code>) / type hints (Python <code>MCPServer</code>)</td><td>Input schema definition for MCP tools in the v2 SDKs.</td></tr>
 <tr><td><code>@modelcontextprotocol/server-everything</code></td><td>Zero-auth reference server exposing tools, resources, and prompts for practice.</td></tr>
 </table>
 <h3 id="communities">Communities</h3>
@@ -1640,9 +1640,9 @@ claude plugin marketplace add your-org/hayah-ai-tools
 </ul>
 <hr />
 
-<p><em>Guide Version 1.0 — Claude Ecosystem Track: Intermediate to Advanced</em><br>
+<p><em>Guide Version 1.1 — Claude Ecosystem Track: Intermediate to Advanced</em><br>
 <em>Non-linear modular design · Placement quiz · 16 modules · ~30h estimated study time · hayah-ai</em><br>
-<em>Tool versions and resources verified as of 2026-07-10</em></p>
+<em>Tool versions and resources verified as of 2026-11-19</em></p>
     </article>
   </main>
 </div>
