@@ -1487,7 +1487,7 @@ print("Top errors:", report["top_errors"])
 </code></pre>
 
 <h4>Partial validation — collecting all errors before stopping</h4>
-<p>By default, Pydantic stops validating a model after the first error in a given field. Set <code>model_config = ConfigDict(validate_default=True)</code> to continue validating all fields even after early failures. For reporting purposes, you want every error in a row, not just the first.</p>
+<p>Pydantic already validates every field before raising: one bad row produces a single <code>ValidationError</code> listing <em>all</em> of its failing fields, which you read with <code>e.errors()</code> and count with <code>e.error_count()</code>. What stops early is your own loop — catch the error per row (as above) so one bad record does not abort the batch, and keep every entry from <code>e.errors()</code> rather than just the first. (<code>ConfigDict(validate_default=True)</code> is unrelated: it makes Pydantic validate fields' <em>default values</em>, which it otherwise trusts.)</p>
 
 <p><strong>Exercise 3.4 — Build a Validation Report</strong></p>
 <p>Dataset: E-commerce Orders Dataset</p>
@@ -1539,15 +1539,16 @@ print("Top errors:", report["top_errors"])
 from pydantic_ai import Agent
 
 # Model strings are "provider:model". We default to Sonnet for agents;
-# swap to 'anthropic:claude-opus-4-8' when the reasoning is harder.
+# swap to 'anthropic:claude-opus-5-5' when the reasoning is harder.
 agent = Agent(
-    "anthropic:claude-sonnet-4-6",
+    "anthropic:claude-sonnet-5-5",
     instructions="You read a customer message and summarize the order intent in one line.",
 )
 
 result = agent.run_sync("Hi! Can I get 3 of SKU-100 shipped to Manila?")
-print(result.output)          # -> a plain string (no output_type set yet)
-print(result.usage())         # token usage, for cost tracking</code></pre>
+print(result.output)          # -&gt; a plain string (no output_type set yet)
+print(result.usage)           # token usage, for cost tracking (a property in Pydantic AI v2)</code></pre>
+<p>This phase targets <strong>Pydantic AI v2</strong>. If an older tutorial shows <code>result.data</code>, <code>result_type=</code>, or <code>result.usage()</code> called as a method, it predates the current API: use <code>result.output</code>, <code>output_type=</code>, and the <code>result.usage</code> property. With current Claude models Pydantic AI requests your <code>output_type</code> through the API's native structured outputs, so the schema is enforced by the model provider as well as re-validated by Pydantic on the way back.</p>
 <blockquote class="callout"><p><strong>Common mistake:</strong> Treating LLM output as trusted because "it returned valid JSON." Valid JSON can still have the wrong field names, an out-of-range quantity, a hallucinated SKU, or a price the customer never mentioned. The whole point of this phase is that the LLM's output is <em>external input</em> — give it the same validation scrutiny you would give an uploaded CSV.</p></blockquote>
 
 <p><strong>Exercise 4.1 — From String to Contract</strong></p>
@@ -1584,7 +1585,7 @@ class OrderRequest(BaseModel):
     customer: Customer
 
 order_agent = Agent(
-    "anthropic:claude-sonnet-4-6",
+    "anthropic:claude-sonnet-5-5",
     output_type=OrderRequest,
     instructions=(
         "Extract the order from the customer message. "
@@ -1634,7 +1635,7 @@ class Deps:
     inventory: dict[str, int]        # swap for a real DB in production
 
 stock_agent = Agent(
-    "anthropic:claude-sonnet-4-6",
+    "anthropic:claude-sonnet-5-5",
     deps_type=Deps,
     output_type=OrderRequest,
     instructions="Extract the order. Before confirming, check stock with the tool.",
@@ -1678,7 +1679,7 @@ for msg in result.all_messages():
 <pre><code class="language-py">from pydantic_ai import Agent, RunContext, ModelRetry
 
 checkout_agent = Agent(
-    "anthropic:claude-sonnet-4-6",
+    "anthropic:claude-sonnet-5-5",
     deps_type=Deps,
     output_type=OrderRequest,
     retries=2,                       # bound the self-correction loop
@@ -1703,7 +1704,7 @@ result = checkout_agent.run_sync(
 print(result.output)     # the agent has reconciled quantity against real stock</code></pre>
 
 <h4>Streaming: structured output, delivered live</h4>
-<p>For chat-style UX you do not want the user staring at a blank screen while a long response generates. <code>agent.run_stream(...)</code> yields the output as it arrives — text deltas for prose, or progressively-validated structured data — so you can render tokens immediately. Streaming is the right default for any user-facing agent where latency is visible; it does not change the validation guarantees, only when you see the result.</p>
+<p>For chat-style UX you do not want the user staring at a blank screen while a long response generates. <code>agent.run_stream(...)</code> yields the output as it arrives, and which method you iterate depends on the agent's <code>output_type</code>: <code>stream_text(delta=True)</code> for a plain-text agent, <code>stream_output()</code> for a structured one, which yields the model progressively filled in. Calling <code>stream_text()</code> on a structured agent raises <code>UserError: stream_text() can only be used with text responses</code>. Streaming is the right default for any user-facing agent where latency is visible; it does not change the validation guarantees — <code>get_output()</code> still returns the fully validated model — only when you see the result.</p>
 
 <pre><code class="language-py">import asyncio
 
@@ -1712,9 +1713,9 @@ async def main():
         "2 of SKU-7 to Cebu",
         deps=Deps(inventory={"SKU-7": 10}),
     ) as stream:
-        async for text in stream.stream_text(delta=True):
-            print(text, end="", flush=True)     # render live, token by token
-        final = await stream.get_output()        # validated OrderRequest at the end
+        async for partial in stream.stream_output():
+            print(partial)                       # progressively-filled OrderRequest
+        final = await stream.get_output()        # fully validated OrderRequest at the end
         print("\n", final.model_dump_json())
 
 asyncio.run(main())</code></pre>
@@ -1725,7 +1726,7 @@ asyncio.run(main())</code></pre>
 <li>Add an <code>@agent.output_validator</code> that raises <code>ModelRetry</code> when the requested quantity exceeds stock; set <code>retries=2</code>.</li>
 <li>Run an over-quantity order and inspect <code>result.all_messages()</code> to see the retry round-trip and the corrected output.</li>
 <li>Force an impossible order (quantity exceeds stock for every SKU) and confirm the agent exhausts retries and raises rather than looping forever.</li>
-<li>Convert one run to streaming with <code>run_stream</code>; print text deltas live and assert the final <code>get_output()</code> is a validated <code>OrderRequest</code>.</li>
+<li>Convert one run to streaming with <code>run_stream</code>; print each partial <code>OrderRequest</code> from <code>stream_output()</code> live and assert the final <code>get_output()</code> is a validated <code>OrderRequest</code>. Then try <code>stream_text()</code> on the same agent and read the <code>UserError</code> it raises.</li>
 <li>Wrap the agent behind a FastAPI <code>POST /intake</code> endpoint (reuse Module 3.2) that accepts a raw message and returns the validated order or a 422.</li>
 </ol>
 <hr />
@@ -1780,13 +1781,13 @@ asyncio.run(main())</code></pre>
 <tr><td>Strict (no coercion) mode</td><td><code>ConfigDict(strict=True)</code></td><td>Strings are not coerced to int/float/date</td></tr>
 <tr><td>Email validation</td><td><code>EmailStr</code></td><td>Requires pydantic[email]</td></tr>
 <tr><td>Inspect errors</td><td><code>e.errors()</code></td><td>List of dicts with loc, msg, type, input keys</td></tr>
-<tr><td>Create an agent</td><td><code>Agent("anthropic:claude-sonnet-4-6")</code></td><td>Pydantic AI; "provider:model" string. Opus 4.8 for harder reasoning</td></tr>
+<tr><td>Create an agent</td><td><code>Agent("anthropic:claude-sonnet-5-5")</code></td><td>Pydantic AI v2; "provider:model" string. Opus 5.5 for harder reasoning</td></tr>
 <tr><td>Validated LLM output</td><td><code>Agent(..., output_type=M)</code></td><td><code>result.output</code> is a validated BaseModel, not a string</td></tr>
 <tr><td>Run an agent</td><td><code>agent.run_sync(msg, deps=...)</code></td><td>Async: <code>await agent.run(...)</code>; <code>.output</code> holds the result</td></tr>
 <tr><td>Give the agent a tool</td><td><code>@agent.tool</code> + <code>RunContext</code></td><td>Function the model can call; args validated by type hints</td></tr>
 <tr><td>Inject dependencies</td><td><code>deps_type=Deps</code></td><td>Passed at run time; read via <code>ctx.deps</code> — testable with fakes</td></tr>
 <tr><td>Self-correcting validation</td><td><code>raise ModelRetry(msg)</code></td><td>In <code>@agent.output_validator</code>; bound with <code>retries=N</code></td></tr>
-<tr><td>Stream a response</td><td><code>agent.run_stream(...)</code></td><td><code>async for</code> deltas; <code>get_output()</code> for the validated result</td></tr>
+<tr><td>Stream a response</td><td><code>agent.run_stream(...)</code></td><td><code>stream_text(delta=True)</code> for text agents, <code>stream_output()</code> for structured ones; <code>get_output()</code> for the validated result</td></tr>
 </table>
 
 <h2 id="glossary">Glossary</h2>
@@ -1868,10 +1869,10 @@ asyncio.run(main())</code></pre>
 <h3 id="books">Books</h3>
 <table>
 <tr><th>Title</th><th>Focus</th></tr>
-<tr><td>Python for Data Analysis (3rd ed.) — Wes McKinney</td><td>Pandas foundations; pairs well with Pydantic's DataFrame integration</td></tr>
-<tr><td>Architecture Patterns with Python — Percival &amp; Gregory</td><td>Using Pydantic for domain models and data validation in production systems</td></tr>
-<tr><td>FastAPI — Sebastian Ramirez (online docs)</td><td>Canonical reference for Pydantic + FastAPI integration</td></tr>
-<tr><td>Robust Python — Patrick Viafore</td><td>Type hints, runtime validation, and defensive data handling in Python</td></tr>
+<tr><td>Python for Data Analysis, 3rd ed. — Wes McKinney (O'Reilly, 2022)</td><td>Pandas foundations; pairs well with Pydantic's DataFrame integration</td></tr>
+<tr><td>Architecture Patterns with Python — Percival &amp; Gregory (O'Reilly, 2020)</td><td>Domain models and data validation in production systems (examples predate Pydantic v2 — apply the patterns, not the syntax)</td></tr>
+<tr><td>FastAPI — Sebastián Ramírez (online docs, continuously updated)</td><td>Canonical reference for Pydantic + FastAPI integration</td></tr>
+<tr><td>Robust Python — Patrick Viafore (O'Reilly, 2021)</td><td>Type hints, runtime validation, and defensive data handling in Python</td></tr>
 </table>
 <h3 id="online-resources">Online Resources</h3>
 <table>
@@ -1882,8 +1883,8 @@ asyncio.run(main())</code></pre>
 <tr><td>Real Python — Pydantic tutorials</td><td>Beginner-friendly walkthroughs</td><td>Good for visual learners; code examples are runnable</td></tr>
 <tr><td>json-schema.org</td><td>JSON Schema specification</td><td>Understand what model_json_schema() produces</td></tr>
 <tr><td>testdriven.io — FastAPI course</td><td>FastAPI + Pydantic in production</td><td>Covers testing, Docker, and deployment</td></tr>
-<tr><td>ai.pydantic.dev</td><td>Official Pydantic AI documentation</td><td>The authoritative source for agents, tools, output types, and streaming (Phase 4)</td></tr>
-<tr><td>Anthropic Claude API docs</td><td>Provider for Pydantic AI agents</td><td>Model IDs and keys; <code>claude-sonnet-4-6</code> is a solid agent default, <code>claude-opus-4-8</code> for harder reasoning</td></tr>
+<tr><td>pydantic.dev/docs/ai (formerly ai.pydantic.dev)</td><td>Official Pydantic AI v2 documentation</td><td>The authoritative source for agents, tools, output types, and streaming (Phase 4)</td></tr>
+<tr><td>Claude Platform docs (platform.claude.com/docs)</td><td>Provider for Pydantic AI agents</td><td>Model IDs and keys; <code>claude-sonnet-5-5</code> is a solid agent default, <code>claude-opus-5-5</code> for harder reasoning, <code>claude-haiku-5-5</code> for cheap high-volume extraction</td></tr>
 </table>
 <h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
 <table>
@@ -1908,7 +1909,7 @@ asyncio.run(main())</code></pre>
 </table>
 
 <h2 id="progress-tracker">Progress Tracker</h2>
-<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is session-only and resets on reload.</p></blockquote>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
 <h4>Phase 1 — Foundations</h4>
 <ul>
 <li>[ ] Module 1.1 — Why Pydantic? Data Quality Problems</li>
@@ -1964,8 +1965,9 @@ asyncio.run(main())</code></pre>
 <li>[ ] test_pipeline.py passing with 6+ tests</li>
 </ul>
 
-<p><em>Guide Version 1.0 — Pydantic Track: Beginner to Intermediate</em><br>
-<em>Non-linear modular design · Placement quiz · 16 modules · ~8 weeks part-time · hayah-ai</em></p>
+<p><em>Guide Version 1.1 — Pydantic Track: Beginner to Intermediate</em><br>
+<em>Non-linear modular design · Placement quiz · 16 modules · ~8 weeks part-time · hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-11-19 (Pydantic 2.14, Pydantic AI 2.x, FastAPI 0.165)</em></p>
     </article>
   </main>
 </div>
