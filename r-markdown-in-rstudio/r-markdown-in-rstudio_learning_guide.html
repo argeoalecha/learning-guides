@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>R Markdown in RStudio Learning Guide — Beginner to Intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+.search-row{position:relative}
+.search-row .nav-search{padding-right:2.4rem}
+.search-kbd{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:4px;padding:0 .3rem;background:var(--paper-2);
+  pointer-events:none;
+}
+.search-row.has-query .search-kbd{display:none}
+.search-bar{
+  display:none;align-items:center;gap:.35rem;margin-top:.45rem;
+  font-size:.72rem;color:var(--ink-soft);
+}
+.search-bar.show{display:flex}
+.search-count{flex:1;font-family:var(--mono)}
+.search-bar button{
+  border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);
+  border-radius:6px;font-size:.72rem;padding:.15rem .45rem;cursor:pointer;min-width:26px;min-height:24px;
+}
+.search-bar button:hover{background:var(--teal-wash)}
+.search-results{
+  display:none;margin:.5rem 0 .2rem;max-height:48vh;overflow-y:auto;
+  border:1px solid var(--line);border-radius:8px;background:var(--paper);
+}
+.search-results.show{display:block}
+.sr-group{border-top:1px solid var(--line-soft)}
+.sr-group:first-child{border-top:none}
+.sr-section{
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--teal);padding:.5rem .65rem .15rem;
+}
+.sr-item{
+  display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  font-family:var(--sans);font-size:.76rem;line-height:1.4;color:var(--ink);
+  padding:.35rem .65rem;
+}
+.sr-item:hover,.sr-item.current{background:var(--teal-wash)}
+.sr-item mark,.lg-hit{background:var(--amber-wash);color:inherit;border-radius:2px;padding:0 1px}
+.sr-more{font-size:.7rem;color:var(--ink-soft);padding:.1rem .65rem .45rem}
+.sr-empty{font-size:.78rem;color:var(--ink-soft);padding:.6rem .65rem}
+pre .lg-hit{background:#5c4a12;color:#fff4cf}
+.lg-hit.lg-hit-current{background:var(--coral);color:#fff;outline:2px solid var(--coral)}
+.lg-block-current{outline:2px dashed var(--teal);outline-offset:4px;border-radius:4px}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — expert guided learning">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">expert guided learning</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">R Markdown in<br>RStudio</div>
+      <div class="brand-sub">R · RStudio · knitr · pandoc · flexdashboard · bookdown</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <div class="search-row" id="searchRow">
+        <input type="search" id="navSearch" class="nav-search" placeholder="Search the guide…" aria-label="Search the whole guide" aria-controls="searchResults" autocomplete="off" spellcheck="false">
+        <span class="search-kbd" aria-hidden="true">/</span>
+      </div>
+      <div class="search-bar" id="searchBar">
+        <span class="search-count" id="searchCount" aria-live="polite"></span>
+        <button type="button" id="searchPrev" aria-label="Previous match">↑</button>
+        <button type="button" id="searchNext" aria-label="Next match">↓</button>
+        <button type="button" id="searchClear" aria-label="Clear search">✕</button>
+      </div>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-intermediate-track" class="nav-top">Beginner to Intermediate Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-foundations" class="nav-top nav-phase">Phase 1: Foundations</a>
+<div class="nav-children">
+<a href="#module-11-setting-up-r-markdown-in-rstudio" class="nav-child">Module 1.1 — Setting Up R Markdown in RStudio</a>
+<a href="#module-12-yaml-front-matter-document-structure" class="nav-child">Module 1.2 — YAML Front Matter &amp; Document Structure</a>
+<a href="#module-13-markdown-syntax-essentials" class="nav-child">Module 1.3 — Markdown Syntax Essentials</a>
+<a href="#module-14-code-chunks-chunk-options" class="nav-child">Module 1.4 — Code Chunks &amp; Chunk Options</a>
+<a href="#module-15-mathematical-notation-equations" class="nav-child">Module 1.5 — Mathematical Notation &amp; Equations</a>
+<a href="#phase-1-capstone-department-summary-memo" class="nav-child">Phase 1 Capstone: Department Summary Memo</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-working-with-data-output" class="nav-top nav-phase">Phase 2: Working with Data &amp; Output</a>
+<div class="nav-children">
+<a href="#module-21-knitting-to-html-pdf-and-word" class="nav-child">Module 2.1 — Knitting to HTML, PDF, and Word</a>
+<a href="#module-22-tables-with-knitrkable-kableextra-and-gt" class="nav-child">Module 2.2 — Tables with knitr::kable, kableExtra &amp; gt</a>
+<a href="#module-23-charts-visualizations-with-ggplot2" class="nav-child">Module 2.3 — Charts &amp; Visualizations with ggplot2</a>
+<a href="#module-24-chunk-caching-performance" class="nav-child">Module 2.4 — Chunk Caching &amp; Performance</a>
+<a href="#phase-2-capstone-regional-performance-report" class="nav-child">Phase 2 Capstone: Regional Performance Report</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-dynamic-parameterized-reports" class="nav-top nav-phase">Phase 3: Dynamic &amp; Parameterized Reports</a>
+<div class="nav-children">
+<a href="#module-31-parameterized-reports-with-params" class="nav-child">Module 3.1 — Parameterized Reports with params</a>
+<a href="#module-32-custom-templates-output-formats" class="nav-child">Module 3.2 — Custom Templates &amp; Output Formats</a>
+<a href="#module-33-interactive-dashboards-with-flexdashboard" class="nav-child">Module 3.3 — Interactive Dashboards with flexdashboard</a>
+<a href="#module-34-htmlwidgets-shiny-runtime" class="nav-child">Module 3.4 — htmlwidgets &amp; the Shiny Runtime</a>
+<a href="#phase-3-capstone-per-region-report-batch" class="nav-child">Phase 3 Capstone: Per-Region Report Batch</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-publishing-books-and-the-quarto-transition" class="nav-top nav-phase">Phase 4: Publishing, Books &amp; the Quarto Transition</a>
+<div class="nav-children">
+<a href="#module-41-bookdown-multi-chapter-reports-cross-references" class="nav-child">Module 4.1 — bookdown: Multi-Chapter Reports &amp; Cross-References</a>
+<a href="#module-42-citations-bibliographies" class="nav-child">Module 4.2 — Citations &amp; Bibliographies</a>
+<a href="#module-43-version-control-collaboration-for-rmd-projects" class="nav-child">Module 4.3 — Version Control &amp; Collaboration for .Rmd Projects</a>
+<a href="#module-44-migrating-to-quarto" class="nav-child">Module 4.4 — Migrating to Quarto</a>
+<a href="#phase-4-capstone-published-analysis-book" class="nav-child">Phase 4 Capstone: Published Analysis Book</a>
+</div></div>
+
+<a href="#final-capstone-superstore-quarterly-business-review" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="r-markdown-in-rstudio-learning-guide">R Markdown in RStudio Learning Guide</h1>
+<h2 id="beginner-to-intermediate-track">Beginner to Intermediate Track</h2>
+<h3>R &middot; RStudio &middot; knitr &middot; pandoc &middot; flexdashboard</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="R Markdown document with a code chunk" xmlns="http://www.w3.org/2000/svg">
+<path d="M56 20 H160 L200 60 V236 H56 Z" fill="none" stroke="#075249" stroke-width="10" stroke-linejoin="round"/>
+<path d="M160 20 V60 H200 Z" fill="#075249"/>
+<rect x="76" y="96" width="108" height="64" rx="8" fill="#0d7a6e" opacity="0.16"/>
+<path d="M76 108 h108" stroke="#0d7a6e" stroke-width="8" stroke-linecap="round"/>
+<path d="M76 132 h72" stroke="#0d7a6e" stroke-width="8" stroke-linecap="round"/>
+<path d="M76 150 h50" stroke="#0d7a6e" stroke-width="8" stroke-linecap="round"/>
+<path d="M92 190 l14 14 l-14 14" fill="none" stroke="#075249" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M168 190 l14 14 l-14 14" fill="none" stroke="#075249" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" transform="translate(0,0) scale(-1,1) translate(-346,0)"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same <strong>Superstore Sales</strong> dataset (<a href="../datasets/superstore-sales/README.md">datasets/superstore-sales</a>) — 2,000 synthetic retail orders across 3 years, shared with the Data Analyst guide so nothing drifts out of sync.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner to R Markdown</strong> (comfortable with basic R, new to .Rmd files) &rarr; Start at Module 1.1 and go sequentially through Phase 1 and 2.</li>
+<li><strong>Some R Markdown experience</strong> (you've knitted a document before but want params/dashboards/bookdown) &rarr; Take the <strong>Placement Quiz</strong> below to find your entry point.</li>
+<li><strong>Targeting a specific outcome</strong> (dashboards, academic publishing, or deciding whether to move to Quarto) &rarr; Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3>Foundations</h3>
+<ul>
+<li>[ ] I know the difference between an .R script and an .Rmd file.</li>
+<li>[ ] I can explain what the YAML front matter at the top of an .Rmd controls.</li>
+<li>[ ] I can read a chunk header like <code>```{r plot1, echo=FALSE, fig.width=6}</code> and say what each part does.</li>
+<li>[ ] I have knitted a document to HTML from the RStudio Knit button at least once.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3>Output &amp; Data Presentation</h3>
+<ul>
+<li>[ ] I can knit the same .Rmd to both HTML and Word without changing the body text.</li>
+<li>[ ] I know why <code>kable()</code> alone often looks worse in Word than in HTML.</li>
+<li>[ ] I can add a ggplot2 chart to a chunk and control its size with chunk options.</li>
+<li>[ ] I know what <code>cache=TRUE</code> does to a chunk and when it can produce stale output.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3>Dynamic Reports &amp; Dashboards</h3>
+<ul>
+<li>[ ] I have used a <code>params:</code> field in YAML to render the same report for different inputs.</li>
+<li>[ ] I know the difference between a static flexdashboard and one with <code>runtime: shiny</code>.</li>
+<li>[ ] I can explain what an htmlwidget is and why it doesn't need a running R session to display.</li>
+<li>[ ] I have written a loop that calls <code>rmarkdown::render()</code> once per parameter value.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3>Publishing &amp; the Quarto Question</h3>
+<ul>
+<li>[ ] I know what bookdown adds on top of plain R Markdown for multi-chapter documents.</li>
+<li>[ ] I can cross-reference a figure or table by its chunk label instead of a hardcoded number.</li>
+<li>[ ] I know what a <code>.bib</code> file and a citation key like <code>[@xie2018]</code> do.</li>
+<li>[ ] I could explain to a colleague when to stay on R Markdown vs. migrate a project to Quarto.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.2</strong> | <strong>4 yes</strong> → Skip to the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-setting-up-r-markdown-in-rstudio"><td>1.1</td><td>Setting Up R Markdown in RStudio</td><td>Beginner</td><td>None (basic R syntax helps)</td><td>2h</td></tr>
+<tr data-href="#module-12-yaml-front-matter-document-structure"><td>1.2</td><td>YAML Front Matter &amp; Document Structure</td><td>Beginner</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-13-markdown-syntax-essentials"><td>1.3</td><td>Markdown Syntax Essentials</td><td>Beginner</td><td>1.1</td><td>1.5h</td></tr>
+<tr data-href="#module-14-code-chunks-chunk-options"><td>1.4</td><td>Code Chunks &amp; Chunk Options</td><td>Beginner</td><td>1.1, 1.2</td><td>2.5h</td></tr>
+<tr data-href="#module-15-mathematical-notation-equations"><td>1.5</td><td>Mathematical Notation &amp; Equations</td><td>Beginner–Intermediate</td><td>1.3</td><td>2h</td></tr>
+<tr data-href="#module-21-knitting-to-html-pdf-and-word"><td>2.1</td><td>Knitting to HTML, PDF, and Word</td><td>Beginner–Intermediate</td><td>1.4</td><td>2.5h</td></tr>
+<tr data-href="#module-22-tables-with-knitrkable-kableextra-and-gt"><td>2.2</td><td>Tables with knitr::kable, kableExtra &amp; gt</td><td>Intermediate</td><td>2.1</td><td>2.5h</td></tr>
+<tr data-href="#module-23-charts-visualizations-with-ggplot2"><td>2.3</td><td>Charts &amp; Visualizations with ggplot2</td><td>Intermediate</td><td>1.4</td><td>2.5h</td></tr>
+<tr data-href="#module-24-chunk-caching-performance"><td>2.4</td><td>Chunk Caching &amp; Performance</td><td>Intermediate</td><td>1.4, 2.1</td><td>1.5h</td></tr>
+<tr data-href="#module-31-parameterized-reports-with-params"><td>3.1</td><td>Parameterized Reports with params</td><td>Intermediate</td><td>2.1</td><td>2.5h</td></tr>
+<tr data-href="#module-32-custom-templates-output-formats"><td>3.2</td><td>Custom Templates &amp; Output Formats</td><td>Intermediate</td><td>2.1, 2.2</td><td>2h</td></tr>
+<tr data-href="#module-33-interactive-dashboards-with-flexdashboard"><td>3.3</td><td>Interactive Dashboards with flexdashboard</td><td>Intermediate</td><td>2.3</td><td>3h</td></tr>
+<tr data-href="#module-34-htmlwidgets-shiny-runtime"><td>3.4</td><td>htmlwidgets &amp; the Shiny Runtime</td><td>Intermediate–Advanced</td><td>3.3</td><td>2.5h</td></tr>
+<tr data-href="#module-41-bookdown-multi-chapter-reports-cross-references"><td>4.1</td><td>bookdown: Multi-Chapter Reports &amp; Cross-References</td><td>Intermediate</td><td>2.1, 2.2</td><td>3h</td></tr>
+<tr data-href="#module-42-citations-bibliographies"><td>4.2</td><td>Citations &amp; Bibliographies</td><td>Intermediate</td><td>4.1</td><td>1.5h</td></tr>
+<tr data-href="#module-43-version-control-collaboration-for-rmd-projects"><td>4.3</td><td>Version Control &amp; Collaboration for .Rmd Projects</td><td>Intermediate</td><td>1.1</td><td>1.5h</td></tr>
+<tr data-href="#module-44-migrating-to-quarto"><td>4.4</td><td>Migrating to Quarto</td><td>Intermediate–Advanced</td><td>2.1, 3.1</td><td>2h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1–2 are strictly linear (each module's chunk-level knowledge feeds the next). Phase 3's two dashboard modules (3.3, 3.4) and Phase 4's publishing modules (4.1–4.3) are independent side tracks — take whichever matches your goal without doing the other.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+
+<h3 id="track-1-business-reporting">Track 1 — Business Reporting (analyst job prep)</h3>
+<p><code>1.1 → 1.2 → 1.4 → 2.1 → 2.2 → 2.3 → 3.1 → Phase 2 Capstone</code><br>
+Target outcome: <strong>ship a recurring, parameterized business report to stakeholders in HTML/Word/PDF</strong></p>
+
+<h3 id="track-2-dashboards-interactive-reporting">Track 2 — Dashboards &amp; Interactive Reporting</h3>
+<p><code>1.1 → 1.4 → 2.1 → 2.3 → 3.3 → 3.4 → Phase 3 Capstone</code><br>
+Target outcome: <strong>build and share a live flexdashboard with interactive charts and filters</strong></p>
+
+<h3 id="track-3-academic-technical-publishing">Track 3 — Academic &amp; Technical Publishing</h3>
+<p><code>1.1 → 1.2 → 1.3 → 2.2 → 4.1 → 4.2 → 4.3 → Phase 4 Capstone</code><br>
+Target outcome: <strong>produce a citable, cross-referenced multi-chapter report or thesis draft with bookdown</strong></p>
+
+<h3 id="track-4-quarto-migration-fast-path">Track 4 — Quarto Migration Fast Path</h3>
+<p><code>1.2 → 1.4 → 2.1 → 3.1 → 4.4</code><br>
+Target outcome: <strong>for readers who already know R Markdown well and specifically want to evaluate/execute a move to Quarto</strong> — this track skips straight to the chunk, YAML, output-format, and params modules needed to understand what changes, then lands on 4.4.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Foundations                          (Weeks 1–2)
+Phase 2 — Working with Data &amp; Output           (Weeks 3–4)
+Phase 3 — Dynamic &amp; Parameterized Reports      (Weeks 5–6)
+Phase 4 — Publishing, Books &amp; the Quarto Move  (Weeks 7–8)
+Final Capstone — Superstore Quarterly Business Review   (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ── 1.2 ── 1.3 ── 1.4 ── 1.5 ─┬─ 2.1 ── 2.2 ─┬─ 3.1 ── 3.2 ─┐
+                          ├─ 2.3 ── 2.4  ├─ 3.3 ── 3.4  ├─ Final Capstone
+                          └──────────────┴─ 4.1 ── 4.2 ─┤
+                                          └─ 4.3 ── 4.4 ─┘</code></pre>
+
+<h2 id="phase-1-foundations">Phase 1: Foundations</h2>
+<h3 id="weeks-1-2">Weeks 1–2 | Goal: go from "never opened an .Rmd file" to knitting a clean, well-structured document with working code chunks</h3>
+<hr />
+
+<h3 id="module-11-setting-up-r-markdown-in-rstudio">Module 1.1 — Setting Up R Markdown in RStudio</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None (basic R syntax helps) · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Create a new .Rmd file from the RStudio template, knit it to HTML without errors, and explain what pandoc's role is in that process.<br>
+<strong>Skip if:</strong> You already have R, RStudio, the <code>rmarkdown</code> package, and a working TinyTeX/pandoc install, and have knitted a document before.<br>
+<strong>Unlocks:</strong> 1.2, 1.3, 1.4</p>
+</blockquote>
+
+<h4>What R Markdown actually is</h4>
+<p>An <strong>.Rmd file</strong> is plain text that interleaves three things: YAML metadata, Markdown-formatted prose, and R code chunks. When you click <strong>Knit</strong>, RStudio doesn't render the file itself — it hands the .Rmd to the <code>rmarkdown</code> package, which calls <strong>knitr</strong> to execute every code chunk and weave the results into a plain Markdown (.md) file, then hands that .md file to <strong>pandoc</strong>, a separate document-conversion engine, which produces the final HTML, Word, or PDF. Knowing this two-step pipeline matters the first time a knit fails with a cryptic pandoc error instead of an R error — the mistake is often in the YAML or Markdown layer, not your code.</p>
+<p>This distinction also explains a common early confusion: an .R script only runs code, while an .Rmd file runs code <em>and</em> formats a document around it — that's why an .Rmd is the right tool the moment you want to hand a colleague a readable report instead of a script.</p>
+
+<h4>Installing the toolchain</h4>
+<p>RStudio (Posit) ships the <strong>Desktop IDE</strong> as of the 2026.07 "Blue Plumbago" release; RStudio itself detects and prompts to install the <code>rmarkdown</code> package (currently 2.31 on CRAN) the first time you open an .Rmd file, along with <code>knitr</code>. For PDF output you also need a LaTeX distribution — install the lightweight <strong>TinyTeX</strong> rather than a full LaTeX install, since a full TeX Live install is several gigabytes you mostly won't use:</p>
+<pre><code class="language-r">install.packages("rmarkdown")
+install.packages("tinytex")
+tinytex::install_tinytex()</code></pre>
+<p>Skipping TinyTeX doesn't block you — HTML and Word output need no LaTeX at all — but PDF knitting will fail with a "pdflatex not found" error until it's installed. Save yourself the mid-project surprise and install it now, in Module 1.1, not when a stakeholder asks for a PDF in Module 2.1.</p>
+
+<h4>Creating and knitting your first document</h4>
+<p>In RStudio: <strong>File → New File → R Markdown…</strong>. Choose HTML as the initial output — it's the fastest to render and needs no extra dependencies, which is why it's the default starting point even if your final deliverable is Word or PDF. Click <strong>Knit</strong> (or press <code>Ctrl/Cmd+Shift+K</code>). A preview pane opens showing the rendered document.</p>
+<pre><code class="language-r">---
+title: "My First Report"
+author: "Your Name"
+date: "2026-07-31"
+output: html_document
+---
+
+## Introduction
+
+This is my first R Markdown document.
+
+```{r}
+summary(cars)
+```</code></pre>
+<p>If the knit fails, read the <strong>Render</strong> tab output from the top — the first error is almost always the real one; later lines are usually cascading failures from it.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Treating the Knit button like "Run All Chunks" in the editor. Knitting runs in a <em>fresh R session</em> with none of your Environment pane's existing variables — code that works interactively but relies on an object you created earlier by hand will fail on knit with "object not found." Always structure a document so it's reproducible top-to-bottom in a clean session.</p></blockquote>
+
+<p><strong>Exercise 1.1 — Environment Check</strong></p>
+<p>Dataset: Superstore Sales (<code>superstore_sales.csv</code>)</p>
+<ol>
+<li>Install <code>rmarkdown</code>, <code>knitr</code>, and <code>tinytex</code> (run <code>tinytex::install_tinytex()</code>).</li>
+<li>Create a new .Rmd from the RStudio template and knit the unmodified default document to HTML.</li>
+<li>Replace the body with a single chunk that reads <code>superstore_sales.csv</code> with <code>read.csv()</code> and prints <code>nrow()</code> and <code>colnames()</code>.</li>
+<li>Knit to HTML again and confirm the row count and column names appear in the output.</li>
+<li>Deliberately introduce an error (reference an undefined variable) inside a chunk, knit, and read the resulting error message end-to-end.</li>
+<li>Fix the error and re-knit to a clean HTML file.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-yaml-front-matter-document-structure">Module 1.2 — YAML Front Matter &amp; Document Structure</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Write a YAML header from memory that sets a title, author, date, a table of contents, and a numbered-section HTML output, then knit it correctly on the first try.<br>
+<strong>Skip if:</strong> You can already configure <code>toc</code>, <code>toc_float</code>, <code>number_sections</code>, and multiple named output formats without looking anything up.<br>
+<strong>Unlocks:</strong> 1.3, 1.4, 2.1</p>
+</blockquote>
+
+<h4>The YAML block is a configuration file, not prose</h4>
+<p>Everything between the two <code>---</code> lines at the top of an .Rmd is <strong>YAML</strong> (YAML Ain't Markup Language) — a whitespace-sensitive key-value format. Indentation is meaningful in YAML the same way it is in Python; a tab character where a space is expected, or a misaligned nested key, produces a render failure with a line number that often doesn't point at the real culprit. Always use spaces, never tabs, in YAML.</p>
+<pre><code class="language-yaml">---
+title: "Regional Sales Summary"
+author: "Data Team"
+date: "2026-07-31"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    theme: flatly
+---</code></pre>
+<p>Nesting <code>output:</code> → <code>html_document:</code> → its options is the pattern to internalize: the top-level <code>output</code> key names the format, and everything under it configures that specific format. Getting this nesting wrong (e.g. putting <code>toc: true</code> at the same indent level as <code>output</code> instead of under <code>html_document</code>) is the single most common YAML mistake beginners make — it silently gets ignored rather than erroring, which is more confusing than a hard failure.</p>
+
+<h4>Multiple output formats from one YAML block</h4>
+<p>A single .Rmd can declare several formats; RStudio's Knit dropdown then lets you pick which to render, or you can render all of them from the console:</p>
+<pre><code class="language-yaml">output:
+  html_document:
+    toc: true
+  word_document: default
+  pdf_document:
+    latex_engine: xelatex</code></pre>
+<pre><code class="language-r">rmarkdown::render("report.Rmd", output_format = "all")</code></pre>
+<p>This is the foundation for Module 2.1's format-specific quirks — the same body content, three different rendering engines underneath.</p>
+
+<h4>Document structure: headings become the table of contents</h4>
+<p>Markdown headings (<code>#</code>, <code>##</code>, <code>###</code>) aren't just visual — with <code>toc: true</code> set, pandoc walks the heading tree to build the table of contents automatically. A document with skipped heading levels (an <code>##</code> followed directly by a <code>####</code>) produces a lopsided, confusing TOC, so keep heading levels sequential.</p>
+
+<p><strong>Exercise 1.2 — Configurable Report Header</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Write a YAML header with title, author, today's date, and an HTML output with <code>toc: true</code>, <code>toc_float: true</code>, and <code>number_sections: true</code>.</li>
+<li>Add three <code>##</code> section headings ("Overview", "Regional Breakdown", "Top Products") with one sentence of placeholder prose each.</li>
+<li>Knit and confirm the floating TOC lists all three sections with correct numbering.</li>
+<li>Add a second output format (<code>word_document</code>) to the same YAML block and knit to Word from the RStudio Knit dropdown.</li>
+<li>Deliberately misindent <code>toc: true</code> to sit outside <code>html_document:</code>, knit, and observe that the TOC silently disappears rather than erroring — then fix it.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-markdown-syntax-essentials">Module 1.3 — Markdown Syntax Essentials</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Write a document from scratch using headings, bold/italic, a bulleted and a numbered list, a table, a hyperlink, and an inline image reference, with no syntax errors on knit.<br>
+<strong>Skip if:</strong> You've written Markdown in GitHub READMEs or elsewhere and just need the pandoc-specific extensions.<br>
+<strong>Unlocks:</strong> 1.4, 2.2</p>
+</blockquote>
+
+<h4>Text formatting and lists</h4>
+<pre><code class="language-md">**bold text**, *italic text*, and `inline code`
+
+- Bullet one
+- Bullet two
+  - Nested bullet
+
+1. First step
+2. Second step
+
+> A blockquote for callouts or quotations.</code></pre>
+<p>List indentation must be exactly consistent (2 or 4 spaces, never mixed) — an inconsistently indented nested bullet is a common cause of a list rendering as a flat, unindented sequence instead of a nested one.</p>
+
+<h4>Tables, links, and images</h4>
+<pre><code class="language-md">| Region | Sales    |
+|--------|----------|
+| West   | $250,000 |
+| East   | $198,000 |
+
+[Superstore dataset](https://example.com/superstore)
+
+![Sales trend](images/sales-trend.png)</code></pre>
+<p>Hand-typed pipe tables like this are fine for short, static tables — but for anything generated from a data frame, use <code>knitr::kable()</code> instead (Module 2.2). Hand-aligning pipes for a 20-row table is a waste of time a single R function replaces.</p>
+
+<h4>Inline R code — the feature that separates R Markdown from plain Markdown</h4>
+<p>Backtick-r expressions evaluate R code inline within prose, so a number in the text updates automatically when the underlying data changes:</p>
+<pre><code class="language-md">The dataset contains `r nrow(superstore_sales)` orders totaling `r scales::dollar(sum(superstore_sales$Sales))` in sales.</code></pre>
+<p>This is the mechanism that makes R Markdown reports self-updating rather than "screenshot and paste a number into a Word doc" — the sentence is regenerated correctly every time you knit against new data, eliminating an entire class of stale-number errors in recurring reports.</p>
+
+<p><em>Retrieval practice: before checking the syntax reference above, write from memory the Markdown for a 2-column, 3-row table and a numbered list with one nested bullet. Compare afterward — the gaps reveal which syntax you haven't internalized yet.</em></p>
+
+<p><strong>Exercise 1.3 — Formatted Summary Page</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Write a one-page .Rmd using at least one heading level, bold and italic text, a bulleted list, a numbered list, and a blockquote.</li>
+<li>Add a hand-typed Markdown table summarizing sales by 3 regions (values can be approximate).</li>
+<li>Add one inline R expression that reports the total row count of <code>superstore_sales.csv</code> directly in a sentence.</li>
+<li>Knit to HTML and verify the inline number matches <code>nrow()</code> run separately in the console.</li>
+</ol>
+<hr />
+
+<h3 id="module-14-code-chunks-chunk-options">Module 1.4 — Code Chunks &amp; Chunk Options</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1, 1.2 · <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Given a report brief that needs a hidden data-loading chunk, a visible-but-not-rerun cached chunk, and a chunk that shows code but suppresses a warning, write all three chunk headers correctly without a reference.<br>
+<strong>Skip if:</strong> You already use <code>echo</code>, <code>eval</code>, <code>include</code>, <code>message</code>, <code>warning</code>, and <code>fig.width</code>/<code>fig.height</code> fluently.<br>
+<strong>Unlocks:</strong> 1.5, 2.1, 2.3, 2.4</p>
+</blockquote>
+
+<h4>Anatomy of a chunk</h4>
+<pre><code class="language-r">```{r load-data, echo=FALSE, message=FALSE}
+library(dplyr)
+sales &lt;- read.csv("superstore_sales.csv")
+```</code></pre>
+<p>The label after <code>r</code> (<code>load-data</code>) is optional but valuable: it appears in error messages, in the cache filename (Module 2.4), and in cross-references (Module 4.1) — name every chunk once you have more than 2–3 per document, or debugging a knit failure means counting chunks by hand to find the failing one.</p>
+
+<h4>The chunk options that matter most</h4>
+<table>
+<tr><th>Option</th><th>Effect</th><th>Typical use</th></tr>
+<tr><td><code>echo</code></td><td>Show/hide the R code itself</td><td><code>echo=FALSE</code> for stakeholder reports — they want results, not code</td></tr>
+<tr><td><code>eval</code></td><td>Run/skip the code entirely</td><td><code>eval=FALSE</code> to document code you don't want executed on knit</td></tr>
+<tr><td><code>include</code></td><td>Run code but hide both code and output</td><td>Setup/loading chunks that produce no visible output of their own</td></tr>
+<tr><td><code>message</code> / <code>warning</code></td><td>Show/suppress package messages and warnings</td><td><code>message=FALSE</code> on <code>library()</code> calls to avoid cluttering output</td></tr>
+<tr><td><code>fig.width</code> / <code>fig.height</code></td><td>Plot dimensions in inches</td><td>Tuning chart proportions for the target output format</td></tr>
+<tr><td><code>results</code></td><td>How printed output is treated (<code>"asis"</code>, <code>"hide"</code>)</td><td><code>results="asis"</code> when a chunk prints raw Markdown/HTML to inject</td></tr>
+</table>
+<p>Conflating <code>echo</code> and <code>eval</code> is the most common chunk-option mistake: <code>echo=FALSE</code> still <em>runs</em> the code and shows its output, just not the code itself, while <code>eval=FALSE</code> shows the code but never runs it. Confusing the two either leaks source code into a client-facing report, or silently drops a computation the rest of the document depends on.</p>
+
+<h4>Global chunk options</h4>
+<p>Set defaults once at the top of the document rather than repeating options on every chunk:</p>
+<pre><code class="language-r">```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```</code></pre>
+<p>Individual chunks can still override this default locally (e.g. one chunk sets <code>echo=TRUE</code> deliberately to show a specific calculation) — global options are a default, not a lock.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Forgetting <code>include=FALSE</code> on the setup chunk itself. Without it, the <code>knitr::opts_chunk$set(...)</code> call and any <code>library()</code> loading messages print into the final document before the options even take effect for that same chunk.</p></blockquote>
+
+<p><strong>Exercise 1.4 — A Clean, Reader-Facing Chunk Set</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Add a <code>setup</code> chunk with <code>include=FALSE</code> that sets global <code>echo=FALSE, message=FALSE, warning=FALSE</code> and loads <code>dplyr</code> and <code>ggplot2</code>.</li>
+<li>Add a data-loading chunk, labeled <code>load-data</code>, that reads <code>superstore_sales.csv</code> — confirm no messages or code leak into the knitted output.</li>
+<li>Add one chunk that deliberately overrides the global default with <code>echo=TRUE</code> to show a specific <code>summary()</code> calculation to the reader.</li>
+<li>Add a chunk with <code>eval=FALSE</code> containing an alternate approach you want documented but not executed — confirm it appears as code but produces no output.</li>
+<li>Knit to HTML and verify: no package messages visible, one calculation's code is visible, one chunk's code is visible but clearly not run.</li>
+</ol>
+<hr />
+
+<h3 id="module-15-mathematical-notation-equations">Module 1.5 — Mathematical Notation &amp; Equations</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Write a display equation for the sample mean and standard deviation from memory using <code>\frac</code>, <code>\sum</code>, and subscripts, and confirm it renders correctly in HTML, PDF, and Word.<br>
+<strong>Skip if:</strong> You already write inline and display LaTeX math in R Markdown fluently and know how each output format handles it differently.<br>
+<strong>Unlocks:</strong> 2.1, 4.2</p>
+</blockquote>
+
+<h4>Inline math vs. display math</h4>
+<p>R Markdown typesets mathematical notation using standard LaTeX math syntax, passed through untouched by pandoc into whichever renderer the output format uses. <strong>Inline math</strong> sits within a sentence, wrapped in single dollar signs; <strong>display math</strong> is set off on its own line, wrapped in double dollar signs (or <code>\[ \]</code>):</p>
+<pre><code class="language-md">The profit margin is $\text{Profit Margin} = \dfrac{\text{Profit}}{\text{Sales}}$, computed per order.
+
+$$\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i$$</code></pre>
+<p>Reach for inline math when the expression is short enough to read as part of a sentence (a ratio, a single variable definition); reach for display math when the equation is the main point of the paragraph or complex enough that cramming it into prose hurts readability.</p>
+
+<h4>Building blocks: fractions, sums, subscripts, and Greek letters</h4>
+<pre><code class="language-md">$$
+\hat{\beta} = (X^\top X)^{-1} X^\top y \qquad
+\sigma^2 = \frac{1}{n-1}\sum_{i=1}^{n}(x_i - \bar{x})^2 \qquad
+\alpha, \beta, \epsilon
+$$</code></pre>
+<p>The handful of building blocks above — <code>\frac{a}{b}</code>, <code>\sum_{i=1}^{n}</code>, <code>x^2</code> for superscripts, <code>x_i</code> for subscripts, and Greek letters spelled out (<code>\alpha</code>, <code>\beta</code>, <code>\sigma</code>) — cover the large majority of formulas that come up in business and data-analysis reporting: means, standard deviations, regression coefficients, growth rates, and percentage-of-total calculations.</p>
+
+<h4>Combining live R results with a typeset equation</h4>
+<p>Because knitr evaluates inline R expressions before pandoc ever sees the math, you can substitute a model's actual fitted values directly into an equation — the equation updates correctly every time the underlying data changes, exactly like Module 1.3's inline-R sentences, just inside math notation instead of prose:</p>
+<pre><code class="language-r">```{r fit-model, include=FALSE}
+model &lt;- lm(Profit ~ Sales, data = sales)
+b0 &lt;- round(coef(model)[1], 2)
+b1 &lt;- round(coef(model)[2], 3)
+```
+
+$$\widehat{\text{Profit}} = `r b0` + `r b1` \times \text{Sales}$$</code></pre>
+<p>This is meaningfully different from typing the coefficients in by hand: a hardcoded equation goes stale the next time the model is refit on updated data, while this version is regenerated correctly on every knit — the same "no stale numbers" guarantee Module 1.3 established for prose, now extended to formulas.</p>
+
+<h4>How each output format actually renders the math</h4>
+<table>
+<tr><th>Format</th><th>Rendering engine</th><th>Notes</th></tr>
+<tr><td><code>html_document</code></td><td>MathJax (loaded via CDN by default)</td><td>Set <code>mathjax: local</code> in YAML if the report must render with no internet connection</td></tr>
+<tr><td><code>pdf_document</code></td><td>Native LaTeX (via TinyTeX)</td><td>Full LaTeX math support — this is the most faithful of the three</td></tr>
+<tr><td><code>word_document</code></td><td>pandoc converts to Office Math (OMML)</td><td>Common notation converts cleanly; obscure/custom LaTeX commands may not — always visually check the Word output, don't assume parity with HTML/PDF</td></tr>
+</table>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Leaving a space immediately after the opening <code>$</code> or before the closing <code>$</code> in inline math (<code>$ x + y $</code> instead of <code>$x + y$</code>). Pandoc requires the dollar signs to hug the math content with no adjacent whitespace — a stray space makes it treat the <code>$</code> as a literal currency symbol instead of a math delimiter, and the "equation" prints as raw, unrendered LaTeX source in the output.</p></blockquote>
+
+<p>A related trap runs the other way: a literal currency figure in prose (<code>"the $500 threshold"</code>) can occasionally get misread as an opening math delimiter if a second <code>$</code> appears later in the same paragraph. Escape genuine currency dollar signs as <code>\$500</code>, or better, generate the figure with inline R (<code>`r scales::dollar(500)`</code>) so it's never typed as a raw <code>$</code> at all.</p>
+
+<p><em>Retrieval practice: before checking the building-blocks reference above, write from memory the display-math equation for a standard deviation, using <code>\sum</code>, a subscript, and a square root (<code>\sqrt{}</code>) — then compare against the pattern shown.</em></p>
+
+<p><strong>Exercise 1.5 — Superstore Formulas</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Write an inline math expression for profit margin as a ratio of Profit to Sales, correctly hugging the dollar-sign delimiters with no adjacent whitespace.</li>
+<li>Write a display equation for the sample mean order value across the dataset, using <code>\bar{x}</code> and <code>\sum</code> notation.</li>
+<li>Fit a simple linear model (<code>Profit ~ Sales</code>) in a hidden chunk, then write a display equation for the fitted regression line that substitutes the actual intercept and slope using inline R code, rounded to 2 decimals.</li>
+<li>Add a sentence mentioning a literal currency figure (e.g., "orders above the $500 threshold") escaped correctly so it does not get misparsed as a math delimiter.</li>
+<li>Knit to HTML, PDF, and Word; compare all three renderings of the same equations and note anything that differs in the Word output specifically.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-department-summary-memo">Phase 1 Capstone: Department Summary Memo</h3>
+<p><strong>Project: Superstore Category Summary Memo</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) the three-stage knit → pandoc pipeline, (2) why YAML indentation errors fail silently rather than loudly, and (3) the difference between <code>echo</code> and <code>eval</code>? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> Superstore Sales</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A single .Rmd with a complete YAML header: title, author, date, HTML output with TOC and numbered sections.</li>
+<li>A hidden setup chunk with sane global chunk-option defaults.</li>
+<li>A "Data Overview" section using inline R code to report total orders, total sales, and date range directly in prose (no hardcoded numbers).</li>
+<li>A "Category Breakdown" section with a hand-typed Markdown table of the 3 product categories (values pulled from a chunk, typed manually into the table for now — <code>kable()</code> comes in Module 2.2).</li>
+<li>An inline math expression for profit margin (<code>Profit / Sales</code>) and a display equation for average order value, both correctly delimited.</li>
+<li>At least one chunk that shows its code deliberately (a calculation worth showing the reader) and one that hides it.</li>
+<li>Knit successfully to both HTML and Word from the same source file.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-working-with-data-output">Phase 2: Working with Data &amp; Output</h2>
+<h3 id="weeks-3-4">Weeks 3–4 | Goal: produce polished, multi-format, data-driven reports with real tables and charts</h3>
+<hr />
+
+<h3 id="module-21-knitting-to-html-pdf-and-word">Module 2.1 — Knitting to HTML, PDF, and Word</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.4 · <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Take one existing .Rmd and knit it cleanly to HTML, PDF, and Word, identifying and fixing at least one format-specific rendering difference (e.g. an image size or table overflow issue).<br>
+<strong>Skip if:</strong> You've already shipped reports in all three formats from the same source and know pandoc's format-specific quirks.<br>
+<strong>Unlocks:</strong> 2.2, 2.4, 3.1, 4.1</p>
+</blockquote>
+
+<h4>Same source, three renderers</h4>
+<p><code>html_document</code> renders through a browser-based HTML+CSS+JS pipeline; <code>pdf_document</code> renders through LaTeX (via TinyTeX); <code>word_document</code> renders through pandoc's native .docx writer. Each has different capabilities — HTML supports floating TOCs, tabs, and interactive widgets; PDF supports the tightest print typography and page-break control but no interactivity; Word supports the easiest "track changes" collaboration with non-technical stakeholders but the roughest table/figure layout control.</p>
+<p>The practical implication: don't assume a document that looks perfect in HTML will look perfect in PDF or Word without a check. A wide table that scrolls horizontally in HTML will overflow the page margin in PDF, silently getting clipped or shrunk by LaTeX's default table handling.</p>
+
+<h4>Format-specific YAML options</h4>
+<pre><code class="language-yaml">output:
+  html_document:
+    toc: true
+    code_folding: hide
+  pdf_document:
+    toc: true
+    latex_engine: xelatex
+    fig_caption: true
+  word_document:
+    toc: true
+    reference_docx: "company-template.docx"</code></pre>
+<p><code>reference_docx</code> is the key Word option: point it at a .docx file with your organization's heading styles, fonts, and margins already set, and pandoc will apply those styles to the knitted output — this is how you get a Word report that matches a corporate template without hand-formatting every knit.</p>
+
+<h4>Rendering from the console instead of the Knit button</h4>
+<p>The Knit button calls <code>rmarkdown::render()</code> under the hood — calling it directly is necessary the moment you need to render programmatically (batch reports, Module 3.1's parameterized rendering, or CI pipelines):</p>
+<pre><code class="language-r">rmarkdown::render(
+  "regional_report.Rmd",
+  output_format = "pdf_document",
+  output_file = "regional_report_2026Q2.pdf"
+)</code></pre>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Editing a knitted output file (the .docx or .pdf) by hand and then re-knitting later, overwriting the manual edits without warning. The .Rmd is the single source of truth — manual edits belong in <code>reference_docx</code> styling or the .Rmd body, never in the rendered output file.</p></blockquote>
+
+<p><strong>Exercise 2.1 — Three-Format Regional Report</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Take your Phase 1 capstone .Rmd and add all three output formats to YAML (HTML, PDF, Word).</li>
+<li>Knit to all three and open each — note one thing that renders differently between formats (e.g. TOC behavior, table wrapping).</li>
+<li>Install TinyTeX if you haven't, and fix any PDF-specific knit errors that appear.</li>
+<li>Add <code>code_folding: hide</code> to the HTML output only and confirm the toggle works in the browser.</li>
+<li>Render the PDF version from the R console using <code>rmarkdown::render()</code> with an explicit <code>output_file</code> name that includes today's date.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-tables-with-knitrkable-kableextra-and-gt">Module 2.2 — Tables with knitr::kable, kableExtra &amp; gt</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Produce a formatted, styled table from a data frame with a caption, conditional row highlighting, and correct number formatting, rendering cleanly in both HTML and PDF.<br>
+<strong>Skip if:</strong> You already reach for <code>kable() %>% kable_styling()</code> or <code>gt()</code> reflexively instead of hand-typing Markdown tables.<br>
+<strong>Unlocks:</strong> 3.2, 4.1</p>
+</blockquote>
+
+<h4>knitr::kable — the baseline</h4>
+<pre><code class="language-r">library(knitr)
+library(dplyr)
+
+sales %>%
+  group_by(Region) %>%
+  summarise(Total_Sales = sum(Sales), .groups = "drop") %>%
+  kable(caption = "Total Sales by Region", digits = 0,
+        format.args = list(big.mark = ","))</code></pre>
+<p><code>kable()</code> alone is format-agnostic and lightweight, but it has no styling hooks of its own — for anything beyond a plain grid, you need <strong>kableExtra</strong> (HTML/PDF-oriented) or <strong>gt</strong> (a more modern grammar-of-tables package with wider styling flexibility, HTML-first).</p>
+
+<h4>kableExtra for styling and highlighting</h4>
+<pre><code class="language-r">library(kableExtra)
+
+sales %>%
+  group_by(Region) %>%
+  summarise(Total_Sales = sum(Sales), .groups = "drop") %>%
+  arrange(desc(Total_Sales)) %>%
+  kable(caption = "Total Sales by Region", digits = 0) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE) %>%
+  row_spec(1, bold = TRUE, background = "#e8f4f1")</code></pre>
+<p><code>kable_styling()</code> options that work in HTML (like hover effects) are silently ignored in PDF output — kableExtra degrades gracefully rather than erroring, but that means a table that looks polished in HTML preview can look plain in the PDF version without any warning. Always check both if you ship both formats.</p>
+
+<h4>gt for a more modern, HTML-first table grammar</h4>
+<pre><code class="language-r">library(gt)
+
+sales %>%
+  group_by(Region) %>%
+  summarise(Total_Sales = sum(Sales), .groups = "drop") %>%
+  gt() %>%
+  fmt_currency(columns = Total_Sales, currency = "USD") %>%
+  tab_header(title = "Regional Sales Summary")</code></pre>
+<p><code>gt</code> handles currency/percentage formatting, cell-level conditional formatting, and multi-level headers more cleanly than kableExtra, at the cost of weaker PDF/LaTeX support — pick kableExtra when PDF output matters, <code>gt</code> when the deliverable is HTML-only.</p>
+
+<p><strong>Exercise 2.2 — Styled Category Table</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Build a summary table of total sales and total profit by <code>Category</code> using <code>dplyr::group_by()</code>/<code>summarise()</code>.</li>
+<li>Render it three ways: plain <code>kable()</code>, <code>kable() %>% kable_styling()</code> with striped rows, and <code>gt()</code> with currency formatting.</li>
+<li>Add a caption to each table stating what it shows.</li>
+<li>Use <code>row_spec()</code> (kableExtra) or <code>tab_style()</code> (gt) to highlight the row with the lowest profit.</li>
+<li>Knit to both HTML and PDF and note which styling survives in PDF and which is dropped.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-charts-visualizations-with-ggplot2">Module 2.3 — Charts &amp; Visualizations with ggplot2</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.4 · <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Produce a correctly sized, labeled ggplot2 chart inside a chunk with appropriate <code>fig.width</code>/<code>fig.height</code>/<code>fig.cap</code>, rendering well in both a wide HTML page and a narrower PDF page.<br>
+<strong>Skip if:</strong> You already control chunk-level figure sizing and captions without trial and error.<br>
+<strong>Unlocks:</strong> 3.3, phase 2 capstone</p>
+</blockquote>
+
+<h4>Embedding a ggplot2 chart</h4>
+<pre><code class="language-r">```{r sales-by-month, fig.cap="Monthly sales trend, 2024–2026", fig.width=8, fig.height=4}
+library(ggplot2)
+library(dplyr)
+
+sales %>%
+  mutate(Order_Month = as.Date(cut(as.Date(Order.Date), "month"))) %>%
+  group_by(Order_Month) %>%
+  summarise(Total_Sales = sum(Sales), .groups = "drop") %>%
+  ggplot(aes(Order_Month, Total_Sales)) +
+  geom_line(color = "#0d7a6e", linewidth = 1) +
+  labs(x = NULL, y = "Total Sales ($)", title = "Monthly Sales Trend") +
+  theme_minimal()
+```</code></pre>
+<p><code>fig.cap</code> only produces a visible, numbered caption in formats that support figure numbering (PDF/LaTeX and bookdown natively; plain HTML shows it as a plain caption line without auto-numbering unless you're inside a bookdown project — see Module 4.1). Setting a caption with no numbering support isn't wrong, just less useful than it looks.</p>
+
+<h4>Sizing for the target output, not your monitor</h4>
+<p>A chunk's <code>fig.width</code>/<code>fig.height</code> are in <strong>inches</strong>, and PDF pages are narrower than most HTML viewports — a chart that looks well-proportioned at <code>fig.width=10</code> in an HTML preview often overflows a PDF page margin. Setting document-wide defaults per output format, and only overriding per-chunk when a specific chart needs different proportions, keeps this consistent:</p>
+<pre><code class="language-r">```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 7, fig.height = 4, fig.align = "center")
+```</code></pre>
+
+<p><em>Retrieval practice: before checking the code above, write from memory a chunk header that sets a figure width of 6 inches, height of 3 inches, and a caption reading "Sales by category" — then compare against the pattern shown.</em></p>
+
+<p><strong>Exercise 2.3 — Regional Trend Charts</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Build a monthly sales trend line chart faceted by <code>Region</code> using <code>facet_wrap()</code>.</li>
+<li>Add an appropriate <code>fig.cap</code>, and set <code>fig.width</code>/<code>fig.height</code> so all 4 regional panels are legible without excessive whitespace.</li>
+<li>Add a second chart: a bar chart of total profit by <code>Sub.Category</code>, sorted descending, with negative-profit bars colored differently from positive ones.</li>
+<li>Knit to HTML and PDF; adjust <code>fig.width</code> if either chart overflows the PDF page margin.</li>
+<li>Set document-wide chunk defaults for figure size in the setup chunk, then override just the faceted chart's width locally to fit 4 panels.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-chunk-caching-performance">Module 2.4 — Chunk Caching &amp; Performance</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.4, 2.1 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Explain, without looking it up, exactly what triggers a knitr cache invalidation, and demonstrate a chunk dependency correctly declared with <code>dependson</code>.<br>
+<strong>Skip if:</strong> You already use <code>cache=TRUE</code> deliberately and know its failure modes.<br>
+<strong>Unlocks:</strong> Phase 2 capstone</p>
+</blockquote>
+
+<h4>What caching does and does not protect against</h4>
+<pre><code class="language-r">```{r slow-model, cache=TRUE}
+model &lt;- lm(Profit ~ Sales + Discount, data = sales)
+```</code></pre>
+<p>With <code>cache=TRUE</code>, knitr saves the chunk's R objects to disk after the first run and skips re-execution on subsequent knits <em>as long as the chunk's own code text hasn't changed</em>. That last clause is the trap: caching invalidates on the chunk's own code changing, but <strong>not</strong> automatically when an upstream chunk it depends on changes — if chunk B reads a variable created in chunk A, and you edit chunk A, chunk B's cache is still considered valid and silently serves stale results.</p>
+
+<h4>Declaring dependencies explicitly</h4>
+<pre><code class="language-r">```{r load-data, cache=TRUE}
+sales &lt;- read.csv("superstore_sales.csv")
+```
+
+```{r slow-model, cache=TRUE, dependson="load-data"}
+model &lt;- lm(Profit ~ Sales + Discount, data = sales)
+```</code></pre>
+<p><code>dependson</code> tells knitr to invalidate <code>slow-model</code>'s cache whenever <code>load-data</code>'s cache invalidates, closing the stale-result gap. Without it, a data refresh silently leaves your model trained on last week's numbers while the rest of the report shows this week's — a bug that's invisible in the rendered output and only surfaces when someone notices the numbers don't reconcile.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Caching a chunk that reads external data with no dependency declared on a file's modification time. If the underlying CSV changes but the R code in the chunk doesn't, the cache stays "valid" and keeps serving the old data indefinitely — delete the <code>cache/</code> folder or bump the chunk label when the source data changes, or better, avoid caching data-loading chunks entirely and reserve caching for genuinely slow computation.</p></blockquote>
+
+<p><strong>Exercise 2.4 — Caching a Slow Aggregation</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Add a chunk that performs a deliberately slow aggregation (e.g. a nested loop or a large <code>group_by</code> across all dimension tables) and cache it.</li>
+<li>Knit twice and confirm the second knit is faster (time it, or note the console output for cache hits).</li>
+<li>Add a downstream chunk that uses the cached chunk's output, declared with <code>dependson</code>.</li>
+<li>Edit the upstream (non-cached) data-loading chunk and re-knit — confirm the downstream cached chunk correctly re-executes.</li>
+<li>Delete the <code>cache/</code> folder and re-knit from scratch to confirm the document still knits correctly with no cache present.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-regional-performance-report">Phase 2 Capstone: Regional Performance Report</h3>
+<p><strong>Project: Superstore Regional Performance Report</strong></p>
+<p><strong>Dataset:</strong> Superstore Sales</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A single .Rmd knitting cleanly to HTML, PDF, and Word from one YAML block.</li>
+<li>A styled summary table (kableExtra or gt) of sales and profit by region, with the lowest-profit region highlighted.</li>
+<li>At least two ggplot2 charts (a trend line and a comparison bar chart) with correctly sized figures and captions in all three output formats.</li>
+<li>At least one cached chunk with a correctly declared <code>dependson</code> relationship to an upstream data-loading chunk.</li>
+<li>Verification that editing the upstream data chunk correctly invalidates the downstream cache on re-knit.</li>
+<li>A Word version that uses a <code>reference_docx</code> template (can be a minimally customized default .docx).</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-dynamic-parameterized-reports">Phase 3: Dynamic &amp; Parameterized Reports</h2>
+<h3 id="weeks-5-6">Weeks 5–6 | Goal: turn a single-run report into a reusable, parameterized, or interactive artifact</h3>
+<hr />
+
+<h3 id="module-31-parameterized-reports-with-params">Module 3.1 — Parameterized Reports with params</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Write a params-driven .Rmd that filters a dataset by a parameter, then render it programmatically for 3 different parameter values into 3 separate output files without touching the .Rmd body.<br>
+<strong>Skip if:</strong> You already declare <code>params:</code> in YAML and reference <code>params$x</code> in chunks reflexively.<br>
+<strong>Unlocks:</strong> 3.2, 4.4, phase 3 capstone</p>
+</blockquote>
+
+<h4>Declaring parameters</h4>
+<pre><code class="language-yaml">---
+title: "Regional Report: `r params$region`"
+output: html_document
+params:
+  region: "West"
+  min_date: "2024-01-01"
+---</code></pre>
+<pre><code class="language-r">```{r filter-region}
+region_sales &lt;- sales %>%
+  filter(Region == params$region, as.Date(Order.Date) >= as.Date(params$min_date))
+```</code></pre>
+<p>This is the feature that turns one .Rmd into a report <em>template</em> rather than a one-off document — the same file, filtered differently per render, instead of four near-duplicate .Rmd files that inevitably drift out of sync when someone fixes a bug in only one copy.</p>
+
+<h4>Rendering programmatically over a set of parameter values</h4>
+<pre><code class="language-r">regions &lt;- c("West", "East", "Central", "South")
+
+for (r in regions) {
+  rmarkdown::render(
+    "regional_report.Rmd",
+    output_file = paste0("report_", tolower(r), ".html"),
+    params = list(region = r, min_date = "2024-01-01")
+  )
+}</code></pre>
+<p>Each iteration renders in a fresh R session by default, so parameter values from one region can never leak into the next region's report — a property you'd have to build by hand if you were, instead, hacking this with a shared script and global variables.</p>
+
+<h4>The "Knit with Parameters" dialog</h4>
+<p>Add <code>params: region: !r params$region</code> style dropdown controls via <code>shiny</code> params input, or simpler — RStudio auto-generates a "Knit with Parameters" form from your YAML <code>params:</code> block when you add:</p>
+<pre><code class="language-yaml">params:
+  region:
+    label: "Region"
+    value: "West"
+    input: select
+    choices: ["West", "East", "Central", "South"]
+</code></pre>
+<p>This gives a non-technical stakeholder a point-and-click way to re-run the report for their own region, without opening the .Rmd file or touching any code — arguably the single highest-leverage feature in this entire guide for reports handed to non-R-users.</p>
+
+<blockquote class="callout"><p><strong>Disambiguation:</strong> "Parameterized report" (this module's <code>params:</code> YAML mechanism, resolved once at render time) is a different thing from a <strong>Shiny app</strong> (Module 3.4's <code>runtime: shiny</code>, which re-executes reactively while a user interacts live). Params render once per call; Shiny keeps a live R process running.</p></blockquote>
+
+<p><strong>Exercise 3.1 — Multi-Region Report Batch</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Add a <code>region</code> and a <code>min_date</code> parameter to a report's YAML, with sensible defaults.</li>
+<li>Filter the dataset by both parameters in a chunk and confirm the title updates via inline R code referencing <code>params$region</code>.</li>
+<li>Add a dropdown <code>input: select</code> parameter for region and knit using RStudio's "Knit with Parameters" dialog.</li>
+<li>Write a script that calls <code>rmarkdown::render()</code> in a loop over all 4 regions, producing 4 uniquely named HTML files.</li>
+<li>Open two of the rendered files side by side and confirm the data, title, and charts differ correctly per region.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-custom-templates-output-formats">Module 3.2 — Custom Templates &amp; Output Formats</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1, 2.2 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Create a reusable RStudio document template (a skeleton .Rmd plus supporting files) that a colleague can select from File → New File → R Markdown → From Template.<br>
+<strong>Skip if:</strong> You've already built or used a custom .Rmd template package internally.<br>
+<strong>Unlocks:</strong> Phase 3 capstone</p>
+</blockquote>
+
+<h4>Why templates matter beyond copy-paste</h4>
+<p>Copy-pasting a "good" .Rmd as a starting point for every new report works until the template itself needs a fix — then every already-copied report is stuck on the old version. An installable R Markdown <strong>template</strong> (delivered inside an R package) solves this by giving every new report a single canonical source, discoverable from RStudio's New File menu.</p>
+
+<h4>Minimal template package structure</h4>
+<pre><code>mycompanyreports/
+├── DESCRIPTION
+├── inst/
+│   └── rmarkdown/
+│       └── templates/
+│           └── regional-report/
+│               ├── template.yaml
+│               └── skeleton/
+│                   └── skeleton.Rmd</code></pre>
+<pre><code class="language-yaml"># template.yaml
+name: Regional Report
+description: >
+  Standard regional sales report with company branding.
+create_dir: false</code></pre>
+<p>Once the containing package is installed, <strong>File → New File → R Markdown → From Template</strong> lists "Regional Report" for every teammate with the package installed — this is how a small team keeps report structure, branding, and boilerplate chunk setup consistent without a wiki page nobody reads.</p>
+
+<h4>Custom output format functions</h4>
+<p>Beyond templates, you can also wrap <code>html_document</code> (or another base format) in your own function to bake in fixed options a team should never have to remember to set:</p>
+<pre><code class="language-r">company_report &lt;- function(...) {
+  rmarkdown::html_document(
+    toc = TRUE, toc_float = TRUE, theme = "flatly", ...
+  )
+}</code></pre>
+<pre><code class="language-yaml">output: mycompanyreports::company_report</code></pre>
+<p>This removes an entire category of "someone forgot to set <code>toc_float</code>" inconsistency across a team's reports — the default is correct by construction.</p>
+
+<p><strong>Exercise 3.2 — Company Report Template</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Create a minimal R package skeleton with the <code>inst/rmarkdown/templates/</code> structure shown above.</li>
+<li>Write a <code>skeleton.Rmd</code> that includes your Phase 2 capstone's YAML defaults (TOC, sections, setup chunk) but no report-specific content.</li>
+<li>Install the package locally (<code>devtools::install()</code>) and confirm "Regional Report" (or your chosen name) appears under File → New File → R Markdown → From Template.</li>
+<li>Create a new report from the template and confirm it knits cleanly with no edits.</li>
+<li>(Optional, advanced) Write a custom output format function wrapping <code>html_document</code> with your team's default options baked in.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-interactive-dashboards-with-flexdashboard">Module 3.3 — Interactive Dashboards with flexdashboard</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.3 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Build a flexdashboard with at least 2 columns, 3 value boxes, and one interactive htmlwidget chart, and correctly explain the row/column-height layout markup.<br>
+<strong>Skip if:</strong> You've already shipped a flexdashboard to a stakeholder.<br>
+<strong>Unlocks:</strong> 3.4, phase 3 capstone</p>
+</blockquote>
+
+<h4>flexdashboard's layout grammar</h4>
+<p>flexdashboard turns Markdown heading levels into a dashboard grid: <code>##</code> defines columns or rows (depending on <code>orientation:</code>), and <code>###</code> defines the panels within them. This is unusual the first time you see it — the layout comes entirely from Markdown heading structure, not from explicit grid code.</p>
+<pre><code class="language-yaml">---
+title: "Superstore Dashboard"
+output:
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---</code></pre>
+<pre><code class="language-r">Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Total Sales
+
+```{r}
+flexdashboard::valueBox(scales::dollar(sum(sales$Sales)), icon = "fa-dollar-sign")
+```
+
+### Total Orders
+
+```{r}
+flexdashboard::valueBox(nrow(sales), icon = "fa-shopping-cart")
+```
+
+Column
+-----------------------------------------------------------------------
+
+### Sales by Region
+
+```{r}
+library(plotly)
+p &lt;- sales %>% group_by(Region) %>% summarise(Total = sum(Sales)) %>%
+  ggplot(aes(Region, Total)) + geom_col(fill = "#0d7a6e")
+ggplotly(p)
+```</code></pre>
+<p>Note the <code>-----</code> row of dashes under each <code>##</code> heading — flexdashboard requires it to close out that row/column's markup; omitting it merges the next section's panels into the current one unexpectedly.</p>
+
+<h4>Value boxes and gauges</h4>
+<p><code>valueBox()</code> is the standard "KPI tile" component — a single number, an icon, and an optional color tied to a threshold. Pair it with <code>gauge()</code> for a dial-style KPI against a target, which reads faster than a raw number for stakeholders scanning a dashboard quickly rather than reading every figure.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Building a flexdashboard entirely from static ggplot2 charts and wondering why it "isn't interactive." A flexdashboard is only as interactive as the widgets inside it — wrap a ggplot in <code>plotly::ggplotly()</code>, or use <code>DT::datatable()</code> for tables, to get hover tooltips and zoom/pan for free. The dashboard <em>shell</em> being flexdashboard doesn't make the charts inside it interactive automatically.</p></blockquote>
+
+<p><strong>Exercise 3.3 — Superstore KPI Dashboard</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Create a flexdashboard with <code>orientation: columns</code>, a narrow left column of 3 value boxes (total sales, total orders, average order value) and a wider right column for charts.</li>
+<li>Add an interactive <code>plotly::ggplotly()</code> chart of sales by region.</li>
+<li>Add a <code>DT::datatable()</code> of the top 10 products by profit, sortable and searchable.</li>
+<li>Knit and confirm hovering the plotly chart shows tooltips, and the DT table is sortable in the browser.</li>
+<li>Deliberately omit a row-separator dash line and observe the layout break, then fix it.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-htmlwidgets-shiny-runtime">Module 3.4 — htmlwidgets &amp; the Shiny Runtime</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate–Advanced · <strong>Prereqs:</strong> 3.3 · <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Explain precisely why an htmlwidget-based dashboard can be emailed as a static file while a <code>runtime: shiny</code> dashboard cannot, and add a working <code>selectInput()</code> filter to a flexdashboard.<br>
+<strong>Skip if:</strong> You already know the htmlwidget vs. Shiny-runtime distinction and have deployed a Shiny-runtime document.<br>
+<strong>Unlocks:</strong> Phase 3 capstone</p>
+</blockquote>
+
+<h4>htmlwidgets: interactivity with no server required</h4>
+<p>Packages like <strong>plotly</strong>, <strong>DT</strong>, and <strong>leaflet</strong> are <strong>htmlwidgets</strong> — they compile to self-contained JavaScript/HTML/CSS embedded directly in the knitted file. That's why the plotly chart in Module 3.3 can be hovered and zoomed even after you've emailed the .html file to someone with no R installed at all: the interactivity lives entirely in the browser, no R process required after knit.</p>
+
+<h4>runtime: shiny — a genuinely different execution model</h4>
+<pre><code class="language-yaml">---
+title: "Live Filterable Dashboard"
+output: flexdashboard::flex_dashboard
+runtime: shiny
+---</code></pre>
+<pre><code class="language-r">selectInput("region_filter", "Region:", choices = unique(sales$Region))
+
+renderPlot({
+  sales %>% filter(Region == input$region_filter) %>%
+    ggplot(aes(Order.Date, Sales)) + geom_line()
+})</code></pre>
+<p>Setting <code>runtime: shiny</code> changes the document from something you knit once into something that must be <strong>served</strong> by a live R process (via <code>rmarkdown::run()</code>, RStudio Connect, or shinyapps.io) — every input change re-executes R code on the server in real time. This is strictly more powerful than htmlwidgets alone (true server-side filtering, joins, model refits per interaction) but it cannot be emailed as a static file or hosted on plain static file storage; it needs an always-on R process somewhere.</p>
+
+<h4>Choosing between the two</h4>
+<p>Default to htmlwidgets-only (no <code>runtime: shiny</code>) whenever the interactivity needed is display-level (hover, zoom, sort, search) — it's simpler to host and share. Reach for <code>runtime: shiny</code> only when the interaction requires re-running R code server-side (a live model refit, a database query per filter change, computation too heavy to precompute for every possible filter combination).</p>
+
+<p><strong>Exercise 3.4 — Live-Filterable Dashboard</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Add <code>runtime: shiny</code> to your Module 3.3 dashboard's YAML.</li>
+<li>Add a <code>selectInput()</code> for Region that filters the sales-by-region chart reactively.</li>
+<li>Run it locally with <code>rmarkdown::run("dashboard.Rmd")</code> and confirm the chart updates live as you change the dropdown.</li>
+<li>Note in a code comment which specific interaction in this dashboard genuinely requires the Shiny runtime vs. could have been done with plain htmlwidgets and a client-side filter.</li>
+<li>Attempt to open the .Rmd's rendered output as a static file (without <code>rmarkdown::run()</code>) and observe/explain what breaks.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-per-region-report-batch">Phase 3 Capstone: Per-Region Report Batch</h3>
+<p><strong>Project: Automated Regional Report Distribution</strong></p>
+<p><strong>Dataset:</strong> Superstore Sales</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A parameterized .Rmd (region + date-range params) with a "Knit with Parameters" dropdown configured.</li>
+<li>A render script that loops over all 4 regions, producing 4 uniquely named HTML reports in one run.</li>
+<li>A companion flexdashboard (static, htmlwidget-based — no Shiny runtime) summarizing all 4 regions on one page with value boxes and an interactive chart.</li>
+<li>A second, Shiny-runtime version of one dashboard panel with a live region filter, run locally and demonstrated working.</li>
+<li>A one-paragraph written justification of which of the two dashboards (static vs. Shiny) you'd actually recommend shipping to stakeholders, and why.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-publishing-books-and-the-quarto-transition">Phase 4: Publishing, Books &amp; the Quarto Transition</h2>
+<h3 id="weeks-7-8">Weeks 7–8 | Goal: produce citable, cross-referenced, version-controlled documents, and know when R Markdown's job is done and Quarto's begins</h3>
+<hr />
+
+<h3 id="module-41-bookdown-multi-chapter-reports-cross-references">Module 4.1 — bookdown: Multi-Chapter Reports &amp; Cross-References</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1, 2.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Build a 3-chapter bookdown project with working cross-references to a figure and a table, correctly numbered across chapters.<br>
+<strong>Skip if:</strong> You've already structured a multi-chapter bookdown project and used <code>\@ref()</code> cross-references.<br>
+<strong>Unlocks:</strong> 4.2, phase 4 capstone</p>
+</blockquote>
+
+<h4>Why bookdown instead of one long .Rmd</h4>
+<p>A single .Rmd handles one document. <strong>bookdown</strong> stitches multiple .Rmd files (one per chapter, numbered <code>01-intro.Rmd</code>, <code>02-methods.Rmd</code>, …) into a single coherent output with shared numbering, a shared bibliography, and cross-chapter cross-references — the right tool once a report grows past "one document" into "a report with distinct sections a reader might jump between," like a thesis, technical manual, or a recurring quarterly business review.</p>
+
+<h4>Project structure</h4>
+<pre><code>my-book/
+├── index.Rmd          # front matter + YAML for the whole book
+├── 01-intro.Rmd
+├── 02-methods.Rmd
+├── 03-results.Rmd
+├── _bookdown.yml
+└── _output.yml</code></pre>
+<pre><code class="language-yaml"># _bookdown.yml
+book_filename: "superstore-analysis"
+output_dir: "docs"</code></pre>
+
+<h4>Cross-references that stay correct as you edit</h4>
+<pre><code class="language-r">```{r sales-trend-fig, fig.cap="Monthly sales trend"}
+plot(monthly_sales)
+```
+
+As shown in Figure \@ref(fig:sales-trend-fig), sales peak in Q4.</code></pre>
+<p>The number in "Figure 3.2" is computed by bookdown from chapter and figure order — insert a new figure earlier in the document and every downstream reference renumbers correctly on the next knit. This is the entire reason to use <code>\@ref()</code> instead of typing "Figure 3.2" by hand: hardcoded figure numbers are exactly the kind of thing that silently goes stale the moment someone reorders a section.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Forgetting that the chunk label itself (<code>sales-trend-fig</code> above) is the cross-reference key — <code>\@ref(fig:sales-trend-fig)</code> only resolves if the chunk producing that figure is labeled exactly that. A typo in either the chunk label or the reference produces a literal "??" in the rendered output rather than a clear error, so check the knitted output, not just that the knit "succeeded."</p></blockquote>
+
+<p><strong>Exercise 4.1 — Three-Chapter Sales Analysis Book</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Create a bookdown project with an <code>index.Rmd</code> and three chapters: Introduction, Methodology, Results.</li>
+<li>In the Results chapter, add a labeled figure (a sales trend chart) and a labeled table (category summary).</li>
+<li>Add at least one cross-reference to each from the Introduction or Methodology chapter using <code>\@ref()</code>.</li>
+<li>Knit the full book with <code>bookdown::render_book()</code> and confirm the cross-reference numbers resolve correctly (not "??").</li>
+<li>Reorder the chapters (swap Methodology and Results) and re-render, confirming the figure/table numbers update correctly.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-citations-bibliographies">Module 4.2 — Citations &amp; Bibliographies</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Add a working .bib-based citation and bibliography to a document, with a citation style correctly applied via a CSL file.<br>
+<strong>Skip if:</strong> You already manage a <code>.bib</code> file and cite sources with <code>[@key]</code> syntax fluently.<br>
+<strong>Unlocks:</strong> Phase 4 capstone</p>
+</blockquote>
+
+<h4>The .bib file and citation keys</h4>
+<pre><code class="language-yaml">---
+title: "Sales Analysis Methodology"
+bibliography: references.bib
+csl: apa.csl
+---</code></pre>
+<pre><code>@book{xie2018,
+  title     = {R Markdown: The Definitive Guide},
+  author    = {Xie, Yihui and Allaire, J. J. and Grolemund, Garrett},
+  year      = {2018},
+  publisher = {Chapman and Hall/CRC}
+}</code></pre>
+<pre><code class="language-md">This report follows conventions established for reproducible reporting [@xie2018].</code></pre>
+<p>pandoc resolves <code>[@xie2018]</code> at knit time into the citation style your <code>csl</code> file specifies (APA, Chicago, IEEE, hundreds of others are available at the Zotero Style Repository), and auto-generates a "References" section at the document's end from every citation key actually used in the text — you never hand-type the bibliography itself.</p>
+
+<h4>Multiple citations and page-specific citations</h4>
+<pre><code class="language-md">Prior work has established this pattern [@xie2018; @grolemund2017], particularly around page 42 [@xie2018, p. 42].</code></pre>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> A citation key typo (<code>[@xie2019]</code> when the .bib entry is <code>xie2018</code>) renders as a literal, visible <code>@xie2019</code> in the output instead of erroring — always visually scan the rendered References section for the expected count of entries, since a silent typo produces a document that looks fine at a glance but is missing a citation.</p></blockquote>
+
+<p><strong>Exercise 4.2 — Cited Methodology Section</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Create a <code>references.bib</code> file with at least 3 entries (can be real R/statistics references, e.g. the R Markdown book, a ggplot2 reference, a statistics textbook).</li>
+<li>Add <code>bibliography:</code> and <code>csl:</code> (download any APA-style .csl) to your bookdown project's YAML.</li>
+<li>Cite at least 2 of the 3 references in the Methodology chapter using <code>[@key]</code> syntax.</li>
+<li>Knit and confirm a correctly formatted References section appears, containing only the cited entries (not all 3, if you only cited 2).</li>
+<li>Deliberately introduce a citation key typo, knit, and observe the literal <code>@key</code> text appear in the rendered output — then fix it.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-version-control-collaboration-for-rmd-projects">Module 4.3 — Version Control &amp; Collaboration for .Rmd Projects</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Set up a .gitignore that correctly excludes knitted output and cache directories but tracks the .Rmd source, and resolve a merge conflict in an .Rmd file.<br>
+<strong>Skip if:</strong> You already keep .Rmd projects under git with sensible ignore rules.<br>
+<strong>Unlocks:</strong> Phase 4 capstone</p>
+</blockquote>
+
+<h4>What to track, what to ignore</h4>
+<p>The .Rmd source is the single source of truth — commit it. Knitted outputs (.html, .pdf, .docx) and the <code>cache/</code> and <code>*_files/</code> directories are <em>derived</em> artifacts that can always be regenerated from the source, and committing them bloats the repository with binary diffs that git can't meaningfully merge:</p>
+<pre><code># .gitignore
+*.html
+*.pdf
+*.docx
+*_cache/
+*_files/
+/docs/</code></pre>
+<p>Exception: if the rendered output <em>is</em> the deliverable being published (e.g. a GitHub Pages site built from bookdown's <code>docs/</code> folder), that specific output directory is tracked deliberately — the rule is "ignore derived files unless the derived file is itself the publishing target."</p>
+
+<h4>Why .Rmd files merge better than most binary formats — and where they still conflict</h4>
+<p>Because .Rmd is plain text, git can diff and merge it line-by-line like code, unlike a Word doc's binary format. But merge conflicts still happen when two people edit the same chunk or the same prose paragraph — resolve them the same way as code conflicts: read both versions, decide which (or a merge of both) is correct, and re-knit locally before pushing to confirm the resolved file still renders.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Committing a knitted .html or .pdf "just this once" to share with a non-technical reviewer, then it silently becomes a permanent tracked file that every future commit re-diffs as a full binary replace. Share rendered output via a build artifact, a shared drive link, or a static-site deploy — not a tracked file in the repo.</p></blockquote>
+
+<p><strong>Exercise 4.3 — Git-Tracked Report Project</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Initialize a git repository for one of your earlier .Rmd projects (if not already tracked).</li>
+<li>Write a <code>.gitignore</code> that excludes knitted HTML/PDF/Word output and any <code>cache/</code>/<code>_files/</code> directories, but tracks the .Rmd and any data files it reads.</li>
+<li>Make a commit, then create a branch and deliberately edit the same paragraph two different ways on <code>main</code> and the branch.</li>
+<li>Attempt to merge the branch into <code>main</code>, resolve the resulting conflict by hand, and re-knit to confirm the resolved file still renders correctly.</li>
+<li>Confirm with <code>git status</code> that no knitted output files are tracked after the merge.</li>
+</ol>
+<hr />
+
+<h3 id="module-44-migrating-to-quarto">Module 4.4 — Migrating to Quarto</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate–Advanced · <strong>Prereqs:</strong> 2.1, 3.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Given an existing multi-document R Markdown project, correctly identify which parts render unmodified under Quarto and which specific features (if any) would need rework, without actually migrating.<br>
+<strong>Skip if:</strong> Your project has hundreds of existing .Rmd files and a working pipeline, or depends on an R Markdown-only extension with no Quarto equivalent — staying on R Markdown is the correct call for you, not a gap to close.<br>
+<strong>Unlocks:</strong> Final capstone</p>
+</blockquote>
+
+<h4>What Quarto is, precisely</h4>
+<p><strong>Quarto</strong> is Posit's next-generation publishing system — a language-agnostic superset of the ideas in R Markdown, supporting R, Python, Julia, and Observable JS from one consistent CLI and document format (.qmd), rather than R Markdown's R-and-knitr-specific pipeline. RStudio 2026.07 has first-class Quarto support built in (a visual editor, live preview, and project tooling), alongside its equally mature R Markdown support — the IDE does not force a choice.</p>
+
+<h4>What changes, concretely</h4>
+<table>
+<tr><th>R Markdown</th><th>Quarto equivalent</th><th>Notes</th></tr>
+<tr><td>.Rmd file, YAML + knitr chunks</td><td>.qmd file, YAML + executable code cells</td><td>Chunk syntax is nearly identical; most .Rmd files render unmodified as .qmd</td></tr>
+<tr><td><code>rmarkdown::render()</code></td><td><code>quarto render</code> (CLI)</td><td>Quarto is a standalone CLI/binary, not only an R package</td></tr>
+<tr><td>bookdown project</td><td>Quarto Book project</td><td>Native in Quarto — no separate package needed</td></tr>
+<tr><td>flexdashboard</td><td>Quarto Dashboards</td><td>Native Quarto feature since Quarto 1.4, similar layout grammar</td></tr>
+<tr><td>blogdown</td><td>Quarto Website/Blog project</td><td>Native, no Hugo dependency required</td></tr>
+</table>
+
+<h4>Reasons to migrate, and reasons not to</h4>
+<p>Migrate when you're starting new projects (Quarto is Posit's actively developed default going forward), want native multi-language support (a team mixing R and Python), or want book/website/dashboard project types without stitching together separate packages (bookdown, blogdown, flexdashboard). Stay on R Markdown when you have a large existing .Rmd codebase with no urgent reason to touch it, depend on an R Markdown-only extension without a Quarto equivalent (some <code>rgl</code> 3D-graphics workflows and certain Shiny-document patterns render more reliably in R Markdown), or work in a restricted environment (locked-down RStudio Server/Workbench setup) where installing the separate Quarto CLI binary is not straightforward.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Treating this as an all-or-nothing, urgent migration. Quarto can render most existing .Rmd files and Jupyter notebooks unmodified, so a pragmatic path is: keep existing .Rmd projects as-is, and simply start <em>new</em> projects in Quarto going forward — there is rarely a deadline forcing a rewrite of working reports.</p></blockquote>
+
+<p><strong>Exercise 4.4 — Migration Feasibility Assessment</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Take your Phase 2 capstone .Rmd and rename a copy to .qmd with no other changes; install the Quarto CLI and attempt <code>quarto render</code> on it.</li>
+<li>Note any warnings or errors and identify whether they're YAML-syntax differences or genuine missing-feature gaps.</li>
+<li>Convert your Module 3.3 flexdashboard to a Quarto Dashboard (<code>format: dashboard</code>) and compare the resulting layout markup to flexdashboard's row/column grammar.</li>
+<li>Write a one-paragraph recommendation: for a hypothetical team with 200 existing .Rmd reports and no Python usage, should they migrate to Quarto now, later, or not at all — and why.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-published-analysis-book">Phase 4 Capstone: Published Analysis Book</h3>
+<p><strong>Project: Superstore Sales Analysis — A bookdown Report</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) why cross-references use the chunk label as their key, (2) why a citation key typo fails silently instead of erroring, and (3) the concrete difference between an .Rmd and a .qmd project? If any draws a blank, re-read that module first.</p></blockquote>
+<p><strong>Dataset:</strong> Superstore Sales</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A 4-chapter bookdown project (Introduction, Methodology, Results, Conclusions) with a shared bibliography.</li>
+<li>At least 3 cross-referenced figures and 2 cross-referenced tables, correctly numbered across chapters.</li>
+<li>At least 3 citations to real sources, formatted via a CSL style, with a correctly generated References section.</li>
+<li>The full project under git, with a correct <code>.gitignore</code> excluding derived output.</li>
+<li>A rendered, published HTML book (bookdown's <code>docs/</code> output, viewable locally by opening <code>index.html</code>).</li>
+<li>A short appendix section assessing whether this specific project would be a good candidate for a future Quarto migration.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-superstore-quarterly-business-review">Final Capstone: Superstore Quarterly Business Review</h2>
+<p><strong>Project: End-to-End Quarterly Business Review Package</strong></p>
+<p>Integrates all four phases. Uses the Superstore Sales dataset throughout.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A parameterized "Regional Quarterly Review" .Rmd (region + quarter params) knitting cleanly to HTML, PDF, and Word from one YAML block, using a <code>reference_docx</code> template for Word.</li>
+<li>Styled tables (kableExtra or gt) and at least 2 ggplot2 charts, with at least one cached chunk with a correct <code>dependson</code> declaration.</li>
+<li>A render script producing one report per region per quarter (at least 8 files across 4 regions × 2 quarters) from a single source .Rmd.</li>
+<li>A companion flexdashboard summarizing all regions on one page, with interactive htmlwidgets (plotly + DT at minimum).</li>
+<li>A 2-chapter bookdown appendix ("Methodology" and "Data Dictionary") with at least one cross-referenced figure and at least 2 citations to real sources.</li>
+<li>The entire project under git with a correct <code>.gitignore</code>, and a clean commit history showing incremental build-up rather than one giant commit.</li>
+<li>A written, one-page executive summary (in the report itself, using inline R code for every number quoted — no hardcoded figures) highlighting the best- and worst-performing region and category.</li>
+<li>A final appendix recommending whether this specific reporting pipeline should migrate to Quarto, with concrete reasoning grounded in Module 4.4.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: R Markdown Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Create a new .Rmd</td><td>File → New File → R Markdown</td><td>Choose HTML first even if the final target is PDF/Word</td></tr>
+<tr><td>Knit a document</td><td><code>rmarkdown::render()</code> / Knit button</td><td>Runs in a fresh R session — no leftover Environment objects</td></tr>
+<tr><td>Set document metadata</td><td>YAML front matter</td><td>Spaces only, never tabs; nesting is meaningful</td></tr>
+<tr><td>Hide code, keep output</td><td><code>echo=FALSE</code></td><td>Code still runs — only the source is hidden</td></tr>
+<tr><td>Skip running code entirely</td><td><code>eval=FALSE</code></td><td>Code shown but never executed — different from <code>echo</code></td></tr>
+<tr><td>Suppress package start-up noise</td><td><code>message=FALSE, warning=FALSE</code></td><td>Set globally in the setup chunk</td></tr>
+<tr><td>Build a formatted table</td><td><code>knitr::kable()</code>, <code>kableExtra</code>, <code>gt</code></td><td>kableExtra for PDF-safe styling; gt for HTML-first polish</td></tr>
+<tr><td>Embed a chart</td><td><code>ggplot2</code> inside a chunk</td><td>Control size with <code>fig.width</code>/<code>fig.height</code>, in inches</td></tr>
+<tr><td>Typeset a formula or equation</td><td>LaTeX math: <code>$...$</code> (inline), <code>$$...$$</code> (display)</td><td>MathJax in HTML, native LaTeX in PDF, Office Math in Word — check Word output for parity</td></tr>
+<tr><td>Avoid re-running slow code</td><td><code>cache=TRUE</code> + <code>dependson</code></td><td>Always declare dependencies explicitly</td></tr>
+<tr><td>Render one report per input value</td><td><code>params:</code> YAML + <code>rmarkdown::render(params=...)</code></td><td>Each render is a fresh R session</td></tr>
+<tr><td>Build a KPI dashboard</td><td><code>flexdashboard::flex_dashboard</code></td><td>Layout comes from Markdown heading levels + dash separators</td></tr>
+<tr><td>Add hover/zoom/sort interactivity</td><td><code>plotly</code>, <code>DT</code>, <code>leaflet</code> (htmlwidgets)</td><td>Works with no live R server after knit</td></tr>
+<tr><td>Add live, server-side reactivity</td><td><code>runtime: shiny</code></td><td>Requires an always-on R process to host it</td></tr>
+<tr><td>Multi-chapter reports with cross-refs</td><td><code>bookdown</code></td><td>Cross-references use the chunk label as the key</td></tr>
+<tr><td>Add citations</td><td><code>bibliography:</code>, <code>csl:</code>, <code>[@key]</code></td><td>Typo'd keys fail silently as literal text</td></tr>
+<tr><td>Multi-language / next-gen publishing</td><td><code>Quarto</code> (.qmd, <code>quarto render</code>)</td><td>Most .Rmd files render unmodified under Quarto</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-core-concepts">Core Concepts</h3>
+<dl class="glossary">
+<dt>R Markdown</dt>
+<dd>A document format (.Rmd) that interleaves YAML metadata, Markdown prose, and executable R code chunks, rendered via the <code>rmarkdown</code> package.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "R script" — a plain .R file has no prose, YAML, or knit step; it only runs code.</dd>
+<dt>Knit</dt>
+<dd>The act of running an .Rmd through knitr (execute chunks) and then pandoc (format conversion) to produce a final HTML/PDF/Word document.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Run" — running executes code in the current console session; knitting always starts a fresh session.</dd>
+<dt>YAML front matter</dt>
+<dd>The metadata block between two <code>---</code> lines at the top of an .Rmd, controlling title, author, output format, and format-specific options.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Header" (ambiguous with Markdown <code>#</code> headings) — use "YAML" or "front matter" specifically.</dd>
+<dt>pandoc</dt>
+<dd>The external document-conversion engine that turns the intermediate Markdown (produced by knitr) into the final HTML, PDF, or Word file.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Assuming pandoc is part of the <code>rmarkdown</code> R package — it's a separate binary that <code>rmarkdown</code> calls.</dd>
+<dt>knitr</dt>
+<dd>The R package that executes code chunks in an .Rmd and weaves their text/table/plot output back into the document body.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Confusing with <code>rmarkdown</code> — <code>rmarkdown</code> orchestrates the whole render; <code>knitr</code> is the chunk-execution engine it calls.</dd>
+<dt>Code chunk</dt>
+<dd>A fenced block of R code inside an .Rmd, delimited by triple backticks with a <code>{r}</code> header, optionally labeled and configured with chunk options.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Code block" alone — reserve "chunk" for the executable, knitr-processed kind versus a plain unexecuted Markdown code fence.</dd>
+<dt>Inline R code</dt>
+<dd>A backtick-r expression embedded directly in prose text, evaluated at knit time and replaced with its result.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Variable interpolation" (a term from other templating systems) — R Markdown's mechanism is chunk-based inline evaluation, not string interpolation.</dd>
+<dt>Inline math</dt>
+<dd>LaTeX math notation set between single dollar signs (<code>$...$</code>), typeset within a sentence rather than run as R code.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Confusing with "Inline R code" — a backtick-r expression evaluates R, while inline math typesets LaTeX notation; the two are often combined but are different mechanisms.</dd>
+<dt>Display math</dt>
+<dd>A LaTeX math expression set off on its own line using double dollar signs (<code>$$...$$</code>) or <code>\[ \]</code>, used for equations too central or complex to embed in a sentence.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Block equation" — not R Markdown's term; use "display math."</dd>
+</dl>
+
+<h3 id="glossary-chunk-options-rendering">Chunk Options &amp; Rendering</h3>
+<dl class="glossary">
+<dt>echo</dt>
+<dd>A chunk option controlling whether the chunk's source code is shown in the output. The code still runs regardless of this setting.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Assuming <code>echo=FALSE</code> skips execution — it only hides the source, not the run.</dd>
+<dt>eval</dt>
+<dd>A chunk option controlling whether the chunk's code is executed at all. When <code>FALSE</code>, the code may still be shown (per <code>echo</code>) but produces no output.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Confusing with <code>echo</code> — see the disambiguation above.</dd>
+<dt>Cache</dt>
+<dd>A knitr feature that persists a chunk's computed R objects to disk, skipping re-execution on future knits as long as the chunk's own code text is unchanged.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Assuming cache automatically invalidates on upstream data changes — it does not, unless <code>dependson</code> is declared.</dd>
+<dt>Parameterized report</dt>
+<dd>An R Markdown document with a <code>params:</code> YAML block whose values are supplied at render time, letting one .Rmd source produce many differently filtered outputs.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Shiny app" — params resolve once per render call; a Shiny app stays live and reactive.</dd>
+<dt>htmlwidget</dt>
+<dd>An R package (plotly, DT, leaflet, etc.) that compiles interactive JavaScript/HTML/CSS directly into the knitted document, requiring no live R process to display interactivity.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Assuming any interactive-looking chart needs <code>runtime: shiny</code> — most interactivity (hover, zoom, sort) comes from htmlwidgets alone.</dd>
+<dt>runtime: shiny</dt>
+<dd>A YAML setting that turns an R Markdown document into a live Shiny application, requiring an always-on R process to serve reactive re-execution on user input.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Interactive document" alone — that phrase also describes plain htmlwidget-based documents with no server requirement.</dd>
+<dt>flexdashboard</dt>
+<dd>An R Markdown output format that turns Markdown heading levels and row-separator dashes into a dashboard grid layout of columns, rows, and panels.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Assuming flexdashboard itself provides interactivity — the dashboard shell is static; interactivity comes from the widgets placed inside it.</dd>
+</dl>
+
+<h3 id="glossary-publishing-quarto">Publishing &amp; Quarto</h3>
+<dl class="glossary">
+<dt>bookdown</dt>
+<dd>An R package extending R Markdown to multi-chapter book/report projects, adding shared numbering, cross-references, and a single combined bibliography across chapters.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Using plain R Markdown for genuinely multi-chapter work — you lose cross-chapter cross-referencing and shared numbering.</dd>
+<dt>Cross-reference</dt>
+<dd>A <code>\@ref()</code> call in bookdown that resolves to a figure/table/section's computed number based on the labeled chunk or heading it points to, renumbering automatically as content is reordered.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Hardcoding a figure or table number in prose — it silently goes stale the moment content is reordered.</dd>
+<dt>CSL (Citation Style Language)</dt>
+<dd>An XML file format defining how citations and bibliographies are formatted (APA, Chicago, IEEE, etc.), referenced via the <code>csl:</code> YAML field.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Hand-formatting a references section — CSL plus a <code>.bib</code> file generates it automatically from cited keys.</dd>
+<dt>Quarto</dt>
+<dd>Posit's next-generation, multi-language publishing system (.qmd files, a standalone CLI) that supersedes R Markdown's role for new projects while remaining largely compatible with existing .Rmd content.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Treating Quarto as "R Markdown version 2" that requires an urgent rewrite — most existing .Rmd files render unmodified, and migration is a choice, not a forced deadline.</dd>
+<dt>Reference docx</dt>
+<dd>A pre-styled .docx file pointed to by the <code>reference_docx</code> YAML option, whose heading/font/margin styles pandoc applies to the knitted Word output.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Manually reformatting a knitted Word document after the fact — style it once via <code>reference_docx</code> instead.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>R Markdown: The Definitive Guide (Xie, Allaire, Grolemund, 2018, Chapman &amp; Hall/CRC — freely available at bookdown.org)</td><td>Comprehensive reference from the format's core developers; still the canonical text as of 2026</td></tr>
+<tr><td>R Markdown Cookbook (Xie, Dervieux, Riederer, 2020, freely available at bookdown.org)</td><td>Task-oriented recipes: tables, figures, custom formats, troubleshooting</td></tr>
+<tr><td>bookdown: Authoring Books and Technical Documents with R (Xie, 2016, freely available at bookdown.org)</td><td>Multi-chapter project structure, cross-references, publishing to GitHub Pages/bookdown.org</td></tr>
+<tr><td>R for Data Science, 2nd ed. (Wickham, Çetinkaya-Rundel, Grolemund, 2023, O'Reilly)</td><td>dplyr/ggplot2 fluency — the data-manipulation skills this guide's exercises assume</td></tr>
+<tr><td>Quarto: The Definitive Guide (in progress, Posit/Xie team, quarto.org)</td><td>For readers taking the Module 4.4 migration path further</td></tr>
+</table>
+
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>rmarkdown.rstudio.com</td><td>Official R Markdown documentation</td><td>Gallery, format reference, cheat sheets</td></tr>
+<tr><td>bookdown.org/yihui/rmarkdown</td><td>R Markdown: The Definitive Guide (online)</td><td>The most current, actively maintained reference</td></tr>
+<tr><td>pkgs.rstudio.com/flexdashboard</td><td>flexdashboard reference</td><td>Layout grammar, value boxes, gauges, Shiny runtime</td></tr>
+<tr><td>quarto.org/docs/faq/rmarkdown.html</td><td>Official R Markdown → Quarto migration FAQ</td><td>Authoritative source for Module 4.4's comparisons</td></tr>
+<tr><td>posit.co/blog</td><td>Posit (RStudio) product announcements</td><td>RStudio/Quarto release notes and new features</td></tr>
+<tr><td>Zotero Style Repository (citationstyles.org)</td><td>CSL citation style files</td><td>Download any journal/publisher citation style for Module 4.2</td></tr>
+<tr><td>ggplot2 documentation (ggplot2.tidyverse.org)</td><td>Chart grammar reference</td><td>Companion reference for Module 2.3</td></tr>
+</table>
+
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>Superstore Sales (<a href="../datasets/superstore-sales/README.md">datasets/superstore-sales</a>)</td><td>This guide's benchmark dataset — used in every exercise and capstone</td></tr>
+<tr><td>RStudio Desktop (Posit, 2026.07 release)</td><td>Primary IDE — Source pane, Knit button, Environment pane</td></tr>
+<tr><td>tinytex</td><td>Lightweight LaTeX distribution for PDF knitting</td></tr>
+<tr><td>kableExtra / gt</td><td>Table styling packages (Module 2.2)</td></tr>
+<tr><td>flexdashboard / plotly / DT</td><td>Dashboard and htmlwidget packages (Module 3.3–3.4)</td></tr>
+<tr><td>bookdown</td><td>Multi-chapter project package (Module 4.1)</td></tr>
+<tr><td>Quarto CLI (quarto.org)</td><td>Standalone next-gen publishing tool (Module 4.4)</td></tr>
+</table>
+
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>Posit Community</td><td>community.posit.co (Discourse forum)</td><td>Official forum — R Markdown, Quarto, Shiny, and RStudio IDE questions, monitored by Posit staff</td></tr>
+<tr><td>r/rstats</td><td>Reddit</td><td>General R questions, package recommendations, career discussion</td></tr>
+<tr><td>RStudio Community Slack / R4DS Online Learning Community</td><td>Slack</td><td>Live help, especially for R for Data Science readers</td></tr>
+<tr><td>Stack Overflow (r-markdown, knitr tags)</td><td>Stack Overflow</td><td>Specific, searchable error-message debugging</td></tr>
+<tr><td>Quarto Discussions (GitHub)</td><td>github.com/quarto-dev/quarto-cli/discussions</td><td>Migration questions and Quarto-specific feature requests</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
+
+<h4>Phase 1 — Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — Setting Up R Markdown in RStudio</li>
+<li>[ ] Exercise 1.1 — Environment Check</li>
+<li>[ ] Module 1.2 — YAML Front Matter &amp; Document Structure</li>
+<li>[ ] Exercise 1.2 — Configurable Report Header</li>
+<li>[ ] Module 1.3 — Markdown Syntax Essentials</li>
+<li>[ ] Exercise 1.3 — Formatted Summary Page</li>
+<li>[ ] Module 1.4 — Code Chunks &amp; Chunk Options</li>
+<li>[ ] Exercise 1.4 — A Clean, Reader-Facing Chunk Set</li>
+<li>[ ] Module 1.5 — Mathematical Notation &amp; Equations</li>
+<li>[ ] Exercise 1.5 — Superstore Formulas</li>
+<li>[ ] Capstone 1 — Department Summary Memo</li>
+</ul>
+
+<h4>Phase 2 — Working with Data &amp; Output</h4>
+<ul>
+<li>[ ] Module 2.1 — Knitting to HTML, PDF, and Word</li>
+<li>[ ] Exercise 2.1 — Three-Format Regional Report</li>
+<li>[ ] Module 2.2 — Tables with knitr::kable, kableExtra &amp; gt</li>
+<li>[ ] Exercise 2.2 — Styled Category Table</li>
+<li>[ ] Module 2.3 — Charts &amp; Visualizations with ggplot2</li>
+<li>[ ] Exercise 2.3 — Regional Trend Charts</li>
+<li>[ ] Module 2.4 — Chunk Caching &amp; Performance</li>
+<li>[ ] Exercise 2.4 — Caching a Slow Aggregation</li>
+<li>[ ] Capstone 2 — Regional Performance Report</li>
+</ul>
+
+<h4>Phase 3 — Dynamic &amp; Parameterized Reports</h4>
+<ul>
+<li>[ ] Module 3.1 — Parameterized Reports with params</li>
+<li>[ ] Exercise 3.1 — Multi-Region Report Batch</li>
+<li>[ ] Module 3.2 — Custom Templates &amp; Output Formats</li>
+<li>[ ] Exercise 3.2 — Company Report Template</li>
+<li>[ ] Module 3.3 — Interactive Dashboards with flexdashboard</li>
+<li>[ ] Exercise 3.3 — Superstore KPI Dashboard</li>
+<li>[ ] Module 3.4 — htmlwidgets &amp; the Shiny Runtime</li>
+<li>[ ] Exercise 3.4 — Live-Filterable Dashboard</li>
+<li>[ ] Capstone 3 — Per-Region Report Batch</li>
+</ul>
+
+<h4>Phase 4 — Publishing, Books &amp; the Quarto Transition</h4>
+<ul>
+<li>[ ] Module 4.1 — bookdown: Multi-Chapter Reports &amp; Cross-References</li>
+<li>[ ] Exercise 4.1 — Three-Chapter Sales Analysis Book</li>
+<li>[ ] Module 4.2 — Citations &amp; Bibliographies</li>
+<li>[ ] Exercise 4.2 — Cited Methodology Section</li>
+<li>[ ] Module 4.3 — Version Control &amp; Collaboration for .Rmd Projects</li>
+<li>[ ] Exercise 4.3 — Git-Tracked Report Project</li>
+<li>[ ] Module 4.4 — Migrating to Quarto</li>
+<li>[ ] Exercise 4.4 — Migration Feasibility Assessment</li>
+<li>[ ] Capstone 4 — Published Analysis Book</li>
+</ul>
+
+<h4>Certifications / Outcomes</h4>
+<ul>
+<li>[ ] Final Capstone — Superstore Quarterly Business Review complete</li>
+<li>[ ] Comfortable knitting to HTML, PDF, and Word from one source</li>
+<li>[ ] Comfortable building a parameterized report batch</li>
+<li>[ ] Comfortable building a flexdashboard with interactive widgets</li>
+<li>[ ] Comfortable assessing a Quarto migration decision</li>
+</ul>
+
+<p><em>Guide Version 1.1 — R Markdown in RStudio Track: Beginner to Intermediate</em><br>
+<em>Non-linear modular design · 17 modules · ~36h estimated study time · hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-07-31 (RStudio 2026.07, rmarkdown 2.31)</em></p>
+
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Full-text guide search ────────────────────────────────
+  // Indexes every block of the guide body, lists matching snippets grouped
+  // by section, highlights hits in the page, and filters the nav to the
+  // sections that contain them. Multiple words = all must appear in the
+  // same block; wrap in "quotes" for an exact phrase.
+  var navSearch = document.getElementById("navSearch");
+  var contentRoot = document.querySelector(".content");
+  if(navSearch && contentRoot){
+    var BLOCK_SEL = "h1,h2,h3,h4,p,li,tr,dt,dd,pre";
+    var searchRow = document.getElementById("searchRow"),
+        searchBar = document.getElementById("searchBar"),
+        searchCount = document.getElementById("searchCount"),
+        searchResults = document.getElementById("searchResults");
+    var navById = {};
+    document.querySelectorAll("#nav a").forEach(function(a){
+      navById[a.getAttribute("href").slice(1)] = a;
+    });
+
+    var blocks = [], section = null;
+    contentRoot.querySelectorAll(BLOCK_SEL).forEach(function(el){
+      if(/^H[1-4]$/.test(el.tagName) && el.id && navById[el.id]) section = el;
+      if(el.classList.contains("quiz-score")) return;
+      var outer = el.parentElement && el.parentElement.closest(BLOCK_SEL);
+      if(outer && contentRoot.contains(outer)) return;
+      var text = el.textContent.replace(/\s+/g, " ").trim();
+      if(text) blocks.push({el:el, text:text, lower:text.toLowerCase(), section:section});
+    });
+
+    var hits = [], cur = -1, timer = null;
+    function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+    function sectionLabel(sec){ return sec && navById[sec.id] ? navById[sec.id].textContent : "Introduction"; }
+
+    function clearMarks(){
+      contentRoot.querySelectorAll("mark.lg-hit").forEach(function(m){
+        var p = m.parentNode;
+        p.replaceChild(document.createTextNode(m.textContent), m);
+        p.normalize();
+      });
+      var b = contentRoot.querySelector(".lg-block-current");
+      if(b) b.classList.remove("lg-block-current");
+    }
+
+    function markBlock(el, re){
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+      while((n = walker.nextNode())) nodes.push(n);
+      var marks = [];
+      nodes.forEach(function(node){
+        var t = node.nodeValue, m, last = 0;
+        re.lastIndex = 0;
+        if(!re.test(t)) return;
+        re.lastIndex = 0;
+        var frag = document.createDocumentFragment();
+        while((m = re.exec(t))){
+          if(m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+          var mk = document.createElement("mark");
+          mk.className = "lg-hit";
+          mk.textContent = m[0];
+          frag.appendChild(mk);
+          marks.push(mk);
+          last = m.index + m[0].length;
+        }
+        if(last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+      });
+      return marks;
+    }
+
+    function snippet(text, terms, re){
+      var lower = text.toLowerCase(), i = -1;
+      terms.forEach(function(t){ var k = lower.indexOf(t); if(k > -1 && (i < 0 || k < i)) i = k; });
+      if(i < 0) i = 0;
+      var start = Math.max(0, i - 40), end = Math.min(text.length, i + 100);
+      var s = text.slice(start, end), out = "", last = 0, m;
+      re.lastIndex = 0;
+      while((m = re.exec(s))){
+        out += escHtml(s.slice(last, m.index)) + "<mark>" + escHtml(m[0]) + "</mark>";
+        last = m.index + m[0].length;
+      }
+      return (start > 0 ? "…" : "") + out + escHtml(s.slice(last)) + (end < text.length ? "…" : "");
+    }
+
+    function filterNav(ids){
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var any = false;
+        g.querySelectorAll("a").forEach(function(a){
+          var show = !ids || !!ids[a.getAttribute("href").slice(1)];
+          if(a.classList.contains("nav-child")) a.classList.toggle("filtered-out", !show);
+          if(show) any = true;
+        });
+        g.classList.toggle("filtered-out", !any);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        a.classList.toggle("filtered-out", !!ids && !ids[a.getAttribute("href").slice(1)]);
+      });
+    }
+
+    function updateCount(nSections){
+      if(!hits.length){ searchCount.textContent = "No matches"; return; }
+      var pos = cur > -1 ? (cur + 1) + " / " + hits.length : hits.length + (hits.length === 1 ? " match" : " matches");
+      searchCount.textContent = pos + " · " + nSections + (nSections === 1 ? " section" : " sections");
+    }
+
+    var lastSectionCount = 0;
+    function run(){
+      var raw = navSearch.value.trim();
+      clearMarks();
+      hits = []; cur = -1;
+      searchRow.classList.toggle("has-query", !!raw);
+      if(raw.length < 2){
+        searchResults.classList.remove("show");
+        searchBar.classList.remove("show");
+        searchResults.innerHTML = "";
+        filterNav(null);
+        return;
+      }
+      var phrase = /^"(.+)"$/.exec(raw);
+      var terms = phrase ? [phrase[1].toLowerCase()] : raw.toLowerCase().split(/\s+/);
+      terms = terms.filter(function(t, i){ return t && terms.indexOf(t) === i; });
+      var re = new RegExp(terms.slice().sort(function(a, b){ return b.length - a.length; }).map(escRe).join("|"), "gi");
+      var matched = blocks.filter(function(b){
+        return terms.every(function(t){ return b.lower.indexOf(t) > -1; });
+      });
+
+      var ids = {}, groups = [], html = "", LIMIT = 60;
+      matched.forEach(function(b, bi){
+        var marks = markBlock(b.el, re);
+        if(marks.length) marks.forEach(function(m){ hits.push({m:m, el:b.el, b:bi}); });
+        else hits.push({m:null, el:b.el, b:bi});
+        var key = b.section ? b.section.id : "";
+        if(b.section) ids[b.section.id] = true;
+        if(!groups.length || groups[groups.length - 1].key !== key) groups.push({key:key, sec:b.section, items:[]});
+        groups[groups.length - 1].items.push(bi);
+      });
+
+      if(!matched.length){
+        html = '<div class="sr-empty">No matches for “' + escHtml(raw) + '”. Try fewer words.</div>';
+      } else {
+        var listed = 0;
+        groups.forEach(function(g){
+          if(listed >= LIMIT) return;
+          html += '<div class="sr-group"><div class="sr-section">' + escHtml(sectionLabel(g.sec)) + '</div>';
+          g.items.slice(0, 4).forEach(function(bi){
+            if(listed >= LIMIT) return;
+            html += '<button type="button" class="sr-item" role="option" data-b="' + bi + '">' +
+                    snippet(matched[bi].text, terms, re) + '</button>';
+            listed++;
+          });
+          if(g.items.length > 4) html += '<div class="sr-more">+' + (g.items.length - 4) + ' more in this section (use ↓ to step through)</div>';
+          html += '</div>';
+        });
+        if(matched.length > listed) html += '<div class="sr-more">Showing ' + listed + ' of ' + matched.length + ' blocks — add a word to narrow it.</div>';
+      }
+      searchResults.innerHTML = html;
+      searchResults.classList.add("show");
+      searchBar.classList.add("show");
+      lastSectionCount = Object.keys(ids).length || (matched.length ? 1 : 0);
+      filterNav(ids);
+      updateCount(lastSectionCount);
+    }
+
+    function go(i, closeMobile){
+      if(!hits.length) return;
+      cur = (i + hits.length) % hits.length;
+      contentRoot.querySelectorAll("mark.lg-hit-current").forEach(function(m){ m.classList.remove("lg-hit-current"); });
+      var prev = contentRoot.querySelector(".lg-block-current");
+      if(prev) prev.classList.remove("lg-block-current");
+      var h = hits[cur];
+      if(h.m) h.m.classList.add("lg-hit-current");
+      h.el.classList.add("lg-block-current");
+      (h.m || h.el).scrollIntoView({behavior:"smooth", block:"center"});
+      searchResults.querySelectorAll(".sr-item").forEach(function(it){
+        var on = +it.getAttribute("data-b") === h.b;
+        it.classList.toggle("current", on);
+        if(on) it.scrollIntoView({block:"nearest"});
+      });
+      updateCount(lastSectionCount);
+      if(closeMobile && window.innerWidth <= 1000) closeNav();
+    }
+
+    navSearch.addEventListener("input", function(){
+      clearTimeout(timer);
+      timer = setTimeout(run, 140);
+    });
+    navSearch.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        clearTimeout(timer);
+        if(!hits.length && navSearch.value.trim().length >= 2) run();
+        go(e.shiftKey ? cur - 1 : cur + 1, true);
+      } else if(e.key === "Escape"){
+        navSearch.value = "";
+        run();
+      }
+    });
+    searchResults.addEventListener("click", function(e){
+      var item = e.target.closest(".sr-item");
+      if(!item) return;
+      var b = +item.getAttribute("data-b");
+      for(var k = 0; k < hits.length; k++){ if(hits[k].b === b){ go(k, true); break; } }
+    });
+    document.getElementById("searchNext").addEventListener("click", function(){ go(cur + 1, false); });
+    document.getElementById("searchPrev").addEventListener("click", function(){ go(cur - 1, false); });
+    document.getElementById("searchClear").addEventListener("click", function(){
+      navSearch.value = "";
+      run();
+      navSearch.focus();
+    });
+    document.addEventListener("keydown", function(e){
+      var tag = (e.target.tagName || "").toLowerCase();
+      var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+      var slash = e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey;
+      var cmdK = (e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K");
+      if(!slash && !cmdK) return;
+      e.preventDefault();
+      if(window.innerWidth <= 1000){
+        document.getElementById("sidebar").classList.add("open");
+        document.getElementById("scrim").classList.add("show");
+      }
+      navSearch.focus();
+      navSearch.select();
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

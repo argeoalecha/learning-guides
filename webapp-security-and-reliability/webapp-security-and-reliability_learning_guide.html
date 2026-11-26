@@ -1,0 +1,2131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web App Security &amp; Reliability Learning Guide — Beginner to Intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+.search-row{position:relative}
+.search-row .nav-search{padding-right:2.4rem}
+.search-kbd{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:4px;padding:0 .3rem;background:var(--paper-2);
+  pointer-events:none;
+}
+.search-row.has-query .search-kbd{display:none}
+.search-bar{
+  display:none;align-items:center;gap:.35rem;margin-top:.45rem;
+  font-size:.72rem;color:var(--ink-soft);
+}
+.search-bar.show{display:flex}
+.search-count{flex:1;font-family:var(--mono)}
+.search-bar button{
+  border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);
+  border-radius:6px;font-size:.72rem;padding:.15rem .45rem;cursor:pointer;min-width:26px;min-height:24px;
+}
+.search-bar button:hover{background:var(--teal-wash)}
+.search-results{
+  display:none;margin:.5rem 0 .2rem;max-height:48vh;overflow-y:auto;
+  border:1px solid var(--line);border-radius:8px;background:var(--paper);
+}
+.search-results.show{display:block}
+.sr-group{border-top:1px solid var(--line-soft)}
+.sr-group:first-child{border-top:none}
+.sr-section{
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--teal);padding:.5rem .65rem .15rem;
+}
+.sr-item{
+  display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  font-family:var(--sans);font-size:.76rem;line-height:1.4;color:var(--ink);
+  padding:.35rem .65rem;
+}
+.sr-item:hover,.sr-item.current{background:var(--teal-wash)}
+.sr-item mark,.lg-hit{background:var(--amber-wash);color:inherit;border-radius:2px;padding:0 1px}
+.sr-more{font-size:.7rem;color:var(--ink-soft);padding:.1rem .65rem .45rem}
+.sr-empty{font-size:.78rem;color:var(--ink-soft);padding:.6rem .65rem}
+pre .lg-hit{background:#5c4a12;color:#fff4cf}
+.lg-hit.lg-hit-current{background:var(--coral);color:#fff;outline:2px solid var(--coral)}
+.lg-block-current{outline:2px dashed var(--teal);outline-offset:4px;border-radius:4px}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Web App Security<br>&amp; Reliability</div>
+      <div class="brand-sub">OWASP Top 10:2025 · OAuth 2.1 · Semgrep/Trivy/ZAP · OpenTelemetry · SLOs</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <div class="search-row" id="searchRow">
+        <input type="search" id="navSearch" class="nav-search" placeholder="Search the guide…" aria-label="Search the whole guide" aria-controls="searchResults" autocomplete="off" spellcheck="false">
+        <span class="search-kbd" aria-hidden="true">/</span>
+      </div>
+      <div class="search-bar" id="searchBar">
+        <span class="search-count" id="searchCount" aria-live="polite"></span>
+        <button type="button" id="searchPrev" aria-label="Previous match">↑</button>
+        <button type="button" id="searchNext" aria-label="Next match">↓</button>
+        <button type="button" id="searchClear" aria-label="Clear search">✕</button>
+      </div>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-intermediate-track" class="nav-top">Beginner to Intermediate Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-appsec-foundations" class="nav-top nav-phase">Phase 1: AppSec Foundations</a>
+<div class="nav-children">
+<a href="#module-11-web-threat-landscape-owasp-top-10-2025" class="nav-child">Module 1.1 — Web Threat Landscape &amp; OWASP Top 10:2025</a>
+<a href="#module-12-authentication-session-security" class="nav-child">Module 1.2 — Authentication &amp; Session Security</a>
+<a href="#module-13-authorization-access-control" class="nav-child">Module 1.3 — Authorization &amp; Access Control</a>
+<a href="#module-14-secrets-sensitive-data-protection" class="nav-child">Module 1.4 — Secrets &amp; Sensitive Data Protection</a>
+<a href="#phase-1-capstone-threat-model-shopflow" class="nav-child">Phase 1 Capstone: Threat Model ShopFlow</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-defensive-engineering" class="nav-top nav-phase">Phase 2: Defensive Engineering</a>
+<div class="nav-children">
+<a href="#module-21-input-validation-injection-defense" class="nav-child">Module 2.1 — Input Validation &amp; Injection Defense</a>
+<a href="#module-22-api-transport-network-security" class="nav-child">Module 2.2 — API, Transport &amp; Network Security</a>
+<a href="#module-23-secure-sdlc-supply-chain-security" class="nav-child">Module 2.3 — Secure SDLC &amp; Supply Chain Security</a>
+<a href="#module-24-security-testing-pentesting-basics" class="nav-child">Module 2.4 — Security Testing &amp; Pentesting Basics</a>
+<a href="#phase-2-capstone-harden-pentest-shopflow" class="nav-child">Phase 2 Capstone: Harden &amp; Pentest ShopFlow</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-sre-reliability-fundamentals" class="nav-top nav-phase">Phase 3: SRE Reliability Fundamentals</a>
+<div class="nav-children">
+<a href="#module-31-sre-principles-slis-slos-error-budgets" class="nav-child">Module 3.1 — SRE Principles, SLIs, SLOs &amp; Error Budgets</a>
+<a href="#module-32-observability-metrics-logs-traces" class="nav-child">Module 3.2 — Observability: Metrics, Logs &amp; Traces</a>
+<a href="#module-33-incident-response-postmortems" class="nav-child">Module 3.3 — Incident Response &amp; Postmortems</a>
+<a href="#phase-3-capstone-slos-observability-for-shopflow" class="nav-child">Phase 3 Capstone: SLOs &amp; Observability for ShopFlow</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-resilience-production-hardening" class="nav-top nav-phase">Phase 4: Resilience &amp; Production Hardening</a>
+<div class="nav-children">
+<a href="#module-41-resilience-patterns-chaos-engineering" class="nav-child">Module 4.1 — Resilience Patterns &amp; Chaos Engineering</a>
+<a href="#module-42-container-cloud-infrastructure-security" class="nav-child">Module 4.2 — Container &amp; Cloud Infrastructure Security</a>
+<a href="#module-43-ddos-bot-mitigation-zero-trust-architecture" class="nav-child">Module 4.3 — DDoS, Bot Mitigation &amp; Zero Trust Architecture</a>
+<a href="#module-44-compliance-privacy-game-days" class="nav-child">Module 4.4 — Compliance, Privacy &amp; Game Days</a>
+<a href="#phase-4-capstone-security-reliability-audit-game-day" class="nav-child">Phase 4 Capstone: Security &amp; Reliability Audit + Game Day</a>
+</div></div>
+
+<a href="#final-capstone-shopflow-launch-readiness-review" class="nav-top">Final Capstone: ShopFlow Launch Readiness Review</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="web-app-security-and-reliability-learning-guide">Web App Security &amp; Reliability Learning Guide</h1>
+<h2 id="beginner-to-intermediate-track">Beginner to Intermediate Track</h2>
+<h3>OWASP Top 10:2025 · OAuth 2.1/OIDC · Semgrep/Trivy/ZAP · OpenTelemetry · SLOs &amp; Error Budgets</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Web App Security and Reliability" xmlns="http://www.w3.org/2000/svg">
+  <path d="M128 16 L224 56 V116 C224 176 184 216 128 240 C72 216 32 176 32 116 V56 Z" fill="none" stroke="#075249" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M96 128 L118 150 L162 100" fill="none" stroke="#0d7a6e" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone hardens, tests, or operates the same running example: <strong>ShopFlow</strong>, a fictional Next.js + Node/Express + PostgreSQL e-commerce web app.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Some experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3>Application Security Fundamentals</h3>
+<ul>
+<li>[ ] I can name at least 5 categories from the OWASP Top 10:2025 without looking them up.</li>
+<li>[ ] I can explain the difference between authentication and authorization in one sentence each.</li>
+<li>[ ] I know why storing a JWT in localStorage is riskier than an httpOnly cookie.</li>
+<li>[ ] I have implemented role-based or attribute-based access control in a real application.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3>Defensive Engineering &amp; Secure SDLC</h3>
+<ul>
+<li>[ ] I can write a parameterized SQL query and explain why string concatenation is dangerous.</li>
+<li>[ ] I know what a Content-Security-Policy header does and how a nonce strengthens it.</li>
+<li>[ ] I have wired a SAST or dependency-scanning tool (Semgrep, Trivy, Snyk, Dependabot) into a CI pipeline.</li>
+<li>[ ] I can describe the difference between SAST, DAST, and SCA.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3>SRE &amp; Reliability</h3>
+<ul>
+<li>[ ] I can define SLI, SLO, and error budget without looking them up.</li>
+<li>[ ] I have instrumented an application with metrics, logs, or traces (Prometheus, OpenTelemetry, Datadog).</li>
+<li>[ ] I have written or participated in a blameless postmortem after a production incident.</li>
+<li>[ ] I know the difference between a retry, a circuit breaker, and graceful degradation.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3>Production Hardening &amp; Compliance</h3>
+<ul>
+<li>[ ] I can explain least-privilege IAM and give an example of over-permissioned access.</li>
+<li>[ ] I know what a WAF does and where it sits in the request path.</li>
+<li>[ ] I have read or applied part of GDPR, SOC 2, or the Philippines Data Privacy Act (RA 10173) to a real system.</li>
+<li>[ ] I have run or participated in a chaos experiment or incident game day.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.2</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.4</strong> | <strong>4 yes</strong> → Skip to the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-web-threat-landscape-owasp-top-10-2025"><td>1.1</td><td>Web Threat Landscape &amp; OWASP Top 10:2025</td><td>Beginner</td><td>None</td><td>3h</td></tr>
+<tr data-href="#module-12-authentication-session-security"><td>1.2</td><td>Authentication &amp; Session Security</td><td>Beginner</td><td>1.1</td><td>4h</td></tr>
+<tr data-href="#module-13-authorization-access-control"><td>1.3</td><td>Authorization &amp; Access Control</td><td>Beginner–Intermediate</td><td>1.2</td><td>4h</td></tr>
+<tr data-href="#module-14-secrets-sensitive-data-protection"><td>1.4</td><td>Secrets &amp; Sensitive Data Protection</td><td>Beginner–Intermediate</td><td>1.1</td><td>3h</td></tr>
+<tr data-href="#module-21-input-validation-injection-defense"><td>2.1</td><td>Input Validation &amp; Injection Defense</td><td>Intermediate</td><td>1.3</td><td>4h</td></tr>
+<tr data-href="#module-22-api-transport-network-security"><td>2.2</td><td>API, Transport &amp; Network Security</td><td>Intermediate</td><td>1.4</td><td>4h</td></tr>
+<tr data-href="#module-23-secure-sdlc-supply-chain-security"><td>2.3</td><td>Secure SDLC &amp; Supply Chain Security</td><td>Intermediate</td><td>2.1</td><td>4h</td></tr>
+<tr data-href="#module-24-security-testing-pentesting-basics"><td>2.4</td><td>Security Testing &amp; Pentesting Basics</td><td>Intermediate</td><td>2.1, 2.2</td><td>5h</td></tr>
+<tr data-href="#module-31-sre-principles-slis-slos-error-budgets"><td>3.1</td><td>SRE Principles, SLIs, SLOs &amp; Error Budgets</td><td>Beginner–Intermediate</td><td>None</td><td>3h</td></tr>
+<tr data-href="#module-32-observability-metrics-logs-traces"><td>3.2</td><td>Observability: Metrics, Logs &amp; Traces</td><td>Intermediate</td><td>3.1</td><td>4h</td></tr>
+<tr data-href="#module-33-incident-response-postmortems"><td>3.3</td><td>Incident Response &amp; Postmortems</td><td>Intermediate</td><td>3.1</td><td>3h</td></tr>
+<tr data-href="#module-41-resilience-patterns-chaos-engineering"><td>4.1</td><td>Resilience Patterns &amp; Chaos Engineering</td><td>Intermediate</td><td>3.2</td><td>4h</td></tr>
+<tr data-href="#module-42-container-cloud-infrastructure-security"><td>4.2</td><td>Container &amp; Cloud Infrastructure Security</td><td>Intermediate</td><td>2.3</td><td>5h</td></tr>
+<tr data-href="#module-43-ddos-bot-mitigation-zero-trust-architecture"><td>4.3</td><td>DDoS, Bot Mitigation &amp; Zero Trust Architecture</td><td>Intermediate–Advanced</td><td>2.2, 4.2</td><td>4h</td></tr>
+<tr data-href="#module-44-compliance-privacy-game-days"><td>4.4</td><td>Compliance, Privacy &amp; Game Days</td><td>Intermediate</td><td>1.4, 3.3</td><td>4h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1–2 (AppSec) and Phase 3 (Reliability) are largely independent tracks — you can work Phase 3 in parallel with Phase 1–2 if security and reliability are being learned for different goals. Phase 4 assumes both are done, since it fuses them (secure <em>and</em> reliable production operations).</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+
+<h3 id="track-1-appsec-engineer">Track 1 — AppSec Engineer (offensive + defensive web security)</h3>
+<p><code>1.1 &rarr; 1.2 &rarr; 1.3 &rarr; 1.4 &rarr; 2.1 &rarr; 2.3 &rarr; 2.4 &rarr; Phase 1/2 Capstones</code><br>
+Target cert/outcome: <strong>OSWA / eWPT-track skills, application security engineer role</strong></p>
+
+<h3 id="track-2-site-reliability-engineer">Track 2 — Site Reliability Engineer (reliability-first)</h3>
+<p><code>3.1 &rarr; 3.2 &rarr; 3.3 &rarr; 4.1 &rarr; 4.4 &rarr; Phase 3/4 Capstones</code><br>
+Target cert/outcome: <strong>Google SRE-book-aligned practice, SRE / production engineering role</strong></p>
+
+<h3 id="track-3-full-stack-security-reliability">Track 3 — Full-Stack Security &amp; Reliability (all modules)</h3>
+<p><code>1.1 &rarr; 1.2 &rarr; 1.3 &rarr; 1.4 &rarr; 2.1 &rarr; 2.2 &rarr; 2.3 &rarr; 2.4 &rarr; 3.1 &rarr; 3.2 &rarr; 3.3 &rarr; 4.1 &rarr; 4.2 &rarr; 4.3 &rarr; 4.4 &rarr; Final Capstone</code><br>
+Target cert/outcome: <strong>Staff/security-conscious full-stack or platform engineer, security champion</strong></p>
+
+<h3 id="track-4-cloud-compliance">Track 4 — Cloud, Compliance &amp; Platform Security</h3>
+<p><code>1.4 &rarr; 2.2 &rarr; 2.3 &rarr; 4.2 &rarr; 4.3 &rarr; 4.4</code><br>
+Target cert/outcome: <strong>Cloud security / platform engineering, SOC 2 and PH DPA compliance readiness</strong></p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — AppSec Foundations             (Weeks 1–3)
+Phase 2 — Defensive Engineering           (Weeks 4–6)
+Phase 3 — SRE Reliability Fundamentals    (Weeks 7–9)
+Phase 4 — Resilience &amp; Production Hardening (Weeks 10–12)
+Final Capstone — ShopFlow Launch Readiness Review (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ─ 1.2 ─ 1.3 ─┬─ 1.4 ── 2.1 ── 2.3 ── 2.4 ─┐
+                  │                            ├─ 4.2 ─┐
+3.1 ── 3.2 ── 3.3 ┴─ 4.1 ──────────────────────┘        ├─ 4.4 ── Final Capstone
+                    2.2 ─────────────────────── 4.3 ────┘</code></pre>
+
+<h2 id="phase-1-appsec-foundations">Phase 1: AppSec Foundations</h2>
+<h3 id="weeks-1-3">Weeks 1–3 | Goal: Think like an attacker and a defender — understand the current threat landscape, and secure identity (who you are, what you can do, what you can see) before writing another line of feature code.</h3>
+<hr />
+
+<h3 id="module-11-web-threat-landscape-owasp-top-10-2025">Module 1.1 — Web Threat Landscape &amp; OWASP Top 10:2025</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> From memory, list 8 of the 10 OWASP Top 10:2025 categories and give one real-world example vulnerability for each.<br>
+<strong>Skip if:</strong> You already work with the OWASP Top 10 regularly and can map a CVE to its category on sight.<br>
+<strong>Unlocks:</strong> 1.2, 1.3, 1.4, all of Phase 2</p>
+</blockquote>
+
+<h4>Why a Threat Model, Not a Checklist</h4>
+<p>Security is not a list of boxes to check — it is reasoning about what an attacker with a browser, a proxy, and time can do to your system. The OWASP Top 10 is a <em>consensus of the most common ways that reasoning plays out in practice</em>, refreshed periodically from real breach and CVE data. Treating it as a checklist without understanding the underlying attacker motivation means you will pass an audit and still get breached by variant #11.</p>
+
+<h4>OWASP Top 10:2025 — What Changed</h4>
+<p>The 2025 edition (finalized January 2026) is the first refresh since 2021, built from analysis of over 175,000 CVE records. Two changes matter most for how you should think about defense in 2026:</p>
+<ul>
+<li><strong>A01:2025 — Broken Access Control</strong> stays #1, and now absorbs Server-Side Request Forgery (SSRF), which was a standalone 2021 category. The message: access control failures are the dominant real-world risk, and SSRF is fundamentally an access-control problem (the server accessing something it shouldn't on the attacker's behalf).</li>
+<li><strong>A02:2025 — Security Misconfiguration</strong> jumped from #5 to #2, reflecting how much modern risk now lives in cloud config, container defaults, and IaC — not just hand-written application code.</li>
+<li><strong>A03:2025 — Software Supply Chain Failures</strong> is new: dependency, build-pipeline, and CI/CD compromise are now common enough to warrant their own category (Module 2.3 goes deep here).</li>
+<li><strong>A10:2025 — Mishandling of Exceptional Conditions</strong> is new: improper error handling, fail-open logic, and logical edge cases that leak data or bypass checks.</li>
+</ul>
+<p>The full 2025 list: A01 Broken Access Control, A02 Security Misconfiguration, A03 Software Supply Chain Failures, A04 Insecure Design, A05 Cryptographic Failures, A06 Vulnerable &amp; Outdated Components, A07 Identification &amp; Authentication Failures, A08 Software &amp; Data Integrity Failures, A09 Security Logging &amp; Monitoring Failures, A10 Mishandling of Exceptional Conditions.</p>
+
+<h4>The Attacker's Toolkit (What You're Defending Against)</h4>
+<p>A minimally-equipped attacker uses a browser, an intercepting proxy (Burp Suite Community or OWASP ZAP), and a wordlist. They are not writing custom exploits for a typical web app — they are looking for the misconfigured S3 bucket, the IDOR in <code>/api/orders/{id}</code>, the debug endpoint left enabled in production. Module 2.4 puts these same tools in your hands so you learn to see your app the way they do.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Treating "we passed our last pentest" as proof of security. A pentest is a snapshot of one moment against one team's toolkit and time budget — it is not a guarantee against the next dependency CVE or the feature shipped the following week. Security is a continuous property (Module 2.3), not a certificate.</p></blockquote>
+
+<h4>Meet ShopFlow</h4>
+<p>Every exercise and capstone in this guide hardens, tests, or operates <strong>ShopFlow</strong>: a Next.js frontend, a Node/Express API, and a PostgreSQL database, with typical e-commerce surface area — user accounts, product catalog, cart, checkout, order history, and an admin panel. It is intentionally realistic and intentionally imperfect at the start of Module 1.1.</p>
+
+<p><strong>Exercise 1.1 — Map ShopFlow to the OWASP Top 10:2025</strong></p>
+<p>Dataset: ShopFlow (sketch the architecture from the description above — you do not need running code yet)</p>
+<ol>
+<li>Draw ShopFlow's architecture: frontend, API, database, and any third-party integrations (payment gateway, email).</li>
+<li>For each of the 10 OWASP:2025 categories, write one concrete way it could manifest in ShopFlow (e.g., A01 → a customer editing the <code>?order_id=</code> query param to view another customer's order).</li>
+<li>Rank your 10 answers by how severe a real breach would be (financial loss, data exposure, reputational damage).</li>
+<li>Circle the top 3 — these become your priorities as you move through Phase 1 and 2.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-authentication-session-security">Module 1.2 — Authentication &amp; Session Security</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Implement an OAuth 2.1-compliant authorization code flow with PKCE and explain why the implicit grant is no longer acceptable.<br>
+<strong>Skip if:</strong> You have shipped OIDC/OAuth login flows in production and can explain token rotation and refresh-token theft mitigation.<br>
+<strong>Unlocks:</strong> 1.3, 1.4</p>
+</blockquote>
+
+<h4>Authentication Is Not Authorization</h4>
+<p>Authentication answers "who are you?" Authorization (Module 1.3) answers "what are you allowed to do?" Conflating them is a common root cause of A01 Broken Access Control — a system that verifies identity correctly but never separately checks permission on every request is not secure, just correctly logged-in.</p>
+
+<h4>OAuth 2.1: The Current Baseline</h4>
+<p>OAuth 2.1 consolidates RFC 6749, PKCE (RFC 7636), and the OAuth Security BCP (RFC 9700) into one profile. It is still an IETF draft, not yet a published RFC, but every major identity provider (Auth0, Okta, Keycloak, Google, Microsoft) already implements it — write new code against OAuth 2.1 rules, not legacy OAuth 2.0. The concrete changes that affect what you type:</p>
+<ul>
+<li><strong>PKCE is mandatory for every client</strong>, not just public/mobile clients as in OAuth 2.0.</li>
+<li><strong>The implicit grant and the resource owner password credentials (ROPC) grant are removed.</strong> Both leaked tokens or credentials into places they shouldn't be (URL fragments, first-party forms).</li>
+<li><strong>Redirect URIs require exact string matching</strong> — no wildcard or partial-match redirect validation.</li>
+</ul>
+
+<pre><code class="language-js">// Authorization code + PKCE, server-side (Node/Express) — ShopFlow login initiation
+import crypto from "node:crypto";
+
+function base64url(buf) {
+  return buf.toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+app.get("/auth/login", (req, res) => {
+  const verifier = base64url(crypto.randomBytes(32));
+  const challenge = base64url(crypto.createHash("sha256").update(verifier).digest());
+
+  // Store verifier server-side, keyed to a short-lived state, not in a cookie the client can read
+  req.session.pkceVerifier = verifier;
+  req.session.oauthState = base64url(crypto.randomBytes(16));
+
+  const authUrl = new URL("https://idp.shopflow.example/oauth2/authorize");
+  authUrl.searchParams.set("response_type", "code");
+  authUrl.searchParams.set("client_id", process.env.OAUTH_CLIENT_ID);
+  authUrl.searchParams.set("redirect_uri", "https://shopflow.example/auth/callback");
+  authUrl.searchParams.set("code_challenge", challenge);
+  authUrl.searchParams.set("code_challenge_method", "S256");
+  authUrl.searchParams.set("state", req.session.oauthState);
+  authUrl.searchParams.set("scope", "openid profile email");
+
+  res.redirect(authUrl.toString());
+});
+</code></pre>
+
+<h4>Sessions and Tokens: Where They Live Matters</h4>
+<p>A JWT stored in <code>localStorage</code> is readable by any script running on the page — one successful XSS (Module 2.1) becomes full account takeover with no further exploitation needed. An <code>httpOnly</code>, <code>Secure</code>, <code>SameSite=Strict</code> cookie is invisible to JavaScript entirely, which is why it remains the safer default for browser-based session storage even in an SPA architecture like ShopFlow's Next.js frontend.</p>
+
+<pre><code class="language-js">// Setting a session cookie correctly after successful OAuth callback
+res.cookie("sf_session", sessionToken, {
+  httpOnly: true,       // JavaScript cannot read this cookie — mitigates XSS token theft
+  secure: true,          // only sent over HTTPS
+  sameSite: "strict",    // not sent on cross-site requests — mitigates CSRF
+  maxAge: 15 * 60 * 1000, // short-lived access token; refresh via rotation, not long expiry
+  path: "/",
+});
+</code></pre>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Treating "we use JWTs" as a security feature. A JWT is just a signed data format — it carries the same risks as any bearer token (theft = impersonation) and adds its own footguns (the classic <code>alg: none</code> bypass, or trusting a client-supplied <code>kid</code> header without validating it against a known key set). JWTs are a transport choice, not a security control.</p></blockquote>
+
+<p><strong>Exercise 1.2 — Secure ShopFlow's Login Flow</strong></p>
+<p>Dataset: ShopFlow</p>
+<ol>
+<li>Design ShopFlow's login sequence diagram using the OAuth 2.1 authorization code + PKCE flow.</li>
+<li>Write the callback handler that exchanges the authorization code for tokens, validating <code>state</code> against the session-stored value before proceeding.</li>
+<li>Decide and justify: where do the access token and refresh token live (cookie vs. memory vs. storage) and why.</li>
+<li>Implement refresh-token rotation: each use of a refresh token issues a new one and invalidates the old, so a stolen-and-reused old token is detectable.</li>
+<li>Add MFA (TOTP) as a required second factor for the ShopFlow admin panel login specifically.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-authorization-access-control">Module 1.3 — Authorization &amp; Access Control</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Given a REST endpoint and two user roles, write the authorization middleware and the specific test case that catches an IDOR regression.<br>
+<strong>Skip if:</strong> You already enforce object-level authorization checks on every request in a production system and can explain the difference between RBAC and ABAC with a real example.<br>
+<strong>Unlocks:</strong> 1.4, 2.1</p>
+</blockquote>
+
+<h4>Why This Is A01, the #1 Risk</h4>
+<p>Broken Access Control tops both the 2021 and 2025 OWASP lists because it is easy to get wrong and expensive to get right: every single request touching user data needs an explicit permission check, and missing even one creates a real breach. Authentication only has to be correct once per session; authorization has to be correct on <em>every request, every time</em>.</p>
+
+<h4>RBAC vs. ABAC</h4>
+<p>Role-Based Access Control (RBAC) grants permissions by role ("admin can refund orders"). It's simple and auditable, but coarse — it can't express "a user can view <em>their own</em> orders but not anyone else's" without an extra object-level check. Attribute-Based Access Control (ABAC) evaluates permissions against attributes of the user, resource, and context ("allow if <code>request.user.id == order.owner_id</code>"). ShopFlow needs both: RBAC for admin-vs-customer, ABAC for object ownership.</p>
+
+<h4>IDOR: The Access Control Bug That Keeps Recurring</h4>
+<p>Insecure Direct Object Reference (IDOR) happens when an endpoint trusts a client-supplied identifier without checking whether the current user is allowed to access that specific object. It is the single most common real-world instance of Broken Access Control, precisely because it's invisible in a code review that only checks "is the user logged in" — the missing check is "is the user logged in <em>and this is their object</em>."</p>
+
+<pre><code class="language-js">// VULNERABLE — checks authentication, not authorization (IDOR)
+app.get("/api/orders/:id", requireAuth, async (req, res) => {
+  const order = await db.orders.findById(req.params.id);
+  res.json(order); // any logged-in user can read any order by guessing IDs
+});
+
+// FIXED — object-level authorization enforced on every request
+app.get("/api/orders/:id", requireAuth, async (req, res) => {
+  const order = await db.orders.findById(req.params.id);
+  if (!order) return res.status(404).json({ error: "Not found" });
+
+  const isOwner = order.customerId === req.user.id;
+  const isAdmin = req.user.roles.includes("admin");
+  if (!isOwner &amp;&amp; !isAdmin) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+  res.json(order);
+});
+</code></pre>
+
+<h4>Least Privilege as a Default, Not an Afterthought</h4>
+<p>Design new endpoints deny-by-default: no route should return data until an explicit allow rule matches. Retrofitting least privilege onto an existing "open unless denied" system means auditing every endpoint one at a time — designing it in from the start costs one extra line per route.</p>
+
+<p><em>Retrieval practice: before reading further, write from memory the authorization check you would add to a <code>DELETE /api/reviews/:id</code> endpoint on ShopFlow. Then compare against your own reasoning above — did you check both "logged in" and "owns this review or is admin"?</em></p>
+
+<p><strong>Exercise 1.3 — Enforce Object-Level Authorization on ShopFlow</strong></p>
+<p>Dataset: ShopFlow</p>
+<ol>
+<li>List every ShopFlow endpoint that returns or mutates user-specific data (orders, addresses, payment methods, reviews).</li>
+<li>Write an authorization middleware function that takes an ownership-check callback per route.</li>
+<li>Apply RBAC for the admin panel (roles: <code>customer</code>, <code>support</code>, <code>admin</code>) and ABAC for object ownership on customer-facing routes.</li>
+<li>Write an automated test that asserts <code>GET /api/orders/999</code> returns 403 (not 200 or a silent empty object) when the order belongs to a different customer.</li>
+<li>Deliberately introduce an IDOR into a copy of one route, then confirm your test catches it.</li>
+</ol>
+<hr />
+
+<h3 id="module-14-secrets-sensitive-data-protection">Module 1.4 — Secrets &amp; Sensitive Data Protection</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Explain the difference between encryption at rest and in transit, and configure a secrets manager to rotate a database credential without downtime.<br>
+<strong>Skip if:</strong> You already use a secrets manager (not <code>.env</code> files) in production and enforce field-level encryption for PII.<br>
+<strong>Unlocks:</strong> 2.2, 4.2, 4.4</p>
+</blockquote>
+
+<h4>Encryption in Transit vs. at Rest</h4>
+<p>TLS (Module 2.2) protects data <em>while it moves</em> between client, server, and database — it does nothing once that data is written to disk. Encryption at rest (database-level or field-level) protects data <em>while it's stored</em>, which matters if a disk, backup, or database snapshot is exfiltrated independently of any live request. Both are required; neither substitutes for the other.</p>
+
+<h4>Secrets Do Not Belong in Code, Env Files, or Git History</h4>
+<p>A `.env` file committed once and later deleted is still in git history forever unless the repo is rewritten — and a leaked API key or database password is exploitable the moment it's pushed, not the moment someone notices. A secrets manager (AWS Secrets Manager, HashiCorp Vault, Doppler) centralizes secrets, supports rotation without a redeploy, and gives you an audit log of who accessed what and when.</p>
+
+<pre><code class="language-js">// Fetching a rotatable secret at runtime instead of baking it into env vars
+import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
+
+const client = new SecretsManagerClient({ region: "ap-southeast-1" });
+
+async function getDbCredentials() {
+  const res = await client.send(
+    new GetSecretValueCommand({ SecretId: "shopflow/prod/db-credentials" })
+  );
+  return JSON.parse(res.SecretString); // { username, password } — rotated by the secrets manager, not the app
+}
+</code></pre>
+
+<h4>PII Minimization and Field-Level Encryption</h4>
+<p>The cheapest way to protect data is to not collect it. For data ShopFlow must retain (payment last-4, shipping address), apply field-level encryption so a database compromise doesn't expose plaintext PII even if the attacker has full read access to the table. Store the encryption key in the secrets manager, never alongside the encrypted data.</p>
+
+<pre><code class="language-js">// Field-level encryption for a sensitive column (Node crypto, AES-256-GCM)
+import crypto from "node:crypto";
+
+function encryptField(plaintext, keyBuffer) {
+  const iv = crypto.randomBytes(12);
+  const cipher = crypto.createCipheriv("aes-256-gcm", keyBuffer, iv);
+  const ciphertext = Buffer.concat([cipher.update(plaintext, "utf8"), cipher.final()]);
+  const authTag = cipher.getAuthTag();
+  return Buffer.concat([iv, authTag, ciphertext]).toString("base64");
+}
+</code></pre>
+
+<blockquote class="callout"><p><strong>Disambiguation:</strong> "Encrypted" and "hashed" are not interchangeable. Passwords are <em>hashed</em> (one-way, with a slow algorithm like bcrypt or argon2) because you never need to recover the original value — only verify a match. PII you must display back to a user (an address, a phone number) is <em>encrypted</em> (two-way, reversible with the key) because the plaintext is needed again later.</p></blockquote>
+
+<p><strong>Exercise 1.4 — Classify and Protect ShopFlow's Data</strong></p>
+<p>Dataset: ShopFlow</p>
+<ol>
+<li>Inventory every data field ShopFlow stores and classify each as: public, internal, confidential, or restricted (PII/payment).</li>
+<li>For each "restricted" field, decide: hash, field-level encrypt, or tokenize (delegate to the payment processor) — and justify the choice.</li>
+<li>Move ShopFlow's database credentials and payment-gateway API key out of <code>.env</code> and into a secrets manager pattern.</li>
+<li>Write a rotation runbook: what changes, in what order, with zero downtime, when the database password is rotated.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-threat-model-shopflow">Phase 1 Capstone: Threat Model ShopFlow</h3>
+<p><strong>Project: ShopFlow Identity &amp; Access Threat Model</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain the difference between authentication and authorization, why IDOR is a top-1 risk category, and why a secrets manager beats a `.env` file? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> ShopFlow</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A written threat model covering ShopFlow's authentication, authorization, and data-protection surface, using STRIDE or a simplified attacker-goal framing.</li>
+<li>A working OAuth 2.1 + PKCE login flow with httpOnly session cookies and refresh-token rotation.</li>
+<li>RBAC + ABAC authorization middleware applied to every user-data endpoint, with automated tests proving IDOR is caught.</li>
+<li>MFA on the admin panel.</li>
+<li>A data classification table and a secrets-management plan (no plaintext secrets in code or `.env`).</li>
+<li>A one-page risk register: top 5 remaining risks, ranked, with a mitigation owner and target date for each.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-defensive-engineering">Phase 2: Defensive Engineering</h2>
+<h3 id="weeks-4-6">Weeks 4–6 | Goal: Build the technical defenses — input validation, transport security, and a secure pipeline — that turn Phase 1's identity model into a genuinely hard-to-breach application, and learn to test your own defenses like an attacker would.</h3>
+<hr />
+
+<h3 id="module-21-input-validation-injection-defense">Module 2.1 — Input Validation &amp; Injection Defense</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Given a raw SQL query built with string concatenation, rewrite it safely, and explain why output-encoding (not input-blocklisting) is the correct XSS defense.<br>
+<strong>Skip if:</strong> You already use parameterized queries and a strict CSP everywhere and can explain SSRF in one sentence.<br>
+<strong>Unlocks:</strong> 2.2, 2.3, 2.4</p>
+</blockquote>
+
+<h4>The Common Root Cause: Trusting Data That Crosses a Trust Boundary</h4>
+<p>SQL injection, XSS, CSRF, and SSRF look like different bugs but share one root cause — data crossing a trust boundary (user input → database, user input → HTML, attacker's browser → your session, attacker's payload → your server's outbound requests) without being treated as untrusted at that boundary. Fix the boundary, not the symptom.</p>
+
+<h4>SQL Injection: Parameterize, Never Concatenate</h4>
+<pre><code class="language-js">// VULNERABLE — string concatenation lets an attacker close the quote and inject SQL
+const query = `SELECT * FROM products WHERE category = '${req.query.category}'`;
+// attacker sends: category=x' OR '1'='1  →  returns every row in the table
+
+// FIXED — parameterized query; the driver treats the value as data, never as SQL syntax
+const result = await db.query(
+  "SELECT * FROM products WHERE category = $1",
+  [req.query.category]
+);
+</code></pre>
+
+<h4>XSS: Output Encoding Beats Input Blocklisting</h4>
+<p>Blocklisting input (stripping `&lt;script&gt;`) is a losing game against attacker creativity — there are dozens of encodings and contexts (`&lt;img onerror=&gt;`, `javascript:` URIs, SVG) a blocklist will miss. Encode output for the context it's rendered into instead: React/Next.js auto-escapes JSX text by default, so the real danger is `dangerouslySetInnerHTML` and direct DOM writes that bypass that protection.</p>
+<pre><code class="language-js">// VULNERABLE — bypasses React's automatic escaping
+function ProductReview({ review }) {
+  return &lt;div dangerouslySetInnerHTML={{ __html: review.text }} /&gt;; // attacker's &lt;script&gt; runs
+}
+
+// FIXED — render as text; React escapes it automatically
+function ProductReview({ review }) {
+  return &lt;div&gt;{review.text}&lt;/div&gt;;
+}
+</code></pre>
+
+<h4>CSRF: SameSite Cookies + Explicit Tokens</h4>
+<p>Cross-Site Request Forgery tricks a logged-in user's browser into submitting a request the user never intended, relying on the browser automatically attaching session cookies. <code>SameSite=Strict</code> cookies (Module 1.2) close most of this; for state-changing requests, add an explicit CSRF token as defense-in-depth, since some legitimate cross-site navigation flows require <code>SameSite=Lax</code>.</p>
+
+<h4>SSRF: Now Filed Under A01 Broken Access Control</h4>
+<p>Server-Side Request Forgery tricks your server into making a request on the attacker's behalf — e.g., a "fetch image from URL" feature that instead targets <code>http://169.254.169.254/</code> (a cloud metadata endpoint) to steal IAM credentials. OWASP 2025 folded SSRF into Broken Access Control because the fix is the same category of control: the server should only be <em>authorized</em> to reach an explicit allowlist of destinations, never an attacker-supplied one.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Assuming a modern framework's defaults make you immune. React escapes JSX, Express doesn't auto-parameterize raw SQL strings, and Next.js doesn't stop you from disabling CSP. Frameworks reduce the number of ways to get it wrong; they don't remove your responsibility to understand the boundary you're crossing.</p></blockquote>
+
+<p><strong>Exercise 2.1 — Find and Fix Injection Bugs in ShopFlow</strong></p>
+<p>Dataset: ShopFlow</p>
+<ol>
+<li>Audit ShopFlow's product search, review submission, and "share via URL" image-fetch feature for injection risk.</li>
+<li>Rewrite any string-concatenated SQL as parameterized queries.</li>
+<li>Confirm review text and product descriptions are rendered as text, not via <code>dangerouslySetInnerHTML</code>; if rich text is a real requirement, sanitize with an allowlist-based library before rendering.</li>
+<li>Add CSRF tokens to ShopFlow's checkout and account-settings forms.</li>
+<li>Add an SSRF allowlist to the image-fetch feature so it can only reach ShopFlow's approved CDN domains.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-api-transport-network-security">Module 2.2 — API, Transport &amp; Network Security</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.4 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Configure a strict, nonce-based Content-Security-Policy and HSTS for a production Next.js app, and set up per-IP and per-account rate limiting on a login endpoint.<br>
+<strong>Skip if:</strong> You already run HSTS + a strict nonce-based CSP + rate limiting in production and can explain what a WAF adds beyond that.<br>
+<strong>Unlocks:</strong> 2.3, 2.4, 4.3</p>
+</blockquote>
+
+<h4>TLS and HSTS: Making HTTPS Non-Optional</h4>
+<p>TLS encrypts traffic between client and server, but a user typing a bare domain or clicking an old `http://` link is briefly vulnerable to downgrade attacks unless the server tells the browser to never use plaintext again. HTTP Strict Transport Security (HSTS) does that — once a browser sees the header, it refuses plaintext HTTP to that domain for the specified duration, even if an attacker on the network tries to intercept and downgrade the connection.</p>
+<pre><code class="language-js">app.use((req, res, next) =&gt; {
+  res.setHeader("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
+  next();
+});
+</code></pre>
+
+<h4>Content-Security-Policy: Nonce, Not a Blocklist</h4>
+<p>A strict CSP is the single most effective XSS mitigation layered on top of output encoding — it tells the browser which script sources are legitimate, so even an injected `&lt;script&gt;` tag simply won't execute. The current best practice is a nonce-based policy: generate a fresh, cryptographically random nonce per response, and only scripts carrying that exact nonce are allowed to run. A static allowlist of domains is weaker and easier to bypass than a per-request nonce.</p>
+<pre><code class="language-js">import crypto from "node:crypto";
+
+app.use((req, res, next) =&gt; {
+  const nonce = crypto.randomBytes(16).toString("base64");
+  res.locals.cspNonce = nonce; // pass to your templating layer to stamp onto &lt;script nonce="..."&gt;
+
+  res.setHeader(
+    "Content-Security-Policy",
+    `default-src 'self'; script-src 'self' 'nonce-${nonce}' 'strict-dynamic'; ` +
+    `style-src 'self' 'nonce-${nonce}'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'`
+  );
+  next();
+});
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Writing middleware that regex-replaces every `&lt;script&gt;` tag with a nonce attribute. An attacker's injected script tag gets the same regex treatment and inherits the nonce too, defeating the whole point. Nonces must come from server-side template rendering that only stamps nonces onto scripts <em>you</em> authored — never a post-hoc string transform on the final HTML.</p></blockquote>
+
+<h4>Rate Limiting and a WAF: Different Layers</h4>
+<p>Rate limiting protects a specific endpoint from abuse (credential stuffing on `/login`, scraping on `/api/products`) at the application layer. A Web Application Firewall (WAF — Cloudflare, AWS WAF) sits in front of the whole app and blocks known attack signatures, bad bots, and volumetric abuse before it reaches your servers at all. Use both: the WAF as a coarse first filter, rate limiting for endpoint-specific business logic the WAF can't know about.</p>
+<pre><code class="language-js">import rateLimit from "express-rate-limit";
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,                       // 5 attempts per IP per window
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many login attempts, try again later." },
+});
+
+app.post("/auth/login", loginLimiter, loginHandler);
+</code></pre>
+
+<p><strong>Exercise 2.2 — Lock Down ShopFlow's Transport &amp; API Layer</strong></p>
+<p>Dataset: ShopFlow</p>
+<ol>
+<li>Enable HSTS and confirm ShopFlow redirects all `http://` traffic to `https://` before HSTS is even relevant.</li>
+<li>Implement a nonce-based CSP for ShopFlow's Next.js app, wiring the nonce through middleware into the document `&lt;head&gt;`.</li>
+<li>Add rate limiting to `/auth/login`, `/auth/register`, and the checkout endpoint, tuned separately per endpoint's legitimate traffic pattern.</li>
+<li>Add the remaining security headers: `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY` (or `frame-ancestors` in CSP), `Referrer-Policy: strict-origin-when-cross-origin`.</li>
+<li>Document where a WAF would sit in ShopFlow's request path and what it would catch that your application-layer controls above would not.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-secure-sdlc-supply-chain-security">Module 2.3 — Secure SDLC &amp; Supply Chain Security</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Wire Semgrep, Trivy, and a dependency-update bot into a CI pipeline, and explain what an SBOM is for.<br>
+<strong>Skip if:</strong> Your team already runs SAST + SCA on every PR and generates SBOMs for releases.<br>
+<strong>Unlocks:</strong> 2.4, 4.2</p>
+</blockquote>
+
+<h4>Why Supply Chain Got Its Own OWASP Category in 2025</h4>
+<p>A typical Next.js app pulls in hundreds of transitive dependencies — each one is code you did not write, did not review, and are nonetheless running with full application privileges. A compromised or vulnerable dependency (or a compromised build pipeline that injects malicious code at build time) bypasses every application-layer defense from Modules 2.1–2.2 entirely, because the malicious code runs <em>as</em> your application, not against it. This is exactly why OWASP introduced A03:2025 — Software Supply Chain Failures.</p>
+
+<h4>Three Tools, Three Jobs</h4>
+<p>The current standard open-source AppSec toolchain divides cleanly by what each tool actually scans: <strong>Semgrep</strong> (SAST) scans your own source code for insecure patterns; <strong>Trivy</strong> (SCA) scans your dependencies and container images for known CVEs; <strong>OWASP ZAP</strong> (DAST — Module 2.4) scans your running application from the outside. Together they catch roughly 60–70% of common vulnerability classes with zero manual review, which is why all three belong in CI, not just in an annual audit.</p>
+
+<pre><code class="language-yaml"># .github/workflows/security-scan.yml
+name: security-scan
+on: [pull_request]
+
+jobs:
+  sast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Semgrep SAST scan
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: p/owasp-top-ten
+
+  sca:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trivy dependency &amp; image scan
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: fs
+          severity: CRITICAL,HIGH
+          exit-code: 1
+</code></pre>
+
+<h4>SBOM: Knowing What You Shipped</h4>
+<p>A Software Bill of Materials (SBOM) is a machine-readable inventory of every dependency in a given release — the artifact that lets you answer "are we affected by CVE-2026-XXXXX" in minutes instead of days when the next high-profile dependency vulnerability breaks. Generate one per release, not once a year.</p>
+<pre><code class="language-bash"># Generate a CycloneDX SBOM for a Node project as part of the release pipeline
+npx @cyclonedx/cyclonedx-npm --output-file sbom.json
+</code></pre>
+
+<p><strong>Exercise 2.3 — Build ShopFlow's Secure Pipeline</strong></p>
+<p>Dataset: ShopFlow</p>
+<ol>
+<li>Add the Semgrep + Trivy GitHub Actions workflow above to ShopFlow's repository, targeting the OWASP Top 10 ruleset.</li>
+<li>Configure the pipeline to fail the PR on any CRITICAL or HIGH finding, and document the exception process for accepted-risk findings.</li>
+<li>Enable an automated dependency-update bot (Dependabot or Renovate) with a weekly schedule.</li>
+<li>Generate an SBOM for a sample ShopFlow release and confirm it lists every direct and transitive dependency.</li>
+<li>Write a one-page "secure SDLC" policy: what scans run at what stage (PR, merge, release), and who owns triaging findings.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-security-testing-pentesting-basics">Module 2.4 — Security Testing &amp; Pentesting Basics</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1, 2.2 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Run an authenticated OWASP ZAP baseline scan against a staging app, triage the findings, and file the real ones as tickets with severity and reproduction steps.<br>
+<strong>Skip if:</strong> You already run DAST scans in CI and can manually walk through an OWASP Top 10 category with Burp Suite.<br>
+<strong>Unlocks:</strong> Phase 2 Capstone, 4.3</p>
+</blockquote>
+
+<h4>DAST: Testing From the Outside</h4>
+<p>Dynamic Application Security Testing (DAST) exercises your <em>running</em> application the way an attacker would — no source code access, just requests and responses. It catches classes of bug SAST structurally cannot see (misconfigurations only visible at runtime, auth bypass through unexpected request sequences) at the cost of needing a live, ideally staging, environment to point it at.</p>
+<pre><code class="language-yaml"># .github/workflows/dast-scan.yml — OWASP ZAP baseline scan against staging on every PR
+name: dast-scan
+on: [pull_request]
+
+jobs:
+  zap-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: "https://staging.shopflow.example"
+          rules_file_name: ".zap/rules.tsv"
+          cmd_options: "-a"
+</code></pre>
+
+<h4>Manual Testing With a Proxy: Where Automation Stops</h4>
+<p>Automated DAST catches known patterns; it does not understand your business logic. A logic flaw like "the checkout API trusts a client-supplied `price` field" needs a human intercepting and modifying requests with Burp Suite Community or OWASP ZAP's manual proxy mode to find — the tool shows you every request, but deciding which parameter is worth tampering with is the tester's judgment, built from the OWASP Top 10 categories in Module 1.1.</p>
+
+<h4>Responsible Scope and Rules of Engagement</h4>
+<p>Every security test — automated or manual — needs an explicit, written scope before it runs: which environment (never production without sign-off), which endpoints are in/out of bounds, and who to notify if something breaks. Testing without authorization, even against your own company's systems, can violate internal policy or, in the worst case, computer-fraud law; a one-paragraph rules-of-engagement doc protects both the tester and the org.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Running a DAST scan once before launch and calling the app "pentested." A scan is a point-in-time result against the app's current state and the scanner's current ruleset — new code ships, new CVEs get disclosed, and yesterday's clean scan says nothing about today's app. DAST belongs in the ongoing pipeline (2.3's CI), not a pre-launch ritual.</p></blockquote>
+
+<p><strong>Exercise 2.4 — Pentest ShopFlow (Staging Only)</strong></p>
+<p>Dataset: ShopFlow (staging environment, never production)</p>
+<ol>
+<li>Write a one-paragraph rules-of-engagement: scope, environment, timeframe, and an emergency stop contact.</li>
+<li>Run an authenticated OWASP ZAP baseline scan against ShopFlow staging and export the report.</li>
+<li>Triage every finding: true positive vs. false positive, and severity (Critical/High/Medium/Low).</li>
+<li>Manually test one business-logic flow (e.g., checkout) with Burp Suite or ZAP's manual proxy, specifically tampering with client-supplied values a server should never trust (price, quantity, discount code).</li>
+<li>File each confirmed finding as a ticket with reproduction steps, impact, and a suggested fix.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-harden-pentest-shopflow">Phase 2 Capstone: Harden &amp; Pentest ShopFlow</h3>
+<p><strong>Project: ShopFlow Defensive Engineering Sign-Off</strong></p>
+<p><strong>Dataset:</strong> ShopFlow</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>All injection vectors from Exercise 2.1 fixed, with regression tests proving the fix.</li>
+<li>HSTS, a nonce-based CSP, and the remaining security headers deployed to ShopFlow staging.</li>
+<li>A CI pipeline running Semgrep, Trivy, and an OWASP ZAP baseline scan on every pull request, gated to fail on Critical/High findings.</li>
+<li>A generated SBOM for the current release.</li>
+<li>A completed pentest report from Exercise 2.4, with every finding triaged and either fixed or explicitly risk-accepted with an owner.</li>
+<li>An updated risk register (carried forward from Phase 1) showing which Phase 1 risks are now mitigated.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-sre-reliability-fundamentals">Phase 3: SRE Reliability Fundamentals</h2>
+<h3 id="weeks-7-9">Weeks 7–9 | Goal: Shift from "is it secure" to "is it reliable" — define what reliable even means in measurable terms, build the visibility to know when you've violated it, and respond to failure without making it worse.</h3>
+<hr />
+
+<h3 id="module-31-sre-principles-slis-slos-error-budgets">Module 3.1 — SRE Principles, SLIs, SLOs &amp; Error Budgets</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Define an SLI and SLO for a real service, calculate its error budget, and describe a tiered deployment policy based on remaining budget.<br>
+<strong>Skip if:</strong> Your team already runs a production SLO with an enforced error-budget policy.<br>
+<strong>Unlocks:</strong> 3.2, 3.3</p>
+</blockquote>
+
+<h4>Reliability Is a Product Decision, Not an Engineering Absolute</h4>
+<p>100% uptime is neither achievable nor, past a point, worth pursuing — every additional nine of reliability costs disproportionately more engineering effort for diminishing user-perceived benefit. SRE's founding insight (from Google's original SRE book) is to make reliability an explicit, negotiated target instead of an unstated assumption that engineering either silently over-invests in or silently fails to meet.</p>
+
+<h4>SLI, SLO, SLA: Three Different Things</h4>
+<ul>
+<li><strong>SLI (Service Level Indicator)</strong> — a measured metric, e.g., "the percentage of HTTP requests to `/checkout` that complete in under 500ms with a 2xx status."</li>
+<li><strong>SLO (Service Level Objective)</strong> — the internal target for that SLI, e.g., "99.9% of checkout requests meet that bar, measured over a rolling 30 days."</li>
+<li><strong>SLA (Service Level Agreement)</strong> — an external, often contractual, commitment with consequences for missing it. Not every service needs one; every service should have SLIs and SLOs.</li>
+</ul>
+
+<h4>Error Budgets: Turning a Target Into a Decision Rule</h4>
+<p>An error budget is simply <code>1 − SLO</code>: a 99.9% SLO leaves a 0.1% budget for failure. As long as that budget isn't spent, the team ships freely; once it is, the team stops shipping features and works on reliability until the budget recovers. This resolves the perennial tension between velocity and stability with a number instead of an argument.</p>
+<pre><code class="language-bash"># Error budget for a 99.9% SLO over a 30-day rolling window
+# Total requests in window:        4,320,000
+# Allowed failures (0.1% budget):  4,320
+# Failures so far this window:     2,850
+# Budget remaining:                (4320 - 2850) / 4320 = 34%
+</code></pre>
+<p>A common tiered policy: &gt;75% budget remaining → normal deploy velocity; 50–75% → cautious deploys, extra review; 25–50% → reliability-focused, defer risky changes; &lt;25% → feature freeze, reliability work only. If a single incident burns more than 20% of the budget in one event, that alone triggers a mandatory postmortem (Module 3.3) regardless of the running total.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Setting every service's SLO to 99.99% "to be safe." A service three hops downstream of the checkout flow, with graceful degradation already handling its failure, does not need the same reliability target as checkout itself — and chasing 99.99% everywhere burns engineering effort disproportionate to user impact. Set the SLO to match what users actually need for that specific service.</p></blockquote>
+
+<p><strong>Exercise 3.1 — Define SLOs for ShopFlow</strong></p>
+<p>Dataset: ShopFlow</p>
+<ol>
+<li>Identify ShopFlow's 3 most user-critical request paths (e.g., product search, add-to-cart, checkout).</li>
+<li>For each, define one latency SLI and one availability/correctness SLI.</li>
+<li>Set an SLO for each SLI, justified by what a real customer would tolerate (not an arbitrary round number).</li>
+<li>Calculate the resulting error budget in concrete terms (allowed failed/slow requests per 30-day window).</li>
+<li>Write a tiered deployment policy tied to remaining budget, matching the pattern above to ShopFlow's release cadence.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-observability-metrics-logs-traces">Module 3.2 — Observability: Metrics, Logs &amp; Traces</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Instrument a service with OpenTelemetry to emit all three signals (metrics, logs, traces) and build a dashboard that visualizes an SLO's real-time error-budget burn.<br>
+<strong>Skip if:</strong> You already run OpenTelemetry (or an equivalent) in production with SLO-driven dashboards and alerts.<br>
+<strong>Unlocks:</strong> 3.3, 4.1</p>
+</blockquote>
+
+<h4>OpenTelemetry Is Now the Default</h4>
+<p>OpenTelemetry graduated the CNCF in May 2026 and is now the de facto observability standard — metrics, logs, and traces are stable across every major language SDK, unified under one wire protocol (OTLP) and one semantic-convention layer, with continuous profiling entering release-candidate status as a fourth signal. Instrument against OpenTelemetry rather than a vendor-proprietary SDK: you keep the freedom to swap Prometheus/Grafana, Datadog, or any OTLP-compatible backend without re-instrumenting the app.</p>
+
+<pre><code class="language-js">// OpenTelemetry setup for a Node/Express service — traces + metrics
+import { NodeSDK } from "@opentelemetry/sdk-node";
+import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+import { PeriodicExportingMetricReader } from "@opentelemetry/sdk-metrics";
+import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http";
+
+const sdk = new NodeSDK({
+  traceExporter: new OTLPTraceExporter({ url: "http://otel-collector:4318/v1/traces" }),
+  metricReader: new PeriodicExportingMetricReader({
+    exporter: new OTLPMetricExporter({ url: "http://otel-collector:4318/v1/metrics" }),
+  }),
+  instrumentations: [getNodeAutoInstrumentations()],
+  serviceName: "shopflow-api",
+});
+
+sdk.start();
+</code></pre>
+
+<h4>The Three Signals, Each With a Job</h4>
+<p><strong>Metrics</strong> answer "how much / how often" cheaply at scale (request rate, error rate, p99 latency — the raw material for SLIs). <strong>Logs</strong> answer "what exactly happened" for one specific event, at the cost of volume. <strong>Traces</strong> answer "where did the time go across services" for one specific request, connecting a slow checkout to the exact downstream call that caused it. A dashboard built from metrics alone can tell you checkout is slow; only a trace tells you it's slow because the payment gateway call is retrying three times.</p>
+
+<h4>Alert on SLO Burn Rate, Not Raw Thresholds</h4>
+<p>A raw threshold alert ("latency &gt; 500ms") fires on noise and misses slow-burning problems that never cross the instantaneous threshold but still consume the monthly error budget. A burn-rate alert compares the <em>rate</em> of budget consumption against the SLO window — "we're burning the 30-day budget fast enough to exhaust it in 6 hours" is a far more actionable, false-positive-resistant signal.</p>
+
+<p><strong>Exercise 3.2 — Instrument ShopFlow</strong></p>
+<p>Dataset: ShopFlow</p>
+<ol>
+<li>Add OpenTelemetry auto-instrumentation to ShopFlow's API service, exporting to an OTLP collector.</li>
+<li>Build a Grafana dashboard showing request rate, error rate, and p50/p95/p99 latency for the 3 critical paths from Exercise 3.1.</li>
+<li>Add a distributed trace view for the checkout flow, confirming you can see the call into the payment gateway as a child span.</li>
+<li>Write a burn-rate alert rule for each SLO defined in Exercise 3.1 (fast-burn and slow-burn variants).</li>
+<li>Deliberately introduce a slow downstream call and confirm the trace, not just the metric, shows you exactly where the time went.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-incident-response-postmortems">Module 3.3 — Incident Response &amp; Postmortems</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Run a mock incident from detection to resolution using a defined severity scale and an incident commander role, then write a blameless postmortem with concrete action items.<br>
+<strong>Skip if:</strong> You already run structured incident response with an IC rotation and write blameless postmortems as standard practice.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone, 4.1, 4.4</p>
+</blockquote>
+
+<h4>Structure Beats Heroics Under Pressure</h4>
+<p>An incident without defined roles collapses into everyone debugging the same log tail while no one is deciding what to communicate, to whom, or when to escalate. A minimal structure — an Incident Commander (coordinates, does not personally debug), a comms lead (updates stakeholders), and however many responders are actually needed — keeps an incident moving even when the people involved are stressed and tired.</p>
+
+<h4>Severity Levels Drive Response, Not Just Labeling</h4>
+<p>A severity scale should map directly to a response: SEV1 (full outage or data loss — page immediately, all-hands) down to SEV4 (minor, no user impact — ticket, business hours). The scale exists so the on-call engineer doesn't have to invent an escalation decision from scratch at 3 a.m.; they classify and the process tells them what happens next.</p>
+
+<h4>Blameless Postmortems: Fix the System, Not the Person</h4>
+<p>A blameless postmortem assumes every person involved made a reasonable decision given what they knew at the time — the useful question is never "who broke it" but "what about our system made this mistake possible, and easy to make." Blaming a person produces defensiveness and hidden information in the <em>next</em> incident; fixing the system produces a genuinely more reliable system.</p>
+
+<pre><code class="language-md"># Postmortem: Checkout 503s — 2026-06-14
+
+## Summary
+Checkout returned 503 for 22 minutes (14:02–14:24 UTC) for ~9% of requests, consuming 31% of the monthly error budget in a single incident.
+
+## Impact
+~1,400 failed checkout attempts. Estimated revenue impact: ₱410,000.
+
+## Timeline (UTC)
+- 14:02 — Deploy of payment-service v2.14.0 begins rolling out.
+- 14:03 — Burn-rate alert fires (fast-burn, checkout SLO).
+- 14:05 — On-call acknowledges, declares SEV2, assumes Incident Commander.
+- 14:09 — Trace data identifies payment-service connection pool exhaustion.
+- 14:12 — Rollback to v2.13.2 initiated.
+- 14:24 — Error rate returns to baseline. Incident resolved.
+
+## Root Cause
+v2.14.0 reduced the payment-service DB connection pool size in a config default change that was not covered by load testing at production traffic levels.
+
+## What Went Well
+- Burn-rate alert fired within 60 seconds of the SLO being at risk.
+- Distributed tracing (Module 3.2) identified the root cause in under 5 minutes.
+
+## Action Items
+1. Add a load test gate to CI for any payment-service config change. Owner: @backend-lead. Due: 2026-06-28.
+2. Add a connection-pool-utilization panel to the payment-service dashboard. Owner: @sre-team. Due: 2026-06-21.
+3. Require a canary stage (5% traffic, 10 min bake) before full rollout for payment-service. Owner: @platform-lead. Due: 2026-07-05.
+</code></pre>
+
+<p><em>Retrieval practice: before reading the postmortem template again, write from memory the 5 sections a blameless postmortem needs. Compare against the template above — which section did you forget?</em></p>
+
+<p><strong>Exercise 3.3 — Run a Mock Incident for ShopFlow</strong></p>
+<p>Dataset: ShopFlow</p>
+<ol>
+<li>Define a 4-level severity scale (SEV1–SEV4) with a concrete response action for each.</li>
+<li>Simulate an incident: deliberately break the checkout flow (kill the DB connection pool, or inject a latency fault), using the burn-rate alert from Exercise 3.2 as your detection trigger.</li>
+<li>Run the incident with defined roles (IC, comms, responder) and log a real timeline as it happens.</li>
+<li>Resolve the incident and write a blameless postmortem using the template above, with at least 3 concrete, owned, dated action items.</li>
+<li>File the action items as real tickets, not just postmortem prose.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-slos-observability-for-shopflow">Phase 3 Capstone: SLOs &amp; Observability for ShopFlow</h3>
+<p><strong>Project: ShopFlow Reliability Baseline</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain the difference between an SLI, SLO, and SLA, why burn-rate alerts beat raw thresholds, and why a postmortem stays blameless? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> ShopFlow</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>SLIs and SLOs defined and documented for ShopFlow's 3 critical paths, with a tiered error-budget deployment policy.</li>
+<li>Full OpenTelemetry instrumentation (metrics, logs, traces) exported to a working dashboard.</li>
+<li>Burn-rate alerts configured for each SLO, fast-burn and slow-burn.</li>
+<li>A completed mock-incident postmortem with owned, dated action items.</li>
+<li>An on-call runbook: how the on-call engineer is paged, what they check first, and when they escalate.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-resilience-production-hardening">Phase 4: Resilience &amp; Production Hardening</h2>
+<h3 id="weeks-10-12">Weeks 10–12 | Goal: Fuse security and reliability into how ShopFlow actually runs in production — resilient to both failure and attack, on hardened infrastructure, with the compliance and drill discipline that keeps it that way.</h3>
+<hr />
+
+<h3 id="module-41-resilience-patterns-chaos-engineering">Module 4.1 — Resilience Patterns &amp; Chaos Engineering</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Implement a circuit breaker around a flaky downstream call, and design a chaos experiment with a clear hypothesis and blast-radius limit.<br>
+<strong>Skip if:</strong> You already run circuit breakers/retries with backoff in production and have run a real chaos experiment.<br>
+<strong>Unlocks:</strong> 4.2, Phase 4 Capstone</p>
+</blockquote>
+
+<h4>Failure Is Guaranteed; Cascading Failure Is a Design Choice</h4>
+<p>A downstream dependency (payment gateway, email service, search index) will eventually be slow, erroring, or unreachable — that's guaranteed. Whether one dependency's failure takes down your entire application is not guaranteed; it's the direct result of whether you designed for isolation and graceful degradation, or let every request block synchronously on every dependency succeeding.</p>
+
+<h4>Retries With Backoff, Circuit Breakers, Timeouts</h4>
+<p>A naive retry on failure can make an already-struggling downstream service worse by adding load exactly when it can least handle it — exponential backoff with jitter spaces retries out and avoids synchronized retry storms across many clients. A circuit breaker goes further: after enough consecutive failures, it stops calling the downstream service entirely for a cooldown period, failing fast instead of piling up slow, doomed requests.</p>
+<pre><code class="language-js">// Circuit breaker around ShopFlow's payment gateway call (using opossum)
+import CircuitBreaker from "opossum";
+
+async function callPaymentGateway(payload) {
+  const res = await fetch("https://payments.example/charge", {
+    method: "POST",
+    body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(3000), // hard timeout — never wait forever
+  });
+  if (!res.ok) throw new Error(`Payment gateway error: ${res.status}`);
+  return res.json();
+}
+
+const breaker = new CircuitBreaker(callPaymentGateway, {
+  timeout: 3000,
+  errorThresholdPercentage: 50, // trip after 50% of requests fail
+  resetTimeout: 15000,          // try again after 15s cooldown
+});
+
+breaker.fallback(() =&gt; ({ status: "queued", message: "Payment queued for retry" }));
+
+app.post("/api/checkout", async (req, res) =&gt; {
+  const result = await breaker.fire(req.body);
+  res.json(result);
+});
+</code></pre>
+
+<h4>Graceful Degradation: Decide What "Down" Means Per Feature</h4>
+<p>Not every feature needs to be available for the app to be "up." If ShopFlow's recommendation engine is down, showing the product page without recommendations is graceful degradation; if checkout is down, the app is genuinely down for its core purpose. Design each feature's failure mode deliberately at build time, not by accident when it actually fails.</p>
+
+<h4>Chaos Engineering: Verify Resilience, Don't Assume It</h4>
+<p>A circuit breaker you've never watched trip under real failure is a hypothesis, not a verified property. Chaos engineering deliberately injects failure (kill a service instance, add latency, drop network packets) in a controlled blast radius to confirm the system degrades the way you designed it to — run first in staging, with a clear hypothesis and an automatic abort condition, before ever considering production.</p>
+
+<p><strong>Exercise 4.1 — Harden ShopFlow Against Downstream Failure</strong></p>
+<p>Dataset: ShopFlow</p>
+<ol>
+<li>Add timeouts to every outbound call ShopFlow makes (payment gateway, email service, search).</li>
+<li>Wrap the payment gateway and email service calls in circuit breakers with a defined fallback for each.</li>
+<li>Design graceful degradation for the recommendation engine: what does the product page show when it's unavailable?</li>
+<li>Write a chaos experiment plan: hypothesis, injected fault (kill the payment gateway's DNS resolution, for example), blast radius (staging, 5% of traffic), and abort condition.</li>
+<li>Run the experiment in staging and record whether the circuit breaker behaved as designed.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-container-cloud-infrastructure-security">Module 4.2 — Container &amp; Cloud Infrastructure Security</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.3 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Write a hardened Dockerfile (non-root user, minimal base image, no secrets baked in) and a least-privilege IAM policy for a specific service's actual needs.<br>
+<strong>Skip if:</strong> You already run non-root containers with scanned images and least-privilege IAM in production.<br>
+<strong>Unlocks:</strong> 4.3, Phase 4 Capstone</p>
+</blockquote>
+
+<h4>Why This Is Now OWASP's #2 Risk</h4>
+<p>Security Misconfiguration jumped from #5 to #2 in the 2025 OWASP Top 10 precisely because so much of a modern application's attack surface now lives in infrastructure config — a permissive IAM policy, a container running as root, a default-open security group — rather than application code. These misconfigurations are invisible to the SAST/DAST tooling from Modules 2.3–2.4, which look at application code and running behavior, not infrastructure definitions.</p>
+
+<h4>Hardened Containers: Small, Non-Root, Scanned</h4>
+<pre><code class="language-bash"># Dockerfile — hardened multi-stage build for ShopFlow's API service
+FROM node:22-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --omit=dev
+COPY . .
+
+FROM node:22-alpine
+RUN addgroup -S shopflow &amp;&amp; adduser -S shopflow -G shopflow
+WORKDIR /app
+COPY --from=build --chown=shopflow:shopflow /app .
+USER shopflow
+EXPOSE 3000
+CMD ["node", "server.js"]
+</code></pre>
+<p>A minimal Alpine base reduces the attack surface (fewer packages, fewer CVEs to track); running as a non-root user means a container-escape vulnerability doesn't hand the attacker root on the host; the multi-stage build keeps dev dependencies and build tools out of the final image entirely.</p>
+
+<h4>Least-Privilege IAM: Scope to the Actual Task</h4>
+<p>A service account with broad admin permissions "to be safe" is the cloud-era equivalent of A01 Broken Access Control at the infrastructure layer — if that service is compromised, the attacker inherits every permission it was granted, whether or not the service ever used them. Scope IAM policies to exactly what the service does.</p>
+<pre><code class="language-json">{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["secretsmanager:GetSecretValue"],
+      "Resource": "arn:aws:secretsmanager:ap-southeast-1:*:secret:shopflow/prod/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject"],
+      "Resource": "arn:aws:s3:::shopflow-product-images/*"
+    }
+  ]
+}
+</code></pre>
+<p>This policy grants exactly two capabilities — reading ShopFlow's own secrets and reading/writing to one specific S3 bucket — nothing broader, so a compromised API container cannot pivot into unrelated AWS resources.</p>
+
+<h4>Kubernetes-Specific Hardening (If ShopFlow Runs on K8s)</h4>
+<p>Pod Security Standards (restricted profile), network policies that default-deny cross-namespace traffic, and read-only root filesystems on containers all apply the same least-privilege logic at the orchestration layer — a compromised pod should not be able to reach every other pod in the cluster or write to its own filesystem to persist malware.</p>
+
+<p><strong>Exercise 4.2 — Harden ShopFlow's Infrastructure</strong></p>
+<p>Dataset: ShopFlow</p>
+<ol>
+<li>Rewrite ShopFlow's API Dockerfile to run as a non-root user on a minimal base image, multi-stage build.</li>
+<li>Scan the resulting image with Trivy (from Module 2.3) and fix any Critical/High findings.</li>
+<li>Write a least-privilege IAM policy for the API service, scoped to exactly the secrets and storage it needs.</li>
+<li>If deploying to Kubernetes: apply a restricted Pod Security Standard and a default-deny NetworkPolicy, then explicitly allow only the traffic ShopFlow's services actually need.</li>
+<li>Audit ShopFlow's CI/CD pipeline for any secret exposed in logs or a broadly-scoped deploy credential, and fix it.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-ddos-bot-mitigation-zero-trust-architecture">Module 4.3 — DDoS, Bot Mitigation &amp; Zero Trust Architecture</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate–Advanced · <strong>Prereqs:</strong> 2.2, 4.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Design a layered DDoS/bot mitigation strategy (edge, application, business-logic) and explain what "never trust, always verify" changes about internal service-to-service calls.<br>
+<strong>Skip if:</strong> You already operate behind a WAF/CDN with bot mitigation and enforce mTLS or equivalent for internal service calls.<br>
+<strong>Unlocks:</strong> 4.4, Phase 4 Capstone</p>
+</blockquote>
+
+<h4>Layered Defense Against Volumetric and Logic-Layer Abuse</h4>
+<p>Distributed Denial of Service defense works in layers because different attack types hit different layers: a CDN/edge network (Cloudflare, AWS CloudFront + Shield) absorbs volumetric network-layer floods before they ever reach your servers; a WAF filters application-layer attack patterns; and business-logic rate limiting (Module 2.2) catches abuse that looks like legitimate traffic at the network layer but isn't — like a bot checking out one item at a time to exhaust inventory.</p>
+
+<h4>Bot Mitigation Beyond Rate Limiting</h4>
+<p>Simple rate limiting catches naive scripted abuse; sophisticated bots rotate IPs and mimic human timing to stay under any per-IP threshold. Behavioral signals (mouse movement, request timing entropy, TLS fingerprinting) and challenge-response mechanisms (CAPTCHA as a last resort, not a first line) catch what pure rate limiting misses, typically delegated to the CDN/WAF layer rather than built in-house.</p>
+
+<h4>Zero Trust: No Implicit Trust From Network Location</h4>
+<p>Traditional "castle and moat" security trusts anything already inside the corporate network or VPC — a single compromised service inside that perimeter then has broad implicit access to everything else inside it. Zero Trust architecture removes that assumption entirely: every service-to-service call is authenticated and authorized on its own merits (mTLS, short-lived service tokens), regardless of whether the caller is "inside" the network. This directly limits blast radius — the same principle as least-privilege IAM (Module 4.2), applied to service-to-service traffic instead of service-to-cloud-resource permissions.</p>
+
+<pre><code class="language-yaml"># Simplified service mesh policy — deny by default, allow explicit service-to-service calls with mTLS
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: shopflow-checkout-policy
+  namespace: shopflow
+spec:
+  selector:
+    matchLabels:
+      app: checkout-service
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals: ["cluster.local/ns/shopflow/sa/api-gateway"]
+      to:
+        - operation:
+            methods: ["POST"]
+            paths: ["/internal/checkout"]
+</code></pre>
+<p>This policy allows only the API gateway's service identity to call the checkout service's internal endpoint — any other service in the cluster, even on the same internal network, is denied by default.</p>
+
+<blockquote class="callout"><p><strong>Disambiguation:</strong> Zero Trust is an architecture principle ("verify every call, trust no network location"), not a specific product — vendors selling "Zero Trust" appliances are implementing the principle, not defining it. The principle applies whether you use a service mesh, mTLS certificates, or short-lived signed service tokens to enforce it.</p></blockquote>
+
+<p><strong>Exercise 4.3 — Design ShopFlow's Perimeter and Internal Trust Model</strong></p>
+<p>Dataset: ShopFlow</p>
+<ol>
+<li>Diagram ShopFlow's request path from the internet to the database, marking where a CDN, WAF, and rate limiting each sit.</li>
+<li>Design a business-logic abuse scenario a naive rate limiter would miss (e.g., slow, distributed inventory-exhaustion checkout bot), and propose a mitigation beyond rate limiting.</li>
+<li>Pick one internal service-to-service call in ShopFlow (e.g., API → payment-processing microservice) and redesign it under Zero Trust: what verifies the caller's identity, and what's denied by default.</li>
+<li>Write the authorization policy (mTLS-based or token-based) enforcing that internal call.</li>
+</ol>
+<hr />
+
+<h3 id="module-44-compliance-privacy-game-days">Module 4.4 — Compliance, Privacy &amp; Game Days</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.4, 3.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Map a real system's PII flows against the Philippines Data Privacy Act's core requirements, and design and run a tabletop game day with a scenario and success criteria.<br>
+<strong>Skip if:</strong> You already run scheduled game days and can speak to your system's compliance posture under RA 10173 or GDPR without looking it up.<br>
+<strong>Unlocks:</strong> Phase 4 Capstone, Final Capstone</p>
+</blockquote>
+
+<h4>Compliance Frameworks as Minimum Bars, Not Ceilings</h4>
+<p>SOC 2, GDPR, and the Philippines Data Privacy Act (RA 10173) codify minimum expectations for handling user data responsibly — passing an audit proves you met that floor, not that you're secure. For a Philippines-market product like ShopFlow, RA 10173 is the binding legal baseline: it requires a lawful basis for processing, data subject rights (access, correction, erasure), breach notification within 72 hours to the National Privacy Commission, and privacy-by-design in system architecture. Everything built in Modules 1.4 and 4.2 (PII classification, encryption, least-privilege access) is what makes RA 10173 compliance achievable rather than a paperwork exercise bolted on after the fact.</p>
+
+<h4>SOC 2 for B2B Trust</h4>
+<p>SOC 2 evaluates a service against five trust principles — security, availability, processing integrity, confidentiality, privacy — through evidence collected over an observation period (a Type II report), not a point-in-time check. For a SaaS product selling to enterprise customers, SOC 2 is frequently the deciding factor in a procurement process; the SLOs, incident response, and access controls from Phases 1–3 of this guide are exactly the evidence a SOC 2 audit collects.</p>
+
+<h4>Game Days: Rehearsing Incidents Before They're Real</h4>
+<p>A game day is a scheduled, deliberate simulation of an incident — security or reliability — run against a real (usually staging) environment with the actual on-call team, to find gaps in tooling, runbooks, and communication <em>before</em> a real incident exposes them under pressure. It is chaos engineering (Module 4.1) extended beyond a single technical fault to the full human response process.</p>
+
+<pre><code class="language-md"># Game Day Plan: Simulated Credential-Stuffing Attack on ShopFlow Login
+
+## Objective
+Verify the team detects and responds to a credential-stuffing attack within
+the incident response process (Module 3.3), without being told in advance
+what the scenario is.
+
+## Scenario
+A scripted load test sends 50 req/s of login attempts from a rotating pool
+of IPs against staging, using a leaked-password-style username/password list.
+
+## Success Criteria
+1. Rate limiting (Module 2.2) engages within 60 seconds.
+2. An alert fires and the on-call engineer acknowledges within 5 minutes.
+3. The team correctly classifies this as a security incident, not a reliability
+   incident, and follows the security escalation path.
+4. A postmortem is written within 48 hours, blameless, with action items.
+
+## Facilitator Notes
+Do not reveal the scenario to the responding team in advance. Have an abort
+switch ready to stop the load test immediately if staging is affected
+unexpectedly. Debrief immediately after resolution while memory is fresh.
+</code></pre>
+
+<p><strong>Exercise 4.4 — Compliance Review &amp; Game Day for ShopFlow</strong></p>
+<p>Dataset: ShopFlow</p>
+<ol>
+<li>Map every PII flow in ShopFlow (collection, storage, processing, third-party sharing) against RA 10173's core requirements.</li>
+<li>Identify and close any gap: missing consent capture, no data-subject-access-request process, no documented breach-notification procedure.</li>
+<li>Draft a game day plan (using the template above) for a scenario of your choice — security or reliability.</li>
+<li>Run the game day against ShopFlow staging with defined success criteria and a facilitator who doesn't reveal the scenario in advance.</li>
+<li>Write the game day debrief: what the success criteria revealed, and what changes as a result.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-security-reliability-audit-game-day">Phase 4 Capstone: Security &amp; Reliability Audit + Game Day</h3>
+<p><strong>Project: ShopFlow Production Hardening Sign-Off</strong></p>
+<p><strong>Dataset:</strong> ShopFlow</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Circuit breakers, timeouts, and documented graceful degradation on every ShopFlow external dependency, verified by a staging chaos experiment.</li>
+<li>Hardened container images (non-root, minimal, scanned clean) and least-privilege IAM policies for every ShopFlow service.</li>
+<li>A documented layered DDoS/bot mitigation strategy and a Zero Trust policy for at least one internal service call.</li>
+<li>A completed RA 10173 (or GDPR, if targeting that market) PII-flow compliance review with gaps closed.</li>
+<li>A completed, debriefed game day with concrete follow-up action items filed.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-shopflow-launch-readiness-review">Final Capstone: ShopFlow Launch Readiness Review</h2>
+<p><strong>Project: ShopFlow Security &amp; Reliability Launch Readiness Review</strong></p>
+<p>Integrates all four phases. Uses ShopFlow, the running example from every prior module and capstone.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A consolidated threat model covering identity, data protection, injection defense, transport security, and infrastructure — pulling together Phases 1, 2, and 4.2.</li>
+<li>A CI/CD pipeline enforcing SAST (Semgrep), SCA (Trivy), and DAST (OWASP ZAP) on every change, gated on severity.</li>
+<li>Live SLOs, dashboards, and burn-rate alerts for ShopFlow's critical paths, with a tested on-call runbook.</li>
+<li>Demonstrated resilience: circuit breakers and graceful degradation verified by a staging chaos experiment.</li>
+<li>A layered DDoS/bot mitigation and Zero Trust internal-service policy, documented and at least partially implemented.</li>
+<li>A completed compliance review (RA 10173 or the relevant framework for your target market) with no open critical gaps.</li>
+<li>A completed, debriefed game day covering at least one security and one reliability scenario.</li>
+<li>A final risk register showing the delta from the Phase 1 baseline: what's mitigated, what's accepted, and why.</li>
+<li>A single "launch readiness" memo (1–2 pages) that a non-technical stakeholder could read to understand whether ShopFlow is ready to serve real customer traffic.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Web App Security &amp; Reliability Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Identity &amp; login</td><td>OAuth 2.1 + PKCE, OIDC</td><td>Implicit and ROPC grants are removed in 2.1 — do not implement them</td></tr>
+<tr><td>Object-level authorization</td><td>RBAC + ABAC middleware</td><td>Check on every request, not just at login</td></tr>
+<tr><td>Secrets storage</td><td>AWS Secrets Manager / HashiCorp Vault</td><td>Never `.env` or hardcoded in production</td></tr>
+<tr><td>SQL injection defense</td><td>Parameterized queries</td><td>Never string-concatenate user input into SQL</td></tr>
+<tr><td>XSS defense</td><td>Output encoding + strict nonce-based CSP</td><td>Framework auto-escaping is the first layer, CSP is defense-in-depth</td></tr>
+<tr><td>Static code scanning (SAST)</td><td>Semgrep</td><td>Run on every pull request, not just pre-release</td></tr>
+<tr><td>Dependency/image scanning (SCA)</td><td>Trivy</td><td>Covers both `package.json` deps and container images</td></tr>
+<tr><td>Running-app scanning (DAST)</td><td>OWASP ZAP</td><td>Needs a live staging target</td></tr>
+<tr><td>Release inventory</td><td>SBOM (CycloneDX)</td><td>Generate per release, not annually</td></tr>
+<tr><td>Metrics, logs, traces</td><td>OpenTelemetry → Prometheus/Grafana</td><td>Vendor-neutral instrumentation via OTLP</td></tr>
+<tr><td>Reliability targets</td><td>SLIs / SLOs / error budgets</td><td>Drives deploy-freeze policy, not just a dashboard number</td></tr>
+<tr><td>Alerting</td><td>Burn-rate alerts</td><td>Catches slow-burning problems raw thresholds miss</td></tr>
+<tr><td>Downstream failure isolation</td><td>Circuit breakers, timeouts, retries with backoff</td><td>Prevents cascading failure</td></tr>
+<tr><td>Edge/volumetric protection</td><td>CDN + WAF (Cloudflare, AWS Shield)</td><td>First layer against DDoS and bot traffic</td></tr>
+<tr><td>Internal service trust</td><td>mTLS / service mesh authorization policy</td><td>Zero Trust — no implicit trust from network location</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-appsec-terms">Application Security Terms</h3>
+<dl class="glossary">
+<dt>Authentication</dt>
+<dd>The process of verifying that a user or system is who it claims to be.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Auth" alone — ambiguous with authorization; specify which.</dd>
+<dt>Authorization</dt>
+<dd>The process of determining whether an already-authenticated identity is permitted to perform a specific action on a specific resource.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Using "permissions" and "authorization" interchangeably without distinguishing the check (authorization) from the data (permissions) it evaluates.</dd>
+<dt>IDOR (Insecure Direct Object Reference)</dt>
+<dd>An access control flaw where an endpoint trusts a client-supplied identifier without verifying the current user is permitted to access that specific object.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Confusing with generic "authorization bug" — IDOR specifically refers to the object-identifier pattern.</dd>
+<dt>OWASP Top 10</dt>
+<dd>A community-consensus ranking of the ten most critical web application security risks, refreshed periodically from real-world CVE and breach data — currently the 2025 edition.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Treating it as an exhaustive checklist rather than a prioritized starting point for threat modeling.</dd>
+<dt>SAST (Static Application Security Testing)</dt>
+<dd>Automated analysis of source code for insecure patterns, without running the application.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Confusing with DAST, which tests a running application from the outside.</dd>
+<dt>DAST (Dynamic Application Security Testing)</dt>
+<dd>Automated testing of a running application by sending it requests and observing responses, with no source code access.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Pentest" as a synonym — DAST is automated and pattern-based; a pentest includes human judgment and business-logic testing.</dd>
+<dt>SCA (Software Composition Analysis)</dt>
+<dd>Automated scanning of third-party dependencies and container images for known vulnerabilities (CVEs).</dd>
+<dd class="avoid"><strong>Avoid:</strong> Assuming SCA covers your own code — it only covers dependencies, not first-party source (that's SAST).</dd>
+<dt>SBOM (Software Bill of Materials)</dt>
+<dd>A machine-readable inventory of every component and dependency included in a specific software release.</dd>
+<dd class="avoid"><strong>Avoid:</strong> None common — the term is specific and not usually confused.</dd>
+<dt>CSP (Content-Security-Policy)</dt>
+<dd>An HTTP response header that instructs the browser which sources of scripts, styles, and other resources are allowed to load or execute on a page.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Confusing with CORS, which governs cross-origin <em>requests</em>, not what resources a page is allowed to load/execute.</dd>
+<dt>Zero Trust</dt>
+<dd>An architecture principle requiring every request — including internal service-to-service calls — to be authenticated and authorized on its own merits, with no implicit trust granted by network location.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Treating it as a specific vendor product rather than the underlying principle a product implements.</dd>
+</dl>
+
+<h3 id="glossary-reliability-terms">Reliability &amp; SRE Terms</h3>
+<dl class="glossary">
+<dt>SLI (Service Level Indicator)</dt>
+<dd>A specific, measured metric quantifying some aspect of the service level provided (e.g., percentage of requests under 500ms).</dd>
+<dd class="avoid"><strong>Avoid:</strong> Confusing with SLO — the SLI is the measurement, the SLO is the target for that measurement.</dd>
+<dt>SLO (Service Level Objective)</dt>
+<dd>An internal target value or range for an SLI, over a defined measurement window.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Confusing with SLA, which is an external, often contractual, commitment.</dd>
+<dt>Error Budget</dt>
+<dd>The allowable amount of unreliability (1 minus the SLO) within a measurement window, used as a data-driven trigger for deploy-freeze or reliability-focused work.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Treating it as a punishment mechanism rather than a shared, negotiated decision rule between product and engineering.</dd>
+<dt>Burn-Rate Alert</dt>
+<dd>An alert that fires based on how fast an error budget is being consumed relative to the measurement window, catching both fast, dramatic failures and slow, sustained degradation.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Threshold alert" as a synonym — a raw threshold alert doesn't account for the budget window at all.</dd>
+<dt>Circuit Breaker</dt>
+<dd>A resilience pattern that stops calling a failing downstream dependency after a failure threshold is crossed, failing fast during a cooldown period instead of continuing to send doomed requests.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Confusing with a simple retry — a circuit breaker actively stops calling, retries just repeat the call.</dd>
+<dt>Blameless Postmortem</dt>
+<dd>A structured incident review that assumes every participant made a reasonable decision given what they knew at the time, focused on identifying systemic contributing factors rather than individual fault.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Root cause analysis" used as a full synonym — RCA is one section of a postmortem, not the whole practice.</dd>
+<dt>Chaos Engineering</dt>
+<dd>The practice of deliberately injecting controlled failure into a system to verify it degrades the way it was designed to, rather than assuming resilience untested.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Confusing with unplanned outages — chaos engineering is deliberate, scoped, and hypothesis-driven.</dd>
+<dt>Game Day</dt>
+<dd>A scheduled, deliberate simulation of an incident (security or reliability) run against a real environment with the actual response team, to find gaps before a real incident does.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Treating it as identical to chaos engineering — a game day tests the human response process, not just the technical system.</dd>
+<dt>Observability</dt>
+<dd>The property of a system that lets you infer its internal state from its external outputs (metrics, logs, traces), especially for states you didn't anticipate needing to debug in advance.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Monitoring" as a full synonym — monitoring typically means watching known, predefined signals; observability supports investigating unknown-unknowns.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td><em>Site Reliability Engineering</em> — Google SRE Team (2016, free online at sre.google)</td><td>Foundational SRE principles: SLOs, error budgets, toil, postmortems</td></tr>
+<tr><td><em>The Site Reliability Workbook</em> — Google SRE Team (2018, free online at sre.google)</td><td>Practical, worked-example follow-up to the original SRE book</td></tr>
+<tr><td><em>Building Secure and Reliable Systems</em> — Google (2020, free online)</td><td>The intersection this guide is built on: security and reliability as one discipline</td></tr>
+<tr><td><em>The Web Application Hacker's Handbook, 2nd ed.</em> — Stuttard &amp; Pinto</td><td>Deep manual testing methodology, still the reference for Burp-style testing technique</td></tr>
+<tr><td><em>Alice and Bob Learn Application Security</em> — Tanya Janca (2020)</td><td>Practical, developer-focused AppSec across the SDLC</td></tr>
+<tr><td><em>Chaos Engineering</em> — Rosenthal &amp; Jones (2020, O'Reilly)</td><td>Principles and practice of controlled failure injection</td></tr>
+</table>
+
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>OWASP Top 10:2025 (owasp.org/Top10/2025)</td><td>Current risk categories</td><td>The canonical, versioned source — always check which year's edition you're reading</td></tr>
+<tr><td>OWASP Cheat Sheet Series (cheatsheetseries.owasp.org)</td><td>Practical defense patterns per topic</td><td>Best single reference for "how do I actually implement this defense"</td></tr>
+<tr><td>OWASP ASVS 5.0 (github.com/OWASP/ASVS)</td><td>Verification requirements checklist</td><td>Use to structure a security review against concrete, testable requirements</td></tr>
+<tr><td>Google SRE site (sre.google)</td><td>SRE book, workbook, and articles</td><td>Free, current, and the primary source this guide's Phase 3 draws from</td></tr>
+<tr><td>web.dev/articles/strict-csp</td><td>Strict CSP implementation guide</td><td>Google's own team's current nonce-based CSP guidance</td></tr>
+<tr><td>OAuth 2.1 draft (oauth.net/2.1)</td><td>Current OAuth best-practice profile</td><td>Track this over the RFC 6749 page — it reflects the 2026 baseline</td></tr>
+<tr><td>National Privacy Commission (privacy.gov.ph)</td><td>Philippines Data Privacy Act (RA 10173)</td><td>Official guidance and breach-notification requirements for PH-market products</td></tr>
+<tr><td>OpenTelemetry docs (opentelemetry.io/docs)</td><td>Instrumentation across languages</td><td>CNCF-graduated standard as of May 2026 — the default choice for new instrumentation</td></tr>
+</table>
+
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>OWASP Juice Shop</td><td>Deliberately vulnerable app for hands-on OWASP Top 10 practice beyond ShopFlow</td></tr>
+<tr><td>OWASP ZAP</td><td>DAST scanning, manual proxy-based testing</td></tr>
+<tr><td>Burp Suite Community Edition</td><td>Manual security testing and request tampering</td></tr>
+<tr><td>Semgrep CE</td><td>SAST scanning in CI</td></tr>
+<tr><td>Trivy</td><td>Dependency, container image, and IaC scanning</td></tr>
+<tr><td>OpenTelemetry + Prometheus/Grafana</td><td>Metrics, logs, traces, and dashboards</td></tr>
+</table>
+
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>OWASP local chapters &amp; Slack</td><td>Slack / in-person meetups</td><td>Direct access to practitioners who write the standards this guide teaches</td></tr>
+<tr><td>r/netsec</td><td>Reddit</td><td>Current vulnerability research and disclosure discussion</td></tr>
+<tr><td>SRE Weekly community &amp; Google SRE Discourse</td><td>Web / mailing list</td><td>SLO design questions and postmortem-culture discussion with working SREs</td></tr>
+<tr><td>CNCF Slack (#opentelemetry)</td><td>Slack</td><td>Instrumentation troubleshooting straight from OpenTelemetry maintainers</td></tr>
+<tr><td>PortSwigger Web Security Academy community</td><td>Web forum</td><td>Free, hands-on labs for every OWASP Top 10 category with a discussion community</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
+
+<h4>Phase 1 — AppSec Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — Web Threat Landscape &amp; OWASP Top 10:2025</li>
+<li>[ ] Exercise 1.1 — Map ShopFlow to the OWASP Top 10:2025</li>
+<li>[ ] Module 1.2 — Authentication &amp; Session Security</li>
+<li>[ ] Exercise 1.2 — Secure ShopFlow's Login Flow</li>
+<li>[ ] Module 1.3 — Authorization &amp; Access Control</li>
+<li>[ ] Exercise 1.3 — Enforce Object-Level Authorization on ShopFlow</li>
+<li>[ ] Module 1.4 — Secrets &amp; Sensitive Data Protection</li>
+<li>[ ] Exercise 1.4 — Classify and Protect ShopFlow's Data</li>
+<li>[ ] Capstone 1 — Threat Model ShopFlow</li>
+</ul>
+
+<h4>Phase 2 — Defensive Engineering</h4>
+<ul>
+<li>[ ] Module 2.1 — Input Validation &amp; Injection Defense</li>
+<li>[ ] Exercise 2.1 — Find and Fix Injection Bugs in ShopFlow</li>
+<li>[ ] Module 2.2 — API, Transport &amp; Network Security</li>
+<li>[ ] Exercise 2.2 — Lock Down ShopFlow's Transport &amp; API Layer</li>
+<li>[ ] Module 2.3 — Secure SDLC &amp; Supply Chain Security</li>
+<li>[ ] Exercise 2.3 — Build ShopFlow's Secure Pipeline</li>
+<li>[ ] Module 2.4 — Security Testing &amp; Pentesting Basics</li>
+<li>[ ] Exercise 2.4 — Pentest ShopFlow (Staging Only)</li>
+<li>[ ] Capstone 2 — Harden &amp; Pentest ShopFlow</li>
+</ul>
+
+<h4>Phase 3 — SRE Reliability Fundamentals</h4>
+<ul>
+<li>[ ] Module 3.1 — SRE Principles, SLIs, SLOs &amp; Error Budgets</li>
+<li>[ ] Exercise 3.1 — Define SLOs for ShopFlow</li>
+<li>[ ] Module 3.2 — Observability: Metrics, Logs &amp; Traces</li>
+<li>[ ] Exercise 3.2 — Instrument ShopFlow</li>
+<li>[ ] Module 3.3 — Incident Response &amp; Postmortems</li>
+<li>[ ] Exercise 3.3 — Run a Mock Incident for ShopFlow</li>
+<li>[ ] Capstone 3 — SLOs &amp; Observability for ShopFlow</li>
+</ul>
+
+<h4>Phase 4 — Resilience &amp; Production Hardening</h4>
+<ul>
+<li>[ ] Module 4.1 — Resilience Patterns &amp; Chaos Engineering</li>
+<li>[ ] Exercise 4.1 — Harden ShopFlow Against Downstream Failure</li>
+<li>[ ] Module 4.2 — Container &amp; Cloud Infrastructure Security</li>
+<li>[ ] Exercise 4.2 — Harden ShopFlow's Infrastructure</li>
+<li>[ ] Module 4.3 — DDoS, Bot Mitigation &amp; Zero Trust Architecture</li>
+<li>[ ] Exercise 4.3 — Design ShopFlow's Perimeter and Internal Trust Model</li>
+<li>[ ] Module 4.4 — Compliance, Privacy &amp; Game Days</li>
+<li>[ ] Exercise 4.4 — Compliance Review &amp; Game Day for ShopFlow</li>
+<li>[ ] Capstone 4 — Security &amp; Reliability Audit + Game Day</li>
+</ul>
+
+<h4>Certifications / Outcomes</h4>
+<ul>
+<li>[ ] OWASP Top 10:2025 mastery — can threat-model a new system unaided</li>
+<li>[ ] Google SRE-aligned reliability practice — SLOs, error budgets, and postmortems in real use</li>
+<li>[ ] Final Capstone — ShopFlow Launch Readiness Review complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 — Web App Security &amp; Reliability Track: Beginner to Intermediate</em><br>
+<em>Non-linear modular design · Placement quiz · 15 modules · ~50h estimated study time · hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-07-24 (OWASP Top 10:2025, OWASP ASVS 5.0, OAuth 2.1 draft, OpenTelemetry post-CNCF-graduation)</em></p>
+
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Full-text guide search ────────────────────────────────
+  // Indexes every block of the guide body, lists matching snippets grouped
+  // by section, highlights hits in the page, and filters the nav to the
+  // sections that contain them. Multiple words = all must appear in the
+  // same block; wrap in "quotes" for an exact phrase.
+  var navSearch = document.getElementById("navSearch");
+  var contentRoot = document.querySelector(".content");
+  if(navSearch && contentRoot){
+    var BLOCK_SEL = "h1,h2,h3,h4,p,li,tr,dt,dd,pre";
+    var searchRow = document.getElementById("searchRow"),
+        searchBar = document.getElementById("searchBar"),
+        searchCount = document.getElementById("searchCount"),
+        searchResults = document.getElementById("searchResults");
+    var navById = {};
+    document.querySelectorAll("#nav a").forEach(function(a){
+      navById[a.getAttribute("href").slice(1)] = a;
+    });
+
+    var blocks = [], section = null;
+    contentRoot.querySelectorAll(BLOCK_SEL).forEach(function(el){
+      if(/^H[1-4]$/.test(el.tagName) && el.id && navById[el.id]) section = el;
+      if(el.classList.contains("quiz-score")) return;
+      var outer = el.parentElement && el.parentElement.closest(BLOCK_SEL);
+      if(outer && contentRoot.contains(outer)) return;
+      var text = el.textContent.replace(/\s+/g, " ").trim();
+      if(text) blocks.push({el:el, text:text, lower:text.toLowerCase(), section:section});
+    });
+
+    var hits = [], cur = -1, timer = null;
+    function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+    function sectionLabel(sec){ return sec && navById[sec.id] ? navById[sec.id].textContent : "Introduction"; }
+
+    function clearMarks(){
+      contentRoot.querySelectorAll("mark.lg-hit").forEach(function(m){
+        var p = m.parentNode;
+        p.replaceChild(document.createTextNode(m.textContent), m);
+        p.normalize();
+      });
+      var b = contentRoot.querySelector(".lg-block-current");
+      if(b) b.classList.remove("lg-block-current");
+    }
+
+    function markBlock(el, re){
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+      while((n = walker.nextNode())) nodes.push(n);
+      var marks = [];
+      nodes.forEach(function(node){
+        var t = node.nodeValue, m, last = 0;
+        re.lastIndex = 0;
+        if(!re.test(t)) return;
+        re.lastIndex = 0;
+        var frag = document.createDocumentFragment();
+        while((m = re.exec(t))){
+          if(m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+          var mk = document.createElement("mark");
+          mk.className = "lg-hit";
+          mk.textContent = m[0];
+          frag.appendChild(mk);
+          marks.push(mk);
+          last = m.index + m[0].length;
+        }
+        if(last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+      });
+      return marks;
+    }
+
+    function snippet(text, terms, re){
+      var lower = text.toLowerCase(), i = -1;
+      terms.forEach(function(t){ var k = lower.indexOf(t); if(k > -1 && (i < 0 || k < i)) i = k; });
+      if(i < 0) i = 0;
+      var start = Math.max(0, i - 40), end = Math.min(text.length, i + 100);
+      var s = text.slice(start, end), out = "", last = 0, m;
+      re.lastIndex = 0;
+      while((m = re.exec(s))){
+        out += escHtml(s.slice(last, m.index)) + "<mark>" + escHtml(m[0]) + "</mark>";
+        last = m.index + m[0].length;
+      }
+      return (start > 0 ? "…" : "") + out + escHtml(s.slice(last)) + (end < text.length ? "…" : "");
+    }
+
+    function filterNav(ids){
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var any = false;
+        g.querySelectorAll("a").forEach(function(a){
+          var show = !ids || !!ids[a.getAttribute("href").slice(1)];
+          if(a.classList.contains("nav-child")) a.classList.toggle("filtered-out", !show);
+          if(show) any = true;
+        });
+        g.classList.toggle("filtered-out", !any);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        a.classList.toggle("filtered-out", !!ids && !ids[a.getAttribute("href").slice(1)]);
+      });
+    }
+
+    function updateCount(nSections){
+      if(!hits.length){ searchCount.textContent = "No matches"; return; }
+      var pos = cur > -1 ? (cur + 1) + " / " + hits.length : hits.length + (hits.length === 1 ? " match" : " matches");
+      searchCount.textContent = pos + " · " + nSections + (nSections === 1 ? " section" : " sections");
+    }
+
+    var lastSectionCount = 0;
+    function run(){
+      var raw = navSearch.value.trim();
+      clearMarks();
+      hits = []; cur = -1;
+      searchRow.classList.toggle("has-query", !!raw);
+      if(raw.length < 2){
+        searchResults.classList.remove("show");
+        searchBar.classList.remove("show");
+        searchResults.innerHTML = "";
+        filterNav(null);
+        return;
+      }
+      var phrase = /^"(.+)"$/.exec(raw);
+      var terms = phrase ? [phrase[1].toLowerCase()] : raw.toLowerCase().split(/\s+/);
+      terms = terms.filter(function(t, i){ return t && terms.indexOf(t) === i; });
+      var re = new RegExp(terms.slice().sort(function(a, b){ return b.length - a.length; }).map(escRe).join("|"), "gi");
+      var matched = blocks.filter(function(b){
+        return terms.every(function(t){ return b.lower.indexOf(t) > -1; });
+      });
+
+      var ids = {}, groups = [], html = "", LIMIT = 60;
+      matched.forEach(function(b, bi){
+        var marks = markBlock(b.el, re);
+        if(marks.length) marks.forEach(function(m){ hits.push({m:m, el:b.el, b:bi}); });
+        else hits.push({m:null, el:b.el, b:bi});
+        var key = b.section ? b.section.id : "";
+        if(b.section) ids[b.section.id] = true;
+        if(!groups.length || groups[groups.length - 1].key !== key) groups.push({key:key, sec:b.section, items:[]});
+        groups[groups.length - 1].items.push(bi);
+      });
+
+      if(!matched.length){
+        html = '<div class="sr-empty">No matches for “' + escHtml(raw) + '”. Try fewer words.</div>';
+      } else {
+        var listed = 0;
+        groups.forEach(function(g){
+          if(listed >= LIMIT) return;
+          html += '<div class="sr-group"><div class="sr-section">' + escHtml(sectionLabel(g.sec)) + '</div>';
+          g.items.slice(0, 4).forEach(function(bi){
+            if(listed >= LIMIT) return;
+            html += '<button type="button" class="sr-item" role="option" data-b="' + bi + '">' +
+                    snippet(matched[bi].text, terms, re) + '</button>';
+            listed++;
+          });
+          if(g.items.length > 4) html += '<div class="sr-more">+' + (g.items.length - 4) + ' more in this section (use ↓ to step through)</div>';
+          html += '</div>';
+        });
+        if(matched.length > listed) html += '<div class="sr-more">Showing ' + listed + ' of ' + matched.length + ' blocks — add a word to narrow it.</div>';
+      }
+      searchResults.innerHTML = html;
+      searchResults.classList.add("show");
+      searchBar.classList.add("show");
+      lastSectionCount = Object.keys(ids).length || (matched.length ? 1 : 0);
+      filterNav(ids);
+      updateCount(lastSectionCount);
+    }
+
+    function go(i, closeMobile){
+      if(!hits.length) return;
+      cur = (i + hits.length) % hits.length;
+      contentRoot.querySelectorAll("mark.lg-hit-current").forEach(function(m){ m.classList.remove("lg-hit-current"); });
+      var prev = contentRoot.querySelector(".lg-block-current");
+      if(prev) prev.classList.remove("lg-block-current");
+      var h = hits[cur];
+      if(h.m) h.m.classList.add("lg-hit-current");
+      h.el.classList.add("lg-block-current");
+      (h.m || h.el).scrollIntoView({behavior:"smooth", block:"center"});
+      searchResults.querySelectorAll(".sr-item").forEach(function(it){
+        var on = +it.getAttribute("data-b") === h.b;
+        it.classList.toggle("current", on);
+        if(on) it.scrollIntoView({block:"nearest"});
+      });
+      updateCount(lastSectionCount);
+      if(closeMobile && window.innerWidth <= 1000) closeNav();
+    }
+
+    navSearch.addEventListener("input", function(){
+      clearTimeout(timer);
+      timer = setTimeout(run, 140);
+    });
+    navSearch.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        clearTimeout(timer);
+        if(!hits.length && navSearch.value.trim().length >= 2) run();
+        go(e.shiftKey ? cur - 1 : cur + 1, true);
+      } else if(e.key === "Escape"){
+        navSearch.value = "";
+        run();
+      }
+    });
+    searchResults.addEventListener("click", function(e){
+      var item = e.target.closest(".sr-item");
+      if(!item) return;
+      var b = +item.getAttribute("data-b");
+      for(var k = 0; k < hits.length; k++){ if(hits[k].b === b){ go(k, true); break; } }
+    });
+    document.getElementById("searchNext").addEventListener("click", function(){ go(cur + 1, false); });
+    document.getElementById("searchPrev").addEventListener("click", function(){ go(cur - 1, false); });
+    document.getElementById("searchClear").addEventListener("click", function(){
+      navSearch.value = "";
+      run();
+      navSearch.focus();
+    });
+    document.addEventListener("keydown", function(e){
+      var tag = (e.target.tagName || "").toLowerCase();
+      var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+      var slash = e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey;
+      var cmdK = (e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K");
+      if(!slash && !cmdK) return;
+      e.preventDefault();
+      if(window.innerWidth <= 1000){
+        document.getElementById("sidebar").classList.add("open");
+        document.getElementById("scrim").classList.add("show");
+      }
+      navSearch.focus();
+      navSearch.select();
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

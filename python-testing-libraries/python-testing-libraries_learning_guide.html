@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Testing Libraries Learning Guide — pytest, Hypothesis &amp; Faker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+.search-row{position:relative}
+.search-row .nav-search{padding-right:2.4rem}
+.search-kbd{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:4px;padding:0 .3rem;background:var(--paper-2);
+  pointer-events:none;
+}
+.search-row.has-query .search-kbd{display:none}
+.search-bar{
+  display:none;align-items:center;gap:.35rem;margin-top:.45rem;
+  font-size:.72rem;color:var(--ink-soft);
+}
+.search-bar.show{display:flex}
+.search-count{flex:1;font-family:var(--mono)}
+.search-bar button{
+  border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);
+  border-radius:6px;font-size:.72rem;padding:.15rem .45rem;cursor:pointer;min-width:26px;min-height:24px;
+}
+.search-bar button:hover{background:var(--teal-wash)}
+.search-results{
+  display:none;margin:.5rem 0 .2rem;max-height:48vh;overflow-y:auto;
+  border:1px solid var(--line);border-radius:8px;background:var(--paper);
+}
+.search-results.show{display:block}
+.sr-group{border-top:1px solid var(--line-soft)}
+.sr-group:first-child{border-top:none}
+.sr-section{
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--teal);padding:.5rem .65rem .15rem;
+}
+.sr-item{
+  display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  font-family:var(--sans);font-size:.76rem;line-height:1.4;color:var(--ink);
+  padding:.35rem .65rem;
+}
+.sr-item:hover,.sr-item.current{background:var(--teal-wash)}
+.sr-item mark,.lg-hit{background:var(--amber-wash);color:inherit;border-radius:2px;padding:0 1px}
+.sr-more{font-size:.7rem;color:var(--ink-soft);padding:.1rem .65rem .45rem}
+.sr-empty{font-size:.78rem;color:var(--ink-soft);padding:.6rem .65rem}
+pre .lg-hit{background:#5c4a12;color:#fff4cf}
+.lg-hit.lg-hit-current{background:var(--coral);color:#fff;outline:2px solid var(--coral)}
+.lg-block-current{outline:2px dashed var(--teal);outline-offset:4px;border-radius:4px}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — expert guided learning">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">expert guided learning</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Python Testing<br>Libraries Guide</div>
+      <div class="brand-sub">pytest · Hypothesis · Faker</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <div class="search-row" id="searchRow">
+        <input type="search" id="navSearch" class="nav-search" placeholder="Search the guide…" aria-label="Search the whole guide" aria-controls="searchResults" autocomplete="off" spellcheck="false">
+        <span class="search-kbd" aria-hidden="true">/</span>
+      </div>
+      <div class="search-bar" id="searchBar">
+        <span class="search-count" id="searchCount" aria-live="polite"></span>
+        <button type="button" id="searchPrev" aria-label="Previous match">↑</button>
+        <button type="button" id="searchNext" aria-label="Next match">↓</button>
+        <button type="button" id="searchClear" aria-label="Clear search">✕</button>
+      </div>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+    </div>
+    <nav id="nav">
+<a href="#applied-test-engineering-track" class="nav-top">Applied Test Engineering Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-pytest-foundations-beyond-basics" class="nav-top nav-phase">Phase 1: pytest Foundations, Beyond Basics</a>
+<div class="nav-children">
+<a href="#module-11-fixture-scopes-factories-conftestpy-architecture" class="nav-child">Module 1.1 — Fixture Scopes &amp; conftest.py</a>
+<a href="#module-12-parametrization-patterns-test-ids" class="nav-child">Module 1.2 — Parametrization Patterns &amp; Test IDs</a>
+<a href="#module-13-markers-skipping-selective-test-runs" class="nav-child">Module 1.3 — Markers, Skipping &amp; Selective Runs</a>
+<a href="#module-14-mocking-with-pytest-mock-monkeypatch" class="nav-child">Module 1.4 — Mocking with pytest-mock &amp; monkeypatch</a>
+<a href="#phase-1-capstone-tindahub-well-architected-test-suite" class="nav-child">Phase 1 Capstone: Well-Architected Test Suite</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-pytest-at-scale-plugins-ci" class="nav-top nav-phase">Phase 2: pytest at Scale: Plugins &amp; CI</a>
+<div class="nav-children">
+<a href="#module-21-coverage-with-pytest-cov-measuring-enforcing" class="nav-child">Module 2.1 — Coverage with pytest-cov</a>
+<a href="#module-22-parallel-testing-with-pytest-xdist" class="nav-child">Module 2.2 — Parallel Testing with pytest-xdist</a>
+<a href="#module-23-testing-async-code-with-pytest-asyncio" class="nav-child">Module 2.3 — Testing Async Code</a>
+<a href="#module-24-custom-plugins-shared-test-infra" class="nav-child">Module 2.4 — Custom Plugins &amp; Shared Test Infra</a>
+<a href="#phase-2-capstone-tindahub-ci-ready-suite" class="nav-child">Phase 2 Capstone: CI-Ready Suite</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-hypothesis-property-based-testing" class="nav-top nav-phase">Phase 3: Hypothesis Property-Based Testing</a>
+<div class="nav-children">
+<a href="#module-31-from-examples-to-properties-given-strategies" class="nav-child">Module 3.1 — From Examples to Properties</a>
+<a href="#module-32-composite-strategies-domain-models" class="nav-child">Module 3.2 — Composite Strategies &amp; Domain Models</a>
+<a href="#module-33-shrinking-reproducibility-the-example-database" class="nav-child">Module 3.3 — Shrinking &amp; Reproducibility</a>
+<a href="#module-34-stateful-testing-with-rulebasedstatemachine" class="nav-child">Module 3.4 — Stateful Testing</a>
+<a href="#phase-3-capstone-tindahub-property-based-suite" class="nav-child">Phase 3 Capstone: Property-Based Suite</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-faker-integration" class="nav-top nav-phase">Phase 4: Faker &amp; Integration</a>
+<div class="nav-children">
+<a href="#module-41-faker-fundamentals-providers-locales-seeding" class="nav-child">Module 4.1 — Faker Fundamentals</a>
+<a href="#module-42-combining-faker-hypothesis-pytest-fixtures" class="nav-child">Module 4.2 — Combining Faker + Hypothesis + pytest</a>
+<a href="#module-43-choosing-the-right-tool-example-based-vs-property-based-vs-fake-data" class="nav-child">Module 4.3 — Choosing the Right Tool</a>
+</div></div>
+
+<a href="#final-capstone-tindahub-test-engineering-toolkit" class="nav-top">Final Capstone: TindaHub Test Engineering Toolkit</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="python-testing-libraries-learning-guide">Python Testing Libraries Learning Guide</h1>
+<h2 id="applied-test-engineering-track">Applied Test Engineering Track</h2>
+<h3>pytest &middot; Hypothesis &middot; Faker</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Python Testing Libraries" xmlns="http://www.w3.org/2000/svg">
+<path d="M128 30 L206 62 L206 128 C206 178 172 214 128 230 C84 214 50 178 50 128 L50 62 Z" fill="#075249"/>
+<path d="M92 128 L118 156 L168 100" fill="none" stroke="#0d7a6e" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide &mdash; you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone tests the same realistic <strong>TindaHub</strong> domain code &mdash; small, pure pricing, discount, and order-validation functions modeled on the same Philippine sari-sari-store distribution business used elsewhere in this workspace, so every test you write is testing something a real order-management feature would actually need.</p>
+</blockquote>
+<p><strong>Scope note:</strong> this guide assumes you've already seen pytest basics &mdash; the <a href="../python/python_learning_guide.html">Python Learning Guide</a>'s Module 5.1 covers writing a fixture, a parametrized test, and running coverage. It also assumes you may have already written FastAPI-specific tests using <code>TestClient</code> and database-fixture isolation, covered in the <a href="../fastapi/fastapi_learning_guide.html">FastAPI guide</a>'s Module 3.3 &mdash; this guide doesn't repeat that web-specific material. What this guide covers instead: pytest's deeper fixture architecture, mocking, and plugin ecosystem (Phases 1&ndash;2); property-based testing with <strong>Hypothesis</strong>, a fundamentally different testing strategy from anything in either guide above (Phase 3); and realistic fake-data generation with <strong>Faker</strong> (Phase 4). All three are library-agnostic &mdash; useful whether the code under test is a FastAPI app, a CLI tool, or a plain Python package.</p>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Solid on pytest basics, new to everything else</strong> &mdash; Start at Module 1.1 and go sequentially through all four phases.</li>
+<li><strong>Comfortable with pytest fixtures and mocking already</strong> &mdash; Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting one library</strong> &mdash; Jump via the <strong>Module Index</strong> or pick a <strong>Learning Track</strong> (pytest-only, Hypothesis-only, Faker-only, or Applied).</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz &mdash; Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3>pytest (deeper fixtures &amp; plugins)</h3>
+<ul>
+<li>[ ] I know the difference between function, class, module, and session fixture scope, and when to use each.</li>
+<li>[ ] I can register a custom marker and select tests to run with <code>-m</code> and <code>-k</code>.</li>
+<li>[ ] I can mock a function or object with <code>pytest-mock</code>'s <code>mocker</code> fixture and explain what auto-cleanup it gives you over raw <code>unittest.mock</code>.</li>
+<li>[ ] I can run tests in parallel with <code>pytest-xdist</code> and know what makes a test suite safe (or unsafe) to parallelize.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 1.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 1.3</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Phase 3</strong></p>
+
+<h3>Hypothesis</h3>
+<ul>
+<li>[ ] I can write a test using <code>@given()</code> and a basic strategy like <code>st.integers()</code> instead of hardcoded example inputs.</li>
+<li>[ ] I can explain what "shrinking" means and why Hypothesis reports the simplest failing example, not the first one it finds.</li>
+<li>[ ] I can build a composite strategy for a custom domain object using <code>st.composite</code> or <code>st.builds</code>.</li>
+<li>[ ] I've written a stateful test with <code>RuleBasedStateMachine</code> to test a sequence of operations, not just a single function call.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 3.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 3.3</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Phase 4</strong></p>
+
+<h3>Faker</h3>
+<ul>
+<li>[ ] I can generate realistic fake names, addresses, and emails with Faker and seed it for reproducible test runs.</li>
+<li>[ ] I know the difference between what Faker generates (realistic-looking data) and what Hypothesis generates (adversarial edge cases), and when each is the right choice.</li>
+<li>[ ] I can use Faker inside a pytest fixture to generate realistic seed data for a test database or test fixtures.</li>
+<li>[ ] I can explain why Faker alone is a poor tool for finding edge-case bugs.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 4.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 4.2</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Module 4.3</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-fixture-scopes-factories-conftestpy-architecture"><td>1.1</td><td>Fixture Scopes, Factories &amp; conftest.py Architecture</td><td>Intermediate</td><td>Basic pytest</td><td>2.5h</td></tr>
+<tr data-href="#module-12-parametrization-patterns-test-ids"><td>1.2</td><td>Parametrization Patterns &amp; Test IDs</td><td>Intermediate</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-13-markers-skipping-selective-test-runs"><td>1.3</td><td>Markers, Skipping &amp; Selective Test Runs</td><td>Intermediate</td><td>Basic pytest</td><td>2h</td></tr>
+<tr data-href="#module-14-mocking-with-pytest-mock-monkeypatch"><td>1.4</td><td>Mocking with pytest-mock &amp; monkeypatch</td><td>Intermediate</td><td>1.1</td><td>2.5h</td></tr>
+<tr data-href="#module-21-coverage-with-pytest-cov-measuring-enforcing"><td>2.1</td><td>Coverage with pytest-cov: Measuring &amp; Enforcing</td><td>Intermediate</td><td>Basic pytest</td><td>2h</td></tr>
+<tr data-href="#module-22-parallel-testing-with-pytest-xdist"><td>2.2</td><td>Parallel Testing with pytest-xdist</td><td>Intermediate</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-23-testing-async-code-with-pytest-asyncio"><td>2.3</td><td>Testing Async Code with pytest-asyncio</td><td>Intermediate</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-24-custom-plugins-shared-test-infra"><td>2.4</td><td>Custom Plugins &amp; Shared Test Infra</td><td>Advanced</td><td>1.1, 1.3</td><td>2.5h</td></tr>
+<tr data-href="#module-31-from-examples-to-properties-given-strategies"><td>3.1</td><td>From Examples to Properties: given() &amp; Strategies</td><td>Intermediate</td><td>Basic pytest</td><td>2.5h</td></tr>
+<tr data-href="#module-32-composite-strategies-domain-models"><td>3.2</td><td>Composite Strategies &amp; Domain Models</td><td>Intermediate</td><td>3.1</td><td>2.5h</td></tr>
+<tr data-href="#module-33-shrinking-reproducibility-the-example-database"><td>3.3</td><td>Shrinking, Reproducibility &amp; the Example Database</td><td>Intermediate</td><td>3.1</td><td>2h</td></tr>
+<tr data-href="#module-34-stateful-testing-with-rulebasedstatemachine"><td>3.4</td><td>Stateful Testing with RuleBasedStateMachine</td><td>Advanced</td><td>3.2</td><td>2.5h</td></tr>
+<tr data-href="#module-41-faker-fundamentals-providers-locales-seeding"><td>4.1</td><td>Faker Fundamentals: Providers, Locales &amp; Seeding</td><td>Beginner&ndash;Intermediate</td><td>None</td><td>1.5h</td></tr>
+<tr data-href="#module-42-combining-faker-hypothesis-pytest-fixtures"><td>4.2</td><td>Combining Faker + Hypothesis + pytest Fixtures</td><td>Intermediate</td><td>4.1, 3.1, 1.1</td><td>2.5h</td></tr>
+<tr data-href="#module-43-choosing-the-right-tool-example-based-vs-property-based-vs-fake-data"><td>4.3</td><td>Choosing the Right Tool</td><td>Intermediate</td><td>Phases 1&ndash;3</td><td>1.5h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1&ndash;3 are largely independent tracks &mdash; deeper pytest (Phase 1), pytest plugins/CI concerns (Phase 2), and Hypothesis (Phase 3) can each be learned on their own once you know pytest basics. Phase 2 builds on Phase 1's fixture architecture, so doing 1.1 first is worthwhile even if you skip the rest of Phase 1. Faker (Phase 4) stands alone from Phases 1&ndash;3 for Module 4.1, but Module 4.2 assumes at least Module 1.1 and Module 3.1.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+
+<h3 id="track-1-pytest-fast-track">Track 1 &mdash; pytest Fast Track (deeper fixtures, mocking, plugins)</h3>
+<p><code>1.1 &rarr; 1.2 &rarr; 1.3 &rarr; 1.4 &rarr; 2.1 &rarr; 2.2 &rarr; Phase 1 Capstone</code><br>
+Target outcome: <strong>a well-architected, mockable, parallel-safe pytest suite with enforced coverage</strong>.</p>
+
+<h3 id="track-2-hypothesis-for-property-based-testing">Track 2 &mdash; Hypothesis for Property-Based Testing</h3>
+<p><code>1.1 &rarr; 3.1 &rarr; 3.2 &rarr; 3.3 &rarr; 3.4 &rarr; Phase 3 Capstone</code><br>
+Target outcome: <strong>writing tests that describe invariants and let Hypothesis hunt for the inputs that break them</strong>.</p>
+
+<h3 id="track-3-faker-for-realistic-test-data">Track 3 &mdash; Faker for Realistic Test Data</h3>
+<p><code>4.1 &rarr; 4.2</code><br>
+Target outcome: <strong>generating realistic, reproducible fake data for fixtures, seed scripts, and demos</strong>.</p>
+
+<h3 id="track-4-applied-full-stack-test-engineering">Track 4 &mdash; Applied Full-Stack Test Engineering</h3>
+<p><code>1.1 &rarr; 1.4 &rarr; 2.1 &rarr; 3.1 &rarr; 3.2 &rarr; 4.1 &rarr; 4.2 &rarr; 4.3 &rarr; Final Capstone</code><br>
+Target outcome: <strong>a single test suite combining example-based tests, property-based tests, and realistic fake data, deliberately chosen per case</strong>.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — pytest Foundations, Beyond Basics   (Weeks 1–2)
+Phase 2 — pytest at Scale: Plugins &amp; CI      (Weeks 2–3)
+Phase 3 — Hypothesis Property-Based Testing   (Weeks 3–5)
+Phase 4 — Faker &amp; Integration                (Weeks 5–6)
+Final Capstone                                (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ─┬─ 1.2
+     ├─ 1.3
+     ├─ 1.4 ── 2.1 ── 2.2 ── 2.3 ── 2.4 ──┐
+     └─ 3.1 ── 3.2 ── 3.3 ── 3.4 ─────────┼─ 4.3 ─ Final Capstone
+              4.1 ── 4.2 ─────────────────┘</code></pre>
+
+<h2 id="phase-1-pytest-foundations-beyond-basics">Phase 1: pytest Foundations, Beyond Basics</h2>
+<h3 id="weeks-1-2">Weeks 1&ndash;2 | Goal: build a well-architected fixture layer, parametrize thoroughly, and mock correctly</h3>
+<hr />
+
+<h3 id="module-11-fixture-scopes-factories-conftestpy-architecture">Module 1.1 &mdash; Fixture Scopes, Factories &amp; conftest.py Architecture</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Basic pytest (a fixture, a test, an assertion) &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Write a session-scoped fixture, a function-scoped fixture that depends on it, and a fixture factory (a fixture that returns a function), organizing them across a <code>conftest.py</code> shared by multiple test files.<br>
+<strong>Skip if:</strong> Fixture scoping and <code>conftest.py</code> organization are already deliberate choices, not defaults you never think about.<br>
+<strong>Unlocks:</strong> Module 1.2, Module 1.4, Module 2.1</p>
+</blockquote>
+
+<h4>Fixture scope: how often does setup actually need to run?</h4>
+<p>A fixture's <code>scope</code> controls how often pytest re-runs its setup: <code>function</code> (the default &mdash; fresh for every test), <code>class</code>, <code>module</code>, or <code>session</code> (once for the entire test run). Choosing too narrow a scope wastes time re-doing expensive setup (spinning up a database connection per test when one per session would do); choosing too broad a scope risks tests silently sharing state and passing or failing depending on execution order &mdash; one of the hardest categories of test bug to diagnose, because the test that fails isn't the test with the actual problem.</p>
+<pre><code class="language-py">import pytest
+
+@pytest.fixture(scope="session")
+def db_engine():
+    engine = create_test_engine()   # expensive: once per test run
+    yield engine
+    engine.dispose()
+
+@pytest.fixture(scope="function")
+def db_session(db_engine):
+    connection = db_engine.connect()
+    transaction = connection.begin()
+    yield connection
+    transaction.rollback()          # cheap: fresh, isolated state per test
+    connection.close()
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> confusing a <strong>yield fixture</strong> (the pattern above &mdash; a fixture that uses <code>yield</code> to separate setup from teardown, still fully supported and the standard way to write pytest fixtures) with the old nose-style <strong>"yield tests"</strong> (a test function itself using <code>yield</code> to produce multiple sub-tests), which pytest 9 removed entirely. If you see a "yield tests are no longer supported" error migrating an old codebase, that's the removed pattern, not this one &mdash; yield-based fixture teardown is unaffected and still the correct, idiomatic approach.</p></blockquote>
+
+<h4>Fixture factories: fixtures that return a function</h4>
+<p>Sometimes a single fixture value isn't enough &mdash; a test needs to create several similar-but-distinct objects. A <strong>fixture factory</strong> is a fixture whose return value is itself a function, which the test then calls (possibly multiple times, with different arguments) to produce what it actually needs.</p>
+<pre><code class="language-py">@pytest.fixture
+def make_order():
+    created = []
+    def _make_order(customer_id=1, status="pending", **overrides):
+        order = {"customer_id": customer_id, "status": status, **overrides}
+        created.append(order)
+        return order
+    yield _make_order
+    # created list available here for any needed teardown/inspection after the test
+
+def test_order_defaults(make_order):
+    order = make_order()
+    assert order["status"] == "pending"
+
+def test_order_override(make_order):
+    order = make_order(status="shipped", customer_id=7)
+    assert order["status"] == "shipped"
+</code></pre>
+
+<h4>conftest.py: sharing fixtures without importing them</h4>
+<p>Fixtures defined in a <code>conftest.py</code> file are automatically available to every test in that directory and its subdirectories &mdash; no explicit import required, which is what makes it the standard place for shared setup (database connections, app instances, common factories). A larger project typically has a top-level <code>conftest.py</code> for suite-wide fixtures and additional <code>conftest.py</code> files in specific subdirectories for fixtures only relevant to that subset of tests.</p>
+
+<p><strong>Exercise 1.1 &mdash; A TindaHub Fixture Layer</strong></p>
+<p>Dataset/code under test: a small module <code>tindahub_pricing.py</code> you'll write, containing:</p>
+<pre><code class="language-py">def calculate_order_total(unit_price: float, quantity: int, discount_rate: float = 0.0) -> float:
+    if quantity &lt; 1:
+        raise ValueError("quantity must be at least 1")
+    if not (0.0 &lt;= discount_rate &lt; 1.0):
+        raise ValueError("discount_rate must be between 0 and 1 (exclusive of 1)")
+    subtotal = unit_price * quantity
+    return round(subtotal * (1 - discount_rate), 2)
+</code></pre>
+<ol>
+<li>Set up a <code>conftest.py</code> with a session-scoped fixture representing a fixed "price list" dict for a handful of TindaHub products.</li>
+<li>Add a function-scoped fixture <code>make_line_item</code> (a fixture factory) that builds a line-item dict from the price list fixture, accepting overrides for quantity and discount.</li>
+<li>Write at least 4 tests using <code>make_line_item</code> to test <code>calculate_order_total</code> across different quantity/discount combinations.</li>
+<li>Deliberately write one test that depends on shared mutable state between two tests (e.g., a module-scoped list both tests append to) to observe order-dependent failures, then fix it by narrowing the fixture's scope, and note in 1&ndash;2 sentences what changed.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-parametrization-patterns-test-ids">Module 1.2 &mdash; Parametrization Patterns &amp; Test IDs</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.1 &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Stack two <code>@pytest.mark.parametrize</code> decorators to produce a cartesian product of cases, assign readable <code>ids</code>, and use indirect parametrization to run a fixture differently per case.<br>
+<strong>Skip if:</strong> All three of these patterns are already comfortable.<br>
+<strong>Unlocks:</strong> Module 1.3, Phase 1 Capstone</p>
+</blockquote>
+
+<h4>Stacking parametrize for combinations</h4>
+<p>A single <code>@pytest.mark.parametrize</code> runs a test once per listed case; stacking two decorators produces the <strong>cartesian product</strong> of both parameter sets &mdash; every combination of the two, not just a paired sequence. This is the tool for "test this function against every combination of input type A and input type B," which would otherwise require manually writing out every pair.</p>
+<pre><code class="language-py">import pytest
+
+@pytest.mark.parametrize("quantity", [1, 5, 100])
+@pytest.mark.parametrize("discount_rate", [0.0, 0.1, 0.5])
+def test_order_total_never_negative(quantity, discount_rate):
+    total = calculate_order_total(unit_price=50.0, quantity=quantity, discount_rate=discount_rate)
+    assert total &gt;= 0
+    # this runs 3 x 3 = 9 times, one per (discount_rate, quantity) combination
+</code></pre>
+
+<h4>Readable test IDs</h4>
+<p>Without explicit <code>ids</code>, pytest generates test names from the parameter values themselves, which gets unreadable fast for complex objects (dicts, tuples). Passing <code>ids=</code> (a list of strings, or a function computing one from each parameter set) makes failing-test output immediately legible instead of requiring you to cross-reference a numeric index back to the parametrize list.</p>
+<pre><code class="language-py">@pytest.mark.parametrize(
+    "unit_price, quantity, discount_rate, expected",
+    [
+        (100.0, 1, 0.0, 100.0),
+        (100.0, 2, 0.1, 180.0),
+        (50.0, 10, 0.25, 375.0),
+    ],
+    ids=["no-discount", "ten-percent-two-units", "quarter-off-bulk"],
+)
+def test_order_total_known_values(unit_price, quantity, discount_rate, expected):
+    assert calculate_order_total(unit_price, quantity, discount_rate) == expected
+</code></pre>
+
+<h4>Indirect parametrization</h4>
+<p>Normally, parametrized values go straight into the test function's arguments. <code>indirect=True</code> instead routes them through a fixture first &mdash; useful when each parametrized case needs some setup logic applied to the raw value before the test uses it, rather than the raw value itself.</p>
+<pre><code class="language-py">@pytest.fixture
+def price_list_variant(request):
+    variant_name = request.param
+    if variant_name == "sale":
+        return {"Lucky Me Pancit Canton": 12.0}
+    return {"Lucky Me Pancit Canton": 15.0}
+
+@pytest.mark.parametrize("price_list_variant", ["regular", "sale"], indirect=True)
+def test_pricing_under_variant(price_list_variant):
+    assert price_list_variant["Lucky Me Pancit Canton"] &gt; 0
+</code></pre>
+
+<p><strong>Exercise 1.2 &mdash; Thorough Parametrization of TindaHub's Pricing</strong></p>
+<p>Dataset/code under test: <code>tindahub_pricing.py</code> (from Exercise 1.1)</p>
+<ol>
+<li>Write a stacked-parametrize test covering at least 3 <code>quantity</code> values &times; 3 <code>discount_rate</code> values against <code>calculate_order_total</code>, asserting the result is always non-negative and always &le; the undiscounted subtotal.</li>
+<li>Rewrite Module 1.2's known-values example with your own 5 cases and meaningful <code>ids</code>, deliberately including at least one case testing the discount_rate boundary (0.0 exactly, and just under 1.0).</li>
+<li>Add tests (parametrized) confirming <code>calculate_order_total</code> raises <code>ValueError</code> for <code>quantity=0</code>, a negative quantity, and a <code>discount_rate</code> of exactly 1.0 or above.</li>
+<li>Use indirect parametrization to test <code>calculate_order_total</code> against two different "price list" fixture variants (e.g., regular vs. promotional pricing), confirming the function itself doesn't need to change to support either.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-markers-skipping-selective-test-runs">Module 1.3 &mdash; Markers, Skipping &amp; Selective Test Runs</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Basic pytest &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Register a custom marker in <code>pyproject.toml</code>, apply it to a subset of tests, and run only those tests with <code>-m</code>, plus correctly distinguish <code>skip</code>/<code>skipif</code>/<code>xfail</code>.<br>
+<strong>Skip if:</strong> Custom markers and selective test running are already routine.<br>
+<strong>Unlocks:</strong> Module 1.4, Module 2.4</p>
+</blockquote>
+
+<h4>Built-in markers: skip, skipif, xfail</h4>
+<p><code>@pytest.mark.skip(reason=...)</code> unconditionally skips a test; <code>@pytest.mark.skipif(condition, reason=...)</code> skips only when a condition is true (a Python version check, a missing optional dependency); <code>@pytest.mark.xfail(reason=...)</code> runs the test but expects it to fail &mdash; useful for a known bug you've filed but not yet fixed, tracked explicitly in the test suite rather than silently commented out. An <code>xfail</code> test that unexpectedly <em>passes</em> is reported as <code>XPASS</code>, which is worth paying attention to: it usually means the underlying bug got fixed and the marker should be removed.</p>
+<pre><code class="language-py">import sys
+import pytest
+
+@pytest.mark.skipif(sys.version_info &lt; (3, 12), reason="requires the 3.12 typing syntax")
+def test_new_syntax_feature():
+    ...
+
+@pytest.mark.xfail(reason="known rounding bug in bulk discounts over 90% — see TICKET-142")
+def test_extreme_bulk_discount():
+    assert calculate_order_total(100.0, 1000, 0.95) &gt;= 0
+</code></pre>
+
+<h4>Custom markers and registering them</h4>
+<p>Custom markers (<code>@pytest.mark.slow</code>, <code>@pytest.mark.integration</code>) categorize tests for selective running, but pytest warns about unregistered markers by default &mdash; register them explicitly in <code>pyproject.toml</code> (or <code>pytest.ini</code>) so a typo in a marker name produces a clear warning instead of a silently-ignored, do-nothing marker.</p>
+<pre><code class="language-toml">[tool.pytest.ini_options]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests requiring a real database connection",
+]
+</code></pre>
+<pre><code class="language-bash">pytest -m "not slow"              # run everything except slow tests
+pytest -m "integration"           # run only integration tests
+pytest -k "discount"              # run tests whose name contains "discount"
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> not registering custom markers and not enabling strict-marker checking, so a typo like <code>@pytest.mark.slwo</code> silently does nothing instead of erroring &mdash; add <code>--strict-markers</code> to your pytest configuration so unregistered markers fail the run immediately rather than quietly excluding tests you meant to include.</p></blockquote>
+
+<p><strong>Exercise 1.3 &mdash; Marker Strategy for TindaHub's Suite</strong></p>
+<p>Dataset/code under test: <code>tindahub_pricing.py</code> plus a hypothetical slow integration test</p>
+<ol>
+<li>Register two custom markers (<code>slow</code> and <code>unit</code>) in <code>pyproject.toml</code>, with <code>--strict-markers</code> enabled.</li>
+<li>Mark your fast, pure-function pricing tests from Exercise 1.2 as <code>unit</code>, and write one deliberately slow test (e.g., using <code>time.sleep(1)</code> to simulate a slow integration check) marked <code>slow</code>.</li>
+<li>Run the suite three ways: all tests, only <code>unit</code>-marked tests, and everything except <code>slow</code>-marked tests, confirming the counts differ as expected.</li>
+<li>Add an <code>xfail</code>-marked test for a genuinely-not-yet-implemented pricing rule (e.g., a loyalty-tier discount), confirm it reports <code>XFAIL</code>, then implement the feature and confirm it now reports <code>XPASS</code> &mdash; and explain in 1&ndash;2 sentences what you should do next once you see an <code>XPASS</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-14-mocking-with-pytest-mock-monkeypatch">Module 1.4 &mdash; Mocking with pytest-mock &amp; monkeypatch</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Use the <code>mocker</code> fixture to patch a function's return value, use <code>monkeypatch</code> to override an environment variable and an object attribute, and explain when reaching for a mock signals a design problem instead of a testing one.<br>
+<strong>Skip if:</strong> Mocking and monkeypatching are already comfortable, including judgment about when <em>not</em> to mock.<br>
+<strong>Unlocks:</strong> Module 2.1, Phase 1 Capstone</p>
+</blockquote>
+
+<h4>pytest-mock's mocker fixture vs. raw unittest.mock</h4>
+<p><code>unittest.mock</code> (stdlib) is the actual mocking engine underneath both; <code>pytest-mock</code> is a thin wrapper providing a <code>mocker</code> fixture with one meaningful convenience: every patch made through <code>mocker.patch(...)</code> is <strong>automatically undone</strong> at the end of the test, with no manual <code>stop()</code> call or context-manager nesting required. Raw <code>unittest.mock.patch</code> as a decorator or context manager works identically in terms of what gets mocked; the difference is purely about cleanup ergonomics and code shape when several things need patching in one test.</p>
+<pre><code class="language-py">import requests
+
+def get_exchange_rate():
+    response = requests.get("https://api.example.com/rates/PHP")
+    return response.json()["rate"]
+
+def test_get_exchange_rate(mocker):
+    mock_response = mocker.Mock()
+    mock_response.json.return_value = {"rate": 56.25}
+    mocker.patch("requests.get", return_value=mock_response)
+
+    assert get_exchange_rate() == 56.25
+    # no manual cleanup needed — mocker undoes the patch automatically after this test
+</code></pre>
+
+<h4>monkeypatch: pytest's built-in patching fixture</h4>
+<p><code>monkeypatch</code> (built into pytest, no plugin required) covers a related but distinct need: temporarily setting an attribute, environment variable, dictionary item, or <code>sys.path</code> entry, with automatic restoration &mdash; it overlaps with <code>mocker</code> for simple attribute patching but is the more natural choice specifically for environment variables and similar process-level state.</p>
+<pre><code class="language-py">import os
+
+def get_api_key():
+    return os.environ["TINDAHUB_API_KEY"]
+
+def test_get_api_key(monkeypatch):
+    monkeypatch.setenv("TINDAHUB_API_KEY", "test-key-123")
+    assert get_api_key() == "test-key-123"
+    # TINDAHUB_API_KEY is restored to its original state (or unset) after this test
+</code></pre>
+
+<h4>When mocking signals a design problem</h4>
+<p>Needing to mock three or four internal collaborators just to test one function's basic logic is often a signal that the function is doing too much or is too tightly coupled to those collaborators &mdash; not a signal to write a more elaborate mock. A function that's mostly pure logic with side effects (network calls, file I/O, database access) pushed to its edges needs little or no mocking to test the logic itself; a function that interleaves logic and I/O throughout needs heavy mocking precisely because the design makes them inseparable. Treat a mock-heavy test as a prompt to ask whether the code under test could be restructured, not just as a testing inconvenience to push through.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> mocking so much of a function's internals that the test ends up verifying "the mocks were called the way I told them to behave," which is nearly tautological, rather than verifying real behavior. Mock at the boundary (the actual network call, the actual file write) — not the business logic that sits on top of it.</p></blockquote>
+
+<p><strong>Exercise 1.4 &mdash; Mocking TindaHub's External Calls</strong></p>
+<p>Dataset/code under test: a new function you'll write, <code>get_delivery_estimate(city, courier_client)</code>, which calls <code>courier_client.get_eta(city)</code> (an object representing a third-party courier API client) and adds 1 day of buffer to whatever ETA it returns</p>
+<ol>
+<li>Write <code>get_delivery_estimate</code> so it depends on an injected <code>courier_client</code> object rather than importing and calling a specific library directly (this is the "push I/O to the edge" pattern from the discussion above).</li>
+<li>Test it using <code>mocker.Mock()</code> to stand in for <code>courier_client</code>, configuring <code>.get_eta.return_value</code> and asserting the 1-day buffer is applied correctly.</li>
+<li>Write a second function, <code>get_api_base_url()</code>, that reads a <code>TINDAHUB_API_ENV</code> environment variable and returns a different URL for <code>"production"</code> vs. anything else; test both branches using <code>monkeypatch.setenv</code>.</li>
+<li>Write 2&ndash;3 sentences reflecting on whether <code>get_delivery_estimate</code>'s dependency-injection design (step 1) made the test in step 2 easier or harder to write than if it had imported and called a courier library directly inside the function body.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-tindahub-well-architected-test-suite">Phase 1 Capstone: TindaHub Well-Architected Test Suite</h3>
+<p><strong>Project: A pytest suite for TindaHub's pricing and delivery-estimate logic, with a deliberate fixture and marker architecture</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain the difference between a yield fixture and the removed "yield tests," why <code>--strict-markers</code> matters, and when a mock-heavy test is a design smell rather than a normal test? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset/code under test:</strong> <code>tindahub_pricing.py</code> and the delivery-estimate function from Module 1.4</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A <code>conftest.py</code> with fixtures at appropriate scopes (at least one <code>session</code>-scoped, at least one fixture factory).</li>
+<li>Thoroughly parametrized tests (stacked parametrize, meaningful <code>ids</code>) covering the pricing function's valid range and error cases.</li>
+<li>At least two registered custom markers, used consistently, with <code>--strict-markers</code> enabled.</li>
+<li>Mocked tests for the delivery-estimate function's external dependency, with no real network/API calls made during the test run.</li>
+<li>A short written note (3&ndash;5 sentences) on which parts of this suite you'd revisit if the codebase under test grew from 2 functions to 200 &mdash; what fixture or marker organization choices made now would or wouldn't scale.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-pytest-at-scale-plugins-ci">Phase 2: pytest at Scale: Plugins &amp; CI</h2>
+<h3 id="weeks-2-3">Weeks 2&ndash;3 | Goal: measure and enforce coverage, run tests in parallel, and test async code correctly</h3>
+<hr />
+
+<h3 id="module-21-coverage-with-pytest-cov-measuring-enforcing">Module 2.1 &mdash; Coverage with pytest-cov: Measuring &amp; Enforcing</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Basic pytest &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Run a suite with <code>pytest-cov</code>, read a <code>term-missing</code> report to find untested lines, enforce a minimum coverage threshold, and explain a concrete way 100% coverage can still hide real bugs.<br>
+<strong>Skip if:</strong> Coverage measurement and its real limits are both already clear.<br>
+<strong>Unlocks:</strong> Module 2.2, Phase 2 Capstone</p>
+</blockquote>
+
+<h4>Measuring coverage</h4>
+<p><code>pytest-cov</code> (current version 7.1.0) reports what fraction of your code's lines (or, with branch coverage enabled, decision branches) actually executed during the test run &mdash; a proxy for "how much of this code do the tests even touch," not a direct measure of correctness.</p>
+<pre><code class="language-bash">pytest --cov=tindahub_pricing --cov-report=term-missing
+</code></pre>
+<pre><code>Name                  Stmts   Miss  Cover   Missing
+---------------------------------------------------
+tindahub_pricing.py      12      2    83%   9-10
+</code></pre>
+<p>The <code>Missing</code> column gives exact line numbers not exercised by any test &mdash; the actionable output of a coverage report, more useful day-to-day than the percentage alone.</p>
+
+<h4>Enforcing a minimum threshold in CI</h4>
+<p><code>--cov-fail-under=N</code> makes the test run itself fail if coverage drops below <code>N</code> percent, turning coverage from a report you might ignore into a gate that blocks a regression from merging.</p>
+<pre><code class="language-bash">pytest --cov=tindahub_pricing --cov-report=term-missing --cov-fail-under=90
+</code></pre>
+
+<h4>What coverage does not guarantee</h4>
+<p>100% line coverage means every line <em>ran</em> at least once during the test suite &mdash; it says nothing about whether the assertions checking that line's behavior are actually correct, or complete. A test that calls <code>calculate_order_total(100, 2, 0.1)</code> and asserts only <code>result &gt; 0</code> gets full coverage of that line while missing an actual bug in the calculation (say, the discount being applied to the wrong operand) &mdash; the line executed, but nothing verified it executed <em>correctly</em>. Branch coverage (<code>--cov-branch</code>) closes part of this gap by also requiring every conditional branch to be taken at least once, but even that is a floor on thoroughness, not a ceiling.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> treating "100% coverage" as equivalent to "well tested" and stopping there. Coverage answers "did this line run," never "was this line's behavior actually checked correctly." A high coverage number with weak assertions is a false sense of security &mdash; worse in some ways than a low, honest number, because it looks finished.</p></blockquote>
+
+<p><strong>Exercise 2.1 &mdash; Coverage-Gated TindaHub Pricing Tests</strong></p>
+<p>Dataset/code under test: <code>tindahub_pricing.py</code> and its Phase 1 test suite</p>
+<ol>
+<li>Run your Phase 1 pricing tests with <code>--cov=tindahub_pricing --cov-report=term-missing</code> and identify any uncovered lines.</li>
+<li>Add tests to close any coverage gaps found, then enable <code>--cov-branch</code> and check whether branch coverage reveals any additional gaps that line coverage alone missed.</li>
+<li>Set <code>--cov-fail-under=95</code> and confirm the suite passes (or fails, and you fix it) with this threshold enforced.</li>
+<li>Deliberately write one test that achieves 100% coverage of a small buggy function (introduce a one-line pricing bug yourself, e.g., applying discount before instead of after multiplying by quantity) using only weak assertions (<code>assert result is not None</code>), then show that a stronger assertion (checking the actual expected value) catches the bug your weak-assertion, 100%-covering test missed.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-parallel-testing-with-pytest-xdist">Module 2.2 &mdash; Parallel Testing with pytest-xdist</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.1 &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Run a suite in parallel with <code>-n auto</code>, and identify (from a real or hypothetical failure) what makes a specific test unsafe to run in parallel.<br>
+<strong>Skip if:</strong> Parallel test execution and its isolation requirements are already familiar.<br>
+<strong>Unlocks:</strong> Module 2.3, Phase 2 Capstone</p>
+</blockquote>
+
+<h4>Running tests across multiple workers</h4>
+<p><code>pytest-xdist</code> distributes a test suite across multiple worker processes, cutting wall-clock time roughly in proportion to available CPU cores for a suite whose tests are independent of each other.</p>
+<pre><code class="language-bash">pytest -n auto              # use one worker per available CPU core
+pytest -n 4                 # use exactly 4 workers
+</code></pre>
+
+<h4>What makes a test suite parallel-safe</h4>
+<p>Parallelization exposes exactly the same shared-state bugs Module 1.1's fixture-scope discussion warned about, just more reliably &mdash; two tests running concurrently in different worker processes and both writing to the same file, the same database row, or the same global variable will produce nondeterministic, hard-to-reproduce failures. A test suite that passes reliably in sequence but fails intermittently under <code>-n auto</code> almost always has a hidden shared-state dependency that sequential execution happened to mask.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> assuming a flaky failure under <code>-n auto</code> is <code>pytest-xdist</code>'s fault. It's almost always an existing isolation bug in the suite itself that sequential execution never surfaced &mdash; two tests sharing a database, a temp file path, or a module-level counter. Fix the isolation (per-test temp directories, per-worker database schemas) rather than treating parallelism itself as unreliable.</p></blockquote>
+
+<p><strong>Exercise 2.2 &mdash; Parallel-Safe TindaHub Tests</strong></p>
+<p>Dataset/code under test: your Phase 1 test suite, plus one deliberately unsafe test you'll add</p>
+<ol>
+<li>Run your existing Phase 1 suite with <code>pytest -n auto</code> and confirm it still passes and measure the wall-clock time difference against a sequential run.</li>
+<li>Deliberately add two tests that both write to the same hardcoded file path (e.g., both calling a function that writes a receipt to <code>/tmp/receipt.txt</code>) and confirm they pass individually but become flaky under <code>-n auto</code> (you may need several runs to observe the flakiness, since it's nondeterministic).</li>
+<li>Fix the isolation bug using pytest's built-in <code>tmp_path</code> fixture (which gives each test its own unique temporary directory) instead of a hardcoded path, and confirm the flakiness is gone under repeated parallel runs.</li>
+<li>Write 2&ndash;3 sentences on why this same bug might never have been noticed in a smaller team running tests sequentially, and why it matters more as a team or CI setup scales up.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-testing-async-code-with-pytest-asyncio">Module 2.3 &mdash; Testing Async Code with pytest-asyncio</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.1 &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Write and correctly run an <code>async def</code> test function with <code>pytest-asyncio</code>, including an async fixture, without the test silently doing nothing.<br>
+<strong>Skip if:</strong> Async test functions and async fixtures are already comfortable.<br>
+<strong>Unlocks:</strong> Module 2.4, Final Capstone</p>
+</blockquote>
+
+<h4>Why async tests need a plugin at all</h4>
+<p>pytest's test runner is fundamentally synchronous; an <code>async def test_...()</code> function, run without help, doesn't actually get awaited &mdash; pytest just calls it, gets back an unawaited coroutine object, and (depending on configuration) either silently "passes" without running any of the test's actual body, or warns about it. <code>pytest-asyncio</code> bridges this gap by running each async test inside an event loop pytest manages for you.</p>
+<pre><code class="language-py">import pytest
+
+async def fetch_delivery_status(order_id: int) -> str:
+    # a real implementation would await an actual async HTTP call
+    return "in_transit"
+
+@pytest.mark.asyncio
+async def test_fetch_delivery_status():
+    status = await fetch_delivery_status(order_id=1)
+    assert status == "in_transit"
+</code></pre>
+<p>With <code>asyncio_mode = "auto"</code> set in configuration, the <code>@pytest.mark.asyncio</code> marker becomes unnecessary &mdash; every <code>async def test_...</code> is treated as an async test automatically. Either mode is valid; the "strict" mode (explicit marker required) makes it harder to accidentally write a silently-not-actually-running async test, which is why it's worth knowing the marker exists even under auto mode.</p>
+
+<h4>Async fixtures</h4>
+<p>A fixture can itself be <code>async def</code>, for setup that requires awaiting something (an async database connection, an async HTTP client) &mdash; <code>pytest-asyncio</code> handles awaiting it before handing the result to the test, the same as any other fixture.</p>
+<pre><code class="language-py">@pytest.fixture
+async def async_courier_client():
+    client = AsyncCourierClient()
+    await client.connect()
+    yield client
+    await client.close()
+
+@pytest.mark.asyncio
+async def test_with_async_fixture(async_courier_client):
+    eta = await async_courier_client.get_eta("Cebu City")
+    assert eta is not None
+</code></pre>
+
+<p><strong>Exercise 2.3 &mdash; Async Delivery Status Tests</strong></p>
+<p>Dataset/code under test: an <code>async def fetch_delivery_status(order_id, courier_client)</code> function you'll write, calling <code>await courier_client.get_status(order_id)</code></p>
+<ol>
+<li>Write <code>fetch_delivery_status</code> as a genuinely async function taking an injected async courier client (mirroring Module 1.4's dependency-injection pattern, now async).</li>
+<li>Write an async fixture providing a fake async courier client (an object with an <code>async def get_status</code> method you control), and use it in an <code>@pytest.mark.asyncio</code> test.</li>
+<li>Deliberately remove the <code>@pytest.mark.asyncio</code> marker (assuming strict mode) and confirm what happens &mdash; a warning, an error, or a silently-skipped test body — and note exactly what you observed.</li>
+<li>Rewrite the same test using <code>asyncio_mode = "auto"</code> in configuration instead of the explicit marker, and confirm it behaves identically to the marked version.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-custom-plugins-shared-test-infra">Module 2.4 &mdash; Custom Plugins &amp; Shared Test Infra</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced &middot; <strong>Prereqs:</strong> Module 1.1, Module 1.3 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Write a <code>conftest.py</code>-based hook that modifies test collection (e.g., auto-marking tests by directory), and explain when that logic should graduate into an installable plugin instead.<br>
+<strong>Skip if:</strong> Both hook usage and the conftest-vs-plugin distinction are already clear.<br>
+<strong>Unlocks:</strong> Phase 2 Capstone</p>
+</blockquote>
+
+<h4>Hooks in conftest.py: customizing pytest's own behavior</h4>
+<p>Beyond fixtures, a <code>conftest.py</code> can define <strong>pytest hooks</strong> &mdash; specially-named functions pytest calls automatically at specific points in the test run (collection, setup, reporting). <code>pytest_collection_modifyitems</code> is a common one: it runs after pytest has discovered all tests but before running them, letting you programmatically re-order, skip, or mark tests based on their location or name.</p>
+<pre><code class="language-py"># conftest.py
+def pytest_collection_modifyitems(config, items):
+    for item in items:
+        if "integration" in str(item.fspath):
+            item.add_marker("integration")   # auto-mark every test under an integration/ directory
+</code></pre>
+
+<h4>When shared logic should become a real plugin</h4>
+<p>A <code>conftest.py</code>'s fixtures and hooks apply automatically within one project's directory tree; a real <strong>pytest plugin</strong> (a small installable package registering fixtures/hooks via entry points) is the right move once that same logic needs to be shared <em>across</em> multiple repositories &mdash; a company-wide "fake courier client" fixture used by five different services, say. The conceptual content is the same either way; the difference is packaging and distribution, not the hook/fixture mechanics themselves.</p>
+
+<p><strong>Exercise 2.4 &mdash; Shared TindaHub Test Infrastructure</strong></p>
+<p>Dataset/code under test: your accumulated Phase 1&ndash;2 test suite</p>
+<ol>
+<li>Write a <code>pytest_collection_modifyitems</code> hook that automatically applies the <code>slow</code> marker (from Module 1.3) to any test whose name contains <code>"delivery"</code>, without editing each test individually.</li>
+<li>Write a second hook, <code>pytest_runtest_makereport</code> or a simpler <code>pytest_terminal_summary</code>, that prints a custom one-line summary at the end of the run (e.g., "N pricing tests, M delivery tests").</li>
+<li>Sketch (in a short README, not necessarily fully implemented) what a minimal installable pytest plugin package for a shared "fake courier client" fixture would look like &mdash; the <code>pyproject.toml</code> entry point registration, in particular.</li>
+<li>Write 2&ndash;3 sentences on the actual trigger you'd use, on a real team, to decide "this conftest.py logic should become a real plugin now" &mdash; what changes about the situation, not just "it got popular"?</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-tindahub-ci-ready-suite">Phase 2 Capstone: TindaHub CI-Ready Suite</h3>
+<p><strong>Project: A coverage-enforced, parallel-safe, async-capable pytest suite with custom collection hooks</strong></p>
+<p><strong>Dataset/code under test:</strong> the accumulated TindaHub pricing and delivery-estimate code from Phase 1&ndash;2</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A full suite passing under <code>pytest -n auto --cov=. --cov-report=term-missing --cov-fail-under=90</code>, with no flakiness across at least 5 repeated parallel runs.</li>
+<li>At least one properly-isolated async test with an async fixture.</li>
+<li>A collection hook auto-marking tests by some rule of your choosing (directory, name pattern).</li>
+<li>A documented (in a short README) CI command a real pipeline would run, and what a failing coverage threshold or a flaky parallel run should each cause the pipeline to do.</li>
+<li>A short written note comparing this suite's design against Phase 1's capstone &mdash; specifically, what changed about your fixture and marker choices once parallel execution and coverage enforcement were added as constraints.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-hypothesis-property-based-testing">Phase 3: Hypothesis Property-Based Testing</h2>
+<h3 id="weeks-3-5">Weeks 3&ndash;5 | Goal: write tests that describe invariants and let Hypothesis search for the inputs that break them</h3>
+<hr />
+
+<h3 id="module-31-from-examples-to-properties-given-strategies">Module 3.1 &mdash; From Examples to Properties: given() &amp; Strategies</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Basic pytest &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Rewrite an example-based test as a Hypothesis property test using <code>@given()</code> and a basic strategy, and explain what a "property" is as distinct from a single expected input/output pair.<br>
+<strong>Skip if:</strong> The example-based-to-property-based mental shift is already comfortable.<br>
+<strong>Unlocks:</strong> Module 3.2, Module 4.2</p>
+</blockquote>
+
+<h4>The mental shift: properties, not examples</h4>
+<p>Every test so far in this guide has been <strong>example-based</strong>: you pick specific input values, compute (by hand or by reasoning) the expected output, and assert they match. This works well but only tests exactly the cases you thought to write &mdash; if you didn't think of quantity <code>0</code>, or a discount rate of exactly <code>1.0</code>, that case simply isn't tested. <strong>Hypothesis</strong> flips this: instead of picking example inputs, you describe a <strong>property</strong> &mdash; something that should hold true for <em>every</em> valid input, not just the ones you happened to think of &mdash; and Hypothesis generates hundreds of varied inputs (biased toward tricky edge cases: zero, negative numbers, very large numbers, empty strings) looking for one that breaks the property.</p>
+<pre><code class="language-py">from hypothesis import given, strategies as st
+
+@given(
+    unit_price=st.floats(min_value=0.01, max_value=10_000, allow_nan=False, allow_infinity=False),
+    quantity=st.integers(min_value=1, max_value=10_000),
+    discount_rate=st.floats(min_value=0.0, max_value=0.99),
+)
+def test_order_total_is_never_negative(unit_price, quantity, discount_rate):
+    total = calculate_order_total(unit_price, quantity, discount_rate)
+    assert total &gt;= 0    # this property should hold for EVERY valid combination, not just a few examples
+
+@given(
+    unit_price=st.floats(min_value=0.01, max_value=10_000, allow_nan=False, allow_infinity=False),
+    quantity=st.integers(min_value=1, max_value=10_000),
+)
+def test_zero_discount_equals_undiscounted_subtotal(unit_price, quantity):
+    total_no_discount = calculate_order_total(unit_price, quantity, discount_rate=0.0)
+    assert total_no_discount == round(unit_price * quantity, 2)
+</code></pre>
+<p>Hypothesis runs each <code>@given</code>-decorated test 100 times by default (configurable), each time with a different generated set of arguments &mdash; a single <code>def test_...</code> function body is doing the work of what would otherwise be dozens or hundreds of manually-written example cases.</p>
+
+<h4>Common strategies</h4>
+<p><code>st.integers()</code>, <code>st.floats()</code>, <code>st.text()</code>, <code>st.lists(...)</code>, <code>st.dictionaries(...)</code>, and <code>st.sampled_from([...])</code> (pick from a fixed set) cover most basic needs; each accepts constraints (<code>min_value</code>, <code>max_value</code>, <code>min_size</code>) narrowing the generated range to values that are actually valid for what you're testing &mdash; generating truly unconstrained floats (including <code>NaN</code>, infinity, and astronomically large values) is rarely what a specific test needs, so constraining strategies deliberately (as in the example above) is the normal, expected pattern, not a workaround.</p>
+
+<p><strong>Exercise 3.1 &mdash; Property Tests for TindaHub Pricing</strong></p>
+<p>Dataset/code under test: <code>tindahub_pricing.py</code></p>
+<ol>
+<li>Write a property test asserting <code>calculate_order_total</code>'s result is always &le; the undiscounted subtotal (<code>unit_price * quantity</code>), for any valid inputs.</li>
+<li>Write a property test asserting that increasing <code>discount_rate</code> (holding <code>unit_price</code> and <code>quantity</code> fixed) never <em>increases</em> the total &mdash; a monotonicity property, not a specific expected value.</li>
+<li>Run both tests and, if either fails, read Hypothesis's failure output carefully: note the specific failing input it reports, and whether it matches an edge case you would have thought to write as an example-based test.</li>
+<li>Write 2&ndash;3 sentences on one property of <code>calculate_order_total</code> you now believe is true but haven't yet written a Hypothesis test for &mdash; and why writing that property down is itself valuable, independent of whether you write the test.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-composite-strategies-domain-models">Module 3.2 &mdash; Composite Strategies &amp; Domain Models</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 3.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Build a composite strategy generating a valid domain object (not just a primitive), using either <code>st.composite</code> or <code>st.builds</code>, including a constraint that couples two of its fields.<br>
+<strong>Skip if:</strong> Composite/domain-object strategies are already comfortable.<br>
+<strong>Unlocks:</strong> Module 3.3, Module 3.4</p>
+</blockquote>
+
+<h4>st.builds: generating instances of a class or function</h4>
+<p><code>st.builds(SomeClass, field=strategy, ...)</code> generates instances of <code>SomeClass</code> by calling it with generated arguments for each named field &mdash; the simplest way to get Hypothesis generating whole domain objects rather than bare primitives, when the object's fields don't need to satisfy relationships with each other.</p>
+<pre><code class="language-py">from dataclasses import dataclass
+from hypothesis import given, strategies as st
+
+@dataclass
+class OrderLine:
+    unit_price: float
+    quantity: int
+    discount_rate: float
+
+order_line_strategy = st.builds(
+    OrderLine,
+    unit_price=st.floats(min_value=0.01, max_value=10_000, allow_nan=False),
+    quantity=st.integers(min_value=1, max_value=1000),
+    discount_rate=st.floats(min_value=0.0, max_value=0.99),
+)
+
+@given(order_line_strategy)
+def test_order_line_total_never_negative(line):
+    total = calculate_order_total(line.unit_price, line.quantity, line.discount_rate)
+    assert total &gt;= 0
+</code></pre>
+
+<h4>st.composite: when fields depend on each other</h4>
+<p>When one field's valid range depends on another's value (a "discount tier" that must match a specific quantity threshold, say), <code>@st.composite</code> gives you a function-based strategy where you explicitly draw each value in sequence, letting later draws depend on earlier ones.</p>
+<pre><code class="language-py">from hypothesis import strategies as st
+
+@st.composite
+def bulk_discount_scenario(draw):
+    quantity = draw(st.integers(min_value=1, max_value=1000))
+    # discount tier is coupled to quantity: only larger orders can have larger discounts
+    max_discount = 0.05 if quantity &lt; 50 else 0.30
+    discount_rate = draw(st.floats(min_value=0.0, max_value=max_discount))
+    unit_price = draw(st.floats(min_value=0.01, max_value=10_000, allow_nan=False))
+    return unit_price, quantity, discount_rate
+
+@given(bulk_discount_scenario())
+def test_bulk_discount_scenario_total(scenario):
+    unit_price, quantity, discount_rate = scenario
+    total = calculate_order_total(unit_price, quantity, discount_rate)
+    assert total &gt;= 0
+</code></pre>
+
+<h4>filter and assume: rejecting invalid draws</h4>
+<p><code>.filter(predicate)</code> on a strategy discards generated values failing the predicate before the test even runs; <code>assume(condition)</code> called inside a test body abandons that particular generated example (without failing the test) if the condition is false. Both exist for the same reason: sometimes it's easier to generate broadly and reject the invalid cases than to construct a strategy that only ever generates valid ones &mdash; but over-filtering (rejecting the vast majority of generated examples) slows Hypothesis down and is usually a sign the strategy itself should be redesigned instead.</p>
+
+<p><strong>Exercise 3.2 &mdash; A TindaHub Order Strategy</strong></p>
+<p>Dataset/code under test: <code>tindahub_pricing.py</code>, plus a new <code>validate_order(customer_id, items)</code> function you'll write that checks every item has <code>quantity &gt;= 1</code> and raises <code>ValueError</code> otherwise</p>
+<ol>
+<li>Define a dataclass <code>OrderLine</code> (unit_price, quantity, discount_rate) and a <code>st.builds</code>-based strategy generating valid instances.</li>
+<li>Write a <code>@st.composite</code> strategy generating a whole "order" as a list of 1&ndash;5 <code>OrderLine</code> instances, plus a <code>customer_id</code>.</li>
+<li>Write a property test for <code>validate_order</code> asserting it never raises for any order generated entirely from valid strategies.</li>
+<li>Write a second property test that deliberately generates <em>invalid</em> orders (e.g., by using <code>.map()</code> to force one line's quantity to 0) and asserts <code>validate_order</code> always raises <code>ValueError</code> for them.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-shrinking-reproducibility-the-example-database">Module 3.3 &mdash; Shrinking, Reproducibility &amp; the Example Database</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 3.1 &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Explain what shrinking does and why it matters, pin a specific regression case with <code>@example()</code>, and locate where Hypothesis's example database persists a found failure for replay.<br>
+<strong>Skip if:</strong> Shrinking and reproducibility are already well understood.<br>
+<strong>Unlocks:</strong> Module 3.4, Phase 3 Capstone</p>
+</blockquote>
+
+<h4>Shrinking: why Hypothesis reports the simplest failure, not the first</h4>
+<p>When Hypothesis finds an input that breaks a property, it doesn't just report that raw (often large, complex, hard-to-read) input &mdash; it automatically searches for a <em>simpler</em> input that still triggers the same failure, a process called <strong>shrinking</strong>. A failure first found with <code>quantity=8472, discount_rate=0.73128841</code> might shrink down to <code>quantity=1, discount_rate=1.0</code>, which is far easier to reason about and almost always points more directly at the actual bug's root cause than the original, more complicated failing example would.</p>
+
+<h4>Reproducibility: seeds and the example database</h4>
+<p>Hypothesis is randomized by nature, but a specific found failure is <strong>not</strong> lost between runs: it's automatically cached in a local <code>.hypothesis/</code> example database and re-tried first on every subsequent run, so a bug found once keeps failing (and getting reported) until it's actually fixed &mdash; it doesn't require a lucky re-roll of the random generator to reproduce. For a specific regression you want permanently pinned into the test itself (not just cached locally, but committed and visible in the test code), <code>@example(specific_value)</code> adds an explicit, guaranteed-to-run case alongside the randomly generated ones.</p>
+<pre><code class="language-py">from hypothesis import given, example, strategies as st
+
+@given(quantity=st.integers(min_value=1, max_value=10_000))
+@example(quantity=1)          # always explicitly tested, regardless of what's randomly generated
+@example(quantity=10_000)     # the documented upper boundary, pinned as a permanent regression check
+def test_quantity_boundary_handling(quantity):
+    total = calculate_order_total(unit_price=10.0, quantity=quantity, discount_rate=0.0)
+    assert total &gt; 0
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> deleting the local <code>.hypothesis/</code> directory (e.g., as part of an overly broad "clean" script) and assuming nothing is lost. Doing so discards the cache of previously-found failing examples, meaning a known-flaky edge case might not resurface on the very next run purely by chance &mdash; treat it as a genuinely useful local cache, not disposable build output, though it should still be gitignored rather than committed (each developer's cache is independent).</p></blockquote>
+
+<p><strong>Exercise 3.3 &mdash; Reproducing and Pinning a TindaHub Bug</strong></p>
+<p>Dataset/code under test: <code>tindahub_pricing.py</code>, with one deliberate bug you'll introduce</p>
+<ol>
+<li>Deliberately introduce a subtle bug into <code>calculate_order_total</code> (e.g., rounding before applying the discount instead of after) and run your Module 3.1 property tests against it.</li>
+<li>Read the shrunk failing example Hypothesis reports, and confirm it's simpler than what you'd expect a random first-try input to look like.</li>
+<li>Add an <code>@example(...)</code> pinning that exact failing case explicitly into the test, fix the bug, and confirm the pinned example now passes alongside the randomly-generated ones.</li>
+<li>Re-introduce the bug, delete your local <code>.hypothesis/</code> directory, and confirm the pinned <code>@example</code> still catches the regression immediately (unlike the cached-but-now-deleted random failure would have needed to be re-discovered).</li>
+</ol>
+<hr />
+
+<h3 id="module-34-stateful-testing-with-rulebasedstatemachine">Module 3.4 &mdash; Stateful Testing with RuleBasedStateMachine</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced &middot; <strong>Prereqs:</strong> Module 3.2 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Write a <code>RuleBasedStateMachine</code> testing a sequence of operations against an object with internal state, including at least one invariant checked after every rule.<br>
+<strong>Skip if:</strong> Stateful testing is already a familiar technique.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+
+<h4>Beyond single function calls: testing sequences of operations</h4>
+<p>Every property test so far has tested one function call in isolation. Real bugs often live in <em>sequences</em> of operations on stateful objects &mdash; an order's status transitions (pending &rarr; shipped &rarr; delivered, but never delivered &rarr; pending), a shopping cart's add/remove/checkout flow &mdash; where the bug only appears after a specific, non-obvious sequence of calls. <code>RuleBasedStateMachine</code> lets Hypothesis generate and try random <em>sequences</em> of operations (not just random single-call arguments), checking that declared invariants hold after every single step, no matter what sequence led there.</p>
+<pre><code class="language-py">from hypothesis.stateful import RuleBasedStateMachine, rule, invariant
+from hypothesis import strategies as st
+
+class OrderStatusMachine(RuleBasedStateMachine):
+    def __init__(self):
+        super().__init__()
+        self.status = "pending"
+
+    @rule()
+    def ship(self):
+        if self.status == "pending":
+            self.status = "shipped"
+
+    @rule()
+    def deliver(self):
+        if self.status == "shipped":
+            self.status = "delivered"
+
+    @rule()
+    def cancel(self):
+        if self.status in ("pending", "shipped"):
+            self.status = "cancelled"
+
+    @invariant()
+    def never_reverts_from_delivered(self):
+        # once delivered, no rule in this machine should ever be able to change it back
+        if self.status == "delivered":
+            assert self.status == "delivered"   # trivially true here — a real invariant would check history
+
+TestOrderStatusMachine = OrderStatusMachine.TestCase
+</code></pre>
+<p>Hypothesis explores many different random sequences of <code>ship</code>/<code>deliver</code>/<code>cancel</code> calls (including calling the same rule multiple times, calling them out of the "expected" order, and every combination in between), checking the <code>@invariant</code> after each step &mdash; exactly the kind of exploratory, sequence-sensitive testing that would be tedious and incomplete to hand-write as individual example-based tests.</p>
+
+<p><strong>Exercise 3.4 &mdash; A Stateful TindaHub Order Machine</strong></p>
+<p>Dataset/code under test: a small <code>Order</code> class you'll write, with a <code>status</code> attribute and methods <code>ship()</code>, <code>deliver()</code>, <code>cancel()</code>, each enforcing valid transitions (raising if called from an invalid state, rather than silently allowing it)</p>
+<ol>
+<li>Implement the <code>Order</code> class so invalid transitions (e.g., <code>deliver()</code> called while still <code>pending</code>) raise an exception rather than silently succeeding.</li>
+<li>Write a <code>RuleBasedStateMachine</code> exercising <code>ship</code>, <code>deliver</code>, and <code>cancel</code> as rules, with an <code>@invariant</code> asserting the order's status is always one of the valid known states.</li>
+<li>Add a second, more meaningful invariant: once an order reaches <code>"cancelled"</code> or <code>"delivered"</code>, no further rule should be able to change its status (a genuinely terminal-state check, not the trivial placeholder from the module's example).</li>
+<li>Run the machine and, if it finds a sequence that violates an invariant, fix the underlying <code>Order</code> class bug it revealed, and note in 1&ndash;2 sentences whether that specific sequence is one you would have thought to write as a manual example-based test.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-tindahub-property-based-suite">Phase 3 Capstone: TindaHub Property-Based Suite</h3>
+<p><strong>Project: A property-based test suite for TindaHub's pricing, validation, and order-status logic</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain what shrinking does, why <code>@example()</code> is still worth adding even though Hypothesis caches found failures, and what makes stateful testing different from a plain <code>@given</code> property test? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset/code under test:</strong> <code>tindahub_pricing.py</code>, <code>validate_order</code>, and the <code>Order</code> status class</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>At least 4 property tests covering pricing and validation logic, using composite strategies for any domain objects involved.</li>
+<li>At least 2 pinned <code>@example()</code> regression cases with a one-line comment explaining what real bug (or plausible bug) each one guards against.</li>
+<li>A <code>RuleBasedStateMachine</code> for the order status transitions, with at least 2 meaningful invariants.</li>
+<li>A short written note (3&ndash;5 sentences) on at least one bug or edge case this property-based suite found (or would plausibly find) that your Phase 1&ndash;2 example-based suite did not cover.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-faker-integration">Phase 4: Faker &amp; Integration</h2>
+<h3 id="weeks-5-6">Weeks 5&ndash;6 | Goal: generate realistic fake data and combine all three libraries deliberately in one suite</h3>
+<hr />
+
+<h3 id="module-41-faker-fundamentals-providers-locales-seeding">Module 4.1 &mdash; Faker Fundamentals: Providers, Locales &amp; Seeding</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> None &middot; <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Generate realistic fake names, addresses, and emails with Faker, seed it for reproducible output, and use the unique-value proxy to avoid duplicate generated emails.<br>
+<strong>Skip if:</strong> Faker's provider system, seeding, and uniqueness are already familiar.<br>
+<strong>Unlocks:</strong> Module 4.2</p>
+</blockquote>
+
+<h4>Faker instances and providers</h4>
+<p>A <code>Faker()</code> instance exposes dozens of <strong>providers</strong> &mdash; categories of realistic-looking fake data (<code>name</code>, <code>address</code>, <code>email</code>, <code>date_of_birth</code>, <code>company</code>, and many more), each returning a plausible-looking value that is <em>not</em> real data. This makes Faker the right tool for filling in realistic-looking demo data, seed scripts, or fixtures where the actual content doesn't matter but its <em>shape</em> (a name that looks like a name, an email that looks like an email) does.</p>
+<pre><code class="language-py">from faker import Faker
+
+fake = Faker()
+print(fake.name())            # "Maria Elena Reyes" — a plausible name, not a real person
+print(fake.email())           # a plausible email
+print(fake.address())         # a plausible multi-line address
+
+fake_ph = Faker("fil_PH")     # locale-specific: Filipino/Philippine-flavored names and formats
+print(fake_ph.name())
+</code></pre>
+
+<h4>Seeding for reproducibility</h4>
+<p>Faker's output is randomized by default &mdash; two runs produce different fake data. <code>Faker.seed(n)</code> makes that randomness deterministic, which matters whenever you need the exact same "random" data across runs (a reproducible demo, a test asserting against generated data, a bug report that needs to reproduce exactly).</p>
+<pre><code class="language-py">from faker import Faker
+
+Faker.seed(42)
+fake = Faker()
+print(fake.name())    # always the same output, every run, given the same seed
+</code></pre>
+
+<h4>Avoiding accidental duplicates with .unique</h4>
+<p>Generating many fake emails or usernames independently can (rarely, but eventually) produce a duplicate, which breaks a test relying on unique values (a unique-constraint database column, say). <code>fake.unique.email()</code> guarantees no duplicate is returned within that <code>Faker</code> instance's lifetime, raising an error instead if it genuinely runs out of unique values for the given constraints (call <code>fake.unique.clear()</code> to reset between test runs if needed).</p>
+
+<p><strong>Exercise 4.1 &mdash; Fake TindaHub Customers</strong></p>
+<p>Dataset/code under test: none required beyond Faker itself</p>
+<ol>
+<li>Generate 20 fake customer records (name, email, address, a plausible PH mobile-style string using <code>fake.numerify("09#########")</code>) using a seeded <code>Faker()</code> instance, and confirm re-running with the same seed produces identical output.</li>
+<li>Use <code>fake.unique.email()</code> to generate the 20 emails specifically, and confirm (by checking a set's length against the list's length) there are no duplicates.</li>
+<li>Try the <code>fil_PH</code> locale for names and compare its output style against the default locale's output for the same seed.</li>
+<li>Write a short function <code>generate_fake_customers(n, seed=None)</code> returning a list of <code>n</code> customer dicts, accepting an optional seed for reproducibility, and write one example-based pytest test confirming two calls with the same seed produce identical output.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-combining-faker-hypothesis-pytest-fixtures">Module 4.2 &mdash; Combining Faker + Hypothesis + pytest Fixtures</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 4.1, Module 3.1, Module 1.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Build a pytest fixture using Faker for realistic fixture data in an example-based test, and explain in concrete terms why that same fixture would be the wrong tool for a Hypothesis property test's inputs.<br>
+<strong>Skip if:</strong> This distinction and the combined workflow are already clear.<br>
+<strong>Unlocks:</strong> Module 4.3, Final Capstone</p>
+</blockquote>
+
+<h4>Faker for realistic fixtures, Hypothesis for adversarial inputs</h4>
+<p>Faker and Hypothesis solve genuinely different problems, and conflating them is a common source of a test suite that's neither properly realistic nor properly thorough. <strong>Faker</strong> generates data that <em>looks like</em> real-world data &mdash; useful when a test's setup needs a plausible customer, address, or order, but the test's actual logic doesn't depend on exploring edge cases in that data. <strong>Hypothesis</strong> generates data specifically <em>biased toward breaking your code</em> &mdash; zeros, negative numbers, empty strings, maximum-length strings, values right at a boundary &mdash; useful when the test's whole point is finding those edge cases. A fixture using Faker to build a "realistic" order in a test that isn't actually about pricing edge cases is the correct use; using Faker's realistic-but-not-adversarial names as the input to a property test whose entire purpose is edge-case-hunting would quietly defeat that test's purpose.</p>
+<pre><code class="language-py">import pytest
+from faker import Faker
+
+@pytest.fixture
+def fake_customer():
+    fake = Faker()
+    Faker.seed(1)
+    return {"name": fake.name(), "email": fake.email(), "city": fake.city()}
+
+def test_order_confirmation_includes_customer_name(fake_customer):
+    # this test is about the confirmation-message logic, not about pricing edge cases —
+    # a realistic Faker-generated customer is exactly the right fixture here
+    message = build_order_confirmation(fake_customer, order_total=250.0)
+    assert fake_customer["name"] in message
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> using Faker to generate the numeric inputs (prices, quantities) for what's supposed to be a thorough edge-case test. Faker's <code>fake.pyfloat()</code> or similar generates plausible-looking numbers, not the deliberately awkward ones (zero, negative, boundary values) Hypothesis is specifically designed to find — reach for Hypothesis strategies, not Faker, whenever the test's actual job is hunting for numeric edge cases.</p></blockquote>
+
+<h4>Faker inside a Hypothesis-generated domain object's non-tested fields</h4>
+<p>The two can still combine within a single test: a composite Hypothesis strategy (Module 3.2) can use Faker to fill in fields that need to look realistic but aren't themselves the property under test, while still using proper Hypothesis strategies for the fields that are. This keeps the "realistic-looking data, adversarial numbers" distinction intact within a single generated object.</p>
+<pre><code class="language-py">from hypothesis import given, strategies as st
+from faker import Faker
+
+fake = Faker()
+Faker.seed(0)
+
+@st.composite
+def order_with_realistic_customer(draw):
+    quantity = draw(st.integers(min_value=1, max_value=1000))       # Hypothesis: adversarial
+    discount_rate = draw(st.floats(min_value=0.0, max_value=0.99))  # Hypothesis: adversarial
+    customer_name = fake.name()    # Faker: realistic, not the thing under test here
+    return customer_name, quantity, discount_rate
+</code></pre>
+
+<p><strong>Exercise 4.2 &mdash; TindaHub's Combined Fixture &amp; Property Suite</strong></p>
+<p>Dataset/code under test: a new <code>build_order_confirmation(customer, order_total)</code> function you'll write, returning a formatted string including the customer's name and a peso-formatted total</p>
+<ol>
+<li>Write <code>build_order_confirmation</code> and a Faker-backed pytest fixture generating a realistic customer for it, with at least 3 example-based tests confirming the confirmation message's format is correct.</li>
+<li>Write a Hypothesis property test asserting <code>build_order_confirmation</code> never raises for any valid <code>order_total</code> (using a proper Hypothesis float strategy, not Faker, for that input specifically).</li>
+<li>Write one composite strategy combining both: Hypothesis-generated <code>order_total</code> values (the thing actually under adversarial test) paired with a Faker-generated customer name (realistic, not the focus of the test).</li>
+<li>Write 2&ndash;3 sentences explaining, using your own two functions from this exercise, why swapping which library generates which field (Faker for the total, Hypothesis for the customer name) would make less sense here.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-choosing-the-right-tool-example-based-vs-property-based-vs-fake-data">Module 4.3 &mdash; Choosing the Right Tool: Example-Based vs Property-Based vs Fake-Data Generation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> at least one module from each of Phases 1&ndash;3 &middot; <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Given four short testing scenarios, correctly name the right approach for each in under a minute, and justify each choice in one sentence.<br>
+<strong>Skip if:</strong> The decision table below is already intuitive to you.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4>A decision framework</h4>
+<table>
+<tr><th>Question</th><th>Tool</th><th>Why</th></tr>
+<tr><td>Testing one specific, known scenario with a clear expected result?</td><td><code>pytest</code> example-based test</td><td>Directly readable, directly maps to a documented requirement or bug report.</td></tr>
+<tr><td>Need to verify an invariant holds across a wide, hard-to-enumerate input range?</td><td><code>Hypothesis</code> <code>@given</code></td><td>Generates and shrinks adversarial inputs you likely wouldn't think to write by hand.</td></tr>
+<tr><td>Need to test whether a sequence of stateful operations ever breaks an invariant?</td><td><code>Hypothesis</code> <code>RuleBasedStateMachine</code></td><td>Explores operation sequences, not just single-call arguments.</td></tr>
+<tr><td>Need realistic-looking (not adversarial) data to set up a test's fixture?</td><td><code>Faker</code></td><td>Plausible names/addresses/emails; not designed to hunt edge cases.</td></tr>
+<tr><td>Need to isolate a function's logic from a network/file/database dependency?</td><td><code>pytest-mock</code> / <code>monkeypatch</code></td><td>Mock at the boundary; a design smell if overused deep inside logic.</td></tr>
+<tr><td>Need confidence a test suite hasn't quietly stopped exercising some code?</td><td><code>pytest-cov</code></td><td>Answers "did this run," not "was this correctly checked" — pair with real assertions.</td></tr>
+<tr><td>Need to seed a demo, staging environment, or manual QA pass with plausible data?</td><td><code>Faker</code></td><td>The same realistic-data need as a fixture, just outside the test suite itself.</td></tr>
+</table>
+
+<h4>The throughline: each tool answers a different question about correctness</h4>
+<p>An example-based test answers "does this specific, known case work?" A property-based test answers "does this general rule hold, across inputs I didn't specifically think of?" Fake data (Faker) answers neither question directly &mdash; it answers "does this code behave reasonably against data that looks like the real world?", which is a different, complementary concern from correctness under adversarial input. A mature test suite uses all three deliberately, not by default reflex: example-based tests to document and lock in specific known behaviors, property-based tests to search for the edge cases nobody wrote down, and Faker to keep fixtures realistic enough that example-based tests aren't accidentally testing against unrealistic toy data.</p>
+
+<p><strong>Exercise 4.3 &mdash; Tool Selection Drill</strong></p>
+<p>Dataset/code under test: none required</p>
+<ol>
+<li>For each of the following, name the single best-fit approach and justify it in one sentence: (a) confirming a specific documented bug (order total came out negative for a 99% discount) stays fixed; (b) confirming no combination of valid quantity and discount ever produces a negative total; (c) populating a staging environment with 500 plausible-looking customers for a demo; (d) confirming an order's status can never skip from "pending" directly to "delivered" through any sequence of allowed operations; (e) confirming a function that calls a third-party shipping API doesn't make a real network call during the test suite; (f) confirming the test suite actually exercises the rarely-hit error-handling branch of a function.</li>
+<li>For one of the above, implement the actual one-line-or-so solution (or a short sketch) to confirm your choice was workable, not just plausible.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-tindahub-test-engineering-toolkit">Final Capstone: TindaHub Test Engineering Toolkit</h2>
+<p><strong>Project: A single, complete test suite for TindaHub's order/pricing domain, combining pytest architecture, property-based testing, and realistic fake data deliberately</strong></p>
+<p>Integrates all four phases. Tests the accumulated TindaHub pricing, validation, delivery-estimate, order-status, and confirmation-message code built across this guide's exercises.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A well-architected <code>conftest.py</code> (appropriate fixture scopes, at least one factory fixture) and registered custom markers with <code>--strict-markers</code> enabled.</li>
+<li>A coverage-enforced (<code>--cov-fail-under</code>), parallel-safe (<code>-n auto</code>, no flakiness across 5 repeated runs) suite.</li>
+<li>At least one properly isolated async test.</li>
+<li>At least 4 Hypothesis property tests (including at least one composite strategy) and one <code>RuleBasedStateMachine</code> for the order-status logic, with at least one pinned <code>@example()</code> regression case.</li>
+<li>A Faker-backed fixture used deliberately where realistic data matters, kept clearly separate from the Hypothesis-driven adversarial-input tests.</li>
+<li>A short "tool choice log" &mdash; one sentence per test file or major test group explaining, using Module 4.3's framework, why that specific approach (example-based, property-based, or Faker-backed) was the right choice.</li>
+<li>A written note (3&ndash;5 sentences) on which single test in this whole suite you'd keep if you could only keep one &mdash; and why that one, specifically, catches the most real risk.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Python Testing Libraries Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Share setup across many tests without importing</td><td><code>conftest.py</code></td><td>Automatically available to every test in its directory and subdirectories.</td></tr>
+<tr><td>Control how often fixture setup re-runs</td><td><code>@pytest.fixture(scope=...)</code></td><td>Narrower scope = more isolation; broader scope = less repeated setup cost.</td></tr>
+<tr><td>Test many input combinations</td><td>stacked <code>@pytest.mark.parametrize</code></td><td>Produces the cartesian product of all stacked parameter sets.</td></tr>
+<tr><td>Select a subset of tests to run</td><td><code>pytest -m "marker_expr"</code> / <code>-k "name_substring"</code></td><td>Register custom markers and use <code>--strict-markers</code> to catch typos.</td></tr>
+<tr><td>Mock a dependency with auto-cleanup</td><td><code>mocker.patch(...)</code> (pytest-mock)</td><td>A thin, auto-cleaning wrapper around stdlib <code>unittest.mock</code>.</td></tr>
+<tr><td>Temporarily set an env var or attribute</td><td><code>monkeypatch.setenv</code> / <code>.setattr</code></td><td>Built into pytest — no plugin required.</td></tr>
+<tr><td>Measure and enforce test coverage</td><td><code>pytest --cov=... --cov-fail-under=N</code></td><td>Coverage measures execution, not correctness of assertions.</td></tr>
+<tr><td>Run tests in parallel</td><td><code>pytest -n auto</code> (pytest-xdist)</td><td>Exposes shared-state isolation bugs as flakiness.</td></tr>
+<tr><td>Test async functions</td><td><code>@pytest.mark.asyncio</code> / <code>asyncio_mode = "auto"</code></td><td>Without it, an <code>async def test_...</code> doesn't actually get awaited.</td></tr>
+<tr><td>Describe a property instead of a single example</td><td><code>@given(...)</code> + strategies (Hypothesis)</td><td>Runs the test against many generated, edge-case-biased inputs.</td></tr>
+<tr><td>Generate valid instances of a domain class</td><td><code>st.builds(...)</code> / <code>@st.composite</code></td><td>Use composite when one field's valid range depends on another's value.</td></tr>
+<tr><td>Pin a specific known regression case</td><td><code>@example(...)</code> (Hypothesis)</td><td>Always runs, regardless of what's randomly generated that run.</td></tr>
+<tr><td>Test sequences of stateful operations</td><td><code>RuleBasedStateMachine</code> (Hypothesis)</td><td>Checks declared invariants after every step in a generated sequence.</td></tr>
+<tr><td>Generate realistic fake data</td><td><code>Faker()</code> providers</td><td>Realistic-looking, not adversarial — pair with <code>Faker.seed()</code> for reproducibility.</td></tr>
+<tr><td>Guarantee no duplicate generated values</td><td><code>fake.unique.<provider>()</code></td><td>Raises if it exhausts unique values under the given constraints.</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-pytest-architecture">pytest Architecture</h3>
+<dl class="glossary">
+<dt>Fixture scope</dt>
+<dd>How often a fixture's setup (and teardown) runs relative to the tests using it &mdash; <code>function</code>, <code>class</code>, <code>module</code>, or <code>session</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming scope only affects performance &mdash; too broad a scope risks tests sharing state and becoming order-dependent.</dd>
+<dt>Yield fixture</dt>
+<dd>A fixture using <code>yield</code> to separate setup (before the yield) from teardown (after it) &mdash; the standard, fully-supported pattern for fixtures needing cleanup.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing this with the removed nose-style "yield tests" (a test function itself using <code>yield</code>, unrelated and gone as of pytest 9) &mdash; different concept, same keyword.</dd>
+<dt>Marker</dt>
+<dd>A label (<code>@pytest.mark.name</code>) attached to a test, used to categorize it for selective running, skipping, or expected-failure handling.</dd>
+<dd class="avoid"><strong>Avoid:</strong> using an unregistered custom marker without <code>--strict-markers</code> enabled &mdash; a typo silently does nothing instead of erroring.</dd>
+<dt>N+1-style flakiness (parallel isolation bug)</dt>
+<dd>A test failure that appears only intermittently under parallel execution, caused by two tests sharing mutable state (a file, a database row, a global) that sequential execution happened to keep safe.</dd>
+<dd class="avoid"><strong>Avoid:</strong> blaming the parallelization tool itself for this kind of flakiness &mdash; it's almost always a pre-existing isolation bug the tool merely exposed.</dd>
+</dl>
+
+<h3 id="glossary-hypothesis-property-based-testing">Hypothesis &amp; Property-Based Testing</h3>
+<dl class="glossary">
+<dt>Property</dt>
+<dd>A statement that should hold true for every valid input to some code, as opposed to a single expected input/output pair.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "assertion" as a strict synonym &mdash; every property test contains assertions, but a property is specifically the general rule being tested, not the specific check.</dd>
+<dt>Strategy</dt>
+<dd>A Hypothesis object describing how to generate values of a particular kind or shape, used to supply arguments to a <code>@given</code>-decorated test.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "generator" as a strict synonym &mdash; Python generators are a distinct language feature; "strategy" is Hypothesis's specific term.</dd>
+<dt>Shrinking</dt>
+<dd>Hypothesis's automatic process of simplifying a found failing input down to the smallest/simplest input that still triggers the same failure.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming the first failing input Hypothesis mentions in its search is the one it ultimately reports &mdash; the reported one is post-shrinking, deliberately simplified.</dd>
+<dt>Stateful testing</dt>
+<dd>Testing a sequence of operations against an object with internal state, checking declared invariants after each step, rather than testing one function call in isolation.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "integration testing" as a substitute term &mdash; stateful testing is specifically about operation sequences and invariants, independent of whether real external systems are involved.</dd>
+</dl>
+
+<h3 id="glossary-faker-fake-data">Faker &amp; Fake Data</h3>
+<dl class="glossary">
+<dt>Provider</dt>
+<dd>A Faker category of realistic-looking fake data generation (name, address, email, etc.), exposed as a method on a <code>Faker</code> instance.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "field" as a substitute term &mdash; a provider is the generator itself; a field is where its output ends up.</dd>
+<dt>Seeding (Faker)</dt>
+<dd>Setting Faker's random state to a fixed value via <code>Faker.seed(n)</code> so the same sequence of "random" fake data is produced on every run.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing Faker's seeding with Hypothesis's example database &mdash; they solve a similar reproducibility problem in unrelated, non-interchangeable ways.</dd>
+<dt>Realistic vs. adversarial data</dt>
+<dd>The core distinction this guide draws between Faker's output (plausible-looking, representative of typical real-world values) and Hypothesis's output (deliberately biased toward edge cases: zero, negative, boundary, and malformed-looking values).</dd>
+<dd class="avoid"><strong>Avoid:</strong> using Faker where the test's actual purpose is edge-case hunting, or Hypothesis where a fixture just needs to look plausible &mdash; each is a poor substitute for the other's actual strength.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>Python Testing with pytest, 2nd ed. (2022) &mdash; Brian Okken</td><td>The standard, actively-maintained pytest reference; covers fixtures, parametrization, plugins, and markers in depth beyond this guide's scope.</td></tr>
+</table>
+<p style="font-size:.85rem;color:var(--ink-soft)">Hypothesis and Faker don't have a comparably current, widely-recommended print book as of this writing &mdash; both move fast enough (and are thin enough libraries with excellent official docs) that the Online Resources below are the more reliable reference for them.</p>
+
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td><a href="https://docs.pytest.org/en/stable/">pytest Official Documentation</a></td><td>Fixtures, markers, plugins, configuration</td><td>The "How-to guides" section covers most of this guide's Phase 1&ndash;2 content directly; check the Deprecations page before trusting an older tutorial's patterns.</td></tr>
+<tr><td><a href="https://hypothesis.readthedocs.io/">Hypothesis Official Documentation</a></td><td>Strategies, shrinking, stateful testing</td><td>The "Quickstart" and "Stateful testing" pages map directly to this guide's Phase 3.</td></tr>
+<tr><td><a href="https://faker.readthedocs.io/">Faker Official Documentation</a></td><td>Providers, locales, seeding, uniqueness</td><td>The provider list is the fastest way to check whether a specific kind of fake data already has a built-in generator.</td></tr>
+<tr><td><a href="https://pytest-cov.readthedocs.io/">pytest-cov Documentation</a></td><td>Coverage measurement and enforcement</td><td>Covers branch coverage configuration referenced in Module 2.1.</td></tr>
+<tr><td><a href="https://hypothesis.works/">Hypothesis.works (blog)</a></td><td>Property-based testing philosophy and worked examples</td><td>Written by Hypothesis's original author; good for building intuition beyond the reference docs.</td></tr>
+</table>
+
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>TindaHub pricing/order domain code (this guide's own exercises)</td><td>The running "codebase under test" used throughout every phase.</td></tr>
+<tr><td>pytest-mock</td><td>The <code>mocker</code> fixture used in Module 1.4.</td></tr>
+<tr><td>pytest-xdist</td><td>Parallel test execution, Module 2.2.</td></tr>
+<tr><td>pytest-asyncio</td><td>Async test support, Module 2.3.</td></tr>
+<tr><td>pytest-cov</td><td>Coverage measurement and enforcement, Module 2.1.</td></tr>
+</table>
+
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>pytest-dev GitHub Discussions</td><td>GitHub Discussions (pytest-dev/pytest)</td><td>Direct access to maintainers for plugin and configuration questions.</td></tr>
+<tr><td>Hypothesis GitHub Discussions</td><td>GitHub Discussions (HypothesisWorks/hypothesis)</td><td>Strategy-design help and reports of confusing shrinking behavior.</td></tr>
+<tr><td>Stack Overflow (<code>pytest</code>, <code>python-hypothesis</code>, <code>faker</code> tags)</td><td>Stack Overflow</td><td>Searchable history of nearly every common error message across all three libraries.</td></tr>
+<tr><td>r/Python</td><td>Reddit</td><td>Broader testing-practice discussion and tool comparisons beyond pure library mechanics.</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them &mdash; this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads &mdash; use "Reset progress" in the sidebar to clear it.</p></blockquote>
+
+<h4>Phase 1 &mdash; pytest Foundations, Beyond Basics</h4>
+<ul>
+<li>[ ] Module 1.1 &mdash; Fixture Scopes, Factories &amp; conftest.py Architecture</li>
+<li>[ ] Exercise 1.1 &mdash; A TindaHub Fixture Layer</li>
+<li>[ ] Module 1.2 &mdash; Parametrization Patterns &amp; Test IDs</li>
+<li>[ ] Exercise 1.2 &mdash; Thorough Parametrization of TindaHub's Pricing</li>
+<li>[ ] Module 1.3 &mdash; Markers, Skipping &amp; Selective Test Runs</li>
+<li>[ ] Exercise 1.3 &mdash; Marker Strategy for TindaHub's Suite</li>
+<li>[ ] Module 1.4 &mdash; Mocking with pytest-mock &amp; monkeypatch</li>
+<li>[ ] Exercise 1.4 &mdash; Mocking TindaHub's External Calls</li>
+<li>[ ] Capstone 1 &mdash; TindaHub Well-Architected Test Suite</li>
+</ul>
+
+<h4>Phase 2 &mdash; pytest at Scale: Plugins &amp; CI</h4>
+<ul>
+<li>[ ] Module 2.1 &mdash; Coverage with pytest-cov: Measuring &amp; Enforcing</li>
+<li>[ ] Exercise 2.1 &mdash; Coverage-Gated TindaHub Pricing Tests</li>
+<li>[ ] Module 2.2 &mdash; Parallel Testing with pytest-xdist</li>
+<li>[ ] Exercise 2.2 &mdash; Parallel-Safe TindaHub Tests</li>
+<li>[ ] Module 2.3 &mdash; Testing Async Code with pytest-asyncio</li>
+<li>[ ] Exercise 2.3 &mdash; Async Delivery Status Tests</li>
+<li>[ ] Module 2.4 &mdash; Custom Plugins &amp; Shared Test Infra</li>
+<li>[ ] Exercise 2.4 &mdash; Shared TindaHub Test Infrastructure</li>
+<li>[ ] Capstone 2 &mdash; TindaHub CI-Ready Suite</li>
+</ul>
+
+<h4>Phase 3 &mdash; Hypothesis Property-Based Testing</h4>
+<ul>
+<li>[ ] Module 3.1 &mdash; From Examples to Properties: given() &amp; Strategies</li>
+<li>[ ] Exercise 3.1 &mdash; Property Tests for TindaHub Pricing</li>
+<li>[ ] Module 3.2 &mdash; Composite Strategies &amp; Domain Models</li>
+<li>[ ] Exercise 3.2 &mdash; A TindaHub Order Strategy</li>
+<li>[ ] Module 3.3 &mdash; Shrinking, Reproducibility &amp; the Example Database</li>
+<li>[ ] Exercise 3.3 &mdash; Reproducing and Pinning a TindaHub Bug</li>
+<li>[ ] Module 3.4 &mdash; Stateful Testing with RuleBasedStateMachine</li>
+<li>[ ] Exercise 3.4 &mdash; A Stateful TindaHub Order Machine</li>
+<li>[ ] Capstone 3 &mdash; TindaHub Property-Based Suite</li>
+</ul>
+
+<h4>Phase 4 &mdash; Faker &amp; Integration</h4>
+<ul>
+<li>[ ] Module 4.1 &mdash; Faker Fundamentals: Providers, Locales &amp; Seeding</li>
+<li>[ ] Exercise 4.1 &mdash; Fake TindaHub Customers</li>
+<li>[ ] Module 4.2 &mdash; Combining Faker + Hypothesis + pytest Fixtures</li>
+<li>[ ] Exercise 4.2 &mdash; TindaHub's Combined Fixture &amp; Property Suite</li>
+<li>[ ] Module 4.3 &mdash; Choosing the Right Tool</li>
+<li>[ ] Exercise 4.3 &mdash; Tool Selection Drill</li>
+</ul>
+
+<h4>Final Outcome</h4>
+<ul>
+<li>[ ] Final Capstone &mdash; TindaHub Test Engineering Toolkit complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 &mdash; Python Testing Libraries Track: Applied Test Engineering</em><br>
+<em>Non-linear modular design &middot; Placement quiz &middot; 15 modules &middot; ~6 weeks part-time &middot; hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-08-02 (pytest 9.1.1, pytest-cov 7.1.0, Hypothesis 6.147+, Faker 40.36.0, Python 3.13 recommended baseline)</em></p>
+
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Full-text guide search ────────────────────────────────
+  // Indexes every block of the guide body, lists matching snippets grouped
+  // by section, highlights hits in the page, and filters the nav to the
+  // sections that contain them. Multiple words = all must appear in the
+  // same block; wrap in "quotes" for an exact phrase.
+  var navSearch = document.getElementById("navSearch");
+  var contentRoot = document.querySelector(".content");
+  if(navSearch && contentRoot){
+    var BLOCK_SEL = "h1,h2,h3,h4,p,li,tr,dt,dd,pre";
+    var searchRow = document.getElementById("searchRow"),
+        searchBar = document.getElementById("searchBar"),
+        searchCount = document.getElementById("searchCount"),
+        searchResults = document.getElementById("searchResults");
+    var navById = {};
+    document.querySelectorAll("#nav a").forEach(function(a){
+      navById[a.getAttribute("href").slice(1)] = a;
+    });
+
+    var blocks = [], section = null;
+    contentRoot.querySelectorAll(BLOCK_SEL).forEach(function(el){
+      if(/^H[1-4]$/.test(el.tagName) && el.id && navById[el.id]) section = el;
+      if(el.classList.contains("quiz-score")) return;
+      var outer = el.parentElement && el.parentElement.closest(BLOCK_SEL);
+      if(outer && contentRoot.contains(outer)) return;
+      var text = el.textContent.replace(/\s+/g, " ").trim();
+      if(text) blocks.push({el:el, text:text, lower:text.toLowerCase(), section:section});
+    });
+
+    var hits = [], cur = -1, timer = null;
+    function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+    function sectionLabel(sec){ return sec && navById[sec.id] ? navById[sec.id].textContent : "Introduction"; }
+
+    function clearMarks(){
+      contentRoot.querySelectorAll("mark.lg-hit").forEach(function(m){
+        var p = m.parentNode;
+        p.replaceChild(document.createTextNode(m.textContent), m);
+        p.normalize();
+      });
+      var b = contentRoot.querySelector(".lg-block-current");
+      if(b) b.classList.remove("lg-block-current");
+    }
+
+    function markBlock(el, re){
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+      while((n = walker.nextNode())) nodes.push(n);
+      var marks = [];
+      nodes.forEach(function(node){
+        var t = node.nodeValue, m, last = 0;
+        re.lastIndex = 0;
+        if(!re.test(t)) return;
+        re.lastIndex = 0;
+        var frag = document.createDocumentFragment();
+        while((m = re.exec(t))){
+          if(m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+          var mk = document.createElement("mark");
+          mk.className = "lg-hit";
+          mk.textContent = m[0];
+          frag.appendChild(mk);
+          marks.push(mk);
+          last = m.index + m[0].length;
+        }
+        if(last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+      });
+      return marks;
+    }
+
+    function snippet(text, terms, re){
+      var lower = text.toLowerCase(), i = -1;
+      terms.forEach(function(t){ var k = lower.indexOf(t); if(k > -1 && (i < 0 || k < i)) i = k; });
+      if(i < 0) i = 0;
+      var start = Math.max(0, i - 40), end = Math.min(text.length, i + 100);
+      var s = text.slice(start, end), out = "", last = 0, m;
+      re.lastIndex = 0;
+      while((m = re.exec(s))){
+        out += escHtml(s.slice(last, m.index)) + "<mark>" + escHtml(m[0]) + "</mark>";
+        last = m.index + m[0].length;
+      }
+      return (start > 0 ? "…" : "") + out + escHtml(s.slice(last)) + (end < text.length ? "…" : "");
+    }
+
+    function filterNav(ids){
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var any = false;
+        g.querySelectorAll("a").forEach(function(a){
+          var show = !ids || !!ids[a.getAttribute("href").slice(1)];
+          if(a.classList.contains("nav-child")) a.classList.toggle("filtered-out", !show);
+          if(show) any = true;
+        });
+        g.classList.toggle("filtered-out", !any);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        a.classList.toggle("filtered-out", !!ids && !ids[a.getAttribute("href").slice(1)]);
+      });
+    }
+
+    function updateCount(nSections){
+      if(!hits.length){ searchCount.textContent = "No matches"; return; }
+      var pos = cur > -1 ? (cur + 1) + " / " + hits.length : hits.length + (hits.length === 1 ? " match" : " matches");
+      searchCount.textContent = pos + " · " + nSections + (nSections === 1 ? " section" : " sections");
+    }
+
+    var lastSectionCount = 0;
+    function run(){
+      var raw = navSearch.value.trim();
+      clearMarks();
+      hits = []; cur = -1;
+      searchRow.classList.toggle("has-query", !!raw);
+      if(raw.length < 2){
+        searchResults.classList.remove("show");
+        searchBar.classList.remove("show");
+        searchResults.innerHTML = "";
+        filterNav(null);
+        return;
+      }
+      var phrase = /^"(.+)"$/.exec(raw);
+      var terms = phrase ? [phrase[1].toLowerCase()] : raw.toLowerCase().split(/\s+/);
+      terms = terms.filter(function(t, i){ return t && terms.indexOf(t) === i; });
+      var re = new RegExp(terms.slice().sort(function(a, b){ return b.length - a.length; }).map(escRe).join("|"), "gi");
+      var matched = blocks.filter(function(b){
+        return terms.every(function(t){ return b.lower.indexOf(t) > -1; });
+      });
+
+      var ids = {}, groups = [], html = "", LIMIT = 60;
+      matched.forEach(function(b, bi){
+        var marks = markBlock(b.el, re);
+        if(marks.length) marks.forEach(function(m){ hits.push({m:m, el:b.el, b:bi}); });
+        else hits.push({m:null, el:b.el, b:bi});
+        var key = b.section ? b.section.id : "";
+        if(b.section) ids[b.section.id] = true;
+        if(!groups.length || groups[groups.length - 1].key !== key) groups.push({key:key, sec:b.section, items:[]});
+        groups[groups.length - 1].items.push(bi);
+      });
+
+      if(!matched.length){
+        html = '<div class="sr-empty">No matches for “' + escHtml(raw) + '”. Try fewer words.</div>';
+      } else {
+        var listed = 0;
+        groups.forEach(function(g){
+          if(listed >= LIMIT) return;
+          html += '<div class="sr-group"><div class="sr-section">' + escHtml(sectionLabel(g.sec)) + '</div>';
+          g.items.slice(0, 4).forEach(function(bi){
+            if(listed >= LIMIT) return;
+            html += '<button type="button" class="sr-item" role="option" data-b="' + bi + '">' +
+                    snippet(matched[bi].text, terms, re) + '</button>';
+            listed++;
+          });
+          if(g.items.length > 4) html += '<div class="sr-more">+' + (g.items.length - 4) + ' more in this section (use ↓ to step through)</div>';
+          html += '</div>';
+        });
+        if(matched.length > listed) html += '<div class="sr-more">Showing ' + listed + ' of ' + matched.length + ' blocks — add a word to narrow it.</div>';
+      }
+      searchResults.innerHTML = html;
+      searchResults.classList.add("show");
+      searchBar.classList.add("show");
+      lastSectionCount = Object.keys(ids).length || (matched.length ? 1 : 0);
+      filterNav(ids);
+      updateCount(lastSectionCount);
+    }
+
+    function go(i, closeMobile){
+      if(!hits.length) return;
+      cur = (i + hits.length) % hits.length;
+      contentRoot.querySelectorAll("mark.lg-hit-current").forEach(function(m){ m.classList.remove("lg-hit-current"); });
+      var prev = contentRoot.querySelector(".lg-block-current");
+      if(prev) prev.classList.remove("lg-block-current");
+      var h = hits[cur];
+      if(h.m) h.m.classList.add("lg-hit-current");
+      h.el.classList.add("lg-block-current");
+      (h.m || h.el).scrollIntoView({behavior:"smooth", block:"center"});
+      searchResults.querySelectorAll(".sr-item").forEach(function(it){
+        var on = +it.getAttribute("data-b") === h.b;
+        it.classList.toggle("current", on);
+        if(on) it.scrollIntoView({block:"nearest"});
+      });
+      updateCount(lastSectionCount);
+      if(closeMobile && window.innerWidth <= 1000) closeNav();
+    }
+
+    navSearch.addEventListener("input", function(){
+      clearTimeout(timer);
+      timer = setTimeout(run, 140);
+    });
+    navSearch.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        clearTimeout(timer);
+        if(!hits.length && navSearch.value.trim().length >= 2) run();
+        go(e.shiftKey ? cur - 1 : cur + 1, true);
+      } else if(e.key === "Escape"){
+        navSearch.value = "";
+        run();
+      }
+    });
+    searchResults.addEventListener("click", function(e){
+      var item = e.target.closest(".sr-item");
+      if(!item) return;
+      var b = +item.getAttribute("data-b");
+      for(var k = 0; k < hits.length; k++){ if(hits[k].b === b){ go(k, true); break; } }
+    });
+    document.getElementById("searchNext").addEventListener("click", function(){ go(cur + 1, false); });
+    document.getElementById("searchPrev").addEventListener("click", function(){ go(cur - 1, false); });
+    document.getElementById("searchClear").addEventListener("click", function(){
+      navSearch.value = "";
+      run();
+      navSearch.focus();
+    });
+    document.addEventListener("keydown", function(e){
+      var tag = (e.target.tagName || "").toLowerCase();
+      var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+      var slash = e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey;
+      var cmdK = (e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K");
+      if(!slash && !cmdK) return;
+      e.preventDefault();
+      if(window.innerWidth <= 1000){
+        document.getElementById("sidebar").classList.add("open");
+        document.getElementById("scrim").classList.add("show");
+      }
+      navSearch.focus();
+      navSearch.select();
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

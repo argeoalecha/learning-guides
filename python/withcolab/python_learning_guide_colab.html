@@ -1,0 +1,2913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Learning Guide — Colab Edition · Sales 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#12211d;
+  --ink-soft:#3d534d;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#178c7d;          /* teal-500  — links, accents on light */
+  --teal-deep:#0e3b36;     /* teal-950  — deck background, headings */
+  --teal-mid:#25a497;      /* teal-400  — deck accent */
+  --teal-wash:#dceee9;     /* teal-200  — card / callout wash */
+  --mint:#8fd9c4;
+  --coral:#e2725b;
+  --coral-wash:#fbe6e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0e3b36;
+  --code-ink:#cfe8e1;
+  --shadow:0 1px 2px rgba(14,59,54,.06),0 8px 24px rgba(14,59,54,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0e3b36;
+  border-bottom:1px solid #0a2f2c;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal-mid),var(--teal));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #c3e0d7;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #c3e0d7;
+}
+pre{
+  background:var(--code-bg);border:1px solid #17564e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--teal-mid);
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eaf5f1;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#f7f9f6}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+.search-row{position:relative}
+.search-row .nav-search{padding-right:2.4rem}
+.search-kbd{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:4px;padding:0 .3rem;background:var(--paper-2);
+  pointer-events:none;
+}
+.search-row.has-query .search-kbd{display:none}
+.search-bar{
+  display:none;align-items:center;gap:.35rem;margin-top:.45rem;
+  font-size:.72rem;color:var(--ink-soft);
+}
+.search-bar.show{display:flex}
+.search-count{flex:1;font-family:var(--mono)}
+.search-bar button{
+  border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);
+  border-radius:6px;font-size:.72rem;padding:.15rem .45rem;cursor:pointer;min-width:26px;min-height:24px;
+}
+.search-bar button:hover{background:var(--teal-wash)}
+.search-results{
+  display:none;margin:.5rem 0 .2rem;max-height:48vh;overflow-y:auto;
+  border:1px solid var(--line);border-radius:8px;background:var(--paper);
+}
+.search-results.show{display:block}
+.sr-group{border-top:1px solid var(--line-soft)}
+.sr-group:first-child{border-top:none}
+.sr-section{
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--teal);padding:.5rem .65rem .15rem;
+}
+.sr-item{
+  display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  font-family:var(--sans);font-size:.76rem;line-height:1.4;color:var(--ink);
+  padding:.35rem .65rem;
+}
+.sr-item:hover,.sr-item.current{background:var(--teal-wash)}
+.sr-item mark,.lg-hit{background:var(--amber-wash);color:inherit;border-radius:2px;padding:0 1px}
+.sr-more{font-size:.7rem;color:var(--ink-soft);padding:.1rem .65rem .45rem}
+.sr-empty{font-size:.78rem;color:var(--ink-soft);padding:.6rem .65rem}
+pre .lg-hit{background:#5c4a12;color:#fff4cf}
+.lg-hit.lg-hit-current{background:var(--coral);color:#fff;outline:2px solid var(--coral)}
+.lg-block-current{outline:2px dashed var(--teal);outline-offset:4px;border-radius:4px}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">learn from home</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Colab · Drive · Non-Linear</div>
+      <div class="brand-title">Python<br>Learning Guide</div>
+      <div class="brand-sub">Colab Edition · Sales 2026</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <div class="search-row" id="searchRow">
+        <input type="search" id="navSearch" class="nav-search" placeholder="Search the guide…" aria-label="Search the whole guide" aria-controls="searchResults" autocomplete="off" spellcheck="false">
+        <span class="search-kbd" aria-hidden="true">/</span>
+      </div>
+      <div class="search-bar" id="searchBar">
+        <span class="search-count" id="searchCount" aria-live="polite"></span>
+        <button type="button" id="searchPrev" aria-label="Previous match">↑</button>
+        <button type="button" id="searchNext" aria-label="Next match">↓</button>
+        <button type="button" id="searchClear" aria-label="Clear search">✕</button>
+      </div>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-intermediate-track" class="nav-top">Beginner to Intermediate Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#colab" class="nav-top nav-phase">Working in Colab</a>
+<a href="#dataset" class="nav-top nav-phase">The Dataset — Sales 2026</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+<div class="nav-group">
+<a href="#phase-1-foundations" class="nav-top nav-phase">Phase 1: Foundations</a>
+<div class="nav-children">
+<a href="#module-11-setup-tooling" class="nav-child">Module 1.1 — Colab, Drive &amp; Hygiene</a>
+<a href="#module-12-core-syntax-types" class="nav-child">Module 1.2 — Core Syntax &amp; Types</a>
+<a href="#module-13-control-flow-functions" class="nav-child">Module 1.3 — Control Flow &amp; Functions</a>
+<a href="#module-14-data-structures-comprehensions" class="nav-child">Module 1.4 — Data Structures &amp; Comprehensions</a>
+<a href="#phase-1-capstone-cli-stock-checker" class="nav-child">Phase 1 Capstone: CLI Stock Checker</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-2-data-files" class="nav-top nav-phase">Phase 2: Data &amp; Files</a>
+<div class="nav-children">
+<a href="#module-21-files-csv-json" class="nav-child">Module 2.1 — Files, CSV &amp; JSON</a>
+<a href="#module-22-errors-logging" class="nav-child">Module 2.2 — Errors &amp; Logging</a>
+<a href="#module-23-pandas-essentials" class="nav-child">Module 2.3 — Pandas Essentials</a>
+<a href="#phase-2-capstone-regional-revenue-report" class="nav-child">Phase 2 Capstone: Regional Revenue Report</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-3-pythonic-oop" class="nav-top nav-phase">Phase 3: Pythonic OOP</a>
+<div class="nav-children">
+<a href="#module-31-classes-dataclasses" class="nav-child">Module 3.1 — Classes &amp; Dataclasses</a>
+<a href="#module-32-iterators-generators-decorators" class="nav-child">Module 3.2 — Iterators, Generators &amp; Decorators</a>
+<a href="#module-33-type-hints" class="nav-child">Module 3.3 — Type Hints</a>
+<a href="#phase-3-capstone-domain-model" class="nav-child">Phase 3 Capstone: Sales 2026 Domain Model</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-4-real-world-python" class="nav-top nav-phase">Phase 4: Real-World Python</a>
+<div class="nav-children">
+<a href="#module-41-consuming-apis-requests" class="nav-child">Module 4.1 — Consuming APIs (requests)</a>
+<a href="#module-42-rest-api-fastapi" class="nav-child">Module 4.2 — REST API with FastAPI</a>
+<a href="#module-43-databases-sqlite-sqlalchemy" class="nav-child">Module 4.3 — Databases: SQLite &amp; SQLAlchemy</a>
+<a href="#phase-4-capstone-sales-service" class="nav-child">Phase 4 Capstone: Sales 2026 Service</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-5-quality-delivery" class="nav-top nav-phase">Phase 5: Quality &amp; Delivery</a>
+<div class="nav-children">
+<a href="#module-51-testing-pytest" class="nav-child">Module 5.1 — Testing with pytest</a>
+<a href="#module-52-packaging-venv-automation" class="nav-child">Module 5.2 — Packaging &amp; Automation</a>
+<a href="#phase-5-capstone-packaged-cli-tool" class="nav-child">Phase 5 Capstone: Packaged CLI Tool</a>
+</div></div>
+<a href="#final-capstone-sales2026-platform" class="nav-top">Final Capstone: Sales 2026 Platform</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#colab-field-guide" class="nav-top">Colab Field Guide</a>
+<a href="#excel-sql-python" class="nav-top">Excel ↔ SQL ↔ Python</a>
+<a href="#resources" class="nav-top">Learning Resources</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="python-learning-guide">Python Learning Guide</h1>
+<h2 id="beginner-to-intermediate-track">Beginner to Intermediate Track</h2>
+<h3>Google Colab · Pandas · FastAPI · SQLAlchemy · pytest — on the Sales 2026 dataset</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 255" role="img" aria-label="Python" xmlns="http://www.w3.org/2000/svg">
+<path fill="#0e3b36" d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.072 61.355.072 126.77c0 65.413 36.289 63.093 36.289 63.093h21.61v-30.356s-1.165-36.289 35.69-36.289h61.43s34.448.557 34.448-33.293V33.892S224.396.072 126.916.072zM92.802 19.66a11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13 11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.13z"/>
+<path fill="#25a497" d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.559 4.713 41.559-60.702c0-65.414-36.289-63.093-36.289-63.093h-21.61v30.355s1.165 36.289-35.69 36.289h-61.43s-34.448-.557-34.448 33.293v56.031s-5.232 33.821 92.247 33.821zm34.114-19.586a11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.131 11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13z"/>
+</svg>
+</div>
+</div>
+
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is <strong>non-linear</strong>. Every module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> to find your entry point, or jump anywhere from the <strong>Module Index</strong>.</p>
+<p><strong>This is the Colab edition.</strong> Every module is a notebook, the IDE is <a href="https://colab.research.google.com">Google Colab</a>, and the data lives in <strong>Google Drive</strong>. There is nothing to install on your machine and no environment to configure — if you can open a browser tab and sign in to Google, you can start.</p>
+<p>Every exercise and every capstone runs on <strong>one dataset: Sales 2026</strong> — the same industrial-parts sales data used in the <em>From Excel to SQL</em> track. You generate it yourself in <a href="#dataset">The Dataset</a> below by running <code>make_dataset.py</code>, which is printed in full on this page. Nothing to download, no external files to hunt for, and every expected number quoted in this guide was computed from the files that script produces.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Set up Drive, generate the dataset, then start at Module 1.1 and go sequentially.</li>
+<li><strong>Some experience</strong> → Set up, generate, take the <strong>Placement Quiz</strong>, start where it points you.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or follow a curated <strong>Learning Track</strong>.</li>
+</ol>
+<p>All three start the same way. Open <a href="https://colab.research.google.com">colab.research.google.com</a>, create a notebook called <code>00_setup_and_dataset.ipynb</code>, and run three cells:</p>
+<pre><code class="language-python"># Cell 1 — mount Drive and lay out the project
+from google.colab import drive
+from pathlib import Path
+
+drive.mount("/content/drive")
+
+ROOT = Path("/content/drive/MyDrive/sales2026")
+DATA, OUT, SRC = ROOT / "data", ROOT / "outputs", ROOT / "src"
+BIG  = Path("/content/data_big")          # scratch — dies with the runtime
+for d in (ROOT, DATA, OUT, SRC, BIG):
+    d.mkdir(parents=True, exist_ok=True)
+print(ROOT, "ready")</code></pre>
+<pre><code class="language-python"># Cell 2 — save the generator (paste the full script from the next section)
+%%writefile /content/drive/MyDrive/sales2026/make_dataset.py
+&lt;paste make_dataset.py here&gt;</code></pre>
+<pre><code class="language-python"># Cell 3 — generate the data into Drive
+%cd /content/drive/MyDrive/sales2026
+!python make_dataset.py
+!wc -l data/*.csv
+#     9 data/products.csv
+#    38 data/customers.csv
+#   653 data/sales.csv</code></pre>
+<p>That is the whole setup. The CSVs are now in your Drive and will still be there next week.</p>
+
+<h2 id="colab">Working in Colab</h2>
+<p>This edition assumes <strong>Google Colab</strong> is your IDE and <strong>Google Drive</strong> is your filesystem. You will not install Python, create a virtual environment, or open a terminal until Module 5.2 — and even then only optionally. Everything runs in a browser tab.</p>
+<p>That trade is deliberate. You skip a week of environment problems, and in exchange you inherit a different set of problems: a runtime that disconnects, a kernel that remembers things your code no longer says, and a filesystem that quietly empties itself. This section is about those.</p>
+
+<h3 id="colab-model">The mental model</h3>
+<div class="table-scroll"><table>
+<tr><th>Piece</th><th>What it is</th><th>What kills it</th></tr>
+<tr><td><strong>Notebook</strong> (<code>.ipynb</code>)</td><td>Your cells and their saved output. Lives in Drive.</td><td>Nothing — it autosaves</td></tr>
+<tr><td><strong>Runtime</strong> (kernel)</td><td>A throwaway Linux VM running Python. Holds every variable you have defined.</td><td>90 min idle, 12 h max, "Restart runtime"</td></tr>
+<tr><td><strong>Local disk</strong> (<code>/content</code>)</td><td>The VM's own disk. Fast. Empty at every start.</td><td>Runtime ending — everything is gone</td></tr>
+<tr><td><strong>Drive</strong> (<code>/content/drive/MyDrive</code>)</td><td>Your real Drive, mounted as a folder. Slow but permanent.</td><td>Nothing — this is where data belongs</td></tr>
+</table></div>
+<blockquote class="callout">
+<p><strong>The one rule that prevents most Colab pain:</strong> anything you want tomorrow goes in Drive. Anything you want <em>fast</em> goes in <code>/content</code>. The 412,908-row file in Module 3.2 is generated straight to <code>/content</code> on purpose — reading it over the Drive mount is roughly ten times slower and teaches you nothing extra.</p>
+</blockquote>
+
+<h3 id="colab-mount">Mount Drive and set your paths</h3>
+<p>This is <strong>Cell 2</strong> of every notebook you write in this guide. Copy it verbatim. The first run opens a permissions dialog; after that it is instant.</p>
+<pre><code class="language-python">from google.colab import drive
+from pathlib import Path
+
+drive.mount("/content/drive")
+
+ROOT = Path("/content/drive/MyDrive/sales2026")   # project lives in Drive
+DATA = ROOT / "data"                               # the three CSVs
+OUT  = ROOT / "outputs"                            # reports you generate
+SRC  = ROOT / "src"                                # .py modules (Phase 3+)
+BIG  = Path("/content/data_big")                   # scratch — dies with the runtime
+
+for d in (ROOT, DATA, OUT, SRC, BIG):
+    d.mkdir(parents=True, exist_ok=True)
+
+print(ROOT, "ready")
+print(sorted(p.name for p in DATA.glob("*.csv")))</code></pre>
+<p>Every code sample in this guide uses <code>DATA</code>, <code>OUT</code>, <code>SRC</code>, and <code>BIG</code>. If a cell fails with <code>NameError: DATA</code>, you skipped this cell — that is the whole diagnosis.</p>
+
+<h3 id="colab-cells">Cells, magics and shell</h3>
+<div class="table-scroll"><table>
+<tr><th>You type</th><th>What happens</th><th>Use it for</th></tr>
+<tr><td><code>!ls -la</code></td><td>Runs a shell command</td><td>Checking files, <code>!pip install</code>, <code>!pytest</code></td></tr>
+<tr><td><code>%cd</code>, <code>%pwd</code></td><td>Magic that <em>persists</em> across cells</td><td>Changing directory (<code>!cd</code> does not stick)</td></tr>
+<tr><td><code>%%writefile path.py</code></td><td>Writes the whole cell to a file instead of running it</td><td>Creating <code>.py</code> modules, tests, <code>pyproject.toml</code></td></tr>
+<tr><td><code>%%time</code></td><td>Times the cell</td><td>Streaming vs. loading in Module 3.2</td></tr>
+<tr><td><code>%load_ext autoreload</code><br><code>%autoreload 2</code></td><td>Re-imports your edited <code>.py</code> files automatically</td><td>Phase 3 onward, once code moves out of cells</td></tr>
+<tr><td><code>?obj</code> / <code>??obj</code></td><td>Docstring / full source</td><td>Faster than a web search</td></tr>
+<tr><td><code>display(df)</code></td><td>Rich table output mid-cell</td><td>Showing more than the last expression</td></tr>
+</table></div>
+<p>Two Colab extras worth turning on once:</p>
+<pre><code class="language-python">%load_ext google.colab.data_table   # sortable, filterable DataFrame output
+import pandas as pd
+pd.set_option("display.float_format", lambda v: f"{v:,.2f}")   # peso-friendly numbers</code></pre>
+
+<h3 id="colab-traps">The four traps</h3>
+<div class="table-scroll"><table>
+<tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr>
+<tr><td>Code works for you, fails for everyone else</td><td><strong>Out-of-order execution.</strong> A variable exists in the kernel that no cell creates any more</td><td><em>Runtime → Restart and run all</em> before you call anything finished. Do this at the end of every module</td></tr>
+<tr><td><code>FileNotFoundError</code> on data that was there an hour ago</td><td>You wrote to <code>/content</code>, and the runtime recycled</td><td>Write to <code>DATA</code>/<code>OUT</code>. Regenerate <code>BIG</code> when it disappears — that is expected</td></tr>
+<tr><td><code>logging</code> produces nothing</td><td>Colab configures the root logger before your code runs, so <code>basicConfig</code> silently does nothing</td><td><code>logging.basicConfig(..., force=True)</code> — covered in Module 2.2</td></tr>
+<tr><td><code>ModuleNotFoundError</code> after <code>!pip install</code></td><td>The package landed, but the running kernel was built before it</td><td><em>Runtime → Restart session</em>, then re-run from Cell 1</td></tr>
+</table></div>
+
+<h3 id="colab-notebooks">One notebook per module</h3>
+<p>Do not build one giant notebook. Fifteen modules in one file becomes unrunnable by Phase 3 — restart-and-run-all takes ten minutes and one broken cell blocks everything after it. Use this layout in Drive:</p>
+<pre><code>MyDrive/sales2026/
+├── 00_setup_and_dataset.ipynb      ← mount, generate, verify
+├── 11_setup_colab.ipynb            ← one per module: 11, 12, 13, 14,
+├── 12_core_syntax.ipynb              21, 22, 23, 31, 32, 33, 41, 42, 43, 51, 52
+├── ...
+├── c1_stock_checker.ipynb          ← one per capstone
+├── data/      products.csv  customers.csv  sales.csv
+├── outputs/   low_stock.csv  report.json  regional_report.xlsx
+└── src/       sales2026/  ← .py modules, written with %%writefile from Phase 3
+</code></pre>
+<p>Every module notebook opens with the same three cells: a title markdown cell, a <code>!pip install -q</code> cell, and the Drive-mount/paths cell above. That repetition is a feature — each notebook stays independently runnable.</p>
+<blockquote class="module-meta">
+<p><strong>Where the code lives changes at Phase 3.</strong> Modules 1.1–2.3 are pure notebook work: cells in, output out. From Module 3.1 you start writing classes and functions with <code>%%writefile SRC/"sales2026"/"loader.py"</code>, importing them back with <code>sys.path.append(str(SRC))</code>, and keeping notebooks for exploration only. That transition — notebook as scratchpad, module as source of truth — is the actual skill Phase 3 teaches.</p>
+</blockquote>
+
+<h2 id="dataset">The Dataset — Sales 2026</h2>
+<p><strong>Rodel Industrial Supply</strong> distributes pump, valve, and instrumentation parts to plants in <strong>NCR</strong>, <strong>Cebu</strong>, and <strong>Davao</strong>. Sales 2026 is six months of their order book: 646 clean order lines across 8 products and 34 active accounts, plus a handful of rows that are deliberately broken.</p>
+<p>You use this one dataset for all 15 modules and all 6 capstones. That is the point — you stop spending attention on <em>what the columns mean</em> and spend it on <em>the Python</em>. By Phase 4 you will know this data well enough to spot a wrong answer without checking.</p>
+
+<blockquote class="module-meta">
+<p><strong>Why this dataset and not a sample from the internet:</strong> it is the same order book used in the <em>From Excel to SQL</em> track — same products, same prices, same regions. A Pump seal is ₱1,450 there and ₱1,450 here. When you write <code>df.groupby("region")</code> in Module 2.3, you are reproducing a pivot table you have already built by dragging fields, and later a <code>GROUP BY</code> you have already written in SQL. Three tools, one answer.</p>
+</blockquote>
+
+<h3 id="dataset-generator">Generate it: <code>make_dataset.py</code></h3>
+<p>Paste this into a cell prefixed with <code>%%writefile /content/drive/MyDrive/sales2026/make_dataset.py</code>, run the cell to save it, then run it in the next cell with <code>!python make_dataset.py</code>. It is deterministic — same seed, same bytes, every time — so your numbers will match every figure printed in this guide.</p>
+<p>It writes to <code>./data</code> relative to the working directory, so <code>%cd</code> into <code>ROOT</code> first. Regenerating is always safe: it overwrites, never appends.</p>
+<pre><code class="language-python">"""make_dataset.py — generate the Sales 2026 dataset used by every exercise.
+
+Creates three CSVs in ./data:
+    products.csv    8 rows   dimension: catalogue, price, stock
+    customers.csv  37 rows   dimension: account, region, segment (3 dormant)
+    sales.csv     652 rows   fact: one row per order line (646 clean + 6 deliberately bad)
+
+Deterministic: same seed, same files, every time.
+    python make_dataset.py                # 646 clean order lines
+    python make_dataset.py --rows 412908  # big file for the streaming exercises
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import random
+from datetime import date, timedelta
+from pathlib import Path
+
+SEED = 2026
+START = date(2026, 1, 1)
+END = date(2026, 6, 30)
+
+# product_code, product, category, unit_price, stock, reorder_point
+PRODUCTS = [
+    ("PS-100", "Pump seal",         "Rotating equipment",  1450.00, 240,  60),
+    ("BR-500", "Bearing housing",   "Rotating equipment",  6750.00,  48,  20),
+    ("IM-600", "Impeller",          "Rotating equipment", 12300.00,   8,  12),
+    ("VK-200", "Valve kit",         "Valves &amp; fittings",   8900.00,  62,  25),
+    ("GS-300", "Gasket set",        "Valves &amp; fittings",    320.00, 900, 200),
+    ("CV-800", "Check valve",       "Valves &amp; fittings",   4150.00,   9,  15),
+    ("FM-400", "Flow meter",        "Instrumentation",    24500.00,   5,   8),
+    ("PG-700", "Pressure gauge",    "Instrumentation",     1980.00, 130,  40),
+]
+
+SEGMENTS = ["Manufacturing", "Utilities", "Marine", "Construction"]
+
+# region -&gt; (number of active accounts, number of clean order lines)
+REGIONS = {"NCR": (18, 406), "Cebu": (10, 142), "Davao": (6, 98)}
+
+# Accounts on the books that never placed an order in the period. They exist so
+# the anti-join exercises ("which customers bought nothing?") return real rows.
+DORMANT = [
+    ("C-NCR-019", "NCR Industrial Account 19",   "NCR",   "Construction"),
+    ("C-CEB-011", "Cebu Industrial Account 11",  "Cebu",  "Utilities"),
+    ("C-DAV-007", "Davao Industrial Account 07", "Davao", "Marine"),
+]
+
+# Regional demand mix. NCR skews to rotating equipment, Cebu to valves,
+# Davao is mixed — this is what makes the GROUP BY exercises interesting.
+MIX = {
+    "NCR":   [0.20, 0.14, 0.10, 0.12, 0.18, 0.08, 0.06, 0.12],
+    "Cebu":  [0.10, 0.06, 0.04, 0.26, 0.28, 0.14, 0.04, 0.08],
+    "Davao": [0.22, 0.10, 0.06, 0.14, 0.20, 0.10, 0.08, 0.10],
+}
+
+# Six deliberately broken rows. Module 2.2 logs and skips them;
+# Module 2.3 drops the duplicate. Do not "fix" them in the generator.
+BAD_ROWS = [
+    ("PH-01412", "2026-03-11", "C-NCR-004", "PS-100",  "NCR",   ""),      # blank qty
+    ("PH-01488", "2026-03-29", "C-CEB-002", "GS-300",  "Cebu",  "six"),   # qty not numeric
+    ("PH-01041", "2026-01-04", "C-NCR-001", "PS-100",  "NCR",   "12"),    # duplicate order_id
+    ("PH-01530", "2026-04-14", "C-DAV-003", "ZZ-999",  "Davao", "4"),     # unknown product
+    ("PH-01602", "",           "C-NCR-011", "VK-200",  "NCR",   "3"),     # missing date
+    ("PH-01655", "2026-05-30", "C-CEB-007", "FM-400",  "Cebu",  "-2"),    # negative qty
+]
+
+
+def build_customers() -&gt; list[dict]:
+    rng = random.Random(SEED)
+    rows = []
+    for region, (n_accounts, _) in REGIONS.items():
+        prefix = {"NCR": "NCR", "Cebu": "CEB", "Davao": "DAV"}[region]
+        for i in range(1, n_accounts + 1):
+            rows.append({
+                "customer_id": f"C-{prefix}-{i:03d}",
+                "customer": f"{region} Industrial Account {i:02d}",
+                "region": region,
+                "segment": rng.choice(SEGMENTS),
+            })
+    fields = ["customer_id", "customer", "region", "segment"]
+    rows += [dict(zip(fields, d)) for d in DORMANT]
+    return rows
+
+
+def build_sales(customers: list[dict], scale: int | None) -&gt; list[dict]:
+    rng = random.Random(SEED + 1)
+    dormant = {d[0] for d in DORMANT}
+    by_region: dict[str, list[str]] = {r: [] for r in REGIONS}
+    for c in customers:
+        if c["customer_id"] not in dormant:
+            by_region[c["region"]].append(c["customer_id"])
+
+    codes = [p[0] for p in PRODUCTS]
+    span = (END - START).days
+
+    # Scale each region's line count proportionally when --rows is given.
+    base_total = sum(n for _, n in REGIONS.values())
+    counts = {r: n for r, (_, n) in REGIONS.items()}
+    if scale:
+        counts = {r: round(n * scale / base_total) for r, n in counts.items()}
+
+    rows, oid = [], 1041
+    for region, n_lines in counts.items():
+        for _ in range(n_lines):
+            code = rng.choices(codes, weights=MIX[region])[0]
+            price = dict((p[0], p[3]) for p in PRODUCTS)[code]
+            # Cheap consumables move in bulk; capital items move in ones and twos.
+            qty = rng.randint(10, 60) if price &lt; 1000 else (
+                rng.randint(3, 18) if price &lt; 5000 else rng.randint(1, 5))
+            rows.append({
+                "order_id": f"PH-{oid:05d}",
+                "order_date": (START + timedelta(days=rng.randint(0, span))).isoformat(),
+                "customer_id": rng.choice(by_region[region]),
+                "product_code": code,
+                "region": region,
+                "qty": str(qty),
+            })
+            oid += 1
+
+    rows.sort(key=lambda r: r["order_date"])
+    if not scale:  # only pollute the small teaching file
+        fields = ["order_id", "order_date", "customer_id", "product_code", "region", "qty"]
+        rows += [dict(zip(fields, bad)) for bad in BAD_ROWS]
+    return rows
+
+
+def write_csv(path: Path, rows: list[dict], fields: list[str]) -&gt; None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=fields)
+        w.writeheader()
+        w.writerows(rows)
+    print(f"wrote {path}  ({len(rows)} rows)")
+
+
+def main() -&gt; None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--rows", type=int, default=None,
+                    help="total clean order lines (default 646)")
+    ap.add_argument("--out", type=Path, default=Path("data"))
+    args = ap.parse_args()
+
+    products = [dict(zip(
+        ["product_code", "product", "category", "unit_price", "stock", "reorder_point"],
+        (row[0], row[1], row[2], f"{row[3]:.2f}", row[4], row[5]),
+    )) for row in PRODUCTS]
+    customers = build_customers()
+    sales = build_sales(customers, args.rows)
+
+    write_csv(args.out / "products.csv", products,
+              ["product_code", "product", "category", "unit_price", "stock", "reorder_point"])
+    write_csv(args.out / "customers.csv", customers,
+              ["customer_id", "customer", "region", "segment"])
+    write_csv(args.out / "sales.csv", sales,
+              ["order_id", "order_date", "customer_id", "product_code", "region", "qty"])
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+
+<blockquote class="callout">
+<p><strong>Do not read this script yet if you are starting at Module 1.1.</strong> It uses argparse, pathlib, type hints, and comprehensions — all of which you will meet in Phase 1. Run it now, understand it in Module 1.4, and treat re-implementing it as an optional stretch goal.</p>
+<p>It is also the first thing you will ever run with <code>%%writefile</code> rather than typing into a cell — worth noticing, because from Phase 3 onward that is how all of your real code gets written.</p>
+</blockquote>
+
+<h3 id="dataset-schema">Schema</h3>
+<p><code>data/products.csv</code> — the catalogue. 8 rows, one per part.</p>
+<div class="table-scroll"><table>
+<tr><th>Column</th><th>Type</th><th>Example</th><th>Notes</th></tr>
+<tr><td><code>product_code</code></td><td>str</td><td><code>PS-100</code></td><td>Primary key. Joins to <code>sales.product_code</code></td></tr>
+<tr><td><code>product</code></td><td>str</td><td>Pump seal</td><td>Display name</td></tr>
+<tr><td><code>category</code></td><td>str</td><td>Rotating equipment</td><td>3 values: Rotating equipment, Valves &amp; fittings, Instrumentation</td></tr>
+<tr><td><code>unit_price</code></td><td>float</td><td>1450.00</td><td>Philippine pesos, VAT-exclusive</td></tr>
+<tr><td><code>stock</code></td><td>int</td><td>240</td><td>Units on hand</td></tr>
+<tr><td><code>reorder_point</code></td><td>int</td><td>60</td><td>Stock below this = reorder now</td></tr>
+</table></div>
+
+<p><code>data/customers.csv</code> — the accounts. 37 rows, of which <strong>3 placed no orders at all</strong>.</p>
+<div class="table-scroll"><table>
+<tr><th>Column</th><th>Type</th><th>Example</th><th>Notes</th></tr>
+<tr><td><code>customer_id</code></td><td>str</td><td><code>C-NCR-013</code></td><td>Primary key. Joins to <code>sales.customer_id</code></td></tr>
+<tr><td><code>customer</code></td><td>str</td><td>NCR Industrial Account 13</td><td>Account name</td></tr>
+<tr><td><code>region</code></td><td>str</td><td>NCR</td><td>NCR, Cebu, or Davao</td></tr>
+<tr><td><code>segment</code></td><td>str</td><td>Manufacturing</td><td>Manufacturing, Utilities, Marine, Construction</td></tr>
+</table></div>
+
+<p><code>data/sales.csv</code> — the fact table. 652 rows: 646 clean order lines plus 6 broken ones.</p>
+<div class="table-scroll"><table>
+<tr><th>Column</th><th>Type</th><th>Example</th><th>Notes</th></tr>
+<tr><td><code>order_id</code></td><td>str</td><td><code>PH-01279</code></td><td>Should be unique — one row is a deliberate duplicate</td></tr>
+<tr><td><code>order_date</code></td><td>date</td><td>2026-01-01</td><td>ISO format, 2026-01-01 to 2026-06-30</td></tr>
+<tr><td><code>customer_id</code></td><td>str</td><td><code>C-NCR-013</code></td><td>Foreign key → customers</td></tr>
+<tr><td><code>product_code</code></td><td>str</td><td><code>VK-200</code></td><td>Foreign key → products</td></tr>
+<tr><td><code>region</code></td><td>str</td><td>NCR</td><td>Denormalised ship-to region (matches the customer's region)</td></tr>
+<tr><td><code>qty</code></td><td>int</td><td>3</td><td>Stored as text in the CSV — you cast it</td></tr>
+</table></div>
+
+<blockquote class="callout">
+<p><strong>There is no <code>revenue</code> column, and that is deliberate.</strong> Revenue is <code>qty × unit_price</code>, and <code>unit_price</code> lives in a different file. Every meaningful question about this dataset therefore requires a join — in Excel that is <code>XLOOKUP</code>, in Pandas it is <code>.merge()</code>, in SQL it is <code>JOIN … ON</code>. Same move, three syntaxes.</p>
+</blockquote>
+
+<h3 id="dataset-dirt">What is deliberately wrong</h3>
+<p>Real order books are dirty. These six rows are appended to <code>sales.csv</code> on purpose so that Modules 2.1, 2.2, and 2.3 have something real to defend against. Do not fix them in the generator — fix them in your loader.</p>
+<div class="table-scroll"><table>
+<tr><th>order_id</th><th>Problem</th><th>Caught by</th></tr>
+<tr><td><code>PH-01412</code></td><td><code>qty</code> is empty</td><td>Numeric cast → <code>ValueError</code></td></tr>
+<tr><td><code>PH-01488</code></td><td><code>qty</code> is the word <code>six</code></td><td>Numeric cast → <code>ValueError</code></td></tr>
+<tr><td><code>PH-01041</code></td><td>Duplicate of an existing order_id</td><td>Only <code>drop_duplicates</code> / a uniqueness check</td></tr>
+<tr><td><code>PH-01530</code></td><td><code>product_code</code> <code>ZZ-999</code> is not in the catalogue</td><td>Left join produces a null price</td></tr>
+<tr><td><code>PH-01602</code></td><td><code>order_date</code> is empty</td><td>Date parse → <code>NaT</code></td></tr>
+<tr><td><code>PH-01655</code></td><td><code>qty</code> is <code>-2</code></td><td>Nothing — it parses fine. You need a business rule</td></tr>
+</table></div>
+<p>Five rows fail a row-level validation pass. The sixth — the duplicate — passes every field check and is only caught by a uniqueness constraint. <strong>652 − 5 − 1 = 646.</strong> If your pipeline reports 646 clean order lines, your cleaning is correct.</p>
+
+<h3 id="dataset-figures">Reference figures</h3>
+<p>Every number below was computed from the files <code>make_dataset.py</code> produces. Treat them as the answer key: if your Pandas, SQL, or hand-rolled pipeline disagrees, the pipeline is wrong.</p>
+<div class="table-scroll"><table>
+<tr><th>Region</th><th>Revenue (₱)</th><th>Orders</th></tr>
+<tr><td>NCR</td><td>10,519,870.00</td><td>406</td></tr>
+<tr><td>Cebu</td><td>3,514,180.00</td><td>142</td></tr>
+<tr><td>Davao</td><td>2,300,500.00</td><td>98</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>16,334,550.00</strong></td><td><strong>646</strong></td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>Category</th><th>Revenue (₱)</th><th>Orders</th></tr>
+<tr><td>Valves &amp; fittings</td><td>6,455,520.00</td><td>292</td></tr>
+<tr><td>Rotating equipment</td><td>5,702,750.00</td><td>256</td></tr>
+<tr><td>Instrumentation</td><td>4,176,280.00</td><td>98</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>Month</th><th>Revenue (₱)</th><th></th><th>Other checks</th><th>Value</th></tr>
+<tr><td>2026-01</td><td>2,393,180.00</td><td></td><td>Top product by revenue</td><td>Valve kit — ₱2,901,400.00</td></tr>
+<tr><td>2026-02</td><td>2,501,770.00</td><td></td><td>Inventory value at cost</td><td>₱2,027,450.00</td></tr>
+<tr><td>2026-03</td><td>2,569,860.00</td><td></td><td>Products below reorder point</td><td>3 — Impeller, Check valve, Flow meter</td></tr>
+<tr><td>2026-04</td><td>2,963,460.00</td><td></td><td>Accounts with zero orders</td><td>3 — C-NCR-019, C-CEB-011, C-DAV-007</td></tr>
+<tr><td>2026-05</td><td>3,120,330.00</td><td></td><td>Distinct products / regions</td><td>8 / 3</td></tr>
+<tr><td>2026-06</td><td>2,785,950.00</td><td></td><td>Date range</td><td>2026-01-01 → 2026-06-30</td></tr>
+</table></div>
+
+<h3 id="dataset-big">The big file</h3>
+<p>646 rows fit in memory a thousand times over, which makes them useless for teaching streaming. The generator takes a <code>--rows</code> flag for exactly that — and it writes to <code>/content</code>, not Drive, on purpose:</p>
+<pre><code class="language-python">%cd /content/drive/MyDrive/sales2026
+!python make_dataset.py --rows 412908 --out /content/data_big
+!ls -lh /content/data_big/sales.csv     # ~18 MB
+# BIG = Path("/content/data_big") from your paths cell</code></pre>
+<blockquote class="callout">
+<p><strong>Why not Drive?</strong> The Drive mount is a network filesystem. Streaming 412,908 rows through it is roughly ten times slower than reading the same file from <code>/content</code>, and the delay is network latency, not Python — which would completely obscure the thing Module 3.2 is trying to show you. Generate it to <code>/content</code>, use it, and regenerate it after a restart. It takes about four seconds.</p>
+</blockquote>
+<p>Module 3.2 (generators) and the Final Capstone use this file. Same schema, same products, same regions — 640× the rows and no bad rows, so the only new problem is memory. Loading it with <code>list(csv.DictReader(f))</code> works but is wasteful; loading it with <code>pd.read_csv</code> works and is fine; loading a 40-million-row version would exhaust the runtime, and that is the lesson.</p>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h4>Section A — Core Python (Modules 1.1–1.4)</h4>
+<ul>
+<li>[ ] I can mount Drive in Colab and run a notebook top-to-bottom after a restart</li>
+<li>[ ] I write functions with default and keyword arguments comfortably</li>
+<li>[ ] I use list, dict, and set comprehensions without looking them up</li>
+<li>[ ] I know the difference between mutable and immutable types and how slicing works</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h4>Section B — Data &amp; Files (Modules 2.1–2.3)</h4>
+<ul>
+<li>[ ] I read and write CSV and JSON files using the standard library</li>
+<li>[ ] I use try/except with specific exception types and the logging module</li>
+<li>[ ] I clean and aggregate tabular data in Pandas (filter, groupby, merge)</li>
+<li>[ ] I can produce a region × month revenue pivot from three raw CSVs</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h4>Section C — Pythonic OOP (Modules 3.1–3.3)</h4>
+<ul>
+<li>[ ] I write classes with <code>__init__</code> and instance methods</li>
+<li>[ ] I use <code>@dataclass</code> and understand <code>__repr__</code> / <code>__eq__</code></li>
+<li>[ ] I write generators with <code>yield</code> and understand iterators</li>
+<li>[ ] I write and apply decorators, and I annotate functions with type hints</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h4>Section D — Real-World Python (Modules 4.1–4.3)</h4>
+<ul>
+<li>[ ] I call REST APIs with <code>requests</code> and handle status codes</li>
+<li>[ ] I have built an HTTP endpoint with a framework like FastAPI or Flask</li>
+<li>[ ] I query a SQL database from Python (sqlite3 or SQLAlchemy)</li>
+<li>[ ] I model tables as ORM classes and run migrations or schema setup</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 5</strong></p>
+
+<h4>Section E — Quality &amp; Delivery (Modules 5.1–5.2)</h4>
+<ul>
+<li>[ ] I write unit tests with pytest, including fixtures</li>
+<li>[ ] I use parametrized tests and measure coverage</li>
+<li>[ ] I structure a project with <code>pyproject.toml</code> and pin dependencies</li>
+<li>[ ] I package a CLI tool with an entry point and automate routine scripts</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 5.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 5.2</strong> | <strong>4 yes</strong> → Go straight to the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out — and because every exercise runs on Sales 2026 with published expected numbers, you can grade yourself.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th><th>Notebook · slice</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-setup-tooling"><td>1.1</td><td>Colab, Drive &amp; Hygiene</td><td>Beginner</td><td>None</td><td>3h</td><td><code>00_setup</code> · generate all three CSVs</td></tr>
+<tr data-href="#module-12-core-syntax-types"><td>1.2</td><td>Core Syntax &amp; Types</td><td>Beginner</td><td>1.1</td><td>10h</td><td>One order line, by hand</td></tr>
+<tr data-href="#module-13-control-flow-functions"><td>1.3</td><td>Control Flow &amp; Functions</td><td>Beginner</td><td>1.2</td><td>10h</td><td>Stock rules, VAT, line totals</td></tr>
+<tr data-href="#module-14-data-structures-comprehensions"><td>1.4</td><td>Data Structures &amp; Comprehensions</td><td>Beginner</td><td>1.2</td><td>10h</td><td>Revenue by region, no libraries</td></tr>
+<tr data-href="#module-21-files-csv-json"><td>2.1</td><td>Files, CSV &amp; JSON</td><td>Beginner–Int</td><td>1.4</td><td>8h</td><td><code>products.csv</code> → <code>low_stock.csv</code></td></tr>
+<tr data-href="#module-22-errors-logging"><td>2.2</td><td>Errors &amp; Logging</td><td>Intermediate</td><td>1.3</td><td>6h</td><td>The six bad rows</td></tr>
+<tr data-href="#module-23-pandas-essentials"><td>2.3</td><td>Pandas Essentials</td><td>Intermediate</td><td>2.1</td><td>16h</td><td>All three, merged and pivoted</td></tr>
+<tr data-href="#module-31-classes-dataclasses"><td>3.1</td><td>Classes &amp; Dataclasses</td><td>Intermediate</td><td>1.3</td><td>10h</td><td><code>Product</code>, <code>OrderLine</code>, <code>Catalog</code></td></tr>
+<tr data-href="#module-32-iterators-generators-decorators"><td>3.2</td><td>Iterators, Generators &amp; Decorators</td><td>Intermediate</td><td>3.1</td><td>10h</td><td>The 412,908-row file</td></tr>
+<tr data-href="#module-33-type-hints"><td>3.3</td><td>Type Hints</td><td>Intermediate</td><td>1.3</td><td>6h</td><td><code>SaleRow</code> TypedDict</td></tr>
+<tr data-href="#module-41-consuming-apis-requests"><td>4.1</td><td>Consuming APIs (requests)</td><td>Intermediate</td><td>2.1</td><td>8h</td><td>PHP → USD conversion</td></tr>
+<tr data-href="#module-42-rest-api-fastapi"><td>4.2</td><td>REST API with FastAPI</td><td>Intermediate</td><td>3.1, 3.3</td><td>14h</td><td>Catalogue + order endpoints</td></tr>
+<tr data-href="#module-43-databases-sqlite-sqlalchemy"><td>4.3</td><td>Databases: SQLite &amp; SQLAlchemy</td><td>Intermediate</td><td>3.1</td><td>12h</td><td>Three tables, joins, anti-joins</td></tr>
+<tr data-href="#module-51-testing-pytest"><td>5.1</td><td>Testing with pytest</td><td>Intermediate</td><td>1.3</td><td>10h</td><td>Pricing and stock rules</td></tr>
+<tr data-href="#module-52-packaging-venv-automation"><td>5.2</td><td>Packaging &amp; Automation</td><td>Intermediate</td><td>2.2</td><td>8h</td><td>Ship the reporter</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1–3 are best done in order. Phase 4 (Real-World) and Phase 5 (Quality) are largely independent of each other — you can learn testing (5.1) before APIs (4.1) if that fits your goal. Only the Final Capstone requires the whole guide.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset — you don't need everything.</p>
+
+<h3 id="track-1-fundamentals-sprint">Track 1 — Fundamentals Sprint (fastest to productive)</h3>
+<p><code>1.1 → 1.2 → 1.3 → 1.4 → 2.1 → 2.2 → Capstone 1</code><br>
+Target outcome: <strong>Write and ship small Python scripts and CLI tools.</strong> Cert: <strong>PCEP</strong> (Certified Entry-Level Python Programmer).</p>
+
+<h3 id="track-2-data-analyst">Track 2 — Data Analyst with Python</h3>
+<p><code>1.1 → 1.2 → 1.4 → 2.1 → 2.3 → 3.3 → Capstone 2</code><br>
+Target outcome: <strong>Clean, analyze, and report on tabular data.</strong> This is the direct continuation of the <em>From Excel to SQL</em> track — same Sales 2026 order book, third syntax. Do the Excel and SQL weeks first if you can; the Pandas will land twice as fast.</p>
+
+<h3 id="track-3-backend-api">Track 3 — Backend / API Developer</h3>
+<p><code>1.x → 3.1 → 3.3 → 4.1 → 4.2 → 4.3 → 5.1 → Capstone 4</code><br>
+Target outcome: <strong>Build and test a database-backed REST API.</strong> Cert: <strong>PCAP</strong>.</p>
+
+<h3 id="track-4-full-python">Track 4 — Full Python (all modules, most complete)</h3>
+<p><code>All phases → Final Capstone</code><br>
+Target outcome: <strong>Job-ready intermediate Python.</strong> Cert: <strong>PCAP</strong> (Certified Associate in Python Programming).</p>
+
+<h3 id="track-5-automation">Track 5 — Automation &amp; Scripting</h3>
+<p><code>1.1 → 1.2 → 1.3 → 2.1 → 2.2 → 5.2 → Capstone 1</code><br>
+Target outcome: <strong>Automate file, data, and report workflows.</strong> The scheduled low-stock report is the deliverable.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Foundations          (Weeks 1–4)
+Phase 2 — Data &amp; Files          (Weeks 5–9)
+Phase 3 — Pythonic OOP          (Weeks 10–13)
+Phase 4 — Real-World Python     (Weeks 14–18)   [independent of Phase 5]
+Phase 5 — Quality &amp; Delivery    (Weeks 19–22)   [independent of Phase 4]
+Capstone Projects              (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ── 1.2 ─┬─ 1.3 ─┬─ 2.2 ──────────────┐
+            │       ├─ 3.1 ─┬─ 3.2        │
+            │       │       └─ 4.3 ──┐    ├─ Final
+            │       └─ 3.3 ─── 4.2 ──┤    │  Capstone
+            └─ 1.4 ─── 2.1 ─┬─ 2.3   ├────┤
+                            └─ 4.1 ──┘    │
+                              5.1 ── 5.2 ─┘</code></pre>
+
+<h2 id="phase-1-foundations">Phase 1: Foundations</h2>
+<h3 id="weeks-1-4">Weeks 1–4 | Goal: Set up Python and master core syntax, functions, and data structures</h3>
+<hr />
+
+<h3 id="module-11-setup-tooling">Module 1.1 — Colab, Drive &amp; Notebook Hygiene</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Create a notebook, mount Drive, write a file to <code>MyDrive</code>, restart the runtime, and read that file back — without touching a terminal.<br>
+<strong>Skip if:</strong> you already work in Colab daily and know why <code>!cd</code> does not stick.<br>
+<strong>Unlocks:</strong> every later module.</p>
+</blockquote>
+
+<h4>Your first notebook</h4>
+<p>Go to <a href="https://colab.research.google.com">colab.research.google.com</a> → <em>New notebook</em> → rename it <code>00_setup_and_dataset.ipynb</code> → <em>File → Save a copy in Drive</em> and move it into a folder called <code>sales2026</code>.</p>
+<p>Check what you were given. Colab hands you a full Linux VM, and it already has most of what this guide needs:</p>
+<pre><code class="language-python">import sys, platform
+print(sys.version)                  # 3.11.x or newer
+print(platform.platform())
+
+import pandas, numpy
+print("pandas", pandas.__version__) # already installed
+!nvidia-smi -L || echo "CPU runtime (correct for this guide — no GPU needed)"
+!df -h /content | tail -1           # ~100 GB scratch disk</code></pre>
+
+<h4>Installing what is missing</h4>
+<p>Colab ships pandas, numpy, matplotlib, requests, and SQLAlchemy. It does not ship FastAPI or a few Phase 4/5 tools. Install with a <code>!</code> shell escape and <code>-q</code> to keep the output short:</p>
+<pre><code class="language-python">!pip install -q "fastapi[standard]" pytest pytest-cov mypy
+print("done — if a later import fails, use Runtime → Restart session first")</code></pre>
+<p>There is no <code>venv</code> here and you do not need one. The runtime <em>is</em> the isolated environment — it is destroyed and rebuilt every session, which is a stronger guarantee than any virtual environment gives you. The cost is that installs do not persist: that <code>!pip install</code> line belongs in Cell 1 of every notebook that needs it.</p>
+
+<h4>Mounting Drive</h4>
+<p>Run the standard paths cell from <a href="#colab-mount">Working in Colab</a>. Then prove the mount is real:</p>
+<pre><code class="language-python">(ROOT / "hello.txt").write_text("written from Colab\n", encoding="utf-8")
+print((ROOT / "hello.txt").read_text())
+!ls -la "{ROOT}"</code></pre>
+<p>Now open Drive in another browser tab. <code>hello.txt</code> is there. That file survives a runtime restart; anything you write to <code>/content</code> does not. Test that claim rather than believing it — <em>Runtime → Restart session</em>, re-run the mount cell, and read the file back.</p>
+
+<h4>Cells, order, and the thing that will bite you</h4>
+<pre><code class="language-python"># Cell A
+total = 100
+
+# Cell B
+total = total + 1
+print(total)</code></pre>
+<p>Run Cell A once, then Cell B four times: <code>101, 102, 103, 104</code>. The notebook looks identical each time but the answer changes, because the kernel remembers. Now delete Cell A and run Cell B — it still works, because <code>total</code> is still in memory even though nothing creates it any more.</p>
+<p>This is the single most common way notebook analyses go wrong, and it is invisible in the saved file. The defence is a habit, not a tool: <strong>Runtime → Restart and run all</strong> before you trust any result or hand a notebook to anyone.</p>
+
+<h4>Writing real files from a notebook</h4>
+<p>You will need this from Module 2.2 onward, so meet it now. <code>%%writefile</code> turns a cell into a file instead of running it:</p>
+<pre><code class="language-python">%%writefile /content/drive/MyDrive/sales2026/hello.py
+def greet(name: str) -&gt; str:
+    return f"Hello, {name} — welcome to Sales 2026."</code></pre>
+<pre><code class="language-python">import sys
+sys.path.append(str(ROOT))
+from hello import greet
+print(greet("Argeo"))</code></pre>
+<p><code>%%writefile</code> must be the very first line of the cell, and it takes a literal path — no f-strings, no variables. That is why the path above is spelled out in full.</p>
+
+<p><strong>Exercise 1.1 — Project Bootstrap</strong></p>
+<p>Notebook: <code>00_setup_and_dataset.ipynb</code> · Dataset: generated in this exercise</p>
+<ol>
+<li>Create the notebook in Drive under a <code>sales2026/</code> folder and run the paths cell — confirm <code>ROOT</code>, <code>DATA</code>, <code>OUT</code>, <code>SRC</code>, <code>BIG</code> all exist</li>
+<li>Print your Python version, the pandas version, and the free space on <code>/content</code></li>
+<li>Use <code>%%writefile</code> to save <a href="#dataset-generator"><code>make_dataset.py</code></a> into <code>ROOT</code>, then run it with <code>!python</code> so the CSVs land in <code>DATA</code></li>
+<li>Count the lines in each CSV with <code>!wc -l</code> — expect <strong>9, 38, 653</strong></li>
+<li>Write a file to <code>/content</code> and one to <code>ROOT</code>, restart the runtime, and confirm exactly one of them survived</li>
+<li>Do <em>Restart and run all</em> and confirm the whole notebook runs top-to-bottom with no manual steps</li>
+</ol>
+<hr />
+
+<h3 id="module-12-core-syntax-types">Module 1.2 — Core Syntax &amp; Types</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Without notes, explain mutable vs immutable, slice a string and a list, and format a float to 2 decimals in an f-string.<br>
+<strong>Skip if:</strong> you fluently use Python's built-in types, slicing, and f-strings.<br>
+<strong>Unlocks:</strong> 1.3, 1.4.</p>
+</blockquote>
+
+<h4>Built-in Types</h4>
+<p>One order line from <code>sales.csv</code>, typed out by hand. Put each block below in its own cell — a cell that does one thing is a cell you can re-run without thinking:</p>
+<pre><code class="language-python">product    = "Pump seal"    # str
+unit_price = 1450.00        # float
+qty        = 12             # int
+in_stock   = True           # bool
+discount   = None           # NoneType — no discount agreed yet
+
+# Immutable: int, float, str, tuple, bool
+# Mutable:   list, dict, set
+line_total = unit_price * qty
+print(f"Line total: ₱{line_total:,.2f}")   # Line total: ₱17,400.00</code></pre>
+
+<h4>Strings &amp; Slicing</h4>
+<pre><code class="language-python">order_id = "PH-01279"
+print(order_id[:2])           # 'PH'   — country prefix
+print(order_id[3:])           # '01279' — sequence number
+print(order_id.split("-"))    # ['PH', '01279']
+
+code = "VK-200"
+family, size = code.split("-")
+print(family, size)           # VK 200
+
+# f-strings handle expressions, alignment and thousands separators
+print(f"{product:&lt;18}| {qty:&gt;4} × ₱{unit_price:&gt;9,.2f}")
+# Pump seal         |   12 × ₱ 1,450.00</code></pre>
+
+<h4>Numbers &amp; Truthiness</h4>
+<pre><code class="language-python">print(17 // 5, 17 % 5, 2 ** 10)      # 3 2 1024
+print(bool(0), bool(""), bool([]))    # False False False  (falsy)
+
+VAT = 0.12
+print(round(line_total * (1 + VAT), 2))   # 19488.0
+
+# Careful: stock of 0 is falsy, so `if stock:` and `if stock is not None:`
+# mean different things. The Check valve has stock 9; imagine it hits 0.
+stock = 0
+print("reorder" if not stock else "ok")   # reorder</code></pre>
+
+<p><strong>Exercise 1.2 — Pricing Helpers</strong></p>
+<p>Dataset: Sales 2026 (<code>products.csv</code>)</p>
+<ol>
+<li>Compute the line total for 12 × Pump seal at ₱1,450.00 — expect <code>17400.0</code></li>
+<li>Add 12% VAT and round to 2 decimals — expect <code>19488.0</code></li>
+<li>Split <code>PH-01279</code> into prefix and sequence, and <code>VK-200</code> into family and size</li>
+<li>Build a receipt line: product left-padded to 18 chars, qty right-aligned to 4, price with a thousands separator and 2 decimals</li>
+<li>Format ₱2,027,450 (the inventory value) from the raw float <code>2027450.0</code> using one f-string</li>
+<li>Explain in one line why <code>if stock:</code> is a bug when <code>stock</code> can legitimately be 0</li>
+</ol>
+<hr />
+
+<h3 id="module-13-control-flow-functions">Module 1.3 — Control Flow &amp; Functions</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Write a function with default + keyword args that loops over a list and returns a filtered, transformed result.<br>
+<strong>Skip if:</strong> functions, <code>*args</code>/<code>**kwargs</code>, and loops are second nature.<br>
+<strong>Unlocks:</strong> 2.2, 3.1, 3.3, 5.1.</p>
+</blockquote>
+
+<h4>Conditionals &amp; Loops</h4>
+<pre><code class="language-python">def stock_status(stock: int, reorder_point: int) -&gt; str:
+    if stock == 0:
+        return "out of stock"
+    elif stock &lt; reorder_point:
+        return "reorder"
+    else:
+        return "ok"
+
+catalogue = [
+    ("Pump seal",   240,  60),
+    ("Impeller",      8,  12),
+    ("Check valve",   9,  15),
+    ("Flow meter",    5,   8),
+]
+for product, stock, rop in catalogue:
+    print(f"{product:&lt;14} {stock_status(stock, rop)}")
+# Pump seal      ok
+# Impeller       reorder
+# Check valve    reorder
+# Flow meter     reorder</code></pre>
+
+<h4>Functions: Arguments &amp; Returns</h4>
+<pre><code class="language-python">def line_total(unit_price: float, qty: int = 1, *, vat: float = 0.0) -&gt; float:
+    """Return the line total, optionally VAT-inclusive. vat is keyword-only."""
+    if qty &lt;= 0:
+        raise ValueError(f"qty must be positive, got {qty}")
+    return round(unit_price * qty * (1 + vat), 2)
+
+print(line_total(1450.00, 12))              # 17400.0
+print(line_total(1450.00, 12, vat=0.12))    # 19488.0
+print(line_total(8900.00, 4))               # 35600.0
+print(line_total(24500.00, 2))              # 49000.0
+
+# *args / **kwargs
+def summarise(*totals: float, **tags: str) -&gt; dict:
+    return {"lines": len(totals), "revenue": round(sum(totals), 2), **tags}
+
+print(summarise(17400.0, 35600.0, region="NCR"))
+# {'lines': 2, 'revenue': 53000.0, 'region': 'NCR'}</code></pre>
+<p>The <code>qty &lt;= 0</code> guard is not decoration — row <code>PH-01655</code> in <code>sales.csv</code> has <code>qty = -2</code>, and nothing else in the pipeline will catch it.</p>
+
+<h4>Scope &amp; Pure Functions</h4>
+<pre><code class="language-python">def apply_discount(prices: list[float], rate: float) -&gt; list[float]:
+    # returns a NEW list; does not mutate the input (pure)
+    return [round(p * (1 - rate), 2) for p in prices]
+
+catalogue_prices = [1450.00, 8900.00, 320.00]
+trade = apply_discount(catalogue_prices, 0.10)
+print(catalogue_prices)   # [1450.0, 8900.0, 320.0]  — untouched
+print(trade)              # [1305.0, 8010.0, 288.0]</code></pre>
+
+<p><strong>Exercise 1.3 — Order Calculations</strong></p>
+<p>Dataset: Sales 2026</p>
+<ol>
+<li>Write <code>stock_status(stock, reorder_point)</code> returning "out of stock" / "reorder" / "ok"</li>
+<li>Write <code>line_total(unit_price, qty, vat)</code> with a keyword-only <code>vat</code> and a guard that rejects <code>qty &lt;= 0</code></li>
+<li>Loop over the four demo lines — Pump seal ×12, Valve kit ×4, Gasket set ×30, Flow meter ×2 — and print each total. Expect <strong>17,400 / 35,600 / 9,600 / 49,000</strong></li>
+<li>Write a pure <code>apply_discount</code> that returns a new price list without mutating the input</li>
+<li>Write <code>most_valuable(lines)</code> that returns the highest-revenue <code>(product, revenue)</code> pair from a list of tuples</li>
+<li>Call <code>line_total(1450.0, -2)</code> and confirm it raises rather than returning a negative number</li>
+</ol>
+<hr />
+
+<h3 id="module-14-data-structures-comprehensions">Module 1.4 — Data Structures &amp; Comprehensions</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Build a dict mapping region → total revenue from a list of order dicts, using a comprehension or <code>defaultdict</code>.<br>
+<strong>Skip if:</strong> you reach for the right structure (list/dict/set/tuple) instinctively and write comprehensions fluently.<br>
+<strong>Unlocks:</strong> 2.1, 2.3.</p>
+</blockquote>
+
+<h4>Lists, Dicts, Sets, Tuples</h4>
+<pre><code class="language-python">regions = ["NCR", "Cebu", "NCR", "Davao"]   # list: ordered, mutable
+distinct = set(regions)                      # {'NCR', 'Cebu', 'Davao'}
+
+product = {"code": "PS-100", "name": "Pump seal", "category": "Rotating equipment"}
+line = ("PS-100", 12)                        # tuple: immutable pair
+
+product["unit_price"] = 1450.00              # add/update
+print("unit_price" in product)               # True
+print(list(product.keys()))
+# ['code', 'name', 'category', 'unit_price']</code></pre>
+
+<h4>Comprehensions</h4>
+<pre><code class="language-python">prices = {"PS-100": 1450.0, "VK-200": 8900.0, "GS-300": 320.0, "FM-400": 24500.0}
+
+consumables = [c for c, p in prices.items() if p &lt; 1000]      # ['GS-300']
+with_vat    = {c: round(p * 1.12, 2) for c, p in prices.items()}
+tiers       = {c: ("capital" if p &gt;= 5000 else "consumable") for c, p in prices.items()}
+tier_names  = {"capital" if p &gt;= 5000 else "consumable" for p in prices.values()}
+print(tier_names)   # {'capital', 'consumable'}</code></pre>
+
+<h4>Grouping &amp; Aggregating</h4>
+<p>This is a GROUP BY, written by hand. Do it this way once — it is what Pandas and SQL are doing underneath.</p>
+<pre><code class="language-python">from collections import defaultdict
+
+orders = [
+    {"order_id": "PH-01279", "region": "NCR",   "revenue": 26700.0},
+    {"order_id": "PH-01355", "region": "NCR",   "revenue":  9600.0},
+    {"order_id": "PH-01412", "region": "Cebu",  "revenue": 35600.0},
+    {"order_id": "PH-01530", "region": "Davao", "revenue": 49000.0},
+]
+
+by_region: dict[str, float] = defaultdict(float)
+for o in orders:
+    by_region[o["region"]] += o["revenue"]
+
+print(dict(by_region))
+# {'NCR': 36300.0, 'Cebu': 35600.0, 'Davao': 49000.0}
+
+top = max(by_region, key=by_region.get)
+print(top, by_region[top])   # Davao 49000.0</code></pre>
+
+<p><strong>Exercise 1.4 — In-Memory Analytics</strong></p>
+<p>Dataset: Sales 2026 (<code>products.csv</code> typed by hand, or read with <code>open()</code>)</p>
+<ol>
+<li>Represent all 8 products as a list of dicts with <code>product_code</code>, <code>product</code>, <code>category</code>, <code>unit_price</code>, <code>stock</code>, <code>reorder_point</code></li>
+<li>Use a comprehension to list every product priced under ₱2,000 — expect <strong>Pump seal, Gasket set, Pressure gauge</strong></li>
+<li>Build a set of distinct categories — expect 3</li>
+<li>Use a comprehension to find every product where <code>stock &lt; reorder_point</code> — expect <strong>Impeller, Check valve, Flow meter</strong></li>
+<li>Use <code>defaultdict</code> to total inventory value (<code>stock × unit_price</code>) per category</li>
+<li>Return the category with the highest inventory value using <code>max</code> with a <code>key</code>, and check the grand total is <strong>₱2,027,450.00</strong></li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-cli-stock-checker">Phase 1 Capstone: CLI Stock Checker</h3>
+<p><strong>Project: <code>stock_tool.py</code></strong></p>
+<p><strong>Dataset:</strong> Sales 2026 (<code>products.csv</code>)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A script <code>stock_tool.py</code> that reads <code>DATA/products.csv</code> with the built-in <code>csv</code> module</li>
+<li>A function returning every product below its reorder point, or below a threshold passed as a CLI argument</li>
+<li>A formatted table printout — product, category, stock, reorder point, unit price — with aligned columns and peso formatting</li>
+<li>A per-category summary: number of SKUs and total inventory value, footing to <strong>₱2,027,450.00</strong></li>
+<li>Graceful handling when <code>DATA/products.csv</code> is missing: a clear message and a non-zero exit code</li>
+<li>A short README explaining how to generate the data and run the tool</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-data-files">Phase 2: Data &amp; Files</h2>
+<h3 id="weeks-5-9">Weeks 5–9 | Goal: Read/write real data, handle failure gracefully, and analyze with Pandas</h3>
+<hr />
+
+<h3 id="module-21-files-csv-json">Module 2.1 — Files, CSV &amp; JSON</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.4 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Read a CSV into a list of dicts, transform it, and write both a CSV and a JSON file back out.<br>
+<strong>Skip if:</strong> <code>csv.DictReader</code>, <code>json.load/dump</code>, and context managers are routine.<br>
+<strong>Unlocks:</strong> 2.3, 4.1.</p>
+</blockquote>
+
+<h4>Reading &amp; Writing Files Safely</h4>
+<pre><code class="language-python"># Always use a context manager so the file is closed automatically
+with open(DATA / "sales.csv", encoding="utf-8") as f:
+    header = f.readline().strip()
+    first_rows = [next(f).strip() for _ in range(3)]
+
+print(header)
+# order_id,order_date,customer_id,product_code,region,qty
+print(first_rows[0])
+# PH-01279,2026-01-01,C-NCR-013,VK-200,NCR,3</code></pre>
+
+<h4>CSV with the Standard Library</h4>
+<pre><code class="language-python">import csv
+
+with open(DATA / "products.csv", newline="", encoding="utf-8") as f:
+    products = [row for row in csv.DictReader(f)]   # list[dict[str, str]]
+
+# Everything from a CSV is a string — cast before you compare
+for p in products:
+    p["unit_price"] = float(p["unit_price"])
+    p["stock"] = int(p["stock"])
+    p["reorder_point"] = int(p["reorder_point"])
+
+low = [p for p in products if p["stock"] &lt; p["reorder_point"]]
+print([p["product"] for p in low])
+# ['Impeller', 'Check valve', 'Flow meter']
+
+with open(OUT / "low_stock.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=products[0].keys())
+    writer.writeheader()
+    writer.writerows(low)</code></pre>
+
+<h4>JSON</h4>
+<pre><code class="language-python">import json
+
+report = {
+    "low_stock_count": len(low),
+    "products": [p["product"] for p in low],
+    "inventory_value": round(sum(p["stock"] * p["unit_price"] for p in products), 2),
+}
+with open(OUT / "report.json", "w", encoding="utf-8") as f:
+    json.dump(report, f, indent=2, ensure_ascii=False)
+
+with open(OUT / "report.json", encoding="utf-8") as f:
+    assert json.load(f)["inventory_value"] == 2027450.0</code></pre>
+
+<h4>Getting Files Out</h4>
+<p>Writing to <code>OUT</code> puts the file in Drive, where you can open it from Sheets or share it. When you want it on your own machine instead:</p>
+<pre><code class="language-python">from google.colab import files
+files.download(str(OUT / OUT / "low_stock.csv"))    # browser download prompt</code></pre>
+<p>Prefer Drive. A file in <code>OUT</code> is still there after the runtime dies; a browser download is a copy that immediately starts drifting from the source.</p>
+
+<p><strong>Exercise 2.1 — ETL Without Pandas</strong></p>
+<p>Dataset: Sales 2026</p>
+<ol>
+<li>Read <code>products.csv</code> with <code>csv.DictReader</code> and cast <code>unit_price</code>, <code>stock</code>, <code>reorder_point</code></li>
+<li>Write <code>low_stock.csv</code> containing every product below its reorder point — expect 3 rows</li>
+<li>Compute total inventory value and write <code>report.json</code> with <code>indent=2</code> — expect <code>2027450.0</code></li>
+<li>Read <code>sales.csv</code> and build a <code>{product_code: unit_price}</code> lookup from <code>products.csv</code>, then compute revenue per row — this is <code>XLOOKUP</code> in three lines</li>
+<li>Round-trip test: read <code>report.json</code> back and assert the count and value both match</li>
+<li>Note what happens on row <code>PH-01530</code> (<code>ZZ-999</code>) when your lookup misses. Handling it properly is Module 2.2</li>
+</ol>
+<hr />
+
+<h3 id="module-22-errors-logging">Module 2.2 — Errors &amp; Logging</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Catch a specific exception, re-raise with context, and configure a logger that writes to a file with levels.<br>
+<strong>Skip if:</strong> you handle exceptions by type and use the <code>logging</code> module instead of <code>print</code>.<br>
+<strong>Unlocks:</strong> 5.2, robust capstones.</p>
+</blockquote>
+<p>This module exists because of the six broken rows at the bottom of <code>sales.csv</code>. Everything here is aimed at one outcome: a loader that reports <strong>646 clean rows and 6 rejects</strong> instead of crashing on row 648.</p>
+
+<h4>Exceptions by Type</h4>
+<pre><code class="language-python">class InvalidOrderRow(Exception):
+    """A sales row that cannot be trusted. Carries the offending row."""
+    def __init__(self, row: dict, reason: str):
+        self.row, self.reason = row, reason
+        super().__init__(f"{row.get('order_id', '?')}: {reason}")
+
+def parse_qty(row: dict) -&gt; int:
+    raw = row.get("qty", "")
+    try:
+        qty = int(raw)
+    except (TypeError, ValueError):
+        raise InvalidOrderRow(row, f"qty is not an integer: {raw!r}") from None
+    if qty &lt;= 0:
+        raise InvalidOrderRow(row, f"qty must be positive, got {qty}")
+    return qty
+
+# try/except/else/finally
+try:
+    q = parse_qty({"order_id": "PH-01488", "qty": "six"})
+except InvalidOrderRow as e:
+    print("rejected:", e)      # rejected: PH-01488: qty is not an integer: 'six'
+else:
+    print("ok:", q)
+finally:
+    print("done")</code></pre>
+
+<h4>Logging Instead of print</h4>
+<pre><code class="language-python">import logging
+
+logging.basicConfig(
+    filename=OUT / "sales2026.log",
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+    force=True,          # ← REQUIRED in Colab. See below.
+)
+log = logging.getLogger("sales2026")
+
+log.info("loaded %d order rows", 652)
+log.warning("rejected %s — %s", "PH-01412", "qty is empty")
+log.warning("duplicate order_id %s, keeping first", "PH-01041")
+log.info("clean rows: %d, rejects: %d", 646, 6)</code></pre>
+<blockquote class="callout">
+<p><strong><code>force=True</code> is not optional here.</strong> Colab attaches a handler to the root logger before your first cell runs, and <code>basicConfig</code> is documented to do nothing if the root logger already has handlers. Without <code>force=True</code> your log file is created empty, every message goes to the cell output instead, and you conclude that logging is broken. It is not — it was configured by someone else first.</p>
+<p>Check the file, not the cell output: <code>!tail -5 "{OUT}/sales2026.log"</code></p>
+</blockquote>
+<p><code>print</code> scrolls out of a cell you will later clear. A log file in Drive is the difference between "the report is wrong" and "the report is wrong because six rows were rejected on 11 March."</p>
+
+<h4>Putting It Together</h4>
+<pre><code class="language-python">def load_sales(path: str) -&gt; tuple[list[dict], list[InvalidOrderRow]]:
+    import csv
+    clean, rejects, seen = [], [], set()
+    with open(path, newline="", encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            try:
+                row["qty"] = parse_qty(row)
+                if not row["order_date"]:
+                    raise InvalidOrderRow(row, "order_date is empty")
+                if row["order_id"] in seen:
+                    raise InvalidOrderRow(row, "duplicate order_id")
+                seen.add(row["order_id"])
+            except InvalidOrderRow as e:
+                log.warning("%s", e)
+                rejects.append(e)
+            else:
+                clean.append(row)
+    log.info("clean=%d rejects=%d", len(clean), len(rejects))
+    return clean, rejects
+
+clean, rejects = load_sales(DATA / "sales.csv")
+print(len(clean), len(rejects))   # 646 6</code></pre>
+
+<p><strong>Exercise 2.2 — Robust Loader</strong></p>
+<p>Dataset: Sales 2026 (<code>sales.csv</code> — the six bad rows are the point)</p>
+<ol>
+<li>Define <code>InvalidOrderRow</code> carrying both the row and a human-readable reason</li>
+<li>Write a loader that rejects and logs bad rows instead of crashing — it must return <strong>646 clean, 6 rejects</strong></li>
+<li>Add an unknown-product check so <code>ZZ-999</code> on <code>PH-01530</code> is rejected rather than silently priced at zero</li>
+<li>Configure <code>logging</code> to write INFO+ to <code>sales2026.log</code> with timestamps</li>
+<li>Wrap the whole load in try/except/finally and always log a completion line</li>
+<li>Assert your log file contains exactly 6 WARNING lines, one per bad <code>order_id</code></li>
+</ol>
+<hr />
+
+<h3 id="module-23-pandas-essentials">Module 2.3 — Pandas Essentials</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~16h<br>
+<strong>Skip-check (test-out):</strong> Load three CSVs, merge them, clean dtypes, and produce a region × month revenue pivot.<br>
+<strong>Skip if:</strong> Pandas filter/groupby/merge/pivot is already your daily driver.<br>
+<strong>Unlocks:</strong> Capstone 2, the Data Analyst track.</p>
+</blockquote>
+
+<h4>Loading &amp; Inspecting</h4>
+<p>Turn on Colab's interactive table renderer once, at the top of the notebook — sortable, filterable, paginated output beats <code>.head()</code> for exploration:</p>
+<pre><code class="language-python">%load_ext google.colab.data_table
+import pandas as pd
+pd.set_option("display.float_format", lambda v: f"{v:,.2f}")</code></pre>
+<pre><code class="language-python">import pandas as pd
+
+sales     = pd.read_csv(DATA / "sales.csv")
+products  = pd.read_csv(DATA / "products.csv")
+customers = pd.read_csv(DATA / "customers.csv")
+
+print(sales.shape)        # (652, 6)
+print(sales.dtypes)       # qty is object, not int — the bad rows poisoned it
+sales.info()
+products.describe()</code></pre>
+<p><code>qty</code> loading as <code>object</code> is your first signal. One <code>"six"</code> in 652 rows is enough to make the whole column text.</p>
+<p>Use <code>display()</code> when a cell needs to show more than one frame — only the last expression renders automatically, so <code>display(by_region); display(by_category)</code> is how you get both.</p>
+
+<h4>Cleaning, Filtering, Deriving</h4>
+<pre><code class="language-python">sales["qty"] = pd.to_numeric(sales["qty"], errors="coerce")          # 'six', '' -&gt; NaN
+sales["order_date"] = pd.to_datetime(sales["order_date"], errors="coerce")
+
+valid = (
+    sales["qty"].notna()
+    &amp; (sales["qty"] &gt; 0)
+    &amp; sales["order_date"].notna()
+    &amp; sales["product_code"].isin(products["product_code"])
+)
+clean = sales[valid].drop_duplicates(subset=["order_id"])
+print(len(sales), len(clean))   # 652 646
+
+# Join to get price and category, then to get segment.
+# Note customers also has a `region` column — select only what you need,
+# or Pandas will hand you region_x and region_y.
+df = (clean
+      .merge(products, on="product_code", how="left")
+      .merge(customers[["customer_id", "customer", "segment"]], on="customer_id", how="left"))
+df["revenue"] = df["qty"] * df["unit_price"]
+
+big_ncr = df[(df["revenue"] &gt; 100_000) &amp; (df["region"] == "NCR")]</code></pre>
+
+<h4>GroupBy &amp; Pivot</h4>
+<pre><code class="language-python">by_region = (df.groupby("region")
+               .agg(revenue=("revenue", "sum"), orders=("order_id", "nunique"))
+               .sort_values("revenue", ascending=False))
+print(by_region)
+#           revenue  orders
+# region
+# NCR    10519870.0     406
+# Cebu    3514180.0     142
+# Davao   2300500.0      98
+
+df["month"] = df["order_date"].dt.to_period("M")
+pivot = df.pivot_table(values="revenue", index="region",
+                       columns="month", aggfunc="sum", fill_value=0)
+
+# HAVING: filter the groups, not the rows
+by_rc = df.groupby(["region", "category"], as_index=False)["revenue"].sum()
+print(by_rc[by_rc["revenue"] &gt; 1_000_000].sort_values("revenue", ascending=False))
+# NCR/Rotating equipment 4,291,800 · NCR/Valves & fittings 3,412,950
+# NCR/Instrumentation 2,815,120 · Cebu/Valves & fittings 2,104,920</code></pre>
+<blockquote class="callout">
+<p><strong>The three-tool sanity check.</strong> <code>df.groupby("region")["revenue"].sum()</code>, a pivot table with Region in Rows and Revenue in Values, and <code>SELECT region, SUM(revenue) FROM sales GROUP BY region</code> must all return 10,519,870 / 3,514,180 / 2,300,500. If one of them disagrees, you have found a real bug — usually a join that dropped or duplicated rows.</p>
+</blockquote>
+
+<p><strong>Exercise 2.3 — Sales Analysis in Pandas</strong></p>
+<p>Dataset: Sales 2026 (all three CSVs)</p>
+<ol>
+<li>Load all three; coerce <code>qty</code> to numeric and parse <code>order_date</code></li>
+<li>Clean to <strong>646 rows</strong> — invalid qty, missing date, unknown product, duplicate order_id</li>
+<li>Merge sales → products → customers into one DataFrame and add <code>revenue</code></li>
+<li>Reproduce the region summary exactly: <strong>NCR 10,519,870 / 406</strong>, <strong>Cebu 3,514,180 / 142</strong>, <strong>Davao 2,300,500 / 98</strong></li>
+<li>Reproduce the category summary: <strong>Valves &amp; fittings 6,455,520</strong>, <strong>Rotating equipment 5,702,750</strong>, <strong>Instrumentation 4,176,280</strong></li>
+<li>Build a region × month pivot; the six month totals must sum to <strong>16,334,550</strong></li>
+<li>Find the top product by revenue — expect <strong>Valve kit, ₱2,901,400</strong> — and export the summary to <code>region_summary.csv</code></li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-regional-revenue-report">Phase 2 Capstone: Regional Revenue Report</h3>
+<p><strong>Project: the monthly report, automated</strong></p>
+<p><strong>Dataset:</strong> Sales 2026 (all three CSVs)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A script that loads and merges all three CSVs with correct dtypes</li>
+<li>A data-quality step that logs rejects and duplicate counts (reusing your Module 2.2 logger) and asserts 646 clean rows</li>
+<li>Revenue by region, by category, and by month — three summary tables matching the published figures</li>
+<li>Top 10 accounts by revenue and every product below its reorder point</li>
+<li>A region × category pivot, and a "which accounts bought nothing" list (expect <strong>3</strong>)</li>
+<li>Export every table to one Excel workbook, one sheet each, with a totals row</li>
+<li>A <code>summary.json</code> with the headline totals for downstream use</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-pythonic-oop">Phase 3: Pythonic OOP</h2>
+<h3 id="weeks-10-13">Weeks 10–13 | Goal: Model a domain with classes, and write idiomatic generators and decorators</h3>
+<hr />
+
+<h3 id="module-31-classes-dataclasses">Module 3.1 — Classes &amp; Dataclasses</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Model an order line with a dataclass, add a computed property, and a method that mutates stock safely.<br>
+<strong>Skip if:</strong> classes, <code>@dataclass</code>, properties, and dunder methods are familiar.<br>
+<strong>Unlocks:</strong> 3.2, 4.2, 4.3.</p>
+</blockquote>
+
+<h4>Classes &amp; Methods</h4>
+<pre><code class="language-python">class Product:
+    def __init__(self, code: str, name: str, unit_price: float,
+                 stock: int, reorder_point: int):
+        self.code = code
+        self.name = name
+        self.unit_price = unit_price
+        self.stock = stock
+        self.reorder_point = reorder_point
+
+    def ship(self, qty: int) -&gt; float:
+        if qty &gt; self.stock:
+            raise ValueError(f"{self.code}: requested {qty}, only {self.stock} on hand")
+        self.stock -= qty
+        return round(self.unit_price * qty, 2)
+
+    @property
+    def needs_reorder(self) -&gt; bool:
+        return self.stock &lt; self.reorder_point
+
+    def __repr__(self) -&gt; str:
+        return f"Product({self.code!r}, stock={self.stock})"
+
+seal = Product("PS-100", "Pump seal", 1450.00, 240, 60)
+print(seal.ship(12))        # 17400.0
+print(seal.stock)           # 228
+print(seal.needs_reorder)   # False</code></pre>
+
+<h4>Dataclasses &amp; Properties</h4>
+<pre><code class="language-python">from dataclasses import dataclass
+from datetime import date
+
+@dataclass
+class OrderLine:
+    order_id: str
+    order_date: date
+    customer_id: str
+    product: Product
+    qty: int
+    discount: float = 0.0
+
+    @property
+    def revenue(self) -&gt; float:
+        gross = self.product.unit_price * self.qty
+        return round(gross * (1 - self.discount), 2)
+
+line = OrderLine("PH-01279", date(2026, 1, 1), "C-NCR-013", seal, qty=12, discount=0.10)
+print(line.revenue)   # 15660.0</code></pre>
+
+<p><strong>Exercise 3.1 — Domain Objects</strong></p>
+<p>Dataset: Sales 2026</p>
+<ol>
+<li>Write a <code>Product</code> class with <code>ship(qty)</code> that decrements stock and refuses to oversell</li>
+<li>Add a <code>needs_reorder</code> property; confirm exactly 3 of the 8 products return <code>True</code></li>
+<li>Write an <code>OrderLine</code> dataclass with a computed <code>revenue</code> property including discount</li>
+<li>Add <code>__repr__</code> so objects print readably in the REPL</li>
+<li>Build a <code>Catalog</code> class that loads <code>products.csv</code> into <code>Product</code> objects, keyed by code</li>
+<li>Add <code>Catalog.reorder_list()</code> and <code>Catalog.inventory_value()</code> — the latter must return <strong>2027450.0</strong></li>
+</ol>
+<hr />
+
+<h3 id="module-32-iterators-generators-decorators">Module 3.2 — Iterators, Generators &amp; Decorators</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Write a generator that streams large-CSV rows lazily and a decorator that times any function.<br>
+<strong>Skip if:</strong> <code>yield</code>, generator expressions, and writing decorators are comfortable.<br>
+<strong>Unlocks:</strong> efficient data pipelines, the Final Capstone.</p>
+</blockquote>
+<p>Generate the big file first — 646 rows will not teach you anything about memory. It goes to <code>/content</code>, not Drive, for the reason given in <a href="#dataset-big">The big file</a>:</p>
+<pre><code class="language-python">%cd /content/drive/MyDrive/sales2026
+!python make_dataset.py --rows 412908 --out /content/data_big
+!ls -lh /content/data_big/sales.csv</code></pre>
+<p>It will vanish when the runtime recycles. Re-running that cell is the fix, and building the habit of regenerating rather than hoarding scratch data is worth more than the four seconds it costs.</p>
+
+<h4>Generators (lazy iteration)</h4>
+<pre><code class="language-python">import csv
+
+def read_rows(path: Path):
+    """Yield rows one at a time — constant memory regardless of file size."""
+    with open(path, newline="", encoding="utf-8") as f:
+        yield from csv.DictReader(f)
+
+PRICES = {"PS-100": 1450.0, "BR-500": 6750.0, "IM-600": 12300.0, "VK-200": 8900.0,
+          "GS-300": 320.0, "CV-800": 4150.0, "FM-400": 24500.0, "PG-700": 1980.0}
+
+# Generator expression: total revenue over 412,908 rows without building a list
+total = sum(int(r["qty"]) * PRICES[r["product_code"]]
+            for r in read_rows(BIG / "sales.csv"))
+print(f"₱{total:,.2f}")</code></pre>
+
+<h4>Chaining Generators Into a Pipeline</h4>
+<pre><code class="language-python">def only(rows, region: str):
+    for r in rows:
+        if r["region"] == region:
+            yield r
+
+def priced(rows):
+    for r in rows:
+        r["revenue"] = int(r["qty"]) * PRICES[r["product_code"]]
+        yield r
+
+pipeline = priced(only(read_rows(BIG / "sales.csv"), "NCR"))
+ncr_total = sum(r["revenue"] for r in pipeline)</code></pre>
+<p>Nothing is read until <code>sum</code> asks for it, and no more than one row is ever in memory. This is what <code>WHERE</code> plus a streaming aggregate looks like when you write it yourself.</p>
+
+<h4>Decorators</h4>
+<p>Measure it two ways. <code>%%time</code> is the quick answer; a decorator is the reusable one, and works on functions you call from other functions:</p>
+<pre><code class="language-python">%%time
+rows = list(read_rows(BIG / "sales.csv"))    # loads all 412,908 into memory
+print(len(rows))</code></pre>
+<pre><code class="language-python">%%time
+n = sum(1 for _ in read_rows(BIG / "sales.csv"))   # streams, constant memory
+print(n)</code></pre>
+<pre><code class="language-python">import functools, time
+
+def timed(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        print(f"{func.__name__} took {time.perf_counter() - start:.3f}s")
+        return result
+    return wrapper
+
+@timed
+def count_rows(path: Path) -&gt; int:
+    return sum(1 for _ in read_rows(path))
+
+print(count_rows(BIG / "sales.csv"))
+# count_rows took 0.9xx s
+# 412908</code></pre>
+
+<p><strong>Exercise 3.2 — Lazy Pipeline</strong></p>
+<p>Dataset: Sales 2026 big file (<code>--rows 412908</code>)</p>
+<ol>
+<li>Generate <code>/content/data_big/sales.csv</code> and confirm it has 412,908 rows and is roughly 18 MB</li>
+<li>Write <code>read_rows(path)</code> as a generator and confirm memory stays flat while it runs</li>
+<li>Compute total revenue with a generator expression — no intermediate list</li>
+<li>Chain <code>only(rows, "NCR")</code> and <code>priced(rows)</code> into one pipeline and total NCR revenue</li>
+<li>Write a <code>@timed</code> decorator and compare streaming against <code>list(csv.DictReader(f))</code> — report both time and peak memory</li>
+<li>Write a <code>@retry(n)</code> decorator factory and use it on a function that fails the first two calls</li>
+</ol>
+<hr />
+
+<h3 id="module-33-type-hints">Module 3.3 — Type Hints</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Annotate a module fully and get a clean <code>mypy</code> run, including a <code>TypedDict</code> and an <code>Optional</code> return.<br>
+<strong>Skip if:</strong> you annotate code and run a type checker as a habit.<br>
+<strong>Unlocks:</strong> 4.2 (FastAPI leans on type hints).</p>
+</blockquote>
+
+<h4>Annotations &amp; Containers</h4>
+<pre><code class="language-python">from typing import Optional
+
+def find_product(products: list[dict], code: str) -&gt; Optional[dict]:
+    for p in products:
+        if p["product_code"] == code:
+            return p
+    return None    # ZZ-999 lives here — the type says so
+
+def revenue_by_region(rows: list[dict]) -&gt; dict[str, float]:
+    out: dict[str, float] = {}
+    for r in rows:
+        out[r["region"]] = out.get(r["region"], 0.0) + r["revenue"]
+    return out</code></pre>
+
+<h4>TypedDict &amp; mypy</h4>
+<pre><code class="language-python">from typing import TypedDict
+from datetime import date
+
+class ProductRow(TypedDict):
+    product_code: str
+    product: str
+    category: str
+    unit_price: float
+    stock: int
+    reorder_point: int
+
+class SaleRow(TypedDict):
+    order_id: str
+    order_date: date
+    customer_id: str
+    product_code: str
+    region: str
+    qty: int
+
+def restock(p: ProductRow, amount: int) -&gt; ProductRow:
+    p["stock"] += amount
+    return p</code></pre>
+<p><strong>mypy cannot check a notebook.</strong> It reads <code>.py</code> files, and your cells are JSON. This is the first concrete reason to start moving code out of cells:</p>
+<pre><code class="language-python">%%writefile /content/drive/MyDrive/sales2026/src/sales2026/loader.py
+from typing import Optional, TypedDict
+# ... your loader, fully annotated ...</code></pre>
+<pre><code class="language-python">!pip install -q mypy
+%cd /content/drive/MyDrive/sales2026
+!mypy --strict src/sales2026/</code></pre>
+<p>Then import it back and keep using the notebook for everything else:</p>
+<pre><code class="language-python">import sys; sys.path.append(str(SRC))
+%load_ext autoreload
+%autoreload 2                 # picks up edits to loader.py without a restart
+from sales2026.loader import load_sales</code></pre>
+<p><code>SaleRow</code> declares <code>qty: int</code> and <code>order_date: date</code> — which is exactly what the raw CSV does <em>not</em> give you. The TypedDict is the contract your Module 2.2 loader is responsible for meeting.</p>
+
+<p><strong>Exercise 3.3 — Fully Typed Module</strong></p>
+<p>Dataset: Sales 2026</p>
+<ol>
+<li>Add type hints to every function in your Phase 2 loader</li>
+<li>Define <code>ProductRow</code> and <code>SaleRow</code> TypedDicts for parsed (not raw) records</li>
+<li>Write <code>find_product</code> returning <code>Optional[ProductRow]</code> and handle the <code>None</code> branch at every call site</li>
+<li>Annotate <code>revenue_by_region</code> as <code>dict[str, float]</code></li>
+<li>Install and run <code>mypy --strict</code>; fix every reported error</li>
+<li>Make <code>mypy</code> catch a real bug: pass the raw string <code>qty</code> into a function typed <code>int</code> and watch it complain before runtime does</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-domain-model">Phase 3 Capstone: Sales 2026 Domain Model</h3>
+<p><strong>Project: the order book as objects</strong></p>
+<p><strong>Dataset:</strong> Sales 2026 (all three CSVs, plus the big file)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li><code>Product</code>, <code>Customer</code>, and <code>OrderLine</code> classes (dataclasses where natural)</li>
+<li>A <code>Catalog</code> that loads products and exposes lookup, reorder list, and inventory value</li>
+<li>An <code>OrderBook</code> service that accepts order lines, validates stock, and decrements it</li>
+<li>A generator that streams <code>sales.csv</code> into the service and reports 646 accepted / 6 rejected</li>
+<li>A <code>@timed</code> decorator on the bulk-load path, benchmarked against the 412,908-row file</li>
+<li>Full type hints and a clean <code>mypy --strict</code> run</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-real-world-python">Phase 4: Real-World Python</h2>
+<h3 id="weeks-14-18">Weeks 14–18 | Goal: Talk to APIs, build your own REST service, and persist to a database</h3>
+<hr />
+
+<h3 id="module-41-consuming-apis-requests">Module 4.1 — Consuming APIs (requests)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Call a REST API, handle non-200 responses, and serialize results to JSON.<br>
+<strong>Skip if:</strong> <code>requests</code>, status-code handling, and JSON parsing are routine.<br>
+<strong>Unlocks:</strong> data enrichment, the Final Capstone.</p>
+</blockquote>
+<p>Sales 2026 is priced in pesos. Head office reports in dollars. That is the enrichment job: fetch a live PHP→USD rate and restate the summary. No API key required.</p>
+
+<h4>GET, Params &amp; Status Codes</h4>
+<pre><code class="language-python">import requests
+
+resp = requests.get("https://open.er-api.com/v6/latest/PHP", timeout=10)
+resp.raise_for_status()            # raises on 4xx/5xx
+data = resp.json()
+
+usd = data["rates"]["USD"]
+print(f"1 PHP = {usd} USD as of {data['time_last_update_utc']}")
+print(f"Total revenue: ${16_334_550 * usd:,.2f}")</code></pre>
+
+<h4>Sessions, Retries &amp; Error Handling</h4>
+<pre><code class="language-python">import requests
+
+session = requests.Session()
+session.headers.update({"User-Agent": "sales2026-reporter/1.0"})
+
+def fetch_rate(base: str = "PHP", target: str = "USD") -&gt; float | None:
+    try:
+        r = session.get(f"https://open.er-api.com/v6/latest/{base}", timeout=10)
+        if r.status_code == 200:
+            return r.json()["rates"][target]
+        if r.status_code &gt;= 500:
+            return None            # caller decides: retry, or fall back to a cached rate
+        r.raise_for_status()
+    except requests.RequestException as e:
+        print("network failure:", e)
+        return None</code></pre>
+<blockquote class="module-meta">
+<p><strong>This API needs no key, but the next one will.</strong> Put credentials in Colab's <strong>Secrets</strong> panel — the key icon in the left sidebar — and read them with <code>from google.colab import userdata; userdata.get("MY_KEY")</code>. Never paste a token into a cell: the notebook is saved in Drive, Drive gets shared, and cell contents are saved along with output.</p>
+</blockquote>
+<p>A disconnected runtime is not an error condition you get to ignore. Cache the last good rate to <code>rate_cache.json</code> and fall back to it — a report that says "USD figures at yesterday's rate" is useful; a traceback is not.</p>
+
+<p><strong>Exercise 4.1 — Restate in USD</strong></p>
+<p>Dataset: Sales 2026 + open.er-api.com</p>
+<ol>
+<li>Fetch the current PHP→USD rate and print the region summary in both currencies</li>
+<li>Handle timeouts and non-200 responses without crashing the run</li>
+<li>Cache the rate and its timestamp to <code>rate_cache.json</code>; reuse it if the call fails</li>
+<li>Add a <code>--stale-after 24h</code> rule that warns when the cached rate is too old</li>
+<li>Write <code>region_summary_usd.json</code> with both currencies and the rate used</li>
+<li>Use a <code>Session</code> and reuse it — one connection, not five</li>
+</ol>
+<hr />
+
+<h3 id="module-42-rest-api-fastapi">Module 4.2 — REST API with FastAPI</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1, 3.3 · <strong>Time:</strong> ~14h<br>
+<strong>Skip-check (test-out):</strong> Build a FastAPI app with a Pydantic model, a GET list endpoint, and a POST that validates input — and exercise it without leaving the notebook.<br>
+<strong>Skip if:</strong> you have shipped a typed FastAPI (or similar) service with validation.<br>
+<strong>Unlocks:</strong> Capstone 4, the backend track.</p>
+</blockquote>
+<p>A notebook cell and a web server want opposite things: the cell wants to finish, the server wants to run forever. There are three ways to reconcile that, and you should know all three because they fail differently.</p>
+
+<h4>Write the app to a file</h4>
+<p>Do not define the app in a live cell — you will re-run it, get a duplicate-route mess, and spend an hour confused. Write it once with <code>%%writefile</code>:</p>
+<pre><code class="language-python">%%writefile /content/drive/MyDrive/sales2026/src/app.py
+import csv
+from pathlib import Path
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
+
+DATA = Path("/content/drive/MyDrive/sales2026/data")
+app = FastAPI(title="Sales 2026 API")
+
+class Product(BaseModel):
+    product_code: str
+    product: str
+    category: str
+    unit_price: float = Field(gt=0)
+    stock: int = Field(ge=0)
+    reorder_point: int = Field(ge=0)
+
+class OrderIn(BaseModel):
+    customer_id: str
+    product_code: str
+    qty: int = Field(gt=0)      # rejects the PH-01655 case at the door
+
+CATALOG: dict[str, Product] = {}
+
+@app.on_event("startup")
+def load_catalog() -&gt; None:
+    with (DATA / "products.csv").open(newline="", encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            CATALOG[r["product_code"]] = Product(**r)
+
+@app.get("/products")
+def list_products(category: str | None = None) -&gt; list[Product]:
+    items = list(CATALOG.values())
+    return [p for p in items if p.category == category] if category else items
+
+@app.get("/products/{code}")
+def get_product(code: str) -&gt; Product:
+    if code not in CATALOG:
+        raise HTTPException(404, f"unknown product_code {code}")
+    return CATALOG[code]
+
+@app.get("/reorder")
+def reorder_list() -&gt; list[Product]:
+    return [p for p in CATALOG.values() if p.stock &lt; p.reorder_point]
+
+@app.post("/orders", status_code=201)
+def place_order(order: OrderIn) -&gt; dict:
+    product = CATALOG.get(order.product_code)
+    if product is None:
+        raise HTTPException(404, f"unknown product_code {order.product_code}")
+    if order.qty &gt; product.stock:
+        raise HTTPException(409, f"insufficient stock: {product.stock} on hand")
+    product.stock -= order.qty
+    return {"ok": True, "revenue": round(product.unit_price * order.qty, 2),
+            "remaining": product.stock}</code></pre>
+
+<h4>Option 1 — TestClient (start here)</h4>
+<p>No server, no port, no tunnel. The cell runs and finishes. This is how you should develop, and it is the same object your pytest suite uses in Module 5.1.</p>
+<pre><code class="language-python">import sys; sys.path.append(str(SRC))
+from fastapi.testclient import TestClient
+from app import app
+
+client = TestClient(app)
+
+print(client.get("/products").status_code)                     # 200
+print(len(client.get("/products").json()))                     # 8
+print(len(client.get("/reorder").json()))                      # 3
+print(client.get("/products/ZZ-999").status_code)              # 404
+
+r = client.post("/orders", json={"customer_id": "C-NCR-013",
+                                 "product_code": "FM-400", "qty": 9})
+print(r.status_code, r.json())     # 409 {'detail': 'insufficient stock: 5 on hand'}</code></pre>
+<p>If you edit <code>app.py</code>, the import is cached. Either add <code>%load_ext autoreload</code> / <code>%autoreload 2</code> at the top of the notebook, or restart the session.</p>
+
+<h4>Option 2 — a real server in the background</h4>
+<p>When you want the interactive <code>/docs</code> page, run uvicorn on a thread and let Colab proxy the port. <code>nest_asyncio</code> is required because the notebook already owns an event loop.</p>
+<pre><code class="language-python">import threading, time, nest_asyncio, uvicorn
+from google.colab.output import eval_js
+from app import app
+
+nest_asyncio.apply()
+
+def serve():
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="warning")
+
+threading.Thread(target=serve, daemon=True).start()
+time.sleep(2)
+
+print(eval_js("google.colab.kernel.proxyPort(8000)"))   # open this + /docs</code></pre>
+<p>The thread dies with the runtime, and re-running the cell will fail with <em>address already in use</em> — that is the tell that the previous server is still up. Restart the session rather than hunting for the process.</p>
+
+<h4>Option 3 — a public URL</h4>
+<p>Only when you genuinely need something outside Colab to reach the service. Both of these expose your notebook to the internet, so shut them down when finished.</p>
+<pre><code class="language-python">!pip install -q pyngrok
+from pyngrok import ngrok
+from google.colab import userdata
+
+ngrok.set_auth_token(userdata.get("NGROK_TOKEN"))   # Colab Secrets, not a literal
+print(ngrok.connect(8000).public_url)
+# ngrok.kill()   ← run this when you are done</code></pre>
+<p>Store the token in Colab's <strong>Secrets</strong> panel (the key icon in the left sidebar) and read it with <code>userdata.get</code>. Never paste a token into a cell — the notebook is in Drive and Drive gets shared.</p>
+
+<p><strong>Exercise 4.2 — Sales 2026 API</strong></p>
+<p>Notebook: <code>42_fastapi.ipynb</code> · Dataset: Sales 2026</p>
+<ol>
+<li>Write <code>app.py</code> to <code>SRC</code> with <code>%%writefile</code> and load <code>products.csv</code> from <code>DATA</code> at startup</li>
+<li>Drive every endpoint with <code>TestClient</code>: <code>GET /products</code> (8), the <code>category</code> filter, <code>GET /products/{code}</code> with its 404 path</li>
+<li><code>GET /reorder</code> must return exactly 3 products</li>
+<li><code>POST /orders</code> must return 409 for <code>FM-400</code> qty 9, and 201 for qty 2</li>
+<li>Add <code>GET /revenue?group_by=region</code> returning the published region totals</li>
+<li>Serve it with uvicorn + <code>proxyPort</code>, open <code>/docs</code>, and confirm the generated schema matches your Pydantic models</li>
+</ol>
+<hr />
+
+<h3 id="module-43-databases-sqlite-sqlalchemy">Module 4.3 — Databases: SQLite &amp; SQLAlchemy</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~12h<br>
+<strong>Skip-check (test-out):</strong> Define related ORM tables, insert rows, and run a join query returning aggregates.<br>
+<strong>Skip if:</strong> you model tables in SQLAlchemy and write queries with joins and aggregates.<br>
+<strong>Unlocks:</strong> Capstone 4, persistent services.</p>
+</blockquote>
+<p>The three CSVs are already a relational schema — one fact table and two dimensions, joined on <code>product_code</code> and <code>customer_id</code>. This module just moves them somewhere that enforces it.</p>
+<blockquote class="callout">
+<p><strong>Build the database on <code>/content</code>, then copy it to Drive.</strong> SQLite relies on file locking, and the Drive mount does not implement locking the way a local disk does — writing directly to <code>MyDrive/sales2026.db</code> produces intermittent <code>database is locked</code> and <code>disk I/O error</code> failures that look like bugs in your code. Work locally, publish when done:</p>
+<pre><code class="language-python">DB = Path("/content/sales2026.db")          # build here
+# ... create tables, load the CSVs, run your queries ...
+!cp /content/sales2026.db "{ROOT}/sales2026.db"    # publish when finished</code></pre>
+</blockquote>
+
+<h4>Raw SQLite (stdlib)</h4>
+<pre><code class="language-python">import csv, sqlite3
+
+con = sqlite3.connect(DB)
+con.execute("""CREATE TABLE IF NOT EXISTS products (
+    product_code TEXT PRIMARY KEY, product TEXT, category TEXT,
+    unit_price REAL, stock INTEGER, reorder_point INTEGER)""")
+
+with open(DATA / "products.csv", newline="", encoding="utf-8") as f:
+    rows = [(r["product_code"], r["product"], r["category"],
+             float(r["unit_price"]), int(r["stock"]), int(r["reorder_point"]))
+            for r in csv.DictReader(f)]
+con.executemany("INSERT OR REPLACE INTO products VALUES (?,?,?,?,?,?)", rows)
+con.commit()
+
+for row in con.execute(
+        "SELECT product, stock FROM products WHERE stock &lt; reorder_point"):
+    print(row)
+# ('Impeller', 8) / ('Check valve', 9) / ('Flow meter', 5)
+con.close()</code></pre>
+
+<h4>SQLAlchemy ORM</h4>
+<pre><code class="language-python">from sqlalchemy import create_engine, ForeignKey, func, select
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, Session
+
+class Base(DeclarativeBase):
+    pass
+
+class Product(Base):
+    __tablename__ = "products"
+    product_code: Mapped[str] = mapped_column(primary_key=True)
+    product: Mapped[str]
+    category: Mapped[str]
+    unit_price: Mapped[float]
+    stock: Mapped[int]
+    sales: Mapped[list["Sale"]] = relationship(back_populates="product_ref")
+
+class Customer(Base):
+    __tablename__ = "customers"
+    customer_id: Mapped[str] = mapped_column(primary_key=True)
+    customer: Mapped[str]
+    region: Mapped[str]
+    segment: Mapped[str]
+    sales: Mapped[list["Sale"]] = relationship(back_populates="customer_ref")
+
+class Sale(Base):
+    __tablename__ = "sales"
+    order_id: Mapped[str] = mapped_column(primary_key=True)
+    order_date: Mapped[str]
+    customer_id: Mapped[str] = mapped_column(ForeignKey("customers.customer_id"))
+    product_code: Mapped[str] = mapped_column(ForeignKey("products.product_code"))
+    region: Mapped[str]
+    qty: Mapped[int]
+    product_ref: Mapped["Product"] = relationship(back_populates="sales")
+    customer_ref: Mapped["Customer"] = relationship(back_populates="sales")
+
+engine = create_engine(f"sqlite:///{DB}")
+Base.metadata.create_all(engine)
+
+with Session(engine) as s:
+    # Revenue by region — the same 10,519,870 / 3,514,180 / 2,300,500
+    stmt = (select(Sale.region,
+                   func.sum(Sale.qty * Product.unit_price).label("revenue"),
+                   func.count(Sale.order_id).label("orders"))
+            .join(Product)
+            .group_by(Sale.region)
+            .order_by(func.sum(Sale.qty * Product.unit_price).desc()))
+    for region, revenue, orders in s.execute(stmt):
+        print(f"{region:&lt;6} ₱{revenue:&gt;14,.2f} {orders:&gt;5}")</code></pre>
+
+<h4>The Anti-Join</h4>
+<p>"Which accounts are on the books but bought nothing?" is the single most useful reconciliation query you will write, and it is the one beginners write wrong.</p>
+<pre><code class="language-python">with Session(engine) as s:
+    dormant = s.execute(
+        select(Customer.customer_id, Customer.region)
+        .outerjoin(Sale)
+        .where(Sale.order_id.is_(None))
+    ).all()
+    print(dormant)
+    # [('C-NCR-019', 'NCR'), ('C-CEB-011', 'Cebu'), ('C-DAV-007', 'Davao')]</code></pre>
+
+<p><strong>Exercise 4.3 — Persist Sales 2026</strong></p>
+<p>Dataset: Sales 2026 (all three CSVs)</p>
+<ol>
+<li>Define <code>Product</code>, <code>Customer</code>, and <code>Sale</code> ORM models with real foreign keys</li>
+<li>Create the schema and bulk-load all three CSVs — the FK on <code>ZZ-999</code> should refuse row <code>PH-01530</code></li>
+<li>Write the revenue-by-region query and match the published totals</li>
+<li>Write the anti-join for accounts with no orders — expect 3</li>
+<li>Write a <code>HAVING</code> query: region + category combinations above ₱1,000,000 — expect 4</li>
+<li>Wrap the load in a transaction and roll back cleanly on any failure</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-sales-service">Phase 4 Capstone: Sales 2026 Service</h3>
+<p><strong>Project: API + database, no more in-memory dicts</strong></p>
+<p><strong>Dataset:</strong> Sales 2026 (all three CSVs)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A FastAPI app backed by SQLAlchemy + SQLite</li>
+<li><code>GET /products</code>, <code>GET /products/{code}</code>, <code>GET /customers/{id}/orders</code>, <code>GET /reorder</code></li>
+<li><code>POST /orders</code> that validates stock and writes to the database in a transaction</li>
+<li><code>GET /revenue?group_by=region|category|month</code> returning the published figures</li>
+<li>Pydantic request/response models kept distinct from the ORM models</li>
+<li>A seed script that runs <code>make_dataset.py</code> then loads the CSVs, rejecting the six bad rows with logged reasons</li>
+<li>Manual verification of every endpoint via <code>/docs</code></li>
+</ol>
+<hr />
+
+<h2 id="phase-5-quality-delivery">Phase 5: Quality &amp; Delivery</h2>
+<h3 id="weeks-19-22">Weeks 19–22 | Goal: Test your code and package it so others can install and run it</h3>
+<hr />
+
+<h3 id="module-51-testing-pytest">Module 5.1 — Testing with pytest</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~10h<br>
+<strong>Skip-check (test-out):</strong> Write a fixture, a parametrized test, and a test that asserts a specific exception is raised, then report coverage.<br>
+<strong>Skip if:</strong> pytest fixtures, parametrization, and coverage are part of your workflow.<br>
+<strong>Unlocks:</strong> trustworthy refactors, CI.</p>
+</blockquote>
+<p>A deterministic dataset is a gift to testing: the expected numbers are fixed, so your assertions can be exact rather than approximate.</p>
+<p>pytest collects <code>.py</code> files, not notebooks. So tests are written with <code>%%writefile</code> and run with <code>!pytest</code> — the notebook becomes the place you <em>drive</em> the suite from, not the place the tests live.</p>
+
+<h4>Tests, Fixtures &amp; Parametrization</h4>
+<pre><code class="language-python">%%writefile /content/drive/MyDrive/sales2026/tests/test_pricing.py
+from pathlib import Path
+import pytest
+from sales2026.pricing import line_total
+from sales2026.loader import load_sales
+
+@pytest.fixture
+def catalog():
+    return {
+        "PS-100": {"unit_price": 1450.00, "stock": 240, "reorder_point": 60},
+        "FM-400": {"unit_price": 24500.00, "stock": 5,  "reorder_point": 8},
+    }
+
+@pytest.mark.parametrize("price,qty,vat,expected", [
+    (1450.00, 12, 0.00, 17400.00),
+    (1450.00, 12, 0.12, 19488.00),
+    ( 8900.00,  4, 0.00, 35600.00),
+    (  320.00, 30, 0.00,  9600.00),
+    (24500.00,  2, 0.00, 49000.00),
+])
+def test_line_total(price, qty, vat, expected):
+    assert line_total(price, qty, vat=vat) == pytest.approx(expected)
+
+@pytest.mark.parametrize("bad_qty", [0, -2])
+def test_non_positive_qty_raises(bad_qty):
+    with pytest.raises(ValueError):
+        line_total(1450.00, bad_qty)
+
+def test_reorder_detection(catalog):
+    low = [c for c, p in catalog.items() if p["stock"] &lt; p["reorder_point"]]
+    assert low == ["FM-400"]
+
+DATA = Path("/content/drive/MyDrive/sales2026/data")
+
+def test_loader_rejects_exactly_six_rows():
+    clean, rejects = load_sales(DATA / "sales.csv")
+    assert len(clean) == 646
+    assert len(rejects) == 6
+
+def test_region_totals():
+    from sales2026.report import revenue_by
+    assert revenue_by("region") == pytest.approx(
+        {"NCR": 10_519_870.0, "Cebu": 3_514_180.0, "Davao": 2_300_500.0})</code></pre>
+
+<h4>Running &amp; Coverage</h4>
+<pre><code class="language-python">!pip install -q pytest pytest-cov
+%cd /content/drive/MyDrive/sales2026
+!pytest -q                                            # run the suite
+!pytest --cov=sales2026 --cov-report=term-missing     # with coverage
+!pytest -q tests/test_pricing.py::test_line_total     # one test while iterating</code></pre>
+<p>Two Colab-specific notes. Coverage cannot see code that only exists in cells, so a low number early on means "move it into <code>src/</code>", not "write more tests". And <code>!pytest</code> imports from disk, so after editing a module with <code>%%writefile</code> the test run always picks up the new version — unlike your notebook's own imports, which need <code>autoreload</code>.</p>
+
+<p><strong>Exercise 5.1 — Test the Domain</strong></p>
+<p>Dataset: Sales 2026</p>
+<ol>
+<li>Parametrize <code>line_total</code> across the four demo lines plus a VAT case</li>
+<li>Assert that <code>qty</code> of 0 and −2 both raise</li>
+<li>Add a fixture that builds a small in-memory catalog and test <code>needs_reorder</code></li>
+<li>Write an integration test asserting the loader returns exactly 646 clean and 6 rejected rows</li>
+<li>Assert the region totals to the peso — <strong>10,519,870 / 3,514,180 / 2,300,500</strong></li>
+<li>Get coverage above 90% on your pricing and loader modules</li>
+</ol>
+<hr />
+
+<h3 id="module-52-packaging-venv-automation">Module 5.2 — Packaging &amp; Automation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Turn notebook cells into an installable package with a console entry point, installed and invoked from within Colab.<br>
+<strong>Skip if:</strong> you author <code>pyproject.toml</code> packages with entry points already.<br>
+<strong>Unlocks:</strong> the Final Capstone, the automation track.</p>
+</blockquote>
+<p>This is where the notebook stops being enough, and admitting that is the lesson. A notebook cannot be imported, scheduled, or version-controlled sensibly. Everything you have written across fifteen modules becomes a package here — built from Colab, but no longer dependent on it.</p>
+
+<h4>Project layout in Drive</h4>
+<pre><code>MyDrive/sales2026/
+├── pyproject.toml
+├── make_dataset.py
+├── data/            products.csv  customers.csv  sales.csv
+├── src/sales2026/   __init__.py  loader.py  pricing.py  report.py  fx.py  cli.py
+├── tests/           test_pricing.py  test_loader.py
+└── *.ipynb          notebooks — now exploration only
+</code></pre>
+
+<h4>Writing the package files</h4>
+<pre><code class="language-python">%%writefile /content/drive/MyDrive/sales2026/pyproject.toml
+[project]
+name = "sales2026"
+version = "0.1.0"
+requires-python = "&gt;=3.11"
+dependencies = ["pandas&gt;=2.0", "requests&gt;=2.31"]
+
+[project.scripts]
+sales2026 = "sales2026.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"</code></pre>
+<pre><code class="language-python">%%writefile /content/drive/MyDrive/sales2026/src/sales2026/cli.py
+import argparse
+from pathlib import Path
+from .loader import load_sales
+from .report import revenue_by
+
+DATA = Path("/content/drive/MyDrive/sales2026/data")
+
+def main() -&gt; int:
+    ap = argparse.ArgumentParser(prog="sales2026")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    sub.add_parser("reorder")
+    rev = sub.add_parser("revenue")
+    rev.add_argument("--by", choices=["region", "category", "month"], default="region")
+    sub.add_parser("validate")
+    args = ap.parse_args()
+
+    if args.cmd == "validate":
+        clean, rejects = load_sales(DATA / "sales.csv")
+        print(f"clean={len(clean)} rejects={len(rejects)}")
+        return 0 if (len(clean), len(rejects)) == (646, 6) else 1
+    if args.cmd == "revenue":
+        for k, v in revenue_by(args.by).items():
+            print(f"{k:&lt;22} ₱{v:&gt;15,.2f}")
+    return 0</code></pre>
+
+<h4>Install and run it</h4>
+<pre><code class="language-python">%cd /content/drive/MyDrive/sales2026
+!pip install -q -e .</code></pre>
+<p>Then <strong>Runtime → Restart session</strong>. The console script is registered on disk but the running kernel's <code>PATH</code> and import cache predate it. This restart is not optional and it is the step everyone skips.</p>
+<pre><code class="language-python">%cd /content/drive/MyDrive/sales2026
+!sales2026 validate               # clean=646 rejects=6
+!sales2026 revenue --by region
+!sales2026 revenue --by month</code></pre>
+<blockquote class="callout">
+<p><strong>Editable installs on the Drive mount are slow and occasionally flaky.</strong> If <code>pip install -e .</code> hangs or the import behaves strangely, copy the tree to local disk first — <code>!cp -r /content/drive/MyDrive/sales2026 /content/proj</code> — install from there, and copy changed files back. Drive is a network filesystem pretending to be a folder; it is fine for data and awkward for code that gets imported hundreds of times.</p>
+</blockquote>
+
+<h4>Scheduling — the honest version</h4>
+<p>Colab has no cron. A notebook runs when a browser tab is open and a human is signed in, and Google actively disconnects idle sessions. Anything that must run unattended has to leave Colab. Three routes, in increasing order of effort:</p>
+<div class="table-scroll"><table>
+<tr><th>Route</th><th>How</th><th>Good for</th><th>Cost</th></tr>
+<tr><td><strong>GitHub Actions</strong></td><td>Push the package to GitHub, add a workflow on a <code>schedule:</code> cron, commit the CSV/XLSX output back or upload as an artifact</td><td>The weekly regional report — this is the right answer for this project</td><td>Free; needs a repo and Drive credentials replaced by files in-repo</td></tr>
+<tr><td><strong>Apps Script</strong></td><td>A Google Apps Script trigger that reads the Drive files and mails the summary</td><td>Report distribution, not computation</td><td>Free; JavaScript, not Python</td></tr>
+<tr><td><strong>A real host</strong></td><td>Any VM or Cloud Run job, <code>pip install</code> the same package, real cron</td><td>The Phase 4 API, anything with uptime expectations</td><td>Money and ops</td></tr>
+</table></div>
+<p>Same package in all three. That is the point of packaging it: <code>sales2026 revenue --by region</code> runs identically from a Colab cell, a GitHub runner, and a server, and none of them needs the notebook.</p>
+<pre><code class="language-yaml"># .github/workflows/weekly-report.yml
+on:
+  schedule:
+    - cron: "0 0 * * 1"        # Monday 08:00 Manila (00:00 UTC)
+  workflow_dispatch:
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -e .
+      - run: python make_dataset.py &amp;&amp; sales2026 validate
+      - run: sales2026 revenue --by region &gt; report.txt
+      - uses: actions/upload-artifact@v4
+        with: { name: weekly-report, path: report.txt }</code></pre>
+
+<p><strong>Exercise 5.2 — Ship the Tool</strong></p>
+<p>Notebook: <code>52_packaging.ipynb</code> · Dataset: Sales 2026</p>
+<ol>
+<li>Move your loader, pricing, report, and FX code out of cells into <code>src/sales2026/*.py</code> with <code>%%writefile</code></li>
+<li>Write <code>pyproject.toml</code> with pinned dependencies and a console entry point</li>
+<li><code>pip install -e .</code>, restart the session, and confirm <code>!sales2026 reorder</code> lists 3 products</li>
+<li>Add the <code>revenue --by region|category|month</code> and <code>validate</code> subcommands</li>
+<li>Confirm <code>!sales2026 validate</code> exits 0 — check with <code>!echo $?</code> — and exits 1 if you corrupt a row</li>
+<li>Push the package to GitHub and get the scheduled workflow green. Colab wrote the code; something else now runs it</li>
+</ol>
+<hr />
+
+<h3 id="phase-5-capstone-packaged-cli-tool">Phase 5 Capstone: Packaged CLI Tool</h3>
+<p><strong>Project: <code>sales2026</code>, installable</strong></p>
+<p><strong>Dataset:</strong> Sales 2026 (all three CSVs)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>An installable <code>sales2026</code> package with <code>pyproject.toml</code> and a console script</li>
+<li>Subcommands: <code>reorder</code>, <code>revenue</code>, <code>validate</code>, and <code>fx</code> (reusing Module 4.1)</li>
+<li><code>validate</code> prints the 6 rejected rows with reasons and exits non-zero if the count changes</li>
+<li>Logging to a file and clean error messages on missing or malformed input</li>
+<li>A pytest suite above 85% coverage, with at least one fixture and one parametrized test</li>
+<li>A README with install, data-generation, and usage instructions</li>
+<li>A cron example for scheduled reporting</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-sales2026-platform">Final Capstone: Sales 2026 Platform</h2>
+<p><strong>Project: End-to-End Sales 2026</strong></p>
+<p>Every phase, one project, one dataset. Nothing here is new — it is the six previous capstones wired together.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A typed <code>src/sales2026/</code> package: domain models (Phase 3), ETL and validation (Phase 2), logging (2.2)</li>
+<li>A SQLAlchemy + SQLite persistence layer seeded from the three CSVs with FK constraints enforced (4.3)</li>
+<li>A FastAPI service exposing catalogue, reorder, revenue, and order endpoints with validation (4.2)</li>
+<li>An FX enrichment job restating revenue in USD, with a cached-rate fallback (4.1)</li>
+<li>A Pandas reporting module producing region, category, and month tables plus a region × month pivot (2.3)</li>
+<li>A streaming path that handles the 412,908-row file without loading it into memory (3.2)</li>
+<li>A pytest suite above 85% coverage, including exact assertions against the published figures (5.1)</li>
+<li>Installable via <code>pyproject.toml</code> with a <code>sales2026</code> CLI entry point (5.2)</li>
+<li>A README documenting setup, the data model, the API, and how to run the tests</li>
+</ol>
+<blockquote class="callout">
+<p><strong>The acceptance test:</strong> delete <code>data/</code> from Drive, choose <em>Runtime → Disconnect and delete runtime</em>, reopen the notebook, and run <em>Restart and run all</em>. It should mount Drive, regenerate the CSVs, seed the database, start the service, hit <code>GET /revenue?group_by=region</code>, and print <strong>10,519,870 / 3,514,180 / 2,300,500</strong> — with no manual steps and no cell run out of order. If that round-trip works from a cold runtime, you are done.</p>
+</blockquote>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Python Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Isolate dependencies</td><td>The Colab runtime itself</td><td>Rebuilt each session — <code>!pip install</code> in Cell 1</td></tr>
+<tr><td>Reach your files</td><td><code>drive.mount("/content/drive")</code></td><td>Drive persists; <code>/content</code> does not</td></tr>
+<tr><td>Read a CSV (stdlib)</td><td><code>csv.DictReader</code></td><td>Rows as dicts — everything is a string</td></tr>
+<tr><td>Read a CSV (analysis)</td><td><code>pandas.read_csv</code></td><td>Check <code>dtypes</code> before trusting it</td></tr>
+<tr><td>Cast a dirty column</td><td><code>pd.to_numeric(..., errors="coerce")</code></td><td>Bad values become <code>NaN</code></td></tr>
+<tr><td>Read/write JSON</td><td><code>json.load</code> / <code>json.dump</code></td><td><code>indent=2</code> for readability</td></tr>
+<tr><td>Group &amp; aggregate</td><td><code>df.groupby().agg()</code></td><td>Or <code>collections.defaultdict</code></td></tr>
+<tr><td>Join tables</td><td><code>df.merge(..., how="left")</code></td><td>Select columns first to avoid <code>_x</code>/<code>_y</code></td></tr>
+<tr><td>Deduplicate</td><td><code>df.drop_duplicates(subset=[...])</code></td><td>Field checks won't catch duplicates</td></tr>
+<tr><td>Lazy iteration</td><td>generators (<code>yield</code>)</td><td>Constant memory on the 412k-row file</td></tr>
+<tr><td>Model a record</td><td><code>@dataclass</code></td><td>Auto <code>__init__</code>/<code>__repr__</code></td></tr>
+<tr><td>Static type check</td><td><code>mypy --strict</code></td><td>Annotate, then check</td></tr>
+<tr><td>Call an HTTP API</td><td><code>requests.get/post</code></td><td><code>raise_for_status()</code>, always a timeout</td></tr>
+<tr><td>Build a REST API</td><td><code>fastapi</code> + <code>pydantic</code></td><td>Auto docs at <code>/docs</code></td></tr>
+<tr><td>Persist data</td><td><code>sqlalchemy</code> / <code>sqlite3</code></td><td>ORM or raw SQL</td></tr>
+<tr><td>Unit testing</td><td><code>pytest</code></td><td>Fixtures + parametrize</td></tr>
+<tr><td>Package &amp; ship</td><td><code>pyproject.toml</code></td><td>Console entry points</td></tr>
+</table>
+
+<h3 id="colab-field-guide">Colab field guide</h3>
+<div class="table-scroll"><table>
+<tr><th>You want to…</th><th>Do this</th><th>Watch out for</th></tr>
+<tr><td>Reach your data</td><td><code>drive.mount("/content/drive")</code></td><td>Re-run it after every restart</td></tr>
+<tr><td>Install something</td><td><code>!pip install -q pkg</code></td><td>Restart the session if the import still fails</td></tr>
+<tr><td>Create a <code>.py</code> file</td><td><code>%%writefile /abs/path.py</code></td><td>Must be line 1; literal path only, no variables</td></tr>
+<tr><td>Import your own module</td><td><code>sys.path.append(str(SRC))</code></td><td>Add <code>%autoreload 2</code> or edits are ignored</td></tr>
+<tr><td>Change directory</td><td><code>%cd path</code></td><td><code>!cd</code> does not persist past the cell</td></tr>
+<tr><td>Time something</td><td><code>%%time</code> or <code>%timeit</code></td><td>First run includes Drive latency — measure twice</td></tr>
+<tr><td>See a log file</td><td><code>!tail -20 "{OUT}/sales2026.log"</code></td><td><code>basicConfig</code> needs <code>force=True</code></td></tr>
+<tr><td>Run tests</td><td><code>!pytest -q</code> after <code>%cd</code></td><td>Tests must be <code>.py</code> files, not cells</td></tr>
+<tr><td>Serve an API</td><td><code>TestClient</code>, or uvicorn + <code>proxyPort</code></td><td>Re-running the server cell hits "address in use"</td></tr>
+<tr><td>Store a secret</td><td>Secrets panel + <code>userdata.get()</code></td><td>Never a literal in a cell — Drive files get shared</td></tr>
+<tr><td>Keep a big scratch file</td><td>Write it to <code>/content</code></td><td>Gone on restart, by design — regenerate it</td></tr>
+<tr><td>Prove it works</td><td><em>Runtime → Restart and run all</em></td><td>The only real test that hidden state is gone</td></tr>
+</table></div>
+
+<h2 id="excel-sql-python">Excel ↔ SQL ↔ Python: The Same Four Jobs</h2>
+<p>You already know what to do to data. Filter, look up, summarize, combine — that never changes. What changes is how much you click versus type, and how many rows the tool survives. Keep this open while you work.</p>
+<div class="table-scroll"><table>
+<tr><th>The job</th><th>Excel</th><th>SQL</th><th>Python / Pandas</th></tr>
+<tr><td>Filter rows</td><td>AutoFilter, <code>FILTER()</code></td><td><code>WHERE</code></td><td><code>df[df.region == "NCR"]</code></td></tr>
+<tr><td>Look up a value</td><td><code>XLOOKUP</code></td><td><code>JOIN … ON</code></td><td><code>df.merge(products, on="product_code")</code></td></tr>
+<tr><td>Summarize</td><td>Pivot table</td><td><code>GROUP BY</code> + <code>SUM</code></td><td><code>df.groupby("region").agg(...)</code></td></tr>
+<tr><td>Filter a summary</td><td>Pivot value filter</td><td><code>HAVING</code></td><td>Filter the grouped frame</td></tr>
+<tr><td>Two-way summary</td><td>Rows + Columns</td><td><code>GROUP BY a, b</code></td><td><code>df.pivot_table(index=, columns=)</code></td></tr>
+<tr><td>Stack tables</td><td>Copy-paste, Append</td><td><code>UNION ALL</code></td><td><code>pd.concat([a, b])</code></td></tr>
+<tr><td>Unmatched rows</td><td>Left Anti merge</td><td><code>LEFT JOIN … IS NULL</code></td><td><code>merge(how="left", indicator=True)</code></td></tr>
+<tr><td>Distinct values</td><td><code>UNIQUE()</code></td><td><code>SELECT DISTINCT</code></td><td><code>df.col.unique()</code></td></tr>
+<tr><td>Sort</td><td>Sort A→Z, <code>SORT()</code></td><td><code>ORDER BY</code></td><td><code>df.sort_values(...)</code></td></tr>
+<tr><td>Conditional logic</td><td><code>IF</code>, <code>IFS</code></td><td><code>CASE WHEN</code></td><td><code>np.where</code>, <code>.apply</code></td></tr>
+<tr><td>Reusable logic</td><td>Power Query step</td><td>Views, CTEs</td><td>Functions, modules</td></tr>
+<tr><td>Row ceiling</td><td>~1M, slow well before</td><td>None that matters</td><td>Memory, or stream it</td></tr>
+</table></div>
+<blockquote class="module-meta">
+<p>Every row of this table can be checked against Sales 2026 in all three tools. Doing exactly that — one job, three syntaxes, same answer — is the fastest way to stop translating and start thinking in whichever tool is in front of you.</p>
+</blockquote>
+
+<h2 id="resources">Learning Resources</h2>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>Python Crash Course (Matthes)</td><td>Beginner foundations + projects</td></tr>
+<tr><td>Automate the Boring Stuff (Sweigart)</td><td>Practical automation &amp; scripting</td></tr>
+<tr><td>Fluent Python (Ramalho)</td><td>Idiomatic, intermediate-to-advanced</td></tr>
+<tr><td>Python for Data Analysis (McKinney)</td><td>Pandas, by its creator</td></tr>
+<tr><td>Effective Python (Slatkin)</td><td>90 specific best practices</td></tr>
+<tr><td>Architecture Patterns with Python (Percival &amp; Gregory)</td><td>Domain modeling, APIs, testing</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>Official Python Tutorial</td><td>Language fundamentals</td><td>docs.python.org/3/tutorial</td></tr>
+<tr><td>Real Python</td><td>Tutorials across all levels</td><td>realpython.com</td></tr>
+<tr><td>Pandas User Guide</td><td>Data analysis</td><td>pandas.pydata.org/docs</td></tr>
+<tr><td>FastAPI Docs</td><td>Building APIs</td><td>fastapi.tiangolo.com</td></tr>
+<tr><td>SQLAlchemy 2.0 Tutorial</td><td>ORM &amp; databases</td><td>docs.sqlalchemy.org</td></tr>
+<tr><td>pytest Documentation</td><td>Testing</td><td>docs.pytest.org</td></tr>
+<tr><td>mypy Documentation</td><td>Static typing</td><td>mypy.readthedocs.io</td></tr>
+<tr><td>Exercism — Python Track</td><td>Practice with mentoring</td><td>exercism.org</td></tr>
+</table>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td><code>make_dataset.py</code> (printed <a href="#dataset-generator">above</a>)</td><td>Generates every CSV this guide uses — the only dataset you need</td></tr>
+<tr><td><code>DATA/sales.csv</code> · <code>products.csv</code> · <code>customers.csv</code></td><td>Every exercise and capstone</td></tr>
+<tr><td><code>--rows 412908</code> big file</td><td>Streaming and performance work (3.2, Final Capstone) — generate to <code>/content</code></td></tr>
+<tr><td>open.er-api.com</td><td>PHP→USD rate for Module 4.1 — no key required</td></tr>
+<tr><td>Google Colab</td><td>The IDE — colab.research.google.com, free tier is plenty</td></tr>
+<tr><td>Google Drive</td><td>The filesystem — <code>MyDrive/sales2026/</code> holds notebooks, data and code</td></tr>
+<tr><td>Colab Secrets panel</td><td>API tokens for Module 4.1 and the ngrok option in 4.2</td></tr>
+<tr><td>VS Code + Python extension</td><td>Optional — for Phase 5, once code lives in <code>.py</code> files</td></tr>
+<tr><td>Ruff</td><td>Fast linter &amp; formatter</td></tr>
+<tr><td>DBeaver or DB Browser for SQLite</td><td>Inspect the database you build in 4.3</td></tr>
+<tr><td><em>From Excel to SQL</em> track</td><td>Same order book in Excel, Power Query, and SQL</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved in your browser and survives a reload.</p></blockquote>
+<h4>Setup</h4>
+<ul>
+<li>[ ] Colab notebook created and saved to <code>MyDrive/sales2026/</code></li>
+<li>[ ] Drive mounted; <code>ROOT</code>, <code>DATA</code>, <code>OUT</code>, <code>SRC</code>, <code>BIG</code> all resolve</li>
+<li>[ ] Dataset generated — three CSVs under <code>MyDrive/sales2026/data/</code></li>
+<li>[ ] Reference figures confirmed — 646 clean rows, ₱16,334,550 total</li>
+<li>[ ] <em>Restart and run all</em> passes on the setup notebook</li>
+</ul>
+<h4>Phase 1 — Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — Colab, Drive &amp; Notebook Hygiene</li>
+<li>[ ] Exercise 1.1 — Project Bootstrap</li>
+<li>[ ] Module 1.2 — Core Syntax &amp; Types</li>
+<li>[ ] Exercise 1.2 — Pricing Helpers</li>
+<li>[ ] Module 1.3 — Control Flow &amp; Functions</li>
+<li>[ ] Exercise 1.3 — Order Calculations</li>
+<li>[ ] Module 1.4 — Data Structures &amp; Comprehensions</li>
+<li>[ ] Exercise 1.4 — In-Memory Analytics</li>
+<li>[ ] Capstone 1 — CLI Stock Checker</li>
+</ul>
+<h4>Phase 2 — Data &amp; Files</h4>
+<ul>
+<li>[ ] Module 2.1 — Files, CSV &amp; JSON</li>
+<li>[ ] Exercise 2.1 — ETL Without Pandas</li>
+<li>[ ] Module 2.2 — Errors &amp; Logging</li>
+<li>[ ] Exercise 2.2 — Robust Loader</li>
+<li>[ ] Module 2.3 — Pandas Essentials</li>
+<li>[ ] Exercise 2.3 — Sales Analysis in Pandas</li>
+<li>[ ] Capstone 2 — Regional Revenue Report</li>
+</ul>
+<h4>Phase 3 — Pythonic OOP</h4>
+<ul>
+<li>[ ] Module 3.1 — Classes &amp; Dataclasses</li>
+<li>[ ] Exercise 3.1 — Domain Objects</li>
+<li>[ ] Module 3.2 — Iterators, Generators &amp; Decorators</li>
+<li>[ ] Exercise 3.2 — Lazy Pipeline</li>
+<li>[ ] Module 3.3 — Type Hints</li>
+<li>[ ] Exercise 3.3 — Fully Typed Module</li>
+<li>[ ] Capstone 3 — Sales 2026 Domain Model</li>
+</ul>
+<h4>Phase 4 — Real-World Python</h4>
+<ul>
+<li>[ ] Module 4.1 — Consuming APIs (requests)</li>
+<li>[ ] Exercise 4.1 — Restate in USD</li>
+<li>[ ] Module 4.2 — REST API with FastAPI</li>
+<li>[ ] Exercise 4.2 — Sales 2026 API</li>
+<li>[ ] Module 4.3 — Databases: SQLite &amp; SQLAlchemy</li>
+<li>[ ] Exercise 4.3 — Persist Sales 2026</li>
+<li>[ ] Capstone 4 — Sales 2026 Service</li>
+</ul>
+<h4>Phase 5 — Quality &amp; Delivery</h4>
+<ul>
+<li>[ ] Module 5.1 — Testing with pytest</li>
+<li>[ ] Exercise 5.1 — Test the Domain</li>
+<li>[ ] Module 5.2 — Packaging &amp; Automation</li>
+<li>[ ] Exercise 5.2 — Ship the Tool</li>
+<li>[ ] Capstone 5 — Packaged CLI Tool</li>
+</ul>
+<h4>Certifications / Outcomes</h4>
+<ul>
+<li>[ ] PCEP — Certified Entry-Level Python Programmer</li>
+<li>[ ] PCAP — Certified Associate in Python Programming</li>
+<li>[ ] Final Capstone — Sales 2026 Platform complete</li>
+</ul>
+
+<p><em>Guide Version 2.0 — Colab Edition · Python Track: Beginner to Intermediate, on the Sales 2026 dataset</em><br>
+<em>Google Colab + Drive · Non-linear modular design · Placement quiz · 15 modules · 6 capstones · ~22 weeks part-time · hayah-ai</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Full-text guide search ────────────────────────────────
+  // Indexes every block of the guide body, lists matching snippets grouped
+  // by section, highlights hits in the page, and filters the nav to the
+  // sections that contain them. Multiple words = all must appear in the
+  // same block; wrap in "quotes" for an exact phrase.
+  var navSearch = document.getElementById("navSearch");
+  var contentRoot = document.querySelector(".content");
+  if(navSearch && contentRoot){
+    var BLOCK_SEL = "h1,h2,h3,h4,p,li,tr,dt,dd,pre";
+    var searchRow = document.getElementById("searchRow"),
+        searchBar = document.getElementById("searchBar"),
+        searchCount = document.getElementById("searchCount"),
+        searchResults = document.getElementById("searchResults");
+    var navById = {};
+    document.querySelectorAll("#nav a").forEach(function(a){
+      navById[a.getAttribute("href").slice(1)] = a;
+    });
+
+    var blocks = [], section = null;
+    contentRoot.querySelectorAll(BLOCK_SEL).forEach(function(el){
+      if(/^H[1-4]$/.test(el.tagName) && el.id && navById[el.id]) section = el;
+      if(el.classList.contains("quiz-score")) return;
+      var outer = el.parentElement && el.parentElement.closest(BLOCK_SEL);
+      if(outer && contentRoot.contains(outer)) return;
+      var text = el.textContent.replace(/\s+/g, " ").trim();
+      if(text) blocks.push({el:el, text:text, lower:text.toLowerCase(), section:section});
+    });
+
+    var hits = [], cur = -1, timer = null;
+    function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+    function sectionLabel(sec){ return sec && navById[sec.id] ? navById[sec.id].textContent : "Introduction"; }
+
+    function clearMarks(){
+      contentRoot.querySelectorAll("mark.lg-hit").forEach(function(m){
+        var p = m.parentNode;
+        p.replaceChild(document.createTextNode(m.textContent), m);
+        p.normalize();
+      });
+      var b = contentRoot.querySelector(".lg-block-current");
+      if(b) b.classList.remove("lg-block-current");
+    }
+
+    function markBlock(el, re){
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+      while((n = walker.nextNode())) nodes.push(n);
+      var marks = [];
+      nodes.forEach(function(node){
+        var t = node.nodeValue, m, last = 0;
+        re.lastIndex = 0;
+        if(!re.test(t)) return;
+        re.lastIndex = 0;
+        var frag = document.createDocumentFragment();
+        while((m = re.exec(t))){
+          if(m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+          var mk = document.createElement("mark");
+          mk.className = "lg-hit";
+          mk.textContent = m[0];
+          frag.appendChild(mk);
+          marks.push(mk);
+          last = m.index + m[0].length;
+        }
+        if(last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+      });
+      return marks;
+    }
+
+    function snippet(text, terms, re){
+      var lower = text.toLowerCase(), i = -1;
+      terms.forEach(function(t){ var k = lower.indexOf(t); if(k > -1 && (i < 0 || k < i)) i = k; });
+      if(i < 0) i = 0;
+      var start = Math.max(0, i - 40), end = Math.min(text.length, i + 100);
+      var s = text.slice(start, end), out = "", last = 0, m;
+      re.lastIndex = 0;
+      while((m = re.exec(s))){
+        out += escHtml(s.slice(last, m.index)) + "<mark>" + escHtml(m[0]) + "</mark>";
+        last = m.index + m[0].length;
+      }
+      return (start > 0 ? "…" : "") + out + escHtml(s.slice(last)) + (end < text.length ? "…" : "");
+    }
+
+    function filterNav(ids){
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var any = false;
+        g.querySelectorAll("a").forEach(function(a){
+          var show = !ids || !!ids[a.getAttribute("href").slice(1)];
+          if(a.classList.contains("nav-child")) a.classList.toggle("filtered-out", !show);
+          if(show) any = true;
+        });
+        g.classList.toggle("filtered-out", !any);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        a.classList.toggle("filtered-out", !!ids && !ids[a.getAttribute("href").slice(1)]);
+      });
+    }
+
+    function updateCount(nSections){
+      if(!hits.length){ searchCount.textContent = "No matches"; return; }
+      var pos = cur > -1 ? (cur + 1) + " / " + hits.length : hits.length + (hits.length === 1 ? " match" : " matches");
+      searchCount.textContent = pos + " · " + nSections + (nSections === 1 ? " section" : " sections");
+    }
+
+    var lastSectionCount = 0;
+    function run(){
+      var raw = navSearch.value.trim();
+      clearMarks();
+      hits = []; cur = -1;
+      searchRow.classList.toggle("has-query", !!raw);
+      if(raw.length < 2){
+        searchResults.classList.remove("show");
+        searchBar.classList.remove("show");
+        searchResults.innerHTML = "";
+        filterNav(null);
+        return;
+      }
+      var phrase = /^"(.+)"$/.exec(raw);
+      var terms = phrase ? [phrase[1].toLowerCase()] : raw.toLowerCase().split(/\s+/);
+      terms = terms.filter(function(t, i){ return t && terms.indexOf(t) === i; });
+      var re = new RegExp(terms.slice().sort(function(a, b){ return b.length - a.length; }).map(escRe).join("|"), "gi");
+      var matched = blocks.filter(function(b){
+        return terms.every(function(t){ return b.lower.indexOf(t) > -1; });
+      });
+
+      var ids = {}, groups = [], html = "", LIMIT = 60;
+      matched.forEach(function(b, bi){
+        var marks = markBlock(b.el, re);
+        if(marks.length) marks.forEach(function(m){ hits.push({m:m, el:b.el, b:bi}); });
+        else hits.push({m:null, el:b.el, b:bi});
+        var key = b.section ? b.section.id : "";
+        if(b.section) ids[b.section.id] = true;
+        if(!groups.length || groups[groups.length - 1].key !== key) groups.push({key:key, sec:b.section, items:[]});
+        groups[groups.length - 1].items.push(bi);
+      });
+
+      if(!matched.length){
+        html = '<div class="sr-empty">No matches for “' + escHtml(raw) + '”. Try fewer words.</div>';
+      } else {
+        var listed = 0;
+        groups.forEach(function(g){
+          if(listed >= LIMIT) return;
+          html += '<div class="sr-group"><div class="sr-section">' + escHtml(sectionLabel(g.sec)) + '</div>';
+          g.items.slice(0, 4).forEach(function(bi){
+            if(listed >= LIMIT) return;
+            html += '<button type="button" class="sr-item" role="option" data-b="' + bi + '">' +
+                    snippet(matched[bi].text, terms, re) + '</button>';
+            listed++;
+          });
+          if(g.items.length > 4) html += '<div class="sr-more">+' + (g.items.length - 4) + ' more in this section (use ↓ to step through)</div>';
+          html += '</div>';
+        });
+        if(matched.length > listed) html += '<div class="sr-more">Showing ' + listed + ' of ' + matched.length + ' blocks — add a word to narrow it.</div>';
+      }
+      searchResults.innerHTML = html;
+      searchResults.classList.add("show");
+      searchBar.classList.add("show");
+      lastSectionCount = Object.keys(ids).length || (matched.length ? 1 : 0);
+      filterNav(ids);
+      updateCount(lastSectionCount);
+    }
+
+    function go(i, closeMobile){
+      if(!hits.length) return;
+      cur = (i + hits.length) % hits.length;
+      contentRoot.querySelectorAll("mark.lg-hit-current").forEach(function(m){ m.classList.remove("lg-hit-current"); });
+      var prev = contentRoot.querySelector(".lg-block-current");
+      if(prev) prev.classList.remove("lg-block-current");
+      var h = hits[cur];
+      if(h.m) h.m.classList.add("lg-hit-current");
+      h.el.classList.add("lg-block-current");
+      (h.m || h.el).scrollIntoView({behavior:"smooth", block:"center"});
+      searchResults.querySelectorAll(".sr-item").forEach(function(it){
+        var on = +it.getAttribute("data-b") === h.b;
+        it.classList.toggle("current", on);
+        if(on) it.scrollIntoView({block:"nearest"});
+      });
+      updateCount(lastSectionCount);
+      if(closeMobile && window.innerWidth <= 1000) closeNav();
+    }
+
+    navSearch.addEventListener("input", function(){
+      clearTimeout(timer);
+      timer = setTimeout(run, 140);
+    });
+    navSearch.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        clearTimeout(timer);
+        if(!hits.length && navSearch.value.trim().length >= 2) run();
+        go(e.shiftKey ? cur - 1 : cur + 1, true);
+      } else if(e.key === "Escape"){
+        navSearch.value = "";
+        run();
+      }
+    });
+    searchResults.addEventListener("click", function(e){
+      var item = e.target.closest(".sr-item");
+      if(!item) return;
+      var b = +item.getAttribute("data-b");
+      for(var k = 0; k < hits.length; k++){ if(hits[k].b === b){ go(k, true); break; } }
+    });
+    document.getElementById("searchNext").addEventListener("click", function(){ go(cur + 1, false); });
+    document.getElementById("searchPrev").addEventListener("click", function(){ go(cur - 1, false); });
+    document.getElementById("searchClear").addEventListener("click", function(){
+      navSearch.value = "";
+      run();
+      navSearch.focus();
+    });
+    document.addEventListener("keydown", function(e){
+      var tag = (e.target.tagName || "").toLowerCase();
+      var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+      var slash = e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey;
+      var cmdK = (e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K");
+      if(!slash && !cmdK) return;
+      e.preventDefault();
+      if(window.innerWidth <= 1000){
+        document.getElementById("sidebar").classList.add("open");
+        document.getElementById("scrim").classList.add("show");
+      }
+      navSearch.focus();
+      navSearch.select();
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

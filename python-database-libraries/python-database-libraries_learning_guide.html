@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Database Libraries Learning Guide — psycopg, SQLAlchemy, DuckDB &amp; supabase-py</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+.search-row{position:relative}
+.search-row .nav-search{padding-right:2.4rem}
+.search-kbd{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:4px;padding:0 .3rem;background:var(--paper-2);
+  pointer-events:none;
+}
+.search-row.has-query .search-kbd{display:none}
+.search-bar{
+  display:none;align-items:center;gap:.35rem;margin-top:.45rem;
+  font-size:.72rem;color:var(--ink-soft);
+}
+.search-bar.show{display:flex}
+.search-count{flex:1;font-family:var(--mono)}
+.search-bar button{
+  border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);
+  border-radius:6px;font-size:.72rem;padding:.15rem .45rem;cursor:pointer;min-width:26px;min-height:24px;
+}
+.search-bar button:hover{background:var(--teal-wash)}
+.search-results{
+  display:none;margin:.5rem 0 .2rem;max-height:48vh;overflow-y:auto;
+  border:1px solid var(--line);border-radius:8px;background:var(--paper);
+}
+.search-results.show{display:block}
+.sr-group{border-top:1px solid var(--line-soft)}
+.sr-group:first-child{border-top:none}
+.sr-section{
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--teal);padding:.5rem .65rem .15rem;
+}
+.sr-item{
+  display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  font-family:var(--sans);font-size:.76rem;line-height:1.4;color:var(--ink);
+  padding:.35rem .65rem;
+}
+.sr-item:hover,.sr-item.current{background:var(--teal-wash)}
+.sr-item mark,.lg-hit{background:var(--amber-wash);color:inherit;border-radius:2px;padding:0 1px}
+.sr-more{font-size:.7rem;color:var(--ink-soft);padding:.1rem .65rem .45rem}
+.sr-empty{font-size:.78rem;color:var(--ink-soft);padding:.6rem .65rem}
+pre .lg-hit{background:#5c4a12;color:#fff4cf}
+.lg-hit.lg-hit-current{background:var(--coral);color:#fff;outline:2px solid var(--coral)}
+.lg-block-current{outline:2px dashed var(--teal);outline-offset:4px;border-radius:4px}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — expert guided learning">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">expert guided learning</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Python Database<br>Libraries Guide</div>
+      <div class="brand-sub">psycopg · SQLAlchemy · DuckDB · supabase-py</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <div class="search-row" id="searchRow">
+        <input type="search" id="navSearch" class="nav-search" placeholder="Search the guide…" aria-label="Search the whole guide" aria-controls="searchResults" autocomplete="off" spellcheck="false">
+        <span class="search-kbd" aria-hidden="true">/</span>
+      </div>
+      <div class="search-bar" id="searchBar">
+        <span class="search-count" id="searchCount" aria-live="polite"></span>
+        <button type="button" id="searchPrev" aria-label="Previous match">↑</button>
+        <button type="button" id="searchNext" aria-label="Next match">↓</button>
+        <button type="button" id="searchClear" aria-label="Clear search">✕</button>
+      </div>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+    </div>
+    <nav id="nav">
+<a href="#applied-data-access-track" class="nav-top">Applied Data Access Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-psycopg-direct-access" class="nav-top nav-phase">Phase 1: psycopg Direct Access</a>
+<div class="nav-children">
+<a href="#module-11-connections-cursors-the-db-api" class="nav-child">Module 1.1 — Connections, Cursors &amp; the DB-API</a>
+<a href="#module-12-parameterized-queries-sql-injection-prevention" class="nav-child">Module 1.2 — Parameterized Queries &amp; SQL Injection</a>
+<a href="#module-13-transactions-autocommit-error-handling" class="nav-child">Module 1.3 — Transactions, Autocommit &amp; Error Handling</a>
+<a href="#module-14-connection-pooling-async-psycopg" class="nav-child">Module 1.4 — Connection Pooling &amp; Async psycopg</a>
+<a href="#phase-1-capstone-tindahub-safe-order-api" class="nav-child">Phase 1 Capstone: TindaHub Safe Order API</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-sqlalchemy-core-orm" class="nav-top nav-phase">Phase 2: SQLAlchemy Core &amp; ORM</a>
+<div class="nav-children">
+<a href="#module-21-engine-connection-core-expression-language" class="nav-child">Module 2.1 — Engine, Connection &amp; Core</a>
+<a href="#module-22-orm-mapping-with-declarative-models" class="nav-child">Module 2.2 — ORM Mapping with Declarative Models</a>
+<a href="#module-23-sessions-relationships-querying-with-select" class="nav-child">Module 2.3 — Sessions, Relationships &amp; select()</a>
+<a href="#module-24-alembic-migrations" class="nav-child">Module 2.4 — Alembic Migrations</a>
+<a href="#phase-2-capstone-tindahub-orm-data-layer" class="nav-child">Phase 2 Capstone: TindaHub ORM Data Layer</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-duckdb-analytical-sql" class="nav-top nav-phase">Phase 3: DuckDB Analytical SQL</a>
+<div class="nav-children">
+<a href="#module-31-duckdb-fundamentals-in-process-olap" class="nav-child">Module 3.1 — DuckDB Fundamentals: In-Process OLAP</a>
+<a href="#module-32-querying-pandas-csv-parquet-directly" class="nav-child">Module 3.2 — Querying Pandas, CSV &amp; Parquet</a>
+<a href="#module-33-duckdb-postgres-federated-queries" class="nav-child">Module 3.3 — DuckDB + Postgres: Federated Queries</a>
+<a href="#module-34-duckdb-for-fast-local-analytics-pipelines" class="nav-child">Module 3.4 — Fast Local Analytics Pipelines</a>
+<a href="#phase-3-capstone-tindahub-duckdb-warehouse" class="nav-child">Phase 3 Capstone: TindaHub DuckDB Warehouse</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-supabase-py-integration" class="nav-top nav-phase">Phase 4: supabase-py &amp; Integration</a>
+<div class="nav-children">
+<a href="#module-41-supabase-py-client-auth-table-queries-rpc" class="nav-child">Module 4.1 — supabase-py Client</a>
+<a href="#module-42-realtime-storage-row-level-security-from-python" class="nav-child">Module 4.2 — Realtime, Storage &amp; RLS</a>
+<a href="#module-43-choosing-the-right-tool-psycopg-vs-sqlalchemy-vs-duckdb-vs-supabase-py" class="nav-child">Module 4.3 — Choosing the Right Tool</a>
+</div></div>
+
+<a href="#final-capstone-tindahub-data-access-toolkit" class="nav-top">Final Capstone: TindaHub Data Access Toolkit</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="python-database-libraries-learning-guide">Python Database Libraries Learning Guide</h1>
+<h2 id="applied-data-access-track">Applied Data Access Track</h2>
+<h3>psycopg &middot; SQLAlchemy &middot; DuckDB &middot; supabase-py</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Python Database Libraries" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="118" cy="56" rx="72" ry="24" fill="#0d7a6e"/>
+<path d="M46 56 L46 176 A72 24 0 0 0 190 176 L190 56 Z" fill="#075249"/>
+<ellipse cx="118" cy="56" rx="72" ry="24" fill="none" stroke="#0d7a6e" stroke-width="0"/>
+<path d="M46 116 A72 24 0 0 0 190 116" fill="none" stroke="#0d7a6e" stroke-width="7"/>
+<rect x="178" y="140" width="54" height="20" rx="7" fill="#0d7a6e"/>
+<circle cx="234" cy="150" r="15" fill="#0d7a6e"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide &mdash; you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same realistic <strong>TindaHub</strong> normalized database &mdash; the 6-table Postgres schema (<code>categories</code>, <code>customers</code>, <code>products</code>, <code>orders</code>, <code>order_items</code>, <code>payments</code>) already seeded in this workspace's local Postgres for the PostgreSQL &amp; Metabase guide.</p>
+</blockquote>
+<p><strong>Scope note:</strong> this guide assumes you already know SQL (SELECT, JOIN, aggregation &mdash; covered end-to-end in the <a href="../postgresql-metabase/postgresql-metabase_learning_guide.html">PostgreSQL &amp; Metabase guide</a>) and everyday Python. It also assumes you've seen a first pass at SQLAlchemy already (the <a href="../python/python_learning_guide.html">Python Learning Guide</a>'s Module 4.3 covers a SQLite-backed ORM introduction) &mdash; this guide goes considerably deeper, against a real Postgres database, and adds three libraries that guide doesn't touch at all: <strong>psycopg</strong> (the raw PostgreSQL driver), <strong>DuckDB</strong> (embedded analytical SQL), and <strong>supabase-py</strong> (Supabase's REST/RPC client). The throughline across all four: each one trades off raw control, ORM convenience, analytical speed, or hosted-platform integration differently, and Module 4.3 makes that trade-off explicit.</p>
+<p><strong>Local setup used throughout:</strong> this workspace already runs PostgreSQL 17 natively (Homebrew, trust auth, database <code>tindahub</code> seeded from <code>datasets/tindahub/schema.sql</code> and <code>seed.sql</code>) for the PostgreSQL &amp; Metabase guide. Every code example in this guide connects to that same local <code>tindahub</code> database via <code>postgresql://localhost/tindahub</code> &mdash; if your own Postgres requires a username/password, add them to the connection string; if <code>tindahub</code> isn't seeded yet, run <code>psql -d tindahub -f schema.sql -f seed.sql</code> from that dataset's folder first.</p>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner to Python database libraries</strong> &mdash; Start at Module 1.1 and go sequentially through all four phases.</li>
+<li><strong>Some experience with one or two of these libraries</strong> &mdash; Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting one library</strong> &mdash; Jump via the <strong>Module Index</strong> or pick a <strong>Learning Track</strong> (psycopg-only, SQLAlchemy-only, DuckDB-only, or Supabase-only).</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz &mdash; Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3>psycopg</h3>
+<ul>
+<li>[ ] I can open a connection, run a parameterized query, and fetch results using psycopg's cursor API.</li>
+<li>[ ] I know why string-formatting values directly into SQL is dangerous, and always use placeholders instead.</li>
+<li>[ ] I can explain the difference between autocommit mode and an explicit transaction, and when to use each.</li>
+<li>[ ] I know what a connection pool is for and when a single long-lived connection isn't enough.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 1.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 1.3</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Phase 2</strong></p>
+
+<h3>SQLAlchemy</h3>
+<ul>
+<li>[ ] I can define a declarative ORM model with <code>Mapped</code>/<code>mapped_column</code> and create its table.</li>
+<li>[ ] I can write a query with SQLAlchemy 2.0's <code>select()</code> construct and execute it through a <code>Session</code>.</li>
+<li>[ ] I understand the difference between Core (expression language) and the ORM, and when each is the better fit.</li>
+<li>[ ] I've generated and applied at least one Alembic migration.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 2.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 2.3</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Phase 3</strong></p>
+
+<h3>DuckDB</h3>
+<ul>
+<li>[ ] I can run a SQL query directly against a CSV or Parquet file with DuckDB, with no separate load step.</li>
+<li>[ ] I can query a pandas DataFrame in place using DuckDB's SQL engine.</li>
+<li>[ ] I've used <code>ATTACH</code> to query a live Postgres table from DuckDB without an ETL step.</li>
+<li>[ ] I can explain why DuckDB is faster than pandas for a large groupby/aggregation.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 3.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 3.3</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Phase 4</strong></p>
+
+<h3>supabase-py</h3>
+<ul>
+<li>[ ] I can create a Supabase client and run a table query with <code>.select()</code>/<code>.insert()</code>.</li>
+<li>[ ] I know the difference between the anon key and the service role key, and when each is safe to use.</li>
+<li>[ ] I can call a Postgres function through <code>.rpc()</code> instead of raw SQL.</li>
+<li>[ ] I understand how Row Level Security changes what a query actually returns, independent of the query itself.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 4.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 4.2</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Module 4.3</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-connections-cursors-the-db-api"><td>1.1</td><td>Connections, Cursors &amp; the DB-API</td><td>Beginner&ndash;Intermediate</td><td>SQL basics</td><td>2h</td></tr>
+<tr data-href="#module-12-parameterized-queries-sql-injection-prevention"><td>1.2</td><td>Parameterized Queries &amp; SQL Injection Prevention</td><td>Beginner&ndash;Intermediate</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-13-transactions-autocommit-error-handling"><td>1.3</td><td>Transactions, Autocommit &amp; Error Handling</td><td>Intermediate</td><td>1.1</td><td>2.5h</td></tr>
+<tr data-href="#module-14-connection-pooling-async-psycopg"><td>1.4</td><td>Connection Pooling &amp; Async psycopg</td><td>Intermediate</td><td>1.3</td><td>2.5h</td></tr>
+<tr data-href="#module-21-engine-connection-core-expression-language"><td>2.1</td><td>Engine, Connection &amp; Core Expression Language</td><td>Intermediate</td><td>1.1</td><td>3h</td></tr>
+<tr data-href="#module-22-orm-mapping-with-declarative-models"><td>2.2</td><td>ORM Mapping with Declarative Models</td><td>Intermediate</td><td>2.1</td><td>3h</td></tr>
+<tr data-href="#module-23-sessions-relationships-querying-with-select"><td>2.3</td><td>Sessions, Relationships &amp; Querying with select()</td><td>Intermediate</td><td>2.2</td><td>3h</td></tr>
+<tr data-href="#module-24-alembic-migrations"><td>2.4</td><td>Alembic Migrations</td><td>Intermediate</td><td>2.2</td><td>2.5h</td></tr>
+<tr data-href="#module-31-duckdb-fundamentals-in-process-olap"><td>3.1</td><td>DuckDB Fundamentals: In-Process OLAP</td><td>Beginner&ndash;Intermediate</td><td>SQL basics</td><td>2h</td></tr>
+<tr data-href="#module-32-querying-pandas-csv-parquet-directly"><td>3.2</td><td>Querying Pandas, CSV &amp; Parquet Directly</td><td>Intermediate</td><td>3.1</td><td>2.5h</td></tr>
+<tr data-href="#module-33-duckdb-postgres-federated-queries"><td>3.3</td><td>DuckDB + Postgres: Federated Queries</td><td>Intermediate</td><td>3.1, 1.1</td><td>2h</td></tr>
+<tr data-href="#module-34-duckdb-for-fast-local-analytics-pipelines"><td>3.4</td><td>DuckDB for Fast Local Analytics Pipelines</td><td>Intermediate</td><td>3.2</td><td>2.5h</td></tr>
+<tr data-href="#module-41-supabase-py-client-auth-table-queries-rpc"><td>4.1</td><td>supabase-py Client: Auth, Table Queries &amp; RPC</td><td>Intermediate</td><td>SQL basics</td><td>2.5h</td></tr>
+<tr data-href="#module-42-realtime-storage-row-level-security-from-python"><td>4.2</td><td>Realtime, Storage &amp; Row Level Security from Python</td><td>Advanced</td><td>4.1</td><td>2.5h</td></tr>
+<tr data-href="#module-43-choosing-the-right-tool-psycopg-vs-sqlalchemy-vs-duckdb-vs-supabase-py"><td>4.3</td><td>Choosing the Right Tool</td><td>Intermediate</td><td>Phases 1&ndash;3, 4.1</td><td>1.5h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1&ndash;3 are largely independent tracks &mdash; psycopg (Phase 1), SQLAlchemy (Phase 2), and DuckDB (Phase 3) can each be learned on their own once you know SQL. SQLAlchemy's Core layer is conceptually adjacent to psycopg (both talk directly to Postgres), so Phase 1 is a useful but not strictly required warm-up for Phase 2. Phase 4's supabase-py modules stand alone from Phases 1&ndash;3, but Module 4.3's decision framework assumes you've done at least one module from each earlier phase.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+
+<h3 id="track-1-psycopg-fast-track">Track 1 &mdash; psycopg Fast Track (direct Postgres access)</h3>
+<p><code>1.1 &rarr; 1.2 &rarr; 1.3 &rarr; 1.4 &rarr; Phase 1 Capstone</code><br>
+Target outcome: <strong>comfortable writing safe, transactional, connection-pooled raw SQL access code</strong>.</p>
+
+<h3 id="track-2-sqlalchemy-for-application-backends">Track 2 &mdash; SQLAlchemy for Application Backends</h3>
+<p><code>1.1 &rarr; 2.1 &rarr; 2.2 &rarr; 2.3 &rarr; 2.4 &rarr; Phase 2 Capstone</code><br>
+Target outcome: <strong>building and evolving an ORM-backed application data layer, schema migrations included</strong>.</p>
+
+<h3 id="track-3-duckdb-for-local-analytics">Track 3 &mdash; DuckDB for Local Analytics</h3>
+<p><code>3.1 &rarr; 3.2 &rarr; 3.3 &rarr; 3.4 &rarr; Phase 3 Capstone</code><br>
+Target outcome: <strong>fast, SQL-native local analysis over files and live Postgres data with no separate warehouse</strong>.</p>
+
+<h3 id="track-4-supabase-backed-app-development">Track 4 &mdash; Supabase-Backed App Development</h3>
+<p><code>2.1 &rarr; 2.2 &rarr; 4.1 &rarr; 4.2 &rarr; 4.3 &rarr; Final Capstone</code><br>
+Target outcome: <strong>choosing correctly between direct-DB access and the Supabase client layer for a real application, with RLS understood</strong>.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — psycopg Direct Access       (Weeks 1–2)
+Phase 2 — SQLAlchemy Core &amp; ORM       (Weeks 2–4)
+Phase 3 — DuckDB Analytical SQL       (Weeks 3–5)
+Phase 4 — supabase-py &amp; Integration   (Weeks 5–6)
+Final Capstone                        (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ─┬─ 1.2 ─ 1.3 ─ 1.4 ──────────┐
+     ├─ 2.1 ─ 2.2 ─ 2.3 ─ 2.4     ├─ 4.3 ─ Final Capstone
+     └─ 3.1 ─ 3.2 ─ 3.3 ─ 3.4     │
+              4.1 ─ 4.2 ──────────┘</code></pre>
+
+<h2 id="phase-1-psycopg-direct-access">Phase 1: psycopg Direct Access</h2>
+<h3 id="weeks-1-2">Weeks 1&ndash;2 | Goal: connect to Postgres and run safe, transactional queries with the raw driver</h3>
+<hr />
+
+<h3 id="module-11-connections-cursors-the-db-api">Module 1.1 &mdash; Connections, Cursors &amp; the DB-API</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> SQL basics (SELECT, INSERT, JOIN) &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Open a psycopg connection, run a query with a cursor, and fetch results as both tuples and dict-like rows, using context managers throughout.<br>
+<strong>Skip if:</strong> You already default to <code>psycopg</code> (not <code>psycopg2</code>) for new Postgres work and use context managers by habit.<br>
+<strong>Unlocks:</strong> Module 1.2, Module 2.1</p>
+</blockquote>
+
+<h4>psycopg3, not psycopg2, for new work</h4>
+<p>This guide teaches <strong>psycopg</strong> (package name <code>psycopg</code>, commonly called "psycopg 3" to distinguish it from the still-widely-deployed older <code>psycopg2</code>). For any new project there's no real reason to reach for <code>psycopg2</code> instead: psycopg 3 has built-in async support, a native connection pool (Module 1.4), better type adaptation, and measured throughput roughly 2&ndash;3x higher on bulk fetches. If you're maintaining an older codebase, <code>psycopg2</code>'s API is similar enough that the concepts here (cursors, parameterized queries, transactions) transfer directly &mdash; only the import name and a handful of APIs differ.</p>
+<pre><code class="language-py">import psycopg
+
+with psycopg.connect("postgresql://localhost/tindahub") as conn:
+    with conn.cursor() as cur:
+        cur.execute("SELECT id, name, email FROM customers LIMIT 5")
+        rows = cur.fetchall()
+        for row in rows:
+            print(row)         # each row is a plain tuple by default: (1, 'Maria Santos', '...')
+</code></pre>
+<p>Using <code>with</code> on both the connection and the cursor matters beyond tidiness: the connection's context manager commits the transaction on clean exit and rolls it back on an exception (Module 1.3 covers this in depth), so skipping it is a common source of silently-lost writes when an error occurs partway through a script.</p>
+
+<h4>Getting rows as dictionaries</h4>
+<p>Plain tuples require remembering column order by position, which gets fragile as a query grows. psycopg's <code>row_factory</code> parameter changes what shape each fetched row comes back as &mdash; <code>dict_row</code> gives you a dictionary keyed by column name instead.</p>
+<pre><code class="language-py">import psycopg
+from psycopg.rows import dict_row
+
+with psycopg.connect("postgresql://localhost/tindahub", row_factory=dict_row) as conn:
+    with conn.cursor() as cur:
+        cur.execute("SELECT id, name, email FROM customers LIMIT 5")
+        for row in cur.fetchall():
+            print(row["name"], row["email"])   # access by column name, not position
+</code></pre>
+
+<p><strong>Exercise 1.1 &mdash; First Queries Against TindaHub</strong></p>
+<p>Dataset: the local <code>tindahub</code> Postgres database (<code>categories</code>, <code>customers</code>, <code>products</code>, <code>orders</code>, <code>order_items</code>, <code>payments</code>)</p>
+<ol>
+<li>Connect to <code>tindahub</code> with psycopg and, using <code>dict_row</code>, fetch and print all rows from <code>categories</code>.</li>
+<li>Write a query joining <code>orders</code> to <code>customers</code> to list each order's <code>id</code>, <code>status</code>, and the customer's <code>name</code>, fetched with <code>cur.fetchall()</code>.</li>
+<li>Use <code>cur.fetchone()</code> in a loop (checking for <code>None</code> to stop) to print the same result set one row at a time instead, and explain in one sentence when you'd prefer <code>fetchone</code>-in-a-loop over <code>fetchall</code>.</li>
+<li>Use <code>cur.description</code> to print the column names of your join query's result set without hardcoding them.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-parameterized-queries-sql-injection-prevention">Module 1.2 &mdash; Parameterized Queries &amp; SQL Injection Prevention</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> Module 1.1 &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Rewrite a query that string-formats a user-supplied value into SQL as a safely parameterized query, and explain exactly what attack the fix prevents.<br>
+<strong>Skip if:</strong> You already never build a SQL string with f-strings/<code>%</code>/<code>.format()</code> around a variable value.<br>
+<strong>Unlocks:</strong> Module 1.3, Module 4.1</p>
+</blockquote>
+
+<h4>Why string-building SQL is dangerous</h4>
+<p>Building a query by inserting a variable directly into a SQL string &mdash; via an f-string, <code>%</code>-formatting, or <code>.format()</code> &mdash; lets any value containing SQL syntax change the query's actual meaning. This is <strong>SQL injection</strong>: if a "customer name" input field ever gets to be <code>"'; DROP TABLE customers; --"</code> and that string is spliced directly into a query, the database executes it as written, not as the harmless text the application intended. This isn't a rare edge case; it's one of the most consistently exploited web application vulnerabilities in real breaches, precisely because it's easy to write by accident.</p>
+<pre><code class="language-py">customer_name = "Maria Santos"
+
+# DANGEROUS — never do this with any value that could originate from user input
+bad_query = f"SELECT * FROM customers WHERE name = '{customer_name}'"
+cur.execute(bad_query)
+
+# SAFE — psycopg substitutes the placeholder itself, correctly escaped, never as raw text
+cur.execute("SELECT * FROM customers WHERE name = %s", (customer_name,))
+</code></pre>
+<p>psycopg's placeholder substitution isn't string concatenation in disguise &mdash; it sends the query and the parameter values to Postgres <em>separately</em>, so a malicious value can never be interpreted as SQL syntax no matter what characters it contains. This is why the fix works even for values you're confident are "safe": the discipline of always using placeholders, with no exceptions for "trusted" input, is what actually prevents the mistake, not case-by-case judgment about which values need it.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> assuming SQL injection only matters for values obviously derived from a web form. Any value that ever traces back to something outside your own hardcoded source &mdash; a CLI argument, a config file, an API response you're relaying &mdash; deserves the same parameterized treatment. Treat placeholders as the unconditional default, not a case-by-case judgment call.</p></blockquote>
+
+<h4>Placeholders for identifiers vs. values</h4>
+<p><code>%s</code> placeholders are for <em>values</em> only &mdash; they cannot be used for table or column names, since those are part of the query's structure, not data. When a table/column name genuinely needs to be dynamic (rare, and worth being suspicious of when it happens), psycopg's <code>sql</code> module provides <code>sql.Identifier</code> for safely composing identifiers instead.</p>
+<pre><code class="language-py">from psycopg import sql
+
+table_name = "orders"   # e.g., selected from a fixed, hardcoded allow-list — never raw user input
+query = sql.SQL("SELECT * FROM {table} LIMIT 5").format(table=sql.Identifier(table_name))
+cur.execute(query)
+</code></pre>
+
+<p><strong>Exercise 1.2 &mdash; Parameterize TindaHub's Customer Search</strong></p>
+<p>Dataset: <code>tindahub</code> Postgres database</p>
+<ol>
+<li>Write a function <code>find_customer(cur, search_term)</code> that safely queries <code>customers</code> for names containing <code>search_term</code> (use <code>ILIKE</code> with a parameterized wildcard pattern &mdash; not string concatenation).</li>
+<li><em>Retrieval practice: before checking your work, write down what would happen if <code>search_term</code> were the string <code>"'; DELETE FROM customers WHERE '1'='1"</code>, first against an f-string version and then against your parameterized version. Then actually test both against a disposable copy of the query to confirm.</em></li>
+<li>Write a second function <code>orders_for_status(cur, status, table_name="orders")</code> that safely parameterizes the <code>status</code> value but uses <code>sql.Identifier</code> for the table name, only accepting table names from a hardcoded allow-list (e.g., <code>{"orders", "order_items"}</code>) and raising an error otherwise.</li>
+<li>Explain in 2&ndash;3 sentences why the allow-list in step 3 is still necessary even though <code>sql.Identifier</code> itself prevents injection &mdash; what problem does the allow-list solve that <code>Identifier</code> alone doesn't?</li>
+</ol>
+<hr />
+
+<h3 id="module-13-transactions-autocommit-error-handling">Module 1.3 &mdash; Transactions, Autocommit &amp; Error Handling</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Write a multi-statement transaction that commits only if every statement succeeds, correctly rolling back on any error, and explain what autocommit mode changes about that behavior.<br>
+<strong>Skip if:</strong> Transaction boundaries and rollback-on-error are already a comfortable habit.<br>
+<strong>Unlocks:</strong> Module 1.4, Module 2.3</p>
+</blockquote>
+
+<h4>Transactions are on by default</h4>
+<p>By default, a psycopg connection is <em>not</em> in autocommit mode: every statement runs inside an implicit transaction that stays open until you call <code>conn.commit()</code> or <code>conn.rollback()</code> &mdash; or, when using <code>with psycopg.connect(...) as conn:</code>, until the block exits (committing on success, rolling back if an exception propagated). This matters for correctness whenever an operation involves more than one statement that must succeed or fail together &mdash; e.g., inserting an order and its order items should never leave one committed without the other.</p>
+<pre><code class="language-py">import psycopg
+
+with psycopg.connect("postgresql://localhost/tindahub") as conn:
+    with conn.cursor() as cur:
+        try:
+            cur.execute(
+                "INSERT INTO orders (customer_id, status) VALUES (%s, %s) RETURNING id",
+                (3, "pending")
+            )
+            order_id = cur.fetchone()[0]
+            cur.execute(
+                "INSERT INTO order_items (order_id, product_id, quantity) VALUES (%s, %s, %s)",
+                (order_id, 7, 2)
+            )
+            # no explicit commit needed here — the `with conn:` block commits on clean exit
+        except Exception:
+            conn.rollback()
+            raise
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> assuming a failed statement automatically undoes itself. In Postgres, once a statement inside a transaction errors, the <em>entire transaction</em> is left in a failed state ("current transaction is aborted") and every subsequent statement in it will also fail until you explicitly <code>rollback()</code> &mdash; there's no partial-success recovery without an explicit <code>SAVEPOINT</code>.</p></blockquote>
+
+<h4>Autocommit mode and savepoints</h4>
+<p><code>conn.autocommit = True</code> makes every statement commit immediately on its own, with no multi-statement transaction wrapping it &mdash; appropriate for simple, independent reads or single-statement writes where you don't need atomicity across multiple statements, and required for certain administrative commands (like <code>CREATE DATABASE</code>) that Postgres won't allow inside a transaction block at all. For partial rollback within a larger transaction, a <code>SAVEPOINT</code> (via <code>conn.transaction()</code> as a nested context manager in psycopg) lets you undo just a portion of the work without losing everything already done.</p>
+<pre><code class="language-py">with psycopg.connect("postgresql://localhost/tindahub") as conn:
+    with conn.cursor() as cur:
+        with conn.transaction():                 # outer transaction
+            cur.execute("UPDATE orders SET status = %s WHERE id = %s", ("shipped", 1))
+            try:
+                with conn.transaction():          # nested — becomes a SAVEPOINT
+                    cur.execute("UPDATE payments SET method = %s WHERE order_id = %s", ("invalid_method", 1))
+            except psycopg.errors.CheckViolation:
+                pass    # only the nested savepoint rolls back; the outer UPDATE above still commits
+</code></pre>
+
+<p><strong>Exercise 1.3 &mdash; Atomic Order Placement for TindaHub</strong></p>
+<p>Dataset: <code>tindahub</code> Postgres database</p>
+<ol>
+<li>Write a function <code>place_order(conn, customer_id, items)</code> where <code>items</code> is a list of <code>(product_id, quantity)</code> tuples, that inserts one row into <code>orders</code> and one row per item into <code>order_items</code>, all inside a single transaction.</li>
+<li>Deliberately pass an invalid <code>product_id</code> (one that violates the foreign key constraint) partway through the items list, and confirm that <em>no</em> rows were inserted at all after the error &mdash; not even the earlier, individually-valid item rows.</li>
+<li>Reproduce the same failure using a <code>SAVEPOINT</code> around each individual item insert instead, so that valid items commit even if one later item fails, and confirm the difference in outcome against step 2.</li>
+<li>Write a short note (2&ndash;3 sentences) on which behavior (all-or-nothing vs. partial-success-via-savepoint) is the correct one for TindaHub's actual order-placement business rule, and why.</li>
+</ol>
+<hr />
+
+<h3 id="module-14-connection-pooling-async-psycopg">Module 1.4 &mdash; Connection Pooling &amp; Async psycopg</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.3 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Explain why opening a new connection per request is expensive, set up a <code>ConnectionPool</code>, and write one query using <code>AsyncConnection</code>.<br>
+<strong>Skip if:</strong> Connection pooling and async psycopg are already familiar.<br>
+<strong>Unlocks:</strong> Module 2.1, Phase 1 Capstone</p>
+</blockquote>
+
+<h4>Why pool connections at all</h4>
+<p>Opening a new Postgres connection involves a TCP handshake, authentication, and server-side process setup &mdash; measured in milliseconds, not microseconds, which becomes a real bottleneck if a web application opens a fresh connection for every incoming request. A <strong>connection pool</strong> keeps a set of already-open connections ready to hand out and reuse, so a request borrows one, uses it, and returns it instead of paying the connection-setup cost every time.</p>
+<pre><code class="language-py">from psycopg_pool import ConnectionPool
+
+pool = ConnectionPool("postgresql://localhost/tindahub", min_size=2, max_size=10)
+
+with pool.connection() as conn:
+    with conn.cursor() as cur:
+        cur.execute("SELECT count(*) FROM orders")
+        print(cur.fetchone())
+# connection is returned to the pool here, not closed
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> pooling against a service that already pools for you in a mode that doesn't support certain session-level features. Supabase's transaction-mode pooler (Supavisor, typically on port 6543), for instance, does not support prepared statements or session-scoped <code>SET</code> commands the way a direct connection does &mdash; connecting through it with default settings can produce confusing "prepared statement already exists" errors under concurrent load. When connecting through any external pooler, check its mode (transaction vs. session) before assuming every psycopg feature behaves identically to a direct connection.</p></blockquote>
+
+<h4>Async psycopg</h4>
+<p>psycopg's async API mirrors the sync one closely &mdash; <code>AsyncConnection</code>/<code>AsyncCursor</code> with <code>await</code> in front of the operations that hit the network &mdash; making it a natural fit inside an already-async application (like a FastAPI endpoint) where you don't want a blocking database call to stall the event loop.</p>
+<pre><code class="language-py">import asyncio
+import psycopg
+
+async def get_customer_count():
+    async with await psycopg.AsyncConnection.connect("postgresql://localhost/tindahub") as conn:
+        async with conn.cursor() as cur:
+            await cur.execute("SELECT count(*) FROM customers")
+            return (await cur.fetchone())[0]
+
+count = asyncio.run(get_customer_count())
+</code></pre>
+
+<p><strong>Exercise 1.4 &mdash; Pool-Backed TindaHub Order Lookups</strong></p>
+<p>Dataset: <code>tindahub</code> Postgres database</p>
+<ol>
+<li>Set up a <code>ConnectionPool</code> with <code>min_size=2, max_size=5</code> against <code>tindahub</code>.</li>
+<li>Write a function that, given an order ID, borrows a connection from the pool, fetches the order with its items (joined to <code>products</code> for names), and returns the result as a list of dicts.</li>
+<li>Simulate 20 concurrent lookups (using <code>concurrent.futures.ThreadPoolExecutor</code> or similar, calling your function with 20 different order IDs) and confirm the pool handles them without opening 20 separate raw connections.</li>
+<li>Rewrite the single-order lookup function as an <code>async def</code> using <code>AsyncConnection</code>, and run the equivalent 20-lookup workload with <code>asyncio.gather</code> instead of a thread pool.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-tindahub-safe-order-api">Phase 1 Capstone: TindaHub Safe Order API</h3>
+<p><strong>Project: A small psycopg-only module providing safe, transactional, pooled access to TindaHub's order data</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain why parameterized queries prevent SQL injection, what happens to a transaction after one statement inside it fails, and why a connection pool matters under concurrent load? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> <code>tindahub</code> Postgres database</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A pooled connection setup (module-level <code>ConnectionPool</code>) used by every function below.</li>
+<li>A <code>place_order(customer_id, items)</code> function, fully parameterized, atomic (all-or-nothing) across the order and its items.</li>
+<li>A <code>search_customers(term)</code> function using safe <code>ILIKE</code> parameterization.</li>
+<li>A <code>cancel_order(order_id)</code> function that updates status inside an explicit transaction, with a savepoint-based partial-rollback path for one sub-step you choose (e.g., a related payment-status update that might legitimately fail without blocking the cancellation itself).</li>
+<li>A short written note (3&ndash;5 sentences) on which of these functions would most benefit from being rewritten as async, and why, given a hypothetical high-concurrency web API in front of them.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-sqlalchemy-core-orm">Phase 2: SQLAlchemy Core &amp; ORM</h2>
+<h3 id="weeks-2-4">Weeks 2&ndash;4 | Goal: build and evolve an ORM-backed application data layer against real Postgres</h3>
+<hr />
+
+<h3 id="module-21-engine-connection-core-expression-language">Module 2.1 &mdash; Engine, Connection &amp; Core Expression Language</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.1 &middot; <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Create an Engine, run a raw SQL query with <code>text()</code>, and build the equivalent query with Core's <code>Table</code>/<code>select()</code> constructs, explaining what Core adds over raw psycopg.<br>
+<strong>Skip if:</strong> Engine/Connection/Core querying is already comfortable, distinct from the ORM layer covered next.<br>
+<strong>Unlocks:</strong> Module 2.2, Module 2.3</p>
+</blockquote>
+
+<h4>Engine: a connection factory, not a connection</h4>
+<p>SQLAlchemy's <code>Engine</code> is a factory that manages a pool of connections (internally, similar in spirit to Module 1.4's <code>ConnectionPool</code>) and knows how to talk to your specific database dialect &mdash; it is created once per application, not per query. Under the hood, SQLAlchemy's Postgres dialect uses psycopg (or another driver you specify) to actually talk to the database; SQLAlchemy itself is a layer on top, not a replacement driver.</p>
+<pre><code class="language-py">from sqlalchemy import create_engine, text
+
+engine = create_engine("postgresql+psycopg://localhost/tindahub")   # +psycopg selects psycopg 3 as the driver
+
+with engine.connect() as conn:
+    result = conn.execute(text("SELECT id, name FROM customers LIMIT 5"))
+    for row in result:
+        print(row.id, row.name)   # named attribute access on the result row
+</code></pre>
+<p><code>text()</code> wraps a raw SQL string for execution &mdash; and still requires parameterization the same way Module 1.2 does, via named bind parameters (<code>:name</code>) rather than psycopg's <code>%s</code>.</p>
+<pre><code class="language-py">result = conn.execute(
+    text("SELECT * FROM customers WHERE name ILIKE :pattern"),
+    {"pattern": "%santos%"}
+)
+</code></pre>
+
+<h4>Core: building queries as Python objects, not strings</h4>
+<p>SQLAlchemy Core represents tables and queries as Python objects rather than SQL strings &mdash; <code>Table</code> objects describe schema, and <code>select()</code>/<code>insert()</code>/<code>update()</code> build a query as a composable expression tree that SQLAlchemy compiles to the correct SQL for your specific database dialect. This buys portability (the same Core query can target Postgres or SQLite without rewriting SQL syntax) and lets you build queries programmatically (conditionally adding a <code>WHERE</code> clause, say) without string concatenation.</p>
+<pre><code class="language-py">from sqlalchemy import MetaData, Table, Column, Integer, String, select
+
+metadata = MetaData()
+customers = Table(
+    "customers", metadata,
+    Column("id", Integer, primary_key=True),
+    Column("name", String),
+    Column("email", String),
+)
+
+query = select(customers.c.id, customers.c.name).where(customers.c.name.ilike("%santos%"))
+with engine.connect() as conn:
+    for row in conn.execute(query):
+        print(row.id, row.name)
+</code></pre>
+<p>Module 2.2 introduces the ORM layer, which sits on top of Core rather than replacing it &mdash; every ORM query still compiles down to the same Core expression machinery underneath.</p>
+
+<p><strong>Exercise 2.1 &mdash; TindaHub Core Queries</strong></p>
+<p>Dataset: <code>tindahub</code> Postgres database</p>
+<ol>
+<li>Create an Engine against <code>tindahub</code> using the <code>postgresql+psycopg://</code> dialect.</li>
+<li>Using <code>text()</code> with named bind parameters, write a parameterized query returning all orders for a given <code>status</code>.</li>
+<li>Reflect the <code>orders</code> and <code>customers</code> tables using <code>Table(..., autoload_with=engine)</code> (instead of manually declaring columns) and build the equivalent join query using Core's <code>select()</code> and a <code>.join()</code>.</li>
+<li>Compare the two approaches (raw <code>text()</code> vs. Core <code>select()</code>) and note in 2&ndash;3 sentences one concrete situation where Core's composability would matter more than raw SQL's directness.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-orm-mapping-with-declarative-models">Module 2.2 &mdash; ORM Mapping with Declarative Models</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 2.1 &middot; <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Define a mapped class with <code>DeclarativeBase</code>, <code>Mapped</code>, and <code>mapped_column</code> for an existing table, including a primary key and a nullable column, without consulting docs.<br>
+<strong>Skip if:</strong> This exact 2.0-style declarative pattern is already fluent (note: this is not the same as the older <code>declarative_base()</code>/<code>Column</code>-only style, which is legacy as of SQLAlchemy 2.0).<br>
+<strong>Unlocks:</strong> Module 2.3, Module 2.4</p>
+</blockquote>
+
+<h4>The 2.0-style declarative pattern</h4>
+<p>SQLAlchemy 2.0 (this guide targets 2.0.51) standardized on typed, annotation-driven declarative models: a <code>DeclarativeBase</code> subclass as your model base, and each column declared with a <code>Mapped[type]</code> annotation paired with <code>mapped_column()</code> for ORM-specific configuration (primary key, foreign key, defaults). If you're reading older tutorials using bare <code>Column</code> assignments without <code>Mapped</code> type annotations, that's the pre-2.0 (1.x) style &mdash; it still works for backward compatibility, but the typed style gets you real IDE autocomplete and static type checking on model attributes, which the untyped style never could.</p>
+<pre><code class="language-py">from typing import Optional
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+
+class Base(DeclarativeBase):
+    pass
+
+class Customer(Base):
+    __tablename__ = "customers"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(120))
+    email: Mapped[Optional[str]]           # Optional[...] maps to a nullable column
+
+class Order(Base):
+    __tablename__ = "orders"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    customer_id: Mapped[int] = mapped_column(ForeignKey("customers.id"))
+    status: Mapped[str]
+</code></pre>
+<p>Note that these mapped classes describe the <em>existing</em> <code>tindahub</code> schema (created by <code>schema.sql</code>) &mdash; <code>Base.metadata.create_all(engine)</code> only creates tables that don't already exist, so running it against <code>tindahub</code> is safe (a no-op for these two) but is the tool you'd use to create a genuinely new table from a model.</p>
+
+<h4>Type mapping and defaults</h4>
+<p>SQLAlchemy infers a reasonable SQL column type from the Python type in <code>Mapped[...]</code> (<code>str</code> &rarr; <code>String</code>/<code>VARCHAR</code>, <code>int</code> &rarr; <code>Integer</code>, <code>datetime</code> &rarr; <code>DateTime</code>), but an explicit <code>mapped_column(String(120))</code> is still worth writing whenever you need a specific length or database-level constraint the bare Python type can't express &mdash; relying purely on inference for anything beyond a quick prototype risks a schema that's technically valid but looser than intended.</p>
+
+<p><strong>Exercise 2.2 &mdash; Map TindaHub's Full Schema</strong></p>
+<p>Dataset: <code>tindahub</code> Postgres database</p>
+<ol>
+<li>Define 2.0-style declarative models for all six <code>tindahub</code> tables (<code>categories</code>, <code>customers</code>, <code>products</code>, <code>orders</code>, <code>order_items</code>, <code>payments</code>), matching the actual column types and constraints in <code>schema.sql</code> as closely as your <code>Mapped</code> annotations allow.</li>
+<li>Include foreign keys (<code>ForeignKey("orders.id")</code>, etc.) on every column that has one in the real schema.</li>
+<li>Run <code>Base.metadata.create_all(engine, checkfirst=True)</code> against a <em>throwaway</em> database (not <code>tindahub</code> itself &mdash; create a scratch database first) and confirm the generated DDL matches the real schema's structure closely, noting any differences in your write-up.</li>
+<li>For the <code>products.attributes</code> JSONB column specifically, research and use SQLAlchemy's <code>JSONB</code> type (from <code>sqlalchemy.dialects.postgresql</code>) rather than a generic string type, and explain in one sentence why that specific type matters here.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-sessions-relationships-querying-with-select">Module 2.3 &mdash; Sessions, Relationships &amp; Querying with select()</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 2.2 &middot; <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Define a <code>relationship()</code> between two mapped models, query it with <code>Session.execute(select(...))</code>, and explain the N+1 query problem and how <code>joinedload</code> or <code>selectinload</code> fixes it.<br>
+<strong>Skip if:</strong> Sessions, relationships, and eager-loading strategies are already comfortable.<br>
+<strong>Unlocks:</strong> Module 2.4, Phase 2 Capstone</p>
+</blockquote>
+
+<h4>Session: the ORM's unit-of-work</h4>
+<p>A <code>Session</code> tracks mapped objects you've loaded or created, and batches the resulting SQL when you call <code>session.commit()</code> &mdash; it plays a role loosely analogous to a psycopg connection-plus-transaction (Module 1.3), but adds object identity tracking (the same database row loaded twice in one session returns the <em>same</em> Python object) and change tracking (mutating an attribute on a loaded object is enough; SQLAlchemy generates the corresponding <code>UPDATE</code> for you on commit).</p>
+<pre><code class="language-py">from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy import select
+
+SessionLocal = sessionmaker(bind=engine)
+
+with SessionLocal() as session:
+    customer = session.get(Customer, 1)              # primary-key lookup
+    customer.email = "updated@example.com"            # tracked change
+    session.commit()                                   # generates and runs the UPDATE
+
+    stmt = select(Customer).where(Customer.name.ilike("%santos%"))
+    matches = session.execute(stmt).scalars().all()    # 2.0-style: execute(select(...)), then .scalars()
+</code></pre>
+
+<h4>relationship() and the N+1 problem</h4>
+<p><code>relationship()</code> lets you navigate from one mapped model to related rows as Python attributes (<code>order.items</code> instead of a manual join query). Without care, looping over a list of orders and accessing <code>.items</code> on each triggers one extra query <em>per order</em> &mdash; the classic <strong>N+1 query problem</strong>, invisible in small test data and a serious performance bug at real scale. <code>joinedload()</code> (a SQL <code>JOIN</code>, one query total) or <code>selectinload()</code> (a second batched query, better for one-to-many collections) tell SQLAlchemy to eagerly load the related rows upfront instead.</p>
+<pre><code class="language-py">from sqlalchemy.orm import relationship, selectinload
+
+class Order(Base):
+    __tablename__ = "orders"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    customer_id: Mapped[int] = mapped_column(ForeignKey("customers.id"))
+    status: Mapped[str]
+    items: Mapped[list["OrderItem"]] = relationship(back_populates="order")
+
+# without eager loading: 1 query for orders + 1 query per order for .items (N+1)
+orders = session.execute(select(Order)).scalars().all()
+for o in orders:
+    print(len(o.items))   # each access triggers a separate query — the bug
+
+# with eager loading: 2 queries total, regardless of how many orders
+stmt = select(Order).options(selectinload(Order.items))
+orders = session.execute(stmt).scalars().all()
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> not noticing the N+1 problem because a local test database only has a handful of rows &mdash; 5 orders means 5 extra queries, easy to miss in a dev log. The bug scales linearly with row count and becomes a real production slowdown exactly when the data grows, which is precisely when it's hardest to just re-test your way into noticing.</p></blockquote>
+
+<p><strong>Exercise 2.3 &mdash; Relationship-Mapped TindaHub Queries</strong></p>
+<p>Dataset: <code>tindahub</code> Postgres database (via the models from Exercise 2.2)</p>
+<ol>
+<li>Add <code>relationship()</code> declarations connecting <code>Order</code> &harr; <code>OrderItem</code>, <code>OrderItem</code> &rarr; <code>Product</code>, and <code>Order</code> &rarr; <code>Customer</code>.</li>
+<li>Write a query fetching all orders for a given customer, printing each order's items and product names, first <em>without</em> any eager-loading option.</li>
+<li>Use SQLAlchemy's <code>Engine(..., echo=True)</code> (or a query counter) to confirm the N+1 pattern actually occurs in step 2, then rewrite the query using <code>selectinload</code> and confirm the query count drops.</li>
+<li>Write one query using <code>joinedload</code> instead for the same relationship, and explain in 1&ndash;2 sentences a scenario where <code>joinedload</code> would be the worse choice compared to <code>selectinload</code> (hint: consider what happens to the number of result rows when joining a one-to-many relationship).</li>
+</ol>
+<hr />
+
+<h3 id="module-24-alembic-migrations">Module 2.4 &mdash; Alembic Migrations</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 2.2 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Initialize Alembic against an existing database, autogenerate a migration for a model change, review it, and apply it with <code>upgrade</code>.<br>
+<strong>Skip if:</strong> The autogenerate-review-upgrade workflow is already routine.<br>
+<strong>Unlocks:</strong> Phase 2 Capstone, Module 4.3</p>
+</blockquote>
+
+<h4>Why migrations, not manual schema edits</h4>
+<p>Editing a production schema by hand (via <code>ALTER TABLE</code> run once, ad hoc) leaves no record of what changed, when, or in what order relative to your application code &mdash; and no reliable way to reproduce that exact schema state on a teammate's machine or a fresh environment. <strong>Alembic</strong> (the standard migration tool for SQLAlchemy) generates versioned, ordered migration scripts that can be applied (<code>upgrade</code>) or reversed (<code>downgrade</code>) as a sequence, giving schema changes the same reviewable, repeatable discipline as application code changes.</p>
+<pre><code class="language-bash">alembic init alembic                       # scaffolds the migration environment, once per project
+# edit alembic/env.py to point target_metadata at Base.metadata and the DB URL at tindahub
+alembic revision --autogenerate -m "add loyalty_points to customers"
+alembic upgrade head                       # applies all pending migrations
+alembic downgrade -1                       # reverses the most recent one
+</code></pre>
+
+<h4>Autogenerate is a draft, not a guarantee</h4>
+<p>Alembic's <code>--autogenerate</code> compares your current models against the live database schema and drafts a migration script &mdash; it's genuinely useful, but it doesn't catch everything (data migrations, some constraint changes, column renames that look like a drop-plus-add to the diff). Always open and read the generated script before running <code>upgrade</code>; treating autogenerate output as ready-to-run without review is how a column rename accidentally becomes a silent data-dropping <code>DROP COLUMN</code> + <code>ADD COLUMN</code> pair instead.</p>
+<pre><code class="language-py"># inside the generated migration file — review this before running upgrade
+def upgrade() -> None:
+    op.add_column("customers", sa.Column("loyalty_points", sa.Integer(), server_default="0"))
+
+def downgrade() -> None:
+    op.drop_column("customers", "loyalty_points")
+</code></pre>
+
+<p><strong>Exercise 2.4 &mdash; Evolve TindaHub's Schema with Alembic</strong></p>
+<p>Dataset: a scratch copy of the <code>tindahub</code> database (not the shared local one &mdash; create <code>tindahub_scratch</code> first, seeded from the same <code>schema.sql</code>/<code>seed.sql</code>)</p>
+<ol>
+<li>Initialize Alembic against <code>tindahub_scratch</code>, pointing <code>target_metadata</code> at your Exercise 2.2 models.</li>
+<li>Add a new <code>loyalty_points</code> integer column (default 0) to your <code>Customer</code> model, then autogenerate and review the resulting migration before applying it.</li>
+<li>Apply the migration with <code>upgrade head</code> and confirm the column exists in <code>tindahub_scratch</code> via a direct query.</li>
+<li>Reverse it with <code>downgrade -1</code> and confirm the column is gone, then explain in 2&ndash;3 sentences one kind of schema change where you would <em>not</em> trust autogenerate's draft without hand-editing it.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-tindahub-orm-data-layer">Phase 2 Capstone: TindaHub ORM Data Layer</h3>
+<p><strong>Project: A relationship-mapped, migration-managed SQLAlchemy data layer for TindaHub</strong></p>
+<p><strong>Dataset:</strong> <code>tindahub_scratch</code> Postgres database</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Complete 2.0-style declarative models for all six TindaHub tables, with every foreign key expressed as a <code>relationship()</code>.</li>
+<li>At least 3 query functions using <code>Session.execute(select(...))</code>, with eager-loading (<code>selectinload</code>/<code>joinedload</code>) chosen deliberately and justified per query.</li>
+<li>One Alembic migration adding a genuinely new field to the schema, reviewed and applied.</li>
+<li>A demonstrated-and-fixed N+1 query, with the query count shown before and after the fix.</li>
+<li>A short written note comparing this ORM data layer against Phase 1's raw psycopg module for the same underlying operations &mdash; where did the ORM save real effort, and where did it add friction versus just writing the SQL directly?</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-duckdb-analytical-sql">Phase 3: DuckDB Analytical SQL</h2>
+<h3 id="weeks-3-5">Weeks 3&ndash;5 | Goal: run fast, SQL-native analysis over files and live Postgres data with no separate warehouse</h3>
+<hr />
+
+<h3 id="module-31-duckdb-fundamentals-in-process-olap">Module 3.1 &mdash; DuckDB Fundamentals: In-Process OLAP</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> SQL basics &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Explain what "in-process" and "OLAP" mean for DuckDB specifically, and run a query against an in-memory DuckDB connection with no separate server process.<br>
+<strong>Skip if:</strong> DuckDB's execution model and basic connection usage are already familiar.<br>
+<strong>Unlocks:</strong> Module 3.2, Module 3.3</p>
+</blockquote>
+
+<h4>In-process, not client-server</h4>
+<p>Postgres (and the psycopg/SQLAlchemy layers on top of it) is a <strong>client-server</strong> database: a separate server process holds the data, and your Python process connects to it over a socket. <strong>DuckDB</strong> runs <em>inside</em> your Python process &mdash; there's no server to start, no connection string pointing at a host/port, and no network round-trip per query. This makes it fundamentally a different tool for a different job: not a replacement for Postgres as your application's system of record, but an extremely fast local engine for analytical queries over data you already have in files or memory.</p>
+<pre><code class="language-py">import duckdb
+
+# no server, no connection string — an in-memory DuckDB "database" just exists
+result = duckdb.sql("SELECT 42 AS answer").fetchall()
+print(result)   # [(42,)]
+
+con = duckdb.connect("tindahub_analytics.duckdb")   # a persistent on-disk file instead of :memory:
+con.sql("CREATE TABLE demo AS SELECT * FROM range(5) AS t(n)")
+print(con.sql("SELECT * FROM demo").fetchall())
+</code></pre>
+
+<h4>OLAP vs. OLTP: why this matters for what DuckDB is good at</h4>
+<p>Postgres is optimized for <strong>OLTP</strong> (Online Transaction Processing) &mdash; many small, concurrent reads and writes of individual rows, exactly what Phase 1&ndash;2's order-placement code needs. DuckDB is a <strong>columnar</strong> engine optimized for <strong>OLAP</strong> (Online Analytical Processing) &mdash; scanning and aggregating huge numbers of rows across a smaller number of columns, exactly what "total revenue by category, by month" needs. Using DuckDB for row-by-row transactional writes, or Postgres for a full-table columnar aggregation over millions of rows, both work, but each is playing against its actual strength.</p>
+
+<p><strong>Exercise 3.1 &mdash; First DuckDB Queries</strong></p>
+<p>Dataset: none required for this exercise beyond DuckDB's own generated data</p>
+<ol>
+<li>Run a query against DuckDB's in-memory mode computing a small aggregate over <code>range(1000)</code> (e.g., sum, average, count of even numbers).</li>
+<li>Create a persistent on-disk DuckDB file, create a table in it, insert a few rows, close the connection (or exit the script), then reopen the file in a new script and confirm the data persisted.</li>
+<li>Time a 10-million-row aggregation (<code>SELECT count(*), avg(n) FROM range(10_000_000) AS t(n) WHERE n % 7 = 0</code>) in DuckDB, and compare against the time to do the equivalent in pure Python with a loop, reporting the speedup.</li>
+<li>In 2&ndash;3 sentences, explain why DuckDB's speedup here is specifically a columnar/vectorized-execution story, not just "a database is faster than a loop" in general.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-querying-pandas-csv-parquet-directly">Module 3.2 &mdash; Querying Pandas, CSV &amp; Parquet Directly</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 3.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Run a SQL query directly against a CSV file and against an existing pandas DataFrame with no explicit load/import step, and explain what makes this possible.<br>
+<strong>Skip if:</strong> Querying files and DataFrames in place is already a routine DuckDB workflow.<br>
+<strong>Unlocks:</strong> Module 3.3, Module 3.4</p>
+</blockquote>
+
+<h4>SQL directly against files: no load step</h4>
+<p>DuckDB can reference a CSV, Parquet, or JSON file's path directly inside a <code>FROM</code> clause, inferring the schema automatically &mdash; there's no separate "load the CSV into a table" step required before you can query it (though <code>CREATE TABLE ... AS SELECT</code> from that same query materializes it into a real table when you want one).</p>
+<pre><code class="language-py">import duckdb
+
+result = duckdb.sql("""
+    SELECT City, count(*) AS n_orders, sum(Amount) AS total_revenue
+    FROM '../datasets/tindahub-orders/tindahub_orders.csv'
+    GROUP BY City
+    ORDER BY total_revenue DESC
+""").fetchall()
+
+# Parquet works identically, and is typically faster to scan than CSV for repeated queries
+duckdb.sql("""
+    COPY (SELECT * FROM '../datasets/tindahub-orders/tindahub_orders.csv')
+    TO 'tindahub_orders.parquet' (FORMAT PARQUET)
+""")
+</code></pre>
+
+<h4>Querying a pandas DataFrame in place</h4>
+<p>DuckDB can also query a pandas DataFrame that already exists in your Python process's memory, by referencing the DataFrame variable's name directly in SQL &mdash; DuckDB detects it in the surrounding Python scope. This is genuinely zero-copy in the common case, not a hidden re-serialization to CSV and back, which is what makes it fast even on DataFrames already sitting in memory.</p>
+<pre><code class="language-py">import duckdb
+import pandas as pd
+
+orders_df = pd.read_csv("../datasets/tindahub-orders/tindahub_orders.csv")
+
+# reference the DataFrame variable name directly inside the SQL string
+result_df = duckdb.sql("""
+    SELECT Category, avg(Amount) AS avg_order_value
+    FROM orders_df
+    WHERE Status = 'Delivered'
+    GROUP BY Category
+    ORDER BY avg_order_value DESC
+""").df()    # .df() converts the DuckDB result back into a pandas DataFrame
+</code></pre>
+<p><em>Retrieval practice: before running the query above, predict roughly how its execution time compares to the pandas-native equivalent (<code>orders_df[orders_df.Status == "Delivered"].groupby("Category").Amount.mean()</code>) on the same 5,000-row file. Run both and check your prediction &mdash; the gap tends to widen, not narrow, as row counts grow into the millions.</em></p>
+
+<p><strong>Exercise 3.2 &mdash; DuckDB-Native TindaHub Analysis</strong></p>
+<p>Dataset: <code>tindahub_orders.csv</code> (<code>datasets/tindahub-orders/</code>)</p>
+<ol>
+<li>Query <code>tindahub_orders.csv</code> directly (no pandas involved) to compute total revenue and order count per <code>Region</code>, ordered descending by revenue.</li>
+<li>Convert the same file to Parquet with <code>COPY ... TO ... (FORMAT PARQUET)</code>, then re-run an equivalent aggregation query against the Parquet file and compare timing against the CSV version.</li>
+<li>Load the CSV into a pandas DataFrame, then run a DuckDB query directly against that DataFrame variable computing average order value by <code>PaymentMethod</code>, converting the result back to a DataFrame with <code>.df()</code>.</li>
+<li>Write one query that joins the DataFrame against a small hardcoded lookup table of category commission rates (create it with a <code>VALUES</code> clause in SQL) to compute estimated commission per category.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-duckdb-postgres-federated-queries">Module 3.3 &mdash; DuckDB + Postgres: Federated Queries</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 3.1, Module 1.1 &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Attach a live Postgres database to a DuckDB connection and run a query joining a Postgres table against a local CSV, in one statement.<br>
+<strong>Skip if:</strong> The Postgres extension and <code>ATTACH</code> workflow are already familiar.<br>
+<strong>Unlocks:</strong> Module 3.4, Module 4.3</p>
+</blockquote>
+
+<h4>ATTACH: querying Postgres without an ETL step</h4>
+<p>DuckDB's <code>postgres</code> extension lets you <code>ATTACH</code> a live Postgres database and query its tables directly from DuckDB &mdash; the data is read from Postgres at query time, not copied in advance. This means you can join a DuckDB-local CSV or Parquet file against a live Postgres table in a single SQL statement, with no separate export/import pipeline, which is exactly the kind of one-off "join my file against the live database" analysis that would otherwise mean writing throwaway ETL code.</p>
+<pre><code class="language-py">import duckdb
+
+con = duckdb.connect()
+con.sql("INSTALL postgres")
+con.sql("LOAD postgres")
+con.sql("ATTACH 'dbname=tindahub host=localhost' AS pg (TYPE postgres)")
+
+# tables from Postgres now queryable as if they were local DuckDB tables
+result = con.sql("SELECT status, count(*) FROM pg.orders GROUP BY status").fetchall()
+
+# join a local CSV against a live Postgres table, in one query
+joined = con.sql("""
+    SELECT c.name, o.status, o.id
+    FROM pg.customers AS c
+    JOIN pg.orders AS o ON o.customer_id = c.id
+    WHERE c.name ILIKE '%santos%'
+""").fetchall()
+</code></pre>
+<p>The older <code>postgres_attach()</code> function-call syntax from early versions of this extension is deprecated in favor of the <code>ATTACH ... (TYPE postgres)</code> syntax shown above &mdash; if you see the old form in an older tutorial, treat it as outdated, not wrong-but-equivalent.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> assuming DuckDB's cached view of an attached Postgres database's schema updates automatically. If a table's columns change via a different connection (e.g., an Alembic migration from Module 2.4) while DuckDB's attachment is still open, DuckDB may keep using stale cached schema info until you run <code>CALL pg_clear_cache()</code> or reattach.</p></blockquote>
+
+<p><strong>Exercise 3.3 &mdash; Federated TindaHub Analysis</strong></p>
+<p>Dataset: <code>tindahub</code> Postgres database, plus <code>tindahub_orders.csv</code> (a different, unrelated flat dataset used here purely as a second data source to demonstrate cross-source joining)</p>
+<ol>
+<li>Install/load the <code>postgres</code> extension and <code>ATTACH</code> the local <code>tindahub</code> database.</li>
+<li>Query <code>pg.orders</code> joined to <code>pg.customers</code> and <code>pg.order_items</code>/<code>pg.products</code> to compute total revenue per customer, entirely via the DuckDB connection (no psycopg involved).</li>
+<li>In the same DuckDB session, also query <code>tindahub_orders.csv</code> directly, and write one query that <code>UNION ALL</code>s a small summary from each source (e.g., total order count from each) to demonstrate combining a live database and a flat file in one result.</li>
+<li>Report, in 2&ndash;3 sentences, one scenario where this federated approach would be clearly preferable to writing the equivalent report as a psycopg script plus a separate pandas script, and one scenario where it wouldn't be.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-duckdb-for-fast-local-analytics-pipelines">Module 3.4 &mdash; DuckDB for Fast Local Analytics Pipelines</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 3.2 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Build a small multi-step DuckDB pipeline (read files, transform, aggregate, export to Parquet) using only SQL, without an intermediate pandas step.<br>
+<strong>Skip if:</strong> This kind of file-in, file-out DuckDB pipeline is already routine.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+
+<h4>CREATE TABLE AS SELECT: materializing pipeline stages</h4>
+<p><code>CREATE TABLE ... AS SELECT</code> (CTAS) is the standard way to persist an intermediate pipeline result as a real DuckDB table, letting you build a multi-stage transformation as a sequence of SQL statements rather than one enormous nested query &mdash; each stage's table can be inspected independently while debugging, which a single giant query can't offer.</p>
+<pre><code class="language-py">import duckdb
+
+con = duckdb.connect("tindahub_pipeline.duckdb")
+
+con.sql("""
+    CREATE OR REPLACE TABLE stg_orders AS
+    SELECT *, Amount / 1.12 AS amount_ex_vat
+    FROM '../datasets/tindahub-orders/tindahub_orders.csv'
+    WHERE Status != 'Cancelled'
+""")
+
+con.sql("""
+    CREATE OR REPLACE TABLE monthly_summary AS
+    SELECT date_trunc('month', OrderDate::DATE) AS month,
+           Region,
+           sum(amount_ex_vat) AS revenue_ex_vat,
+           count(*) AS n_orders
+    FROM stg_orders
+    GROUP BY month, Region
+""")
+
+con.sql("COPY monthly_summary TO 'monthly_summary.parquet' (FORMAT PARQUET)")
+</code></pre>
+<p>This staged pattern &mdash; raw source &rarr; cleaned staging table &rarr; aggregated summary table &rarr; exported file &mdash; is the same shape as a proper data pipeline, just expressed entirely in SQL running inside your Python process instead of requiring a separate warehouse or orchestration tool for what's fundamentally a local, single-machine analysis job.</p>
+
+<p><strong>Exercise 3.4 &mdash; A Complete TindaHub Analytics Pipeline</strong></p>
+<p>Dataset: <code>tindahub_orders.csv</code>, <code>tindahub_customers.csv</code> (<code>datasets/tindahub-orders/</code>)</p>
+<ol>
+<li>Build a staging table cleaning and typing <code>tindahub_orders.csv</code> (parse <code>OrderDate</code> as a real date, exclude <code>Cancelled</code> orders, compute VAT-exclusive amount).</li>
+<li>Build a second table joining that staging table against <code>tindahub_customers.csv</code> to attach each order's customer join-date, and compute a "days since customer joined" column for each order.</li>
+<li>Build a final summary table: monthly revenue and order count, split by whether the order came from a customer who joined in the last 90 days ("new") vs. earlier ("returning").</li>
+<li>Export the final summary table to Parquet, then re-open the <code>.duckdb</code> file in a fresh Python session and confirm all three tables persisted correctly.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-tindahub-duckdb-warehouse">Phase 3 Capstone: TindaHub DuckDB Warehouse</h3>
+<p><strong>Project: A small, file-backed DuckDB "warehouse" combining live Postgres data and flat files</strong></p>
+<p><strong>Dataset:</strong> <code>tindahub</code> Postgres database, <code>tindahub_orders.csv</code>, <code>tindahub_customers.csv</code></p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A persistent <code>.duckdb</code> file with staged, cleaned tables built via CTAS from both the live Postgres <code>tindahub</code> database (via <code>ATTACH</code>) and the flat CSV files.</li>
+<li>At least one query that joins across both sources (Postgres-attached and CSV-sourced) in a single statement.</li>
+<li>A final exported Parquet summary table suitable for handing to someone without database access.</li>
+<li>A timing comparison (documented, not just claimed) between the DuckDB pipeline and an equivalent pure-pandas version for at least one of the aggregation steps.</li>
+<li>A short written note on which parts of this pipeline should <em>not</em> be migrated to DuckDB even if it's faster &mdash; i.e., which of TindaHub's actual operational (not analytical) work still belongs in Postgres.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-supabase-py-integration">Phase 4: supabase-py &amp; Integration</h2>
+<h3 id="weeks-5-6">Weeks 5&ndash;6 | Goal: use the Supabase client layer correctly, and choose the right data-access tool deliberately</h3>
+<hr />
+
+<h3 id="module-41-supabase-py-client-auth-table-queries-rpc">Module 4.1 &mdash; supabase-py Client: Auth, Table Queries &amp; RPC</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> SQL basics &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Create a Supabase client, run a table query with filters, sign in a user with email/password, and call a Postgres function via <code>.rpc()</code>, explaining what's actually happening over the wire for each.<br>
+<strong>Skip if:</strong> The supabase-py client and its major pieces (table queries, auth, rpc) are already familiar.<br>
+<strong>Unlocks:</strong> Module 4.2, Module 4.3</p>
+</blockquote>
+
+<h4>supabase-py is a REST client, not a database driver</h4>
+<p>This is the single most important thing to understand before writing any supabase-py code: unlike psycopg or SQLAlchemy, <strong>supabase-py doesn't open a Postgres connection at all</strong>. It's an HTTP client wrapping Supabase's auto-generated REST API (PostgREST) plus separate Auth, Storage, and Realtime services. Every <code>.table(...).select(...).execute()</code> call is an HTTP request, translated into SQL server-side by PostgREST &mdash; which is precisely what makes it usable from contexts (browser JS, mobile apps, serverless functions with no persistent DB connection) where a raw Postgres connection wouldn't be practical or safe.</p>
+<pre><code class="language-py">from supabase import create_client
+
+url = "https://your-project.supabase.co"
+key = "your-anon-or-service-role-key"   # see the key-choice warning below
+supabase = create_client(url, key)
+
+response = (
+    supabase.table("orders")
+    .select("id, status, customers(name)")   # nested select follows the foreign key relationship
+    .eq("status", "delivered")
+    .order("id", desc=True)
+    .limit(10)
+    .execute()
+)
+print(response.data)   # a list of dicts, already JSON-decoded
+</code></pre>
+
+<h4>anon key vs. service role key: this choice is a security decision</h4>
+<p>The <strong>anon key</strong> is safe to embed in client-side code (a browser or mobile app) precisely because every request made with it is still subject to Row Level Security (Module 4.2) &mdash; it identifies the request as coming from an unauthenticated or authenticated end-user, not as a trusted backend. The <strong>service role key</strong> bypasses Row Level Security entirely and must never be shipped to a client; it belongs only in trusted server-side code (a backend service, a scheduled job) that you control. Using the service role key in a context an end user could inspect (a mobile app, a public repo, client-side JS) is a full database compromise, not a minor misconfiguration.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> reaching for the service role key during development because it "just works" (no RLS policy debugging needed) and forgetting to switch back before shipping. Default to the anon key plus correctly-configured RLS policies for anything a client will run; reserve the service role key for genuinely trusted server-side code, and treat any accidental client-side exposure of it as an incident requiring an immediate key rotation.</p></blockquote>
+
+<h4>Calling Postgres functions with .rpc()</h4>
+<p>For logic too complex for PostgREST's query-builder style (multi-step business logic, an operation that must be atomic across several tables), define a Postgres function (in SQL, deployed via a migration) and call it through <code>.rpc()</code> &mdash; the request still goes over HTTP, but the actual work runs as a single function call inside Postgres, which is both faster (one round-trip) and safer (atomic) than orchestrating the same multi-step logic from multiple separate <code>.table()</code> calls in Python.</p>
+<pre><code class="language-py">response = supabase.rpc("place_order", {"p_customer_id": 3, "p_items": [{"product_id": 7, "quantity": 2}]}).execute()
+</code></pre>
+
+<p><strong>Exercise 4.1 &mdash; supabase-py Against a TindaHub-Shaped Project</strong></p>
+<p>Dataset: a Supabase project with the same <code>tindahub</code> schema (create a free Supabase project and run <code>schema.sql</code>/<code>seed.sql</code> against it via the SQL editor, or note in your write-up if you're working from documentation only)</p>
+<ol>
+<li>Create a Supabase client using the anon key and run a filtered, ordered, limited query against <code>orders</code>, including a nested <code>customers(name)</code> select.</li>
+<li>Attempt an <code>.insert()</code> into <code>orders</code> using the anon key with no RLS policy allowing it yet, and confirm (and note) that it's rejected &mdash; this is Module 4.2's territory, but seeing the rejection here previews why RLS matters.</li>
+<li>Write a small Postgres function <code>order_count_by_status()</code> returning a table of <code>(status, count)</code>, deploy it via the SQL editor, and call it through <code>.rpc()</code> from supabase-py.</li>
+<li>In 2&ndash;3 sentences, contrast what you just did with the equivalent Module 2.3 SQLAlchemy query &mdash; same logical result, very different mechanism underneath.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-realtime-storage-row-level-security-from-python">Module 4.2 &mdash; Realtime, Storage &amp; Row Level Security from Python</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced &middot; <strong>Prereqs:</strong> Module 4.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Subscribe to a Realtime channel for table changes, upload/download a file via Storage, and explain how an RLS policy change alone (with no code change) alters what a given query returns.<br>
+<strong>Skip if:</strong> All three are already comfortable, RLS especially.<br>
+<strong>Unlocks:</strong> Module 4.3, Final Capstone</p>
+</blockquote>
+
+<h4>Row Level Security: the policy lives in Postgres, not in your Python code</h4>
+<p><strong>Row Level Security</strong> (RLS) is a genuine Postgres feature (not a Supabase invention) that filters which rows a query can see or modify, enforced by the database itself based on policies you define in SQL &mdash; a policy like "a customer can only see their own orders" applies no matter which client issues the query (supabase-py, a browser, psql directly), because the enforcement happens inside Postgres, not in application code that a client could bypass. This is precisely why the anon key is safe to expose (previous module): the key alone grants no access; the RLS policy is what actually decides what's visible.</p>
+<pre><code class="language-sql">-- run via the SQL editor or a migration, not from Python
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "customers see only their own orders"
+ON orders FOR SELECT
+USING (customer_id = (SELECT id FROM customers WHERE auth_user_id = auth.uid()));
+</code></pre>
+<p>Once this policy exists, the exact same <code>supabase.table("orders").select("*").execute()</code> call from Module 4.1 returns a different result set depending on which user is authenticated when it runs &mdash; nothing changes in the Python code at all. This is the core mental model shift from Phase 1&ndash;2's direct-access tools: with psycopg/SQLAlchemy, your application code is typically the thing deciding what a user is allowed to see; with Supabase's RLS-first model, the database itself enforces that, and the client layer becomes deliberately less trusted by design.</p>
+<blockquote class="callout"><p><strong>Disambiguation:</strong> RLS is not the same thing as an application-level permission check (an <code>if user.role == "admin"</code> in Python). An application-level check only protects paths that actually run that check; RLS protects the data at the database layer regardless of which code path (or which client entirely) issues the query &mdash; a meaningfully stronger guarantee, and the reason Supabase's client-side-safe anon key model works at all.</p></blockquote>
+
+<h4>Realtime and Storage, briefly</h4>
+<p>The <strong>Realtime</strong> client lets Python code subscribe to live database change events (insert/update/delete) over a WebSocket, rather than polling; the <strong>Storage</strong> client uploads/downloads files to Supabase's managed object storage, with the same RLS-style policy model applied to buckets.</p>
+<pre><code class="language-py">def handle_change(payload):
+    print("order changed:", payload)
+
+channel = supabase.channel("orders-changes")
+channel.on_postgres_changes("UPDATE", schema="public", table="orders", callback=handle_change)
+channel.subscribe()
+
+with open("receipt.pdf", "rb") as f:
+    supabase.storage.from_("receipts").upload("order-42-receipt.pdf", f)
+</code></pre>
+
+<p><strong>Exercise 4.2 &mdash; RLS-Protected TindaHub Access</strong></p>
+<p>Dataset: the same Supabase project from Exercise 4.1</p>
+<ol>
+<li>Write and apply an RLS policy on <code>orders</code> restricting <code>SELECT</code> to rows matching the authenticated user (adapt the pattern above to however you've modeled the customer&harr;auth-user link, or document a reasonable simplification if your schema doesn't have one yet).</li>
+<li>From Python, sign in as two different (test) users and run the identical query against <code>orders</code> for each, confirming the result sets differ according to the policy.</li>
+<li>Temporarily switch the client to the service role key for the same query and confirm it returns <em>all</em> rows regardless of the policy, then explicitly note in your write-up why this confirms the service role key must never reach client-side code.</li>
+<li>Subscribe to Realtime changes on <code>orders</code>, trigger an update via a separate script (or the SQL editor), and confirm your callback fires with the change payload.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-choosing-the-right-tool-psycopg-vs-sqlalchemy-vs-duckdb-vs-supabase-py">Module 4.3 &mdash; Choosing the Right Tool: psycopg vs SQLAlchemy vs DuckDB vs supabase-py</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> at least one module from each of Phases 1&ndash;3, Module 4.1 &middot; <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Given four short problem descriptions, correctly name the right library for each in under a minute, and justify each choice in one sentence.<br>
+<strong>Skip if:</strong> The decision table below is already intuitive to you.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4>A decision framework</h4>
+<table>
+<tr><th>Question</th><th>Tool</th><th>Why</th></tr>
+<tr><td>Need maximum control and performance for direct Postgres access, from trusted server-side code?</td><td><code>psycopg</code></td><td>The thinnest layer over the wire protocol; no ORM overhead.</td></tr>
+<tr><td>Building an application with an evolving schema, wanting Python objects instead of raw rows?</td><td><code>SQLAlchemy</code></td><td>ORM mapping, relationship navigation, and Alembic migrations as a package.</td></tr>
+<tr><td>Need a quick, portable SQL layer over CSV/Parquet files or a fast local aggregation?</td><td><code>DuckDB</code></td><td>No server, no ETL step, columnar execution built for exactly this.</td></tr>
+<tr><td>Need one-off analysis joining live Postgres data against local files?</td><td><code>DuckDB</code> (<code>ATTACH ... TYPE postgres</code>)</td><td>Federated querying with no separate export/import pipeline.</td></tr>
+<tr><td>Building a client-side (browser, mobile) or serverless app that needs safe, per-user-scoped database access?</td><td><code>supabase-py</code> (anon key + RLS)</td><td>No persistent DB connection required; security enforced at the database layer via RLS, not in client code.</td></tr>
+<tr><td>Need real-time change notifications or file storage alongside your data?</td><td><code>supabase-py</code> (Realtime / Storage)</td><td>Neither psycopg, SQLAlchemy, nor DuckDB has a built-in equivalent.</td></tr>
+<tr><td>Need to evolve a schema safely, with a reviewable, reversible history?</td><td><code>Alembic</code> (via SQLAlchemy models)</td><td>Migrations as versioned code, not one-off manual <code>ALTER TABLE</code> statements.</td></tr>
+</table>
+
+<h4>The throughline: trust boundary decides more than performance does</h4>
+<p>The deepest distinction across this guide isn't speed (though DuckDB's analytical performance and psycopg's raw-driver speed are both real) &mdash; it's <strong>where the trust boundary sits</strong>. psycopg and SQLAlchemy assume the code running them is fully trusted (a backend server you control), and every access-control decision lives in that trusted code. supabase-py's anon-key model assumes the opposite: the calling code (a browser tab, someone's phone) is <em>not</em> trusted, so access control has to live in the database itself via RLS, not in the client. Picking psycopg/SQLAlchemy for genuinely client-facing code, or picking supabase-py's anon key for genuinely trusted backend logic that then skips writing real RLS policies, both put access control in the wrong place relative to who's actually running the code.</p>
+
+<p><strong>Exercise 4.3 &mdash; Tool Selection Drill</strong></p>
+<p>Dataset: none required</p>
+<ol>
+<li>For each of the following, name the single best-fit tool and justify it in one sentence: (a) a nightly backend job that needs to place 10,000 orders as fast as possible; (b) a mobile app's "my orders" screen; (c) a one-off analysis joining this month's live order data against last year's archived CSV export; (d) an application's evolving customer-loyalty schema that needs safe, reviewable changes over time; (e) a dashboard that needs to update live the instant an order's status changes; (f) a data scientist's laptop-only exploration of a 50-million-row Parquet export, with no Postgres access at all.</li>
+<li>For one of the above, implement the actual one-line-or-so solution (or a short sketch) to confirm your choice was workable, not just plausible.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-tindahub-data-access-toolkit">Final Capstone: TindaHub Data Access Toolkit</h2>
+<p><strong>Project: A single, reusable Python package combining psycopg, SQLAlchemy, DuckDB, and supabase-py for TindaHub's different data-access needs</strong></p>
+<p>Integrates all four phases. Uses the local <code>tindahub</code> Postgres database, the TindaHub flat CSVs, and (where available) a Supabase project mirroring the same schema.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A <code>tindahub_data</code> package with clearly separated modules: a pooled, transactional psycopg layer for high-throughput trusted backend writes (Phase 1), a SQLAlchemy ORM layer with Alembic-managed migrations for application-level modeling (Phase 2), a DuckDB-based analytics layer combining live Postgres and flat-file data (Phase 3), and a supabase-py layer with RLS policies for client-safe access (Phase 4).</li>
+<li>At least one operation implemented in <em>two</em> different layers on purpose (e.g., "place an order" via both the psycopg module and a Postgres function called through <code>.rpc()</code>), with a written comparison of the trade-offs.</li>
+<li>A demonstrated, fixed N+1 query in the SQLAlchemy layer.</li>
+<li>A demonstrated, reviewed Alembic migration applied to a scratch database.</li>
+<li>A DuckDB pipeline producing at least one exported Parquet summary, combining Postgres-attached and flat-file data.</li>
+<li>A working RLS policy on at least one Supabase table, verified from Python with two different authenticated identities returning different result sets.</li>
+<li>A "tool choice log" &mdash; one sentence per module explaining, using Module 4.3's trust-boundary framework, why that specific library was the right choice for that specific job.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Python Database Libraries Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Open a direct Postgres connection</td><td><code>psycopg.connect(...)</code></td><td>Prefer psycopg (3) over psycopg2 for new work.</td></tr>
+<tr><td>Get rows as dicts instead of tuples</td><td><code>row_factory=dict_row</code></td><td>Access by column name instead of position.</td></tr>
+<tr><td>Safely pass a value into a query</td><td><code>%s</code> placeholder + parameter tuple</td><td>Never string-format a value into SQL, no exceptions.</td></tr>
+<tr><td>Safely pass a dynamic table/column name</td><td><code>psycopg.sql.Identifier</code></td><td>Still needs a hardcoded allow-list around it.</td></tr>
+<tr><td>Multi-statement atomic write</td><td><code>with conn: ...</code> / explicit <code>commit()</code>/<code>rollback()</code></td><td>A failed statement aborts the whole transaction until rolled back.</td></tr>
+<tr><td>Partial rollback within a transaction</td><td><code>conn.transaction()</code> nested (SAVEPOINT)</td><td>Only the nested block rolls back on error.</td></tr>
+<tr><td>Reuse connections under load</td><td><code>psycopg_pool.ConnectionPool</code></td><td>Check external pooler mode (transaction vs. session) before relying on session features.</td></tr>
+<tr><td>Create an ORM-ready engine</td><td><code>create_engine("postgresql+psycopg://...")</code></td><td>The Engine manages its own connection pool.</td></tr>
+<tr><td>Define a typed ORM model</td><td><code>DeclarativeBase</code> + <code>Mapped[...]</code> + <code>mapped_column()</code></td><td>The current (2.0) idiomatic style — not bare <code>Column</code>.</td></tr>
+<tr><td>Query with the ORM</td><td><code>session.execute(select(Model))</code></td><td>2.0-style — not the legacy <code>session.query()</code> style.</td></tr>
+<tr><td>Avoid N+1 on a relationship</td><td><code>selectinload()</code> / <code>joinedload()</code></td><td><code>selectinload</code> usually wins for one-to-many collections.</td></tr>
+<tr><td>Generate/apply a schema change</td><td><code>alembic revision --autogenerate</code>, <code>alembic upgrade head</code></td><td>Always review the generated script before applying.</td></tr>
+<tr><td>Query a file with no load step</td><td><code>duckdb.sql("... FROM 'file.csv'")</code></td><td>Works for CSV, Parquet, JSON directly.</td></tr>
+<tr><td>Query a pandas DataFrame in place</td><td><code>duckdb.sql("... FROM df_var_name")</code></td><td>References the Python variable by name — no explicit registration needed.</td></tr>
+<tr><td>Query live Postgres from DuckDB</td><td><code>ATTACH '...' AS pg (TYPE postgres)</code></td><td>Reads at query time; clear stale schema cache with <code>pg_clear_cache()</code>.</td></tr>
+<tr><td>Persist a pipeline stage</td><td><code>CREATE TABLE ... AS SELECT</code></td><td>Materializes an intermediate result as a real table.</td></tr>
+<tr><td>Query via Supabase's REST layer</td><td><code>supabase.table(...).select(...).execute()</code></td><td>An HTTP call to PostgREST, not a direct DB connection.</td></tr>
+<tr><td>Call server-side business logic safely</td><td><code>supabase.rpc(fn_name, params)</code></td><td>Atomic, single round-trip Postgres function call.</td></tr>
+<tr><td>Restrict per-user data access</td><td>Postgres <code>ROW LEVEL SECURITY</code> policies</td><td>Enforced in the database — not bypassable from client code.</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-psycopg-the-db-api">psycopg &amp; the DB-API</h3>
+<dl class="glossary">
+<dt>Cursor</dt>
+<dd>An object that executes queries against an open connection and exposes their results for fetching, one query (or a sequence of them) at a time.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing a database cursor with a text/UI cursor &mdash; unrelated concepts sharing a name.</dd>
+<dt>Parameterized query</dt>
+<dd>A query containing placeholders whose actual values are sent separately from the query text, so a value can never be interpreted as SQL syntax.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "escaped query" as a substitute term &mdash; manual escaping is exactly the fragile, error-prone approach parameterization exists to replace.</dd>
+<dt>Autocommit</dt>
+<dd>A connection mode where each statement commits immediately on its own, with no multi-statement transaction wrapping it.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming autocommit is simply "no transactions" &mdash; each individual statement is still its own implicit transaction.</dd>
+<dt>Connection pool</dt>
+<dd>A managed set of already-open database connections that application code borrows and returns, avoiding the cost of opening a new connection per operation.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "connection cache" &mdash; a pool actively manages connection lifecycle (health checks, min/max sizing), not just passive reuse.</dd>
+</dl>
+
+<h3 id="glossary-sqlalchemy-core-orm">SQLAlchemy Core &amp; ORM</h3>
+<dl class="glossary">
+<dt>Engine</dt>
+<dd>A factory object managing a connection pool and dialect-specific SQL generation for a given database, created once per application.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "connection" as a substitute &mdash; an Engine issues connections; it is not itself one.</dd>
+<dt>Core (expression language)</dt>
+<dd>SQLAlchemy's layer for building SQL queries as composable Python objects (<code>Table</code>, <code>select()</code>, etc.), independent of the ORM.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming Core requires the ORM &mdash; Core is usable entirely on its own, and the ORM is built on top of it.</dd>
+<dt>Declarative model</dt>
+<dd>A Python class mapped to a database table via <code>DeclarativeBase</code>, with columns declared using <code>Mapped[...]</code> type annotations and <code>mapped_column()</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> the legacy bare-<code>Column</code> style (no <code>Mapped</code> annotation) as the default to teach or learn &mdash; it still works, but the typed style is SQLAlchemy 2.0's idiomatic default.</dd>
+<dt>N+1 query problem</dt>
+<dd>A performance bug where accessing a relationship on each of N loaded objects triggers one additional query per object, instead of a single batched query.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming this only matters at very large N &mdash; the bug exists (and costs real round-trips) at any N greater than 1, it just becomes visibly slow at scale.</dd>
+</dl>
+
+<h3 id="glossary-duckdb-olap">DuckDB &amp; OLAP</h3>
+<dl class="glossary">
+<dt>In-process database</dt>
+<dd>A database engine that runs inside the calling application's own process, with no separate server process or network connection involved.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "embedded database" as a strict synonym in casual use &mdash; the term is fine, but don't let it imply DuckDB is a stripped-down toy; it's a full columnar analytical engine.</dd>
+<dt>OLAP (Online Analytical Processing)</dt>
+<dd>A workload pattern of scanning and aggregating large numbers of rows across relatively few columns, as opposed to OLTP's many small single-row reads/writes.</dd>
+<dd class="avoid"><strong>Avoid:</strong> treating OLAP and OLTP as a strict "one is better" ranking &mdash; they're optimized for different, roughly opposite access patterns.</dd>
+<dt>Columnar execution</dt>
+<dd>A storage/execution model that processes data column-by-column rather than row-by-row, enabling vectorized operations over many values at once.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "faster because it's in memory" as the explanation for DuckDB's speed &mdash; the columnar, vectorized execution model is the real driver, independent of whether data is on disk or in RAM.</dd>
+<dt>ATTACH (Postgres extension)</dt>
+<dd>A DuckDB command that connects a live external database (Postgres, in this guide) so its tables can be queried directly from DuckDB SQL, read at query time.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming <code>ATTACH</code> copies or syncs data into DuckDB &mdash; it reads live from the source at query time, and its cached schema info can go stale if the source schema changes.</dd>
+</dl>
+
+<h3 id="glossary-supabase-rls">Supabase &amp; RLS</h3>
+<dl class="glossary">
+<dt>PostgREST</dt>
+<dd>The service that auto-generates a REST API from a Postgres schema; supabase-py's table-query methods are a Python wrapper around calls to it.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "the Supabase database" as a substitute term &mdash; PostgREST is a layer in front of Postgres, not the database itself.</dd>
+<dt>anon key</dt>
+<dd>A Supabase API key safe for client-side exposure, identifying requests as coming from an untrusted client whose access is still filtered by RLS.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "public key" as a substitute &mdash; correct in spirit but not Supabase's actual terminology, which is specifically "anon key."</dd>
+<dt>service role key</dt>
+<dd>A Supabase API key that bypasses Row Level Security entirely, intended only for trusted server-side code.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "admin key" as a substitute &mdash; correct in spirit, but again not the actual term, and "admin" undersells how completely it bypasses every policy.</dd>
+<dt>Row Level Security (RLS)</dt>
+<dd>A Postgres feature that filters which rows a query can access or modify, based on policies enforced by the database itself regardless of which client issues the query.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing RLS with an application-level permission check &mdash; RLS is enforced at the database layer and cannot be bypassed by a client skipping a check.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+
+<h3 id="books">Books</h3>
+<p>This guide deliberately has no Books table. Its toolset moves too fast for print to stay current against: SQLAlchemy 2.0's typed declarative style (<code>Mapped</code>/<code>mapped_column</code>) postdates nearly every print SQLAlchemy book, psycopg 3 is a substantially different API from the psycopg2 most older books cover, and DuckDB ships new releases monthly. The official documentation for each library (below) is the reliable, current reference this guide's own examples were checked against &mdash; for SQL fundamentals themselves (not covered by this guide at all), see the <a href="../postgresql-metabase/postgresql-metabase_learning_guide.html">PostgreSQL &amp; Metabase guide</a>'s Resources section instead.</p>
+
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td><a href="https://www.psycopg.org/psycopg3/docs/">psycopg 3 Official Documentation</a></td><td>Connections, cursors, transactions, pooling, async</td><td>Includes an explicit "differences from psycopg2" page, useful if migrating older code.</td></tr>
+<tr><td><a href="https://docs.sqlalchemy.org/en/20/">SQLAlchemy 2.0 Official Documentation</a></td><td>Core, ORM, sessions, relationships</td><td>The "ORM Quick Start" and "Unified Tutorial" directly parallel this guide's Phase 2.</td></tr>
+<tr><td><a href="https://alembic.sqlalchemy.org/">Alembic Official Documentation</a></td><td>Migrations</td><td>The tutorial walks the same autogenerate-review-upgrade workflow as Module 2.4.</td></tr>
+<tr><td><a href="https://duckdb.org/docs/">DuckDB Official Documentation</a></td><td>SQL reference, Python client, extensions</td><td>The "Python client" and "Postgres extension" guide pages map directly to Phase 3.</td></tr>
+<tr><td><a href="https://supabase.com/docs/reference/python/introduction">Supabase Python Client Reference</a></td><td>Table queries, auth, storage, realtime, rpc</td><td>Kept current with each supabase-py release; check here before trusting an older blog post's method names.</td></tr>
+<tr><td><a href="https://supabase.com/docs/guides/database/postgres/row-level-security">Supabase: Row Level Security Guide</a></td><td>RLS policy syntax and patterns</td><td>Directly extends Module 4.2's RLS coverage with more policy examples.</td></tr>
+</table>
+
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>TindaHub Postgres schema (<code>datasets/tindahub/</code>, this workspace)</td><td>The normalized 6-table benchmark database used throughout Phases 1, 2, and 3.</td></tr>
+<tr><td>TindaHub Orders CSVs (<code>datasets/tindahub-orders/</code>, this workspace)</td><td>Flat-file source used for DuckDB's file-querying and federated-query modules.</td></tr>
+<tr><td>Local PostgreSQL 17 (Homebrew, this workspace)</td><td>The live database every psycopg/SQLAlchemy/DuckDB exercise in this guide connects to.</td></tr>
+<tr><td>psycopg_pool</td><td>Connection pooling for psycopg (Module 1.4) &mdash; installed separately from core <code>psycopg</code>.</td></tr>
+<tr><td>A free Supabase project</td><td>Required for Phase 4's hands-on exercises; the local Postgres database alone can't demonstrate PostgREST, Auth, Realtime, or RLS-as-a-service.</td></tr>
+</table>
+
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>Supabase Discord</td><td>Discord</td><td>Fast, active answers on supabase-py, RLS policy debugging, and Realtime/Storage edge cases.</td></tr>
+<tr><td>SQLAlchemy Discussions</td><td>GitHub Discussions (sqlalchemy/sqlalchemy)</td><td>The maintainers actively answer design and 2.0-migration questions directly.</td></tr>
+<tr><td>Stack Overflow (<code>psycopg2</code>, <code>psycopg</code>, <code>sqlalchemy</code>, <code>duckdb</code>, <code>supabase</code> tags)</td><td>Stack Overflow</td><td>Searchable history of nearly every common error message across all four libraries.</td></tr>
+<tr><td>r/PostgreSQL</td><td>Reddit</td><td>Broader Postgres operational questions (pooling, performance) that sit underneath all four Python libraries.</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them &mdash; this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads &mdash; use "Reset progress" in the sidebar to clear it.</p></blockquote>
+
+<h4>Phase 1 &mdash; psycopg Direct Access</h4>
+<ul>
+<li>[ ] Module 1.1 &mdash; Connections, Cursors &amp; the DB-API</li>
+<li>[ ] Exercise 1.1 &mdash; First Queries Against TindaHub</li>
+<li>[ ] Module 1.2 &mdash; Parameterized Queries &amp; SQL Injection Prevention</li>
+<li>[ ] Exercise 1.2 &mdash; Parameterize TindaHub's Customer Search</li>
+<li>[ ] Module 1.3 &mdash; Transactions, Autocommit &amp; Error Handling</li>
+<li>[ ] Exercise 1.3 &mdash; Atomic Order Placement for TindaHub</li>
+<li>[ ] Module 1.4 &mdash; Connection Pooling &amp; Async psycopg</li>
+<li>[ ] Exercise 1.4 &mdash; Pool-Backed TindaHub Order Lookups</li>
+<li>[ ] Capstone 1 &mdash; TindaHub Safe Order API</li>
+</ul>
+
+<h4>Phase 2 &mdash; SQLAlchemy Core &amp; ORM</h4>
+<ul>
+<li>[ ] Module 2.1 &mdash; Engine, Connection &amp; Core Expression Language</li>
+<li>[ ] Exercise 2.1 &mdash; TindaHub Core Queries</li>
+<li>[ ] Module 2.2 &mdash; ORM Mapping with Declarative Models</li>
+<li>[ ] Exercise 2.2 &mdash; Map TindaHub's Full Schema</li>
+<li>[ ] Module 2.3 &mdash; Sessions, Relationships &amp; Querying with select()</li>
+<li>[ ] Exercise 2.3 &mdash; Relationship-Mapped TindaHub Queries</li>
+<li>[ ] Module 2.4 &mdash; Alembic Migrations</li>
+<li>[ ] Exercise 2.4 &mdash; Evolve TindaHub's Schema with Alembic</li>
+<li>[ ] Capstone 2 &mdash; TindaHub ORM Data Layer</li>
+</ul>
+
+<h4>Phase 3 &mdash; DuckDB Analytical SQL</h4>
+<ul>
+<li>[ ] Module 3.1 &mdash; DuckDB Fundamentals: In-Process OLAP</li>
+<li>[ ] Exercise 3.1 &mdash; First DuckDB Queries</li>
+<li>[ ] Module 3.2 &mdash; Querying Pandas, CSV &amp; Parquet Directly</li>
+<li>[ ] Exercise 3.2 &mdash; DuckDB-Native TindaHub Analysis</li>
+<li>[ ] Module 3.3 &mdash; DuckDB + Postgres: Federated Queries</li>
+<li>[ ] Exercise 3.3 &mdash; Federated TindaHub Analysis</li>
+<li>[ ] Module 3.4 &mdash; DuckDB for Fast Local Analytics Pipelines</li>
+<li>[ ] Exercise 3.4 &mdash; A Complete TindaHub Analytics Pipeline</li>
+<li>[ ] Capstone 3 &mdash; TindaHub DuckDB Warehouse</li>
+</ul>
+
+<h4>Phase 4 &mdash; supabase-py &amp; Integration</h4>
+<ul>
+<li>[ ] Module 4.1 &mdash; supabase-py Client: Auth, Table Queries &amp; RPC</li>
+<li>[ ] Exercise 4.1 &mdash; supabase-py Against a TindaHub-Shaped Project</li>
+<li>[ ] Module 4.2 &mdash; Realtime, Storage &amp; Row Level Security from Python</li>
+<li>[ ] Exercise 4.2 &mdash; RLS-Protected TindaHub Access</li>
+<li>[ ] Module 4.3 &mdash; Choosing the Right Tool</li>
+<li>[ ] Exercise 4.3 &mdash; Tool Selection Drill</li>
+</ul>
+
+<h4>Final Outcome</h4>
+<ul>
+<li>[ ] Final Capstone &mdash; TindaHub Data Access Toolkit complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 &mdash; Python Database Libraries Track: Applied Data Access</em><br>
+<em>Non-linear modular design &middot; Placement quiz &middot; 15 modules &middot; ~6 weeks part-time &middot; hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-08-02 (psycopg 3.3, SQLAlchemy 2.0.51, Alembic 1.18.5, DuckDB 1.5.4 / 1.4.5 LTS, supabase-py 2.31.0, Python 3.13 recommended baseline)</em></p>
+
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Full-text guide search ────────────────────────────────
+  // Indexes every block of the guide body, lists matching snippets grouped
+  // by section, highlights hits in the page, and filters the nav to the
+  // sections that contain them. Multiple words = all must appear in the
+  // same block; wrap in "quotes" for an exact phrase.
+  var navSearch = document.getElementById("navSearch");
+  var contentRoot = document.querySelector(".content");
+  if(navSearch && contentRoot){
+    var BLOCK_SEL = "h1,h2,h3,h4,p,li,tr,dt,dd,pre";
+    var searchRow = document.getElementById("searchRow"),
+        searchBar = document.getElementById("searchBar"),
+        searchCount = document.getElementById("searchCount"),
+        searchResults = document.getElementById("searchResults");
+    var navById = {};
+    document.querySelectorAll("#nav a").forEach(function(a){
+      navById[a.getAttribute("href").slice(1)] = a;
+    });
+
+    var blocks = [], section = null;
+    contentRoot.querySelectorAll(BLOCK_SEL).forEach(function(el){
+      if(/^H[1-4]$/.test(el.tagName) && el.id && navById[el.id]) section = el;
+      if(el.classList.contains("quiz-score")) return;
+      var outer = el.parentElement && el.parentElement.closest(BLOCK_SEL);
+      if(outer && contentRoot.contains(outer)) return;
+      var text = el.textContent.replace(/\s+/g, " ").trim();
+      if(text) blocks.push({el:el, text:text, lower:text.toLowerCase(), section:section});
+    });
+
+    var hits = [], cur = -1, timer = null;
+    function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+    function sectionLabel(sec){ return sec && navById[sec.id] ? navById[sec.id].textContent : "Introduction"; }
+
+    function clearMarks(){
+      contentRoot.querySelectorAll("mark.lg-hit").forEach(function(m){
+        var p = m.parentNode;
+        p.replaceChild(document.createTextNode(m.textContent), m);
+        p.normalize();
+      });
+      var b = contentRoot.querySelector(".lg-block-current");
+      if(b) b.classList.remove("lg-block-current");
+    }
+
+    function markBlock(el, re){
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+      while((n = walker.nextNode())) nodes.push(n);
+      var marks = [];
+      nodes.forEach(function(node){
+        var t = node.nodeValue, m, last = 0;
+        re.lastIndex = 0;
+        if(!re.test(t)) return;
+        re.lastIndex = 0;
+        var frag = document.createDocumentFragment();
+        while((m = re.exec(t))){
+          if(m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+          var mk = document.createElement("mark");
+          mk.className = "lg-hit";
+          mk.textContent = m[0];
+          frag.appendChild(mk);
+          marks.push(mk);
+          last = m.index + m[0].length;
+        }
+        if(last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+      });
+      return marks;
+    }
+
+    function snippet(text, terms, re){
+      var lower = text.toLowerCase(), i = -1;
+      terms.forEach(function(t){ var k = lower.indexOf(t); if(k > -1 && (i < 0 || k < i)) i = k; });
+      if(i < 0) i = 0;
+      var start = Math.max(0, i - 40), end = Math.min(text.length, i + 100);
+      var s = text.slice(start, end), out = "", last = 0, m;
+      re.lastIndex = 0;
+      while((m = re.exec(s))){
+        out += escHtml(s.slice(last, m.index)) + "<mark>" + escHtml(m[0]) + "</mark>";
+        last = m.index + m[0].length;
+      }
+      return (start > 0 ? "…" : "") + out + escHtml(s.slice(last)) + (end < text.length ? "…" : "");
+    }
+
+    function filterNav(ids){
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var any = false;
+        g.querySelectorAll("a").forEach(function(a){
+          var show = !ids || !!ids[a.getAttribute("href").slice(1)];
+          if(a.classList.contains("nav-child")) a.classList.toggle("filtered-out", !show);
+          if(show) any = true;
+        });
+        g.classList.toggle("filtered-out", !any);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        a.classList.toggle("filtered-out", !!ids && !ids[a.getAttribute("href").slice(1)]);
+      });
+    }
+
+    function updateCount(nSections){
+      if(!hits.length){ searchCount.textContent = "No matches"; return; }
+      var pos = cur > -1 ? (cur + 1) + " / " + hits.length : hits.length + (hits.length === 1 ? " match" : " matches");
+      searchCount.textContent = pos + " · " + nSections + (nSections === 1 ? " section" : " sections");
+    }
+
+    var lastSectionCount = 0;
+    function run(){
+      var raw = navSearch.value.trim();
+      clearMarks();
+      hits = []; cur = -1;
+      searchRow.classList.toggle("has-query", !!raw);
+      if(raw.length < 2){
+        searchResults.classList.remove("show");
+        searchBar.classList.remove("show");
+        searchResults.innerHTML = "";
+        filterNav(null);
+        return;
+      }
+      var phrase = /^"(.+)"$/.exec(raw);
+      var terms = phrase ? [phrase[1].toLowerCase()] : raw.toLowerCase().split(/\s+/);
+      terms = terms.filter(function(t, i){ return t && terms.indexOf(t) === i; });
+      var re = new RegExp(terms.slice().sort(function(a, b){ return b.length - a.length; }).map(escRe).join("|"), "gi");
+      var matched = blocks.filter(function(b){
+        return terms.every(function(t){ return b.lower.indexOf(t) > -1; });
+      });
+
+      var ids = {}, groups = [], html = "", LIMIT = 60;
+      matched.forEach(function(b, bi){
+        var marks = markBlock(b.el, re);
+        if(marks.length) marks.forEach(function(m){ hits.push({m:m, el:b.el, b:bi}); });
+        else hits.push({m:null, el:b.el, b:bi});
+        var key = b.section ? b.section.id : "";
+        if(b.section) ids[b.section.id] = true;
+        if(!groups.length || groups[groups.length - 1].key !== key) groups.push({key:key, sec:b.section, items:[]});
+        groups[groups.length - 1].items.push(bi);
+      });
+
+      if(!matched.length){
+        html = '<div class="sr-empty">No matches for “' + escHtml(raw) + '”. Try fewer words.</div>';
+      } else {
+        var listed = 0;
+        groups.forEach(function(g){
+          if(listed >= LIMIT) return;
+          html += '<div class="sr-group"><div class="sr-section">' + escHtml(sectionLabel(g.sec)) + '</div>';
+          g.items.slice(0, 4).forEach(function(bi){
+            if(listed >= LIMIT) return;
+            html += '<button type="button" class="sr-item" role="option" data-b="' + bi + '">' +
+                    snippet(matched[bi].text, terms, re) + '</button>';
+            listed++;
+          });
+          if(g.items.length > 4) html += '<div class="sr-more">+' + (g.items.length - 4) + ' more in this section (use ↓ to step through)</div>';
+          html += '</div>';
+        });
+        if(matched.length > listed) html += '<div class="sr-more">Showing ' + listed + ' of ' + matched.length + ' blocks — add a word to narrow it.</div>';
+      }
+      searchResults.innerHTML = html;
+      searchResults.classList.add("show");
+      searchBar.classList.add("show");
+      lastSectionCount = Object.keys(ids).length || (matched.length ? 1 : 0);
+      filterNav(ids);
+      updateCount(lastSectionCount);
+    }
+
+    function go(i, closeMobile){
+      if(!hits.length) return;
+      cur = (i + hits.length) % hits.length;
+      contentRoot.querySelectorAll("mark.lg-hit-current").forEach(function(m){ m.classList.remove("lg-hit-current"); });
+      var prev = contentRoot.querySelector(".lg-block-current");
+      if(prev) prev.classList.remove("lg-block-current");
+      var h = hits[cur];
+      if(h.m) h.m.classList.add("lg-hit-current");
+      h.el.classList.add("lg-block-current");
+      (h.m || h.el).scrollIntoView({behavior:"smooth", block:"center"});
+      searchResults.querySelectorAll(".sr-item").forEach(function(it){
+        var on = +it.getAttribute("data-b") === h.b;
+        it.classList.toggle("current", on);
+        if(on) it.scrollIntoView({block:"nearest"});
+      });
+      updateCount(lastSectionCount);
+      if(closeMobile && window.innerWidth <= 1000) closeNav();
+    }
+
+    navSearch.addEventListener("input", function(){
+      clearTimeout(timer);
+      timer = setTimeout(run, 140);
+    });
+    navSearch.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        clearTimeout(timer);
+        if(!hits.length && navSearch.value.trim().length >= 2) run();
+        go(e.shiftKey ? cur - 1 : cur + 1, true);
+      } else if(e.key === "Escape"){
+        navSearch.value = "";
+        run();
+      }
+    });
+    searchResults.addEventListener("click", function(e){
+      var item = e.target.closest(".sr-item");
+      if(!item) return;
+      var b = +item.getAttribute("data-b");
+      for(var k = 0; k < hits.length; k++){ if(hits[k].b === b){ go(k, true); break; } }
+    });
+    document.getElementById("searchNext").addEventListener("click", function(){ go(cur + 1, false); });
+    document.getElementById("searchPrev").addEventListener("click", function(){ go(cur - 1, false); });
+    document.getElementById("searchClear").addEventListener("click", function(){
+      navSearch.value = "";
+      run();
+      navSearch.focus();
+    });
+    document.addEventListener("keydown", function(e){
+      var tag = (e.target.tagName || "").toLowerCase();
+      var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+      var slash = e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey;
+      var cmdK = (e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K");
+      if(!slash && !cmdK) return;
+      e.preventDefault();
+      if(window.innerWidth <= 1000){
+        document.getElementById("sidebar").classList.add("open");
+        document.getElementById("scrim").classList.add("show");
+      }
+      navSearch.focus();
+      navSearch.select();
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python GIS &amp; Mapping Learning Guide — GeoPandas, Shapely &amp; Folium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+.search-row{position:relative}
+.search-row .nav-search{padding-right:2.4rem}
+.search-kbd{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:4px;padding:0 .3rem;background:var(--paper-2);
+  pointer-events:none;
+}
+.search-row.has-query .search-kbd{display:none}
+.search-bar{
+  display:none;align-items:center;gap:.35rem;margin-top:.45rem;
+  font-size:.72rem;color:var(--ink-soft);
+}
+.search-bar.show{display:flex}
+.search-count{flex:1;font-family:var(--mono)}
+.search-bar button{
+  border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);
+  border-radius:6px;font-size:.72rem;padding:.15rem .45rem;cursor:pointer;min-width:26px;min-height:24px;
+}
+.search-bar button:hover{background:var(--teal-wash)}
+.search-results{
+  display:none;margin:.5rem 0 .2rem;max-height:48vh;overflow-y:auto;
+  border:1px solid var(--line);border-radius:8px;background:var(--paper);
+}
+.search-results.show{display:block}
+.sr-group{border-top:1px solid var(--line-soft)}
+.sr-group:first-child{border-top:none}
+.sr-section{
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--teal);padding:.5rem .65rem .15rem;
+}
+.sr-item{
+  display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  font-family:var(--sans);font-size:.76rem;line-height:1.4;color:var(--ink);
+  padding:.35rem .65rem;
+}
+.sr-item:hover,.sr-item.current{background:var(--teal-wash)}
+.sr-item mark,.lg-hit{background:var(--amber-wash);color:inherit;border-radius:2px;padding:0 1px}
+.sr-more{font-size:.7rem;color:var(--ink-soft);padding:.1rem .65rem .45rem}
+.sr-empty{font-size:.78rem;color:var(--ink-soft);padding:.6rem .65rem}
+pre .lg-hit{background:#5c4a12;color:#fff4cf}
+.lg-hit.lg-hit-current{background:var(--coral);color:#fff;outline:2px solid var(--coral)}
+.lg-block-current{outline:2px dashed var(--teal);outline-offset:4px;border-radius:4px}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — expert guided learning">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">expert guided learning</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Python GIS<br>&amp; Mapping Guide</div>
+      <div class="brand-sub">GeoPandas · Shapely · Folium</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <div class="search-row" id="searchRow">
+        <input type="search" id="navSearch" class="nav-search" placeholder="Search the guide…" aria-label="Search the whole guide" aria-controls="searchResults" autocomplete="off" spellcheck="false">
+        <span class="search-kbd" aria-hidden="true">/</span>
+      </div>
+      <div class="search-bar" id="searchBar">
+        <span class="search-count" id="searchCount" aria-live="polite"></span>
+        <button type="button" id="searchPrev" aria-label="Previous match">↑</button>
+        <button type="button" id="searchNext" aria-label="Next match">↓</button>
+        <button type="button" id="searchClear" aria-label="Clear search">✕</button>
+      </div>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+    </div>
+    <nav id="nav">
+<a href="#applied-geospatial-analytics-track" class="nav-top">Applied Geospatial Analytics Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-shapely-foundations" class="nav-top nav-phase">Phase 1: Shapely Foundations</a>
+<div class="nav-children">
+<a href="#module-11-geometric-primitives-point-linestring-polygon" class="nav-child">Module 1.1 — Geometric Primitives</a>
+<a href="#module-12-spatial-predicates-relationships" class="nav-child">Module 1.2 — Spatial Predicates &amp; Relationships</a>
+<a href="#module-13-geometric-operations-buffer-union-intersection-simplify" class="nav-child">Module 1.3 — Geometric Operations</a>
+<a href="#module-14-spatial-indexing-performance-with-strtree" class="nav-child">Module 1.4 — Spatial Indexing &amp; Performance</a>
+<a href="#phase-1-capstone-tindahub-hub-coverage-model" class="nav-child">Phase 1 Capstone: TindaHub Hub Coverage Model</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-geopandas-spatial-data" class="nav-top nav-phase">Phase 2: GeoPandas Spatial Data</a>
+<div class="nav-children">
+<a href="#module-21-geodataframe-fundamentals-file-io" class="nav-child">Module 2.1 — GeoDataFrame Fundamentals &amp; File I/O</a>
+<a href="#module-22-coordinate-reference-systems-reprojection" class="nav-child">Module 2.2 — CRS &amp; Reprojection</a>
+<a href="#module-23-spatial-attribute-joins" class="nav-child">Module 2.3 — Spatial &amp; Attribute Joins</a>
+<a href="#module-24-static-choropleth-mapping-basemaps" class="nav-child">Module 2.4 — Static Choropleth Mapping &amp; Basemaps</a>
+<a href="#phase-2-capstone-tindahub-provincial-performance-map" class="nav-child">Phase 2 Capstone: TindaHub Provincial Performance Map</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-folium-interactive-maps" class="nav-top nav-phase">Phase 3: Folium Interactive Maps</a>
+<div class="nav-children">
+<a href="#module-31-basic-folium-maps-markers-popups-tooltips" class="nav-child">Module 3.1 — Basic Folium Maps</a>
+<a href="#module-32-layers-marker-clusters-featuregroups" class="nav-child">Module 3.2 — Layers, Clusters &amp; FeatureGroups</a>
+<a href="#module-33-interactive-choropleths-with-folium" class="nav-child">Module 3.3 — Interactive Choropleths</a>
+<a href="#module-34-exporting-embedding-custom-tiles" class="nav-child">Module 3.4 — Exporting, Embedding &amp; Custom Tiles</a>
+<a href="#phase-3-capstone-tindahub-interactive-operations-map" class="nav-child">Phase 3 Capstone: TindaHub Interactive Operations Map</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-integration-judgment" class="nav-top nav-phase">Phase 4: Integration &amp; Judgment</a>
+<div class="nav-children">
+<a href="#module-41-geocoding-from-addresses-to-points" class="nav-child">Module 4.1 — Geocoding</a>
+<a href="#module-42-applied-case-study-tindahub-delivery-zone-analysis" class="nav-child">Module 4.2 — Applied Case Study: Delivery Zone Analysis</a>
+<a href="#module-43-choosing-the-right-tool-shapely-vs-geopandas-vs-folium-vs-contextily" class="nav-child">Module 4.3 — Choosing the Right Tool</a>
+</div></div>
+
+<a href="#final-capstone-tindahub-geospatial-operations-toolkit" class="nav-top">Final Capstone: TindaHub Geospatial Operations Toolkit</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="python-gis-mapping-learning-guide">Python GIS &amp; Mapping Learning Guide</h1>
+<h2 id="applied-geospatial-analytics-track">Applied Geospatial Analytics Track</h2>
+<h3>Shapely &middot; GeoPandas &middot; Folium</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Python GIS and Mapping" xmlns="http://www.w3.org/2000/svg">
+<polygon points="40,70 132,32 218,76 192,186 58,196" fill="#075249"/>
+<path d="M152 96 C152 68 130 46 103 46 C76 46 54 68 54 96 C54 132 103 190 103 190 C103 190 152 132 152 96 Z" fill="#0d7a6e"/>
+<circle cx="103" cy="96" r="19" fill="#075249"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide &mdash; you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same realistic <strong>TindaHub Orders</strong> scenario &mdash; the same 5,000-row Philippine sari-sari-store distribution order register used elsewhere in this workspace, extended here with a small bundled city-coordinate lookup so every order and customer can be placed on a map.</p>
+</blockquote>
+<p><strong>Scope note:</strong> this guide assumes you already write everyday Python and pandas &mdash; DataFrames, <code>merge</code>, <code>groupby</code>, reading a CSV. If that's shaky, work through the <a href="../python/python_learning_guide.html">Python Learning Guide</a> and the pandas modules of the <a href="../data-analyst/data-analyst_learning_guide.html">Data Analyst guide</a> first. This guide starts where those stop: turning tabular rows into actual geometry, and geometry into maps. <strong>Shapely</strong> gives you the geometric objects and operations; <strong>GeoPandas</strong> puts those geometries into pandas-shaped tables with coordinate-system awareness, spatial joins, and static plotting; <strong>Folium</strong> turns the result into an interactive, web-embeddable map. Statistical or ML modeling of spatial data (spatial autocorrelation, kriging, point-pattern statistics) is out of scope &mdash; this guide is about representing, joining, and visualizing location data correctly, not spatial statistics.</p>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner to GIS in Python</strong> &mdash; Start at Module 1.1 and go sequentially through all four phases.</li>
+<li><strong>Some geopandas/mapping experience</strong> &mdash; Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting one library</strong> &mdash; Jump via the <strong>Module Index</strong> or pick a <strong>Learning Track</strong> (Shapely-only, GeoPandas-only, Folium-only, or Applied).</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz &mdash; Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3>Shapely</h3>
+<ul>
+<li>[ ] I can create a <code>Point</code>, <code>LineString</code>, and <code>Polygon</code> and explain the difference between them.</li>
+<li>[ ] I know the difference between <code>intersects</code>, <code>contains</code>, and <code>within</code>, and when each gives a different answer.</li>
+<li>[ ] I can compute a buffer, union, or intersection of two geometries.</li>
+<li>[ ] I know what a spatial index (<code>STRtree</code>) is for and why point-in-polygon checks get slow without one.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 1.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 1.3</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Phase 2</strong></p>
+
+<h3>GeoPandas</h3>
+<ul>
+<li>[ ] I can read a shapefile or GeoJSON into a <code>GeoDataFrame</code> and explain what makes it different from a plain DataFrame.</li>
+<li>[ ] I know what a CRS is and can reproject a GeoDataFrame with <code>.to_crs()</code>.</li>
+<li>[ ] I can perform a spatial join (<code>sjoin</code>) between points and polygons.</li>
+<li>[ ] I can produce a static choropleth map colored by a data column.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 2.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 2.3</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Phase 3</strong></p>
+
+<h3>Folium</h3>
+<ul>
+<li>[ ] I can create a Folium map centered on a location and add a marker with a popup.</li>
+<li>[ ] I can group markers into layers and add a layer control to toggle them.</li>
+<li>[ ] I can cluster hundreds of markers so the map stays readable at low zoom.</li>
+<li>[ ] I can build an interactive choropleth from a GeoDataFrame and export the map to a standalone HTML file.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 3.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 3.3</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Phase 4</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-geometric-primitives-point-linestring-polygon"><td>1.1</td><td>Geometric Primitives: Point, LineString, Polygon</td><td>Beginner&ndash;Intermediate</td><td>None</td><td>2h</td></tr>
+<tr data-href="#module-12-spatial-predicates-relationships"><td>1.2</td><td>Spatial Predicates &amp; Relationships</td><td>Beginner&ndash;Intermediate</td><td>1.1</td><td>2.5h</td></tr>
+<tr data-href="#module-13-geometric-operations-buffer-union-intersection-simplify"><td>1.3</td><td>Geometric Operations: Buffer, Union, Intersection, Simplify</td><td>Intermediate</td><td>1.1</td><td>2.5h</td></tr>
+<tr data-href="#module-14-spatial-indexing-performance-with-strtree"><td>1.4</td><td>Spatial Indexing &amp; Performance with STRtree</td><td>Intermediate</td><td>1.2</td><td>2h</td></tr>
+<tr data-href="#module-21-geodataframe-fundamentals-file-io"><td>2.1</td><td>GeoDataFrame Fundamentals &amp; File I/O</td><td>Beginner&ndash;Intermediate</td><td>1.1, pandas basics</td><td>3h</td></tr>
+<tr data-href="#module-22-coordinate-reference-systems-reprojection"><td>2.2</td><td>Coordinate Reference Systems &amp; Reprojection</td><td>Intermediate</td><td>2.1</td><td>3h</td></tr>
+<tr data-href="#module-23-spatial-attribute-joins"><td>2.3</td><td>Spatial &amp; Attribute Joins</td><td>Intermediate</td><td>2.1, 1.2</td><td>3h</td></tr>
+<tr data-href="#module-24-static-choropleth-mapping-basemaps"><td>2.4</td><td>Static Choropleth Mapping &amp; Basemaps</td><td>Intermediate</td><td>2.2</td><td>2.5h</td></tr>
+<tr data-href="#module-31-basic-folium-maps-markers-popups-tooltips"><td>3.1</td><td>Basic Folium Maps: Markers, Popups, Tooltips</td><td>Beginner&ndash;Intermediate</td><td>None</td><td>2h</td></tr>
+<tr data-href="#module-32-layers-marker-clusters-featuregroups"><td>3.2</td><td>Layers, Marker Clusters &amp; FeatureGroups</td><td>Intermediate</td><td>3.1</td><td>2.5h</td></tr>
+<tr data-href="#module-33-interactive-choropleths-with-folium"><td>3.3</td><td>Interactive Choropleths with Folium</td><td>Intermediate</td><td>3.1, 2.1</td><td>2.5h</td></tr>
+<tr data-href="#module-34-exporting-embedding-custom-tiles"><td>3.4</td><td>Exporting, Embedding &amp; Custom Tiles</td><td>Intermediate</td><td>3.2</td><td>1.5h</td></tr>
+<tr data-href="#module-41-geocoding-from-addresses-to-points"><td>4.1</td><td>Geocoding: From Addresses to Points</td><td>Intermediate</td><td>2.1</td><td>2h</td></tr>
+<tr data-href="#module-42-applied-case-study-tindahub-delivery-zone-analysis"><td>4.2</td><td>Applied Case Study: TindaHub Delivery Zone Analysis</td><td>Advanced</td><td>1.3, 2.3, 3.3</td><td>3h</td></tr>
+<tr data-href="#module-43-choosing-the-right-tool-shapely-vs-geopandas-vs-folium-vs-contextily"><td>4.3</td><td>Choosing the Right Tool: Shapely vs GeoPandas vs Folium vs Contextily</td><td>Intermediate</td><td>Phases 1&ndash;3</td><td>1.5h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1&ndash;3 are largely independent tracks &mdash; Shapely (Phase 1), GeoPandas (Phase 2), and Folium (Phase 3) can each be learned on their own once you've done Module 1.1. GeoPandas builds on Shapely geometries internally, so Phase 1 is a soft prerequisite for Phase 2, and Folium modules only need Module 1.1 plus, from Module 3.3 onward, a GeoDataFrame from Phase 2. Phase 4 integrates all three and assumes at least one module from each earlier phase.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+
+<h3 id="track-1-shapely-fast-track">Track 1 &mdash; Shapely Fast Track (pure geometry)</h3>
+<p><code>1.1 &rarr; 1.2 &rarr; 1.3 &rarr; 1.4 &rarr; Phase 1 Capstone</code><br>
+Target outcome: <strong>comfortable constructing and manipulating geometric objects independent of any tabular or web-mapping context</strong>.</p>
+
+<h3 id="track-2-geopandas-for-spatial-analysis">Track 2 &mdash; GeoPandas for Spatial Data Analysis</h3>
+<p><code>1.1 &rarr; 2.1 &rarr; 2.2 &rarr; 2.3 &rarr; 2.4 &rarr; Phase 2 Capstone</code><br>
+Target outcome: <strong>loading, reprojecting, joining, and mapping real-world spatial datasets in a pandas-native workflow</strong>.</p>
+
+<h3 id="track-3-folium-for-interactive-web-maps">Track 3 &mdash; Folium for Interactive Web Maps</h3>
+<p><code>1.1 &rarr; 2.1 &rarr; 3.1 &rarr; 3.2 &rarr; 3.3 &rarr; 3.4 &rarr; Phase 3 Capstone</code><br>
+Target outcome: <strong>producing shareable, interactive HTML maps with markers, clusters, and choropleths</strong>.</p>
+
+<h3 id="track-4-applied-delivery-logistics-analytics">Track 4 &mdash; Applied Delivery &amp; Logistics Geospatial Analytics</h3>
+<p><code>2.1 &rarr; 2.2 &rarr; 2.3 &rarr; 4.1 &rarr; 4.2 &rarr; 4.3 &rarr; Final Capstone</code><br>
+Target outcome: <strong>building a defensible delivery-zone or coverage-area analysis end-to-end on the TindaHub dataset</strong>.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Shapely Foundations        (Weeks 1–2)
+Phase 2 — GeoPandas Spatial Data     (Weeks 2–4)
+Phase 3 — Folium Interactive Maps    (Weeks 3–5)
+Phase 4 — Integration &amp; Judgment     (Weeks 5–6)
+Final Capstone                       (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ─┬─ 1.2 ─ 1.3 ─ 1.4 ──────────┐
+     ├─ 2.1 ─ 2.2 ─ 2.3 ─ 2.4     ├─ 4.1 ─ 4.2 ─ 4.3 ─ Final Capstone
+     └─ 3.1 ─ 3.2 ─ 3.3 ─ 3.4 ────┘</code></pre>
+
+<h2 id="phase-1-shapely-foundations">Phase 1: Shapely Foundations</h2>
+<h3 id="weeks-1-2">Weeks 1&ndash;2 | Goal: represent and manipulate geometric objects independent of any tabular or web-mapping context</h3>
+<hr />
+
+<h3 id="module-11-geometric-primitives-point-linestring-polygon">Module 1.1 &mdash; Geometric Primitives: Point, LineString, Polygon</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> None (comfortable writing everyday Python) &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Create a <code>Point</code>, a <code>LineString</code>, and a <code>Polygon</code> from coordinate tuples, and explain what <code>.wkt</code> and <code>.bounds</code> return for each.<br>
+<strong>Skip if:</strong> You already default to Shapely for representing coordinates, shapes, and boundaries.<br>
+<strong>Unlocks:</strong> Module 1.2, Module 2.1</p>
+</blockquote>
+
+<h4>Why Shapely exists: geometry as first-class objects</h4>
+<p>A latitude/longitude pair stored as two plain floats can't answer "is this point inside that boundary" or "how far apart are these two shapes" without you hand-rolling the math. Shapely wraps coordinates into real geometric objects &mdash; <code>Point</code>, <code>LineString</code>, <code>Polygon</code>, and their <code>Multi-</code> variants &mdash; backed by GEOS, the same battle-tested C++ geometry engine used by PostGIS and QGIS. Once a coordinate is a Shapely object rather than a bare tuple, every spatial question (Module 1.2) and operation (Module 1.3) becomes a method call instead of a from-scratch math problem.</p>
+<pre><code class="language-py">from shapely.geometry import Point, LineString, Polygon
+
+manila = Point(120.9842, 14.5995)          # (lon, lat) — Shapely is x, y, i.e. lon, lat
+route = LineString([(120.9842, 14.5995), (121.0244, 14.5547)])  # Manila → Makati
+service_area = Polygon([
+    (120.95, 14.55), (121.05, 14.55), (121.05, 14.65), (120.95, 14.65)
+])
+
+print(manila.wkt)          # 'POINT (120.9842 14.5995)' — Well-Known Text
+print(route.length)        # straight-line length in coordinate units (degrees here — see Module 2.2)
+print(service_area.bounds) # (minx, miny, maxx, maxy) bounding box
+print(service_area.area)   # area in coordinate units² — not square meters until reprojected
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> passing (latitude, longitude) instead of (longitude, latitude). Shapely, like most geometry libraries, orders coordinates as <strong>(x, y)</strong> &mdash; and geographic x is longitude, y is latitude. Swap them and every point silently lands in the wrong hemisphere-adjacent location without any error being raised.</p></blockquote>
+
+<h4>Multi-part geometries</h4>
+<p>Real-world features often aren't a single contiguous shape &mdash; a province made of several islands, a delivery network with disconnected route segments. <code>MultiPoint</code>, <code>MultiLineString</code>, and <code>MultiPolygon</code> hold a collection of same-type geometries as one logical object, which matters because a GeoPandas column (Module 2.1) expects one geometry value per row, even when that row's true shape is multi-part.</p>
+<pre><code class="language-py">from shapely.geometry import MultiPoint
+
+tindahub_hub_cities = MultiPoint([(120.9842, 14.5995), (123.8854, 10.3157), (125.4553, 7.1907)])
+print(tindahub_hub_cities.geoms[0])   # access individual Point members via .geoms
+</code></pre>
+
+<h4>WKT and WKB: how geometries move between systems</h4>
+<p><strong>WKT</strong> (Well-Known Text) is the human-readable string form of a geometry (<code>"POINT (120.9842 14.5995)"</code>); <strong>WKB</strong> (Well-Known Binary) is its compact binary form, used when geometries are stored in a database column or a file format. Both are round-trippable with <code>shapely.from_wkt</code>/<code>.wkt</code> and <code>shapely.from_wkb</code>/<code>.wkb</code> &mdash; the format that lets a geometry created in Shapely be written to a file and read back identically later.</p>
+
+<p><strong>Exercise 1.1 &mdash; Build TindaHub's City Points</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code> (bundled with this guide &mdash; City, Province, Region, Lat, Lon for the 17 cities that appear in TindaHub Orders)</p>
+<ol>
+<li>Load <code>tindahub_city_coords.csv</code> with the stdlib <code>csv</code> module (no pandas yet) and build a Shapely <code>Point(lon, lat)</code> for each of the 17 cities, keeping city name and point together (e.g., a list of tuples).</li>
+<li>Print the <code>.wkt</code> of the Manila and Davao City points.</li>
+<li>Build a <code>MultiPoint</code> of all 4 NCR cities (Makati, Manila, Pasig, Quezon City) and print its <code>.bounds</code>.</li>
+<li>Construct a rough rectangular <code>Polygon</code> "Luzon service zone" that bounds all Central Luzon and CALABARZON cities, and print its <code>.area</code> (note: this is in degrees&sup2;, not a real area yet &mdash; Module 2.2 covers fixing that).</li>
+</ol>
+<hr />
+
+<h3 id="module-12-spatial-predicates-relationships">Module 1.2 &mdash; Spatial Predicates &amp; Relationships</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> Module 1.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Given two geometries, correctly predict the result of <code>intersects</code>, <code>contains</code>, <code>within</code>, and <code>touches</code> without running code, including one case where they disagree.<br>
+<strong>Skip if:</strong> These four predicates and the difference between them are already second nature.<br>
+<strong>Unlocks:</strong> Module 1.3, Module 1.4, Module 2.3</p>
+</blockquote>
+
+<h4>The core predicates</h4>
+<p>Shapely's spatial predicates answer yes/no questions about how two geometries relate. <code>a.intersects(b)</code> is true if they share any point at all (including just touching at an edge); <code>a.contains(b)</code> is true if <code>b</code> is entirely inside <code>a</code> with no boundary touching; <code>a.within(b)</code> is the mirror of <code>contains</code> (true if <code>a</code> is entirely inside <code>b</code>); <code>a.touches(b)</code> is true only if they share a boundary point but no interior points. Getting <code>contains</code> and <code>intersects</code> confused is the single most common spatial-predicate bug: a point sitting exactly on a polygon's edge satisfies <code>intersects</code> but not <code>contains</code>, which matters for edge-case delivery addresses sitting exactly on a zone boundary.</p>
+<pre><code class="language-py">from shapely.geometry import Point, Polygon
+
+zone = Polygon([(120.95, 14.55), (121.05, 14.55), (121.05, 14.65), (120.95, 14.65)])
+inside_point = Point(121.00, 14.60)
+edge_point = Point(120.95, 14.60)          # exactly on the zone's left edge
+outside_point = Point(121.20, 14.60)
+
+print(zone.contains(inside_point))    # True
+print(zone.contains(edge_point))      # False — boundary points don't count as "contained"
+print(zone.intersects(edge_point))    # True — touching the boundary is enough for intersects
+print(zone.contains(outside_point))   # False
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> using <code>intersects</code> when you meant <code>contains</code> (or vice versa) for a point-in-polygon check. If an address sits exactly on a delivery-zone boundary, <code>intersects</code> counts it as served and <code>contains</code> does not &mdash; pick deliberately based on whether boundary-exact cases should count, don't default to whichever one you remember first.</p></blockquote>
+
+<h4>distance and nearest relationships</h4>
+<p><code>a.distance(b)</code> returns the shortest distance between two geometries (0 if they intersect), in whatever units the coordinates are in &mdash; degrees for unprojected lon/lat data, which is rarely what you actually want for a real distance (Module 2.2 covers projecting to get meters). For finding the closest of many candidates, <code>shapely.ops.nearest_points</code> returns the actual closest point pair, not just the distance.</p>
+<pre><code class="language-py">from shapely.ops import nearest_points
+from shapely.geometry import Point
+
+customer = Point(121.05, 14.58)
+hub_a = Point(120.9842, 14.5995)   # Manila hub
+hub_b = Point(121.0244, 14.5547)   # Makati hub
+
+nearer_hub = min([hub_a, hub_b], key=lambda h: customer.distance(h))
+p1, p2 = nearest_points(customer, hub_b)
+</code></pre>
+
+<p><strong>Exercise 1.2 &mdash; Which TindaHub Zone Does Each City Fall In?</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code></p>
+<ol>
+<li>Reuse the "Luzon service zone" polygon from Exercise 1.1. For each of the 17 city points, test <code>contains</code> and report which cities fall inside it.</li>
+<li>Construct one more polygon, a "Visayas service zone" covering Cebu City, Mandaue, Tagbilaran, Bacolod, and Iloilo City, sized so it deliberately has one city sitting exactly on its boundary edge (pick the coordinates to make this true).</li>
+<li>For that boundary city, show that <code>intersects</code> returns <code>True</code> but <code>contains</code> returns <code>False</code>, and explain in one sentence which one a real "is this order in my service zone" business rule should use.</li>
+<li>For every city not in either zone, compute its <code>distance</code> to the nearest zone polygon (use <code>.distance()</code> against each zone and take the minimum).</li>
+</ol>
+<hr />
+
+<h3 id="module-13-geometric-operations-buffer-union-intersection-simplify">Module 1.3 &mdash; Geometric Operations: Buffer, Union, Intersection, Simplify</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Compute a buffer around a point, the union of two overlapping polygons, and their intersection, and explain what each represents in a real coverage-area scenario.<br>
+<strong>Skip if:</strong> These operations are already familiar and you know why buffering unprojected coordinates is risky.<br>
+<strong>Unlocks:</strong> Module 1.4, Module 4.2</p>
+</blockquote>
+
+<h4>buffer: growing a shape outward</h4>
+<p><code>geometry.buffer(distance)</code> returns a new polygon expanded outward by <code>distance</code> in every direction &mdash; the standard way to represent "everything within X of this point/line/shape," such as a delivery hub's coverage radius or a road's right-of-way. The distance is in the geometry's own coordinate units, which is exactly why buffering directly on unprojected lon/lat coordinates is a trap: 0.05 degrees is roughly 5.5 km near the equator but noticeably less further from it, so the same buffer distance means a different real-world radius depending on latitude. Module 2.2 covers projecting to a metric CRS before buffering for anything where the real distance matters.</p>
+<pre><code class="language-py">from shapely.geometry import Point
+
+hub = Point(120.9842, 14.5995)          # Manila hub, in degrees (unprojected)
+rough_coverage = hub.buffer(0.05)        # ~5.5 km-ish near Manila — approximate, don't trust for precise work
+print(rough_coverage.area)
+</code></pre>
+
+<h4>union, intersection, difference</h4>
+<p>These three set-like operations combine two geometries: <code>a.union(b)</code> is everything covered by either; <code>a.intersection(b)</code> is only the overlapping area; <code>a.difference(b)</code> is <code>a</code> with <code>b</code>'s area removed. For combining many geometries at once (e.g., unioning all 17 cities' buffer zones into one coverage footprint), <code>shapely.ops.unary_union</code> is far more efficient than folding <code>.union()</code> in a Python loop.</p>
+<pre><code class="language-py">from shapely.ops import unary_union
+from shapely.geometry import Point
+
+zone_a = Point(121.00, 14.60).buffer(0.08)
+zone_b = Point(121.05, 14.62).buffer(0.08)
+
+overlap = zone_a.intersection(zone_b)     # area served by both hubs — a candidate for consolidation
+combined = unary_union([zone_a, zone_b])  # total footprint served by either hub
+exclusive_a = zone_a.difference(zone_b)   # area only zone_a covers
+</code></pre>
+
+<h4>simplify: reducing vertex count</h4>
+<p><code>geometry.simplify(tolerance)</code> reduces a polygon or line's vertex count while staying within <code>tolerance</code> distance of the original shape (Douglas-Peucker algorithm) &mdash; useful when a boundary file has far more detail than a given map's zoom level needs, since fewer vertices means faster rendering and smaller file sizes, especially noticeable once you're pushing GeoJSON to a Folium map (Phase 3).</p>
+
+<p><strong>Exercise 1.3 &mdash; Model TindaHub Hub Coverage Overlaps</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code></p>
+<ol>
+<li>Pick 3 TindaHub cities as candidate delivery hubs (e.g., Manila, Cebu City, Davao City) and buffer each by a distance of your choosing (in degrees, acknowledging the imprecision noted above).</li>
+<li>Compute the pairwise <code>intersection</code> between each pair of hub buffers, and report which pairs overlap at all.</li>
+<li>Use <code>unary_union</code> to compute the total combined coverage footprint of all 3 hubs as one geometry.</li>
+<li>For any city point that falls in more than one hub's buffer (an overlap zone), decide and justify in 1&ndash;2 sentences a tie-breaking rule (e.g., nearest hub) for which hub should actually serve it.</li>
+</ol>
+<hr />
+
+<h3 id="module-14-spatial-indexing-performance-with-strtree">Module 1.4 &mdash; Spatial Indexing &amp; Performance with STRtree</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.2 &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Build an <code>STRtree</code> from a list of geometries and use <code>.query()</code> to find candidates near a target, explaining why this is faster than checking every geometry in a loop.<br>
+<strong>Skip if:</strong> You already reach for a spatial index once a geometry list grows past a few hundred items.<br>
+<strong>Unlocks:</strong> Module 2.3, Phase 1 Capstone</p>
+</blockquote>
+
+<h4>Why brute-force point-in-polygon checks don't scale</h4>
+<p>Checking whether a point falls inside any of N polygons by looping and testing <code>polygon.contains(point)</code> for every polygon is <strong>O(N)</strong> per point &mdash; fine for the 3 hub zones in Exercise 1.3, but a real bottleneck once N is in the hundreds or thousands (all Philippine municipalities, say) and you're checking thousands of points against them. A <strong>spatial index</strong> pre-organizes geometries by location so a query only has to check a small, spatially-relevant subset rather than everything.</p>
+<pre><code class="language-py">from shapely import STRtree
+from shapely.geometry import Point
+
+candidate_zones = [Point(121.0 + i * 0.01, 14.6).buffer(0.02) for i in range(500)]
+tree = STRtree(candidate_zones)
+
+query_point = Point(121.15, 14.6)
+nearby_indices = tree.query(query_point)              # fast: only spatially-plausible candidates
+actual_hits = [i for i in nearby_indices if candidate_zones[i].contains(query_point)]
+</code></pre>
+<p><code>tree.query()</code> returns candidates whose bounding boxes are near the query geometry &mdash; a fast, approximate first pass. It does <strong>not</strong> guarantee an actual <code>contains</code>/<code>intersects</code> match, so a precise predicate check on the returned candidates (as above) is still required; skipping that second check is a common correctness bug once a spatial index is introduced.</p>
+
+<p><strong>Exercise 1.4 &mdash; Speed Up TindaHub's Zone Lookup</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code>, extended with synthetic zones</p>
+<ol>
+<li>Generate 300 small synthetic circular "delivery zones" (buffered points) scattered across the Luzon bounding box covered by TindaHub's cities.</li>
+<li>Write a brute-force function that, for each of the 17 real city points, checks every one of the 300 zones with <code>.contains()</code> in a loop, and time it.</li>
+<li>Build an <code>STRtree</code> from the 300 zones and repeat the same 17-city lookup using <code>tree.query()</code> plus a precise <code>contains</code> check on the returned candidates, and time it.</li>
+<li>Report the speedup and explain, in 1&ndash;2 sentences, why the speedup would grow (not shrink) if you scaled from 300 zones to 30,000.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-tindahub-hub-coverage-model">Phase 1 Capstone: TindaHub Hub Coverage Model</h3>
+<p><strong>Project: A pure-Shapely coverage and zone-assignment model for TindaHub's delivery hubs</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain the difference between <code>contains</code> and <code>intersects</code>, why buffering unprojected coordinates is imprecise, and what a spatial index actually speeds up? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> <code>tindahub_city_coords.csv</code></p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Buffered coverage polygons for at least 4 candidate hub cities.</li>
+<li>A computed overlap analysis (pairwise <code>intersection</code>) identifying which hub pairs have redundant coverage.</li>
+<li>An <code>STRtree</code>-backed lookup assigning every one of the 17 TindaHub cities to its nearest hub (by <code>distance</code>, with the tree used to narrow candidates first).</li>
+<li>A <code>unary_union</code>'d total coverage footprint and its <code>.area</code> (noting the unprojected-degrees caveat).</li>
+<li>A short written note (3&ndash;5 sentences) on which decisions in this capstone would need to change before treating the results as real distances/areas rather than approximate ones.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-geopandas-spatial-data">Phase 2: GeoPandas Spatial Data</h2>
+<h3 id="weeks-2-4">Weeks 2&ndash;4 | Goal: load, reproject, join, and map real-world spatial data in a pandas-native workflow</h3>
+<hr />
+
+<h3 id="module-21-geodataframe-fundamentals-file-io">Module 2.1 &mdash; GeoDataFrame Fundamentals &amp; File I/O</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> Module 1.1, comfortable with pandas DataFrames &middot; <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Build a <code>GeoDataFrame</code> from a plain DataFrame with lon/lat columns, read a GeoJSON file into one, and explain what the special <code>geometry</code> column is.<br>
+<strong>Skip if:</strong> Creating and reading/writing GeoDataFrames is already routine.<br>
+<strong>Unlocks:</strong> Module 2.2, Module 3.3, Module 4.1</p>
+</blockquote>
+
+<h4>GeoDataFrame: a DataFrame with one geometry-typed column</h4>
+<p>A <code>GeoDataFrame</code> is a pandas <code>DataFrame</code> with one column (by convention named <code>geometry</code>) holding Shapely geometry objects instead of numbers or strings, plus CRS metadata (Module 2.2) attached to the whole table. Every pandas operation you already know &mdash; <code>merge</code>, <code>groupby</code>, boolean filtering &mdash; still works, because <code>GeoDataFrame</code> subclasses <code>DataFrame</code>; the geometry column just adds spatial methods (<code>.distance()</code>, <code>.buffer()</code>, <code>.plot()</code>) on top.</p>
+<pre><code class="language-py">import geopandas as gpd
+import pandas as pd
+from shapely.geometry import Point
+
+cities = pd.read_csv("tindahub_city_coords.csv")
+cities_gdf = gpd.GeoDataFrame(
+    cities,
+    geometry=gpd.points_from_xy(cities["Lon"], cities["Lat"]),
+    crs="EPSG:4326"          # WGS84 — the standard lat/lon CRS; see Module 2.2
+)
+print(cities_gdf.geometry.iloc[0])   # a real Shapely Point, not a string
+print(type(cities_gdf))              # geopandas.geodataframe.GeoDataFrame
+</code></pre>
+<p><code>gpd.points_from_xy</code> is the fast, vectorized way to build a whole geometry column from x/y arrays &mdash; far preferable to constructing a Python list of <code>Point</code> objects in a loop for anything beyond a handful of rows.</p>
+
+<h4>Reading and writing files: pyogrio is the current default engine</h4>
+<p>As of GeoPandas 1.0, <strong>pyogrio</strong> is the default engine behind <code>gpd.read_file()</code> and <code>.to_file()</code>, replacing the older <code>fiona</code>-based default &mdash; pyogrio is measured at 5&ndash;20x faster for bulk reads and writes, which matters once a boundary file has thousands of features. This guide's GeoPandas is 1.1.x, where you don't need to do anything to get pyogrio; it's automatic. If you're following an older tutorial that explicitly imports or configures <code>fiona</code>, that's a pre-1.0 pattern &mdash; not wrong, just outdated as the default.</p>
+<pre><code class="language-py">import geopandas as gpd
+
+# GeoJSON, Shapefile, GeoPackage — gpd.read_file auto-detects format, uses pyogrio by default
+provinces = gpd.read_file("ph_provinces.geojson")
+cities_gdf.to_file("tindahub_cities.gpkg", driver="GPKG")   # GeoPackage: the modern preferred format over .shp
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> defaulting to the legacy Shapefile format (<code>.shp</code>) for new work. A Shapefile is actually a bundle of 3+ separate files (<code>.shp</code>, <code>.shx</code>, <code>.dbf</code>, ...) that must all travel together, truncates column names to 10 characters, and has no native CRS storage without a companion <code>.prj</code> file. GeoPackage (<code>.gpkg</code>, a single SQLite-based file) or GeoJSON avoid all three problems and are the better default for anything you're creating today.</p></blockquote>
+
+<p><strong>Exercise 2.1 &mdash; Build the TindaHub Cities GeoDataFrame</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code>, TindaHub Orders (<code>tindahub_orders.csv</code>)</p>
+<ol>
+<li>Build a <code>GeoDataFrame</code> from <code>tindahub_city_coords.csv</code> using <code>gpd.points_from_xy</code>, with CRS <code>EPSG:4326</code>.</li>
+<li>Load <code>tindahub_orders.csv</code> with pandas and aggregate total <code>Amount</code> and order count by <code>City</code>.</li>
+<li>Merge (plain pandas <code>merge</code>, on <code>City</code>) that aggregation into the cities GeoDataFrame, confirming the result is still a <code>GeoDataFrame</code> (check <code>type()</code>) with a working <code>geometry</code> column.</li>
+<li>Save the merged result to a GeoPackage file and read it back, confirming the geometry and CRS survived the round trip.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-coordinate-reference-systems-reprojection">Module 2.2 &mdash; Coordinate Reference Systems &amp; Reprojection</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 2.1 &middot; <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Explain the difference between a geographic and a projected CRS, reproject a GeoDataFrame to a metric CRS with <code>.to_crs()</code>, and compute a real-world distance in meters/kilometers.<br>
+<strong>Skip if:</strong> CRS concepts and <code>.to_crs()</code> are already comfortable.<br>
+<strong>Unlocks:</strong> Module 2.3, Module 2.4, Module 4.2</p>
+</blockquote>
+
+<h4>Geographic vs. projected CRS</h4>
+<p>A <strong>geographic CRS</strong> (like <code>EPSG:4326</code>/WGS84) expresses positions as angles &mdash; degrees of latitude and longitude on a sphere/ellipsoid &mdash; and is what GPS coordinates come in. A <strong>projected CRS</strong> flattens that sphere onto a 2D plane using a specific mathematical projection, expressing positions in linear units (usually meters), which is what makes area, distance, and buffer calculations behave the way you'd intuitively expect. Every geometric measurement in Module 1.3 (buffer, area, distance) computed on unprojected lon/lat data was returning values in <em>degrees</em>, not meters &mdash; technically correct, practically meaningless for real-world distance.</p>
+
+<h4>EPSG codes and choosing a projection</h4>
+<p>Every CRS has a standard <strong>EPSG code</strong> identifying it precisely (<code>EPSG:4326</code> for WGS84 lon/lat, <code>EPSG:3857</code> for Web Mercator used by most web maps, <code>EPSG:32651</code> for UTM Zone 51N, which covers most of the Philippines with good local accuracy for area/distance work). The choice matters: Web Mercator is fine for web-map <em>display</em> but distorts area badly at higher latitudes, so it's a poor choice for actual area/distance measurement &mdash; a locally-appropriate UTM zone is the better choice when the numbers themselves need to be trustworthy, not just visually reasonable.</p>
+<pre><code class="language-py">import geopandas as gpd
+
+cities_gdf = gpd.GeoDataFrame(
+    {"City": ["Manila", "Cebu City"]},
+    geometry=gpd.points_from_xy([120.9842, 123.8854], [14.5995, 10.3157]),
+    crs="EPSG:4326"
+)
+
+print(cities_gdf.crs)                     # EPSG:4326 — degrees
+manila_pt = cities_gdf.geometry.iloc[0]
+cebu_pt = cities_gdf.geometry.iloc[1]
+print(manila_pt.distance(cebu_pt))        # a number in degrees — not meaningful on its own
+
+utm_gdf = cities_gdf.to_crs("EPSG:32651")  # reproject to UTM Zone 51N — meters now
+manila_utm = utm_gdf.geometry.iloc[0]
+cebu_utm = utm_gdf.geometry.iloc[1]
+distance_km = manila_utm.distance(cebu_utm) / 1000
+print(f"{distance_km:.0f} km")             # a real, trustworthy distance
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> calling <code>.buffer()</code>, <code>.distance()</code>, or <code>.area</code> on a GeoDataFrame still in <code>EPSG:4326</code> and treating the result as meters or square meters. It isn't &mdash; it's degrees. Always <code>.to_crs()</code> to an appropriate projected CRS first when the actual real-world magnitude of a measurement matters, not just its relative comparison.</p></blockquote>
+
+<p><strong>Exercise 2.2 &mdash; Real Distances Between TindaHub Cities</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code></p>
+<ol>
+<li>Build the 17-city GeoDataFrame in <code>EPSG:4326</code> (reuse Exercise 2.1's result).</li>
+<li>Reproject it to <code>EPSG:32651</code> (UTM Zone 51N) with <code>.to_crs()</code>.</li>
+<li>Compute the real distance in kilometers between every pair of the 3 candidate hub cities from the Phase 1 Capstone, using the projected coordinates.</li>
+<li>Re-buffer one hub city by a real 10 km radius (now meaningful, since you're in a metric CRS) and compare its <code>.area</code> in km&sup2; against the degree-based buffer area you computed in Module 1.3's exercise for the same nominal distance &mdash; report how far off the unprojected version was.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-spatial-attribute-joins">Module 2.3 &mdash; Spatial &amp; Attribute Joins</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 2.1, Module 1.2 &middot; <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Perform a spatial join between a point GeoDataFrame and a polygon GeoDataFrame with <code>sjoin</code>, choosing the correct predicate, and explain how it differs from a normal pandas <code>merge</code>.<br>
+<strong>Skip if:</strong> <code>sjoin</code> and its predicate options are already familiar.<br>
+<strong>Unlocks:</strong> Module 2.4, Module 4.2</p>
+</blockquote>
+
+<h4>sjoin: joining on spatial relationship, not a shared key</h4>
+<p>A normal pandas <code>merge</code> joins rows where a column value matches exactly (e.g., <code>City</code> == <code>City</code>). A <strong>spatial join</strong> (<code>geopandas.sjoin</code>) joins rows based on a spatial <em>relationship</em> between their geometries instead &mdash; "which polygon contains this point," "which points fall within this buffer" &mdash; with no shared key column required at all. This is the tool for attaching a boundary's attributes (province name, region) to a set of points purely by location.</p>
+<pre><code class="language-py">import geopandas as gpd
+
+points_gdf = gpd.GeoDataFrame(
+    {"City": ["Manila", "Cebu City"]},
+    geometry=gpd.points_from_xy([120.9842, 123.8854], [14.5995, 10.3157]),
+    crs="EPSG:4326"
+)
+provinces_gdf = gpd.read_file("ph_provinces.geojson")   # polygons with a "PROVINCE" column
+
+joined = gpd.sjoin(points_gdf, provinces_gdf, how="left", predicate="within")
+print(joined[["City", "PROVINCE"]])
+</code></pre>
+<p>The <code>predicate</code> argument accepts the same relationships from Module 1.2 (<code>"intersects"</code>, <code>"within"</code>, <code>"contains"</code>, ...) &mdash; choosing the wrong one produces the same boundary-edge-case bugs discussed there, now silently affecting an entire joined table instead of one manual check.</p>
+
+<h4>Combining a spatial join with a normal attribute join</h4>
+<p>A typical real workflow chains both: spatially join points to polygons to attach a region/province label, then use that label to do a normal pandas <code>groupby</code> or attribute <code>merge</code> against a non-spatial table (like sales-by-province targets).</p>
+
+<p><strong>Exercise 2.3 &mdash; Assign TindaHub Cities to Delivery Zones by Spatial Join</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code>, plus the buffered hub-zone polygons from the Phase 1 Capstone</p>
+<ol>
+<li>Turn the Phase 1 Capstone's buffered hub-coverage polygons into a small <code>GeoDataFrame</code> (one row per hub, with a <code>hub_name</code> column) using <code>EPSG:4326</code>.</li>
+<li>Build the 17-city points GeoDataFrame and run <code>gpd.sjoin</code> with <code>predicate="within"</code> to assign each city to a hub zone (some may get no match &mdash; that's expected and worth noting).</li>
+<li>Re-run the same join with <code>predicate="intersects"</code> and compare the results &mdash; report any city whose hub assignment changed between the two predicates and explain why.</li>
+<li>Attribute-join (plain pandas <code>merge</code>) the result against a small manually-created table of each hub's daily delivery capacity, and flag any hub whose assigned cities' combined order volume (from <code>tindahub_orders.csv</code>) would exceed that capacity.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-static-choropleth-mapping-basemaps">Module 2.4 &mdash; Static Choropleth Mapping &amp; Basemaps</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 2.2 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Produce a static choropleth map of a GeoDataFrame colored by a numeric column, with a legend and an added basemap tile layer.<br>
+<strong>Skip if:</strong> This is already a routine task.<br>
+<strong>Unlocks:</strong> Phase 2 Capstone</p>
+</blockquote>
+
+<h4>GeoDataFrame.plot(): choropleths in one call</h4>
+<p>A <strong>choropleth</strong> is a map where regions are shaded by a data value (revenue per province, population density, ...). GeoDataFrame's <code>.plot()</code> method (built on matplotlib) does this directly &mdash; pass a <code>column</code> to color by, a <code>cmap</code> color scheme, and <code>legend=True</code> for a color-scale key.</p>
+<pre><code class="language-py">import geopandas as gpd
+import matplotlib.pyplot as plt
+
+provinces_gdf = gpd.read_file("ph_provinces.geojson")   # has a "revenue" column, joined in earlier
+
+fig, ax = plt.subplots(figsize=(8, 10))
+provinces_gdf.plot(column="revenue", cmap="YlGnBu", legend=True, edgecolor="white", ax=ax)
+ax.set_axis_off()
+plt.savefig("province_revenue_choropleth.png", dpi=150, bbox_inches="tight")
+</code></pre>
+
+<h4>Adding a basemap with contextily</h4>
+<p><strong>Contextily</strong> adds an OpenStreetMap-style tile basemap underneath a matplotlib/GeoPandas plot, giving static maps real-world visual context (roads, city names, coastlines) without switching to an interactive tool. It requires the GeoDataFrame to be in <code>EPSG:3857</code> (Web Mercator) first, since that's the projection basemap tile providers use.</p>
+<pre><code class="language-py">import contextily as cx
+
+points_web_mercator = cities_gdf.to_crs(epsg=3857)
+ax = points_web_mercator.plot(figsize=(8, 8), markersize=20, color="#ff6b47")
+cx.add_basemap(ax, source=cx.providers.CartoDB.Positron)
+ax.set_axis_off()
+plt.savefig("cities_with_basemap.png", dpi=150, bbox_inches="tight")
+</code></pre>
+<p>Contextily is the right tool specifically for <em>static</em> output (reports, printed maps, blog posts); Folium (Phase 3) is the right tool once the map needs to be interactive (pan, zoom, clickable popups) or embedded in a web page as a live widget &mdash; Module 4.3 turns this into an explicit decision rule.</p>
+
+<p><strong>Exercise 2.4 &mdash; Static Revenue Choropleth for TindaHub</strong></p>
+<p>Dataset: TindaHub Orders (<code>tindahub_orders.csv</code>), <code>tindahub_city_coords.csv</code></p>
+<ol>
+<li>Aggregate total <code>Amount</code> by <code>Province</code> from <code>tindahub_orders.csv</code>.</li>
+<li>Using the city GeoDataFrame's <code>Province</code> column, build a simplified province-level GeoDataFrame by taking the convex hull of each province's city points (a rough stand-in for a real province boundary &mdash; explicitly note this in your write-up as an approximation, not authoritative boundary data).</li>
+<li>Merge in the revenue-by-province totals and produce a choropleth colored by revenue, with a legend.</li>
+<li>Reproject the city points to <code>EPSG:3857</code> and produce a second plot with a contextily basemap showing the 17 cities as points sized by order count.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-tindahub-provincial-performance-map">Phase 2 Capstone: TindaHub Provincial Performance Map</h3>
+<p><strong>Project: A reprojected, spatially-joined, choropleth-mapped view of TindaHub performance by province</strong></p>
+<p><strong>Dataset:</strong> TindaHub Orders, TindaHub Customers, <code>tindahub_city_coords.csv</code></p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A <code>GeoDataFrame</code> of all TindaHub cities, correctly typed with <code>EPSG:4326</code>, merged with aggregated revenue and order-count metrics.</li>
+<li>A reprojected (<code>EPSG:32651</code>) version used to compute real distances between the 3 hub cities from Phase 1.</li>
+<li>A spatial join assigning every city to its nearest hub zone, with a documented predicate choice and justification.</li>
+<li>A static choropleth (province-level, convex-hull approximation, clearly labeled as such) colored by revenue, with a contextily basemap version of the city points as a second view.</li>
+<li>A one-page written summary noting which of this capstone's approximations (convex-hull "provinces," degree-based vs. projected measurements) would need to be replaced with authoritative data (e.g., a real PH province boundary file) before this went into a real business decision.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-folium-interactive-maps">Phase 3: Folium Interactive Maps</h2>
+<h3 id="weeks-3-5">Weeks 3&ndash;5 | Goal: produce shareable, interactive HTML maps with markers, layers, clusters, and choropleths</h3>
+<hr />
+
+<h3 id="module-31-basic-folium-maps-markers-popups-tooltips">Module 3.1 &mdash; Basic Folium Maps: Markers, Popups, Tooltips</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> None &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Create a Folium map centered on a location, add a marker with a popup and a tooltip, and save it to a standalone HTML file.<br>
+<strong>Skip if:</strong> Basic Folium maps and markers are already routine.<br>
+<strong>Unlocks:</strong> Module 3.2, Module 3.3</p>
+</blockquote>
+
+<h4>folium.Map: a Leaflet map in one line</h4>
+<p>Folium is a thin, Pythonic wrapper around <strong>Leaflet.js</strong>, the JavaScript library behind most interactive web maps you've ever used. Calling <code>folium.Map()</code> produces an object that, when saved or displayed, renders as a real pannable, zoomable web map &mdash; no JavaScript required, though the output <em>is</em> an HTML/JS file under the hood, which is what makes it trivially shareable or embeddable.</p>
+<pre><code class="language-py">import folium
+
+m = folium.Map(location=[14.5995, 120.9842], zoom_start=11)   # centered on Manila; note (lat, lon) here — Folium's order, opposite Shapely's
+folium.Marker(
+    location=[14.5995, 120.9842],
+    popup="Manila Hub — 1,204 orders this month",
+    tooltip="Click for details"
+).add_to(m)
+m.save("tindahub_manila_hub.html")
+</code></pre>
+<blockquote class="callout"><p><strong>Disambiguation:</strong> Folium takes coordinates as <strong>(lat, lon)</strong>, the opposite order from Shapely/GeoPandas's <strong>(lon, lat)</strong>/(x, y) convention. Both conventions are individually correct within their own library; the trap is copying a Shapely <code>(x, y)</code> tuple straight into a Folium call (or vice versa) and getting a point that's silently rotated 90 degrees off, or in the wrong hemisphere. Always check which order a specific function expects.</p></blockquote>
+
+<h4>Popups vs. tooltips</h4>
+<p>A <strong>popup</strong> opens on click and stays open until dismissed &mdash; good for detailed information the user chooses to inspect. A <strong>tooltip</strong> shows on hover and disappears immediately &mdash; good for a quick label that doesn't require a click. Both accept HTML content, not just plain text, which lets a popup show a small formatted table or an embedded chart image.</p>
+<pre><code class="language-py">popup_html = """
+<b>Manila Hub</b><br>
+Orders this month: 1,204<br>
+Revenue: &#8369;487,300
+"""
+folium.Marker(
+    location=[14.5995, 120.9842],
+    popup=folium.Popup(popup_html, max_width=250),
+    tooltip="Manila Hub"
+).add_to(m)
+</code></pre>
+
+<p><strong>Exercise 3.1 &mdash; Map TindaHub's City Network</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code>, TindaHub Orders</p>
+<ol>
+<li>Aggregate total revenue and order count by <code>City</code> from <code>tindahub_orders.csv</code>.</li>
+<li>Create a Folium map centered on the Philippines as a whole (a reasonable center point and zoom level covering all 17 cities).</li>
+<li>Add one marker per city, with a popup showing that city's revenue and order count, and a tooltip showing just the city name.</li>
+<li>Save the map to an HTML file and open it in a browser to confirm the popups and tooltips work as expected.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-layers-marker-clusters-featuregroups">Module 3.2 &mdash; Layers, Marker Clusters &amp; FeatureGroups</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 3.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Group markers into toggleable layers with <code>FeatureGroup</code> and <code>LayerControl</code>, and cluster hundreds of nearby markers with <code>MarkerCluster</code>.<br>
+<strong>Skip if:</strong> Both are already comfortable tools.<br>
+<strong>Unlocks:</strong> Module 3.3, Module 3.4</p>
+</blockquote>
+
+<h4>FeatureGroup and LayerControl: toggleable layers</h4>
+<p>A <code>folium.FeatureGroup</code> is a named container for a set of map elements that can be shown or hidden together via a <code>folium.LayerControl</code> toggle &mdash; the standard way to let a map viewer switch between, say, "Delivered orders" and "Cancelled orders" without cluttering the view with both at once.</p>
+<pre><code class="language-py">import folium
+
+m = folium.Map(location=[12.5, 122.0], zoom_start=6)
+
+delivered_layer = folium.FeatureGroup(name="Delivered orders")
+cancelled_layer = folium.FeatureGroup(name="Cancelled orders")
+
+folium.CircleMarker(location=[14.5995, 120.9842], radius=6, color="#0d7a6e", fill=True).add_to(delivered_layer)
+folium.CircleMarker(location=[10.3157, 123.8854], radius=6, color="#ff6b47", fill=True).add_to(cancelled_layer)
+
+delivered_layer.add_to(m)
+cancelled_layer.add_to(m)
+folium.LayerControl(collapsed=False).add_to(m)   # must be added AFTER all layers, or new ones won't appear in it
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> adding <code>LayerControl</code> before all the layers it should control. Folium builds the control's list from whatever's on the map at the moment <code>.add_to(m)</code> is called on the control itself &mdash; layers added afterward won't show up in the toggle list, even though they're still on the map.</p></blockquote>
+
+<h4>MarkerCluster: keeping hundreds of markers readable</h4>
+<p>Plotting one marker per order across 5,000 rows produces an unreadable wall of overlapping pins at any reasonable zoom level. <code>folium.plugins.MarkerCluster</code> groups nearby markers into a single numbered cluster icon that expands as the viewer zooms in &mdash; the standard fix for exactly this problem, and one of the plugins bundled with Folium itself (<code>from folium.plugins import MarkerCluster</code>).</p>
+<pre><code class="language-py">from folium.plugins import MarkerCluster
+import folium
+
+m = folium.Map(location=[12.5, 122.0], zoom_start=6)
+cluster = MarkerCluster(name="All orders").add_to(m)
+
+for lat, lon, city in [(14.5995, 120.9842, "Manila"), (10.3157, 123.8854, "Cebu City")]:
+    folium.Marker(location=[lat, lon], tooltip=city).add_to(cluster)
+</code></pre>
+
+<p><strong>Exercise 3.2 &mdash; Cluster &amp; Layer TindaHub's Full Order Map</strong></p>
+<p>Dataset: TindaHub Orders, <code>tindahub_city_coords.csv</code></p>
+<ol>
+<li>Join <code>tindahub_orders.csv</code> to the city coordinates (on <code>City</code>) so every one of the 5,000 orders has a lat/lon (all orders in the same city share that city's point &mdash; note this simplification in your write-up).</li>
+<li>Build one <code>MarkerCluster</code> layer containing a marker for every <code>Delivered</code> order and a separate <code>MarkerCluster</code> layer for every <code>Cancelled</code> order.</li>
+<li>Add both as named <code>FeatureGroup</code>-wrapped clusters (or clusters with a <code>name</code>) with a <code>LayerControl</code> added last, so a viewer can toggle Delivered vs. Cancelled independently.</li>
+<li>Confirm in a browser that toggling each layer works, and that zooming in expands the clusters into individual markers.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-interactive-choropleths-with-folium">Module 3.3 &mdash; Interactive Choropleths with Folium</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 3.1, Module 2.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Build an interactive choropleth from a GeoDataFrame using <code>folium.Choropleth</code>, correctly linking the data column to the geometry's key field.<br>
+<strong>Skip if:</strong> This is already a comfortable workflow.<br>
+<strong>Unlocks:</strong> Module 3.4, Module 4.2</p>
+</blockquote>
+
+<h4>folium.Choropleth: GeoJSON in, colored regions out</h4>
+<p><code>folium.Choropleth</code> takes a GeoJSON-shaped input (a GeoDataFrame works directly, or a file path) and a pandas DataFrame of values, joining them on a shared key field, then renders a color-shaded polygon layer on the map &mdash; the interactive counterpart to Module 2.4's static <code>.plot(column=...)</code>. The most common setup mistake is a mismatch between the <code>key_on</code> field (which must reference the GeoJSON's <em>feature property</em> path, prefixed <code>"feature.properties."</code>) and the actual column name in the data being joined.</p>
+<pre><code class="language-py">import folium
+import geopandas as gpd
+import pandas as pd
+
+provinces_gdf = gpd.read_file("ph_provinces_approx.geojson")   # has a "PROVINCE" property
+revenue_by_province = pd.DataFrame({
+    "PROVINCE": ["Metro Manila", "Cebu", "Davao del Sur"],
+    "revenue": [487300, 298400, 176200]
+})
+
+m = folium.Map(location=[12.5, 122.0], zoom_start=6)
+folium.Choropleth(
+    geo_data=provinces_gdf,
+    data=revenue_by_province,
+    columns=["PROVINCE", "revenue"],
+    key_on="feature.properties.PROVINCE",     # must match the GeoJSON property name exactly, including case
+    fill_color="YlGnBu",
+    legend_name="Total Revenue (₱)"
+).add_to(m)
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> a <code>key_on</code> value that doesn't exactly match the GeoJSON property name (including case and whitespace) &mdash; the choropleth silently renders with no color at all (every region defaults to the same shade) rather than raising an error, since unmatched joins are just treated as missing data.</p></blockquote>
+
+<p><strong>Exercise 3.3 &mdash; Interactive TindaHub Revenue Map</strong></p>
+<p>Dataset: TindaHub Orders, the convex-hull province GeoDataFrame from Exercise 2.4</p>
+<ol>
+<li>Reuse the convex-hull-approximated province GeoDataFrame and revenue-by-province table from Exercise 2.4.</li>
+<li>Build a Folium map with a <code>folium.Choropleth</code> layer colored by revenue, double-checking the <code>key_on</code> field matches your GeoDataFrame's actual property name.</li>
+<li>Layer the 17 city markers (clustered, from Exercise 3.2) on top of the choropleth as a second toggleable layer.</li>
+<li>Add a <code>LayerControl</code> and confirm both layers toggle independently in a browser.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-exporting-embedding-custom-tiles">Module 3.4 &mdash; Exporting, Embedding &amp; Custom Tiles</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 3.2 &middot; <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Save a Folium map as a standalone HTML file, embed it in a Jupyter notebook cell, and switch its base tile layer to a non-default provider.<br>
+<strong>Skip if:</strong> All three are already familiar.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone, Module 4.2</p>
+</blockquote>
+
+<h4>Exporting and embedding</h4>
+<p><code>m.save("file.html")</code> writes a fully self-contained HTML file (the map, its data, and the Leaflet JS/CSS it needs) that opens in any browser with no server required &mdash; the simplest way to share a map with someone who doesn't have Python installed at all. Inside a Jupyter notebook, simply returning <code>m</code> as the last expression in a cell renders it inline, without needing to save a file first.</p>
+
+<h4>Custom tile layers</h4>
+<p>Folium's default tile is OpenStreetMap, but <code>folium.Map(tiles=...)</code> accepts other built-in providers (e.g., <code>"CartoDB positron"</code> for a cleaner, low-contrast base good for data-heavy overlays) or a custom tile URL template for a provider requiring an API key. Picking a lower-contrast base tile is a small but real usability win once your own colored choropleth or markers are the actual content the viewer needs to focus on.</p>
+<pre><code class="language-py">import folium
+
+m = folium.Map(location=[12.5, 122.0], zoom_start=6, tiles="CartoDB positron")
+folium.TileLayer("OpenStreetMap", name="Standard OSM").add_to(m)   # add a second, switchable base layer
+folium.LayerControl().add_to(m)
+m.save("tindahub_final_map.html")
+</code></pre>
+
+<p><em>Retrieval practice: before checking the docs, predict what would happen to your Exercise 3.3 map's readability if you switched its base tile from the default OpenStreetMap to <code>"CartoDB positron"</code>. Make the change and confirm whether your prediction held.</em></p>
+
+<p><strong>Exercise 3.4 &mdash; Finalize and Export TindaHub's Map</strong></p>
+<p>Dataset: builds on Exercise 3.3</p>
+<ol>
+<li>Rebuild Exercise 3.3's map using <code>tiles="CartoDB positron"</code> as the base instead of the default.</li>
+<li>Add a second <code>TileLayer</code> for standard OpenStreetMap so a viewer can switch back, and confirm both appear correctly in the <code>LayerControl</code>.</li>
+<li>Save the final map to a standalone HTML file and confirm (by opening it directly, not through Jupyter) that it renders correctly with no Python runtime involved.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-tindahub-interactive-operations-map">Phase 3 Capstone: TindaHub Interactive Operations Map</h3>
+<p><strong>Project: A single shareable HTML map combining choropleth, clustered markers, and toggleable layers</strong></p>
+<p><strong>Dataset:</strong> TindaHub Orders, TindaHub Customers, <code>tindahub_city_coords.csv</code>, Phase 2's province approximation</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A revenue-by-province interactive choropleth layer.</li>
+<li>Separate clustered marker layers for Delivered and Cancelled orders.</li>
+<li>A third layer showing the 3 candidate hub cities as distinct, larger markers with popups summarizing each hub's assigned cities (from Phase 2's spatial join).</li>
+<li>A working <code>LayerControl</code> toggling all layers independently, and a non-default base tile.</li>
+<li>A standalone, emailable HTML file that opens correctly with no Python installed.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-integration-judgment">Phase 4: Integration &amp; Judgment</h2>
+<h3 id="weeks-5-6">Weeks 5&ndash;6 | Goal: geocode real addresses and choose the right geospatial tool deliberately</h3>
+<hr />
+
+<h3 id="module-41-geocoding-from-addresses-to-points">Module 4.1 &mdash; Geocoding: From Addresses to Points</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 2.1 &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Explain what geocoding does, why it needs rate-limiting and caching against a live service, and when a pre-built coordinate lookup (like this guide's bundled CSV) is the better choice instead.<br>
+<strong>Skip if:</strong> Geocoding workflows and their pitfalls are already familiar.<br>
+<strong>Unlocks:</strong> Module 4.2</p>
+</blockquote>
+
+<h4>What geocoding actually does</h4>
+<p><strong>Geocoding</strong> converts a human-readable address or place name ("Barangay Poblacion, Calamba, Laguna") into coordinates; <strong>reverse geocoding</strong> does the opposite. GeoPandas doesn't geocode itself &mdash; it delegates to the <code>geopy</code> library's <code>geocode()</code> function, which in turn calls an external service (Nominatim/OpenStreetMap by default, free but rate-limited; commercial providers for higher volume).</p>
+<pre><code class="language-py">import geopandas as gpd
+
+addresses = ["Barangay Poblacion, Calamba, Laguna, Philippines", "Barangay Rizal, Cebu City, Philippines"]
+geocoded = gpd.tools.geocode(addresses, provider="nominatim", user_agent="tindahub-guide-exercise")
+print(geocoded[["geometry", "address"]])
+</code></pre>
+<p>This single call actually issues one HTTP request per address to a shared public service &mdash; which is exactly why it needs to be rate-limited (Nominatim's usage policy caps request frequency) and why results should be cached locally rather than re-geocoded on every script run. For this guide's own exercises, the bundled <code>tindahub_city_coords.csv</code> exists precisely to avoid needing live geocoding calls for the running example &mdash; a real project would geocode once, save the result, and treat that saved file the same way this guide treats the bundled CSV.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> geocoding the same address list repeatedly across script re-runs instead of caching results. Beyond wasting time on redundant network calls, this risks tripping a free provider's rate limit and getting temporarily blocked &mdash; geocode once, persist the result (CSV, GeoPackage, database), and load from that thereafter.</p></blockquote>
+
+<h4>Geocoding accuracy and ambiguity</h4>
+<p>Geocoding results are only as good as the input address's specificity and the provider's data coverage for that region &mdash; a barangay-level address in a smaller Philippine municipality may resolve only to municipality-level accuracy (or fail entirely), which is worth explicitly checking (e.g., inspecting the returned address string) rather than assuming every geocoded point is precise to the street.</p>
+
+<p><strong>Exercise 4.1 &mdash; Geocode a Sample of TindaHub Customer Addresses</strong></p>
+<p>Dataset: TindaHub Customers (<code>tindahub_customers.csv</code>)</p>
+<ol>
+<li>Build a small sample (10&ndash;15 rows) of <code>"Barangay, City, Province, Philippines"</code> address strings from <code>tindahub_customers.csv</code>.</li>
+<li>Geocode them with <code>gpd.tools.geocode</code>, being mindful of rate limits (a small sample, one run, not a loop that re-geocodes repeatedly).</li>
+<li>Compare each geocoded point's city-level position against this guide's bundled <code>tindahub_city_coords.csv</code> value for the same city, and report the typical discrepancy in kilometers (reproject both to <code>EPSG:32651</code> first).</li>
+<li>Save your geocoded results to a small GeoPackage file so a re-run of this exercise wouldn't need to re-geocode the same addresses.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-applied-case-study-tindahub-delivery-zone-analysis">Module 4.2 &mdash; Applied Case Study: TindaHub Delivery Zone Analysis</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced &middot; <strong>Prereqs:</strong> Module 1.3, Module 2.3, Module 3.3 &middot; <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Combine a buffered coverage polygon, a spatial join assigning orders to zones, and an interactive Folium visualization of the result, all in one coherent script.<br>
+<strong>Skip if:</strong> You've already built an end-to-end coverage/assignment analysis combining all three libraries.<br>
+<strong>Unlocks:</strong> Module 4.3, Final Capstone</p>
+</blockquote>
+
+<h4>The full pipeline, combined</h4>
+<p>This module is deliberately just an application of Phases 1&ndash;3's tools in sequence, on a slightly harder version of the same problem: Shapely builds and measures the geometry (buffers, real projected distances), GeoPandas holds the tabular-plus-spatial data and performs the join, and Folium renders the interactive result for a non-technical stakeholder to actually look at.</p>
+<pre><code class="language-py">import geopandas as gpd
+import folium
+from folium.plugins import MarkerCluster
+
+# 1. Shapely/GeoPandas: real (projected) coverage buffers around 3 hubs
+hubs_gdf = gpd.GeoDataFrame(
+    {"hub_name": ["Manila Hub", "Cebu Hub", "Davao Hub"]},
+    geometry=gpd.points_from_xy([120.9842, 123.8854, 125.4553], [14.5995, 10.3157, 7.1907]),
+    crs="EPSG:4326"
+).to_crs("EPSG:32651")
+hubs_gdf["coverage"] = hubs_gdf.geometry.buffer(150_000)   # a real 150 km radius, in meters
+coverage_gdf = hubs_gdf.set_geometry("coverage")
+
+# 2. GeoPandas: spatial join assigning every city to a hub's coverage
+cities_gdf = gpd.read_file("tindahub_cities.gpkg").to_crs("EPSG:32651")
+assigned = gpd.sjoin(cities_gdf, coverage_gdf[["hub_name", "coverage"]].set_geometry("coverage"),
+                      how="left", predicate="within")
+
+# 3. Folium: render the assignment back in EPSG:4326 (Folium expects lat/lon)
+assigned_wgs84 = assigned.to_crs("EPSG:4326")
+m = folium.Map(location=[12.5, 122.0], zoom_start=6)
+cluster = MarkerCluster().add_to(m)
+for _, row in assigned_wgs84.iterrows():
+    folium.Marker(
+        location=[row.geometry.y, row.geometry.x],
+        popup=f"{row['City']} → {row.get('hub_name', 'Unassigned')}"
+    ).add_to(cluster)
+m.save("tindahub_zone_assignment.html")
+</code></pre>
+<p><em>Retrieval practice: before running this, predict which TindaHub cities (from the 17 in the bundled CSV) will end up "Unassigned" given three 150 km hubs at Manila, Cebu City, and Davao City. Run it and check your prediction against the actual result.</em></p>
+
+<p><strong>Exercise 4.2 &mdash; Full Delivery Zone Assignment &amp; Coverage Gap Report</strong></p>
+<p>Dataset: TindaHub Orders, TindaHub Customers, <code>tindahub_city_coords.csv</code></p>
+<ol>
+<li>Reproduce the pipeline above with your own choice of hub radius, and identify every city left unassigned.</li>
+<li>For each unassigned city, compute its real (projected) distance to the nearest hub, and rank them by how far outside coverage they fall.</li>
+<li>Propose (and justify in 2&ndash;3 sentences) one additional hub location and radius that would close the largest coverage gap, and add it to the pipeline to confirm it resolves the gap.</li>
+<li>Produce a final Folium map with all 4 hubs' coverage areas as a semi-transparent polygon layer, city markers colored by assigned hub, and a working layer toggle.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-choosing-the-right-tool-shapely-vs-geopandas-vs-folium-vs-contextily">Module 4.3 &mdash; Choosing the Right Tool: Shapely vs GeoPandas vs Folium vs Contextily</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> at least one module from each of Phases 1&ndash;3 &middot; <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Given four short problem descriptions, correctly name the right library for each in under a minute, and justify each choice in one sentence.<br>
+<strong>Skip if:</strong> The decision table below is already intuitive to you.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4>A decision framework</h4>
+<table>
+<tr><th>Question</th><th>Tool</th><th>Why</th></tr>
+<tr><td>Need to construct or test a single geometric object/relationship, no table involved?</td><td><code>Shapely</code></td><td>The lightweight geometry primitive layer everything else is built on.</td></tr>
+<tr><td>Have (or need) many geometries alongside tabular attributes?</td><td><code>GeoPandas</code></td><td>Pandas-native table with CRS-aware geometry column, joins, and file I/O.</td></tr>
+<tr><td>Need to join data by spatial relationship instead of a shared key?</td><td><code>GeoPandas sjoin</code></td><td>Purpose-built; a plain pandas <code>merge</code> can't join on "is inside."</td></tr>
+<tr><td>Need a real-world distance, area, or buffer radius?</td><td><code>GeoPandas .to_crs()</code> to a projected CRS, then <code>Shapely</code> ops</td><td>Unprojected lon/lat measurements are in degrees, not meters.</td></tr>
+<tr><td>Need a polished static map for a report or document?</td><td><code>GeoPandas .plot()</code> + <code>contextily</code></td><td>Matplotlib-based, print-quality, no browser needed.</td></tr>
+<tr><td>Need a pannable/zoomable map a non-technical stakeholder can click around in?</td><td><code>Folium</code></td><td>Real interactivity via Leaflet.js; shareable as one HTML file.</td></tr>
+<tr><td>Need to convert an address into coordinates?</td><td><code>geopy</code> via <code>gpd.tools.geocode</code></td><td>Not built into core GeoPandas; calls an external geocoding service.</td></tr>
+</table>
+
+<h4>The throughline: geometry, then table, then presentation</h4>
+<p>Across this whole guide, the natural order is Shapely (define what a shape <em>is</em> and how shapes relate) &rarr; GeoPandas (attach shapes to real tabular data, handle projections and joins correctly) &rarr; Folium or contextily (present the result to a human, interactively or statically). Skipping straight to a map without getting the CRS and join logic right underneath it is the single most common source of a beautiful-looking map with a wrong answer baked in &mdash; a choropleth can render perfectly while joining on a mismatched key or measuring unprojected degrees as if they were kilometers, and nothing about the visual output will tell you that happened.</p>
+
+<p><strong>Exercise 4.3 &mdash; Tool Selection Drill</strong></p>
+<p>Dataset: none required</p>
+<ol>
+<li>For each of the following, name the single best-fit tool and justify it in one sentence: (a) checking whether one delivery zone polygon overlaps another; (b) attaching each of 5,000 orders to the province polygon it falls within; (c) producing a print-ready map for a quarterly business report; (d) letting a regional manager click through an interactive map of their own province's orders; (e) turning a spreadsheet of customer addresses into mappable points; (f) computing the real-world radius, in kilometers, that a delivery hub can reasonably serve within 30 minutes.</li>
+<li>For one of the above, implement the actual one-line-or-so solution to confirm your choice was workable, not just plausible.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-tindahub-geospatial-operations-toolkit">Final Capstone: TindaHub Geospatial Operations Toolkit</h2>
+<p><strong>Project: A single, reusable Python module combining Shapely, GeoPandas, and Folium for TindaHub's location-based decisions</strong></p>
+<p>Integrates all four phases. Uses the TindaHub Orders, Customers, and bundled city-coordinate datasets throughout.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A <code>tindahub_geo.py</code> module with clearly separated functions: a Shapely-based geometry/coverage layer (Phase 1), a GeoPandas-based data-loading, reprojection, and spatial-join layer (Phase 2), and a Folium-based interactive reporting layer (Phase 3).</li>
+<li>A hub coverage and zone-assignment analysis using real, projected (not degree-based) distances and areas throughout.</li>
+<li>At least one small live-geocoded batch of customer addresses (Module 4.1), cached to a file rather than re-geocoded on each run.</li>
+<li>A final interactive Folium map combining a choropleth layer, clustered order markers, and a hub-coverage layer, all independently toggleable.</li>
+<li>A companion static (contextily-based) map suitable for a printed report.</li>
+<li>Explicit documentation, in code comments or a short README, of every approximation made (convex-hull province boundaries, single-point-per-city order locations) and what real data source would replace each before production use.</li>
+<li>A short "tool choice log" &mdash; one sentence per major step explaining, using Module 4.3's framework, why that specific library was the right choice.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Python GIS &amp; Mapping Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Create a point/line/polygon</td><td><code>shapely.geometry.Point/LineString/Polygon</code></td><td>Coordinate order is (x, y) = (lon, lat).</td></tr>
+<tr><td>Test a spatial relationship</td><td><code>.intersects()</code>, <code>.contains()</code>, <code>.within()</code>, <code>.touches()</code></td><td>Boundary-exact cases differ between predicates &mdash; choose deliberately.</td></tr>
+<tr><td>Grow a shape outward</td><td><code>.buffer(distance)</code></td><td>Reproject to a metric CRS first for a real-world distance.</td></tr>
+<tr><td>Combine many geometries at once</td><td><code>shapely.ops.unary_union</code></td><td>Faster than folding <code>.union()</code> in a loop.</td></tr>
+<tr><td>Speed up point-in-polygon at scale</td><td><code>shapely.STRtree</code></td><td>Still needs a precise predicate check on the returned candidates.</td></tr>
+<tr><td>Build a geometry column from lon/lat arrays</td><td><code>gpd.points_from_xy</code></td><td>Vectorized; avoid a Python loop of individual <code>Point()</code> calls.</td></tr>
+<tr><td>Read/write spatial files</td><td><code>gpd.read_file</code> / <code>.to_file</code></td><td>pyogrio is the default engine since GeoPandas 1.0; prefer GeoPackage over Shapefile.</td></tr>
+<tr><td>Reproject to a metric CRS</td><td><code>.to_crs("EPSG:32651")</code> (or your local UTM zone)</td><td>Required before any real distance/area/buffer calculation.</td></tr>
+<tr><td>Join points to polygons by location</td><td><code>gpd.sjoin(..., predicate=...)</code></td><td>No shared key column needed &mdash; joins on spatial relationship.</td></tr>
+<tr><td>Static choropleth map</td><td><code>GeoDataFrame.plot(column=...)</code></td><td>Add <code>contextily.add_basemap()</code> for real-world context (needs EPSG:3857).</td></tr>
+<tr><td>Interactive map with markers</td><td><code>folium.Map</code>, <code>folium.Marker</code></td><td>Coordinate order is (lat, lon) &mdash; opposite of Shapely.</td></tr>
+<tr><td>Cluster hundreds of markers</td><td><code>folium.plugins.MarkerCluster</code></td><td>Keeps a large marker set readable at low zoom.</td></tr>
+<tr><td>Interactive choropleth</td><td><code>folium.Choropleth</code></td><td><code>key_on</code> must exactly match the GeoJSON property name.</td></tr>
+<tr><td>Convert an address to coordinates</td><td><code>gpd.tools.geocode</code> (via geopy)</td><td>Rate-limited external call &mdash; geocode once, cache the result.</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-shapely-geometry">Shapely Geometry</h3>
+<dl class="glossary">
+<dt>Point / LineString / Polygon</dt>
+<dd>Shapely's three core single-part geometry types: a single coordinate, an ordered sequence of connected coordinates, and a closed area bounded by an ordered coordinate ring, respectively.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "coordinate" as a substitute for "Point" &mdash; a coordinate is a raw (x, y) pair; a <code>Point</code> is the Shapely object wrapping one, with spatial methods attached.</dd>
+<dt>Spatial predicate</dt>
+<dd>A method that answers a yes/no question about how two geometries relate (e.g., <code>intersects</code>, <code>contains</code>, <code>within</code>, <code>touches</code>).</dd>
+<dd class="avoid"><strong>Avoid:</strong> treating "intersects" and "contains" as interchangeable &mdash; they disagree precisely on boundary-touching cases.</dd>
+<dt>Buffer</dt>
+<dd>A new polygon representing every point within a given distance of a source geometry.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming a buffer distance on unprojected (lon/lat) coordinates is a real-world distance &mdash; it's in degrees unless the geometry has been reprojected first.</dd>
+<dt>WKT / WKB</dt>
+<dd>Well-Known Text and Well-Known Binary: the standard human-readable and binary serialization formats for a geometry, used to move geometries between libraries, files, and databases.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing WKT/WKB with GeoJSON &mdash; GeoJSON is a separate, JSON-based format also capable of encoding geometry, commonly used for web maps.</dd>
+<dt>Spatial index (STRtree)</dt>
+<dd>A data structure that organizes geometries by location so a spatial query only has to check a small, relevant subset instead of every geometry in a collection.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming an index query alone confirms an exact spatial match &mdash; it returns fast candidates that still need a precise predicate check.</dd>
+</dl>
+
+<h3 id="glossary-geopandas-crs">GeoPandas &amp; CRS</h3>
+<dl class="glossary">
+<dt>GeoDataFrame</dt>
+<dd>A pandas DataFrame subclass with one designated geometry-typed column and CRS metadata attached to the whole table.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "spatial DataFrame" as a casual substitute &mdash; <code>GeoDataFrame</code> is the specific, correctly-cased class name.</dd>
+<dt>CRS (Coordinate Reference System)</dt>
+<dd>The specific system, including its unit of measurement and reference surface, that gives a geometry's coordinates real-world meaning.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "projection" as a strict synonym &mdash; a geographic CRS (like WGS84) isn't a projection at all; "projected CRS" is the narrower term for CRSes that flatten the earth onto a plane.</dd>
+<dt>EPSG code</dt>
+<dd>A standardized numeric identifier for one specific CRS (e.g., <code>EPSG:4326</code> for WGS84 lon/lat).</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming all EPSG codes use the same coordinate order or unit &mdash; each CRS defines its own.</dd>
+<dt>Spatial join (sjoin)</dt>
+<dd>A join between two GeoDataFrames based on the spatial relationship between their geometries, rather than a matching key column.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "merge" as a substitute term &mdash; pandas <code>merge</code> requires a shared key column and has no concept of spatial relationship.</dd>
+<dt>Choropleth</dt>
+<dd>A map where regions are shaded according to a data value associated with each region.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "heat map" as a synonym &mdash; a heat map typically shades continuous density from point data, not discrete regions from a joined attribute.</dd>
+</dl>
+
+<h3 id="glossary-folium-web-mapping">Folium &amp; Web Mapping</h3>
+<dl class="glossary">
+<dt>Leaflet.js</dt>
+<dd>The JavaScript mapping library that Folium generates code for; Folium itself never renders a map directly, it emits Leaflet-compatible HTML/JS.</dd>
+<dd class="avoid"><strong>Avoid:</strong> describing Folium as "a mapping engine" &mdash; it's a Python code generator for Leaflet, not a rendering engine in its own right.</dd>
+<dt>Tile layer</dt>
+<dd>The base imagery (roads, labels, terrain) a map is drawn on top of, served as small image tiles from a provider (OpenStreetMap, CartoDB, etc.).</dd>
+<dd class="avoid"><strong>Avoid:</strong> "basemap" as a strict synonym in Folium's own API &mdash; Folium's class is specifically named <code>TileLayer</code>, though "basemap" is fine as a general descriptive term.</dd>
+<dt>FeatureGroup</dt>
+<dd>A named container grouping Folium map elements so they can be shown, hidden, or toggled together as one unit.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing a <code>FeatureGroup</code> with a <code>LayerControl</code> &mdash; the group holds elements; the control is the separate UI widget that lets a viewer toggle groups on/off.</dd>
+<dt>GeoJson layer</dt>
+<dd>A Folium layer rendering raw GeoJSON (or a GeoDataFrame) directly onto the map, without the data-joining behavior <code>Choropleth</code> adds on top.</dd>
+<dd class="avoid"><strong>Avoid:</strong> reaching for <code>folium.Choropleth</code> when you just need to draw shapes with no associated data-driven coloring &mdash; plain <code>folium.GeoJson</code> is simpler for that case.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>Geographic Data Science with Python (2023) &mdash; Rey, Arribas-Bel &amp; Wolf</td><td>Comprehensive, actively-maintained treatment of GeoPandas, spatial joins, and geovisualization; the closest single book to this guide's exact scope, with a free companion site.</td></tr>
+<tr><td>Python for Data Analysis, 3rd ed. (2022) &mdash; Wes McKinney</td><td>The pandas foundation GeoPandas builds on; useful if the pandas prerequisites in this guide's scope note feel shaky.</td></tr>
+</table>
+
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td><a href="https://geopandas.org/en/stable/">GeoPandas Official Documentation</a></td><td>GeoDataFrames, CRS, joins, plotting</td><td>The "Getting Started" tutorial and User Guide directly parallel this guide's Phase 2.</td></tr>
+<tr><td><a href="https://shapely.readthedocs.io/en/stable/">Shapely Official Documentation</a></td><td>Geometry objects, predicates, operations</td><td>Covers the 2.x vectorized array-style API alongside the classic object-method API used in this guide.</td></tr>
+<tr><td><a href="https://python-visualization.github.io/folium/latest/">Folium Official Documentation</a></td><td>Maps, markers, plugins, choropleths</td><td>Includes a live example gallery for every plugin covered in Phase 3.</td></tr>
+<tr><td><a href="https://geographicdata.science/">Geographic Data Science with Python (companion site)</a></td><td>Free online version of the book above</td><td>Deeper spatial-analysis material beyond this guide's scope (spatial statistics, clustering).</td></tr>
+<tr><td><a href="https://data.humdata.org/dataset/cod-ab-phl">HDX: Philippines Subnational Administrative Boundaries</a></td><td>Official PSA/NAMRIA-sourced PH boundary shapefiles</td><td>The authoritative replacement for this guide's convex-hull province approximation &mdash; use this for any real (non-teaching) PH choropleth.</td></tr>
+<tr><td><a href="https://contextily.readthedocs.io/">Contextily Documentation</a></td><td>Static basemaps for matplotlib/GeoPandas plots</td><td>Covers tile providers and the EPSG:3857 requirement referenced in Module 2.4.</td></tr>
+</table>
+
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>TindaHub Orders &amp; Customers (<code>datasets/tindahub-orders/</code>, this workspace)</td><td>The benchmark tabular dataset used throughout this guide.</td></tr>
+<tr><td><code>tindahub_city_coords.csv</code> (bundled with this guide)</td><td>City-level lat/lon lookup for all 17 TindaHub cities &mdash; avoids needing live geocoding for every exercise.</td></tr>
+<tr><td>geopy</td><td>Geocoding backend used by <code>gpd.tools.geocode</code> (Module 4.1).</td></tr>
+<tr><td>Jupyter Notebook</td><td>Inline Folium map rendering and quick GeoPandas <code>.plot()</code> iteration. See this workspace's <code>jupyter-notebook</code> skill for generating one.</td></tr>
+<tr><td>QGIS (desktop, free)</td><td>Visual inspection of shapefiles/GeoJSON/GeoPackage files outside Python &mdash; useful for sanity-checking a boundary file before loading it with GeoPandas.</td></tr>
+</table>
+
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>GIS Stack Exchange</td><td>gis.stackexchange.com</td><td>The highest-reputation Q&amp;A site specifically for GIS/geospatial questions, including Python-specific ones.</td></tr>
+<tr><td>Stack Overflow (<code>geopandas</code>, <code>shapely</code>, <code>folium</code> tags)</td><td>Stack Overflow</td><td>Searchable history of common library-specific errors and edge cases.</td></tr>
+<tr><td>PyData / Scientific Python Discourse</td><td>discuss.scientific-python.org</td><td>Design discussions and deeper questions for the GeoPandas/Shapely maintainer community.</td></tr>
+<tr><td>r/gis</td><td>Reddit</td><td>Broad GIS practitioner community, useful for real-world workflow and data-source questions beyond pure library mechanics.</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them &mdash; this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads &mdash; use "Reset progress" in the sidebar to clear it.</p></blockquote>
+
+<h4>Phase 1 &mdash; Shapely Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 &mdash; Geometric Primitives: Point, LineString, Polygon</li>
+<li>[ ] Exercise 1.1 &mdash; Build TindaHub's City Points</li>
+<li>[ ] Module 1.2 &mdash; Spatial Predicates &amp; Relationships</li>
+<li>[ ] Exercise 1.2 &mdash; Which TindaHub Zone Does Each City Fall In?</li>
+<li>[ ] Module 1.3 &mdash; Geometric Operations: Buffer, Union, Intersection, Simplify</li>
+<li>[ ] Exercise 1.3 &mdash; Model TindaHub Hub Coverage Overlaps</li>
+<li>[ ] Module 1.4 &mdash; Spatial Indexing &amp; Performance with STRtree</li>
+<li>[ ] Exercise 1.4 &mdash; Speed Up TindaHub's Zone Lookup</li>
+<li>[ ] Capstone 1 &mdash; TindaHub Hub Coverage Model</li>
+</ul>
+
+<h4>Phase 2 &mdash; GeoPandas Spatial Data</h4>
+<ul>
+<li>[ ] Module 2.1 &mdash; GeoDataFrame Fundamentals &amp; File I/O</li>
+<li>[ ] Exercise 2.1 &mdash; Build the TindaHub Cities GeoDataFrame</li>
+<li>[ ] Module 2.2 &mdash; Coordinate Reference Systems &amp; Reprojection</li>
+<li>[ ] Exercise 2.2 &mdash; Real Distances Between TindaHub Cities</li>
+<li>[ ] Module 2.3 &mdash; Spatial &amp; Attribute Joins</li>
+<li>[ ] Exercise 2.3 &mdash; Assign TindaHub Cities to Delivery Zones by Spatial Join</li>
+<li>[ ] Module 2.4 &mdash; Static Choropleth Mapping &amp; Basemaps</li>
+<li>[ ] Exercise 2.4 &mdash; Static Revenue Choropleth for TindaHub</li>
+<li>[ ] Capstone 2 &mdash; TindaHub Provincial Performance Map</li>
+</ul>
+
+<h4>Phase 3 &mdash; Folium Interactive Maps</h4>
+<ul>
+<li>[ ] Module 3.1 &mdash; Basic Folium Maps: Markers, Popups, Tooltips</li>
+<li>[ ] Exercise 3.1 &mdash; Map TindaHub's City Network</li>
+<li>[ ] Module 3.2 &mdash; Layers, Marker Clusters &amp; FeatureGroups</li>
+<li>[ ] Exercise 3.2 &mdash; Cluster &amp; Layer TindaHub's Full Order Map</li>
+<li>[ ] Module 3.3 &mdash; Interactive Choropleths with Folium</li>
+<li>[ ] Exercise 3.3 &mdash; Interactive TindaHub Revenue Map</li>
+<li>[ ] Module 3.4 &mdash; Exporting, Embedding &amp; Custom Tiles</li>
+<li>[ ] Exercise 3.4 &mdash; Finalize and Export TindaHub's Map</li>
+<li>[ ] Capstone 3 &mdash; TindaHub Interactive Operations Map</li>
+</ul>
+
+<h4>Phase 4 &mdash; Integration &amp; Judgment</h4>
+<ul>
+<li>[ ] Module 4.1 &mdash; Geocoding: From Addresses to Points</li>
+<li>[ ] Exercise 4.1 &mdash; Geocode a Sample of TindaHub Customer Addresses</li>
+<li>[ ] Module 4.2 &mdash; Applied Case Study: TindaHub Delivery Zone Analysis</li>
+<li>[ ] Exercise 4.2 &mdash; Full Delivery Zone Assignment &amp; Coverage Gap Report</li>
+<li>[ ] Module 4.3 &mdash; Choosing the Right Tool</li>
+<li>[ ] Exercise 4.3 &mdash; Tool Selection Drill</li>
+</ul>
+
+<h4>Final Outcome</h4>
+<ul>
+<li>[ ] Final Capstone &mdash; TindaHub Geospatial Operations Toolkit complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 &mdash; Python GIS &amp; Mapping Track: Applied Geospatial Analytics</em><br>
+<em>Non-linear modular design &middot; Placement quiz &middot; 15 modules &middot; ~6 weeks part-time &middot; hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-08-02 (GeoPandas 1.1.4 with pyogrio as default engine, Shapely 2.1.2, Folium 0.20.0, Python 3.13 recommended baseline)</em></p>
+
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Full-text guide search ────────────────────────────────
+  // Indexes every block of the guide body, lists matching snippets grouped
+  // by section, highlights hits in the page, and filters the nav to the
+  // sections that contain them. Multiple words = all must appear in the
+  // same block; wrap in "quotes" for an exact phrase.
+  var navSearch = document.getElementById("navSearch");
+  var contentRoot = document.querySelector(".content");
+  if(navSearch && contentRoot){
+    var BLOCK_SEL = "h1,h2,h3,h4,p,li,tr,dt,dd,pre";
+    var searchRow = document.getElementById("searchRow"),
+        searchBar = document.getElementById("searchBar"),
+        searchCount = document.getElementById("searchCount"),
+        searchResults = document.getElementById("searchResults");
+    var navById = {};
+    document.querySelectorAll("#nav a").forEach(function(a){
+      navById[a.getAttribute("href").slice(1)] = a;
+    });
+
+    var blocks = [], section = null;
+    contentRoot.querySelectorAll(BLOCK_SEL).forEach(function(el){
+      if(/^H[1-4]$/.test(el.tagName) && el.id && navById[el.id]) section = el;
+      if(el.classList.contains("quiz-score")) return;
+      var outer = el.parentElement && el.parentElement.closest(BLOCK_SEL);
+      if(outer && contentRoot.contains(outer)) return;
+      var text = el.textContent.replace(/\s+/g, " ").trim();
+      if(text) blocks.push({el:el, text:text, lower:text.toLowerCase(), section:section});
+    });
+
+    var hits = [], cur = -1, timer = null;
+    function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+    function sectionLabel(sec){ return sec && navById[sec.id] ? navById[sec.id].textContent : "Introduction"; }
+
+    function clearMarks(){
+      contentRoot.querySelectorAll("mark.lg-hit").forEach(function(m){
+        var p = m.parentNode;
+        p.replaceChild(document.createTextNode(m.textContent), m);
+        p.normalize();
+      });
+      var b = contentRoot.querySelector(".lg-block-current");
+      if(b) b.classList.remove("lg-block-current");
+    }
+
+    function markBlock(el, re){
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+      while((n = walker.nextNode())) nodes.push(n);
+      var marks = [];
+      nodes.forEach(function(node){
+        var t = node.nodeValue, m, last = 0;
+        re.lastIndex = 0;
+        if(!re.test(t)) return;
+        re.lastIndex = 0;
+        var frag = document.createDocumentFragment();
+        while((m = re.exec(t))){
+          if(m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+          var mk = document.createElement("mark");
+          mk.className = "lg-hit";
+          mk.textContent = m[0];
+          frag.appendChild(mk);
+          marks.push(mk);
+          last = m.index + m[0].length;
+        }
+        if(last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+      });
+      return marks;
+    }
+
+    function snippet(text, terms, re){
+      var lower = text.toLowerCase(), i = -1;
+      terms.forEach(function(t){ var k = lower.indexOf(t); if(k > -1 && (i < 0 || k < i)) i = k; });
+      if(i < 0) i = 0;
+      var start = Math.max(0, i - 40), end = Math.min(text.length, i + 100);
+      var s = text.slice(start, end), out = "", last = 0, m;
+      re.lastIndex = 0;
+      while((m = re.exec(s))){
+        out += escHtml(s.slice(last, m.index)) + "<mark>" + escHtml(m[0]) + "</mark>";
+        last = m.index + m[0].length;
+      }
+      return (start > 0 ? "…" : "") + out + escHtml(s.slice(last)) + (end < text.length ? "…" : "");
+    }
+
+    function filterNav(ids){
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var any = false;
+        g.querySelectorAll("a").forEach(function(a){
+          var show = !ids || !!ids[a.getAttribute("href").slice(1)];
+          if(a.classList.contains("nav-child")) a.classList.toggle("filtered-out", !show);
+          if(show) any = true;
+        });
+        g.classList.toggle("filtered-out", !any);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        a.classList.toggle("filtered-out", !!ids && !ids[a.getAttribute("href").slice(1)]);
+      });
+    }
+
+    function updateCount(nSections){
+      if(!hits.length){ searchCount.textContent = "No matches"; return; }
+      var pos = cur > -1 ? (cur + 1) + " / " + hits.length : hits.length + (hits.length === 1 ? " match" : " matches");
+      searchCount.textContent = pos + " · " + nSections + (nSections === 1 ? " section" : " sections");
+    }
+
+    var lastSectionCount = 0;
+    function run(){
+      var raw = navSearch.value.trim();
+      clearMarks();
+      hits = []; cur = -1;
+      searchRow.classList.toggle("has-query", !!raw);
+      if(raw.length < 2){
+        searchResults.classList.remove("show");
+        searchBar.classList.remove("show");
+        searchResults.innerHTML = "";
+        filterNav(null);
+        return;
+      }
+      var phrase = /^"(.+)"$/.exec(raw);
+      var terms = phrase ? [phrase[1].toLowerCase()] : raw.toLowerCase().split(/\s+/);
+      terms = terms.filter(function(t, i){ return t && terms.indexOf(t) === i; });
+      var re = new RegExp(terms.slice().sort(function(a, b){ return b.length - a.length; }).map(escRe).join("|"), "gi");
+      var matched = blocks.filter(function(b){
+        return terms.every(function(t){ return b.lower.indexOf(t) > -1; });
+      });
+
+      var ids = {}, groups = [], html = "", LIMIT = 60;
+      matched.forEach(function(b, bi){
+        var marks = markBlock(b.el, re);
+        if(marks.length) marks.forEach(function(m){ hits.push({m:m, el:b.el, b:bi}); });
+        else hits.push({m:null, el:b.el, b:bi});
+        var key = b.section ? b.section.id : "";
+        if(b.section) ids[b.section.id] = true;
+        if(!groups.length || groups[groups.length - 1].key !== key) groups.push({key:key, sec:b.section, items:[]});
+        groups[groups.length - 1].items.push(bi);
+      });
+
+      if(!matched.length){
+        html = '<div class="sr-empty">No matches for “' + escHtml(raw) + '”. Try fewer words.</div>';
+      } else {
+        var listed = 0;
+        groups.forEach(function(g){
+          if(listed >= LIMIT) return;
+          html += '<div class="sr-group"><div class="sr-section">' + escHtml(sectionLabel(g.sec)) + '</div>';
+          g.items.slice(0, 4).forEach(function(bi){
+            if(listed >= LIMIT) return;
+            html += '<button type="button" class="sr-item" role="option" data-b="' + bi + '">' +
+                    snippet(matched[bi].text, terms, re) + '</button>';
+            listed++;
+          });
+          if(g.items.length > 4) html += '<div class="sr-more">+' + (g.items.length - 4) + ' more in this section (use ↓ to step through)</div>';
+          html += '</div>';
+        });
+        if(matched.length > listed) html += '<div class="sr-more">Showing ' + listed + ' of ' + matched.length + ' blocks — add a word to narrow it.</div>';
+      }
+      searchResults.innerHTML = html;
+      searchResults.classList.add("show");
+      searchBar.classList.add("show");
+      lastSectionCount = Object.keys(ids).length || (matched.length ? 1 : 0);
+      filterNav(ids);
+      updateCount(lastSectionCount);
+    }
+
+    function go(i, closeMobile){
+      if(!hits.length) return;
+      cur = (i + hits.length) % hits.length;
+      contentRoot.querySelectorAll("mark.lg-hit-current").forEach(function(m){ m.classList.remove("lg-hit-current"); });
+      var prev = contentRoot.querySelector(".lg-block-current");
+      if(prev) prev.classList.remove("lg-block-current");
+      var h = hits[cur];
+      if(h.m) h.m.classList.add("lg-hit-current");
+      h.el.classList.add("lg-block-current");
+      (h.m || h.el).scrollIntoView({behavior:"smooth", block:"center"});
+      searchResults.querySelectorAll(".sr-item").forEach(function(it){
+        var on = +it.getAttribute("data-b") === h.b;
+        it.classList.toggle("current", on);
+        if(on) it.scrollIntoView({block:"nearest"});
+      });
+      updateCount(lastSectionCount);
+      if(closeMobile && window.innerWidth <= 1000) closeNav();
+    }
+
+    navSearch.addEventListener("input", function(){
+      clearTimeout(timer);
+      timer = setTimeout(run, 140);
+    });
+    navSearch.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        clearTimeout(timer);
+        if(!hits.length && navSearch.value.trim().length >= 2) run();
+        go(e.shiftKey ? cur - 1 : cur + 1, true);
+      } else if(e.key === "Escape"){
+        navSearch.value = "";
+        run();
+      }
+    });
+    searchResults.addEventListener("click", function(e){
+      var item = e.target.closest(".sr-item");
+      if(!item) return;
+      var b = +item.getAttribute("data-b");
+      for(var k = 0; k < hits.length; k++){ if(hits[k].b === b){ go(k, true); break; } }
+    });
+    document.getElementById("searchNext").addEventListener("click", function(){ go(cur + 1, false); });
+    document.getElementById("searchPrev").addEventListener("click", function(){ go(cur - 1, false); });
+    document.getElementById("searchClear").addEventListener("click", function(){
+      navSearch.value = "";
+      run();
+      navSearch.focus();
+    });
+    document.addEventListener("keydown", function(e){
+      var tag = (e.target.tagName || "").toLowerCase();
+      var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+      var slash = e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey;
+      var cmdK = (e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K");
+      if(!slash && !cmdK) return;
+      e.preventDefault();
+      if(window.innerWidth <= 1000){
+        document.getElementById("sidebar").classList.add("open");
+        document.getElementById("scrim").classList.add("show");
+      }
+      navSearch.focus();
+      navSearch.select();
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

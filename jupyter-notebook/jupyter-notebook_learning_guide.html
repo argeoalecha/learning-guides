@@ -1,0 +1,1951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jupyter Notebook Learning Guide — Beginner to Intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+.search-row{position:relative}
+.search-row .nav-search{padding-right:2.4rem}
+.search-kbd{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:4px;padding:0 .3rem;background:var(--paper-2);
+  pointer-events:none;
+}
+.search-row.has-query .search-kbd{display:none}
+.search-bar{
+  display:none;align-items:center;gap:.35rem;margin-top:.45rem;
+  font-size:.72rem;color:var(--ink-soft);
+}
+.search-bar.show{display:flex}
+.search-count{flex:1;font-family:var(--mono)}
+.search-bar button{
+  border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);
+  border-radius:6px;font-size:.72rem;padding:.15rem .45rem;cursor:pointer;min-width:26px;min-height:24px;
+}
+.search-bar button:hover{background:var(--teal-wash)}
+.search-results{
+  display:none;margin:.5rem 0 .2rem;max-height:48vh;overflow-y:auto;
+  border:1px solid var(--line);border-radius:8px;background:var(--paper);
+}
+.search-results.show{display:block}
+.sr-group{border-top:1px solid var(--line-soft)}
+.sr-group:first-child{border-top:none}
+.sr-section{
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--teal);padding:.5rem .65rem .15rem;
+}
+.sr-item{
+  display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  font-family:var(--sans);font-size:.76rem;line-height:1.4;color:var(--ink);
+  padding:.35rem .65rem;
+}
+.sr-item:hover,.sr-item.current{background:var(--teal-wash)}
+.sr-item mark,.lg-hit{background:var(--amber-wash);color:inherit;border-radius:2px;padding:0 1px}
+.sr-more{font-size:.7rem;color:var(--ink-soft);padding:.1rem .65rem .45rem}
+.sr-empty{font-size:.78rem;color:var(--ink-soft);padding:.6rem .65rem}
+pre .lg-hit{background:#5c4a12;color:#fff4cf}
+.lg-hit.lg-hit-current{background:var(--coral);color:#fff;outline:2px solid var(--coral)}
+.lg-block-current{outline:2px dashed var(--teal);outline-offset:4px;border-radius:4px}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — expert guided learning">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">expert guided learning</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Jupyter Notebook<br>Learning Guide</div>
+      <div class="brand-sub">JupyterLab · IPython · Papermill · Jupytext · Voila · nbconvert</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <div class="search-row" id="searchRow">
+        <input type="search" id="navSearch" class="nav-search" placeholder="Search the guide…" aria-label="Search the whole guide" aria-controls="searchResults" autocomplete="off" spellcheck="false">
+        <span class="search-kbd" aria-hidden="true">/</span>
+      </div>
+      <div class="search-bar" id="searchBar">
+        <span class="search-count" id="searchCount" aria-live="polite"></span>
+        <button type="button" id="searchPrev" aria-label="Previous match">↑</button>
+        <button type="button" id="searchNext" aria-label="Next match">↓</button>
+        <button type="button" id="searchClear" aria-label="Clear search">✕</button>
+      </div>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-intermediate-track" class="nav-top">Beginner to Intermediate Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-foundations" class="nav-top nav-phase">Phase 1: Foundations</a>
+<div class="nav-children">
+<a href="#module-11-installing-launching-jupyterlab" class="nav-child">Module 1.1 — Getting Started: Colab, Anaconda &amp; VS Code</a>
+<a href="#module-12-the-notebook-interface-kernel-model" class="nav-child">Module 1.2 — The Notebook Interface &amp; Kernel Model</a>
+<a href="#module-13-markdown-cells-notebook-structure" class="nav-child">Module 1.3 — Markdown Cells &amp; Notebook Structure</a>
+<a href="#module-14-magic-commands-the-ipython-kernel" class="nav-child">Module 1.4 — Magic Commands &amp; the IPython Kernel</a>
+<a href="#phase-1-capstone-exploratory-orders-notebook" class="nav-child">Phase 1 Capstone: Exploratory Orders Notebook</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-working-with-data-output" class="nav-top nav-phase">Phase 2: Working with Data &amp; Output</a>
+<div class="nav-children">
+<a href="#module-21-data-loading-pandas-display-rich-output" class="nav-child">Module 2.1 — Data Loading, pandas Display &amp; Rich Output</a>
+<a href="#module-22-visualization-inline-matplotlib-seaborn-interactive-plots" class="nav-child">Module 2.2 — Visualization Inline: Matplotlib, Seaborn &amp; Interactive Plots</a>
+<a href="#module-23-widgets-interactive-exploration-ipywidgets" class="nav-child">Module 2.3 — Widgets &amp; Interactive Exploration (ipywidgets)</a>
+<a href="#module-24-debugging-profiling-performance-in-notebooks" class="nav-child">Module 2.4 — Debugging, Profiling &amp; Performance in Notebooks</a>
+<a href="#phase-2-capstone-interactive-regional-explorer" class="nav-child">Phase 2 Capstone: Interactive Regional Explorer</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-reproducibility-collaboration" class="nav-top nav-phase">Phase 3: Reproducibility &amp; Collaboration</a>
+<div class="nav-children">
+<a href="#module-31-notebook-hygiene-restart-run-all" class="nav-child">Module 3.1 — Notebook Hygiene: Restart &amp; Run All</a>
+<a href="#module-32-version-control-for-notebooks" class="nav-child">Module 3.2 — Version Control for Notebooks</a>
+<a href="#module-33-parameterizing-automating-with-papermill" class="nav-child">Module 3.3 — Parameterizing &amp; Automating with Papermill</a>
+<a href="#module-34-converting-publishing-with-nbconvert-voila" class="nav-child">Module 3.4 — Converting &amp; Publishing with nbconvert &amp; Voila</a>
+<a href="#phase-3-capstone-automated-regional-report-run" class="nav-child">Phase 3 Capstone: Automated Regional Report Run</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-scaling-sharing" class="nav-top nav-phase">Phase 4: Scaling &amp; Sharing</a>
+<div class="nav-children">
+<a href="#module-41-environments-kernels" class="nav-child">Module 4.1 — Environments &amp; Kernels</a>
+<a href="#module-42-sharing-notebooks-github-colab-binder" class="nav-child">Module 4.2 — Sharing Notebooks: GitHub, Colab &amp; Binder</a>
+<a href="#module-43-jupyterhub-multi-user-deployments" class="nav-child">Module 4.3 — JupyterHub &amp; Multi-User Deployments</a>
+<a href="#module-44-notebooks-vs-quarto-vs-scripts" class="nav-child">Module 4.4 — Notebooks vs. Quarto vs. Scripts</a>
+<a href="#phase-4-capstone-shared-team-analysis-environment" class="nav-child">Phase 4 Capstone: Shared Team Analysis Environment</a>
+</div></div>
+
+<a href="#final-capstone-superstore-analysis-notebook-suite" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="jupyter-notebook-learning-guide">Jupyter Notebook Learning Guide</h1>
+<h2 id="beginner-to-intermediate-track">Beginner to Intermediate Track</h2>
+<h3>JupyterLab &middot; IPython &middot; Papermill &middot; Jupytext</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Three overlapping orbiting circles representing Jupyter" xmlns="http://www.w3.org/2000/svg">
+<path d="M40 176 C 90 220, 166 220, 216 176" fill="none" stroke="#0d7a6e" stroke-width="10" stroke-linecap="round"/>
+<path d="M40 128 C 90 172, 166 172, 216 128" fill="none" stroke="#075249" stroke-width="10" stroke-linecap="round"/>
+<path d="M40 80 C 90 124, 166 124, 216 80" fill="none" stroke="#0d7a6e" stroke-width="10" stroke-linecap="round"/>
+<circle cx="40" cy="176" r="14" fill="#075249"/>
+<circle cx="216" cy="176" r="14" fill="#075249"/>
+<circle cx="40" cy="80" r="10" fill="#0d7a6e"/>
+<circle cx="216" cy="80" r="10" fill="#0d7a6e"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same <strong>Superstore Sales</strong> dataset (<a href="../datasets/superstore-sales/README.md">datasets/superstore-sales</a>) — 2,000 synthetic retail orders across 3 years, shared with the Data Analyst and R Markdown guides so nothing drifts out of sync.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner to Jupyter</strong> (comfortable with basic Python, never opened a notebook) &rarr; Start at Module 1.1 and go sequentially through Phase 1 and 2.</li>
+<li><strong>Some notebook experience</strong> (you've run cells in Jupyter or Colab but want reproducibility/automation skills) &rarr; Take the <strong>Placement Quiz</strong> below to find your entry point.</li>
+<li><strong>Targeting a specific outcome</strong> (automated reporting, sharing dashboards, or deploying JupyterHub for a team) &rarr; Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3>Foundations</h3>
+<ul>
+<li>[ ] I can explain the difference between a notebook document (.ipynb) and the kernel that executes its code.</li>
+<li>[ ] I know why running cells out of numerical order can silently produce wrong results.</li>
+<li>[ ] I can write a Markdown cell with headings, a list, and an inline LaTeX formula.</li>
+<li>[ ] I have used at least one IPython magic command (like <code>%timeit</code> or <code>%matplotlib inline</code>) deliberately, not by copy-pasting.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3>Data &amp; Interactivity</h3>
+<ul>
+<li>[ ] I know why <code>df</code> on its own line renders a styled HTML table but <code>print(df)</code> doesn't.</li>
+<li>[ ] I can embed a matplotlib chart inline and control its size without it appearing in a separate window.</li>
+<li>[ ] I have added an <code>ipywidgets</code> slider or dropdown that live-updates a chart.</li>
+<li>[ ] I know how to profile a slow cell to find out which line is actually the bottleneck.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3>Reproducibility &amp; Automation</h3>
+<ul>
+<li>[ ] I always do a "Restart Kernel and Run All" check before considering a notebook finished.</li>
+<li>[ ] I know why committing a raw .ipynb to git produces noisy, unreviewable diffs, and at least one fix for it.</li>
+<li>[ ] I have parameterized and executed a notebook programmatically (e.g. with Papermill) rather than editing it by hand for each run.</li>
+<li>[ ] I have converted a notebook to a shareable static HTML or PDF report.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3>Scaling &amp; Sharing</h3>
+<ul>
+<li>[ ] I know the difference between a Python environment/kernel and the JupyterLab application itself.</li>
+<li>[ ] I could explain to a colleague how to open and run my notebook on Google Colab or Binder with no local setup.</li>
+<li>[ ] I know what JupyterHub adds on top of a single-user JupyterLab install.</li>
+<li>[ ] I could explain when a notebook is the wrong tool and a Quarto document or plain script is the better choice.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.2</strong> | <strong>4 yes</strong> → Skip to the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-installing-launching-jupyterlab"><td>1.1</td><td>Getting Started: Colab, Anaconda &amp; VS Code</td><td>Beginner</td><td>None (basic Python helps)</td><td>2h</td></tr>
+<tr data-href="#module-12-the-notebook-interface-kernel-model"><td>1.2</td><td>The Notebook Interface &amp; Kernel Model</td><td>Beginner</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-13-markdown-cells-notebook-structure"><td>1.3</td><td>Markdown Cells &amp; Notebook Structure</td><td>Beginner</td><td>1.1</td><td>1.5h</td></tr>
+<tr data-href="#module-14-magic-commands-the-ipython-kernel"><td>1.4</td><td>Magic Commands &amp; the IPython Kernel</td><td>Beginner</td><td>1.2</td><td>2h</td></tr>
+<tr data-href="#module-21-data-loading-pandas-display-rich-output"><td>2.1</td><td>Data Loading, pandas Display &amp; Rich Output</td><td>Beginner–Intermediate</td><td>1.4</td><td>2.5h</td></tr>
+<tr data-href="#module-22-visualization-inline-matplotlib-seaborn-interactive-plots"><td>2.2</td><td>Visualization Inline: Matplotlib, Seaborn &amp; Interactive Plots</td><td>Intermediate</td><td>2.1</td><td>2.5h</td></tr>
+<tr data-href="#module-23-widgets-interactive-exploration-ipywidgets"><td>2.3</td><td>Widgets &amp; Interactive Exploration (ipywidgets)</td><td>Intermediate</td><td>2.2</td><td>2.5h</td></tr>
+<tr data-href="#module-24-debugging-profiling-performance-in-notebooks"><td>2.4</td><td>Debugging, Profiling &amp; Performance in Notebooks</td><td>Intermediate</td><td>1.4, 2.1</td><td>2h</td></tr>
+<tr data-href="#module-31-notebook-hygiene-restart-run-all"><td>3.1</td><td>Notebook Hygiene: Restart &amp; Run All</td><td>Intermediate</td><td>1.2</td><td>1.5h</td></tr>
+<tr data-href="#module-32-version-control-for-notebooks"><td>3.2</td><td>Version Control for Notebooks</td><td>Intermediate</td><td>3.1</td><td>2h</td></tr>
+<tr data-href="#module-33-parameterizing-automating-with-papermill"><td>3.3</td><td>Parameterizing &amp; Automating with Papermill</td><td>Intermediate</td><td>3.1</td><td>2.5h</td></tr>
+<tr data-href="#module-34-converting-publishing-with-nbconvert-voila"><td>3.4</td><td>Converting &amp; Publishing with nbconvert &amp; Voila</td><td>Intermediate</td><td>2.3, 3.1</td><td>2.5h</td></tr>
+<tr data-href="#module-41-environments-kernels"><td>4.1</td><td>Environments &amp; Kernels</td><td>Intermediate</td><td>1.2</td><td>2h</td></tr>
+<tr data-href="#module-42-sharing-notebooks-github-colab-binder"><td>4.2</td><td>Sharing Notebooks: GitHub, Colab &amp; Binder</td><td>Intermediate</td><td>3.2, 4.1</td><td>2h</td></tr>
+<tr data-href="#module-43-jupyterhub-multi-user-deployments"><td>4.3</td><td>JupyterHub &amp; Multi-User Deployments</td><td>Intermediate–Advanced</td><td>4.1</td><td>2.5h</td></tr>
+<tr data-href="#module-44-notebooks-vs-quarto-vs-scripts"><td>4.4</td><td>Notebooks vs. Quarto vs. Scripts</td><td>Intermediate–Advanced</td><td>3.1, 3.4</td><td>1.5h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1–2 are strictly linear (each module's interface and kernel knowledge feeds the next). Phase 3's four modules build a single reproducibility skillset in order. Phase 4's four modules are largely independent side-tracks — pick 4.2 for sharing, 4.3 for team infrastructure, or 4.4 for a tooling-choice decision, without needing the others.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+
+<h3 id="track-1-data-analyst-fast-path">Track 1 — Data Analyst Fast Path</h3>
+<p><code>1.1 → 1.2 → 1.4 → 2.1 → 2.2 → 3.1 → Phase 2 Capstone</code><br>
+Target outcome: <strong>comfortably explore and chart a dataset in a notebook without falling into execution-order traps</strong></p>
+
+<h3 id="track-2-reproducible-research-team-collaboration">Track 2 — Reproducible Research &amp; Team Collaboration</h3>
+<p><code>1.1 → 1.2 → 3.1 → 3.2 → 3.3 → 3.4 → Phase 3 Capstone</code><br>
+Target outcome: <strong>ship notebooks that survive a clean "Restart &amp; Run All," diff cleanly in git, and run unattended on a schedule</strong></p>
+
+<h3 id="track-3-interactive-apps-dashboards">Track 3 — Interactive Apps &amp; Dashboards</h3>
+<p><code>1.1 → 2.1 → 2.3 → 3.4 → 4.2 → Phase 4 Capstone</code><br>
+Target outcome: <strong>build a widget-driven notebook and publish it as a standalone Voila app or shareable link</strong></p>
+
+<h3 id="track-4-notebook-ops-deployment">Track 4 — Notebook Ops &amp; Deployment</h3>
+<p><code>4.1 → 4.2 → 4.3 → 4.4</code><br>
+Target outcome: <strong>for readers who already know notebooks well and specifically need environment, sharing, and multi-user infrastructure decisions</strong> — this track skips straight to the operational modules.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Foundations                          (Weeks 1–2)
+Phase 2 — Working with Data &amp; Output           (Weeks 3–4)
+Phase 3 — Reproducibility &amp; Collaboration      (Weeks 5–6)
+Phase 4 — Scaling &amp; Sharing                    (Weeks 7–8)
+Final Capstone — Superstore Analysis Notebook Suite   (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ── 1.2 ─┬─ 1.3         2.1 ── 2.2 ─┬─ 2.3 ── 2.4 ─┐
+            └─ 1.4 ────────┘           │              ├─ 3.1 ── 3.2 ── 3.3 ── 3.4 ─┐
+                                        └───────────────┘                          ├─ Final Capstone
+                                          4.1 ── 4.2 ── 4.3 ── 4.4 ─────────────────┘</code></pre>
+
+<h2 id="phase-1-foundations">Phase 1: Foundations</h2>
+<h3 id="weeks-1-2">Weeks 1–2 | Goal: go from "never opened a notebook" to comfortably running, structuring, and documenting a working .ipynb file</h3>
+<hr />
+
+<h3 id="module-11-installing-launching-jupyterlab">Module 1.1 — Getting Started: Colab, Anaconda &amp; VS Code</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None (basic Python helps) · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Run a cell in Google Colab, launch JupyterLab locally via Anaconda, and open the same local notebook in VS Code — creating a notebook and running a single cell producing output in each — without consulting a tutorial.<br>
+<strong>Skip if:</strong> You already have a local Jupyter install (Anaconda or pip) and can launch and run a notebook without help.<br>
+<strong>Unlocks:</strong> 1.2, 1.3, 1.4</p>
+</blockquote>
+
+<h4>Three platforms, one learning order</h4>
+<p>There's no single "correct" way to run a notebook — Colab, Anaconda, and VS Code are all legitimate, and most people who use notebooks seriously end up touching all three eventually. What matters is the <strong>order</strong>: each stage removes one piece of friction the previous stage still had, so learning them in this sequence means you only deal with one new concept at a time instead of fighting installation problems and the notebook interface simultaneously.</p>
+<ol>
+<li><strong>Google Colab</strong> — zero install, runs in a browser tab. Best for your very first cell, and for quick one-off experiments later. Can't easily touch your own local files.</li>
+<li><strong>Anaconda</strong> — a local install with Python, JupyterLab, and the common data-science packages bundled together. Best once you're working with your own files, larger data, or need to work offline.</li>
+<li><strong>VS Code + Git</strong> — notebooks live inside a real, version-controlled project instead of standing alone. Best once a notebook needs to survive being edited by more than just "future you," or be tracked in a repository at all.</li>
+</ol>
+
+<h4>Stage 1 — Google Colab: run your first cell with nothing installed</h4>
+<p>Go to <code>colab.research.google.com</code>, sign in with a Google account, and choose <strong>New notebook</strong>. This opens an .ipynb-compatible document running entirely on Google's infrastructure — no Python, no Jupyter, nothing installed on your machine at all, and free (rate-limited) GPU/TPU access if you ever need it later. This is the lowest-friction way to find out whether the core notebook loop (write code, run it, see output immediately below) makes sense to you, before installing anything.</p>
+<p>Colab's tradeoff: the environment is Google's, not yours. Working with your own CSV files means uploading them each session (they don't persist by default) or mounting Google Drive — workable, but noticeably more friction than a file already sitting on your own disk. That's the signal to move to Stage 2. <em>(Module 4.2 comes back to Colab later — specifically for sharing a finished notebook so someone else can run it with zero setup, which is a different use case than working in it yourself.)</em></p>
+
+<h4>Stage 2 — Anaconda: move the work onto your own machine</h4>
+<p>Once you're ready to work with your own local files, install <a href="https://www.anaconda.com/download">Anaconda</a> (the full distribution — Python, JupyterLab, and roughly 250 data-science packages including pandas and matplotlib, preinstalled) or <a href="https://www.anaconda.com/docs/getting-started/miniconda/main">Miniconda</a> (a minimal installer that gives you just <code>conda</code> itself, so you install only what each project actually needs). Either way, you get <code>conda</code>, Anaconda's package and environment manager.</p>
+<pre><code class="language-bash">conda install -c conda-forge jupyterlab
+jupyter lab</code></pre>
+<p>This starts a local server and opens JupyterLab in your default browser at <code>localhost:8888</code> — or, with the full Anaconda distribution, open <strong>Anaconda Navigator</strong> and click <strong>Launch</strong> under JupyterLab instead of using the command line at all. If you'd rather skip conda entirely, <code>pip install jupyterlab</code> works identically — Anaconda is a convenience for environment/package management, not a requirement to run notebooks locally. Module 4.1 covers proper environment isolation (multiple projects, no version conflicts) in depth; for this first local install, one shared environment is fine.</p>
+
+<h4>JupyterLab vs. classic Notebook — there is only one real choice today</h4>
+<p><strong>JupyterLab</strong> (currently 4.6.x) is the actively developed, modern interface — a file browser, multiple tabs, a built-in terminal, and an extension ecosystem, all in one browser tab. <strong>Jupyter Notebook 7</strong> is not a separate legacy product anymore; since version 7 it's rebuilt on the same underlying components as JupyterLab, just presented in the simpler, single-document classic layout. The old "classic Notebook 6" interface is retired — anything you read online referencing it describes a superseded UI, not what installing <code>notebook</code> gives you today. Install JupyterLab for full functionality, or plain Notebook 7 if you specifically want the simpler single-document view; either way, you get the modern engine underneath.</p>
+
+<h4>Stage 3 — VS Code + Git: notebooks as part of a real project</h4>
+<p>Once a notebook is worth keeping — not just a one-off scratch exploration — move it into a git-tracked project and open it in <a href="https://code.visualstudio.com/">VS Code</a> with the official <strong>Jupyter</strong> extension (<code>ms-toolsai.jupyter</code>) installed from the Extensions panel. VS Code auto-detects the same kernels your Anaconda/conda or pip install already registered, opens <code>.ipynb</code> files with the same cell-based interface, and gives you the same <code>Shift+Enter</code> loop — but now inside an editor that also has a git-aware sidebar and an integrated terminal, so committing, branching, and reviewing history don't require switching windows.</p>
+<p>This stage deliberately comes last. A raw <code>.ipynb</code> committed to git diffs terribly by default (Module 3.2 covers why, and the fix) — that problem only matters once you're actually about to put a notebook under version control, which usually isn't the same day you're still learning what a kernel is. Learn the notebook itself in Colab and Anaconda first; bring in git once there's something worth tracking.</p>
+
+<h4>Creating and running your first notebook — the loop is identical everywhere</h4>
+<p>Whichever of the three you're using, the interaction is the same: choose <strong>New notebook</strong> (Colab), click <strong>Python 3 (ipykernel)</strong> under Notebook in JupyterLab's Launcher (Anaconda), or create/open a <code>.ipynb</code> file in VS Code. A new file opens with one empty cell. Type <code>2 + 2</code> and press <code>Shift+Enter</code> — the cell executes, prints its result below itself, and a new cell is selected below it. That single interaction is the core loop of every notebook session, on every platform: write code in a cell, execute it, read the result immediately underneath, then move to the next cell.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Assuming closing the browser tab (or VS Code window) stops the notebook. The process backing your notebook (the <strong>kernel</strong>, Module 1.2) keeps running in the background until you explicitly shut it down — closing the tab just closes the view. Long-running background kernels silently consuming memory is a common surprise for beginners who wonder why their machine is sluggish after a day of notebook work. (Colab's equivalent surprise runs the other way: its runtime disconnects — and wipes all variables — after a period of inactivity, so it's the opposite failure mode of the same underlying concept.)</p></blockquote>
+
+<p><strong>Exercise 1.1 — Three-Platform Startup</strong></p>
+<p>Dataset: Superstore Sales (<code>superstore_sales.csv</code>)</p>
+<ol>
+<li>Open <code>colab.research.google.com</code>, create a new notebook, and run <code>2 + 2</code> in a cell with <code>Shift+Enter</code>.</li>
+<li>Install Anaconda (or Miniconda + <code>conda install -c conda-forge jupyterlab</code>), launch JupyterLab locally, and create a new notebook. In the first cell, import pandas and read <code>superstore_sales.csv</code>, then run it with <code>Shift+Enter</code>; in a second cell, call <code>.shape</code> on the resulting DataFrame.</li>
+<li>Install VS Code and the Jupyter extension, then open that same local notebook file directly in VS Code and run one more cell from there.</li>
+<li>In JupyterLab, open the Running Terminals and Kernels panel (in VS Code, the Jupyter: Variables / kernel picker) and confirm you can see and shut down the kernel backing your notebook.</li>
+<li>Write one sentence per platform on what it made easier that the other two didn't (zero-setup, local files, git-aware editing).</li>
+</ol>
+<hr />
+
+<h3 id="module-12-the-notebook-interface-kernel-model">Module 1.2 — The Notebook Interface &amp; Kernel Model</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Explain, without looking it up, why a variable can exist in a notebook's memory even after the cell that created it has been deleted, and demonstrate restarting a kernel to clear that state.<br>
+<strong>Skip if:</strong> You already understand the kernel as a separate, persistent process from the notebook document, and know the difference between Command and Edit mode.<br>
+<strong>Unlocks:</strong> 1.3, 1.4, 3.1</p>
+</blockquote>
+
+<h4>The notebook document is not the same thing as the kernel</h4>
+<p>An <strong>.ipynb file</strong> is a JSON document storing your cells (code, Markdown), their execution outputs, and metadata. The <strong>kernel</strong> is a completely separate, running Python (or R, Julia, etc.) process that actually executes your code and holds all your variables in memory. This separation explains a behavior that confuses every beginner at least once: deleting a cell from the notebook document does <em>not</em> remove the variables it created from the kernel's memory — those variables persist until you restart the kernel, no matter what the visible notebook looks like now.</p>
+
+<h4>Execution count: the only honest record of what actually ran</h4>
+<p>The number in brackets to the left of a cell (<code>In [7]:</code>) is the kernel's <strong>execution count</strong> — it increments every time any cell runs, in the order cells were actually executed, not the order they appear in the document. A notebook showing <code>In [3]</code> above <code>In [1]</code> is direct evidence that cells were run out of visual order — exactly the situation that produces "works on my machine" results that silently break the moment someone else opens the file and runs top-to-bottom.</p>
+
+<h4>Command mode vs. Edit mode</h4>
+<p>A cell has a blue left border in <strong>Command mode</strong> (keyboard shortcuts act on the cell as a whole — <code>dd</code> deletes it, <code>b</code> inserts a new one below) and a green border in <strong>Edit mode</strong> (you're typing inside the cell itself). Press <code>Esc</code> to leave Edit mode and enter Command mode, <code>Enter</code> to go the other way. Beginners who don't know this distinction often discover it by accident — typing <code>dd</code> while in Command mode on the wrong cell deletes it instantly, with no confirmation dialog.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Believing a notebook that "runs fine" for you interactively will run fine for someone else, when your kernel's memory actually holds leftover variables from cells you ran once, then deleted or reordered. The only real test is Module 3.1's "Restart Kernel and Run All" — anything less is not a genuine reproducibility check.</p></blockquote>
+
+<p><strong>Exercise 1.2 — Kernel State Investigation</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>In a fresh notebook, create a variable in cell 1, then delete cell 1 entirely.</li>
+<li>In a new cell, reference that variable and confirm it still exists in kernel memory despite its creating cell being gone.</li>
+<li>Restart the kernel (Kernel → Restart Kernel) and re-run only the remaining cell — confirm it now fails with a <code>NameError</code>.</li>
+<li>Deliberately run three cells out of visual order (run cell 3, then cell 1, then cell 2) and note the resulting execution-count numbers next to each.</li>
+<li>Use Command mode (<code>Esc</code>, then <code>b</code>) to insert a new cell below the last one without touching the mouse.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-markdown-cells-notebook-structure">Module 1.3 — Markdown Cells &amp; Notebook Structure</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Write a Markdown cell with two heading levels, a bulleted list, a table, and an inline LaTeX formula, and render it correctly.<br>
+<strong>Skip if:</strong> You've written Markdown documentation elsewhere and just need the notebook-specific rendering details.<br>
+<strong>Unlocks:</strong> 2.1, 3.4</p>
+</blockquote>
+
+<h4>Markdown cells are what separate a notebook from a script</h4>
+<p>Change a cell's type with the dropdown in the toolbar (or the keyboard shortcut <code>m</code> in Command mode) to <strong>Markdown</strong>, then run it with <code>Shift+Enter</code> to render it. This is the mechanism that turns a notebook from "a script with print statements" into a literate document — narrative explanation and executable analysis interleaved in the order a reader actually needs them, not separated into a code file and a README that inevitably drift apart.</p>
+<pre><code class="language-md">## Regional Sales Overview
+
+This section summarizes total sales and profit by region.
+
+- **Scope**: All orders, 2024–2026
+- **Source**: `superstore_sales.csv`
+
+| Region | Orders |
+|--------|--------|
+| West   | 542    |
+| East   | 498    |</code></pre>
+
+<h4>Math notation with LaTeX</h4>
+<p>Jupyter's Markdown cells support inline and display LaTeX math via MathJax, the same <code>$...$</code> / <code>$$...$$</code> delimiter convention used in R Markdown and most scientific publishing tools:</p>
+<pre><code class="language-md">The profit margin is $\text{Profit Margin} = \dfrac{\text{Profit}}{\text{Sales}}$.
+
+$$\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i$$</code></pre>
+<p>This is worth knowing even for non-mathematical notebooks — reporting a formula for a KPI or a statistical test cleanly, instead of as an ASCII approximation, makes the notebook readable as a real analytical document rather than just a code log.</p>
+
+<h4>Structuring a notebook top-to-bottom</h4>
+<p>A well-structured analysis notebook typically follows: a title/purpose Markdown cell, an imports cell, a data-loading cell, then alternating Markdown-explanation and code-analysis cells building toward a conclusion. This isn't cosmetic — a notebook with no structure forces a reader (including future you) to run every cell and read every line of code to find out what it does; clear Markdown section headers let a reader skim the story before deciding which part to actually run.</p>
+
+<p><strong>Exercise 1.3 — Structured Overview Notebook</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Create a notebook with a title Markdown cell, followed by an imports cell, followed by a data-loading cell.</li>
+<li>Add a Markdown section with two heading levels, a bulleted list summarizing what the notebook covers, and a hand-typed Markdown table of the 3 product categories.</li>
+<li>Add one inline LaTeX formula for average order value and one display equation for total profit margin.</li>
+<li>Use JupyterLab's Table of Contents panel (left sidebar) to confirm your headings produce a navigable outline.</li>
+<li>Render every Markdown cell and confirm the table and LaTeX both display correctly, not as raw text.</li>
+</ol>
+<hr />
+
+<h3 id="module-14-magic-commands-the-ipython-kernel">Module 1.4 — Magic Commands &amp; the IPython Kernel</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Use <code>%timeit</code> to benchmark two alternative implementations of the same calculation and correctly interpret which one is faster and by how much.<br>
+<strong>Skip if:</strong> You already reach for <code>%timeit</code>, <code>%%time</code>, and shell magics (<code>!</code>) fluently.<br>
+<strong>Unlocks:</strong> 2.1, 2.4</p>
+</blockquote>
+
+<h4>What magic commands are</h4>
+<p>The notebook kernel is <strong>IPython</strong>, an enhanced interactive Python shell, not plain Python — and <strong>magic commands</strong> (prefixed <code>%</code> for line magics, <code>%%</code> for cell magics) are IPython-specific commands that aren't valid Python syntax on their own. This is why copy-pasting notebook code containing a <code>%</code>-line into a plain <code>.py</code> script and running it with <code>python script.py</code> fails — magics only exist inside an IPython/Jupyter kernel.</p>
+
+<h4>The magics worth knowing early</h4>
+<pre><code class="language-python">%timeit sum(range(1000))          # benchmarks a single line, averaging many runs
+
+%%time
+total = 0
+for i in range(1_000_000):
+    total += i                     # times an entire cell, once
+
+%matplotlib inline                 # renders matplotlib figures inline in the notebook, not a popup window
+
+%who                                # lists variables currently defined in the kernel
+%reset -f                          # clears all variables from kernel memory (use before a clean re-run)</code></pre>
+<p><code>%timeit</code> and <code>%%time</code> answer genuinely different questions: <code>%timeit</code> runs the line many times and reports statistically meaningful average/best timing (correct for benchmarking a fast operation), while <code>%%time</code> times the cell's contents exactly once (correct when the code itself has side effects you don't want repeated, like writing to a file or a database).</p>
+
+<h4>Running shell commands from a cell</h4>
+<pre><code class="language-python">!pip list | grep pandas
+!ls -la ../datasets/superstore-sales</code></pre>
+<p>A leading <code>!</code> passes the rest of the line to the system shell rather than the Python interpreter — genuinely useful for checking installed package versions or inspecting files without leaving the notebook, but it's a shell escape hatch, not a reproducible part of your analysis: a <code>!pip install</code> run once, interactively, doesn't record itself anywhere a colleague opening your notebook later would see it. Module 4.1 covers pinning environment dependencies properly instead of relying on ad hoc <code>!pip install</code> cells.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Treating <code>%matplotlib inline</code> as optional boilerplate copied from an old tutorial. On current JupyterLab it is usually unnecessary (inline rendering is the default), but on some kernel/backend combinations omitting it silently opens plots in a separate window or produces no visible output at all — if a chart isn't appearing, this is the first thing to check.</p></blockquote>
+
+<p><em>Retrieval practice: before checking the magics reference above, write from memory the line magic that benchmarks a single line of code by running it many times, and the cell magic that times an entire cell exactly once — then compare.</em></p>
+
+<p><strong>Exercise 1.4 — Benchmarking Two Approaches</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Load <code>superstore_sales.csv</code> and write two different implementations of "total sales per region" — one using a plain Python loop, one using <code>pandas.groupby()</code>.</li>
+<li>Benchmark both with <code>%timeit</code> and record which is faster and by roughly what factor.</li>
+<li>Use <code>%%time</code> on a cell that writes a summary CSV to disk, and explain in a Markdown cell why <code>%%time</code> was the right choice here instead of <code>%timeit</code>.</li>
+<li>Use <code>%who</code> to list all variables currently in kernel memory, then <code>%reset -f</code> to clear them, and confirm with a subsequent cell that referencing an old variable now raises a <code>NameError</code>.</li>
+<li>Use a <code>!</code> shell command to confirm which version of <code>pandas</code> is installed in the current kernel's environment.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-exploratory-orders-notebook">Phase 1 Capstone: Exploratory Orders Notebook</h3>
+<p><strong>Project: Superstore Orders Exploration Notebook</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) why deleting a cell doesn't remove its variables from kernel memory, (2) what the execution-count number actually tells you, and (3) the difference between <code>%timeit</code> and <code>%%time</code>? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> Superstore Sales</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A single notebook with a title Markdown cell, an imports cell, and a data-loading cell, in that order.</li>
+<li>A Markdown "Overview" section with two heading levels, a bulleted summary, and a hand-typed table of the 3 product categories.</li>
+<li>At least one magic command used deliberately and explained in an adjacent Markdown cell (why that magic, not just what it does).</li>
+<li>Evidence of correct execution order: a "Restart Kernel and Run All," with the resulting execution-count numbers running sequentially top to bottom.</li>
+<li>A Markdown cell explaining, in your own words, the difference between the notebook document and the kernel.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-working-with-data-output">Phase 2: Working with Data &amp; Output</h2>
+<h3 id="weeks-3-4">Weeks 3–4 | Goal: produce rich, interactive, well-visualized analysis directly inside the notebook</h3>
+<hr />
+
+<h3 id="module-21-data-loading-pandas-display-rich-output">Module 2.1 — Data Loading, pandas Display &amp; Rich Output</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.4 · <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Explain why a bare DataFrame expression at the end of a cell renders a styled table while <code>print(df)</code> does not, and configure pandas display options to show more rows/columns than the default.<br>
+<strong>Skip if:</strong> You already know Jupyter's rich display (<code>_repr_html_</code>) mechanism and configure pandas display options routinely.<br>
+<strong>Unlocks:</strong> 2.2, 2.4, phase 2 capstone</p>
+</blockquote>
+
+<h4>Why the last line of a cell looks "special"</h4>
+<pre><code class="language-python">import pandas as pd
+sales = pd.read_csv("superstore_sales.csv")
+sales.head()</code></pre>
+<p>Jupyter automatically displays the value of a cell's <strong>last expression</strong> using its richest available representation — for a DataFrame, that's a styled HTML table via a special <code>_repr_html_</code> method the object defines, not plain text. <code>print(df)</code>, by contrast, always produces plain text, because <code>print()</code> bypasses Jupyter's rich-display mechanism entirely and writes directly to stdout. This is why swapping <code>df</code> for <code>print(df)</code> at the end of a cell — a natural habit for anyone coming from script-based Python — quietly downgrades a nicely formatted table into a cramped text dump.</p>
+
+<h4>Configuring what pandas actually shows</h4>
+<pre><code class="language-python">pd.set_option("display.max_rows", 100)
+pd.set_option("display.max_columns", 50)
+pd.set_option("display.float_format", "{:.2f}".format)</code></pre>
+<p>Without these, pandas silently truncates wide or long DataFrames with a "..." — easy to miss the first few times, and a real problem if you're scanning a table by eye for an outlier that happens to fall in a truncated row.</p>
+
+<h4>Displaying multiple rich outputs from one cell</h4>
+<pre><code class="language-python">from IPython.display import display
+
+for region in sales["Region"].unique():
+    display(sales[sales["Region"] == region].head(3))</code></pre>
+<p>Only a cell's <em>last</em> expression auto-displays — calling <code>display()</code> explicitly is how you show more than one rich object (multiple tables, a table and a chart) from a single cell, which a bare last-expression trick can't do.</p>
+
+<blockquote class="callout"><p><strong>Disambiguation:</strong> "Rich output" (this module's HTML/image/JSON representations Jupyter renders in the notebook) is a different thing from a <strong>magic command's</strong> plain-text output (Module 1.4) — rich display is about how <em>objects</em> render; magics are IPython commands that may or may not produce rich output themselves.</p></blockquote>
+
+<p><strong>Exercise 2.1 — Configured Data Overview</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Load <code>superstore_sales.csv</code> and display it as a bare last expression, then again with <code>print()</code> — note the visible difference.</li>
+<li>Set pandas display options so all 20 columns are visible without truncation, and floats show exactly 2 decimal places.</li>
+<li>Use <code>IPython.display.display()</code> inside a loop to show the top 3 rows for each of the 4 regions from a single cell.</li>
+<li>Confirm which of the two approaches (bare expression vs. <code>display()</code>) is required once you need more than one rich output per cell.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-visualization-inline-matplotlib-seaborn-interactive-plots">Module 2.2 — Visualization Inline: Matplotlib, Seaborn &amp; Interactive Plots</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Produce a correctly sized, labeled matplotlib chart inline, and a separate interactive Plotly chart, in the same notebook.<br>
+<strong>Skip if:</strong> You already control figure sizing and know the difference between a static and an interactive plotting library's notebook output.<br>
+<strong>Unlocks:</strong> 2.3, phase 2 capstone</p>
+</blockquote>
+
+<h4>Static charts with matplotlib and seaborn</h4>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import seaborn as sns
+
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.lineplot(data=sales.groupby("Order Date")["Sales"].sum().reset_index(),
+             x="Order Date", y="Sales", ax=ax)
+ax.set_title("Daily Sales Trend")
+plt.show()</code></pre>
+<p>Calling <code>plt.show()</code> (or simply leaving the figure as the cell's last expression) renders the chart as a static image embedded directly in the notebook's saved output — meaning the chart is visible even to someone who opens the .ipynb file without re-running any code, which matters the moment you share a notebook as a report rather than as executable code.</p>
+
+<h4>Interactive charts with Plotly</h4>
+<pre><code class="language-python">import plotly.express as px
+
+fig = px.bar(sales.groupby("Region")["Sales"].sum().reset_index(),
+             x="Region", y="Sales", title="Total Sales by Region")
+fig.show()</code></pre>
+<p>Plotly renders as an embedded interactive widget (hover tooltips, zoom, pan) rather than a flat image — the tradeoff is that an interactive Plotly output only stays interactive in contexts that can execute its embedded JavaScript (a live notebook, nbviewer, or a converted HTML export); some static conversion paths (certain PDF exports) flatten it back to an image.</p>
+
+<h4>Sizing figures correctly the first time</h4>
+<p>The most common early frustration is a matplotlib figure that's either too small to read or overflows the notebook's width. Set <code>figsize=(width, height)</code> in inches explicitly on every figure rather than accepting the tiny default — a chart meant to be read, not just glanced at, is rarely legible at matplotlib's default 6.4×4.8 inch size once it's shrunk to fit a notebook cell's output area.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Calling <code>plt.figure()</code> or creating a new figure repeatedly across cells without closing the previous one, then wondering why old, half-finished plots reappear or blank figures accumulate. Use <code>fig, ax = plt.subplots()</code> once per chart and build on <code>ax</code> explicitly — it's far less error-prone than the older implicit-state matplotlib API once a notebook has more than 2–3 charts.</p></blockquote>
+
+<p><strong>Exercise 2.2 — Regional Trend Dashboard (Static + Interactive)</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Build a static seaborn line chart of monthly sales trend, sized at <code>figsize=(8, 4)</code>, with a title and labeled axes.</li>
+<li>Build an interactive Plotly bar chart of total profit by sub-category, sorted descending.</li>
+<li>Save the notebook, close and reopen it without re-running any cells, and confirm the matplotlib chart is still visible from its saved output while noting whether the Plotly chart is too.</li>
+<li>Add a second matplotlib chart using the explicit <code>fig, ax = plt.subplots()</code> pattern and confirm no stray blank figures appear.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-widgets-interactive-exploration-ipywidgets">Module 2.3 — Widgets &amp; Interactive Exploration (ipywidgets)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Build a dropdown widget that filters a DataFrame and re-renders a chart live using <code>@interact</code>, without consulting a reference.<br>
+<strong>Skip if:</strong> You already use <code>ipywidgets</code>' <code>interact</code>/<code>interactive</code> helpers or manual <code>Output</code> widgets fluently.<br>
+<strong>Unlocks:</strong> 3.4, phase 2 capstone</p>
+</blockquote>
+
+<h4>The fastest path to interactivity: @interact</h4>
+<pre><code class="language-python">from ipywidgets import interact
+
+@interact(region=sales["Region"].unique().tolist())
+def plot_region(region):
+    subset = sales[sales["Region"] == region]
+    subset.groupby("Order Date")["Sales"].sum().plot(figsize=(8, 4), title=f"Sales Trend — {region}")
+    plt.show()</code></pre>
+<p><code>@interact</code> inspects the function's parameters and the values you pass it, and auto-generates the right widget (a dropdown for a list of choices, a slider for a numeric range) — this is the reason it's worth learning before building widgets manually: most exploratory filtering needs are a one-line decorator away, not a custom widget layout.</p>
+
+<h4>Manual widgets for more control</h4>
+<pre><code class="language-python">import ipywidgets as widgets
+from IPython.display import display, clear_output
+
+region_dropdown = widgets.Dropdown(options=sales["Region"].unique().tolist(), description="Region:")
+output = widgets.Output()
+
+def on_change(change):
+    with output:
+        clear_output(wait=True)
+        subset = sales[sales["Region"] == change["new"]]
+        print(f"Total sales: {subset['Sales'].sum():,.2f}")
+
+region_dropdown.observe(on_change, names="value")
+display(region_dropdown, output)</code></pre>
+<p>The <code>Output</code> widget plus <code>clear_output(wait=True)</code> is the standard pattern for "redraw this area in place" — without <code>clear_output</code>, every dropdown change would append a new result below the last instead of replacing it, and the notebook would fill with stale, superseded output.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Building an elaborate custom widget layout with <code>Output</code>/<code>observe</code> for a case <code>@interact</code> would have handled in one line. Reach for the manual pattern only once you need multiple linked widgets, custom layout, or state that persists across more than one callback — not by default.</p></blockquote>
+
+<p><strong>Exercise 2.3 — Interactive Region &amp; Category Filter</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Build an <code>@interact</code>-decorated function with a region dropdown that re-plots the monthly sales trend chart live.</li>
+<li>Add a second parameter (a numeric slider for minimum order value) to the same <code>@interact</code> function and confirm both filters combine correctly.</li>
+<li>Rebuild the same filtering behavior manually using <code>Dropdown</code>, <code>Output</code>, and <code>observe</code>, with <code>clear_output(wait=True)</code> to avoid stacked output.</li>
+<li>Compare the two approaches in a Markdown cell: which took less code, and when would the manual version actually be worth the extra effort?</li>
+</ol>
+<hr />
+
+<h3 id="module-24-debugging-profiling-performance-in-notebooks">Module 2.4 — Debugging, Profiling &amp; Performance in Notebooks</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.4, 2.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Use <code>%debug</code> to inspect the state at the point of a raised exception, and use <code>%prun</code> or <code>%%prun</code> to identify which function call is the actual bottleneck in a slow cell.<br>
+<strong>Skip if:</strong> You already reach for the post-mortem debugger and a profiler instead of scattering <code>print()</code> statements when something is slow or broken.<br>
+<strong>Unlocks:</strong> Phase 2 capstone</p>
+</blockquote>
+
+<h4>Post-mortem debugging with %debug</h4>
+<pre><code class="language-python">def compute_margin(row):
+    return row["Profit"] / row["Sales"]
+
+sales["Margin"] = sales.apply(compute_margin, axis=1)</code></pre>
+<p>If a row has <code>Sales == 0</code>, this raises a <code>ZeroDivisionError</code> mid-run. Running <code>%debug</code> in the very next cell drops you into an interactive post-mortem debugger at the exact frame where the exception occurred — you can inspect <code>row</code>, check which columns are involved, and confirm the exact cause, instead of guessing from the traceback text alone or re-running with print statements sprinkled in.</p>
+
+<h4>Profiling with %prun and %%prun</h4>
+<pre><code class="language-python">%prun sales.groupby(["Region", "Category"]).agg({"Sales": "sum", "Profit": "sum"})</code></pre>
+<p><code>%prun</code> runs the cProfile profiler on the expression and reports a function-by-function breakdown of time spent — the correct tool the moment "this cell is slow" needs to become "this <em>specific line inside this cell</em> is slow," rather than guessing which of several operations is the actual bottleneck.</p>
+
+<h4>Line-level timing with %%timeit</h4>
+<pre><code class="language-python">%%timeit
+sales[sales["Region"] == "West"]["Sales"].sum()</code></pre>
+<p>Use <code>%%timeit</code> (cell magic) when comparing whole-cell alternatives, and plain <code>%timeit</code> (line magic, Module 1.4) for single-expression comparisons — the distinction matters once a cell contains several lines you don't want individually re-run thousands of times just to benchmark one of them.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Debugging a notebook exception by inserting <code>print()</code> statements, re-running the whole notebook, reading the new output, then deleting the prints — a slow loop compared to <code>%debug</code>'s single-shot inspection of the actual failure state.</p></blockquote>
+
+<p><strong>Exercise 2.4 — Diagnosing a Slow, Broken Aggregation</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Write a function that computes profit margin per row and deliberately trigger a division-by-zero or missing-column error on a subset of the data.</li>
+<li>Use <code>%debug</code> in the next cell to inspect the failing row and identify the exact cause.</li>
+<li>Fix the function to handle the edge case, then re-run cleanly.</li>
+<li>Use <code>%prun</code> on a multi-step aggregation (group by two columns, aggregate three metrics) and identify which internal call consumes the most time.</li>
+<li>Use <code>%%timeit</code> to compare two alternative implementations of the same aggregation and report which is faster.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-interactive-regional-explorer">Phase 2 Capstone: Interactive Regional Explorer</h3>
+<p><strong>Project: Superstore Interactive Regional Explorer</strong></p>
+<p><strong>Dataset:</strong> Superstore Sales</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A notebook with pandas display options configured so all columns and 2-decimal floats are visible without truncation.</li>
+<li>At least one static (matplotlib/seaborn) and one interactive (Plotly) chart, both correctly sized and labeled.</li>
+<li>An <code>@interact</code>-driven filter (region and/or category dropdown) that live-updates a chart.</li>
+<li>At least one deliberately introduced and then fixed bug, debugged using <code>%debug</code> rather than print statements, documented in a Markdown cell.</li>
+<li>A profiling pass (<code>%prun</code>) on the notebook's heaviest aggregation, with a one-sentence conclusion about the bottleneck.</li>
+<li>Evidence of a clean "Restart Kernel and Run All" producing sequential execution counts with no errors.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-reproducibility-collaboration">Phase 3: Reproducibility &amp; Collaboration</h2>
+<h3 id="weeks-5-6">Weeks 5–6 | Goal: turn a personal exploratory notebook into something that survives a clean run, a git diff, and unattended execution</h3>
+<hr />
+
+<h3 id="module-31-notebook-hygiene-restart-run-all">Module 3.1 — Notebook Hygiene: Restart &amp; Run All</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Explain precisely why a notebook that "runs fine" interactively can still fail a "Restart Kernel and Run All" check, and identify the two or three most common causes.<br>
+<strong>Skip if:</strong> You already treat "Restart &amp; Run All, no errors, top to bottom" as the non-negotiable definition of "done" for any notebook.<br>
+<strong>Unlocks:</strong> 3.2, 3.3, 3.4</p>
+</blockquote>
+
+<h4>The single most important habit in this entire guide</h4>
+<p>Before considering any notebook finished — sharing it, committing it, or handing it to a colleague — run <strong>Kernel → Restart Kernel and Run All Cells</strong>. This is the only way to confirm the notebook is actually reproducible from a clean state, because Module 1.2 established that a kernel's memory can silently hold leftover variables from cells you deleted, reordered, or ran multiple times. A notebook that "just works" when you personally step through it cell by cell proves nothing about whether it works for anyone else, including future-you three months from now.</p>
+
+<h4>The most common ways Restart &amp; Run All exposes a broken notebook</h4>
+<ul>
+<li><strong>Hidden order dependency</strong> — a later cell references a variable that only exists because an earlier cell (now deleted or moved) once ran first.</li>
+<li><strong>Stateful side effects run more than once</strong> — a cell that appends to a list or increments a counter produces a different result the second time it's re-run versus the first.</li>
+<li><strong>Environment drift</strong> — a package version installed ad hoc via <code>!pip install</code> mid-session isn't actually recorded anywhere a fresh environment would pick up (Module 4.1 fixes this properly).</li>
+</ul>
+
+<h4>Automating the check from the command line</h4>
+<pre><code class="language-bash">jupyter execute notebook.ipynb --output executed.ipynb</code></pre>
+<p>Running this in a fresh terminal (fresh kernel, no leftover state from any interactive session) is the closest thing to a genuine reproducibility test, and it's the same underlying mechanism CI systems use to catch a broken notebook before it's merged — Module 3.3 builds on this exact command for parameterized, automated runs.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Treating "no red error text visible right now" as proof a notebook works. The only valid proof is a clean Restart &amp; Run All (or <code>jupyter execute</code>) from a fresh kernel — anything short of that is trusting whatever state happens to currently be sitting in memory.</p></blockquote>
+
+<p><strong>Exercise 3.1 — Reproducibility Audit</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Take your Phase 2 capstone notebook and deliberately introduce a hidden order dependency (delete a data-loading cell after confirming the rest of the notebook still "works" using leftover kernel state).</li>
+<li>Run Restart Kernel and Run All Cells and confirm it now fails with a clear error.</li>
+<li>Fix the dependency so the notebook passes a clean Restart &amp; Run All.</li>
+<li>Run <code>jupyter execute notebook.ipynb --output executed.ipynb</code> from a terminal and confirm it succeeds with no interactive session involved at all.</li>
+<li>Write a one-paragraph checklist (in a Markdown cell) of what you now check before calling any notebook "done."</li>
+</ol>
+<hr />
+
+<h3 id="module-32-version-control-for-notebooks">Module 3.2 — Version Control for Notebooks</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Set up either <code>nbstripout</code> or Jupytext pairing on a git-tracked notebook project, and demonstrate a clean, reviewable diff after a code change.<br>
+<strong>Skip if:</strong> You already keep notebook projects under git with a working strategy for clean diffs.<br>
+<strong>Unlocks:</strong> Phase 3 capstone</p>
+</blockquote>
+
+<h4>Why raw .ipynb diffs are unreadable</h4>
+<p>An .ipynb file is JSON containing not just your code but every cell's output (including binary image data, base64-encoded, for embedded charts) and execution counts. Changing one line of code inside a chart-producing cell regenerates that base64 image blob, so a one-line code change can produce a git diff hundreds of lines long, dominated by unreadable binary noise — making code review on a raw notebook diff nearly useless.</p>
+
+<h4>Option 1: nbstripout — strip outputs before every commit</h4>
+<pre><code class="language-bash">pip install nbstripout
+nbstripout --install</code></pre>
+<p>This installs a git filter that strips all cell outputs from a notebook automatically at commit time, while your local working copy keeps its outputs untouched. The tracked history then only shows meaningful code changes — at the cost of the repository never storing rendered output, so a reviewer has to actually run the notebook to see results.</p>
+
+<h4>Option 2: Jupytext — pair a notebook with a plain-text representation</h4>
+<pre><code class="language-bash">pip install jupytext
+jupytext --set-formats ipynb,py:percent notebook.ipynb</code></pre>
+<p>Jupytext keeps a <code>.ipynb</code> and a paired plain <code>.py</code> file (using <code># %%</code> cell markers) in sync — you edit either one, and the other updates on save. Committing the <code>.py</code> pair instead of (or alongside) the <code>.ipynb</code> gives genuinely clean, line-by-line diffable history, since it's just Python source with comment markers, no JSON, no embedded binary output.</p>
+
+<h4>Choosing between them</h4>
+<p>Use <code>nbstripout</code> when you want to keep working exclusively in <code>.ipynb</code> files with minimal workflow change — it's a one-time setup with almost no new habits to learn. Use Jupytext when the team wants notebooks reviewable like code in a pull request (diffs that read like a code review, not a JSON dump) — it requires committing to the paired-file workflow but produces much better collaboration ergonomics for teams that review each other's analysis.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Committing raw .ipynb files with full outputs to a shared repository "to save time," then having every subsequent PR review buried in unreadable binary diffs. Set up <code>nbstripout</code> or Jupytext on day one of a shared notebook project, not after the repository history is already polluted.</p></blockquote>
+
+<p><strong>Exercise 3.2 — Clean-Diff Notebook Repository</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Initialize a git repository containing your Phase 2 capstone notebook, committed once with full outputs, and note the diff size of a trivial one-line code change.</li>
+<li>Install and configure <code>nbstripout</code>, make the same one-line change, and compare the resulting diff.</li>
+<li>On a separate branch, set up Jupytext pairing (<code>ipynb</code> + <code>py:percent</code>) instead, make the same change in the <code>.py</code> file, and sync it back to the notebook.</li>
+<li>Compare the three diffs (raw, nbstripout, Jupytext) side by side and write a one-paragraph recommendation for a 4-person analyst team.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-parameterizing-automating-with-papermill">Module 3.3 — Parameterizing &amp; Automating with Papermill</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Tag a parameters cell, then execute the same notebook with three different parameter sets programmatically using Papermill, producing three distinct output notebooks.<br>
+<strong>Skip if:</strong> You already parameterize and batch-execute notebooks with Papermill instead of manually editing and re-running by hand.<br>
+<strong>Unlocks:</strong> 3.4, phase 3 capstone</p>
+</blockquote>
+
+<h4>Tagging a parameters cell</h4>
+<p>In JupyterLab, select a cell (usually near the top, right after imports), open the cell tag panel (View → Right Sidebar → Notebook Tools → Cell Tag), and add the tag <code>parameters</code>. That cell's variable assignments become the notebook's default parameter values:</p>
+<pre><code class="language-python"># Tagged "parameters"
+region = "West"
+min_date = "2024-01-01"</code></pre>
+<p>Papermill works by injecting a <em>new</em> cell directly after the tagged one, overriding these defaults — it never edits the tagged cell itself, so the notebook's default behavior (opened normally, run interactively) is completely unaffected by parameterization.</p>
+
+<h4>Executing programmatically</h4>
+<pre><code class="language-python">import papermill as pm
+
+for region in ["West", "East", "Central", "South"]:
+    pm.execute_notebook(
+        "regional_analysis.ipynb",
+        f"output_{region.lower()}.ipynb",
+        parameters=dict(region=region, min_date="2024-01-01")
+    )</code></pre>
+<p>Each call executes the full notebook fresh in its own kernel with the given parameters, saving a complete, independently viewable output notebook — this is the mechanism that turns "one analyst manually re-running and re-editing a notebook four times" into "one script producing four correct reports unattended," and it's the same command-line-callable behavior a scheduler (cron, Airflow) can trigger with no human involved.</p>
+
+<h4>Command-line equivalent</h4>
+<pre><code class="language-bash">papermill regional_analysis.ipynb output_west.ipynb -p region West -p min_date 2024-01-01</code></pre>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Parameterizing a notebook that hasn't first passed Module 3.1's Restart &amp; Run All check. Papermill executes from a fresh kernel every time — a notebook that only "worked" because of leftover interactive kernel state will fail (or worse, silently produce wrong output) the moment Papermill runs it clean.</p></blockquote>
+
+<p><strong>Exercise 3.3 — Automated Regional Runs</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Tag a parameters cell in your Phase 2 capstone notebook with default <code>region</code> and <code>min_date</code> values.</li>
+<li>Filter the DataFrame by both parameters in a subsequent cell, and confirm the chart titles update from an f-string referencing <code>region</code>.</li>
+<li>Write a Python script that loops over all 4 regions and calls <code>papermill.execute_notebook()</code> for each, producing 4 uniquely named output notebooks.</li>
+<li>Open two of the output notebooks and confirm the data, chart titles, and computed metrics differ correctly per region.</li>
+<li>Run the same parameterization once from the <code>papermill</code> command line instead of the Python API.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-converting-publishing-with-nbconvert-voila">Module 3.4 — Converting &amp; Publishing with nbconvert &amp; Voila</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.3, 3.1 · <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Convert a notebook to a static HTML report and a PDF with nbconvert, and serve the same notebook as a code-free interactive app with Voila.<br>
+<strong>Skip if:</strong> You already ship notebooks as nbconvert exports or Voila apps rather than sharing raw .ipynb files with non-technical stakeholders.<br>
+<strong>Unlocks:</strong> Phase 3 capstone</p>
+</blockquote>
+
+<h4>nbconvert: turning a notebook into a static deliverable</h4>
+<pre><code class="language-bash">jupyter nbconvert --to html regional_analysis.ipynb
+jupyter nbconvert --to pdf regional_analysis.ipynb
+jupyter nbconvert --to script regional_analysis.ipynb</code></pre>
+<p><code>nbconvert</code> (currently 7.17.x) converts an .ipynb into HTML, PDF (via pandoc and LaTeX, the same underlying pipeline R Markdown's PDF output uses), a plain <code>.py</code> script, or several other formats. <code>--to html</code> is the right choice for sharing a read-only, self-contained report with anyone with a browser and no Jupyter installed at all — the notebook's already-computed outputs are baked directly into the HTML file.</p>
+
+<h4>Executing and converting in one step</h4>
+<pre><code class="language-bash">jupyter nbconvert --to html --execute regional_analysis.ipynb</code></pre>
+<p>Adding <code>--execute</code> re-runs the notebook fresh before converting, rather than converting whatever outputs happen to already be saved in the file — this is the version worth using for any automated report pipeline, since it guarantees the exported HTML reflects current data, not stale output from whenever the notebook was last saved interactively.</p>
+
+<h4>Voila: the same notebook, served as a live app with no visible code</h4>
+<pre><code class="language-bash">pip install voila
+voila regional_analysis.ipynb</code></pre>
+<p>Voila runs the notebook's code cells (so <code>@interact</code> widgets from Module 2.3 stay live and reactive) but renders only Markdown and output — no code cells are shown at all. This is the correct tool the moment your audience is a stakeholder who wants to move a dropdown and see a chart update, not read or run Python code; nbconvert's static HTML export, by contrast, is correct when the audience just wants to read a fixed report with no interaction needed.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Choosing between nbconvert and Voila based on which one you learned first rather than what the audience actually needs. A static one-time report → nbconvert HTML/PDF. A live, dropdown-driven exploration tool → Voila. Building a Voila app for a report nobody needs to interact with just adds an always-on server to maintain for no benefit.</p></blockquote>
+
+<p><strong>Exercise 3.4 — Two Deliverables, One Notebook</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Convert your Phase 2 capstone notebook to a static HTML report using <code>nbconvert --to html --execute</code>, and open the resulting file with no Jupyter server running.</li>
+<li>Convert the same notebook to PDF and note any rendering differences from the HTML version (chart sizing, page breaks).</li>
+<li>Serve the notebook with <code>voila</code> and confirm the <code>@interact</code> widget from Module 2.3 is live and updates the chart, with no visible code cells.</li>
+<li>Write a one-paragraph recommendation: for a monthly stakeholder update on regional performance, which of the two (static HTML/PDF vs. Voila) would you actually ship, and why.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-automated-regional-report-run">Phase 3 Capstone: Automated Regional Report Run</h3>
+<p><strong>Project: Superstore Automated Regional Reporting Pipeline</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (1) why Restart &amp; Run All is the only valid reproducibility test, (2) why raw .ipynb diffs are unreadable in git, and (3) what Papermill actually does to a tagged parameters cell? If any draws a blank, re-read that module first.</p></blockquote>
+<p><strong>Dataset:</strong> Superstore Sales</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A parameterized notebook (tagged <code>parameters</code> cell for region and date range) that passes a clean Restart &amp; Run All.</li>
+<li>The notebook under git with either <code>nbstripout</code> or Jupytext pairing configured, with a demonstrated clean diff on a code change.</li>
+<li>A script that batch-executes the notebook via Papermill across all 4 regions, producing 4 distinct output notebooks.</li>
+<li>Each output notebook converted to a static HTML report via <code>nbconvert --execute</code>.</li>
+<li>A separate Voila-served version of the same base notebook (unparameterized) demonstrating live widget interactivity.</li>
+<li>A short written summary of the full pipeline: parameterize → batch-execute → convert, and where each step would plug into a scheduler in production.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-scaling-sharing">Phase 4: Scaling &amp; Sharing</h2>
+<h3 id="weeks-7-8">Weeks 7–8 | Goal: manage environments correctly, share notebooks with people who don't have your local setup, and know when a notebook isn't the right tool at all</h3>
+<hr />
+
+<h3 id="module-41-environments-kernels">Module 4.1 — Environments &amp; Kernels</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Create a new virtual environment, register it as a distinct Jupyter kernel, and switch a notebook between two different kernels, confirming each has an independent package set.<br>
+<strong>Skip if:</strong> You already register project-specific kernels rather than installing every project's dependencies into one global environment.<br>
+<strong>Unlocks:</strong> 4.2, 4.3</p>
+</blockquote>
+
+<h4>A kernel is bound to an environment, not to JupyterLab itself</h4>
+<p>JupyterLab is just the interface; each notebook connects to a <strong>kernel</strong>, and each kernel is backed by a specific Python environment (a venv, conda env, or your system Python) with its own installed packages. Installing every project's dependencies into one shared global environment is the single most common cause of "it worked yesterday, now this notebook is broken" — a later project's conflicting package version silently breaks an earlier project's notebook, because they were never actually isolated from each other.</p>
+
+<h4>Registering a project-specific kernel</h4>
+<pre><code class="language-bash">python -m venv .venv
+source .venv/bin/activate
+pip install ipykernel pandas matplotlib
+python -m ipykernel install --user --name superstore-project --display-name "Python (superstore-project)"</code></pre>
+<p>This registers the virtual environment as a selectable kernel in JupyterLab's Launcher and in any notebook's Kernel → Change Kernel menu — "Python (superstore-project)" now appears as its own option, isolated from whatever else is installed globally or in other projects' environments.</p>
+
+<h4>Pinning dependencies so the environment itself is reproducible</h4>
+<pre><code class="language-bash">pip freeze > requirements.txt</code></pre>
+<p>A notebook that passes Restart &amp; Run All today can still fail for a colleague six months from now if the packages it depends on have released breaking changes since. A pinned <code>requirements.txt</code> (or a conda <code>environment.yml</code>) committed alongside the notebook is what actually closes that gap — "the notebook runs" is only a meaningful claim relative to a specific, recorded set of package versions.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Running <code>!pip install some-package</code> inside a notebook cell as a substitute for proper environment management. It installs into whatever environment the current kernel happens to be using, doesn't get recorded in any requirements file, and gives a false sense that the dependency is "handled" when it's actually invisible to anyone re-creating the environment from scratch.</p></blockquote>
+
+<p><strong>Exercise 4.1 — Isolated Project Environment</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Create a new virtual environment for this exercise specifically, separate from any environment used in earlier modules.</li>
+<li>Install <code>ipykernel</code>, <code>pandas</code>, and <code>matplotlib</code> into it, then register it as a named Jupyter kernel.</li>
+<li>Open your Phase 3 capstone notebook and switch it to this new kernel via Kernel → Change Kernel.</li>
+<li>Confirm the notebook still passes Restart &amp; Run All under the new, isolated environment.</li>
+<li>Generate a <code>requirements.txt</code> from this environment and commit it alongside the notebook.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-sharing-notebooks-github-colab-binder">Module 4.2 — Sharing Notebooks: GitHub, Colab &amp; Binder</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.2, 4.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Share a notebook three ways — a GitHub-rendered static preview, an "Open in Colab" link, and a working Binder link — and explain what a recipient can and can't do with each.<br>
+<strong>Skip if:</strong> You already know which sharing method fits which audience and have set up at least one of the three.<br>
+<strong>Unlocks:</strong> Phase 4 capstone</p>
+</blockquote>
+
+<h4>GitHub's built-in static preview</h4>
+<p>Pushing an .ipynb to GitHub gets you a free, automatic static render of the notebook (code, Markdown, and saved outputs) right in the repository browser — no setup required, but it's read-only: a viewer sees exactly what was saved, and cannot execute or modify a single cell.</p>
+
+<h4>Google Colab: zero-setup, executable, free compute</h4>
+<p>A notebook opened via an "Open in Colab" badge (linking to <code>colab.research.google.com/github/&lt;user&gt;/&lt;repo&gt;/blob/main/notebook.ipynb</code>) runs on Google's hosted infrastructure — a recipient with just a Google account can execute every cell with no local Python install at all, including free (rate-limited) GPU access. The tradeoff: Colab's environment is Google's, not yours — a notebook depending on unusual local packages or data files needs an explicit setup cell (<code>!pip install ...</code>, downloading data) to work there.</p>
+
+<h4>Binder: a full reproducible environment from a git repo</h4>
+<pre><code># requirements.txt in your repo root, then share:
+# https://mybinder.org/v2/gh/&lt;user&gt;/&lt;repo&gt;/HEAD</code></pre>
+<p>Binder builds a complete, ephemeral Docker container matching your repository's declared <code>requirements.txt</code> (or <code>environment.yml</code>) and launches JupyterLab inside it — the closest thing to "hand someone your exact environment" without them installing anything locally. It's slower to start (a fresh container build) and the session is temporary (changes aren't saved back to the repo), which makes it right for demos and workshops, not for ongoing collaborative editing.</p>
+
+<h4>Choosing the right one</h4>
+<table>
+<tr><th>Need</th><th>Best fit</th></tr>
+<tr><td>Quick, read-only "here's what I found"</td><td>GitHub static preview</td></tr>
+<tr><td>Recipient should run/modify code with zero setup</td><td>Google Colab</td></tr>
+<tr><td>Recipient needs your <em>exact</em> environment, temporarily</td><td>Binder</td></tr>
+<tr><td>Ongoing team collaboration on the same environment</td><td>JupyterHub (Module 4.3)</td></tr>
+</table>
+
+<p><strong>Exercise 4.2 — Three-Way Sharing Test</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Push your Phase 4.1 notebook and its <code>requirements.txt</code> to a public (or shareable private) GitHub repository.</li>
+<li>Confirm the GitHub static preview renders correctly with all saved outputs visible.</li>
+<li>Construct and test an "Open in Colab" link for the same notebook, adding any setup cell needed to fetch the Superstore CSV inside Colab's environment.</li>
+<li>Add a Binder-compatible <code>requirements.txt</code> at the repo root and test the resulting <code>mybinder.org</code> link.</li>
+<li>Write a one-paragraph comparison of what a recipient can and can't do in each of the three.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-jupyterhub-multi-user-deployments">Module 4.3 — JupyterHub &amp; Multi-User Deployments</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate–Advanced · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Explain what JupyterHub adds on top of a single-user JupyterLab install, and describe at minimum the role of the Hub, the proxy, and a spawner.<br>
+<strong>Skip if:</strong> You're not currently responsible for provisioning notebook access for more than one person — revisit this module when that becomes your problem, not before.<br>
+<strong>Unlocks:</strong> Phase 4 capstone</p>
+</blockquote>
+
+<h4>What JupyterHub actually is</h4>
+<p><strong>JupyterHub</strong> is a multi-user server that spawns, manages, and proxies a separate, isolated JupyterLab (or Notebook) instance per authenticated user — it is not a bigger JupyterLab, it's infrastructure <em>around</em> many single-user JupyterLab instances. Three components matter: the <strong>Hub</strong> (handles authentication and manages user sessions), the <strong>proxy</strong> (routes each user's browser traffic to their own private server instance), and a <strong>spawner</strong> (the pluggable mechanism that actually starts each user's server — a local process, a Docker container, or a Kubernetes pod, depending on deployment scale).</p>
+
+<h4>When JupyterHub is the right tool</h4>
+<p>Reach for JupyterHub once you're responsible for giving a <em>team</em> (not just yourself) reliable, authenticated, isolated notebook access — a classroom, a research group, or a company data team sharing compute resources. It is deliberate overkill for a single person's own analysis work; the operational overhead (authentication setup, a spawner choice, server maintenance) only pays for itself once genuinely multiple users need it.</p>
+
+<h4>Deployment scale options</h4>
+<table>
+<tr><th>Scale</th><th>Typical setup</th><th>Notes</th></tr>
+<tr><td>Small team, one shared machine</td><td>JupyterHub + <code>LocalProcessSpawner</code></td><td>Simplest install; all users share one host's resources</td></tr>
+<tr><td>Larger team, isolation needed</td><td>JupyterHub + <code>DockerSpawner</code></td><td>Each user gets an isolated container</td></tr>
+<tr><td>Institution/org scale, elastic capacity</td><td>Zero to JupyterHub for Kubernetes</td><td>Auto-scales pods per user on a Kubernetes cluster</td></tr>
+</table>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> Reaching for JupyterHub as the default "share my notebook" solution when Module 4.2's simpler options (GitHub preview, Colab, Binder) would have fully solved the actual sharing need with far less operational burden. JupyterHub solves a genuinely different problem — ongoing, authenticated, multi-user compute access — not one-off sharing.</p></blockquote>
+
+<p><strong>Exercise 4.3 — Deployment Scale Assessment</strong></p>
+<p>Dataset: Superstore Sales (as a running example only — this exercise is about infrastructure decisions, not data analysis)</p>
+<ol>
+<li>Write a short brief (in a Markdown cell or plain text file) describing a hypothetical 8-person analyst team that currently emails .ipynb files back and forth.</li>
+<li>Identify which JupyterHub spawner (local process, Docker, Kubernetes) best fits that team's scale, and justify the choice.</li>
+<li>List the specific authentication method you'd configure (e.g. OAuth against a company Google Workspace, or a simple PAM login) and why.</li>
+<li>Identify one sharing need from that team's workflow that Module 4.2's lighter-weight options (GitHub/Colab/Binder) would already solve without needing JupyterHub at all.</li>
+</ol>
+<hr />
+
+<h3 id="module-44-notebooks-vs-quarto-vs-scripts">Module 4.4 — Notebooks vs. Quarto vs. Scripts</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate–Advanced · <strong>Prereqs:</strong> 3.1, 3.4 · <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Given a real analysis task, correctly identify whether a notebook, a Quarto document, or a plain Python script is the right tool, and justify the choice in one paragraph.<br>
+<strong>Skip if:</strong> You already make this choice deliberately for every new piece of work rather than defaulting to whichever tool you happen to have open.<br>
+<strong>Unlocks:</strong> Final capstone</p>
+</blockquote>
+
+<h4>Three tools, three different jobs</h4>
+<p>A <strong>notebook</strong> excels at exploration: a tight, forgiving feedback loop for poking at data, checking assumptions, and understanding why a result looks wrong, with state that persists between cells so you don't re-run everything after every small change. A <strong>Quarto document</strong> (or R Markdown, for R users — see this guide's companion R Markdown guide) is stricter by design: it renders from a clean process every time, acts like a compiler that either produces a coherent report or fails outright, and is the right tool once your analysis logic has stabilized and the deliverable is a polished, shareable report rather than an exploration space. A plain <strong>.py script</strong> is the right tool once code needs to run unattended in production — a scheduled job, a pipeline step, an imported library — where there's no human present to read cell-by-cell output at all.</p>
+
+<h4>A concrete decision framework</h4>
+<table>
+<tr><th>Situation</th><th>Right tool</th><th>Why</th></tr>
+<tr><td>Exploring a new dataset, unsure what you'll find</td><td>Notebook</td><td>Tight iterate-and-inspect loop; state persists between attempts</td></tr>
+<tr><td>Polished report for stakeholders, logic already stable</td><td>Quarto / R Markdown</td><td>Clean-run-or-fail discipline; multi-format publishing (HTML/PDF/Word)</td></tr>
+<tr><td>Recurring scheduled job, no human watching it run</td><td>Plain script</td><td>No notebook server, no cell-execution overhead; runs via cron/Airflow directly</td></tr>
+<tr><td>Reusable function called from multiple notebooks</td><td>Plain script (imported module)</td><td>A function copy-pasted across notebooks drifts out of sync; import it instead</td></tr>
+</table>
+
+<h4>The pattern that actually resolves the tension</h4>
+<p>The strongest teams don't pick one tool forever — they move the same work through the pipeline as it matures: explore in a notebook, extract the analysis logic that turned out to matter into a plain <code>.py</code> module once it stabilizes (so it's importable and testable), and either keep a thin notebook that imports and calls that module for further exploration, or migrate the final reporting layer into Quarto/R Markdown for the polished, recurring deliverable. Treating "notebook vs. script vs. Quarto" as a permanent, one-time decision for a whole project is usually the wrong framing — it's a decision made per piece of work, and it changes as that work matures.</p>
+
+<blockquote class="callout"><p><strong>Disambiguation:</strong> This is not the same choice as Module 3.4's "nbconvert vs. Voila" — that's about <em>exporting</em> an existing notebook for two different audiences. This module is about which <em>authoring</em> tool to start in for a given piece of work in the first place.</p></blockquote>
+
+<p><strong>Exercise 4.4 — Tool Choice Justification</strong></p>
+<p>Dataset: Superstore Sales</p>
+<ol>
+<li>Take your Phase 3 capstone's core aggregation logic (the region/category summary calculations) and extract it into a plain, importable <code>.py</code> module with tested functions.</li>
+<li>Rewrite a thin notebook that imports and calls this module instead of duplicating the logic inline.</li>
+<li>Write a one-paragraph recommendation for each of these three scenarios: (a) a first look at a newly received dataset, (b) a monthly stakeholder-facing regional performance report, (c) a nightly automated data-quality check with no human review — notebook, Quarto/R Markdown, or plain script, and why.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-shared-team-analysis-environment">Phase 4 Capstone: Shared Team Analysis Environment</h3>
+<p><strong>Project: Superstore Team Analysis Environment</strong></p>
+<p><strong>Dataset:</strong> Superstore Sales</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A project-specific virtual environment registered as a named Jupyter kernel, with a pinned <code>requirements.txt</code>.</li>
+<li>The project notebook shared three ways: a GitHub static preview, a working "Open in Colab" link, and a Binder-compatible setup.</li>
+<li>A written infrastructure brief recommending a JupyterHub spawner and authentication approach for a hypothetical team of your choosing, plus a note on which sharing needs Module 4.2's lighter options already cover.</li>
+<li>The core analysis logic extracted into an importable <code>.py</code> module, with a thin notebook that imports it rather than duplicating logic inline.</li>
+<li>A one-page written decision framework (in a Markdown cell) for when this team should use a notebook vs. Quarto/R Markdown vs. a plain script for future work.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-superstore-analysis-notebook-suite">Final Capstone: Superstore Analysis Notebook Suite</h2>
+<p><strong>Project: End-to-End Notebook-Based Reporting Suite</strong></p>
+<p>Integrates all four phases. Uses the Superstore Sales dataset throughout.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A well-structured exploratory notebook (title, imports, data-loading, Markdown section headers) that passes a clean Restart &amp; Run All, with at least one inline LaTeX formula and one hand-typed Markdown table.</li>
+<li>At least one static chart (matplotlib/seaborn) and one interactive chart (Plotly), plus an <code>@interact</code>-driven filter widget.</li>
+<li>A parameterized version of the notebook (tagged <code>parameters</code> cell) batch-executed via Papermill across at least 4 regions, producing 4 distinct output notebooks.</li>
+<li>Each output converted to a static HTML report via <code>nbconvert --execute</code>, plus a separate Voila-served live version of the unparameterized notebook.</li>
+<li>The entire project under git with either <code>nbstripout</code> or Jupytext pairing configured, and a clean, reviewable commit history.</li>
+<li>A project-specific virtual environment registered as a named kernel, with a pinned <code>requirements.txt</code> committed alongside the notebooks.</li>
+<li>The base notebook shared via all three of GitHub preview, Colab, and Binder, with each tested and working.</li>
+<li>A final written appendix (Markdown cell) justifying, for this specific project, which pieces should stay as notebooks long-term, which should move to a Quarto/R Markdown report, and which core logic should live in an importable <code>.py</code> module instead.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Jupyter Notebook Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Launch a notebook environment</td><td><code>jupyter lab</code></td><td>JupyterLab is the actively developed interface; Notebook 7 shares its engine</td></tr>
+<tr><td>Run a cell</td><td><code>Shift+Enter</code></td><td>Increments the kernel's execution count</td></tr>
+<tr><td>Clear kernel memory for a clean test</td><td>Kernel → Restart Kernel and Run All Cells</td><td>The only valid reproducibility check</td></tr>
+<tr><td>Benchmark a single line</td><td><code>%timeit</code></td><td>Runs many times, reports statistics</td></tr>
+<tr><td>Time a whole cell once</td><td><code>%%time</code></td><td>Use when repeated runs would have side effects</td></tr>
+<tr><td>Post-mortem debug an exception</td><td><code>%debug</code></td><td>Inspects state at the exact failing frame</td></tr>
+<tr><td>Profile a slow cell</td><td><code>%prun</code> / <code>%%prun</code></td><td>Function-by-function time breakdown via cProfile</td></tr>
+<tr><td>Configure pandas table display</td><td><code>pd.set_option(...)</code></td><td>Prevents silent truncation of wide/long DataFrames</td></tr>
+<tr><td>Add a live filter widget</td><td><code>ipywidgets.interact</code></td><td>Auto-generates the right widget from function parameters</td></tr>
+<tr><td>Diff notebooks cleanly in git</td><td><code>nbstripout</code> or Jupytext</td><td>Raw .ipynb diffs are dominated by base64 output noise</td></tr>
+<tr><td>Run the same notebook per parameter value</td><td><code>papermill</code></td><td>Injects overrides after a tagged <code>parameters</code> cell</td></tr>
+<tr><td>Export a static report</td><td><code>jupyter nbconvert --to html --execute</code></td><td>Bakes computed output into a standalone file</td></tr>
+<tr><td>Serve a live, code-free app</td><td><code>voila</code></td><td>Keeps widgets reactive, hides all code cells</td></tr>
+<tr><td>Isolate a project's dependencies</td><td><code>python -m ipykernel install</code></td><td>Registers a venv/conda env as its own selectable kernel</td></tr>
+<tr><td>Give a team authenticated, isolated notebook access</td><td>JupyterHub</td><td>Overkill for solo work; right for genuine multi-user needs</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-core-concepts">Core Concepts</h3>
+<dl class="glossary">
+<dt>Notebook document (.ipynb)</dt>
+<dd>A JSON file storing a sequence of cells (code, Markdown), their saved outputs, and metadata — the persisted artifact you save, share, and version-control.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Notebook" alone when the distinction from the kernel matters — see <strong>Kernel</strong>.</dd>
+<dt>Kernel</dt>
+<dd>A separate, running process (IPython for Python) that executes a notebook's code and holds its variables in memory, independent of the notebook document itself.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Assuming the kernel resets whenever the notebook document changes — it only resets on an explicit restart.</dd>
+<dt>Execution count</dt>
+<dd>The number shown as <code>In [n]:</code> beside a cell, reflecting the order cells were actually run by the kernel, not their visual order in the document.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Cell number" — that implies document position, not run order.</dd>
+<dt>Magic command</dt>
+<dd>An IPython-specific command, prefixed <code>%</code> (line) or <code>%%</code> (cell), that isn't valid plain Python and only works inside an IPython/Jupyter kernel.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Assuming magic-command code will run unmodified if pasted into a plain <code>.py</code> script.</dd>
+<dt>Rich output / display</dt>
+<dd>Jupyter's mechanism for rendering an object's richest representation (HTML, image, JSON) via methods like <code>_repr_html_</code>, shown automatically for a cell's last expression or explicitly via <code>IPython.display.display()</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Confusing with <code>print()</code> output — <code>print()</code> always writes plain text, bypassing rich display entirely.</dd>
+<dt>Command mode / Edit mode</dt>
+<dd>The two interaction modes for a cell — Command mode (blue border) for cell-level keyboard shortcuts, Edit mode (green border) for typing inside the cell.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Assuming Command-mode shortcuts (like <code>dd</code> to delete) require a confirmation dialog — they don't.</dd>
+</dl>
+
+<h3 id="glossary-reproducibility-collaboration">Reproducibility &amp; Collaboration</h3>
+<dl class="glossary">
+<dt>Restart &amp; Run All</dt>
+<dd>The practice of restarting the kernel and executing every cell top to bottom in one pass, the only valid check that a notebook is genuinely reproducible from a clean state.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Treating "no errors visible right now" (while interactively stepping through cells) as equivalent proof — it isn't.</dd>
+<dt>nbstripout</dt>
+<dd>A git filter tool that automatically strips all cell outputs from a notebook at commit time, keeping tracked history free of binary output noise.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Confusing with Jupytext — nbstripout removes outputs; Jupytext maintains an entirely separate plain-text paired file.</dd>
+<dt>Jupytext pairing</dt>
+<dd>A synchronization between an <code>.ipynb</code> file and a plain-text representation (e.g. <code>.py</code> with <code>%%</code> cell markers) that stays in sync as either file is edited and saved.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Notebook export" — pairing is a live, two-way sync, not a one-time conversion.</dd>
+<dt>Parameterized notebook</dt>
+<dd>A notebook with a cell tagged <code>parameters</code>, whose variable defaults can be overridden at execution time by a tool like Papermill without editing the notebook by hand.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Templated notebook" — not the standard term in this ecosystem; use "parameterized."</dd>
+<dt>Papermill</dt>
+<dd>A tool that executes a notebook programmatically with injected parameter overrides, producing a fully executed, independently viewable output notebook per run.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Assuming Papermill edits the original notebook's tagged cell — it injects a new cell after it instead.</dd>
+</dl>
+
+<h3 id="glossary-sharing-deployment">Sharing &amp; Deployment</h3>
+<dl class="glossary">
+<dt>nbconvert</dt>
+<dd>The tool (and library) that converts a notebook to another format — HTML, PDF, a plain script, and more — optionally re-executing it fresh first with the <code>--execute</code> flag.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Assuming a converted export always reflects current data — without <code>--execute</code>, it exports whatever outputs were last saved.</dd>
+<dt>Voila</dt>
+<dd>A tool that serves a notebook as a live, interactive web application, keeping widget reactivity while hiding every code cell from the viewer.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Dashboard" alone — Voila specifically runs the underlying notebook's kernel live; a static export has no running kernel at all.</dd>
+<dt>Kernel spec</dt>
+<dd>The registered configuration (via <code>ipykernel install</code>) that makes a specific Python environment selectable as a named kernel in Jupyter's interface.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Assuming installing a package updates every kernel — it only affects the specific environment that kernel spec points to.</dd>
+<dt>JupyterHub</dt>
+<dd>A multi-user server that authenticates users and spawns an isolated, single-user JupyterLab instance per person, via a pluggable spawner (local process, Docker, Kubernetes).</dd>
+<dd class="avoid"><strong>Avoid:</strong> Treating JupyterHub as "JupyterLab for more people" — it's separate infrastructure surrounding many isolated single-user instances, not a shared multi-user editing session.</dd>
+<dt>Binder</dt>
+<dd>A service that builds an ephemeral, reproducible container from a git repository's declared dependencies and launches a temporary JupyterLab session inside it.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Assuming a Binder session persists changes back to the source repository — sessions are temporary and unsaved by default.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>Python for Data Analysis, 3rd ed. (McKinney, 2022, O'Reilly — freely available at wesmckinney.com/book)</td><td>pandas/NumPy fluency inside a notebook workflow, from the creator of pandas</td></tr>
+<tr><td>Effective Computation in Physics (Scopatz &amp; Huff, 2015, O'Reilly)</td><td>Still the strongest treatment of research-notebook reproducibility habits, version control, and testing for scientific code</td></tr>
+<tr><td>Jupyter Notebook 101 / Official Jupyter Documentation (docs.jupyter.org, continuously updated)</td><td>Canonical, always-current reference for JupyterLab/Notebook 7 features</td></tr>
+<tr><td>R for Data Science, 2nd ed. (Wickham, Çetinkaya-Rundel, Grolemund, 2023, O'Reilly)</td><td>Useful cross-reference for readers also working through this project's R Markdown guide</td></tr>
+</table>
+
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>docs.jupyter.org</td><td>Official Jupyter project documentation</td><td>JupyterLab, Notebook 7, and the wider Jupyter ecosystem</td></tr>
+<tr><td>jupyterlab.readthedocs.io</td><td>JupyterLab reference &amp; changelog</td><td>Authoritative source for current version and feature changes</td></tr>
+<tr><td>papermill.readthedocs.io</td><td>Papermill documentation</td><td>Parameterization and execution API reference for Module 3.3</td></tr>
+<tr><td>jupytext.readthedocs.io</td><td>Jupytext documentation</td><td>Paired-file formats and CLI reference for Module 3.2</td></tr>
+<tr><td>voila.readthedocs.io</td><td>Voila documentation</td><td>Deployment options and configuration for Module 3.4</td></tr>
+<tr><td>mybinder.org</td><td>Binder — live service and docs</td><td>Test and share reproducible environments (Module 4.2)</td></tr>
+<tr><td>quarto.org/docs/faq/jupyter.html</td><td>Official Jupyter ↔ Quarto interoperability FAQ</td><td>Authoritative source for Module 4.4's tool-choice comparisons</td></tr>
+</table>
+
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>Superstore Sales (<a href="../datasets/superstore-sales/README.md">datasets/superstore-sales</a>)</td><td>This guide's benchmark dataset — used in every exercise and capstone</td></tr>
+<tr><td>JupyterLab (4.6.x)</td><td>Primary IDE — Launcher, file browser, Table of Contents panel, kernel management</td></tr>
+<tr><td>ipykernel</td><td>Registers Python environments as selectable Jupyter kernels (Module 4.1)</td></tr>
+<tr><td>ipywidgets</td><td>Interactive widgets and <code>@interact</code> (Module 2.3)</td></tr>
+<tr><td>nbstripout / Jupytext</td><td>Clean git diffs for notebook projects (Module 3.2)</td></tr>
+<tr><td>papermill</td><td>Parameterized, programmatic notebook execution (Module 3.3)</td></tr>
+<tr><td>nbconvert / voila</td><td>Static export and live app serving (Module 3.4)</td></tr>
+<tr><td>JupyterHub</td><td>Multi-user notebook infrastructure (Module 4.3)</td></tr>
+</table>
+
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>Jupyter Discourse</td><td>discourse.jupyter.org</td><td>Official forum — JupyterLab, JupyterHub, Voila, and ecosystem tooling questions</td></tr>
+<tr><td>r/datascience &amp; r/Python</td><td>Reddit</td><td>General notebook workflow discussion and package recommendations</td></tr>
+<tr><td>PyData / Jupyter community Slack &amp; Zulip</td><td>Slack / Zulip</td><td>Live help, especially for JupyterHub deployment questions</td></tr>
+<tr><td>Stack Overflow (jupyter-notebook, jupyterlab, ipywidgets tags)</td><td>Stack Overflow</td><td>Specific, searchable error-message debugging</td></tr>
+<tr><td>Binder / mybinder.org GitHub Discussions</td><td>GitHub</td><td>Binder-specific build and deployment troubleshooting</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
+
+<h4>Phase 1 — Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — Getting Started: Colab, Anaconda &amp; VS Code</li>
+<li>[ ] Exercise 1.1 — Three-Platform Startup</li>
+<li>[ ] Module 1.2 — The Notebook Interface &amp; Kernel Model</li>
+<li>[ ] Exercise 1.2 — Kernel State Investigation</li>
+<li>[ ] Module 1.3 — Markdown Cells &amp; Notebook Structure</li>
+<li>[ ] Exercise 1.3 — Structured Overview Notebook</li>
+<li>[ ] Module 1.4 — Magic Commands &amp; the IPython Kernel</li>
+<li>[ ] Exercise 1.4 — Benchmarking Two Approaches</li>
+<li>[ ] Capstone 1 — Exploratory Orders Notebook</li>
+</ul>
+
+<h4>Phase 2 — Working with Data &amp; Output</h4>
+<ul>
+<li>[ ] Module 2.1 — Data Loading, pandas Display &amp; Rich Output</li>
+<li>[ ] Exercise 2.1 — Configured Data Overview</li>
+<li>[ ] Module 2.2 — Visualization Inline: Matplotlib, Seaborn &amp; Interactive Plots</li>
+<li>[ ] Exercise 2.2 — Regional Trend Dashboard (Static + Interactive)</li>
+<li>[ ] Module 2.3 — Widgets &amp; Interactive Exploration (ipywidgets)</li>
+<li>[ ] Exercise 2.3 — Interactive Region &amp; Category Filter</li>
+<li>[ ] Module 2.4 — Debugging, Profiling &amp; Performance in Notebooks</li>
+<li>[ ] Exercise 2.4 — Diagnosing a Slow, Broken Aggregation</li>
+<li>[ ] Capstone 2 — Interactive Regional Explorer</li>
+</ul>
+
+<h4>Phase 3 — Reproducibility &amp; Collaboration</h4>
+<ul>
+<li>[ ] Module 3.1 — Notebook Hygiene: Restart &amp; Run All</li>
+<li>[ ] Exercise 3.1 — Reproducibility Audit</li>
+<li>[ ] Module 3.2 — Version Control for Notebooks</li>
+<li>[ ] Exercise 3.2 — Clean-Diff Notebook Repository</li>
+<li>[ ] Module 3.3 — Parameterizing &amp; Automating with Papermill</li>
+<li>[ ] Exercise 3.3 — Automated Regional Runs</li>
+<li>[ ] Module 3.4 — Converting &amp; Publishing with nbconvert &amp; Voila</li>
+<li>[ ] Exercise 3.4 — Two Deliverables, One Notebook</li>
+<li>[ ] Capstone 3 — Automated Regional Report Run</li>
+</ul>
+
+<h4>Phase 4 — Scaling &amp; Sharing</h4>
+<ul>
+<li>[ ] Module 4.1 — Environments &amp; Kernels</li>
+<li>[ ] Exercise 4.1 — Isolated Project Environment</li>
+<li>[ ] Module 4.2 — Sharing Notebooks: GitHub, Colab &amp; Binder</li>
+<li>[ ] Exercise 4.2 — Three-Way Sharing Test</li>
+<li>[ ] Module 4.3 — JupyterHub &amp; Multi-User Deployments</li>
+<li>[ ] Exercise 4.3 — Deployment Scale Assessment</li>
+<li>[ ] Module 4.4 — Notebooks vs. Quarto vs. Scripts</li>
+<li>[ ] Exercise 4.4 — Tool Choice Justification</li>
+<li>[ ] Capstone 4 — Shared Team Analysis Environment</li>
+</ul>
+
+<h4>Certifications / Outcomes</h4>
+<ul>
+<li>[ ] Final Capstone — Superstore Analysis Notebook Suite complete</li>
+<li>[ ] Comfortable with kernel/document separation and execution-order discipline</li>
+<li>[ ] Comfortable building interactive, widget-driven notebooks</li>
+<li>[ ] Comfortable parameterizing and batch-executing notebooks with Papermill</li>
+<li>[ ] Comfortable choosing between notebooks, Quarto/R Markdown, and plain scripts</li>
+</ul>
+
+<p><em>Guide Version 1.0 — Jupyter Notebook Track: Beginner to Intermediate</em><br>
+<em>Non-linear modular design · 16 modules · ~34h estimated study time · hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-07-31 (JupyterLab 4.6.2, nbconvert 7.17.1)</em></p>
+
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Full-text guide search ────────────────────────────────
+  // Indexes every block of the guide body, lists matching snippets grouped
+  // by section, highlights hits in the page, and filters the nav to the
+  // sections that contain them. Multiple words = all must appear in the
+  // same block; wrap in "quotes" for an exact phrase.
+  var navSearch = document.getElementById("navSearch");
+  var contentRoot = document.querySelector(".content");
+  if(navSearch && contentRoot){
+    var BLOCK_SEL = "h1,h2,h3,h4,p,li,tr,dt,dd,pre";
+    var searchRow = document.getElementById("searchRow"),
+        searchBar = document.getElementById("searchBar"),
+        searchCount = document.getElementById("searchCount"),
+        searchResults = document.getElementById("searchResults");
+    var navById = {};
+    document.querySelectorAll("#nav a").forEach(function(a){
+      navById[a.getAttribute("href").slice(1)] = a;
+    });
+
+    var blocks = [], section = null;
+    contentRoot.querySelectorAll(BLOCK_SEL).forEach(function(el){
+      if(/^H[1-4]$/.test(el.tagName) && el.id && navById[el.id]) section = el;
+      if(el.classList.contains("quiz-score")) return;
+      var outer = el.parentElement && el.parentElement.closest(BLOCK_SEL);
+      if(outer && contentRoot.contains(outer)) return;
+      var text = el.textContent.replace(/\s+/g, " ").trim();
+      if(text) blocks.push({el:el, text:text, lower:text.toLowerCase(), section:section});
+    });
+
+    var hits = [], cur = -1, timer = null;
+    function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+    function sectionLabel(sec){ return sec && navById[sec.id] ? navById[sec.id].textContent : "Introduction"; }
+
+    function clearMarks(){
+      contentRoot.querySelectorAll("mark.lg-hit").forEach(function(m){
+        var p = m.parentNode;
+        p.replaceChild(document.createTextNode(m.textContent), m);
+        p.normalize();
+      });
+      var b = contentRoot.querySelector(".lg-block-current");
+      if(b) b.classList.remove("lg-block-current");
+    }
+
+    function markBlock(el, re){
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+      while((n = walker.nextNode())) nodes.push(n);
+      var marks = [];
+      nodes.forEach(function(node){
+        var t = node.nodeValue, m, last = 0;
+        re.lastIndex = 0;
+        if(!re.test(t)) return;
+        re.lastIndex = 0;
+        var frag = document.createDocumentFragment();
+        while((m = re.exec(t))){
+          if(m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+          var mk = document.createElement("mark");
+          mk.className = "lg-hit";
+          mk.textContent = m[0];
+          frag.appendChild(mk);
+          marks.push(mk);
+          last = m.index + m[0].length;
+        }
+        if(last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+      });
+      return marks;
+    }
+
+    function snippet(text, terms, re){
+      var lower = text.toLowerCase(), i = -1;
+      terms.forEach(function(t){ var k = lower.indexOf(t); if(k > -1 && (i < 0 || k < i)) i = k; });
+      if(i < 0) i = 0;
+      var start = Math.max(0, i - 40), end = Math.min(text.length, i + 100);
+      var s = text.slice(start, end), out = "", last = 0, m;
+      re.lastIndex = 0;
+      while((m = re.exec(s))){
+        out += escHtml(s.slice(last, m.index)) + "<mark>" + escHtml(m[0]) + "</mark>";
+        last = m.index + m[0].length;
+      }
+      return (start > 0 ? "…" : "") + out + escHtml(s.slice(last)) + (end < text.length ? "…" : "");
+    }
+
+    function filterNav(ids){
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var any = false;
+        g.querySelectorAll("a").forEach(function(a){
+          var show = !ids || !!ids[a.getAttribute("href").slice(1)];
+          if(a.classList.contains("nav-child")) a.classList.toggle("filtered-out", !show);
+          if(show) any = true;
+        });
+        g.classList.toggle("filtered-out", !any);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        a.classList.toggle("filtered-out", !!ids && !ids[a.getAttribute("href").slice(1)]);
+      });
+    }
+
+    function updateCount(nSections){
+      if(!hits.length){ searchCount.textContent = "No matches"; return; }
+      var pos = cur > -1 ? (cur + 1) + " / " + hits.length : hits.length + (hits.length === 1 ? " match" : " matches");
+      searchCount.textContent = pos + " · " + nSections + (nSections === 1 ? " section" : " sections");
+    }
+
+    var lastSectionCount = 0;
+    function run(){
+      var raw = navSearch.value.trim();
+      clearMarks();
+      hits = []; cur = -1;
+      searchRow.classList.toggle("has-query", !!raw);
+      if(raw.length < 2){
+        searchResults.classList.remove("show");
+        searchBar.classList.remove("show");
+        searchResults.innerHTML = "";
+        filterNav(null);
+        return;
+      }
+      var phrase = /^"(.+)"$/.exec(raw);
+      var terms = phrase ? [phrase[1].toLowerCase()] : raw.toLowerCase().split(/\s+/);
+      terms = terms.filter(function(t, i){ return t && terms.indexOf(t) === i; });
+      var re = new RegExp(terms.slice().sort(function(a, b){ return b.length - a.length; }).map(escRe).join("|"), "gi");
+      var matched = blocks.filter(function(b){
+        return terms.every(function(t){ return b.lower.indexOf(t) > -1; });
+      });
+
+      var ids = {}, groups = [], html = "", LIMIT = 60;
+      matched.forEach(function(b, bi){
+        var marks = markBlock(b.el, re);
+        if(marks.length) marks.forEach(function(m){ hits.push({m:m, el:b.el, b:bi}); });
+        else hits.push({m:null, el:b.el, b:bi});
+        var key = b.section ? b.section.id : "";
+        if(b.section) ids[b.section.id] = true;
+        if(!groups.length || groups[groups.length - 1].key !== key) groups.push({key:key, sec:b.section, items:[]});
+        groups[groups.length - 1].items.push(bi);
+      });
+
+      if(!matched.length){
+        html = '<div class="sr-empty">No matches for “' + escHtml(raw) + '”. Try fewer words.</div>';
+      } else {
+        var listed = 0;
+        groups.forEach(function(g){
+          if(listed >= LIMIT) return;
+          html += '<div class="sr-group"><div class="sr-section">' + escHtml(sectionLabel(g.sec)) + '</div>';
+          g.items.slice(0, 4).forEach(function(bi){
+            if(listed >= LIMIT) return;
+            html += '<button type="button" class="sr-item" role="option" data-b="' + bi + '">' +
+                    snippet(matched[bi].text, terms, re) + '</button>';
+            listed++;
+          });
+          if(g.items.length > 4) html += '<div class="sr-more">+' + (g.items.length - 4) + ' more in this section (use ↓ to step through)</div>';
+          html += '</div>';
+        });
+        if(matched.length > listed) html += '<div class="sr-more">Showing ' + listed + ' of ' + matched.length + ' blocks — add a word to narrow it.</div>';
+      }
+      searchResults.innerHTML = html;
+      searchResults.classList.add("show");
+      searchBar.classList.add("show");
+      lastSectionCount = Object.keys(ids).length || (matched.length ? 1 : 0);
+      filterNav(ids);
+      updateCount(lastSectionCount);
+    }
+
+    function go(i, closeMobile){
+      if(!hits.length) return;
+      cur = (i + hits.length) % hits.length;
+      contentRoot.querySelectorAll("mark.lg-hit-current").forEach(function(m){ m.classList.remove("lg-hit-current"); });
+      var prev = contentRoot.querySelector(".lg-block-current");
+      if(prev) prev.classList.remove("lg-block-current");
+      var h = hits[cur];
+      if(h.m) h.m.classList.add("lg-hit-current");
+      h.el.classList.add("lg-block-current");
+      (h.m || h.el).scrollIntoView({behavior:"smooth", block:"center"});
+      searchResults.querySelectorAll(".sr-item").forEach(function(it){
+        var on = +it.getAttribute("data-b") === h.b;
+        it.classList.toggle("current", on);
+        if(on) it.scrollIntoView({block:"nearest"});
+      });
+      updateCount(lastSectionCount);
+      if(closeMobile && window.innerWidth <= 1000) closeNav();
+    }
+
+    navSearch.addEventListener("input", function(){
+      clearTimeout(timer);
+      timer = setTimeout(run, 140);
+    });
+    navSearch.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        clearTimeout(timer);
+        if(!hits.length && navSearch.value.trim().length >= 2) run();
+        go(e.shiftKey ? cur - 1 : cur + 1, true);
+      } else if(e.key === "Escape"){
+        navSearch.value = "";
+        run();
+      }
+    });
+    searchResults.addEventListener("click", function(e){
+      var item = e.target.closest(".sr-item");
+      if(!item) return;
+      var b = +item.getAttribute("data-b");
+      for(var k = 0; k < hits.length; k++){ if(hits[k].b === b){ go(k, true); break; } }
+    });
+    document.getElementById("searchNext").addEventListener("click", function(){ go(cur + 1, false); });
+    document.getElementById("searchPrev").addEventListener("click", function(){ go(cur - 1, false); });
+    document.getElementById("searchClear").addEventListener("click", function(){
+      navSearch.value = "";
+      run();
+      navSearch.focus();
+    });
+    document.addEventListener("keydown", function(e){
+      var tag = (e.target.tagName || "").toLowerCase();
+      var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+      var slash = e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey;
+      var cmdK = (e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K");
+      if(!slash && !cmdK) return;
+      e.preventDefault();
+      if(window.innerWidth <= 1000){
+        document.getElementById("sidebar").classList.add("open");
+        document.getElementById("scrim").classList.add("show");
+      }
+      navSearch.focus();
+      navSearch.select();
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

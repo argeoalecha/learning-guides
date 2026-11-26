@@ -11,19 +11,39 @@ This document describes the end-to-end process for generating the interactive HT
 | Claude Code | `claude-code/claude-code_learning_guide.html` | DevToolkit (spec only) |
 | Claude Design | `claude-design/claude-design_learning_guide.html` | SkillBot (spec only) |
 | Claude Ecosystem Mastery | `claude-ecosystem-mastery/claude-ecosystem-mastery_learning_guide.html` | TaskFlow (spec only) |
-| Data Analyst | `data-analyst/da_learning_guide_v3_merged.html` | Superstore Sales (real data) |
+| OpenAI Codex | `openai-codex/openai-codex_learning_guide.html` | DevToolkit (spec only) |
+| LangChain Ecosystem | `langchain-ecosystem/langchain-ecosystem_learning_guide.html` | — (no dedicated `datasets/` entry) |
+| Data Analyst | `data-analyst/da_learning_guide.html` | Superstore Sales (real data) |
 | Data Science & ML | `data-science-ml/data-science-ml_learning_guide.html` | ShopSphere (real data) |
-| DevOps/SRE | `devops-sre/devops-sre_learning_guide.html` | ShopFast (spec only) |
-| FastAPI | `fastapi/fastapi_learning_guide.html` | ShopPH (spec only) |
-| GTM Strategy & Automation | `gtm-strategy-automation/gtm-strategy-automation_learning_guide.html` | SaasFlow (scenario brief) |
-| Hormozi 100M Sales | `hormozi-100m-sales/hormozi-100m-sales_learning_guide.html` | FitForge (scenario brief) |
 | IT Networking: Zero to CCNA | `it-networking/it-networking_learning_guide.html` | TindaHub Network (spec only) |
 | PostgreSQL & Metabase | `postgresql-metabase/postgresql-metabase_learning_guide.html` | TindaHub (real data — schema.sql/seed.sql) |
-| Pydantic | `pydantic/pydantic_learning_guide.html` | E-commerce Orders (real data) |
-| Python | `python/python_learning_guide.html` | BookCart (spec only) |
 | Statistics with Python | `statistics-with-python/statistics-with-python_learning_guide.html` | ShopFlow (real data) |
-| Terminal, Git & GitHub | `terminal-git/terminal-git-github_learning_guide.html` | rotabrain-blades (spec only) |
+| Excel | `excel/excel_learning_guide.html` | — (no dedicated `datasets/` entry) |
+| Google Sheets, Apps Script & AppSheet | `sheets-apps-script-appsheet/sheets-apps-script-appsheet_learning_guide.html` | — (no dedicated `datasets/` entry) |
+| Python | `python/python_learning_guide.html` | BookCart (spec only) |
+| FastAPI | `fastapi/fastapi_learning_guide.html` | ShopPH (spec only) |
+| Pydantic | `pydantic/pydantic_learning_guide.html` | E-commerce Orders (real data) |
 | Web App Product Dev | `webapp-product-dev/webapp-product-dev_learning_guide.html` | SensorHub (spec only) |
+| Terminal, Git & GitHub | `terminal-git/terminal-git-github_learning_guide.html` | rotabrain-blades (spec only) |
+| VS Code on Windows | `vscode-windows-html/vscode-windows-html_learning_guide.html` | — (no dedicated `datasets/` entry) |
+| DevOps/SRE | `devops-sre/devops-sre_learning_guide.html` | ShopFast (spec only) |
+| Linux Systems & Networking | `linux-learning/linux-learning_learning_guide.html` | — (no dedicated `datasets/` entry) |
+| Web App Security & Reliability | `webapp-security-and-reliability/webapp-security-and-reliability_learning_guide.html` | — (no dedicated `datasets/` entry) |
+| Hormozi 100M Sales | `hormozi-100m-sales/hormozi-100m-sales_learning_guide.html` | FitForge (scenario brief) |
+| GTM Strategy & Automation | `gtm-strategy-automation/gtm-strategy-automation_learning_guide.html` | SaasFlow (scenario brief) |
+| R Markdown in RStudio | `r-markdown-in-rstudio/r-markdown-in-rstudio_learning_guide.html` | Superstore Sales (real data) |
+| Jupyter Notebook | `jupyter-notebook/jupyter-notebook_learning_guide.html` | Superstore Sales (real data) |
+| Python (Colab edition) | `python/python_learning_guide_colab.html` | Sales 2026 — generated in-guide by `make_dataset.py` (no dedicated `datasets/` entry) |
+| Python Database Libraries | `python-database-libraries/python-database-libraries_learning_guide.html` | TindaHub (real data — schema.sql/seed.sql) |
+| Python Excel Libraries | `python-excel-libraries/python-excel-libraries_learning_guide.html` | TindaHub Orders (real data) |
+| Python Scientific Computing | `python-scientific-computing/python-scientific-computing_learning_guide.html` | TindaHub Orders (real data) |
+| Python Testing Libraries | `python-testing-libraries/python-testing-libraries_learning_guide.html` | TindaHub domain code — pricing/validation functions (no dedicated `datasets/` entry) |
+| Python GIS & Mapping | `python-gis-mapping/python-gis-mapping_learning_guide.html` | TindaHub Orders (real data) + bundled `tindahub_city_coords.csv` |
+| R GIS & Mapping | `r-gis-mapping/r-gis-mapping_learning_guide.html` | TindaHub Orders (real data) — same 17-city network as Python GIS |
+| SQL Mastery | `sql-mastery/sql-mastery_learning_guide.html` | Pagila (real data) |
+| Docker, Colima & OrbStack | `docker-colima-orbstack/docker-colima-orbstack_learning_guide.html` | NotesFlow — FastAPI + Postgres + Redis app (no dedicated `datasets/` entry) |
+| Modern LLM | `modern-llm/modern-llm_learning_guide.html` | ShopSense — PH e-commerce support desk (no dedicated `datasets/` entry) |
+| Industrial Communication Protocols | `industrial-communication-protocols/industrial-communication-protocols_learning_guide.html` | CampusGrid (register map, meter simulator, decode-lab frames) |
 
 ---
 

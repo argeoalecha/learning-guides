@@ -580,7 +580,7 @@ This guide is built to be <strong>non-linear</strong>. Each module is self-conta
 <tr data-href="#module-14-number-formats-conditional-formatting"><td>1.4</td><td>Number Formats &amp; Conditional Formatting</td><td>Beginner</td><td>1.2</td><td>3h</td></tr>
 <tr data-href="#module-21-logical-lookup-functions"><td>2.1</td><td>Logical &amp; Lookup Functions</td><td>Beginner–Intermediate</td><td>1.3</td><td>5h</td></tr>
 <tr data-href="#module-22-text-date-time-functions"><td>2.2</td><td>Text, Date &amp; Time Functions</td><td>Beginner–Intermediate</td><td>1.3</td><td>4h</td></tr>
-<tr data-href="#module-23-conditional-aggregation"><td>2.3</td><td>Conditional Aggregation</td><td>2.1</td><td>2.1</td><td>4h</td></tr>
+<tr data-href="#module-23-conditional-aggregation"><td>2.3</td><td>Conditional Aggregation</td><td>Beginner–Intermediate</td><td>2.1</td><td>4h</td></tr>
 <tr data-href="#module-24-dynamic-arrays-spilling"><td>2.4</td><td>Dynamic Arrays &amp; Spilling</td><td>Intermediate</td><td>2.1</td><td>5h</td></tr>
 <tr data-href="#module-25-let-lambda-modern-aggregation"><td>2.5</td><td>LET, LAMBDA &amp; Modern Aggregation</td><td>Intermediate</td><td>2.4</td><td>5h</td></tr>
 <tr data-href="#module-31-pivottable-fundamentals"><td>3.1</td><td>PivotTable Fundamentals</td><td>Beginner–Intermediate</td><td>1.3</td><td>4h</td></tr>
@@ -648,7 +648,7 @@ Ctrl+Z / Ctrl+Y     Undo / redo — Excel keeps ~100 steps</code></pre>
 <h4>Freeze Panes, split, and window discipline</h4>
 <p>View → Freeze Panes → "Freeze Top Row" keeps headers visible; "Freeze Panes" at B2 locks both the header row and an ID column. Without frozen headers you will misread which column you are in around row 800 — a classic source of silently wrong analysis, not just annoyance.</p>
 <p><strong>Exercise 1.1 — Learn the terrain</strong></p>
-<p>Dataset: TindaHub Orders workbook (5,000 orders: OrderID, OrderDate, Customer, Barangay, City, Province, Region, Product, Category, Qty, UnitPrice, Amount, PaymentMethod, Status)</p>
+<p>Dataset: TindaHub Orders workbook (5,000 orders: OrderID, OrderDate, CustomerID, Customer, Barangay, City, Province, Region, Product, Category, Qty, UnitPrice, Amount, PaymentMethod, Status, DeliveredDate, ImportedDates)</p>
 <ol>
 <li>Open the Orders sheet and use Ctrl+Arrow to find the exact last row and last column — write both down.</li>
 <li>Select the entire Amount column of data (not the whole sheet column) with Ctrl+Shift+Down and read Sum, Average, and Count off the status bar.</li>
@@ -675,12 +675,12 @@ Ctrl+Z / Ctrl+Y     Undo / redo — Excel keeps ~100 steps</code></pre>
 <h4>Order of operations and the arithmetic operators</h4>
 <p>Excel follows standard precedence: parentheses, then <code>^</code>, then <code>*</code> <code>/</code>, then <code>+</code> <code>-</code>, with comparison operators (<code>=</code> <code>&lt;&gt;</code> <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code>) last and <code>&amp;</code> for text joining. <code>=100+50*2</code> is 200, not 300. When in doubt, add parentheses — they cost nothing and every reader (including you in three months) parses the formula correctly on the first read.</p>
 <h4>The starter function set</h4>
-<pre><code class="language-excel">=SUM(D2:D5001)                 total of a range
-=AVERAGE(D2:D5001)             mean
-=MIN(D2:D5001)  =MAX(D2:D5001) extremes
-=COUNT(D2:D5001)               numeric cells only
+<pre><code class="language-excel">=SUM(M2:M5001)                 total of a range   (M = Amount on the Orders sheet)
+=AVERAGE(M2:M5001)             mean
+=MIN(M2:M5001)  =MAX(M2:M5001) extremes
+=COUNT(M2:M5001)               numeric cells only
 =COUNTA(A2:A5001)              non-empty cells (any type)
-=ROUND(D2*0.12, 2)             12% VAT, rounded to centavos
+=ROUND(M2*0.12, 2)             12% VAT, rounded to centavos
 =TODAY()   =NOW()              current date / date-time (volatile)</code></pre>
 <p>COUNT vs COUNTA matters on real data: a column of order IDs stored as text gives COUNT = 0 and COUNTA = 5,000 — the mismatch itself is a data-quality signal you will exploit in Module 4.1.</p>
 <h4>Reading error values instead of fearing them</h4>
@@ -746,9 +746,9 @@ yyyy-mm-dd                      ISO dates — sort-safe and unambiguous
 <p>Use the ₱ symbol via a custom format, not by typing it into cells — <code>₱1,250</code> typed as text is a string, and your revenue column stops summing.</p>
 <h4>Conditional formatting: presets, then formulas</h4>
 <p>The presets (color scales, data bars, top 10%) cover quick looks. The real tool is <strong>"Use a formula to determine which cells to format"</strong> — the formula is written for the top-left cell of the applied range and copied conceptually across it, so reference discipline from Module 1.2 applies directly:</p>
-<pre><code class="language-excel">=$M2="Cancelled"        highlight the whole row when Status is Cancelled
+<pre><code class="language-excel">=$O2="Cancelled"        highlight the whole row when Status is Cancelled
                         ($ pins the column, row stays relative)
-=D2&gt;AVERAGE($D$2:$D$5001)   flag above-average order amounts
+=M2&gt;AVERAGE($M$2:$M$5001)   flag above-average order amounts
 =COUNTIF($A$2:$A2,$A2)&gt;1    flag the 2nd+ occurrence of a duplicate OrderID</code></pre>
 <p>Formula rules make the sheet self-monitoring: bad data lights up as it is typed, which is vastly cheaper than finding it at report time.</p>
 <p><strong>Exercise 1.4 — Make the register readable</strong></p>
@@ -813,7 +813,7 @@ Two-way lookup (row AND column):
 <p>Dataset: TindaHub Orders workbook</p>
 <ol>
 <li>Add a <code>Category</code> column to Orders via XLOOKUP against the Products table, with "Unknown" for misses — count the misses.</li>
-<li>Add a <code>CustomerCity</code> column from the Customers table the same way.</li>
+<li>Add a <code>CustomerCity</code> column from the Customers table — look up on <code>CustomerID</code>, not <code>Customer</code>. Names happen to be unique in this dataset, but IDs are the reliable key: two real customers sharing a name would silently return the wrong city, and the formula would never error.</li>
 <li>Band every order Small/Medium/Large with one approximate-match XLOOKUP (no IFs).</li>
 <li>Add a <code>CODRisk</code> flag: "Verify" when PaymentMethod = COD AND Amount &gt; ₱5,000, else "OK".</li>
 <li>Rebuild the Category lookup once with INDEX/MATCH to prove the equivalence.</li>
@@ -1126,8 +1126,8 @@ Single KPI vs target           → simple number + delta, not a gauge</code></pr
 </blockquote>
 <h4>The four horsemen of dirty spreadsheet data</h4>
 <p><strong>Text-numbers</strong> (left-aligned, excluded from SUM — fix with VALUE or multiply-by-1), <strong>stray spaces</strong> (<code>"NCR "</code> ≠ <code>"NCR"</code> to every lookup and SUMIFS — fix with TRIM), <strong>duplicates</strong> (Data → Remove Duplicates, but <em>count first</em> with COUNTIF so you know what you deleted), and <strong>inconsistent categories</strong> ("QC", "Quezon City", "quezon city" are three cities to a PivotTable). Each is invisible in a casual scroll and each silently corrupts every aggregate downstream — cleaning is not preparation for analysis, it <em>is</em> analysis of what can go wrong.</p>
-<pre><code class="language-excel">=ISNUMBER(D2)                          FALSE = text-number lurking
-=LEN(C2)-LEN(TRIM(C2))                 &gt;0 = stray spaces
+<pre><code class="language-excel">=ISNUMBER(I2)                          FALSE = text-number lurking  (I = Amount on MessyImport)
+=LEN(C2)-LEN(TRIM(C2))                 &gt;0 = stray spaces            (C = Customer)
 =COUNTIF(Orders[OrderID],[@OrderID])   &gt;1 = duplicate
 =SORT(UNIQUE(Orders[City]))            eyeball the spelling variants in one list</code></pre>
 <h4>Find &amp; Replace, Flash Fill, and text-to-columns</h4>
@@ -1137,7 +1137,7 @@ Single KPI vs target           → simple number + delta, not a gauge</code></pr
   List      =StatusList           dropdown: Delivered/Pending/Cancelled/Returned
   Date      between 1/1/2024 and =TODAY()      no future orders
   Custom    =COUNTIF(Orders[OrderID],A2)=1     reject duplicate IDs at entry
-  Custom    =REGEXTEST(B2,"^09\d{9}$")         PH mobile format only</code></pre>
+  Custom    =REGEXTEST(J2,"^09\d{9}$")         PH mobile format only  (J = Mobile on MessyImport)</code></pre>
 <p>Source the dropdown list from a small Table so new statuses are one row away. Every validation rule is a cleaning task you never do again: the economics of prevention over repair is the entire lesson of this module.</p>
 <p><strong>Exercise 4.1 — Clean the seeded mess</strong></p>
 <p>Dataset: TindaHub Orders workbook (<code>MessyImport</code> sheet — 500 rows with seeded defects)</p>
@@ -1187,7 +1187,7 @@ in
 <p>Dataset: TindaHub Orders workbook + the three monthly CSV extracts (Apr/May/Jun 2026)</p>
 <ol>
 <li>Import one CSV via Transform Data and build the six-step cleaning recipe from the lesson.</li>
-<li>Convert it to a From Folder query appending all three months; verify row counts equal the sum of the files.</li>
+<li>Convert it to a From Folder query appending all three months. Check the count at two points: straight after the append it should equal the raw sum of the files (320 + 345 + 360 = <strong>1,025</strong>), and after the Filtered Rows and Removed Duplicates steps it will be <em>lower</em> — reconcile the difference against the Test rows and duplicates you removed rather than assuming the append lost data.</li>
 <li>Merge product Category in from the Products table (Left Outer) and expand only Category.</li>
 <li>Load to a Table named <code>MonthlyOrders</code> and build a quick pivot on it.</li>
 <li>Drop a fourth CSV (Jul) into the folder, Refresh, and watch table and pivot grow with zero editing.</li>

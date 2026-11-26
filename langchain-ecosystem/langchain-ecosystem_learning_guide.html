@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LangChain Ecosystem Learning Guide — Beginner to Advanced</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+.search-row{position:relative}
+.search-row .nav-search{padding-right:2.4rem}
+.search-kbd{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:4px;padding:0 .3rem;background:var(--paper-2);
+  pointer-events:none;
+}
+.search-row.has-query .search-kbd{display:none}
+.search-bar{
+  display:none;align-items:center;gap:.35rem;margin-top:.45rem;
+  font-size:.72rem;color:var(--ink-soft);
+}
+.search-bar.show{display:flex}
+.search-count{flex:1;font-family:var(--mono)}
+.search-bar button{
+  border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);
+  border-radius:6px;font-size:.72rem;padding:.15rem .45rem;cursor:pointer;min-width:26px;min-height:24px;
+}
+.search-bar button:hover{background:var(--teal-wash)}
+.search-results{
+  display:none;margin:.5rem 0 .2rem;max-height:48vh;overflow-y:auto;
+  border:1px solid var(--line);border-radius:8px;background:var(--paper);
+}
+.search-results.show{display:block}
+.sr-group{border-top:1px solid var(--line-soft)}
+.sr-group:first-child{border-top:none}
+.sr-section{
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--teal);padding:.5rem .65rem .15rem;
+}
+.sr-item{
+  display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  font-family:var(--sans);font-size:.76rem;line-height:1.4;color:var(--ink);
+  padding:.35rem .65rem;
+}
+.sr-item:hover,.sr-item.current{background:var(--teal-wash)}
+.sr-item mark,.lg-hit{background:var(--amber-wash);color:inherit;border-radius:2px;padding:0 1px}
+.sr-more{font-size:.7rem;color:var(--ink-soft);padding:.1rem .65rem .45rem}
+.sr-empty{font-size:.78rem;color:var(--ink-soft);padding:.6rem .65rem}
+pre .lg-hit{background:#5c4a12;color:#fff4cf}
+.lg-hit.lg-hit-current{background:var(--coral);color:#fff;outline:2px solid var(--coral)}
+.lg-block-current{outline:2px dashed var(--teal);outline-offset:4px;border-radius:4px}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — learn from home">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8
+          f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">expert guided learning</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">LangChain Ecosystem<br>Learning Guide</div>
+      <div class="brand-sub">LangChain 1.x · LangGraph 1.x · LangSmith</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <div class="search-row" id="searchRow">
+        <input type="search" id="navSearch" class="nav-search" placeholder="Search the guide…" aria-label="Search the whole guide" aria-controls="searchResults" autocomplete="off" spellcheck="false">
+        <span class="search-kbd" aria-hidden="true">/</span>
+      </div>
+      <div class="search-bar" id="searchBar">
+        <span class="search-count" id="searchCount" aria-live="polite"></span>
+        <button type="button" id="searchPrev" aria-label="Previous match">↑</button>
+        <button type="button" id="searchNext" aria-label="Next match">↓</button>
+        <button type="button" id="searchClear" aria-label="Clear search">✕</button>
+      </div>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-advanced-track" class="nav-top">Beginner to Advanced Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-langchain-foundations" class="nav-top nav-phase">Phase 1: LangChain Foundations</a>
+<div class="nav-children">
+<a href="#module-11-llms-chat-models-messages" class="nav-child">Module 1.1 — LLMs, Chat Models &amp; Messages</a>
+<a href="#module-12-prompt-templates-lcel-composition" class="nav-child">Module 1.2 — Prompt Templates &amp; LCEL</a>
+<a href="#module-13-tool-calling-structured-output" class="nav-child">Module 1.3 — Tool Calling &amp; Structured Output</a>
+<a href="#module-14-retrieval-augmented-generation-rag" class="nav-child">Module 1.4 — Retrieval-Augmented Generation</a>
+<a href="#phase-1-capstone-tindahub-faq-rag-assistant" class="nav-child">Phase 1 Capstone: TindaHub FAQ RAG</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-agents-with-langgraph" class="nav-top nav-phase">Phase 2: Agents with LangGraph</a>
+<div class="nav-children">
+<a href="#module-21-from-agentexecutor-to-create-agent" class="nav-child">Module 2.1 — AgentExecutor → create_agent</a>
+<a href="#module-22-langgraph-fundamentals-stategraph-nodes-edges" class="nav-child">Module 2.2 — StateGraph, Nodes &amp; Edges</a>
+<a href="#module-23-conditional-edges-cycles-control-flow" class="nav-child">Module 2.3 — Conditional Edges &amp; Cycles</a>
+<a href="#module-24-persistence-checkpointers-memory" class="nav-child">Module 2.4 — Persistence &amp; Checkpointers</a>
+<a href="#module-25-human-in-the-loop-interrupts-approval-gates" class="nav-child">Module 2.5 — Human-in-the-Loop</a>
+<a href="#phase-2-capstone-tindahub-ticket-triage-agent" class="nav-child">Phase 2 Capstone: Ticket Triage Agent</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-multi-agent-production-patterns" class="nav-top nav-phase">Phase 3: Multi-Agent &amp; Production</a>
+<div class="nav-children">
+<a href="#module-31-multi-agent-architectures-supervisor-swarm" class="nav-child">Module 3.1 — Supervisor &amp; Swarm</a>
+<a href="#module-32-streaming-tokens-updates-custom-data" class="nav-child">Module 3.2 — Streaming</a>
+<a href="#module-33-durable-execution-retries-error-recovery" class="nav-child">Module 3.3 — Durable Execution &amp; Retries</a>
+<a href="#phase-3-capstone-multi-agent-tindahub-support-desk" class="nav-child">Phase 3 Capstone: Multi-Agent Support Desk</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-langsmith-observability-evaluation" class="nav-top nav-phase">Phase 4: LangSmith Observability</a>
+<div class="nav-children">
+<a href="#module-41-tracing-debugging-with-langsmith" class="nav-child">Module 4.1 — Tracing &amp; Debugging</a>
+<a href="#module-42-evaluations-datasets-llm-as-judge" class="nav-child">Module 4.2 — Evaluations &amp; Datasets</a>
+<a href="#module-43-production-monitoring-alerts-cost-langsmith-engine" class="nav-child">Module 4.3 — Production Monitoring</a>
+<a href="#module-44-deployment-langgraph-platform-context-hub" class="nav-child">Module 4.4 — Deployment</a>
+<a href="#phase-4-capstone-full-stack-observability-for-the-tindahub-agent" class="nav-child">Phase 4 Capstone: Full-Stack Observability</a>
+</div></div>
+
+<a href="#final-capstone-tindahub-ai-support-copilot" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="langchain-ecosystem-learning-guide">LangChain Ecosystem Learning Guide</h1>
+<h2 id="beginner-to-advanced-track">Beginner to Advanced Track</h2>
+<h3>LangChain 1.x · LangGraph 1.x · LangSmith</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="LangChain interlocking chain links" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="88" width="130" height="72" rx="36" transform="rotate(-32 95 124)" fill="none" stroke="#075249" stroke-width="20"/>
+<rect x="96" y="96" width="130" height="72" rx="36" transform="rotate(-32 161 132)" fill="none" stroke="#0d7a6e" stroke-width="20"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone builds the same running scenario: <strong>TindaHub</strong>, a synthetic Philippine e-commerce marketplace, needs an AI support copilot that answers order questions, triages tickets, and escalates refunds to a human.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner to LLM app development</strong> → Start at Module 1.1 and go sequentially through all four phases.</li>
+<li><strong>Some experience with LLM APIs or old LangChain</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point — most returning LangChain users should start at Module 2.1.</li>
+<li><strong>Targeting a specific skill</strong> (e.g., "I just need LangGraph agents" or "I just need observability") → Jump via the <strong>Module Index</strong> or pick a <strong>Learning Track</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3>LangChain Core</h3>
+<ul>
+<li>[ ] I can explain the difference between a chat model and a raw text-completion LLM.</li>
+<li>[ ] I have built a prompt template that injects variables and piped it into a model call.</li>
+<li>[ ] I know how to bind tools to a model and read a tool call off the response.</li>
+<li>[ ] I have built a retrieval pipeline (embed → vector store → similarity search → inject into prompt).</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3>LangGraph &amp; Agents</h3>
+<ul>
+<li>[ ] I know why <code>AgentExecutor</code> is deprecated and what replaced it.</li>
+<li>[ ] I can define a <code>StateGraph</code> with typed state, nodes, and edges.</li>
+<li>[ ] I have used a conditional edge to route between nodes based on state.</li>
+<li>[ ] I have used a checkpointer to persist an agent's state across turns.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.4</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3>Multi-Agent &amp; Production</h3>
+<ul>
+<li>[ ] I can describe the difference between a supervisor architecture and a swarm/handoff architecture.</li>
+<li>[ ] I know how to stream intermediate agent steps to a frontend, not just the final answer.</li>
+<li>[ ] I have configured retry or timeout behavior on a long-running graph node.</li>
+<li>[ ] I know what a durable execution checkpoint protects against.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3>LangSmith Observability</h3>
+<ul>
+<li>[ ] I have traced an LLM call end-to-end in LangSmith and read the token/cost breakdown.</li>
+<li>[ ] I have built an evaluation dataset and run an offline evaluation against it.</li>
+<li>[ ] I know how to set up a production alert on error rate or latency.</li>
+<li>[ ] I have deployed a LangGraph app to a hosted or self-hosted runtime.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.3</strong> | <strong>4 yes</strong> → You're ready for the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-llms-chat-models-messages"><td>1.1</td><td>LLMs, Chat Models &amp; Messages</td><td>Beginner</td><td>Python basics</td><td>2h</td></tr>
+<tr data-href="#module-12-prompt-templates-lcel-composition"><td>1.2</td><td>Prompt Templates &amp; LCEL</td><td>Beginner</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-13-tool-calling-structured-output"><td>1.3</td><td>Tool Calling &amp; Structured Output</td><td>Beginner–Intermediate</td><td>1.2</td><td>3h</td></tr>
+<tr data-href="#module-14-retrieval-augmented-generation-rag"><td>1.4</td><td>Retrieval-Augmented Generation</td><td>Intermediate</td><td>1.2</td><td>4h</td></tr>
+<tr data-href="#phase-1-capstone-tindahub-faq-rag-assistant"><td>1.C</td><td>Phase 1 Capstone — TindaHub FAQ RAG</td><td>Intermediate</td><td>1.1–1.4</td><td>4h</td></tr>
+<tr data-href="#module-21-from-agentexecutor-to-create-agent"><td>2.1</td><td>AgentExecutor → create_agent</td><td>Intermediate</td><td>1.3</td><td>2h</td></tr>
+<tr data-href="#module-22-langgraph-fundamentals-stategraph-nodes-edges"><td>2.2</td><td>StateGraph, Nodes &amp; Edges</td><td>Intermediate</td><td>2.1</td><td>3h</td></tr>
+<tr data-href="#module-23-conditional-edges-cycles-control-flow"><td>2.3</td><td>Conditional Edges &amp; Cycles</td><td>Intermediate</td><td>2.2</td><td>3h</td></tr>
+<tr data-href="#module-24-persistence-checkpointers-memory"><td>2.4</td><td>Persistence &amp; Checkpointers</td><td>Intermediate</td><td>2.2</td><td>3h</td></tr>
+<tr data-href="#module-25-human-in-the-loop-interrupts-approval-gates"><td>2.5</td><td>Human-in-the-Loop</td><td>Intermediate–Advanced</td><td>2.4</td><td>3h</td></tr>
+<tr data-href="#phase-2-capstone-tindahub-ticket-triage-agent"><td>2.C</td><td>Phase 2 Capstone — Ticket Triage Agent</td><td>Intermediate–Advanced</td><td>2.1–2.5</td><td>5h</td></tr>
+<tr data-href="#module-31-multi-agent-architectures-supervisor-swarm"><td>3.1</td><td>Supervisor &amp; Swarm Architectures</td><td>Advanced</td><td>2.5</td><td>4h</td></tr>
+<tr data-href="#module-32-streaming-tokens-updates-custom-data"><td>3.2</td><td>Streaming</td><td>Intermediate</td><td>2.2</td><td>2h</td></tr>
+<tr data-href="#module-33-durable-execution-retries-error-recovery"><td>3.3</td><td>Durable Execution &amp; Retries</td><td>Advanced</td><td>2.4</td><td>3h</td></tr>
+<tr data-href="#phase-3-capstone-multi-agent-tindahub-support-desk"><td>3.C</td><td>Phase 3 Capstone — Multi-Agent Support Desk</td><td>Advanced</td><td>3.1–3.3</td><td>5h</td></tr>
+<tr data-href="#module-41-tracing-debugging-with-langsmith"><td>4.1</td><td>Tracing &amp; Debugging</td><td>Beginner–Intermediate</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-42-evaluations-datasets-llm-as-judge"><td>4.2</td><td>Evaluations &amp; Datasets</td><td>Intermediate</td><td>4.1</td><td>3h</td></tr>
+<tr data-href="#module-43-production-monitoring-alerts-cost-langsmith-engine"><td>4.3</td><td>Production Monitoring</td><td>Intermediate–Advanced</td><td>4.1</td><td>2h</td></tr>
+<tr data-href="#module-44-deployment-langgraph-platform-context-hub"><td>4.4</td><td>Deployment</td><td>Advanced</td><td>2.4, 4.1</td><td>3h</td></tr>
+<tr data-href="#phase-4-capstone-full-stack-observability-for-the-tindahub-agent"><td>4.C</td><td>Phase 4 Capstone — Full-Stack Observability</td><td>Advanced</td><td>4.1–4.4</td><td>4h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phase 4 (LangSmith) is largely independent of Phases 2–3 — Module 4.1 only needs Module 1.1. You can weave observability in early (trace your Phase 1 chains) or study it as a dedicated block at the end. The Learning Tracks below route accordingly.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+
+<h3 id="track-1-agent-builder-fast-path">Track 1 — Agent Builder Fast Path (ship a working agent this week)</h3>
+<p><code>1.1 → 1.3 → 2.1 → 2.2 → 2.3 → Phase 2 Capstone</code><br>
+Target outcome: <strong>a working tool-using LangGraph agent in production shape</strong>, skipping deep RAG and multi-agent theory.</p>
+
+<h3 id="track-2-rag-specialist">Track 2 — RAG Specialist</h3>
+<p><code>1.1 → 1.2 → 1.4 → Phase 1 Capstone → 4.2</code><br>
+Target outcome: <strong>a retrieval pipeline you can evaluate for groundedness</strong>, for teams building knowledge-base assistants.</p>
+
+<h3 id="track-3-langgraph-orchestration-deep-dive">Track 3 — LangGraph Orchestration Deep Dive</h3>
+<p><code>2.2 → 2.3 → 2.4 → 2.5 → 3.1 → 3.3 → Phase 3 Capstone</code><br>
+Target outcome: <strong>production-grade multi-step, multi-agent orchestration</strong> with persistence, interrupts, and durable execution.</p>
+
+<h3 id="track-4-observability-and-production">Track 4 — Observability &amp; Production (LangSmith)</h3>
+<p><code>4.1 → 4.2 → 4.3 → 4.4 → Phase 4 Capstone</code><br>
+Target outcome: <strong>a fully traced, evaluated, monitored, and deployed pipeline</strong> — for teams who already have an agent and need to operate it.</p>
+
+<h3 id="track-5-full-stack-path">Track 5 — Full-Stack Path (recommended for most software developers)</h3>
+<p><code>Phase 1 → Phase 2 → Phase 3 → Phase 4 → Final Capstone</code><br>
+Target outcome: <strong>end-to-end fluency</strong> across the ecosystem — the sequential default if you have no strong reason to specialize.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — LangChain Foundations         (Weeks 1–2)
+Phase 2 — Agents with LangGraph         (Weeks 3–5)
+Phase 3 — Multi-Agent &amp; Production      (Weeks 6–7)
+Phase 4 — LangSmith Observability       (Weeks 8–9)
+Final Capstone — TindaHub AI Support Copilot   (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ─ 1.2 ─┬─ 1.3 ─┬─ 2.1 ─ 2.2 ─ 2.3 ─┬─ 2.4 ─ 2.5 ─┬─ 3.1 ─┐
+           └─ 1.4 ─┘                   └─ 3.2 ───────┼─ 3.3 ─┼─ Final
+                                                       │       │  Capstone
+                        4.1 ─ 4.2 ─ 4.3 ─ 4.4 ─────────┴───────┘</code></pre>
+
+<h2 id="phase-1-langchain-foundations">Phase 1: LangChain Foundations</h2>
+<h3 id="weeks-1-2">Weeks 1–2 | Goal: build and compose LLM calls — prompts, tools, and retrieval — using LangChain 1.x's current APIs</h3>
+<hr />
+
+<h3 id="module-11-llms-chat-models-messages">Module 1.1 — LLMs, Chat Models &amp; Messages</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Python basics, an Anthropic or OpenAI API key · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Instantiate a chat model, send a list of messages, and print the response's text content and token usage.<br>
+<strong>Skip if:</strong> You've already called <code>init_chat_model</code> or a provider-specific chat class and read a response object.<br>
+<strong>Unlocks:</strong> 1.2, 1.3, 4.1</p>
+</blockquote>
+
+<h4>Why LangChain exists</h4>
+<p>Every LLM provider (Anthropic, OpenAI, Google, local models via Ollama) has a slightly different request/response shape. LangChain's core value is a <strong>unified interface</strong> over these differences — you write one chat-model call and swap providers by changing a string, not rewriting your integration. Skipping this abstraction is fine for a single-provider prototype, but it means every prompt, tool schema, and streaming handler you write is locked to one vendor's SDK — a costly rewrite the day you need a cheaper or faster model for one workload.</p>
+
+<h4>Chat models and the message object</h4>
+<p>LangChain 1.x standardizes on <strong>chat models</strong> (not raw text completion) as the default interface, and on a single <strong>content block</strong> format for messages across providers. Getting the message roles wrong (e.g., putting instructions in a <code>user</code> message instead of <code>system</code>) is the single most common beginner mistake — it works by accident on some models and silently degrades output quality on others.</p>
+<pre><code class="language-python">from langchain.chat_models import init_chat_model
+
+# init_chat_model resolves "provider:model" strings to the right integration class —
+# swapping providers means changing this one string, nothing else in your code.
+model = init_chat_model("anthropic:claude-sonnet-5", temperature=0)
+
+response = model.invoke([
+    {"role": "system", "content": "You are a support assistant for TindaHub, a Philippine online marketplace."},
+    {"role": "user", "content": "My order #TH-88213 hasn't arrived in 9 days. What should I do?"},
+])
+
+print(response.content)          # the assistant's text
+print(response.usage_metadata)   # {'input_tokens': ..., 'output_tokens': ..., 'total_tokens': ...}</code></pre>
+
+<h4>Why token usage matters from day one</h4>
+<p>Every response carries <code>usage_metadata</code>. Reading it from your very first call — not bolting it on later — is what makes Module 4.3's cost dashboards possible without re-instrumenting every call site. A support bot that silently sends the entire order history as context on every turn can burn 50x the tokens of one that retrieves only what's relevant; that gap only becomes visible if you're watching usage from the start.</p>
+
+<p><strong>Exercise 1.1 — First TindaHub Support Reply</strong></p>
+<p>Scenario: TindaHub, the running example for this whole guide.</p>
+<ol>
+<li>Install <code>langchain</code> and a provider package (<code>pip install langchain langchain-anthropic</code>).</li>
+<li>Set your API key as an environment variable — never hardcode it in the script.</li>
+<li>Use <code>init_chat_model</code> to create a chat model with <code>temperature=0</code> for deterministic support replies.</li>
+<li>Send a system message that establishes the assistant as TindaHub support, plus 3 different user messages (a shipping delay, a refund request, a product question).</li>
+<li>For each response, print the text content and the total token count.</li>
+<li>Sum the total tokens across all 3 calls and estimate the cost using your model's published per-token price.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-prompt-templates-lcel-composition">Module 1.2 — Prompt Templates &amp; LCEL Composition</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> Module 1.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Build a <code>ChatPromptTemplate</code> with variables and pipe it into a model and output parser using the <code>|</code> operator.<br>
+<strong>Skip if:</strong> You've written a multi-step LCEL chain and can explain what <code>|</code> does under the hood.<br>
+<strong>Unlocks:</strong> 1.3, 1.4</p>
+</blockquote>
+
+<h4>Templates instead of string concatenation</h4>
+<p>Hardcoded f-strings for prompts work until you need to reuse the same prompt structure across 10 call sites, or a teammate needs to edit wording without touching Python logic. <code>ChatPromptTemplate</code> separates the fixed instruction text from the variable slots, and validates at call time that every variable you declared actually got filled — an unfilled variable in an f-string just silently sends the literal placeholder text to the model.</p>
+<pre><code class="language-python">from langchain_core.prompts import ChatPromptTemplate
+
+triage_prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a triage assistant for TindaHub support tickets. "
+               "Classify the ticket into exactly one category: shipping, refund, "
+               "product_question, or account. Respond with only the category."),
+    ("human", "{ticket_text}"),
+])
+
+formatted = triage_prompt.invoke({"ticket_text": "Wala pa dumadating yung order ko, 9 days na."})
+print(formatted.to_messages())</code></pre>
+
+<h4>LCEL: composing steps with the pipe operator</h4>
+<p>LangChain Expression Language (LCEL) lets you chain a prompt, a model, and an output parser into one runnable using <code>|</code>, similar to Unix pipes. It still has a place in LangChain 1.x for straight-line, non-branching compositions — prompt → model → parse — even though branching agent logic has moved to LangGraph (Module 2.1). Reach for LCEL when the flow is linear; reach for LangGraph the moment you need a decision point.</p>
+<pre><code class="language-python">from langchain_core.output_parsers import StrOutputParser
+
+triage_chain = triage_prompt | model | StrOutputParser()
+
+category = triage_chain.invoke({"ticket_text": "I want a refund for order TH-88213, it's damaged."})
+print(category)  # "refund"</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Treating LCEL as the tool for building agents. LCEL chains are static — the same steps run every time. The moment your logic needs to loop, branch conditionally, or call tools in an open-ended way, you've outgrown LCEL and need LangGraph (Phase 2), not a longer chain.</p></blockquote>
+
+<p><strong>Exercise 1.2 — Ticket Triage Chain</strong></p>
+<p>Scenario: TindaHub support tickets.</p>
+<ol>
+<li>Build a <code>ChatPromptTemplate</code> that classifies a ticket into <code>shipping</code>, <code>refund</code>, <code>product_question</code>, or <code>account</code>.</li>
+<li>Compose it with your model and a <code>StrOutputParser</code> using LCEL.</li>
+<li>Run it against 6 sample tickets (write realistic Taglish/English mixed tickets like a real PH marketplace would receive).</li>
+<li>Add a second prompt template that drafts a reply once the category is known, and chain the two together so triage output feeds the reply prompt.</li>
+<li>Print both the category and the drafted reply for each ticket.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-tool-calling-structured-output">Module 1.3 — Tool Calling &amp; Structured Output</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 1.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Define a Python function tool with a typed signature, bind it to a model, and execute the tool call the model returns.<br>
+<strong>Skip if:</strong> You've built a function-calling loop by hand with any LLM SDK.<br>
+<strong>Unlocks:</strong> 1.4, 2.1</p>
+</blockquote>
+
+<h4>Tools: giving the model hands</h4>
+<p>A chat model only produces text. A <strong>tool</strong> is a Python function with a schema the model can choose to call — the model doesn't execute anything itself, it returns a structured request (<code>tool_calls</code>) that your code executes and feeds back. Miss this distinction and you'll expect the model to "just look up the order," when in fact your code has to run <code>get_order_status(order_id)</code> and pass the result back as a new message.</p>
+<pre><code class="language-python">from langchain_core.tools import tool
+
+@tool
+def get_order_status(order_id: str) -> str:
+    """Look up the shipping status of a TindaHub order by its order ID."""
+    orders = {
+        "TH-88213": "In transit, last scan: Cebu sorting facility, ETA 2 days.",
+        "TH-90441": "Delivered on 2026-07-20, signed by J. Reyes.",
+    }
+    return orders.get(order_id, "Order ID not found.")
+
+model_with_tools = model.bind_tools([get_order_status])
+response = model_with_tools.invoke("What's the status of order TH-88213?")
+print(response.tool_calls)  # [{'name': 'get_order_status', 'args': {'order_id': 'TH-88213'}, ...}]</code></pre>
+
+<h4>Structured output: forcing a schema, not free text</h4>
+<p>When you need the model's <em>answer</em> (not a tool call) shaped as data — a category, a confidence score, a refund amount — use <code>with_structured_output</code> with a Pydantic model. This is different from tool calling: tools let the model take an <em>action</em>; structured output constrains the model's final <em>response</em> to a schema you can parse without regex or hopeful JSON parsing.</p>
+<pre><code class="language-python">from pydantic import BaseModel, Field
+
+class TicketClassification(BaseModel):
+    category: str = Field(description="shipping, refund, product_question, or account")
+    urgency: str = Field(description="low, medium, or high")
+    refund_amount_php: float | None = Field(default=None, description="Requested refund in PHP, if any")
+
+structured_model = model.with_structured_output(TicketClassification)
+result = structured_model.invoke("Order TH-88213 pa rin wala, 9 days na. Gusto ko na lang ma-refund yung ₱1,250.")
+print(result.category, result.urgency, result.refund_amount_php)</code></pre>
+<blockquote class="callout"><p><strong>Disambiguation:</strong> "Structured output" and "tool calling" both use the model's function-calling machinery under the hood, but they answer different questions. Tool calling asks "what should I do next?" (fetch data, send an email). Structured output asks "shape your final answer as this schema" — there's no execution step, just parsing.</p></blockquote>
+
+<p><strong>Exercise 1.3 — Order Lookup Tool</strong></p>
+<p>Scenario: TindaHub order lookups.</p>
+<ol>
+<li>Write 2 tools: <code>get_order_status(order_id)</code> and <code>get_refund_policy(category)</code> (return realistic canned data for at least 4 orders and 3 product categories).</li>
+<li>Bind both tools to your model and send a question that should trigger exactly one tool call.</li>
+<li>Manually execute the returned tool call, append the result as a <code>ToolMessage</code>, and call the model again to get a final natural-language answer.</li>
+<li>Separately, define a <code>TicketClassification</code> Pydantic schema with <code>category</code>, <code>urgency</code>, and <code>needs_human</code> (bool) fields, and use <code>with_structured_output</code> to classify 5 sample tickets.</li>
+</ol>
+<hr />
+
+<h3 id="module-14-retrieval-augmented-generation-rag">Module 1.4 — Retrieval-Augmented Generation (RAG)</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 1.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Embed a set of documents into a vector store, run a similarity search, and inject the top results into a prompt as context.<br>
+<strong>Skip if:</strong> You've built an embed → store → retrieve → generate pipeline with any vector database.<br>
+<strong>Unlocks:</strong> Phase 1 Capstone, 4.2</p>
+</blockquote>
+
+<h4>Why RAG instead of putting everything in the prompt</h4>
+<p>A model's context window is finite and costs money per token — pasting your entire FAQ or product catalog into every prompt doesn't scale past a few dozen documents. RAG retrieves only the most relevant chunks for a given question by comparing <strong>embeddings</strong> (numeric vectors that capture meaning) rather than keywords, so a question phrased differently from the source text still matches.</p>
+<pre><code class="language-python">from langchain_core.documents import Document
+from langchain_openai import OpenAIEmbeddings
+from langchain_core.vectorstores import InMemoryVectorStore
+
+faq_docs = [
+    Document(page_content="TindaHub refunds are processed within 5-7 business days after the returned item is received at our warehouse.", metadata={"topic": "refund"}),
+    Document(page_content="Standard shipping within Metro Manila takes 2-3 days; provincial shipping takes 5-9 days depending on courier.", metadata={"topic": "shipping"}),
+    Document(page_content="Cash on Delivery (COD) orders can be cancelled free of charge any time before the courier is dispatched.", metadata={"topic": "cod"}),
+]
+
+embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+vector_store = InMemoryVectorStore(embeddings)
+vector_store.add_documents(faq_docs)
+
+results = vector_store.similarity_search("How long until I get my money back?", k=2)
+for doc in results:
+    print(doc.page_content)</code></pre>
+
+<h4>Chunking and the retrieval-generation prompt</h4>
+<p>Real documents are longer than one FAQ line, so you split them into chunks before embedding — too large and irrelevant text dilutes the match; too small and you lose surrounding context the model needs to answer correctly. Getting chunk size wrong is the most common reason a RAG system "hallucinates" — it isn't inventing facts, it's answering from a chunk that's missing the qualifying sentence two lines below the cut.</p>
+<pre><code class="language-python">from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+chunks = splitter.split_documents(faq_docs)
+
+rag_prompt = ChatPromptTemplate.from_messages([
+    ("system", "Answer the TindaHub customer's question using ONLY the provided context. "
+               "If the context doesn't contain the answer, say you'll escalate to a human agent."),
+    ("human", "Context:\n{context}\n\nQuestion: {question}"),
+])
+
+def answer_question(question: str) -> str:
+    docs = vector_store.similarity_search(question, k=2)
+    context = "\n\n".join(d.page_content for d in docs)
+    chain = rag_prompt | model | StrOutputParser()
+    return chain.invoke({"context": context, "question": question})
+
+print(answer_question("Pwede ba icancel kahit COD?"))</code></pre>
+
+<p><strong>Exercise 1.4 — TindaHub Knowledge Base</strong></p>
+<p>Scenario: TindaHub's policy FAQ.</p>
+<ol>
+<li>Write at least 8 FAQ documents covering shipping, refunds, COD, warranty, and account topics — realistic PH marketplace policy text.</li>
+<li>Split, embed, and load them into an <code>InMemoryVectorStore</code>.</li>
+<li><em>Retrieval practice: before running the code, predict from memory which 2 documents each of these 3 questions should retrieve — then run the search and compare.</em></li>
+<li>Build the retrieval-generation chain and answer 5 realistic customer questions.</li>
+<li>Test one question with no matching FAQ content and confirm the model says it will escalate, rather than guessing.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-tindahub-faq-rag-assistant">Phase 1 Capstone: TindaHub FAQ RAG Assistant</h3>
+<p><strong>Project: A retrieval-grounded FAQ assistant for TindaHub</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain the difference between a tool call and structured output, and why RAG beats stuffing everything into the prompt? If either draws a blank, re-read Module 1.3 or 1.4 before attempting the deliverables.</p></blockquote>
+<p><strong>Scenario:</strong> TindaHub FAQ knowledge base (build on Exercise 1.4's documents, expanded to 15+ entries).</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A 15+ document FAQ knowledge base covering at least 5 policy categories.</li>
+<li>An embedding + vector store pipeline with tuned chunk size (justify your choice in a comment).</li>
+<li>A structured-output classifier that tags each incoming question with a category and confidence.</li>
+<li>A retrieval-generation chain that answers grounded in retrieved context only.</li>
+<li>A fallback path: when retrieval confidence is low (no chunk scores above a threshold you define), the assistant states it will escalate rather than answering.</li>
+<li>A test harness that runs 12 sample questions (mix of answerable and unanswerable) and prints category, retrieved sources, and final answer for each.</li>
+<li>A short written note (3-5 sentences) on one failure case you observed and how you'd fix it.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-agents-with-langgraph">Phase 2: Agents with LangGraph</h2>
+<h3 id="weeks-3-5">Weeks 3–5 | Goal: build stateful, branching, tool-using agents on LangGraph's graph runtime</h3>
+<hr />
+
+<h3 id="module-21-from-agentexecutor-to-create-agent">Module 2.1 — From AgentExecutor to create_agent</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 1.3 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Explain why <code>AgentExecutor</code> is deprecated and build a working tool-using agent with <code>create_agent</code>.<br>
+<strong>Skip if:</strong> You've already migrated an agent off <code>AgentExecutor</code> / <code>initialize_agent</code>.<br>
+<strong>Unlocks:</strong> 2.2</p>
+</blockquote>
+
+<h4>Why the old agent API was retired</h4>
+<p><code>AgentExecutor</code> (and <code>initialize_agent</code>, <code>create_react_agent</code> from pre-1.0 LangChain) implemented agent looping as a simple "call model, run tool, repeat" loop with almost no control over what happens between steps. It could not natively support branching logic, human approval gates, or resuming a crashed run — because those all require a real state machine, not a loop. LangChain 1.0 (October 2025) replaced it with <code>create_agent</code>, which builds the same "tool-calling agent" pattern on top of <strong>LangGraph's</strong> graph runtime instead of a bare loop. As of mid-2026, <code>AgentExecutor</code> is in maintenance-only mode through December 2026 — treat any code you find using it as legacy to migrate, not a pattern to copy.</p>
+<pre><code class="language-python">from langchain.agents import create_agent
+
+agent = create_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[get_order_status, get_refund_policy],
+    system_prompt=(
+        "You are TindaHub's support agent. Use the tools to look up real order "
+        "and policy data before answering. Never guess an order status."
+    ),
+)
+
+result = agent.invoke({"messages": [{"role": "user", "content": "Where is order TH-88213?"}]})
+print(result["messages"][-1].content)</code></pre>
+
+<h4>create_agent vs. hand-rolled StateGraph</h4>
+<p><code>create_agent</code> is the fast path: it wires up a standard tool-calling loop (call model → if tool call, run tool → feed result back → repeat until a final answer) with sensible defaults, and it's what LangGraph runs under the hood. Reach for the full <code>StateGraph</code> API (Module 2.2) the moment you need node-level control the prebuilt loop doesn't expose — custom routing between more than "call tool or answer," per-node checkpointing, or a human-approval step in the middle of the loop.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Assuming <code>create_agent</code> and <code>StateGraph</code> are competing choices. They aren't — <code>create_agent</code> returns a compiled graph, and you can inspect, extend, or even embed it as a node inside a larger <code>StateGraph</code> (see Module 3.1). Start with <code>create_agent</code>; drop to raw <code>StateGraph</code> only when you hit its ceiling.</p></blockquote>
+
+<p><strong>Exercise 2.1 — First create_agent</strong></p>
+<p>Scenario: TindaHub order lookup and refund policy tools from Module 1.3.</p>
+<ol>
+<li>Build a <code>create_agent</code> agent wired to your two tools from Exercise 1.3.</li>
+<li>Run 3 test queries: one that needs one tool call, one that needs two tool calls in sequence, and one that needs no tool call at all.</li>
+<li>Print the full <code>result["messages"]</code> list for the two-tool-call case and identify each message's role (human, ai with tool_calls, tool, final ai).</li>
+<li>In a short comment, note what the old <code>AgentExecutor</code> would have required you to write by hand that <code>create_agent</code> handles for you.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-langgraph-fundamentals-stategraph-nodes-edges">Module 2.2 — LangGraph Fundamentals: StateGraph, Nodes &amp; Edges</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Define a typed state, add 3 nodes and edges between them, compile the graph, and run it end-to-end.<br>
+<strong>Skip if:</strong> You've built a <code>StateGraph</code> with more than one node from scratch.<br>
+<strong>Unlocks:</strong> 2.3, 2.4, 3.2</p>
+</blockquote>
+
+<h4>Graphs as the mental model for agent orchestration</h4>
+<p>LangGraph (currently v1.2.x) models an agent as a <strong>graph</strong>: a shared <strong>state</strong> object, <strong>nodes</strong> that are functions reading and updating that state, and <strong>edges</strong> that determine which node runs next. This is a deliberate shift from thinking "what's my next API call" to thinking "what are the states my workflow can be in, and what moves it between them" — the latter model is what makes branching, cycles, and resumability possible later in this phase.</p>
+<pre><code class="language-python">from typing import TypedDict, Annotated
+from langgraph.graph import StateGraph, START, END
+from langgraph.graph.message import add_messages
+
+class SupportState(TypedDict):
+    messages: Annotated[list, add_messages]
+    category: str
+
+def classify_node(state: SupportState) -> dict:
+    last_user_msg = state["messages"][-1].content
+    category = triage_chain.invoke({"ticket_text": last_user_msg})
+    return {"category": category}
+
+def respond_node(state: SupportState) -> dict:
+    reply = model.invoke(state["messages"])
+    return {"messages": [reply]}
+
+graph = StateGraph(SupportState)
+graph.add_node("classify", classify_node)
+graph.add_node("respond", respond_node)
+graph.add_edge(START, "classify")
+graph.add_edge("classify", "respond")
+graph.add_edge("respond", END)
+
+app = graph.compile()
+result = app.invoke({"messages": [{"role": "user", "content": "Saan na yung order ko?"}], "category": ""})</code></pre>
+
+<h4>Why state is annotated, not just assigned</h4>
+<p>Notice <code>messages</code> uses <code>Annotated[list, add_messages]</code> — this tells LangGraph <em>how to merge</em> a node's return value into existing state, rather than overwriting it. Without <code>add_messages</code>, every node that returns <code>{"messages": [...]}</code> would replace the entire conversation history instead of appending to it — a bug that silently erases context and is easy to miss until a multi-turn conversation loses earlier messages.</p>
+
+<p><strong>Exercise 2.2 — Two-Node Support Graph</strong></p>
+<p>Scenario: TindaHub ticket handling.</p>
+<ol>
+<li>Define a <code>TicketState</code> TypedDict with <code>messages</code> (using <code>add_messages</code>), <code>category</code>, and <code>urgency</code> fields.</li>
+<li>Build 3 nodes: <code>classify_node</code>, <code>draft_reply_node</code>, and <code>log_node</code> (the last just prints the final state — a stand-in for writing to a database).</li>
+<li>Wire them in sequence with <code>add_edge</code> and compile.</li>
+<li>Invoke the graph with 3 different tickets and print the final state after each run.</li>
+<li>Deliberately return <code>{"messages": [reply]}</code> from a node WITHOUT the <code>add_messages</code> annotation in a throwaway test, and confirm the conversation history gets overwritten — this is the bug the annotation prevents.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-conditional-edges-cycles-control-flow">Module 2.3 — Conditional Edges, Cycles &amp; Control Flow</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Add a conditional edge that routes to different nodes based on state, and a cycle that loops until a condition is met.<br>
+<strong>Skip if:</strong> You've built a graph with branching AND a loop that terminates on a state condition.<br>
+<strong>Unlocks:</strong> 2.4, 3.1</p>
+</blockquote>
+
+<h4>Routing with conditional edges</h4>
+<p>A conditional edge is a function that inspects state and returns the name of the next node — this is how a graph makes decisions instead of always running the same fixed sequence. This is the capability <code>AgentExecutor</code> never had cleanly: routing a refund request to a human-approval node while letting a shipping question go straight to auto-reply, from the <em>same</em> graph.</p>
+<pre><code class="language-python">def route_by_category(state: SupportState) -> str:
+    if state["category"] == "refund":
+        return "human_review"
+    return "auto_respond"
+
+graph.add_node("human_review", human_review_node)
+graph.add_node("auto_respond", respond_node)
+graph.add_conditional_edges(
+    "classify",
+    route_by_category,
+    {"human_review": "human_review", "auto_respond": "auto_respond"},
+)</code></pre>
+
+<h4>Cycles: looping until state says stop</h4>
+<p>Unlike a straight-line LCEL chain, a graph can point an edge <em>backward</em> — this is how an agent "keeps calling tools until it has enough information to answer," a pattern that's structurally impossible in a linear chain. The termination condition lives in your routing function; forgetting to define one that eventually returns <code>END</code> produces an infinite loop that silently burns API credits until you hit a rate limit or bill shock.</p>
+<pre><code class="language-python">def should_continue(state: SupportState) -> str:
+    last_message = state["messages"][-1]
+    if getattr(last_message, "tool_calls", None):
+        return "tools"
+    return END
+
+graph.add_conditional_edges("agent", should_continue, {"tools": "tools", END: END})
+graph.add_edge("tools", "agent")  # loop back after running a tool</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Writing a conditional edge that can return a node name not present in the routing map passed to <code>add_conditional_edges</code>. LangGraph raises at runtime, not at compile time, so this bug only surfaces on the specific state that triggers the missing branch — test every branch explicitly, don't just run the happy path.</p></blockquote>
+
+<p><strong>Exercise 2.3 — Refund Escalation Routing</strong></p>
+<p>Scenario: TindaHub ticket handling, extending Exercise 2.2's graph.</p>
+<ol>
+<li>Add a conditional edge after <code>classify_node</code> that routes <code>refund</code> tickets to a <code>human_review</code> node and everything else to <code>auto_respond</code>.</li>
+<li>Build a tool-calling loop node (<code>agent</code> + <code>tools</code>) using <code>should_continue</code>-style routing so the agent can call <code>get_order_status</code> as many times as needed before answering.</li>
+<li>Run a ticket that requires 2 sequential tool calls and confirm the loop terminates correctly.</li>
+<li>Write a routing function bug on purpose (return a node name not in the map) and observe the runtime error — note at what point it fails.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-persistence-checkpointers-memory">Module 2.4 — Persistence, Checkpointers &amp; Memory</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Compile a graph with a checkpointer, run it across 2 separate <code>invoke</code> calls using the same thread ID, and show state persisted between them.<br>
+<strong>Skip if:</strong> You've used a checkpointer with thread-scoped conversation memory in production.<br>
+<strong>Unlocks:</strong> 2.5, 3.3, 4.4</p>
+</blockquote>
+
+<h4>Checkpointers: state that survives between calls</h4>
+<p>Without a checkpointer, every <code>invoke</code> starts from a blank state — the graph has no memory of a previous turn. A <strong>checkpointer</strong> saves state after every node runs, keyed by a <code>thread_id</code>, so a support conversation can span multiple HTTP requests (a real chat UI) without you manually re-sending the whole history every time.</p>
+<pre><code class="language-python">from langgraph.checkpoint.memory import MemorySaver
+
+checkpointer = MemorySaver()  # in-memory — swap for a Postgres/Redis checkpointer in production
+app = graph.compile(checkpointer=checkpointer)
+
+config = {"configurable": {"thread_id": "ticket-th-88213"}}
+
+app.invoke({"messages": [{"role": "user", "content": "Where's my order?"}]}, config)
+# ... later, same thread_id — the graph remembers the earlier turn ...
+app.invoke({"messages": [{"role": "user", "content": "And what if it doesn't arrive by Friday?"}]}, config)</code></pre>
+
+<h4>Why thread_id, not session ID, is the right mental model</h4>
+<p>A <code>thread_id</code> maps 1:1 to one continuous conversation or workflow run — in TindaHub's case, one support ticket, not one user. A single customer can have 3 open tickets (3 <code>thread_id</code>s) or a shared "account" thread; the checkpointer doesn't assume anything about your business's identity model, so getting the thread_id granularity wrong (e.g., one thread per user instead of per ticket) mixes unrelated conversations into the same memory.</p>
+<p><code>MemorySaver</code> is process-local and disappears on restart — fine for development, wrong for production, where a <code>PostgresSaver</code> or <code>RedisSaver</code> is required so a crash or redeploy doesn't lose every in-flight conversation.</p>
+
+<p><strong>Exercise 2.4 — Multi-Turn TindaHub Conversations</strong></p>
+<p>Scenario: TindaHub support graph from Exercise 2.3.</p>
+<ol>
+<li>Compile your graph with a <code>MemorySaver</code> checkpointer.</li>
+<li>Run a 3-turn conversation on the same <code>thread_id</code> where turn 3 refers back to something mentioned in turn 1 ("that order I asked about") and confirm the model resolves the reference correctly.</li>
+<li>Start a second, separate <code>thread_id</code> and confirm it has no knowledge of the first thread's conversation.</li>
+<li>Inspect the checkpointer's stored state directly (<code>app.get_state(config)</code>) and print what LangGraph actually persisted.</li>
+</ol>
+<hr />
+
+<h3 id="module-25-human-in-the-loop-interrupts-approval-gates">Module 2.5 — Human-in-the-Loop: Interrupts &amp; Approval Gates</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate–Advanced · <strong>Prereqs:</strong> Module 2.4 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Add an <code>interrupt</code> that pauses a graph mid-run for approval, then resume it with <code>Command(resume=...)</code>.<br>
+<strong>Skip if:</strong> You've shipped an approval gate that pauses agent execution and waits for external input.<br>
+<strong>Unlocks:</strong> Phase 2 Capstone, 3.1</p>
+</blockquote>
+
+<h4>Why some decisions shouldn't be fully autonomous</h4>
+<p>A refund of ₱50 is low-stakes; a refund of ₱15,000 is not. Human-in-the-loop (HITL) lets a graph pause execution at exactly the node where the stakes justify a human check, without giving up automation everywhere else. This only works because of the checkpointer from Module 2.4 — <code>interrupt</code> relies on persisted state to pause and later resume from the exact same point, potentially minutes or hours later.</p>
+<pre><code class="language-python">from langgraph.types import interrupt, Command
+
+def human_review_node(state: SupportState) -> dict:
+    decision = interrupt({
+        "question": "Approve this refund?",
+        "order_id": state.get("order_id"),
+        "amount_php": state.get("refund_amount_php"),
+    })
+    if decision["approved"]:
+        return {"messages": [{"role": "assistant", "content": "Refund approved and processed."}]}
+    return {"messages": [{"role": "assistant", "content": "Refund denied — escalating to account manager."}]}
+
+# First call pauses at the interrupt and returns control to your app:
+result = app.invoke({"messages": [...], "order_id": "TH-88213", "refund_amount_php": 15000}, config)
+print(result["__interrupt__"])  # the payload passed to interrupt()
+
+# ... your app shows this to a human agent, gets a decision, then resumes ...
+app.invoke(Command(resume={"approved": True}), config)</code></pre>
+
+<h4>Interrupt vs. exception</h4>
+<p>An <code>interrupt</code> is not an error — it's a deliberate, resumable pause built into the graph's control flow, distinct from a crash. Confusing the two leads to wrapping interrupts in try/except blocks meant for real failures, which either swallows the pause silently or crashes a workflow that was working exactly as designed.</p>
+
+<p><strong>Exercise 2.5 — Refund Approval Gate</strong></p>
+<p>Scenario: TindaHub refund escalation from Exercise 2.3.</p>
+<ol>
+<li>Add a <code>human_review_node</code> that calls <code>interrupt</code> with the order ID and requested refund amount whenever the amount exceeds ₱2,000.</li>
+<li>Run the graph on a high-value refund request and confirm it pauses and returns the interrupt payload instead of an answer.</li>
+<li>Resume the graph twice on two separate copies of the same starting state: once with an approval, once with a denial, and confirm each produces the correct final message.</li>
+<li>Confirm a low-value refund (under ₱2,000) skips the interrupt entirely and auto-resolves.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-tindahub-ticket-triage-agent">Phase 2 Capstone: TindaHub Ticket Triage Agent</h3>
+<p><strong>Project: A stateful, persistent, human-gated support agent for TindaHub</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain the difference between an edge and a conditional edge, and why a checkpointer is required before you can use <code>interrupt</code>? If either draws a blank, re-read Module 2.3 or 2.4 before attempting the deliverables.</p></blockquote>
+<p><strong>Scenario:</strong> TindaHub support tickets, integrating the tools from Phase 1 and the graph patterns from Phase 2.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A <code>StateGraph</code> with typed state covering messages, category, urgency, and refund amount.</li>
+<li>A classify node that routes tickets to at least 3 different paths (auto-respond, tool-calling agent loop, human review).</li>
+<li>A tool-calling agent sub-flow (order lookup + refund policy) with a correctly-terminating cycle.</li>
+<li>A <code>PostgresSaver</code> or <code>MemorySaver</code> checkpointer enabling multi-turn conversations per ticket thread.</li>
+<li>A human-in-the-loop interrupt gating any refund above a threshold you define and justify.</li>
+<li>A test suite of at least 8 tickets covering every path through the graph, including at least one that requires resuming after an interrupt.</li>
+<li>A short design note explaining your threshold choice and one edge case your graph does NOT yet handle.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-multi-agent-production-patterns">Phase 3: Multi-Agent &amp; Production Patterns</h2>
+<h3 id="weeks-6-7">Weeks 6–7 | Goal: coordinate multiple specialized agents and harden execution for production traffic</h3>
+<hr />
+
+<h3 id="module-31-multi-agent-architectures-supervisor-swarm">Module 3.1 — Multi-Agent Architectures: Supervisor &amp; Swarm</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> Module 2.5 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Build a supervisor graph that routes work to 2+ specialist sub-agents and hands control back.<br>
+<strong>Skip if:</strong> You've built a multi-agent system with either a supervisor or peer-handoff pattern.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+
+<h4>When one agent isn't enough</h4>
+<p>A single agent with 15 tools and a 3-paragraph system prompt covering shipping, refunds, and account issues tends to confuse itself — it picks the wrong tool or blends instructions meant for different scenarios. Splitting into <strong>specialist agents</strong>, each with a narrow toolset and focused prompt, mirrors how a real support team routes tickets to specialized queues, and is easier to prompt-engineer and evaluate in isolation.</p>
+
+<h4>Supervisor architecture: one coordinator, many workers</h4>
+<p>In a supervisor pattern, one agent's only job is to read the request and route it to the right specialist — it doesn't do the work itself. The specialist returns control to the supervisor, which decides the next step or ends the run. This is the easiest multi-agent pattern to reason about, because there is always exactly one place that owns "what happens next."</p>
+<pre><code class="language-python">from langgraph.types import Command
+from typing import Literal
+
+def supervisor_node(state: SupportState) -> Command[Literal["billing_agent", "shipping_agent", "__end__"]]:
+    category = state["category"]
+    if category == "refund":
+        return Command(goto="billing_agent")
+    if category == "shipping":
+        return Command(goto="shipping_agent")
+    return Command(goto="__end__", update={"messages": [{"role": "assistant", "content": "Ticket resolved."}]})
+
+def billing_agent_node(state: SupportState) -> Command[Literal["supervisor"]]:
+    reply = billing_agent.invoke(state)
+    return Command(goto="supervisor", update={"messages": reply["messages"]})</code></pre>
+
+<h4>Swarm / handoff architecture: peer agents pass control directly</h4>
+<p>A swarm lets any agent hand off directly to any other agent it decides is better suited — there's no central router. This scales better to many specialists but is harder to debug, since "what happens next" is distributed across every agent's own logic instead of living in one place. Use a supervisor by default; reach for swarm handoffs only when the routing logic itself needs to be dynamic and context-dependent (e.g., a billing agent realizing mid-conversation that the real issue is a shipping delay, and handing off itself).</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Building a swarm architecture because it sounds more sophisticated, when a supervisor would be simpler to build, test, and debug for the same use case. Multi-agent complexity should be justified by an actual routing need that a single supervisor can't express cleanly — not chosen by default.</p></blockquote>
+
+<p><strong>Exercise 3.1 — Specialist Support Team</strong></p>
+<p>Scenario: TindaHub support, split by domain.</p>
+<ol>
+<li>Build 2 specialist agents with <code>create_agent</code>: a <code>billing_agent</code> (refund policy + refund calculation tools) and a <code>shipping_agent</code> (order status + courier ETA tools).</li>
+<li>Build a supervisor node using <code>Command</code> that routes based on the classify node's category output.</li>
+<li>Wire the graph so each specialist returns control to the supervisor after responding.</li>
+<li>Run 4 tickets that each require a different specialist, plus one ambiguous ticket, and observe how the supervisor handles ambiguity.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-streaming-tokens-updates-custom-data">Module 3.2 — Streaming: Tokens, Updates &amp; Custom Data</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 2.2 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Stream a graph run using at least two different <code>stream_mode</code> values and explain what each returns.<br>
+<strong>Skip if:</strong> You've wired streaming graph output into a frontend chat UI.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+
+<h4>Why streaming matters for a chat product</h4>
+<p>A user staring at a blank screen for 8 seconds while a multi-step agent runs tool calls feels broken, even if the final answer is correct — streaming intermediate progress ("looking up your order…", then the answer token-by-token) is what makes an agent feel responsive rather than frozen. LangGraph's 2026 releases added a content-block-centric streaming API specifically to make this easier to wire into modern chat UIs.</p>
+<pre><code class="language-python"># stream_mode="updates" — one event per node completion, showing what changed
+for chunk in app.stream({"messages": [{"role": "user", "content": "Where's TH-88213?"}]}, config, stream_mode="updates"):
+    print(chunk)  # {'classify': {'category': 'shipping'}}, then {'respond': {'messages': [...]}}
+
+# stream_mode="messages" — token-by-token streaming of the LLM's own output
+for token, metadata in app.stream({"messages": [...]}, config, stream_mode="messages"):
+    print(token.content, end="", flush=True)</code></pre>
+
+<h4>Custom streaming for non-LLM progress</h4>
+<p>Not every "in progress" signal comes from the model — a slow tool call (a real database lookup, an external courier API) has no tokens to stream. A node can push arbitrary custom events via <code>get_stream_writer</code> so your frontend can show "checking courier status…" while a tool call is still running, not just while the model is generating text.</p>
+<pre><code class="language-python">from langgraph.config import get_stream_writer
+
+def shipping_lookup_node(state: SupportState) -> dict:
+    writer = get_stream_writer()
+    writer({"status": "Checking courier API..."})
+    status = get_order_status.invoke({"order_id": state["order_id"]})
+    return {"messages": [{"role": "assistant", "content": status}]}</code></pre>
+
+<p><strong>Exercise 3.2 — Streaming TindaHub Progress</strong></p>
+<p>Scenario: your graph from Exercise 2.3.</p>
+<ol>
+<li>Run the same query with <code>stream_mode="updates"</code> and <code>stream_mode="messages"</code> and compare what each prints.</li>
+<li>Add a <code>get_stream_writer</code> custom event inside your tool-calling node announcing which tool is about to run.</li>
+<li>Write a minimal loop that consumes the stream and prints a running transcript as if it were feeding a terminal-based chat UI.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-durable-execution-retries-error-recovery">Module 3.3 — Durable Execution, Retries &amp; Error Recovery</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> Module 2.4 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Configure a node-level retry policy and explain what a checkpoint protects against on process crash.<br>
+<strong>Skip if:</strong> You've configured retry/timeout policies on a production LangGraph deployment.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone, 4.4</p>
+</blockquote>
+
+<h4>Durable execution: surviving a crash mid-run</h4>
+<p>Because a checkpointer persists state after every node (Module 2.4), a graph can resume from its last completed node after a process crash or redeploy, instead of restarting the entire run from scratch. For a multi-step agent that's already made 3 paid API calls, this is the difference between losing that work on a crash and picking up exactly where it left off.</p>
+
+<h4>Retry policies on flaky nodes</h4>
+<p>External calls — a courier tracking API, a payment gateway — fail transiently. A <code>RetryPolicy</code> on a node retries with backoff automatically, instead of failing the whole graph run on one dropped connection.</p>
+<pre><code class="language-python">from langgraph.types import RetryPolicy
+
+graph.add_node(
+    "check_courier_api",
+    check_courier_node,
+    retry_policy=RetryPolicy(max_attempts=3, initial_interval=1.0, backoff_factor=2.0),
+)</code></pre>
+
+<h4>Timeouts and graceful shutdown</h4>
+<p>2026 LangGraph releases added finer-grained node execution control — timeouts so one hung external call doesn't stall an entire ticket queue, plus graceful shutdown so an in-flight run isn't corrupted mid-checkpoint when a worker is scaled down. Without a timeout, a single unresponsive tool call can block the node indefinitely, and every other ticket routed to that worker queues up behind it.</p>
+<pre><code class="language-python">app = graph.compile(checkpointer=checkpointer)
+result = app.invoke(
+    {"messages": [...]}, config,
+    config={"configurable": {"thread_id": "ticket-th-99120"}, "recursion_limit": 25},
+)</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Relying on a checkpointer alone for reliability and skipping retry policies. A checkpoint protects work already completed — it does nothing to make a currently-failing external call succeed. You need both: checkpoints for crash recovery, retries for transient failures.</p></blockquote>
+
+<p><strong>Exercise 3.3 — Hardening the Support Graph</strong></p>
+<p>Scenario: your Phase 2 capstone graph.</p>
+<ol>
+<li>Add a <code>RetryPolicy</code> to any node that calls an external tool, with at least 3 max attempts and exponential backoff.</li>
+<li>Simulate a transient failure (raise an exception on the first 2 calls, succeed on the 3rd, using a counter) and confirm the retry policy recovers without failing the graph.</li>
+<li>Set a <code>recursion_limit</code> low enough to trigger on a deliberately-broken cycle (one missing termination condition) and observe the error LangGraph raises.</li>
+<li>Write 2-3 sentences on how you'd decide which nodes get retry policies and which don't.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-multi-agent-tindahub-support-desk">Phase 3 Capstone: Multi-Agent TindaHub Support Desk</h3>
+<p><strong>Project: A production-hardened, multi-agent support system</strong></p>
+<p><strong>Scenario:</strong> TindaHub support, integrating Phase 2's single agent into a multi-agent, streaming, fault-tolerant system.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A supervisor graph coordinating at least 3 specialist agents (billing, shipping, product/account).</li>
+<li>Streaming wired end-to-end using at least 2 <code>stream_mode</code>s, including a custom progress event from at least one tool-calling node.</li>
+<li>Retry policies on every node that calls an external tool or API.</li>
+<li>A checkpointer configured for durable execution, with a documented recovery test: kill the process mid-run and confirm it resumes.</li>
+<li>A human-in-the-loop gate on high-value refunds, carried over and re-tested in the multi-agent context.</li>
+<li>A test suite of at least 10 tickets exercising every specialist, at least one handoff/ambiguous routing case, and one simulated transient failure.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-langsmith-observability-evaluation">Phase 4: LangSmith Observability</h2>
+<h3 id="weeks-8-9">Weeks 8–9 | Goal: trace, evaluate, monitor, and deploy what you've built</h3>
+<hr />
+
+<h3 id="module-41-tracing-debugging-with-langsmith">Module 4.1 — Tracing &amp; Debugging with LangSmith</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> Module 1.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Enable tracing on a chain or graph and inspect a full run — including nested tool calls — in the LangSmith UI.<br>
+<strong>Skip if:</strong> You've debugged a production issue using LangSmith trace data.<br>
+<strong>Unlocks:</strong> 4.2, 4.3</p>
+</blockquote>
+
+<h4>Why "it works on my machine" isn't enough for LLM apps</h4>
+<p>An LLM call's failure mode is rarely a stack trace — it's a subtly wrong answer, a tool called with the wrong argument, or a retrieval that missed the right chunk. None of that shows up in application logs unless you specifically capture the full prompt, model response, and intermediate steps for every run. LangSmith is LangChain's observability platform built for exactly this: automatic, zero-code tracing of every chain, agent, and graph run.</p>
+<pre><code class="language-bash">export LANGSMITH_TRACING=true
+export LANGSMITH_API_KEY=your-api-key
+export LANGSMITH_PROJECT=tindahub-support</code></pre>
+<p>With those environment variables set, every <code>invoke</code>, <code>stream</code>, or <code>batch</code> call on a LangChain or LangGraph object is traced automatically — no code changes required. Each trace shows the full tree: the top-level graph run, every node it entered, every tool call and its arguments, every LLM call's prompt and response, and the token/latency/cost for each.</p>
+
+<h4>Reading a trace to debug a wrong answer</h4>
+<p>When TindaHub's agent gives a wrong order status, the trace tells you exactly where it went wrong: did the tool return bad data, did the model misread correct tool output, or did classification route the ticket to the wrong specialist? Without tracing, you're guessing between three different root causes from the same symptom; with it, you click into the exact node and see the actual input/output.</p>
+<pre><code class="language-python">from langsmith import traceable
+
+@traceable(name="classify_ticket", run_type="chain")
+def classify_ticket(ticket_text: str) -> str:
+    # Custom, non-LangChain functions can be traced too via the @traceable decorator —
+    # useful for wrapping business logic that sits between LangChain calls.
+    return triage_chain.invoke({"ticket_text": ticket_text})</code></pre>
+
+<p><strong>Exercise 4.1 — Trace the TindaHub Agent</strong></p>
+<p>Scenario: your Phase 2 or Phase 3 capstone graph.</p>
+<ol>
+<li>Sign up for a LangSmith account (free Developer tier is sufficient) and set the 3 tracing environment variables.</li>
+<li>Run your agent on 5 tickets and open each trace in the LangSmith UI.</li>
+<li>Find one trace with a tool call and identify the exact arguments the model passed to the tool.</li>
+<li>Wrap one non-LangChain helper function in your code with <code>@traceable</code> and confirm it appears nested correctly inside a graph run's trace.</li>
+<li>Deliberately trigger a wrong classification (write a genuinely ambiguous ticket) and use the trace to diagnose why the model chose that category.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-evaluations-datasets-llm-as-judge">Module 4.2 — Evaluations, Datasets &amp; LLM-as-Judge</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> Module 4.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Build a LangSmith dataset and run an offline evaluation with at least one custom evaluator function.<br>
+<strong>Skip if:</strong> You've run a regression evaluation before shipping a prompt change.<br>
+<strong>Unlocks:</strong> 4.3, Phase 4 Capstone</p>
+</blockquote>
+
+<h4>Why "it looked right when I tried it" doesn't scale</h4>
+<p>Manually eyeballing 5 example outputs before shipping a prompt change catches the obvious breaks, but not the 1-in-20 regression that only shows up on an edge case you didn't happen to test. A LangSmith <strong>dataset</strong> is a fixed, reusable set of example inputs (and ideally expected outputs) you can run any version of your chain against — this turns "does the new prompt still work" into a repeatable, quantified check instead of a vibe.</p>
+<pre><code class="language-python">from langsmith import Client
+
+client = Client()
+dataset = client.create_dataset("tindahub-triage-eval", description="Ticket triage regression set")
+
+examples = [
+    {"inputs": {"ticket_text": "Order TH-88213 wala pa 9 days na"}, "outputs": {"category": "shipping"}},
+    {"inputs": {"ticket_text": "Gusto ko ma-refund yung sira na item"}, "outputs": {"category": "refund"}},
+    {"inputs": {"ticket_text": "Ano po ang warranty ng product na 'to?"}, "outputs": {"category": "product_question"}},
+]
+client.create_examples(dataset_id=dataset.id, examples=examples)</code></pre>
+
+<h4>Evaluators: exact match vs. LLM-as-judge</h4>
+<p>Some outputs (like a triage category) can be checked with plain code — string equality. Others (like a drafted reply's tone or helpfulness) can't be checked programmatically, so LangSmith supports <strong>LLM-as-judge</strong> evaluators — a second LLM call that scores the output against a rubric you write. LLM-as-judge is powerful but not free of its own error rate; use exact-match or rule-based evaluators wherever the output is structured enough to allow it, and reserve LLM-as-judge for genuinely subjective qualities.</p>
+<pre><code class="language-python">from langsmith.evaluation import evaluate
+
+def category_exact_match(run, example) -> dict:
+    predicted = run.outputs.get("category")
+    expected = example.outputs.get("category")
+    return {"key": "category_correct", "score": int(predicted == expected)}
+
+def target(inputs: dict) -> dict:
+    return {"category": triage_chain.invoke(inputs)}
+
+results = evaluate(
+    target,
+    data="tindahub-triage-eval",
+    evaluators=[category_exact_match],
+    experiment_prefix="triage-v2",
+)</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> Only building a dataset from "nice" examples. A regression set that never includes the Taglish, sarcastic, or deliberately ambiguous tickets your real users actually send will pass every evaluation while still failing in production the day it ships.</p></blockquote>
+
+<p><strong>Exercise 4.2 — Regression-Test the Triage Chain</strong></p>
+<p>Scenario: your Module 1.2 triage chain and Module 1.3 classifier.</p>
+<ol>
+<li>Build a LangSmith dataset of at least 15 tickets with expected categories, including at least 3 deliberately ambiguous or mixed-language ones.</li>
+<li>Write an exact-match evaluator for category correctness.</li>
+<li>Write an LLM-as-judge evaluator that scores whether a drafted reply is polite and on-topic (1-5 scale).</li>
+<li>Run <code>evaluate</code> against your current chain and record the pass rate.</li>
+<li>Change one word in your triage prompt, re-run the evaluation, and compare the two experiment results in the LangSmith UI.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-production-monitoring-alerts-cost-langsmith-engine">Module 4.3 — Production Monitoring: Alerts, Cost &amp; LangSmith Engine</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate–Advanced · <strong>Prereqs:</strong> Module 4.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Configure a production alert on error rate or latency and explain what triggers it.<br>
+<strong>Skip if:</strong> You've set up alerting on an LLM application already running in production.<br>
+<strong>Unlocks:</strong> 4.4, Phase 4 Capstone</p>
+</blockquote>
+
+<h4>Cost visibility beyond just LLM calls</h4>
+<p>As of 2026, LangSmith gives a unified cost view across an agent's <em>entire</em> workflow — not just model tokens, but retrieval and tool execution spend too. For TindaHub, this means seeing that a "cheap" model call is actually the smallest line item, and the real cost driver is a courier-status tool hitting a paid third-party API on every single message, even ones that don't need it.</p>
+
+<h4>Alerts: catching problems before users report them</h4>
+<p>LangSmith Alerts fire on error rate, run latency, feedback score, or cost, aggregated over a 5- or 15-minute window, and route to PagerDuty, Dynatrace, or any webhook. Alerting on aggregated windows (not single failures) matters because LLM calls have natural transient failure noise — alerting on every single error would page someone every few minutes for nothing actionable.</p>
+<pre><code class="language-json">{
+  "alert_name": "tindahub-support-error-spike",
+  "metric": "error_rate",
+  "threshold": 0.05,
+  "window_minutes": 15,
+  "webhook_url": "https://hooks.example.com/tindahub-alerts"
+}</code></pre>
+
+<h4>LangSmith Engine and Context Hub</h4>
+<p>Two additions announced at LangChain's Interrupt 2026 conference are worth knowing: <strong>LangSmith Engine</strong> watches production traces, clusters recurring failures into a single issue instead of hundreds of individual traces, and can open a pull request with a proposed fix — you mark an issue "Fixing" or "Watching," and watching an issue gets you a Slack alert the next time a matching trace recurs. <strong>Context Hub</strong> is a versioned store — "Git for agent context" — for the files that actually govern agent behavior (instructions like <code>AGENTS.md</code>, skill definitions, policy documents), with environment tagging (dev/staging/prod) and CLI push/pull (<code>langsmith hub push</code> / <code>langsmith hub pull</code>) so a prompt regression traces back to a specific commit and can be rolled back the same way you'd revert code.</p>
+
+<p><strong>Exercise 4.3 — Alert on TindaHub Support Errors</strong></p>
+<p>Scenario: your Phase 3 capstone graph, traced via Module 4.1.</p>
+<ol>
+<li>In the LangSmith UI, configure an alert on error rate exceeding 5% over a 15-minute window for your project.</li>
+<li>Configure a second alert on p95 latency exceeding a threshold you choose, and justify the number in a comment.</li>
+<li>Review your project's cost dashboard and identify which node or tool contributes the most spend.</li>
+<li>Write 2-3 sentences proposing one concrete change to reduce that top cost driver without degrading answer quality.</li>
+</ol>
+<hr />
+
+<h3 id="module-44-deployment-langgraph-platform-context-hub">Module 4.4 — Deployment: LangGraph Platform &amp; Context Hub</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> Module 2.4, Module 4.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Deploy a LangGraph app (hosted or self-hosted) with a persistent checkpointer and confirm it survives a restart.<br>
+<strong>Skip if:</strong> You've deployed a LangGraph application to a non-local environment.<br>
+<strong>Unlocks:</strong> Phase 4 Capstone, Final Capstone</p>
+</blockquote>
+
+<h4>From local script to a running service</h4>
+<p>Everything up to this module has run as a local Python script. A production support agent needs to run as a persistent service: reachable over HTTP, with a real database-backed checkpointer (not <code>MemorySaver</code>), and able to restart without losing in-flight conversations. LangGraph Platform is the managed deployment path; self-hosting via Docker is the alternative when data residency or infra constraints require it.</p>
+<pre><code class="language-json">{
+  "dependencies": ["."],
+  "graphs": {
+    "tindahub_support": "./src/graph.py:app"
+  },
+  "env": ".env"
+}</code></pre>
+<pre><code class="language-bash"># Local dev server, hot-reloading, with a LangGraph Studio UI for inspecting runs
+langgraph dev
+
+# Deploy to LangGraph Platform (hosted)
+langgraph up</code></pre>
+
+<h4>Swapping to a production checkpointer</h4>
+<p>The one code change every deployment needs: replacing <code>MemorySaver</code> with a durable backend. This is the single most common production incident in LangGraph apps — shipping with the in-memory saver and losing every conversation on the first redeploy.</p>
+<pre><code class="language-python">from langgraph.checkpoint.postgres import PostgresSaver
+
+with PostgresSaver.from_conn_string(DATABASE_URL) as checkpointer:
+    checkpointer.setup()  # creates the required tables on first run
+    app = graph.compile(checkpointer=checkpointer)</code></pre>
+
+<h4>Context Hub for prompt versioning</h4>
+<p>Once deployed, prompts and instructions need the same change discipline as code — push TindaHub's triage instructions to Context Hub with <code>langsmith hub push</code>, tag the environment, and your deployed graph pulls the current version at runtime. Updating the triage prompt no longer requires a full redeploy, and a bad prompt change rolls back the same way a bad commit does.</p>
+
+<p><strong>Exercise 4.4 — Deploy the Support Desk</strong></p>
+<p>Scenario: your Phase 3 capstone graph.</p>
+<ol>
+<li>Swap your checkpointer to <code>PostgresSaver</code> (a local Postgres instance is fine for this exercise) and confirm existing multi-turn tests still pass.</li>
+<li>Write a <code>langgraph.json</code> config pointing at your compiled graph.</li>
+<li>Run <code>langgraph dev</code> locally and inspect a run through LangGraph Studio.</li>
+<li>Kill the local server mid-conversation, restart it, and confirm the conversation state survived (proof the Postgres checkpointer, not memory, is the source of truth).</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-full-stack-observability-for-the-tindahub-agent">Phase 4 Capstone: Full-Stack Observability for the TindaHub Agent</h3>
+<p><strong>Project: End-to-end tracing, evaluation, alerting, and deployment</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain the difference between an exact-match evaluator and an LLM-as-judge evaluator, and why alerts fire on aggregated windows instead of single failures? If either draws a blank, re-read Module 4.2 or 4.3 before attempting the deliverables.</p></blockquote>
+<p><strong>Scenario:</strong> your Phase 3 capstone multi-agent support desk, made fully observable and deployed.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Full tracing enabled across every agent and tool call in the system.</li>
+<li>A regression dataset of at least 20 tickets with both exact-match and LLM-as-judge evaluators.</li>
+<li>Two production alerts (error rate and latency) with justified thresholds.</li>
+<li>A cost breakdown identifying the top 2 cost drivers and a proposed mitigation for each.</li>
+<li>A Postgres-backed deployment, verified to survive a restart mid-conversation.</li>
+<li>A written incident-response note: if this system's error rate spiked in production, walk through exactly which LangSmith views you'd check first, in order.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-tindahub-ai-support-copilot">Final Capstone: TindaHub AI Support Copilot</h2>
+<p><strong>Project: A complete, production-shaped AI support system for a Philippine e-commerce marketplace</strong></p>
+<p>Integrates all four phases. Uses the TindaHub scenario throughout: RAG-grounded FAQ answers, tool-using specialist agents, human-gated refund approvals, and full LangSmith observability.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A knowledge base of 20+ FAQ documents, chunked and embedded, with a retrieval fallback for unanswerable questions.</li>
+<li>A multi-agent LangGraph system: a supervisor plus at least 3 specialists (billing, shipping, product/account), each with its own tools.</li>
+<li>A human-in-the-loop approval gate on refunds above a defined threshold, using <code>interrupt</code>/<code>Command(resume=...)</code>.</li>
+<li>A Postgres-backed checkpointer enabling durable, multi-turn, multi-day support threads.</li>
+<li>Streaming wired to show both token-level output and custom tool-progress events.</li>
+<li>Retry policies on every external tool call, plus one demonstrated crash-recovery test.</li>
+<li>Full LangSmith tracing, a 20+ example regression dataset with mixed evaluator types, and 2 production alerts.</li>
+<li>A deployed instance (local <code>langgraph dev</code> is acceptable) with a documented <code>langgraph.json</code> config.</li>
+<li>A README summarizing the architecture with a diagram (ASCII is fine) of the full graph, including every node and conditional edge.</li>
+<li>A retrospective (half a page) covering: what you'd change if TindaHub's ticket volume grew 50x, and which single component is the current reliability bottleneck.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: LangChain Ecosystem Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Call a chat model, provider-agnostic</td><td><code>init_chat_model</code></td><td>Swap providers by changing a string</td></tr>
+<tr><td>Template a reusable prompt</td><td><code>ChatPromptTemplate</code></td><td>Validates variables at call time</td></tr>
+<tr><td>Compose a linear (non-branching) pipeline</td><td>LCEL <code>|</code> operator</td><td>Not for agents — use LangGraph once you branch</td></tr>
+<tr><td>Give a model an action to take</td><td><code>@tool</code> + <code>bind_tools</code></td><td>Model requests it; your code executes it</td></tr>
+<tr><td>Force a model's answer into a schema</td><td><code>with_structured_output</code></td><td>Different from tool calling — no execution step</td></tr>
+<tr><td>Ground answers in your own documents</td><td>Embeddings + Vector Store + retrieval chain</td><td>Chunk size controls the hallucination/context tradeoff</td></tr>
+<tr><td>Build a quick tool-calling agent</td><td><code>create_agent</code></td><td>Runs LangGraph under the hood; replaces <code>AgentExecutor</code></td></tr>
+<tr><td>Build custom branching/looping logic</td><td><code>StateGraph</code></td><td>Nodes, edges, conditional edges, cycles</td></tr>
+<tr><td>Persist conversation state across calls</td><td>Checkpointer (<code>MemorySaver</code>/<code>PostgresSaver</code>)</td><td>Keyed by <code>thread_id</code>; required for HITL</td></tr>
+<tr><td>Pause for human approval</td><td><code>interrupt</code> + <code>Command(resume=...)</code></td><td>Requires a checkpointer</td></tr>
+<tr><td>Coordinate multiple specialist agents</td><td>Supervisor (<code>Command(goto=...)</code>) or swarm</td><td>Default to supervisor unless routing needs to be distributed</td></tr>
+<tr><td>Stream progress to a UI</td><td><code>stream_mode="updates"/"messages"</code>, <code>get_stream_writer</code></td><td>Custom events for non-LLM progress</td></tr>
+<tr><td>Survive transient tool/API failures</td><td><code>RetryPolicy</code> on a node</td><td>Pair with checkpoints for crash recovery</td></tr>
+<tr><td>Debug a wrong or slow run</td><td>LangSmith tracing (<code>LANGSMITH_TRACING=true</code>)</td><td>Zero-code once env vars are set</td></tr>
+<tr><td>Regression-test a prompt or chain change</td><td>LangSmith <code>Dataset</code> + <code>evaluate</code></td><td>Mix exact-match and LLM-as-judge evaluators</td></tr>
+<tr><td>Catch production issues proactively</td><td>LangSmith Alerts</td><td>Aggregated windows, not single-failure triggers</td></tr>
+<tr><td>Deploy a graph as a service</td><td><code>langgraph.json</code> + <code>langgraph up</code>/<code>dev</code></td><td>Swap to a durable checkpointer before shipping</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-langchain-core">LangChain Core</h3>
+<dl class="glossary">
+<dt>Chat Model</dt>
+<dd>A model interface that takes a list of role-tagged messages and returns a message, as opposed to raw text completion.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "LLM" as a synonym in LangChain's own API — <code>LLM</code> is a separate, legacy text-completion interface class.</dd>
+<dt>Message</dt>
+<dd>A single turn in a conversation, with a role (system/human/ai/tool) and content, optionally including tool calls or usage metadata.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "prompt" as a synonym — a prompt is a template that produces messages, not a message itself.</dd>
+<dt>Tool</dt>
+<dd>A Python function with a schema that a model can request be called; the model never executes it directly.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "function" alone — every tool is a function, but not every function passed around your code is a tool the model can see.</dd>
+<dt>Structured Output</dt>
+<dd>Constraining a model's final response to a defined schema (typically a Pydantic model), parsed without free-text parsing.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Confusing with tool calling — structured output shapes the answer, tool calling requests an action.</dd>
+<dt>LCEL (LangChain Expression Language)</dt>
+<dd>The <code>|</code>-based syntax for composing linear, non-branching sequences of runnables (prompt → model → parser).</dd>
+<dd class="avoid"><strong>Avoid:</strong> Using LCEL to describe agent logic — branching/looping agent flows are LangGraph's job.</dd>
+<dt>Retrieval-Augmented Generation (RAG)</dt>
+<dd>A pattern where relevant document chunks are retrieved by embedding similarity and injected into a prompt as grounding context.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "fine-tuning" — RAG changes what the model reads at query time, not the model's weights.</dd>
+<dt>Embedding</dt>
+<dd>A numeric vector representation of text that captures semantic meaning, used to compare texts by similarity rather than keyword overlap.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "token" — tokens are units of text the model processes; embeddings are a derived vector representation of that text.</dd>
+</dl>
+
+<h3 id="glossary-langgraph">LangGraph</h3>
+<dl class="glossary">
+<dt>StateGraph</dt>
+<dd>LangGraph's core graph-builder class: a typed shared state, a set of nodes, and edges connecting them, compiled into a runnable app.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "chain" — a chain is LCEL's linear composition; a StateGraph can branch and cycle.</dd>
+<dt>Node</dt>
+<dd>A function in a graph that reads the current state and returns a partial update to be merged into it.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "step" — used loosely elsewhere, but in LangGraph a node is a specific, named unit registered on the graph.</dd>
+<dt>Conditional Edge</dt>
+<dd>An edge whose destination is decided at runtime by a routing function that inspects state.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "branch" alone — a conditional edge is the mechanism; a branch is the resulting path.</dd>
+<dt>Checkpointer</dt>
+<dd>A persistence backend that saves graph state after every node, keyed by <code>thread_id</code>, enabling resumable and multi-turn execution.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "cache" — a checkpoint is durable conversation state, not a performance optimization layer.</dd>
+<dt>Thread</dt>
+<dd>One continuous, checkpointed run or conversation, identified by a <code>thread_id</code> passed in the config at invoke time.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "session" or "user" — a thread maps to one conversation, which may not be 1:1 with a user or login session.</dd>
+<dt>Interrupt</dt>
+<dd>A deliberate, resumable pause in graph execution that hands control to an external actor (typically a human) before continuing.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "exception" or "error" — an interrupt is expected control flow, not a failure.</dd>
+<dt>create_agent</dt>
+<dd>LangChain 1.x's prebuilt function for constructing a standard tool-calling agent loop, compiled as a LangGraph graph under the hood.</dd>
+<dd class="avoid"><strong>Avoid:</strong> <code>AgentExecutor</code>, <code>initialize_agent</code>, <code>create_react_agent</code> (pre-1.0) — all deprecated, in maintenance mode through December 2026.</dd>
+<dt>Supervisor Pattern</dt>
+<dd>A multi-agent architecture where one coordinating agent routes work to specialist agents and receives control back after each.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "orchestrator" as a precise synonym — used loosely across the industry; this guide reserves "supervisor" for the specific centralized-routing pattern.</dd>
+<dt>Swarm / Handoff Pattern</dt>
+<dd>A multi-agent architecture where agents transfer control directly to one another without a central router.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Assuming it's always better than supervisor — it trades debuggability for routing flexibility.</dd>
+</dl>
+
+<h3 id="glossary-langsmith">LangSmith</h3>
+<dl class="glossary">
+<dt>Trace</dt>
+<dd>The full recorded tree of a single run — every node, tool call, and LLM call, with inputs, outputs, latency, and token cost.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "log" — a trace is structured and hierarchical, not a flat text log line.</dd>
+<dt>Dataset (LangSmith)</dt>
+<dd>A fixed, reusable collection of example inputs (and optionally expected outputs) used to run repeatable evaluations.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Confusing with a RAG knowledge-base document set — different purpose entirely.</dd>
+<dt>Evaluator</dt>
+<dd>A function that scores a run's output against expected output or a rubric, either by code (exact-match) or by a second LLM call (LLM-as-judge).</dd>
+<dd class="avoid"><strong>Avoid:</strong> "test" alone — an evaluator produces a score, not a pass/fail assertion, though you can threshold it into one.</dd>
+<dt>LLM-as-Judge</dt>
+<dd>An evaluator implemented as an LLM call that scores a subjective quality (tone, helpfulness, groundedness) against a written rubric.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Treating its score as ground truth — it carries its own error rate and should be spot-checked against human judgment.</dd>
+<dt>Alert</dt>
+<dd>A rule that fires when a production metric (error rate, latency, cost, feedback score) crosses a threshold over an aggregation window.</dd>
+<dd class="avoid"><strong>Avoid:</strong> Alerting on single-event failures — LLM calls have natural transient noise; windowed aggregation is the default for a reason.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>Learning LangChain: Building AI and LLM Applications with LangChain and LangGraph (O'Reilly, 2025), Oshin &amp; Campos</td><td>Core LangChain fundamentals through LangGraph agent architectures — written by LangChain engineers, covers RAG, LCEL, and agent monitoring/evaluation</td></tr>
+</table>
+
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>docs.langchain.com</td><td>Official LangChain &amp; LangGraph documentation</td><td>Primary source for current API — always check version-specific docs, not blog posts</td></tr>
+<tr><td>reference.langchain.com</td><td>API reference for langchain-core, langchain, langgraph</td><td>Ground truth for exact function signatures</td></tr>
+<tr><td>changelog.langchain.com</td><td>LangChain/LangGraph/LangSmith release notes</td><td>Check before starting any project — this ecosystem ships frequently</td></tr>
+<tr><td>LangChain Academy</td><td>Free official courses on chains, agents, LangGraph, and production patterns</td><td>~13 hours total across 3 courses; closest thing to an official certification path</td></tr>
+<tr><td>LangGraph Studio</td><td>Visual graph inspector bundled with <code>langgraph dev</code></td><td>Use it while debugging Phase 2-3 exercises — seeing the graph visually clarifies routing bugs fast</td></tr>
+<tr><td>GitHub: langchain-ai/langchain &amp; langchain-ai/langgraph</td><td>Source code, issues, release history</td><td>Issue trackers are the fastest way to confirm whether something is a bug or intended behavior</td></tr>
+</table>
+
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>Anthropic or OpenAI API key</td><td>Required for every module — pick one provider to start; <code>init_chat_model</code> makes switching later cheap</td></tr>
+<tr><td>InMemoryVectorStore (langchain-core)</td><td>Zero-setup vector store for Phase 1 RAG exercises — swap for a real vector DB in production</td></tr>
+<tr><td>Local Postgres instance</td><td>Required for Module 4.4's <code>PostgresSaver</code> deployment exercise</td></tr>
+<tr><td>LangSmith account (free Developer tier)</td><td>Required for all of Phase 4 — 5,000 traces/month is enough for this entire guide</td></tr>
+<tr><td>TindaHub scenario data (self-authored)</td><td>The running example — you write the FAQ docs, order records, and tickets yourself per exercise instructions</td></tr>
+</table>
+
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>LangChain Forum</td><td>forum.langchain.com</td><td>Official Q&amp;A, migration questions (e.g., AgentExecutor → create_agent), maintainer responses</td></tr>
+<tr><td>r/LangChain</td><td>Reddit</td><td>Real-world architecture debates, honest pros/cons discussion, production war stories</td></tr>
+<tr><td>LangChain Discord</td><td>Discord</td><td>Fast, informal troubleshooting; good for "is this a bug or am I misusing the API" questions</td></tr>
+<tr><td>LangChain GitHub Discussions</td><td>GitHub</td><td>Design-level questions and feature requests, closest to the maintainers</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
+
+<h4>Phase 1 — LangChain Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — LLMs, Chat Models &amp; Messages</li>
+<li>[ ] Exercise 1.1 — First TindaHub Support Reply</li>
+<li>[ ] Module 1.2 — Prompt Templates &amp; LCEL Composition</li>
+<li>[ ] Exercise 1.2 — Ticket Triage Chain</li>
+<li>[ ] Module 1.3 — Tool Calling &amp; Structured Output</li>
+<li>[ ] Exercise 1.3 — Order Lookup Tool</li>
+<li>[ ] Module 1.4 — Retrieval-Augmented Generation</li>
+<li>[ ] Exercise 1.4 — TindaHub Knowledge Base</li>
+<li>[ ] Capstone 1 — TindaHub FAQ RAG Assistant</li>
+</ul>
+
+<h4>Phase 2 — Agents with LangGraph</h4>
+<ul>
+<li>[ ] Module 2.1 — From AgentExecutor to create_agent</li>
+<li>[ ] Exercise 2.1 — First create_agent</li>
+<li>[ ] Module 2.2 — StateGraph, Nodes &amp; Edges</li>
+<li>[ ] Exercise 2.2 — Two-Node Support Graph</li>
+<li>[ ] Module 2.3 — Conditional Edges, Cycles &amp; Control Flow</li>
+<li>[ ] Exercise 2.3 — Refund Escalation Routing</li>
+<li>[ ] Module 2.4 — Persistence, Checkpointers &amp; Memory</li>
+<li>[ ] Exercise 2.4 — Multi-Turn TindaHub Conversations</li>
+<li>[ ] Module 2.5 — Human-in-the-Loop</li>
+<li>[ ] Exercise 2.5 — Refund Approval Gate</li>
+<li>[ ] Capstone 2 — TindaHub Ticket Triage Agent</li>
+</ul>
+
+<h4>Phase 3 — Multi-Agent &amp; Production Patterns</h4>
+<ul>
+<li>[ ] Module 3.1 — Supervisor &amp; Swarm Architectures</li>
+<li>[ ] Exercise 3.1 — Specialist Support Team</li>
+<li>[ ] Module 3.2 — Streaming</li>
+<li>[ ] Exercise 3.2 — Streaming TindaHub Progress</li>
+<li>[ ] Module 3.3 — Durable Execution, Retries &amp; Error Recovery</li>
+<li>[ ] Exercise 3.3 — Hardening the Support Graph</li>
+<li>[ ] Capstone 3 — Multi-Agent TindaHub Support Desk</li>
+</ul>
+
+<h4>Phase 4 — LangSmith Observability</h4>
+<ul>
+<li>[ ] Module 4.1 — Tracing &amp; Debugging with LangSmith</li>
+<li>[ ] Exercise 4.1 — Trace the TindaHub Agent</li>
+<li>[ ] Module 4.2 — Evaluations, Datasets &amp; LLM-as-Judge</li>
+<li>[ ] Exercise 4.2 — Regression-Test the Triage Chain</li>
+<li>[ ] Module 4.3 — Production Monitoring</li>
+<li>[ ] Exercise 4.3 — Alert on TindaHub Support Errors</li>
+<li>[ ] Module 4.4 — Deployment</li>
+<li>[ ] Exercise 4.4 — Deploy the Support Desk</li>
+<li>[ ] Capstone 4 — Full-Stack Observability for the TindaHub Agent</li>
+</ul>
+
+<h4>Outcomes</h4>
+<ul>
+<li>[ ] Final Capstone — TindaHub AI Support Copilot complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 — LangChain Ecosystem Track: Beginner to Advanced</em><br>
+<em>Non-linear modular design · Placement quiz · 19 modules (incl. capstones) · ~9 weeks part-time · hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-07-26 — LangChain 1.3.14, langchain-core 1.4.8, LangGraph 1.2.9 / langgraph-cli 0.4.31, LangSmith Interrupt-2026 feature set (Engine, Context Hub, unified cost tracking)</em></p>
+
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Full-text guide search ────────────────────────────────
+  // Indexes every block of the guide body, lists matching snippets grouped
+  // by section, highlights hits in the page, and filters the nav to the
+  // sections that contain them. Multiple words = all must appear in the
+  // same block; wrap in "quotes" for an exact phrase.
+  var navSearch = document.getElementById("navSearch");
+  var contentRoot = document.querySelector(".content");
+  if(navSearch && contentRoot){
+    var BLOCK_SEL = "h1,h2,h3,h4,p,li,tr,dt,dd,pre";
+    var searchRow = document.getElementById("searchRow"),
+        searchBar = document.getElementById("searchBar"),
+        searchCount = document.getElementById("searchCount"),
+        searchResults = document.getElementById("searchResults");
+    var navById = {};
+    document.querySelectorAll("#nav a").forEach(function(a){
+      navById[a.getAttribute("href").slice(1)] = a;
+    });
+
+    var blocks = [], section = null;
+    contentRoot.querySelectorAll(BLOCK_SEL).forEach(function(el){
+      if(/^H[1-4]$/.test(el.tagName) && el.id && navById[el.id]) section = el;
+      if(el.classList.contains("quiz-score")) return;
+      var outer = el.parentElement && el.parentElement.closest(BLOCK_SEL);
+      if(outer && contentRoot.contains(outer)) return;
+      var text = el.textContent.replace(/\s+/g, " ").trim();
+      if(text) blocks.push({el:el, text:text, lower:text.toLowerCase(), section:section});
+    });
+
+    var hits = [], cur = -1, timer = null;
+    function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+    function sectionLabel(sec){ return sec && navById[sec.id] ? navById[sec.id].textContent : "Introduction"; }
+
+    function clearMarks(){
+      contentRoot.querySelectorAll("mark.lg-hit").forEach(function(m){
+        var p = m.parentNode;
+        p.replaceChild(document.createTextNode(m.textContent), m);
+        p.normalize();
+      });
+      var b = contentRoot.querySelector(".lg-block-current");
+      if(b) b.classList.remove("lg-block-current");
+    }
+
+    function markBlock(el, re){
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+      while((n = walker.nextNode())) nodes.push(n);
+      var marks = [];
+      nodes.forEach(function(node){
+        var t = node.nodeValue, m, last = 0;
+        re.lastIndex = 0;
+        if(!re.test(t)) return;
+        re.lastIndex = 0;
+        var frag = document.createDocumentFragment();
+        while((m = re.exec(t))){
+          if(m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+          var mk = document.createElement("mark");
+          mk.className = "lg-hit";
+          mk.textContent = m[0];
+          frag.appendChild(mk);
+          marks.push(mk);
+          last = m.index + m[0].length;
+        }
+        if(last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+      });
+      return marks;
+    }
+
+    function snippet(text, terms, re){
+      var lower = text.toLowerCase(), i = -1;
+      terms.forEach(function(t){ var k = lower.indexOf(t); if(k > -1 && (i < 0 || k < i)) i = k; });
+      if(i < 0) i = 0;
+      var start = Math.max(0, i - 40), end = Math.min(text.length, i + 100);
+      var s = text.slice(start, end), out = "", last = 0, m;
+      re.lastIndex = 0;
+      while((m = re.exec(s))){
+        out += escHtml(s.slice(last, m.index)) + "<mark>" + escHtml(m[0]) + "</mark>";
+        last = m.index + m[0].length;
+      }
+      return (start > 0 ? "…" : "") + out + escHtml(s.slice(last)) + (end < text.length ? "…" : "");
+    }
+
+    function filterNav(ids){
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var any = false;
+        g.querySelectorAll("a").forEach(function(a){
+          var show = !ids || !!ids[a.getAttribute("href").slice(1)];
+          if(a.classList.contains("nav-child")) a.classList.toggle("filtered-out", !show);
+          if(show) any = true;
+        });
+        g.classList.toggle("filtered-out", !any);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        a.classList.toggle("filtered-out", !!ids && !ids[a.getAttribute("href").slice(1)]);
+      });
+    }
+
+    function updateCount(nSections){
+      if(!hits.length){ searchCount.textContent = "No matches"; return; }
+      var pos = cur > -1 ? (cur + 1) + " / " + hits.length : hits.length + (hits.length === 1 ? " match" : " matches");
+      searchCount.textContent = pos + " · " + nSections + (nSections === 1 ? " section" : " sections");
+    }
+
+    var lastSectionCount = 0;
+    function run(){
+      var raw = navSearch.value.trim();
+      clearMarks();
+      hits = []; cur = -1;
+      searchRow.classList.toggle("has-query", !!raw);
+      if(raw.length < 2){
+        searchResults.classList.remove("show");
+        searchBar.classList.remove("show");
+        searchResults.innerHTML = "";
+        filterNav(null);
+        return;
+      }
+      var phrase = /^"(.+)"$/.exec(raw);
+      var terms = phrase ? [phrase[1].toLowerCase()] : raw.toLowerCase().split(/\s+/);
+      terms = terms.filter(function(t, i){ return t && terms.indexOf(t) === i; });
+      var re = new RegExp(terms.slice().sort(function(a, b){ return b.length - a.length; }).map(escRe).join("|"), "gi");
+      var matched = blocks.filter(function(b){
+        return terms.every(function(t){ return b.lower.indexOf(t) > -1; });
+      });
+
+      var ids = {}, groups = [], html = "", LIMIT = 60;
+      matched.forEach(function(b, bi){
+        var marks = markBlock(b.el, re);
+        if(marks.length) marks.forEach(function(m){ hits.push({m:m, el:b.el, b:bi}); });
+        else hits.push({m:null, el:b.el, b:bi});
+        var key = b.section ? b.section.id : "";
+        if(b.section) ids[b.section.id] = true;
+        if(!groups.length || groups[groups.length - 1].key !== key) groups.push({key:key, sec:b.section, items:[]});
+        groups[groups.length - 1].items.push(bi);
+      });
+
+      if(!matched.length){
+        html = '<div class="sr-empty">No matches for “' + escHtml(raw) + '”. Try fewer words.</div>';
+      } else {
+        var listed = 0;
+        groups.forEach(function(g){
+          if(listed >= LIMIT) return;
+          html += '<div class="sr-group"><div class="sr-section">' + escHtml(sectionLabel(g.sec)) + '</div>';
+          g.items.slice(0, 4).forEach(function(bi){
+            if(listed >= LIMIT) return;
+            html += '<button type="button" class="sr-item" role="option" data-b="' + bi + '">' +
+                    snippet(matched[bi].text, terms, re) + '</button>';
+            listed++;
+          });
+          if(g.items.length > 4) html += '<div class="sr-more">+' + (g.items.length - 4) + ' more in this section (use ↓ to step through)</div>';
+          html += '</div>';
+        });
+        if(matched.length > listed) html += '<div class="sr-more">Showing ' + listed + ' of ' + matched.length + ' blocks — add a word to narrow it.</div>';
+      }
+      searchResults.innerHTML = html;
+      searchResults.classList.add("show");
+      searchBar.classList.add("show");
+      lastSectionCount = Object.keys(ids).length || (matched.length ? 1 : 0);
+      filterNav(ids);
+      updateCount(lastSectionCount);
+    }
+
+    function go(i, closeMobile){
+      if(!hits.length) return;
+      cur = (i + hits.length) % hits.length;
+      contentRoot.querySelectorAll("mark.lg-hit-current").forEach(function(m){ m.classList.remove("lg-hit-current"); });
+      var prev = contentRoot.querySelector(".lg-block-current");
+      if(prev) prev.classList.remove("lg-block-current");
+      var h = hits[cur];
+      if(h.m) h.m.classList.add("lg-hit-current");
+      h.el.classList.add("lg-block-current");
+      (h.m || h.el).scrollIntoView({behavior:"smooth", block:"center"});
+      searchResults.querySelectorAll(".sr-item").forEach(function(it){
+        var on = +it.getAttribute("data-b") === h.b;
+        it.classList.toggle("current", on);
+        if(on) it.scrollIntoView({block:"nearest"});
+      });
+      updateCount(lastSectionCount);
+      if(closeMobile && window.innerWidth <= 1000) closeNav();
+    }
+
+    navSearch.addEventListener("input", function(){
+      clearTimeout(timer);
+      timer = setTimeout(run, 140);
+    });
+    navSearch.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        clearTimeout(timer);
+        if(!hits.length && navSearch.value.trim().length >= 2) run();
+        go(e.shiftKey ? cur - 1 : cur + 1, true);
+      } else if(e.key === "Escape"){
+        navSearch.value = "";
+        run();
+      }
+    });
+    searchResults.addEventListener("click", function(e){
+      var item = e.target.closest(".sr-item");
+      if(!item) return;
+      var b = +item.getAttribute("data-b");
+      for(var k = 0; k < hits.length; k++){ if(hits[k].b === b){ go(k, true); break; } }
+    });
+    document.getElementById("searchNext").addEventListener("click", function(){ go(cur + 1, false); });
+    document.getElementById("searchPrev").addEventListener("click", function(){ go(cur - 1, false); });
+    document.getElementById("searchClear").addEventListener("click", function(){
+      navSearch.value = "";
+      run();
+      navSearch.focus();
+    });
+    document.addEventListener("keydown", function(e){
+      var tag = (e.target.tagName || "").toLowerCase();
+      var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+      var slash = e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey;
+      var cmdK = (e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K");
+      if(!slash && !cmdK) return;
+      e.preventDefault();
+      if(window.innerWidth <= 1000){
+        document.getElementById("sidebar").classList.add("open");
+        document.getElementById("scrim").classList.add("show");
+      }
+      navSearch.focus();
+      navSearch.select();
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Scientific Computing Learning Guide — math, NumPy, SciPy &amp; SymPy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+.search-row{position:relative}
+.search-row .nav-search{padding-right:2.4rem}
+.search-kbd{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:4px;padding:0 .3rem;background:var(--paper-2);
+  pointer-events:none;
+}
+.search-row.has-query .search-kbd{display:none}
+.search-bar{
+  display:none;align-items:center;gap:.35rem;margin-top:.45rem;
+  font-size:.72rem;color:var(--ink-soft);
+}
+.search-bar.show{display:flex}
+.search-count{flex:1;font-family:var(--mono)}
+.search-bar button{
+  border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);
+  border-radius:6px;font-size:.72rem;padding:.15rem .45rem;cursor:pointer;min-width:26px;min-height:24px;
+}
+.search-bar button:hover{background:var(--teal-wash)}
+.search-results{
+  display:none;margin:.5rem 0 .2rem;max-height:48vh;overflow-y:auto;
+  border:1px solid var(--line);border-radius:8px;background:var(--paper);
+}
+.search-results.show{display:block}
+.sr-group{border-top:1px solid var(--line-soft)}
+.sr-group:first-child{border-top:none}
+.sr-section{
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--teal);padding:.5rem .65rem .15rem;
+}
+.sr-item{
+  display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  font-family:var(--sans);font-size:.76rem;line-height:1.4;color:var(--ink);
+  padding:.35rem .65rem;
+}
+.sr-item:hover,.sr-item.current{background:var(--teal-wash)}
+.sr-item mark,.lg-hit{background:var(--amber-wash);color:inherit;border-radius:2px;padding:0 1px}
+.sr-more{font-size:.7rem;color:var(--ink-soft);padding:.1rem .65rem .45rem}
+.sr-empty{font-size:.78rem;color:var(--ink-soft);padding:.6rem .65rem}
+pre .lg-hit{background:#5c4a12;color:#fff4cf}
+.lg-hit.lg-hit-current{background:var(--coral);color:#fff;outline:2px solid var(--coral)}
+.lg-block-current{outline:2px dashed var(--teal);outline-offset:4px;border-radius:4px}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — expert guided learning">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">expert guided learning</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Python Scientific<br>Computing Guide</div>
+      <div class="brand-sub">math · NumPy · SciPy · SymPy</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <div class="search-row" id="searchRow">
+        <input type="search" id="navSearch" class="nav-search" placeholder="Search the guide…" aria-label="Search the whole guide" aria-controls="searchResults" autocomplete="off" spellcheck="false">
+        <span class="search-kbd" aria-hidden="true">/</span>
+      </div>
+      <div class="search-bar" id="searchBar">
+        <span class="search-count" id="searchCount" aria-live="polite"></span>
+        <button type="button" id="searchPrev" aria-label="Previous match">↑</button>
+        <button type="button" id="searchNext" aria-label="Next match">↓</button>
+        <button type="button" id="searchClear" aria-label="Clear search">✕</button>
+      </div>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+    </div>
+    <nav id="nav">
+<a href="#applied-numerical-symbolic-computing-track" class="nav-top">Applied Numerical &amp; Symbolic Computing Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-numpy-foundations" class="nav-top nav-phase">Phase 1: NumPy Foundations</a>
+<div class="nav-children">
+<a href="#module-11-math-module-and-the-case-for-arrays" class="nav-child">Module 1.1 — math Module &amp; the Case for Arrays</a>
+<a href="#module-12-numpy-arrays-creation-dtype-indexing" class="nav-child">Module 1.2 — NumPy Arrays: Creation, dtype &amp; Indexing</a>
+<a href="#module-13-vectorization-broadcasting-performance" class="nav-child">Module 1.3 — Vectorization, Broadcasting &amp; Performance</a>
+<a href="#module-14-linear-algebra-with-numpylinalg" class="nav-child">Module 1.4 — Linear Algebra with numpy.linalg</a>
+<a href="#phase-1-capstone-array-ify-tindahub" class="nav-child">Phase 1 Capstone: Array-ify TindaHub</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-scipy-numerical-methods" class="nav-top nav-phase">Phase 2: SciPy Numerical Methods</a>
+<div class="nav-children">
+<a href="#module-21-scipystats-just-enough-to-know-its-there" class="nav-child">Module 2.1 — scipy.stats: Just Enough to Know It's There</a>
+<a href="#module-22-scipyoptimize-root-finding-minimization" class="nav-child">Module 2.2 — scipy.optimize: Root Finding &amp; Minimization</a>
+<a href="#module-23-scipyintegrate-quadrature-odes" class="nav-child">Module 2.3 — scipy.integrate: Quadrature &amp; ODEs</a>
+<a href="#module-24-scipyinterpolate-scipysignal-basics" class="nav-child">Module 2.4 — scipy.interpolate &amp; scipy.signal Basics</a>
+<a href="#phase-2-capstone-numerically-optimize-tindahub-restocking" class="nav-child">Phase 2 Capstone: Numerically Optimize TindaHub Restocking</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-sympy-symbolic-math" class="nav-top nav-phase">Phase 3: SymPy Symbolic Math</a>
+<div class="nav-children">
+<a href="#module-31-symbols-expressions-simplification" class="nav-child">Module 3.1 — Symbols, Expressions &amp; Simplification</a>
+<a href="#module-32-symbolic-calculus-derivatives-integrals-limits-series" class="nav-child">Module 3.2 — Symbolic Calculus</a>
+<a href="#module-33-solving-equations-systems-symbolically" class="nav-child">Module 3.3 — Solving Equations &amp; Systems Symbolically</a>
+<a href="#module-34-bridging-symbolic-to-numeric-lambdify-plotting" class="nav-child">Module 3.4 — Bridging Symbolic to Numeric: lambdify</a>
+<a href="#phase-3-capstone-symbolic-profit-model-for-tindahub" class="nav-child">Phase 3 Capstone: Symbolic Profit Model for TindaHub</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-integration-judgment" class="nav-top nav-phase">Phase 4: Integration &amp; Judgment</a>
+<div class="nav-children">
+<a href="#module-41-when-to-use-what-math-vs-numpy-vs-scipy-vs-sympy" class="nav-child">Module 4.1 — When to Use What</a>
+<a href="#module-42-applied-case-study-delivery-cost-optimization" class="nav-child">Module 4.2 — Applied Case Study: Delivery Cost Optimization</a>
+<a href="#module-43-validation-precision-numerical-pitfalls" class="nav-child">Module 4.3 — Validation, Precision &amp; Numerical Pitfalls</a>
+</div></div>
+
+<a href="#final-capstone-tindahub-scientific-computing-toolkit" class="nav-top">Final Capstone: TindaHub Scientific Computing Toolkit</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="python-scientific-computing-learning-guide">Python Scientific Computing Learning Guide</h1>
+<h2 id="applied-numerical-symbolic-computing-track">Applied Numerical &amp; Symbolic Computing Track</h2>
+<h3>math &middot; NumPy &middot; SciPy &middot; SymPy</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Python Scientific Computing" xmlns="http://www.w3.org/2000/svg">
+<g fill="#075249">
+<rect x="26" y="26" width="46" height="46" rx="8"/>
+<rect x="90" y="26" width="46" height="46" rx="8"/>
+<rect x="154" y="26" width="46" height="46" rx="8"/>
+<rect x="26" y="90" width="46" height="46" rx="8"/>
+<rect x="154" y="90" width="46" height="46" rx="8"/>
+<rect x="26" y="154" width="46" height="46" rx="8"/>
+<rect x="90" y="154" width="46" height="46" rx="8"/>
+<rect x="154" y="154" width="46" height="46" rx="8"/>
+</g>
+<path d="M120 38 C98 38 92 58 92 76 L92 180 C92 198 86 218 64 218" fill="none" stroke="#0d7a6e" stroke-width="14" stroke-linecap="round"/>
+<circle cx="124" cy="32" r="8" fill="#0d7a6e"/>
+<circle cx="60" cy="224" r="8" fill="#0d7a6e"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide &mdash; you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same realistic <strong>TindaHub Orders</strong> dataset &mdash; a 5,000-row Philippine sari-sari-store distribution order register already in this workspace.</p>
+</blockquote>
+<p><strong>Scope note:</strong> this guide assumes you already write everyday Python &mdash; functions, loops, list comprehensions, reading a CSV. If that's shaky, work through the <a href="../python/python_learning_guide.html">Python Learning Guide</a> first (especially Modules 1.1&ndash;2.3). This guide starts where that one stops: the stdlib <code>math</code> module, then the three big scientific-computing libraries &mdash; <strong>NumPy</strong> (arrays), <strong>SciPy</strong> (numerical methods built on NumPy), and <strong>SymPy</strong> (symbolic/exact math). Statistical inference (hypothesis tests, distributions, regression theory) is deliberately kept light here and cross-referenced to the <a href="../statistics-with-python/statistics-with-python_learning_guide.html">Statistics with Python guide</a>, which already owns that ground &mdash; this guide's Module 2.1 covers only the shape of the <code>scipy.stats</code> interface, not a statistics curriculum.</p>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner to scientific Python</strong> &mdash; Start at Module 1.1 and go sequentially through all four phases.</li>
+<li><strong>Some NumPy/SciPy experience</strong> &mdash; Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting one library</strong> &mdash; Jump via the <strong>Module Index</strong> or pick a <strong>Learning Track</strong> (NumPy-only, SciPy-only, SymPy-only, or Applied).</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz &mdash; Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3>NumPy</h3>
+<ul>
+<li>[ ] I know the difference between a Python list and a NumPy <code>ndarray</code>, and why the latter is faster for numeric work.</li>
+<li>[ ] I can create arrays with <code>np.array</code>, <code>np.arange</code>, and <code>np.linspace</code>, and reshape them.</li>
+<li>[ ] I can explain broadcasting and use boolean masks to filter an array without a Python loop.</li>
+<li>[ ] I can solve a linear system with <code>numpy.linalg.solve</code> and know what <code>lstsq</code> is for.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 1.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 1.3</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Phase 2</strong></p>
+
+<h3>SciPy</h3>
+<ul>
+<li>[ ] I know that SciPy is built on top of NumPy arrays, not a replacement for them.</li>
+<li>[ ] I can use <code>scipy.optimize.minimize</code> to find a value that minimizes a cost function.</li>
+<li>[ ] I can numerically integrate a function with <code>scipy.integrate.quad</code> or solve an ODE with <code>solve_ivp</code>.</li>
+<li>[ ] I can interpolate missing values in a series with <code>scipy.interpolate</code>.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 2.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 2.3</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Phase 3</strong></p>
+
+<h3>SymPy</h3>
+<ul>
+<li>[ ] I can define symbols and build an algebraic expression that isn't evaluated to a number.</li>
+<li>[ ] I can symbolically differentiate and integrate an expression with <code>diff</code> and <code>integrate</code>.</li>
+<li>[ ] I can solve an equation exactly with <code>solve</code> or <code>solveset</code> instead of guessing numerically.</li>
+<li>[ ] I know what <code>lambdify</code> does and why you'd need it before evaluating a symbolic expression on a NumPy array.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 3.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 3.3</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Phase 4</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-math-module-and-the-case-for-arrays"><td>1.1</td><td>math Module &amp; the Case for Arrays</td><td>Beginner&ndash;Intermediate</td><td>None</td><td>2h</td></tr>
+<tr data-href="#module-12-numpy-arrays-creation-dtype-indexing"><td>1.2</td><td>NumPy Arrays: Creation, dtype &amp; Indexing</td><td>Beginner&ndash;Intermediate</td><td>1.1</td><td>3h</td></tr>
+<tr data-href="#module-13-vectorization-broadcasting-performance"><td>1.3</td><td>Vectorization, Broadcasting &amp; Performance</td><td>Intermediate</td><td>1.2</td><td>3h</td></tr>
+<tr data-href="#module-14-linear-algebra-with-numpylinalg"><td>1.4</td><td>Linear Algebra with numpy.linalg</td><td>Intermediate</td><td>1.3</td><td>3h</td></tr>
+<tr data-href="#module-21-scipystats-just-enough-to-know-its-there"><td>2.1</td><td>scipy.stats: Just Enough to Know It's There</td><td>Intermediate</td><td>1.2</td><td>2h</td></tr>
+<tr data-href="#module-22-scipyoptimize-root-finding-minimization"><td>2.2</td><td>scipy.optimize: Root Finding &amp; Minimization</td><td>Intermediate</td><td>1.3</td><td>3h</td></tr>
+<tr data-href="#module-23-scipyintegrate-quadrature-odes"><td>2.3</td><td>scipy.integrate: Quadrature &amp; ODEs</td><td>Intermediate</td><td>1.3</td><td>3h</td></tr>
+<tr data-href="#module-24-scipyinterpolate-scipysignal-basics"><td>2.4</td><td>scipy.interpolate &amp; scipy.signal Basics</td><td>Intermediate</td><td>1.2</td><td>2.5h</td></tr>
+<tr data-href="#module-31-symbols-expressions-simplification"><td>3.1</td><td>Symbols, Expressions &amp; Simplification</td><td>Beginner&ndash;Intermediate</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-32-symbolic-calculus-derivatives-integrals-limits-series"><td>3.2</td><td>Symbolic Calculus: Derivatives, Integrals, Limits, Series</td><td>Intermediate</td><td>3.1</td><td>3h</td></tr>
+<tr data-href="#module-33-solving-equations-systems-symbolically"><td>3.3</td><td>Solving Equations &amp; Systems Symbolically</td><td>Intermediate</td><td>3.1</td><td>2.5h</td></tr>
+<tr data-href="#module-34-bridging-symbolic-to-numeric-lambdify-plotting"><td>3.4</td><td>Bridging Symbolic to Numeric: lambdify &amp; Plotting</td><td>Intermediate</td><td>3.2, 1.2</td><td>2.5h</td></tr>
+<tr data-href="#module-41-when-to-use-what-math-vs-numpy-vs-scipy-vs-sympy"><td>4.1</td><td>When to Use What: math vs NumPy vs SciPy vs SymPy</td><td>Intermediate</td><td>Phases 1&ndash;3</td><td>1.5h</td></tr>
+<tr data-href="#module-42-applied-case-study-delivery-cost-optimization"><td>4.2</td><td>Applied Case Study: Delivery Cost Optimization</td><td>Advanced</td><td>2.2, 3.4</td><td>3h</td></tr>
+<tr data-href="#module-43-validation-precision-numerical-pitfalls"><td>4.3</td><td>Validation, Precision &amp; Numerical Pitfalls</td><td>Advanced</td><td>1.4, 3.3</td><td>2h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1&ndash;3 are largely independent tracks &mdash; NumPy (Phase 1), SciPy (Phase 2), and SymPy (Phase 3) each stand alone once you've done Module 1.1&ndash;1.2. SciPy leans on NumPy arrays as its data structure, so Phase 1 is a soft prerequisite for Phase 2. Phase 4 integrates all three and assumes you've done at least one module from each earlier phase.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+
+<h3 id="track-1-numpy-fast-track">Track 1 &mdash; NumPy Fast Track (array computing for data work)</h3>
+<p><code>1.1 &rarr; 1.2 &rarr; 1.3 &rarr; 1.4 &rarr; Phase 1 Capstone</code><br>
+Target outcome: <strong>comfortable replacing loops with vectorized NumPy in day-to-day data scripts</strong>.</p>
+
+<h3 id="track-2-scipy-for-numerical-methods">Track 2 &mdash; SciPy for Numerical Methods (engineers &amp; analysts)</h3>
+<p><code>1.2 &rarr; 1.3 &rarr; 2.1 &rarr; 2.2 &rarr; 2.3 &rarr; 2.4 &rarr; Phase 2 Capstone</code><br>
+Target outcome: <strong>solving optimization, integration, and interpolation problems without hand-rolled numerical code</strong>.</p>
+
+<h3 id="track-3-sympy-for-symbolic-math">Track 3 &mdash; SymPy for Symbolic Math (exact algebra &amp; calculus automation)</h3>
+<p><code>1.1 &rarr; 3.1 &rarr; 3.2 &rarr; 3.3 &rarr; 3.4 &rarr; Phase 3 Capstone</code><br>
+Target outcome: <strong>deriving formulas exactly instead of by hand, then converting them to fast numeric functions</strong>.</p>
+
+<h3 id="track-4-applied-quant-business-modeling">Track 4 &mdash; Applied Quant &amp; Business Modeling</h3>
+<p><code>1.2 &rarr; 1.4 &rarr; 2.2 &rarr; 3.1 &rarr; 3.2 &rarr; 4.1 &rarr; 4.2 &rarr; 4.3 &rarr; Final Capstone</code><br>
+Target outcome: <strong>building a small, defensible quantitative model (cost, growth, break-even) end-to-end on the TindaHub dataset</strong>.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — NumPy Foundations         (Weeks 1–2)
+Phase 2 — SciPy Numerical Methods   (Weeks 2–4)
+Phase 3 — SymPy Symbolic Math       (Weeks 3–5)
+Phase 4 — Integration &amp; Judgment    (Weeks 5–6)
+Final Capstone                      (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ─ 1.2 ─┬─ 1.3 ─ 1.4 ────────┐
+           ├─ 2.1                │
+           ├─ 2.2 ─ 2.3 ─ 2.4    ├─ 4.1 ─ 4.2 ─ 4.3 ─ Final Capstone
+1.1 ─ 3.1 ─┴─ 3.2 ─ 3.3 ─ 3.4 ──┘</code></pre>
+
+<h2 id="phase-1-numpy-foundations">Phase 1: NumPy Foundations</h2>
+<h3 id="weeks-1-2">Weeks 1&ndash;2 | Goal: replace scalar math and Python loops with vectorized NumPy arrays</h3>
+<hr />
+
+<h3 id="module-11-math-module-and-the-case-for-arrays">Module 1.1 &mdash; math Module &amp; the Case for Arrays</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> None (comfortable writing functions and loops in Python) &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Without looking anything up, explain why <code>math.sqrt</code> can't be called directly on a list of 1,000 numbers, and write the one-line NumPy equivalent that can.<br>
+<strong>Skip if:</strong> You already default to NumPy for any numeric work touching more than a handful of values.<br>
+<strong>Unlocks:</strong> Module 1.2, Module 3.1</p>
+</blockquote>
+
+<h4>The stdlib math module: scalars only</h4>
+<p>Python's built-in <code>math</code> module wraps the C standard library's math functions &mdash; <code>sqrt</code>, <code>log</code>, <code>exp</code>, <code>sin</code>/<code>cos</code>, <code>factorial</code>, <code>gcd</code>, and the constants <code>math.pi</code> and <code>math.e</code>. It operates on one Python number at a time and returns one Python number. That's the whole contract, and it matters: <code>math</code> functions cannot take a list as input. Passing a list to <code>math.sqrt</code> raises <code>TypeError</code>, because <code>math</code> was designed for single-value scalar math, not collections &mdash; not because of a missing feature, but because that's outside its scope by design.</p>
+<pre><code class="language-py">import math
+
+# math works on one number at a time
+print(math.sqrt(49))        # 7.0
+print(math.log(100, 10))    # 2.0
+print(math.gcd(48, 18))     # 6
+print(math.isclose(0.1 + 0.2, 0.3))  # True — safe float comparison
+
+# this fails: math has no concept of "a list of numbers"
+prices = [49, 100, 225]
+# math.sqrt(prices)  # TypeError: must be real number, not list
+</code></pre>
+<p>The naive fix is a loop or a list comprehension:</p>
+<pre><code class="language-py">roots = [math.sqrt(p) for p in prices]  # [7.0, 10.0, 15.0]
+</code></pre>
+<p>This works, but it's slow at scale: each iteration re-enters the Python interpreter, does type-checking, and allocates a new float object. For 5,000 TindaHub order rows this is fine; for 5 million it becomes a bottleneck, and the fix isn't a faster loop &mdash; it's not looping in Python at all.</p>
+
+<h4>Why NumPy exists: vectorized, typed, contiguous</h4>
+<p>NumPy's core object, the <code>ndarray</code>, stores numbers in one contiguous, uniformly-typed block of memory (unlike a Python list, which is an array of pointers to separately-allocated Python objects). Operations on an <code>ndarray</code> run as compiled C loops under the hood &mdash; <code>numpy.sqrt(arr)</code> computes every element's square root without a Python-level loop at all. This is why NumPy is the substrate SciPy, SymPy's numeric bridge, pandas, and virtually every other Python numerical library are built on: it's the answer to "how do I represent and operate on large blocks of numbers efficiently," and everything above it assumes that answer.</p>
+<pre><code class="language-py">import numpy as np
+
+prices = np.array([49, 100, 225])
+roots = np.sqrt(prices)          # array([ 7., 10., 15.]) — no Python loop
+print(roots.dtype)                # float64
+</code></pre>
+<p>Getting this distinction backwards &mdash; reaching for <code>math</code> on a collection, or writing a manual loop where <code>np.sqrt</code> would do &mdash; is the single most common habit this phase exists to break.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> writing <code>[math.sqrt(x) for x in arr]</code> on a NumPy array. It works (NumPy arrays are iterable), but it throws away every performance and readability benefit of using NumPy in the first place &mdash; you've converted a vectorized array back into a Python-level loop. Use <code>np.sqrt(arr)</code> instead.</p></blockquote>
+
+<h4>When math is still the right tool</h4>
+<p>math still wins for genuinely scalar, one-off calculations &mdash; a single interest-rate conversion, a config constant, a quick <code>math.ceil()</code> on a page count &mdash; where importing NumPy for one number is overkill. The decision rule carried through this whole guide: <strong>one number, use math; a collection of numbers, use NumPy.</strong> Module 4.1 formalizes this into a fuller decision table once SciPy and SymPy are in the picture too.</p>
+
+<p><strong>Exercise 1.1 &mdash; From Loop to Vector</strong></p>
+<p>Dataset: <code>../datasets/tindahub-orders/tindahub_orders.csv</code> (5,000-row TindaHub order register)</p>
+<ol>
+<li>Using the stdlib <code>csv</code> module (no pandas yet), read the <code>Amount</code> column of <code>tindahub_orders.csv</code> into a plain Python list of floats.</li>
+<li>Write a pure-Python loop that computes the 12% VAT-exclusive base price for every order (<code>amount / 1.12</code>), appending results to a new list.</li>
+<li>Time that loop with <code>time.perf_counter()</code> over 100 repetitions.</li>
+<li>Rewrite step 2 as a single NumPy vectorized expression on an <code>np.array</code> of the same values, and time it the same way.</li>
+<li>Report the speedup ratio. Explain in one sentence, using what you learned above, <em>why</em> the ratio exists &mdash; not just that it does.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-numpy-arrays-creation-dtype-indexing">Module 1.2 &mdash; NumPy Arrays: Creation, dtype &amp; Indexing</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> Module 1.1 &middot; <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Create a 2D array from a CSV column pair, slice out every 5th row, and filter rows where a column exceeds a threshold &mdash; without consulting docs.<br>
+<strong>Skip if:</strong> You already use <code>np.array</code>, boolean masks, and 2D indexing fluently.<br>
+<strong>Unlocks:</strong> Module 1.3, Module 2.1, Module 2.4</p>
+</blockquote>
+
+<h4>Creating arrays</h4>
+<p>NumPy gives you several constructors depending on what you're building: <code>np.array()</code> from existing Python data, <code>np.arange(start, stop, step)</code> for evenly-spaced integers, <code>np.linspace(start, stop, num)</code> for a fixed <em>count</em> of evenly-spaced floats (the one to reach for when you need exactly N points, not a step size), and <code>np.zeros</code>/<code>np.ones</code>/<code>np.full</code> for pre-allocated arrays you'll fill in later.</p>
+<pre><code class="language-py">import numpy as np
+
+a = np.array([1, 2, 3, 4])          # from a list
+b = np.arange(0, 20, 5)             # array([ 0,  5, 10, 15]) — step-based
+c = np.linspace(0, 1, 5)            # array([0.  , 0.25, 0.5 , 0.75, 1.  ]) — count-based
+d = np.zeros((3, 4))                # 3x4 array of 0.0, pre-allocated for later filling
+
+# from the TindaHub CSV, skipping the header row
+qty, unit_price = np.genfromtxt(
+    "../datasets/tindahub-orders/tindahub_orders.csv",
+    delimiter=",", skip_header=1, usecols=(10, 11), unpack=True
+)
+</code></pre>
+<p><code>np.genfromtxt</code> is the right stdlib-adjacent tool for quick numeric-column loads; for anything with mixed types, missing values, or a need to keep the whole table together, pandas (already covered in the main Python guide's Module 2.3) is the better choice &mdash; NumPy arrays are single-dtype, so a table with both text and numbers doesn't fit one array cleanly.</p>
+
+<h4>dtype: why the type of your numbers matters</h4>
+<p>Every <code>ndarray</code> has one <code>dtype</code> shared by all its elements &mdash; <code>int64</code>, <code>float64</code>, <code>bool</code>, and so on. This is not a formality: an <code>int32</code> array silently wraps around on overflow instead of raising an error the way Python's arbitrary-precision <code>int</code> would, and mixing <code>int</code> and <code>float</code> arrays in one operation upcasts the result to <code>float64</code>, which can introduce rounding you didn't ask for on values that should stay exact (like peso amounts in centavos). Always check <code>.dtype</code> before trusting the precision of a computed total.</p>
+<pre><code class="language-py">totals = np.array([234, 99, 56, 288], dtype=np.int64)
+print(totals.dtype)          # int64
+
+overflow_demo = np.array([2_000_000_000], dtype=np.int32)
+print(overflow_demo + overflow_demo)   # wraps to a negative number — silent, no error
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> assuming NumPy integer overflow raises an error the way Python's built-in <code>int</code> does. It does not &mdash; fixed-width integer types wrap silently. For peso totals that could plausibly grow large, default to <code>float64</code> or <code>int64</code>, not <code>int32</code>.</p></blockquote>
+
+<h4>Indexing, slicing, and boolean masks</h4>
+<p>Beyond simple <code>arr[3]</code> or <code>arr[1:4]</code> slicing, NumPy's boolean masking lets you filter without a loop: <code>arr[arr &gt; 100]</code> returns only the elements where the condition is true. This is the array-native equivalent of a spreadsheet filter or a SQL <code>WHERE</code> clause, and it composes with <code>&amp;</code> (and) and <code>|</code> (or) for multiple conditions &mdash; each condition must be wrapped in parentheses, since Python's operator precedence binds <code>&amp;</code> tighter than comparison operators.</p>
+<pre><code class="language-py">amounts = np.array([234.0, 99.0, 56.0, 288.0, 1200.0])
+statuses_delivered = np.array([True, False, True, True, True])
+
+big_delivered = amounts[(amounts &gt; 100) &amp; statuses_delivered]
+print(big_delivered)   # array([ 288., 1200.])
+</code></pre>
+
+<p><strong>Exercise 1.2 &mdash; Filtering TindaHub Orders with Masks</strong></p>
+<p>Dataset: TindaHub Orders (<code>tindahub_orders.csv</code>)</p>
+<ol>
+<li>Load the <code>Qty</code>, <code>UnitPrice</code>, and <code>Amount</code> columns into three separate NumPy arrays using <code>np.genfromtxt</code>.</li>
+<li>Check and print the <code>dtype</code> of each array. Explain why <code>Amount</code> should not be loaded as an integer dtype even though many values happen to be whole numbers.</li>
+<li>Using a boolean mask, find all orders where <code>Amount &gt; 500</code> and print how many there are.</li>
+<li>Using a compound boolean mask, find orders where <code>Qty &gt; 10</code> AND <code>UnitPrice &lt; 20</code>.</li>
+<li>Reload the <code>Status</code> column as text (<code>dtype=str</code>) and combine it with the numeric mask to find high-value (<code>Amount &gt; 500</code>) orders that are <code>"Cancelled"</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-vectorization-broadcasting-performance">Module 1.3 &mdash; Vectorization, Broadcasting &amp; Performance</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.2 &middot; <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Explain why <code>(5000,)</code> and <code>(5000, 1)</code> arrays broadcast differently against a <code>(3,)</code> array, and predict the output shape without running code.<br>
+<strong>Skip if:</strong> Broadcasting shape rules are already second nature.<br>
+<strong>Unlocks:</strong> Module 1.4, Module 2.2, Module 2.3</p>
+</blockquote>
+
+<h4>Vectorization and ufuncs</h4>
+<p>A <strong>ufunc</strong> (universal function) is a NumPy function that operates element-wise on arrays, implemented as a compiled loop rather than a Python one &mdash; <code>np.add</code>, <code>np.sqrt</code>, <code>np.exp</code>, and the operators <code>+</code>, <code>*</code>, <code>&gt;</code> are all ufuncs under the hood. Writing "vectorized" code means expressing a computation as ufunc calls over whole arrays instead of per-element Python loops; this is the single biggest performance lever in ordinary NumPy code, typically 10&ndash;100x faster than the equivalent pure-Python loop for arrays in the thousands-to-millions range.</p>
+
+<h4>Broadcasting: the shape-matching rules</h4>
+<p>Broadcasting is NumPy's rule set for combining arrays of different (but compatible) shapes without explicitly copying data to match sizes. Two dimensions are compatible if they're equal, or one of them is 1. NumPy compares shapes from the <em>trailing</em> (rightmost) dimension inward. Getting this wrong produces either a silent wrong answer (when shapes are compatible but not the way you intended) or a <code>ValueError: operands could not be broadcast together</code> (when they aren't) &mdash; and the silent case is the dangerous one, since nothing crashes to tell you it happened.</p>
+<pre><code class="language-py">import numpy as np
+
+qty = np.array([18, 3, 8, 16])          # shape (4,)
+unit_price = np.array([13.0, 33.0, 7.0, 18.0])  # shape (4,)
+amounts = qty * unit_price               # element-wise, shape (4,) — same-shape broadcast
+
+discounts = np.array([[0.05], [0.10]])   # shape (2, 1)
+prices = np.array([100.0, 200.0, 300.0]) # shape (3,)
+# (2,1) and (3,) broadcast to (2,3): each discount row applied to every price
+discounted = prices * (1 - discounts)
+print(discounted.shape)                  # (2, 3)
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> confusing a <code>(5000,)</code> 1D array with a <code>(5000, 1)</code> column vector. They look similar printed out, but broadcasting a <code>(5000,)</code> array against a <code>(5000,)</code> array does element-wise pairing, while a <code>(5000, 1)</code> against a <code>(1, 5000)</code> produces a full <code>(5000, 5000)</code> outer-product-style result &mdash; silently, and often accidentally, if you meant element-wise. Check <code>.shape</code> whenever a broadcast result looks larger than expected.</p></blockquote>
+
+<h4>Measuring performance honestly</h4>
+<p>Use <code>%timeit</code> in a Jupyter/IPython session, or <code>timeit.timeit()</code> in a script, to compare a loop-based and a vectorized version on the <em>same</em> data and problem size &mdash; performance claims about NumPy only mean something relative to a specific array size, since the fixed overhead of a single ufunc call can make it slower than a plain Python loop for arrays of, say, 3 elements.</p>
+<pre><code class="language-py">import timeit
+import numpy as np
+
+n = 100_000
+data = np.random.default_rng(42).uniform(1, 1000, size=n)
+
+def loop_version():
+    return [x / 1.12 for x in data]
+
+def vector_version():
+    return data / 1.12
+
+t_loop = timeit.timeit(loop_version, number=20)
+t_vec = timeit.timeit(vector_version, number=20)
+print(f"loop: {t_loop:.4f}s  vector: {t_vec:.4f}s  speedup: {t_loop / t_vec:.1f}x")
+</code></pre>
+<p><em>Retrieval practice: before running the code above, predict roughly what order of magnitude the speedup will be (2x? 20x? 200x?) and write down your guess &mdash; then compare against the actual output. The gap between your intuition and the measured number is exactly the calibration this module is trying to build.</em></p>
+
+<p><strong>Exercise 1.3 &mdash; Vectorize TindaHub's VAT and Discount Logic</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Load <code>Qty</code>, <code>UnitPrice</code>, and <code>Amount</code> as NumPy arrays.</li>
+<li>Vectorize a rule: orders with <code>Qty &gt;= 15</code> get a 5% bulk discount on <code>Amount</code>; all others are unchanged. Do this with a boolean mask and array arithmetic &mdash; no Python <code>for</code> loop.</li>
+<li>Build a <code>(4,)</code> array of four candidate discount rates and, using broadcasting, compute a <code>(4, 5000)</code> matrix of "what would total revenue be under each rate" without a loop over rates.</li>
+<li>Time your vectorized discount logic against an equivalent <code>for</code>-loop version and report the speedup.</li>
+</ol>
+<hr />
+
+<h3 id="module-14-linear-algebra-with-numpylinalg">Module 1.4 &mdash; Linear Algebra with numpy.linalg</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.3 &middot; <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Solve a 3-variable linear system with <code>np.linalg.solve</code> and fit a least-squares trend line with <code>np.linalg.lstsq</code>, explaining when each is the appropriate tool.<br>
+<strong>Skip if:</strong> Matrix multiplication, <code>solve</code>, and <code>lstsq</code> are already familiar.<br>
+<strong>Unlocks:</strong> Phase 1 Capstone, Module 4.2</p>
+</blockquote>
+
+<h4>Matrices as 2D arrays</h4>
+<p>A matrix is just a 2D <code>ndarray</code>; NumPy distinguishes element-wise multiplication (<code>*</code>) from true matrix multiplication (<code>@</code> or <code>np.matmul</code>) &mdash; using <code>*</code> where you meant <code>@</code> is a common source of silently-wrong linear algebra, since both run without error but compute a different thing.</p>
+<pre><code class="language-py">import numpy as np
+
+A = np.array([[2.0, 1.0], [1.0, 3.0]])
+b = np.array([8.0, 13.0])
+
+x = np.linalg.solve(A, b)     # exact solution to Ax = b
+print(x)                       # array([2.2, 3.6])
+
+det = np.linalg.det(A)         # 5.0 — nonzero, so A is invertible
+inv = np.linalg.inv(A)         # explicit inverse (rarely needed — solve() is more stable)
+</code></pre>
+<p>Prefer <code>np.linalg.solve(A, b)</code> over <code>np.linalg.inv(A) @ b</code> for solving systems: computing an explicit inverse is both slower and less numerically stable than a direct solver, for the same reason long division is more reliable than computing <code>1/x</code> and multiplying.</p>
+
+<h4>Least squares: fitting a trend when there's no exact solution</h4>
+<p><code>np.linalg.lstsq</code> finds the best-fit solution when a system is over-determined (more equations than unknowns) &mdash; the classic case being fitting a straight line through noisy data points where no line passes through all of them exactly. This is the NumPy-native way to do simple linear regression without pulling in a stats or ML library.</p>
+<pre><code class="language-py">months = np.array([1, 2, 3, 4, 5, 6])                 # Jan–Jun 2026
+revenue = np.array([842_000, 861_000, 855_000, 900_000, 918_000, 940_000])
+
+# design matrix: column of months, column of 1s (for the intercept)
+X = np.vstack([months, np.ones_like(months)]).T
+slope, intercept = np.linalg.lstsq(X, revenue, rcond=None)[0]
+print(f"revenue ≈ {slope:.0f} * month + {intercept:.0f}")
+
+projected_month_7 = slope * 7 + intercept
+</code></pre>
+
+<p><strong>Exercise 1.4 &mdash; Project TindaHub's Next-Month Revenue</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Aggregate <code>Amount</code> by calendar month (Jan&ndash;Jun 2026) into a length-6 NumPy array of monthly totals (a plain Python loop over unique months is fine here; the fit itself must use <code>linalg</code>).</li>
+<li>Build the design matrix and use <code>np.linalg.lstsq</code> to fit a linear trend.</li>
+<li>Project revenue for July and August 2026.</li>
+<li>Separately, solve the small system: TindaHub sells two bundles, A (2 units Product X + 1 unit Product Y = &#8369;280) and B (1 unit Product X + 3 units Product Y = &#8369;390). Use <code>np.linalg.solve</code> to find the per-unit price of X and Y.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-array-ify-tindahub">Phase 1 Capstone: Array-ify TindaHub</h3>
+<p><strong>Project: A NumPy-only KPI script for the TindaHub order register</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain what a ufunc is, why <code>*</code> and <code>@</code> differ for 2D arrays, and one concrete broadcasting mistake to watch for? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> TindaHub Orders (<code>tindahub_orders.csv</code>)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A script that loads <code>Qty</code>, <code>UnitPrice</code>, <code>Amount</code>, and <code>Status</code> using NumPy only (no pandas).</li>
+<li>Vectorized computation (no Python loops over rows) of: total revenue for <code>Delivered</code> orders, count of <code>Cancelled</code> orders, and average order value for orders with <code>Qty &gt; 5</code>.</li>
+<li>A <code>(N, 2)</code> matrix built with <code>np.column_stack</code> pairing <code>Qty</code> and <code>Amount</code>, then a boolean-mask filter for outlier orders (<code>Amount</code> more than 3 standard deviations from the mean).</li>
+<li>A least-squares linear trend fit of monthly revenue and a 2-month-ahead projection, using <code>np.linalg.lstsq</code>.</li>
+<li>A short written comparison (3&ndash;5 sentences): where would this script have been meaningfully slower or more awkward if written with the stdlib <code>math</code> module and plain loops instead of NumPy?</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-scipy-numerical-methods">Phase 2: SciPy Numerical Methods</h2>
+<h3 id="weeks-2-4">Weeks 2&ndash;4 | Goal: solve optimization, integration, and interpolation problems using SciPy's numerical solvers</h3>
+<hr />
+
+<h3 id="module-21-scipystats-just-enough-to-know-its-there">Module 2.1 &mdash; scipy.stats: Just Enough to Know It's There</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.2 &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Create a <code>scipy.stats.norm</code> distribution object and call <code>.pdf</code>, <code>.cdf</code>, and <code>.rvs</code> on it without checking the docs.<br>
+<strong>Skip if:</strong> You've already worked through the Statistics with Python guide's hypothesis-testing modules.<br>
+<strong>Unlocks:</strong> Module 2.2</p>
+</blockquote>
+
+<h4>Scope note</h4>
+<p>This module deliberately does not teach hypothesis testing, p-values, or regression theory &mdash; that's the dedicated <a href="../statistics-with-python/statistics-with-python_learning_guide.html">Statistics with Python guide</a>'s job (its Modules 5.1&ndash;5.2 cover <code>scipy.stats</code> hypothesis tests and regression in depth). What's covered here is just the <em>shape</em> of the <code>scipy.stats</code> interface, so that when SciPy shows up elsewhere in this guide (Module 2.2's optimization, Module 4.2's cost model) you recognize it.</p>
+
+<h4>Distribution objects: pdf, cdf, rvs</h4>
+<p>Every distribution in <code>scipy.stats</code> (<code>norm</code>, <code>expon</code>, <code>poisson</code>, dozens more) is an object exposing a consistent set of methods: <code>.pdf(x)</code>/<code>.pmf(x)</code> (density or mass at a point), <code>.cdf(x)</code> (cumulative probability up to <code>x</code>), and <code>.rvs(size=n)</code> (draw random samples). Learning this one shape once means you already know most of the interface for every distribution in the module.</p>
+<pre><code class="language-py">from scipy import stats
+
+order_values = stats.norm(loc=250, scale=80)   # a Normal(250, 80) model of order size
+print(order_values.cdf(500))    # P(order value <= 500)
+samples = order_values.rvs(size=1000, random_state=42)
+
+# a two-sample t-test — one line, but interpreting it correctly is a statistics
+# question, not a SciPy question; see the Statistics with Python guide
+t_stat, p_value = stats.ttest_ind(samples[:500], samples[500:])
+</code></pre>
+
+<p><strong>Exercise 2.1 &mdash; Model TindaHub Order Sizes</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Load the <code>Amount</code> column and fit a <code>scipy.stats.norm</code> distribution to it using <code>stats.norm.fit(amounts)</code>.</li>
+<li>Using the fitted distribution's <code>.cdf</code>, estimate what fraction of orders should be above &#8369;1,000 under the fitted model, and compare that to the actual empirical fraction in the data.</li>
+<li>Draw 5,000 synthetic samples with <code>.rvs</code> and compare their mean/std to the real data's mean/std.</li>
+<li>In 2&ndash;3 sentences, note whether a Normal distribution looks like a good fit for order amounts (which can't go negative) or whether a different distribution shape would fit better &mdash; you don't need to fit that alternative, just name the mismatch.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-scipyoptimize-root-finding-minimization">Module 2.2 &mdash; scipy.optimize: Root Finding &amp; Minimization</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.3 &middot; <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Write a cost function and find its minimizing input with <code>scipy.optimize.minimize_scalar</code>, and explain what a local vs. global minimum is in that context.<br>
+<strong>Skip if:</strong> You've already used <code>scipy.optimize</code> for a real minimization or root-finding problem.<br>
+<strong>Unlocks:</strong> Module 2.3, Module 4.2</p>
+</blockquote>
+
+<h4>Minimizing a function of one variable</h4>
+<p><code>scipy.optimize.minimize_scalar</code> finds the input that minimizes a scalar function without you deriving calculus by hand. The classic operations-research example is the <strong>Economic Order Quantity (EOQ)</strong> problem: ordering more units at once reduces per-order costs but increases holding costs, and there's a quantity that minimizes their sum.</p>
+<pre><code class="language-py">from scipy.optimize import minimize_scalar
+
+def total_cost(order_qty, annual_demand=12_000, order_cost=150, holding_cost_per_unit=8):
+    if order_qty &lt;= 0:
+        return float("inf")
+    ordering = (annual_demand / order_qty) * order_cost
+    holding = (order_qty / 2) * holding_cost_per_unit
+    return ordering + holding
+
+result = minimize_scalar(total_cost, bounds=(1, 5000), method="bounded")
+print(f"optimal order qty: {result.x:.0f} units, cost: ₱{result.fun:,.0f}")
+</code></pre>
+
+<h4>Minimizing over multiple variables, and root-finding</h4>
+<p><code>scipy.optimize.minimize</code> generalizes to multiple decision variables (needs an initial guess <code>x0</code> and, for many methods, benefits from a gradient); <code>scipy.optimize.root</code> and <code>brentq</code> find where a function crosses zero rather than where it's smallest &mdash; the tool to reach for when the question is "at what input does this equation balance" rather than "what input minimizes this."</p>
+<pre><code class="language-py">from scipy.optimize import minimize, brentq
+
+def two_var_cost(x):
+    qty_a, qty_b = x
+    return (qty_a - 40) ** 2 + (qty_b - 25) ** 2 + 0.1 * qty_a * qty_b
+
+result = minimize(two_var_cost, x0=[0, 0])
+print(result.x)   # approximate optimal [qty_a, qty_b]
+
+# root-finding: at what price does profit break even?
+def profit(price, fixed_cost=50_000, unit_cost=30, demand_slope=-200):
+    units_sold = max(demand_slope * (price - unit_cost) + 5000, 0)
+    return units_sold * (price - unit_cost) - fixed_cost
+
+break_even_price = brentq(profit, a=unit_cost + 0.01, b=1000)
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> assuming <code>minimize</code> found the <em>global</em> minimum. Gradient-based methods can settle into a <strong>local minimum</strong> that isn't the best possible answer, especially on non-convex cost functions with multiple valleys. For anything business-critical, re-run with several different <code>x0</code> starting guesses and check whether they converge to the same answer &mdash; if they don't, you have local minima to worry about.</p></blockquote>
+
+<p><strong>Exercise 2.2 &mdash; Optimal Restock Quantity for TindaHub's Top SKU</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Find TindaHub's highest-volume product by total <code>Qty</code> sold and compute its annual demand (extrapolate from the 6 months of data).</li>
+<li>Using a realistic per-order cost (assume &#8369;150) and per-unit annual holding cost (assume 15% of <code>UnitPrice</code>), write an EOQ cost function and find the optimal order quantity with <code>minimize_scalar</code>.</li>
+<li>Re-run with three different holding-cost assumptions (10%, 15%, 25% of unit price) and report how sensitive the optimal quantity is to that assumption.</li>
+<li>Using <code>brentq</code>, find the break-even selling price for this SKU given its wholesale cost and a simple linear demand model of your own choosing.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-scipyintegrate-quadrature-odes">Module 2.3 &mdash; scipy.integrate: Quadrature &amp; ODEs</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.3 &middot; <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Numerically integrate a function with <code>quad</code> and solve a first-order ODE with <code>solve_ivp</code>, explaining what each result physically represents.<br>
+<strong>Skip if:</strong> Both are already comfortable tools.<br>
+<strong>Unlocks:</strong> Module 2.4, Phase 2 Capstone</p>
+</blockquote>
+
+<h4>Definite integrals with quad</h4>
+<p><code>scipy.integrate.quad</code> numerically computes a definite integral &mdash; the area under a curve between two bounds &mdash; for functions that either can't be integrated symbolically in closed form, or where you just don't need the exact symbolic antiderivative (SymPy's <code>integrate</code>, covered in Module 3.2, is the tool when you do need the exact form).</p>
+<pre><code class="language-py">from scipy.integrate import quad
+import numpy as np
+
+def demand_rate(t):        # orders per day, t = days since launch
+    return 40 + 15 * np.sin(t / 7) * np.exp(-t / 90)
+
+total_orders_first_90_days, estimated_error = quad(demand_rate, 0, 90)
+print(f"~{total_orders_first_90_days:.0f} orders (est. error ±{estimated_error:.1e})")
+</code></pre>
+
+<h4>Ordinary differential equations with solve_ivp</h4>
+<p>An ODE describes how a quantity changes over time via its rate of change (<code>dy/dt = f(t, y)</code>) rather than giving <code>y</code> directly; <code>solve_ivp</code> numerically integrates that rate forward from a starting condition. A natural TindaHub example: modeling how a fixed inventory quantity depletes over time under a demand rate that itself changes, or how a customer base grows toward a saturation point (logistic growth) rather than growing forever.</p>
+<pre><code class="language-py">from scipy.integrate import solve_ivp
+import numpy as np
+
+def logistic_growth(t, y, carrying_capacity=5000, growth_rate=0.08):
+    return growth_rate * y * (1 - y / carrying_capacity)
+
+solution = solve_ivp(
+    logistic_growth, t_span=(0, 365), y0=[200],
+    t_eval=np.linspace(0, 365, 13)   # monthly checkpoints over a year
+)
+print(solution.y[0])   # customer-count estimate at each checkpoint
+</code></pre>
+
+<p><strong>Exercise 2.3 &mdash; Model TindaHub's Customer Growth</strong></p>
+<p>Dataset: TindaHub Customers (<code>tindahub_customers.csv</code>) and Orders</p>
+<ol>
+<li>From <code>tindahub_customers.csv</code>, compute the actual month-over-month growth in distinct active customers (customers with at least one order that month) for the 6 months of data.</li>
+<li>Fit a logistic growth model (choose a plausible carrying capacity and growth rate by trial, or use <code>scipy.optimize.curve_fit</code> if you want to fit them) and use <code>solve_ivp</code> to project the customer count 12 months out.</li>
+<li>Using <code>quad</code>, integrate a simple daily-demand-rate function of your own construction (informed by the data) over a 30-day window to estimate total expected orders for that window.</li>
+<li>Compare the <code>solve_ivp</code> projection against a naive linear extrapolation of the same 6 months of data, and explain in 2&ndash;3 sentences which is more defensible and why.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-scipyinterpolate-scipysignal-basics">Module 2.4 &mdash; scipy.interpolate &amp; scipy.signal Basics</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.2 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Fill a gap in a daily time series using <code>CubicSpline</code>, and smooth a noisy series with <code>savgol_filter</code>, and explain the difference in purpose between the two.<br>
+<strong>Skip if:</strong> Both are already familiar tools.<br>
+<strong>Unlocks:</strong> Phase 2 Capstone</p>
+</blockquote>
+
+<h4>Interpolation: estimating values between known points</h4>
+<p><code>scipy.interpolate</code> estimates values <em>between</em> known data points &mdash; useful for filling a missing day in a daily sales series, or resampling monthly totals onto a weekly grid. <code>interp1d</code> (linear by default) is the simple case; <code>CubicSpline</code> produces a smoother curve through the same points, which matters when the underlying process is genuinely continuous (temperature, growth) rather than genuinely stepwise.</p>
+<pre><code class="language-py">from scipy.interpolate import CubicSpline
+import numpy as np
+
+known_days = np.array([1, 5, 10, 15, 20, 25, 30])
+known_totals = np.array([12000, 13500, 12800, 15200, 16000, 15500, 17000])
+
+spline = CubicSpline(known_days, known_totals)
+all_days = np.arange(1, 31)
+estimated_daily_totals = spline(all_days)
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> interpolating past the range of your known data (extrapolation) and trusting the result the same as interpolation within the range. <code>CubicSpline</code> will happily return a value for day 45 when your known data only goes to day 30, but that's an extrapolation, not an interpolation, and its accuracy is not guaranteed the same way.</p></blockquote>
+
+<h4>Smoothing noisy series</h4>
+<p><code>scipy.signal.savgol_filter</code> (Savitzky-Golay) smooths a noisy series while preserving its overall shape better than a simple moving average, by fitting a small local polynomial across a sliding window rather than just averaging.</p>
+<pre><code class="language-py">from scipy.signal import savgol_filter
+import numpy as np
+
+daily_orders = np.array([45, 62, 38, 71, 55, 40, 68, 50, 44, 73, 39, 60])
+smoothed = savgol_filter(daily_orders, window_length=5, polyorder=2)
+</code></pre>
+
+<p><strong>Exercise 2.4 &mdash; Smooth &amp; Fill TindaHub's Daily Order Series</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Aggregate orders into a daily order-count series for Jan&ndash;Jun 2026 (some days may have zero orders &mdash; keep them as 0, not missing).</li>
+<li>Deliberately remove 10 random days' worth of data to simulate a missing-data scenario, then use <code>CubicSpline</code> to reconstruct estimates for those days.</li>
+<li>Compare your reconstructed values against the true (removed) values you know from step 1, and report the average absolute error.</li>
+<li>Apply <code>savgol_filter</code> to the full daily series and describe, in 2&ndash;3 sentences, what pattern the smoothed line reveals that the raw daily counts obscure.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-numerically-optimize-tindahub-restocking">Phase 2 Capstone: Numerically Optimize TindaHub Restocking</h3>
+<p><strong>Project: A SciPy-driven restocking recommendation for TindaHub's top 5 products</strong></p>
+<p><strong>Dataset:</strong> TindaHub Orders, TindaHub Customers</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>For each of TindaHub's top 5 products by revenue, an EOQ-style optimal order quantity found via <code>scipy.optimize.minimize_scalar</code>.</li>
+<li>A logistic growth projection (<code>solve_ivp</code>) of overall customer count 6 months forward.</li>
+<li>A smoothed (<code>savgol_filter</code>) daily demand curve for the top product, with a <code>CubicSpline</code>-filled version for any gap days.</li>
+<li>A one-page written summary translating the numerical results into a plain-language restocking recommendation a non-technical shop owner could act on.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-sympy-symbolic-math">Phase 3: SymPy Symbolic Math</h2>
+<h3 id="weeks-3-5">Weeks 3&ndash;5 | Goal: derive exact algebraic and calculus results instead of hand-deriving or numerically approximating them</h3>
+<hr />
+
+<h3 id="module-31-symbols-expressions-simplification">Module 3.1 &mdash; Symbols, Expressions &amp; Simplification</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> Module 1.1 &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Define symbols, build an unevaluated algebraic expression, and simplify/expand/factor it, explaining the difference between the three.<br>
+<strong>Skip if:</strong> You've used SymPy (or Mathematica/Maple/a CAS) before and these are old hat.<br>
+<strong>Unlocks:</strong> Module 3.2, Module 3.3</p>
+</blockquote>
+
+<h4>Symbols: variables that stay variables</h4>
+<p>SymPy's <code>Symbol</code> objects represent mathematical variables that are never evaluated to a number unless you explicitly ask &mdash; the opposite of how every other variable in Python behaves. This is the entire point of a Computer Algebra System (CAS): <code>x + x</code> in SymPy stays as the expression <code>2*x</code>, exactly, rather than requiring you to have already decided what number <code>x</code> is.</p>
+<pre><code class="language-py">import sympy as sp
+
+x, y = sp.symbols("x y")
+expr = (x + y) ** 2
+print(expr)                 # (x + y)**2 — unevaluated
+print(sp.expand(expr))      # x**2 + 2*x*y + y**2
+</code></pre>
+
+<h4>simplify, expand, factor, together, apart</h4>
+<p>These five functions cover most day-to-day symbolic manipulation: <code>expand</code> multiplies out products and powers; <code>factor</code> does the reverse, pulling out common structure; <code>simplify</code> is a general-purpose (and comparatively slow) attempt to find the "simplest" equivalent form, trying several strategies internally; <code>together</code> combines fractions over a common denominator, and <code>apart</code> splits a fraction into partial fractions.</p>
+<pre><code class="language-py">expr2 = x**2 - 4
+print(sp.factor(expr2))               # (x - 2)*(x + 2)
+
+expr3 = (x**2 + 3*x + 2) / (x + 1)
+print(sp.simplify(expr3))             # x + 2 — cancels the common factor exactly
+
+fraction_sum = 1 / x + 1 / y
+print(sp.together(fraction_sum))      # (x + y)/(x*y)
+</code></pre>
+<blockquote class="callout"><p><strong>Disambiguation:</strong> <code>simplify</code> is not a "make it correct" button and is not always the right first choice &mdash; it can be slow on large expressions and doesn't always produce the form you actually want (e.g., you might want a factored form, which <code>factor</code> gives directly and more predictably). Reach for the specific transformation (<code>expand</code>, <code>factor</code>, <code>together</code>) when you know what shape you want; use <code>simplify</code> as a fallback when you don't.</p></blockquote>
+
+<h4>Rational numbers stay exact</h4>
+<p>SymPy's <code>Rational</code> (and the shorthand <code>sp.Rational(1, 3)</code>) keeps fractions as exact ratios rather than converting to a floating-point approximation &mdash; <code>sp.Rational(1, 3) + sp.Rational(1, 3)</code> is exactly <code>2/3</code>, not <code>0.6666666666666666</code>. This exactness is the core value proposition of SymPy over NumPy: NumPy is fast and approximate, SymPy is slower and exact. Module 4.1 turns this into an explicit decision rule.</p>
+
+<p><strong>Exercise 3.1 &mdash; Symbolic Discount &amp; VAT Formula</strong></p>
+<p>Dataset: none required (pure symbolic exercise, informed by TindaHub's pricing rules established in earlier modules)</p>
+<ol>
+<li>Define symbols <code>p</code> (unit price), <code>q</code> (quantity), and <code>d</code> (discount rate) and build a symbolic expression for total amount after a <code>d</code> discount, plus 12% VAT.</li>
+<li>Expand the expression fully with <code>sp.expand</code>.</li>
+<li>Factor out <code>p*q</code> from the expanded form with <code>sp.factor</code>, and confirm (using <code>sp.simplify(expanded - refactored)</code> equal to zero) that your factored form is algebraically identical to the expanded one.</li>
+<li>Substitute <code>d = sp.Rational(1, 20)</code> (a 5% discount) and evaluate the expression exactly for <code>p=100, q=18</code> using <code>.subs()</code>, confirming the result is an exact <code>Rational</code>, not a float.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-symbolic-calculus-derivatives-integrals-limits-series">Module 3.2 &mdash; Symbolic Calculus: Derivatives, Integrals, Limits, Series</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 3.1 &middot; <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Symbolically differentiate and integrate an expression, evaluate a limit, and produce a Taylor series &mdash; all without a reference.<br>
+<strong>Skip if:</strong> These four operations are already fluent.<br>
+<strong>Unlocks:</strong> Module 3.3, Module 3.4</p>
+</blockquote>
+
+<h4>diff and integrate</h4>
+<p><code>sp.diff(expr, x)</code> returns the exact symbolic derivative; <code>sp.integrate(expr, x)</code> returns the exact symbolic antiderivative (or a definite value if you pass bounds). Both handle standard functions (polynomials, trig, exp, log) and their combinations via the chain, product, and quotient rules automatically &mdash; the calculus you'd otherwise do by hand.</p>
+<pre><code class="language-py">import sympy as sp
+
+x = sp.symbols("x")
+revenue = 200 * x - 3 * x**2       # revenue as a function of price discount x
+
+marginal_revenue = sp.diff(revenue, x)         # 200 - 6*x — the exact derivative
+print(marginal_revenue)
+
+total_over_range = sp.integrate(revenue, (x, 0, 10))  # definite integral, exact
+print(total_over_range)
+</code></pre>
+
+<h4>limit and series</h4>
+<p><code>sp.limit</code> evaluates the exact limiting value of an expression as a variable approaches a point (including infinity), correctly handling forms like 0/0 that would need L'Hopital's rule by hand. <code>sp.series</code> produces a Taylor/Maclaurin series expansion around a point &mdash; a polynomial approximation of a function useful when you need a fast, simple stand-in for something more complex nearby a specific value.</p>
+<pre><code class="language-py">limit_val = sp.limit(sp.sin(x) / x, x, 0)      # 1 — the classic 0/0 limit, exact
+print(limit_val)
+
+taylor = sp.series(sp.exp(x), x, 0, 5)          # Maclaurin series to 5 terms
+print(taylor)   # 1 + x + x**2/2 + x**3/6 + x**4/24 + O(x**5)
+</code></pre>
+
+<p><strong>Exercise 3.2 &mdash; Marginal Profit for TindaHub's Bundle Pricing</strong></p>
+<p>Dataset: none required (pure symbolic exercise)</p>
+<ol>
+<li>Build a symbolic profit function <code>profit(price)</code> for a TindaHub bundle: <code>units_sold = 500 - 4*price</code> (a simple linear demand curve) and <code>unit_cost = 30</code>. Profit is <code>units_sold * (price - unit_cost)</code>.</li>
+<li>Differentiate to get marginal profit, and solve (by hand reasoning about the sign, or by inspecting where it's zero &mdash; full equation-solving is Module 3.3) for roughly where profit is maximized.</li>
+<li>Compute the definite integral of the profit function between two candidate price points to get total accumulated profit-as-price-varies (a slightly artificial but instructive use of <code>integrate</code>).</li>
+<li>Produce a 3-term Taylor series of the profit function around the price point you found in step 2, and note in 1&ndash;2 sentences how well that local polynomial approximates profit at a price &#8369;20 away from that point.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-solving-equations-systems-symbolically">Module 3.3 &mdash; Solving Equations &amp; Systems Symbolically</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 3.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Solve a quadratic exactly with <code>solve</code>, a system of linear equations with <code>linsolve</code>, and explain when you'd reach for <code>nonlinsolve</code> instead.<br>
+<strong>Skip if:</strong> All three are already familiar.<br>
+<strong>Unlocks:</strong> Module 3.4, Module 4.3</p>
+</blockquote>
+
+<h4>solve and solveset</h4>
+<p><code>sp.solve(equation, variable)</code> is the general-purpose equation solver, returning exact solutions (including irrational and complex ones) rather than a single numeric approximation. <code>solveset</code> is the newer, more mathematically rigorous successor that's explicit about the solution set's domain (real vs. complex) &mdash; prefer <code>solveset</code> for new code when you need that precision, though <code>solve</code> remains more common in examples and simpler for quick one-off use.</p>
+<pre><code class="language-py">import sympy as sp
+
+x = sp.symbols("x")
+solutions = sp.solve(sp.Eq(x**2 - 5*x + 6, 0), x)
+print(solutions)   # [2, 3] — exact, not approximate
+
+from sympy import solveset, S
+real_solutions = solveset(x**2 - 5*x + 6, x, domain=S.Reals)
+</code></pre>
+
+<h4>linsolve and nonlinsolve for systems</h4>
+<p><code>linsolve</code> solves systems of <em>linear</em> equations symbolically (the SymPy counterpart to <code>numpy.linalg.solve</code>, but exact and able to report infinite-solution or no-solution cases explicitly rather than raising a numerical error); <code>nonlinsolve</code> handles systems with at least one non-linear equation, where NumPy's linear-algebra tools don't apply at all.</p>
+<pre><code class="language-py">from sympy import linsolve, nonlinsolve, symbols
+
+a, b = symbols("a b")
+linear_system = linsolve([2*a + b - 280, a + 3*b - 390], (a, b))
+print(linear_system)    # {(78, 104)} — exact prices for products X and Y
+
+nonlinear_system = nonlinsolve([a**2 + b**2 - 25, a - b - 1], (a, b))
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> reaching for <code>nonlinsolve</code> (or SymPy generally) on a large, purely numeric system where <code>numpy.linalg.solve</code> or <code>scipy.optimize</code> would be far faster and entirely sufficient. Symbolic solving is for when you need the exact, general-form answer (or the equation has genuinely symbolic, not-yet-numeric coefficients) &mdash; not a default replacement for numeric linear algebra. Module 4.1 covers this trade-off directly.</p></blockquote>
+
+<p><strong>Exercise 3.3 &mdash; Exact Break-Even Points for TindaHub Pricing</strong></p>
+<p>Dataset: none required (pure symbolic exercise)</p>
+<ol>
+<li>Using the profit function from Exercise 3.2, use <code>sp.solve</code> to find the exact price(s) where profit equals zero (break-even).</li>
+<li>Using <code>sp.solve</code> on the derivative from Exercise 3.2, find the exact profit-maximizing price and confirm it's the same value you estimated by reasoning in Exercise 3.2.</li>
+<li>Set up and solve, with <code>linsolve</code>, a 3-product linear pricing system analogous to Exercise 1.4's 2-product one, and compare the experience (readability, exactness, effort) against having done it with <code>np.linalg.solve</code>.</li>
+<li>Construct one small non-linear system (e.g., a circle-and-line intersection, or a case where quantity and price both appear as squared terms in a constraint) and solve it with <code>nonlinsolve</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-bridging-symbolic-to-numeric-lambdify-plotting">Module 3.4 &mdash; Bridging Symbolic to Numeric: lambdify &amp; Plotting</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 3.2, Module 1.2 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Convert a SymPy expression to a fast NumPy-callable function with <code>lambdify</code> and evaluate it over a whole array, explaining why this is faster than repeated <code>.subs()</code> calls.<br>
+<strong>Skip if:</strong> <code>lambdify</code> is already a familiar tool.<br>
+<strong>Unlocks:</strong> Module 4.1, Module 4.2</p>
+</blockquote>
+
+<h4>Why you can't just hand a NumPy array to a SymPy expression</h4>
+<p>A SymPy expression is a symbolic tree, not a compiled function &mdash; evaluating it at one point via <code>.subs(x, value)</code> walks that tree and substitutes, which is slow if repeated thousands of times. <code>sp.lambdify(symbol, expr, "numpy")</code> compiles the symbolic expression into an actual Python function backed by NumPy ufuncs, so it can be called once on an entire array at native NumPy speed &mdash; this is the bridge between "derive it exactly" (SymPy) and "evaluate it fast, many times" (NumPy).</p>
+<pre><code class="language-py">import sympy as sp
+import numpy as np
+
+x = sp.symbols("x")
+profit_expr = (500 - 4*x) * (x - 30)
+
+profit_fast = sp.lambdify(x, profit_expr, "numpy")   # a real, fast callable now
+
+prices = np.linspace(30, 125, 1000)
+profits = profit_fast(prices)          # one vectorized call over 1000 points
+print(profits.max())
+</code></pre>
+<p><em>Retrieval practice: before reading further, predict what would happen (correctness-wise and speed-wise) if you evaluated <code>profit_expr.subs(x, p)</code> in a Python loop over the same 1,000 prices instead of using <code>lambdify</code>. Write your prediction down, then verify it by timing both approaches.</em></p>
+
+<h4>A quick look at plotting (out of scope for depth)</h4>
+<p>Matplotlib (not covered in depth by this guide) is the standard way to visualize a <code>lambdify</code>'d function's output; SymPy also ships a convenience wrapper, <code>sympy.plotting.plot</code>, for quick symbolic-expression plots without leaving SymPy.</p>
+<pre><code class="language-py">import matplotlib.pyplot as plt
+
+plt.plot(prices, profits)
+plt.xlabel("price"); plt.ylabel("profit")
+plt.savefig("profit_curve.png")
+</code></pre>
+
+<p><strong>Exercise 3.4 &mdash; Fast Numeric Sweep of the Profit Curve</strong></p>
+<p>Dataset: none required, builds on Exercises 3.2&ndash;3.3</p>
+<ol>
+<li><code>lambdify</code> the profit expression from Exercise 3.2 and evaluate it over a NumPy array of 10,000 candidate prices.</li>
+<li>Find the price (from that array) giving the maximum profit using <code>np.argmax</code>, and confirm it's close to the exact symbolic answer from Exercise 3.3.</li>
+<li>Time the <code>lambdify</code>-then-vectorize approach against a loop calling <code>.subs()</code> 10,000 times, and report the speedup.</li>
+<li>Plot the profit curve with matplotlib, marking the break-even points (from Exercise 3.3) and the maximum on the chart.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-symbolic-profit-model-for-tindahub">Phase 3 Capstone: Symbolic Profit Model for TindaHub</h3>
+<p><strong>Project: An exact, derivable profit model for a TindaHub product line</strong></p>
+<p><strong>Dataset:</strong> TindaHub Orders (for realistic price/cost inputs)</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A symbolic revenue, cost, and profit function for a chosen product category, built from parameters informed by real values in the dataset.</li>
+<li>Exact break-even price(s) and exact profit-maximizing price, both derived symbolically (<code>solve</code>, <code>diff</code>).</li>
+<li>A <code>lambdify</code>'d, vectorized numeric sweep over a realistic price range, plotted with matplotlib.</li>
+<li>A short written note (3&ndash;5 sentences) on which parts of this model would break down if demand weren't really linear, and what you'd need to change in the SymPy expression to accommodate that.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-integration-judgment">Phase 4: Integration &amp; Judgment</h2>
+<h3 id="weeks-5-6">Weeks 5&ndash;6 | Goal: choose the right tool deliberately and combine math, NumPy, SciPy, and SymPy in one workflow</h3>
+<hr />
+
+<h3 id="module-41-when-to-use-what-math-vs-numpy-vs-scipy-vs-sympy">Module 4.1 &mdash; When to Use What: math vs NumPy vs SciPy vs SymPy</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> at least one module from each of Phases 1&ndash;3 &middot; <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Given four short problem descriptions, correctly name the right library for each in under a minute, and justify each choice in one sentence.<br>
+<strong>Skip if:</strong> The decision table below is already intuitive to you.<br>
+<strong>Unlocks:</strong> Module 4.2, Module 4.3</p>
+</blockquote>
+
+<h4>A decision framework</h4>
+<table>
+<tr><th>Question</th><th>Tool</th><th>Why</th></tr>
+<tr><td>One number, one calculation?</td><td><code>math</code></td><td>Zero overhead; NumPy import cost isn't worth it for a scalar.</td></tr>
+<tr><td>Same operation on thousands of numbers?</td><td><code>NumPy</code></td><td>Vectorized C loops; the default for any bulk numeric data.</td></tr>
+<tr><td>Need the best input that minimizes/maximizes something, numerically?</td><td><code>SciPy (optimize)</code></td><td>Purpose-built solvers; don't hand-roll gradient descent.</td></tr>
+<tr><td>Need an exact derivative, integral, or algebraic solution?</td><td><code>SymPy</code></td><td>Exact symbolic results; NumPy/SciPy only approximate.</td></tr>
+<tr><td>Have an exact SymPy result, need it evaluated fast on real data?</td><td><code>SymPy lambdify</code> &rarr; <code>NumPy</code></td><td>Derive once symbolically, evaluate many times numerically.</td></tr>
+<tr><td>Need to numerically integrate a function with no closed form?</td><td><code>SciPy (integrate)</code></td><td>SymPy's <code>integrate</code> may fail or be intractable; <code>quad</code> approximates instead.</td></tr>
+<tr><td>Need statistical inference (tests, confidence intervals)?</td><td><code>SciPy (stats)</code> or the dedicated Statistics guide</td><td>Purpose-built and validated; don't hand-derive test statistics.</td></tr>
+</table>
+
+<h4>The exactness/speed trade-off, restated</h4>
+<p>The throughline across this whole guide: <code>math</code> and <code>NumPy</code> are fast and numeric (floating-point, therefore approximate at the bit level); <code>SymPy</code> is exact but slow, because it manipulates symbolic expression trees instead of raw numbers. <code>SciPy</code> sits on the numeric side, offering purpose-built numerical algorithms (optimization, integration, interpolation) for problems where an exact symbolic answer either doesn't exist or isn't needed. Picking the wrong one isn't usually a correctness bug &mdash; it's a needless performance or precision cost, which is exactly why this decision deserves a deliberate check rather than a reflexive default.</p>
+<blockquote class="callout"><p><strong>Common mistake:</strong> using SymPy on a problem with thousands of numeric data points (e.g., trying to <code>solve</code> a different equation per row of a DataFrame). SymPy's per-call overhead makes this dramatically slower than an equivalent NumPy/SciPy vectorized approach &mdash; symbolic tools are for deriving a formula <em>once</em>, not for repeated per-row numeric work.</p></blockquote>
+
+<p><strong>Exercise 4.1 &mdash; Tool Selection Drill</strong></p>
+<p>Dataset: none required</p>
+<ol>
+<li>For each of the following, name the single best-fit tool (<code>math</code>, <code>NumPy</code>, <code>SciPy</code>, or <code>SymPy</code>) and justify it in one sentence: (a) computing VAT on a single receipt total; (b) computing VAT on all 5,000 TindaHub orders at once; (c) finding the order quantity that minimizes total inventory cost; (d) deriving the exact formula for marginal profit as a function of price; (e) estimating the total number of orders over a 90-day window from a demand-rate function with no clean antiderivative; (f) solving a 2-equation, 2-unknown pricing system where the coefficients are still symbolic parameters, not yet fixed numbers.</li>
+<li>For one of the above, implement the actual one-line-or-so solution to confirm your choice was workable, not just plausible.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-applied-case-study-delivery-cost-optimization">Module 4.2 &mdash; Applied Case Study: Delivery Cost Optimization</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced &middot; <strong>Prereqs:</strong> Module 2.2, Module 3.4 &middot; <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Derive a cost function's gradient symbolically with SymPy, <code>lambdify</code> it, and feed it to <code>scipy.optimize.minimize</code> as the <code>jac</code> argument, explaining why supplying an exact gradient helps the optimizer.<br>
+<strong>Skip if:</strong> You've already combined SymPy-derived gradients with SciPy optimizers in a real project.<br>
+<strong>Unlocks:</strong> Module 4.3, Final Capstone</p>
+</blockquote>
+
+<h4>Why hand the optimizer an exact gradient</h4>
+<p><code>scipy.optimize.minimize</code> can estimate a gradient numerically (finite differences) if you don't supply one, but a numerically-estimated gradient is both slower to compute (extra function evaluations per step) and less accurate than an exact one. When your cost function is differentiable in closed form, SymPy can derive that gradient exactly once, <code>lambdify</code> converts it to a fast callable, and you pass it to <code>minimize</code> via the <code>jac</code> parameter &mdash; combining all three libraries' strengths in a single workflow.</p>
+<pre><code class="language-py">import sympy as sp
+import numpy as np
+from scipy.optimize import minimize
+
+qty_a, qty_b = sp.symbols("qty_a qty_b")
+# delivery cost: base per-trip cost + distance penalty that grows with imbalance
+cost_expr = 50 * (qty_a + qty_b) + 0.4 * (qty_a - qty_b) ** 2 + 1200
+
+cost_fn = sp.lambdify((qty_a, qty_b), cost_expr, "numpy")
+grad_a = sp.lambdify((qty_a, qty_b), sp.diff(cost_expr, qty_a), "numpy")
+grad_b = sp.lambdify((qty_a, qty_b), sp.diff(cost_expr, qty_b), "numpy")
+
+def cost_wrapper(x):
+    return cost_fn(x[0], x[1])
+
+def grad_wrapper(x):
+    return np.array([grad_a(x[0], x[1]), grad_b(x[0], x[1])])
+
+result = minimize(cost_wrapper, x0=[10, 10], jac=grad_wrapper, method="BFGS")
+print(result.x, result.fun)
+</code></pre>
+
+<p><em>Retrieval practice: before running this, predict whether supplying <code>jac=grad_wrapper</code> will change the <em>answer</em> <code>minimize</code> converges to, or only the number of iterations/evaluations it takes to get there. Verify by running the same optimization with and without <code>jac</code> and comparing both the result and <code>result.nfev</code>.</em></p>
+
+<p><strong>Exercise 4.2 &mdash; Optimize TindaHub's Two-Region Delivery Split</strong></p>
+<p>Dataset: TindaHub Orders (grouped by <code>Region</code>)</p>
+<ol>
+<li>Pick two TindaHub regions and compute their actual average order quantity and delivery frequency from the data.</li>
+<li>Build a symbolic delivery-cost function of two decision variables (trips-per-week to each region) informed by those real numbers &mdash; include both a linear per-trip cost and a quadratic penalty for under-serving either region.</li>
+<li>Symbolically differentiate to get the gradient, <code>lambdify</code> both the cost and gradient, and minimize with <code>scipy.optimize.minimize</code> using <code>jac</code>.</li>
+<li>Re-run without supplying <code>jac</code> and compare <code>result.nfev</code> (function evaluation count) between the two runs.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-validation-precision-numerical-pitfalls">Module 4.3 &mdash; Validation, Precision &amp; Numerical Pitfalls</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced &middot; <strong>Prereqs:</strong> Module 1.4, Module 3.3 &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Explain why <code>0.1 + 0.2 == 0.3</code> is <code>False</code> in floating point, demonstrate the correct fix with <code>np.isclose</code>, and describe one situation where SymPy's exactness sidesteps this problem entirely.<br>
+<strong>Skip if:</strong> Floating-point comparison pitfalls and condition numbers are already familiar.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4>Floating-point isn't exact, and comparisons must account for that</h4>
+<p>Binary floating-point can't represent most decimal fractions exactly (0.1 in binary is a repeating fraction, truncated), so <code>0.1 + 0.2</code> evaluates to <code>0.30000000000000004</code>, not <code>0.3</code>. Direct equality checks (<code>==</code>) on floats are therefore unreliable after any arithmetic; <code>np.isclose</code> (or <code>math.isclose</code> for scalars) checks equality within a tolerance instead, which is the correct habit for any float comparison in this guide's code &mdash; and in any numeric code at all.</p>
+<pre><code class="language-py">import numpy as np
+
+print(0.1 + 0.2 == 0.3)          # False — the trap
+print(np.isclose(0.1 + 0.2, 0.3))  # True — the fix
+</code></pre>
+
+<h4>Condition numbers: when a linear system is fragile</h4>
+<p>A matrix's <strong>condition number</strong> (<code>np.linalg.cond(A)</code>) measures how sensitive <code>solve(A, b)</code>'s answer is to tiny errors in <code>A</code> or <code>b</code> &mdash; a high condition number (loosely, above ~10<sup>4</sup>&ndash;10<sup>6</sup> depending on your precision needs) means small input noise can produce wildly different solutions, a warning sign worth checking before trusting a numeric linear-algebra result on real-world (noisy) data.</p>
+<pre><code class="language-py">import numpy as np
+
+well_conditioned = np.array([[2.0, 0.0], [0.0, 2.0]])
+ill_conditioned = np.array([[1.0, 1.0], [1.0, 1.0001]])
+
+print(np.linalg.cond(well_conditioned))   # ~1 — very stable
+print(np.linalg.cond(ill_conditioned))    # large — small input noise, big answer swings
+</code></pre>
+
+<h4>Where SymPy's exactness sidesteps floating-point error entirely</h4>
+<p>Because SymPy keeps rational numbers as exact fractions and symbolic constants (like <code>sp.pi</code> or <code>sp.sqrt(2)</code>) unevaluated until you ask, a symbolic computation chain never accumulates the small rounding errors that a floating-point chain does &mdash; at the cost of speed. This is why a SymPy-derived exact break-even price (Module 3.3) is worth cross-checking against a SciPy numeric optimizer's answer (Module 2.2): if they disagree by more than rounding, something in the numeric setup (tolerance, starting guess, local minimum) is suspect, not the exact symbolic one.</p>
+
+<p><strong>Exercise 4.3 &mdash; Cross-Validate TindaHub's Numeric and Symbolic Answers</strong></p>
+<p>Dataset: builds on earlier exercises' results</p>
+<ol>
+<li>Take the exact break-even price from Exercise 3.3 and the numeric break-even price from Exercise 2.2 (if you used different profit-function assumptions between the two, align them to the same assumptions first) and compare them with <code>np.isclose</code>, not <code>==</code>.</li>
+<li>Compute the condition number of the 3-product pricing system matrix from Exercise 3.3, and of a deliberately near-singular variant you construct yourself (e.g., make two of the three equations nearly identical), and compare.</li>
+<li>Re-solve the near-singular system with <code>np.linalg.solve</code> and separately with SymPy's <code>linsolve</code>, and report whether the numeric answer's error is visible, and whether the symbolic one is still exact regardless.</li>
+<li>Write 3&ndash;5 sentences on when you'd trust a fast numeric answer without symbolic cross-checking, and when the extra cost of a symbolic sanity check is worth it.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-tindahub-scientific-computing-toolkit">Final Capstone: TindaHub Scientific Computing Toolkit</h2>
+<p><strong>Project: A single, reusable Python module combining math, NumPy, SciPy, and SymPy for TindaHub's quantitative decisions</strong></p>
+<p>Integrates all four phases. Uses the TindaHub Orders and Customers datasets throughout.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A <code>tindahub_quant.py</code> module with clearly separated functions: a NumPy-vectorized KPI layer (Phase 1), a SciPy-based restocking optimizer (Phase 2), and a SymPy-derived, <code>lambdify</code>'d pricing model (Phase 3).</li>
+<li>A least-squares revenue trend projection (<code>numpy.linalg.lstsq</code>) and a logistic customer-growth projection (<code>scipy.integrate.solve_ivp</code>), both feeding into the same summary report.</li>
+<li>A symbolic profit model with exact break-even and profit-maximizing prices, cross-validated against a <code>scipy.optimize</code> numeric solution using <code>np.isclose</code> (Module 4.3's discipline, applied for real).</li>
+<li>A gradient-informed <code>scipy.optimize.minimize</code> call (SymPy-derived <code>jac</code>) solving a two-region delivery allocation problem.</li>
+<li>Explicit precision/validation checks throughout: no bare float <code>==</code> comparisons, at least one condition-number check on any linear system solved numerically.</li>
+<li>A one-page written summary (non-technical, shop-owner-readable) translating every numeric/symbolic result into a plain business recommendation.</li>
+<li>A short "tool choice log" &mdash; one sentence per major computation explaining, using Module 4.1's framework, why that specific library was the right choice.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Python Scientific Computing Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Single scalar math (sqrt, log, factorial)</td><td><code>math.sqrt</code>, <code>math.log</code>, <code>math.factorial</code></td><td>One number in, one number out; no array support.</td></tr>
+<tr><td>Safe float comparison</td><td><code>math.isclose</code> / <code>np.isclose</code></td><td>Never use <code>==</code> on computed floats.</td></tr>
+<tr><td>Create an array</td><td><code>np.array</code>, <code>np.arange</code>, <code>np.linspace</code></td><td><code>arange</code> is step-based, <code>linspace</code> is count-based.</td></tr>
+<tr><td>Filter without a loop</td><td>boolean mask: <code>arr[arr &gt; x]</code></td><td>Combine conditions with <code>&amp;</code>/<code>|</code>, parenthesized.</td></tr>
+<tr><td>Solve a linear system</td><td><code>np.linalg.solve(A, b)</code></td><td>Prefer over <code>inv(A) @ b</code> &mdash; faster and more stable.</td></tr>
+<tr><td>Fit a trend line (least squares)</td><td><code>np.linalg.lstsq</code></td><td>NumPy-native simple regression, no stats library needed.</td></tr>
+<tr><td>Minimize a cost function</td><td><code>scipy.optimize.minimize_scalar</code> / <code>minimize</code></td><td>Check multiple <code>x0</code> starting points for local minima.</td></tr>
+<tr><td>Find where a function crosses zero</td><td><code>scipy.optimize.brentq</code> / <code>root</code></td><td>Root-finding, not minimization.</td></tr>
+<tr><td>Numerically integrate a function</td><td><code>scipy.integrate.quad</code></td><td>Use when there's no clean symbolic antiderivative.</td></tr>
+<tr><td>Solve an ODE (growth/decay over time)</td><td><code>scipy.integrate.solve_ivp</code></td><td>Needs a rate function and an initial condition.</td></tr>
+<tr><td>Fill gaps in a series</td><td><code>scipy.interpolate.CubicSpline</code></td><td>Interpolation only &mdash; don't extrapolate past known range.</td></tr>
+<tr><td>Smooth a noisy series</td><td><code>scipy.signal.savgol_filter</code></td><td>Preserves shape better than a plain moving average.</td></tr>
+<tr><td>Exact symbolic derivative/integral</td><td><code>sp.diff</code> / <code>sp.integrate</code></td><td>Exact, not approximate &mdash; slower than NumPy/SciPy.</td></tr>
+<tr><td>Exact equation/system solving</td><td><code>sp.solve</code>, <code>linsolve</code>, <code>nonlinsolve</code></td><td>Use for genuinely symbolic or exactness-critical cases.</td></tr>
+<tr><td>Evaluate a symbolic result fast, at scale</td><td><code>sp.lambdify(x, expr, "numpy")</code></td><td>Derive once symbolically, evaluate many times numerically.</td></tr>
+<tr><td>Check numeric stability of a linear system</td><td><code>np.linalg.cond(A)</code></td><td>High condition number = fragile to input noise.</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-numpy-core">NumPy Core</h3>
+<dl class="glossary">
+<dt>ndarray</dt>
+<dd>NumPy's core data structure: a fixed-size, single-dtype, contiguous block of memory holding a grid of values of the same type.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "NumPy list", "array" (bare) &mdash; a Python list is not an <code>ndarray</code> and behaves very differently under arithmetic.</dd>
+<dt>dtype</dt>
+<dd>The single data type (e.g., <code>int64</code>, <code>float64</code>, <code>bool</code>) shared by every element of an <code>ndarray</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "type" (bare) &mdash; conflates Python's per-object <code>type()</code> with NumPy's array-wide <code>dtype</code>.</dd>
+<dt>ufunc</dt>
+<dd>A NumPy function (universal function) that applies element-wise across arrays via a compiled loop, e.g., <code>np.add</code>, <code>np.sqrt</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "vectorized function" as a strict synonym &mdash; all ufuncs are vectorized, but "vectorization" also describes writing array-expression code generally, not just calling a ufunc.</dd>
+<dt>Broadcasting</dt>
+<dd>NumPy's rule set for combining arrays of different, but compatible, shapes without explicitly copying data, by comparing shapes from the trailing dimension inward.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "auto-resizing" &mdash; broadcasting never actually resizes the underlying array in memory; it conceptually stretches it during the operation only.</dd>
+<dt>View vs. copy</dt>
+<dd>A view shares the original array's underlying memory (modifying it modifies the source); a copy is an independent block of memory. Basic slicing (<code>arr[1:3]</code>) returns a view; boolean-mask indexing (<code>arr[arr &gt; 0]</code>) returns a copy.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming all indexing returns the same thing &mdash; whether you get a view or a copy depends on the indexing method used, and this affects whether edits propagate back.</dd>
+</dl>
+
+<h3 id="glossary-scipy-numerical-methods">SciPy Numerical Methods</h3>
+<dl class="glossary">
+<dt>Quadrature</dt>
+<dd>The numerical (approximate, not exact-symbolic) computation of a definite integral, as performed by <code>scipy.integrate.quad</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "integration" (bare) when precision matters &mdash; SymPy's <code>integrate</code> is exact/symbolic; SciPy's <code>quad</code> is numeric/approximate. Same word, different guarantee.</dd>
+<dt>ODE (Ordinary Differential Equation)</dt>
+<dd>An equation describing a quantity's rate of change over one independent variable (usually time), rather than giving the quantity's value directly.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "equation" (bare) &mdash; an ODE is specifically about rates of change, not a static algebraic relationship.</dd>
+<dt>Local minimum</dt>
+<dd>A point where a function's value is lower than all nearby points, but not necessarily the lowest value overall (the global minimum).</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming any <code>scipy.optimize.minimize</code> result is the global minimum &mdash; gradient-based methods can and do settle on local ones.</dd>
+<dt>Interpolation</dt>
+<dd>Estimating a value strictly <em>between</em> two known data points along the domain the known data actually covers.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "extrapolation" as a synonym &mdash; extrapolation estimates values <em>outside</em> the known range and carries much weaker accuracy guarantees.</dd>
+</dl>
+
+<h3 id="glossary-sympy-symbolic-math">SymPy Symbolic Math</h3>
+<dl class="glossary">
+<dt>Symbol</dt>
+<dd>A SymPy object representing an unevaluated mathematical variable, which stays symbolic through arithmetic until explicitly substituted with a value.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "variable" (bare) in a Python-semantics sense &mdash; a Python variable holds a value immediately; a SymPy <code>Symbol</code> deliberately does not.</dd>
+<dt>Expression</dt>
+<dd>A tree of SymPy operations and symbols (e.g., <code>(x + y)**2</code>) that represents a mathematical formula without evaluating it to a number.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing an unevaluated expression with its numeric result &mdash; printing an expression shows the formula, not a computed value, until you call <code>.subs()</code> or <code>.evalf()</code>.</dd>
+<dt>lambdify</dt>
+<dd>A SymPy function that compiles a symbolic expression into an ordinary, fast, callable Python function (typically NumPy-backed), for repeated numeric evaluation.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "evaluate" as a substitute term for what <code>lambdify</code> does &mdash; <code>.subs()</code> and <code>.evalf()</code> evaluate a single point; <code>lambdify</code> instead produces a reusable, vectorizable function.</dd>
+<dt>Rational</dt>
+<dd>SymPy's exact fraction type, stored as an integer numerator/denominator pair rather than a floating-point approximation.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "float" or "decimal" &mdash; a <code>Rational</code> stays exact through arithmetic; converting to a Python <code>float</code> immediately reintroduces floating-point rounding.</dd>
+<dt>solveset</dt>
+<dd>SymPy's newer equation-solving function that returns a mathematically explicit solution set, with an explicit domain (real, complex, etc.).</dd>
+<dd class="avoid"><strong>Avoid:</strong> treating <code>solve</code> and <code>solveset</code> as fully interchangeable &mdash; they can differ in output form and in how they handle infinite or no-solution cases.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>Numerical Python, 3rd ed. (2024) &mdash; Robert Johansson</td><td>Comprehensive NumPy, SciPy, SymPy &amp; Matplotlib reference; the closest single book to this guide's exact scope.</td></tr>
+<tr><td>Python for Data Analysis, 3rd ed. (2022) &mdash; Wes McKinney</td><td>pandas-centric data wrangling; useful complement once you're moving numeric results into tabular workflows.</td></tr>
+<tr><td>Mathematics for Machine Learning (2020, open access) &mdash; Deisenroth, Faisal &amp; Ong</td><td>Linear algebra, calculus &amp; probability foundations underlying everything NumPy/SciPy/SymPy compute &mdash; content is math, not version-bound, so it stays current.</td></tr>
+</table>
+
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td><a href="https://numpy.org/doc/stable/">NumPy Official Documentation</a></td><td>NumPy reference &amp; user guide</td><td>Includes the "NumPy: the absolute basics for beginners" tutorial &mdash; start here for array fundamentals.</td></tr>
+<tr><td><a href="https://docs.scipy.org/doc/scipy/">SciPy Official Documentation</a></td><td>SciPy reference &amp; tutorials</td><td>Each submodule (<code>optimize</code>, <code>integrate</code>, <code>interpolate</code>, <code>stats</code>) has its own tutorial section.</td></tr>
+<tr><td><a href="https://docs.sympy.org/latest/index.html">SymPy Official Documentation</a></td><td>SymPy reference &amp; tutorial</td><td>The built-in tutorial covers Modules 3.1&ndash;3.4's content directly, with more depth.</td></tr>
+<tr><td><a href="https://scipy-lectures.org/">Scientific Python Lectures</a></td><td>Community-maintained NumPy/SciPy/Matplotlib course</td><td>Free, actively maintained, good second pass after this guide.</td></tr>
+<tr><td><a href="https://realpython.com/numpy-array-programming/">Real Python: NumPy &amp; SciPy tutorials</a></td><td>Practical, example-driven walkthroughs</td><td>Good for a second explanation of broadcasting and vectorization if Module 1.3 didn't land the first time.</td></tr>
+<tr><td><a href="https://numpy.org/news/">NumPy Release Notes</a></td><td>Version-by-version changes</td><td>Check before relying on a specific function signature &mdash; NumPy 2.x changed some defaults from 1.x.</td></tr>
+</table>
+
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>TindaHub Orders (<code>datasets/tindahub-orders/</code>, this workspace)</td><td>The benchmark dataset used in every exercise and capstone in this guide.</td></tr>
+<tr><td>Jupyter Notebook</td><td>Interactive exploration &mdash; <code>%timeit</code> for Module 1.3's performance comparisons, inline plotting for Module 3.4. See this workspace's <code>jupyter-notebook</code> skill for generating one.</td></tr>
+<tr><td>Matplotlib</td><td>Plotting <code>lambdify</code>'d and NumPy-computed results (Modules 3.4, 4.2). Not taught in depth here &mdash; used as a supporting tool only.</td></tr>
+<tr><td>pandas</td><td>Table-shaped data with mixed dtypes (covered in the main Python guide) &mdash; hand off to pandas once a NumPy array alone can't represent your table.</td></tr>
+</table>
+
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>NumPy &amp; SciPy Discourse</td><td>discuss.scientific-python.org</td><td>Official forum for both projects &mdash; design questions, bug reports, "is this the right function" questions.</td></tr>
+<tr><td>r/learnpython &amp; r/Python</td><td>Reddit</td><td>General troubleshooting and code review from a broad Python audience.</td></tr>
+<tr><td>Stack Overflow (<code>numpy</code>, <code>scipy</code>, <code>sympy</code> tags)</td><td>Stack Overflow</td><td>Searchable history of nearly every common error message you'll hit in these libraries.</td></tr>
+<tr><td>PyData community (Discord/Slack, regional meetups)</td><td>Discord/Slack/in-person</td><td>Applied scientific-Python discussion beyond pure library mechanics &mdash; good for "how would you model this" questions.</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them &mdash; this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads &mdash; use "Reset progress" in the sidebar to clear it.</p></blockquote>
+
+<h4>Phase 1 &mdash; NumPy Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 &mdash; math Module &amp; the Case for Arrays</li>
+<li>[ ] Exercise 1.1 &mdash; From Loop to Vector</li>
+<li>[ ] Module 1.2 &mdash; NumPy Arrays: Creation, dtype &amp; Indexing</li>
+<li>[ ] Exercise 1.2 &mdash; Filtering TindaHub Orders with Masks</li>
+<li>[ ] Module 1.3 &mdash; Vectorization, Broadcasting &amp; Performance</li>
+<li>[ ] Exercise 1.3 &mdash; Vectorize TindaHub's VAT and Discount Logic</li>
+<li>[ ] Module 1.4 &mdash; Linear Algebra with numpy.linalg</li>
+<li>[ ] Exercise 1.4 &mdash; Project TindaHub's Next-Month Revenue</li>
+<li>[ ] Capstone 1 &mdash; Array-ify TindaHub</li>
+</ul>
+
+<h4>Phase 2 &mdash; SciPy Numerical Methods</h4>
+<ul>
+<li>[ ] Module 2.1 &mdash; scipy.stats: Just Enough to Know It's There</li>
+<li>[ ] Exercise 2.1 &mdash; Model TindaHub Order Sizes</li>
+<li>[ ] Module 2.2 &mdash; scipy.optimize: Root Finding &amp; Minimization</li>
+<li>[ ] Exercise 2.2 &mdash; Optimal Restock Quantity for TindaHub's Top SKU</li>
+<li>[ ] Module 2.3 &mdash; scipy.integrate: Quadrature &amp; ODEs</li>
+<li>[ ] Exercise 2.3 &mdash; Model TindaHub's Customer Growth</li>
+<li>[ ] Module 2.4 &mdash; scipy.interpolate &amp; scipy.signal Basics</li>
+<li>[ ] Exercise 2.4 &mdash; Smooth &amp; Fill TindaHub's Daily Order Series</li>
+<li>[ ] Capstone 2 &mdash; Numerically Optimize TindaHub Restocking</li>
+</ul>
+
+<h4>Phase 3 &mdash; SymPy Symbolic Math</h4>
+<ul>
+<li>[ ] Module 3.1 &mdash; Symbols, Expressions &amp; Simplification</li>
+<li>[ ] Exercise 3.1 &mdash; Symbolic Discount &amp; VAT Formula</li>
+<li>[ ] Module 3.2 &mdash; Symbolic Calculus: Derivatives, Integrals, Limits, Series</li>
+<li>[ ] Exercise 3.2 &mdash; Marginal Profit for TindaHub's Bundle Pricing</li>
+<li>[ ] Module 3.3 &mdash; Solving Equations &amp; Systems Symbolically</li>
+<li>[ ] Exercise 3.3 &mdash; Exact Break-Even Points for TindaHub Pricing</li>
+<li>[ ] Module 3.4 &mdash; Bridging Symbolic to Numeric: lambdify &amp; Plotting</li>
+<li>[ ] Exercise 3.4 &mdash; Fast Numeric Sweep of the Profit Curve</li>
+<li>[ ] Capstone 3 &mdash; Symbolic Profit Model for TindaHub</li>
+</ul>
+
+<h4>Phase 4 &mdash; Integration &amp; Judgment</h4>
+<ul>
+<li>[ ] Module 4.1 &mdash; When to Use What: math vs NumPy vs SciPy vs SymPy</li>
+<li>[ ] Exercise 4.1 &mdash; Tool Selection Drill</li>
+<li>[ ] Module 4.2 &mdash; Applied Case Study: Delivery Cost Optimization</li>
+<li>[ ] Exercise 4.2 &mdash; Optimize TindaHub's Two-Region Delivery Split</li>
+<li>[ ] Module 4.3 &mdash; Validation, Precision &amp; Numerical Pitfalls</li>
+<li>[ ] Exercise 4.3 &mdash; Cross-Validate TindaHub's Numeric and Symbolic Answers</li>
+</ul>
+
+<h4>Final Outcome</h4>
+<ul>
+<li>[ ] Final Capstone &mdash; TindaHub Scientific Computing Toolkit complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 &mdash; Python Scientific Computing Track: Applied Numerical &amp; Symbolic Computing</em><br>
+<em>Non-linear modular design &middot; Placement quiz &middot; 15 modules &middot; ~6 weeks part-time &middot; hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-08-02 (NumPy 2.5.1, SciPy 1.18.0, SymPy 1.14.0, Python 3.13 recommended baseline)</em></p>
+
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Full-text guide search ────────────────────────────────
+  // Indexes every block of the guide body, lists matching snippets grouped
+  // by section, highlights hits in the page, and filters the nav to the
+  // sections that contain them. Multiple words = all must appear in the
+  // same block; wrap in "quotes" for an exact phrase.
+  var navSearch = document.getElementById("navSearch");
+  var contentRoot = document.querySelector(".content");
+  if(navSearch && contentRoot){
+    var BLOCK_SEL = "h1,h2,h3,h4,p,li,tr,dt,dd,pre";
+    var searchRow = document.getElementById("searchRow"),
+        searchBar = document.getElementById("searchBar"),
+        searchCount = document.getElementById("searchCount"),
+        searchResults = document.getElementById("searchResults");
+    var navById = {};
+    document.querySelectorAll("#nav a").forEach(function(a){
+      navById[a.getAttribute("href").slice(1)] = a;
+    });
+
+    var blocks = [], section = null;
+    contentRoot.querySelectorAll(BLOCK_SEL).forEach(function(el){
+      if(/^H[1-4]$/.test(el.tagName) && el.id && navById[el.id]) section = el;
+      if(el.classList.contains("quiz-score")) return;
+      var outer = el.parentElement && el.parentElement.closest(BLOCK_SEL);
+      if(outer && contentRoot.contains(outer)) return;
+      var text = el.textContent.replace(/\s+/g, " ").trim();
+      if(text) blocks.push({el:el, text:text, lower:text.toLowerCase(), section:section});
+    });
+
+    var hits = [], cur = -1, timer = null;
+    function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+    function sectionLabel(sec){ return sec && navById[sec.id] ? navById[sec.id].textContent : "Introduction"; }
+
+    function clearMarks(){
+      contentRoot.querySelectorAll("mark.lg-hit").forEach(function(m){
+        var p = m.parentNode;
+        p.replaceChild(document.createTextNode(m.textContent), m);
+        p.normalize();
+      });
+      var b = contentRoot.querySelector(".lg-block-current");
+      if(b) b.classList.remove("lg-block-current");
+    }
+
+    function markBlock(el, re){
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+      while((n = walker.nextNode())) nodes.push(n);
+      var marks = [];
+      nodes.forEach(function(node){
+        var t = node.nodeValue, m, last = 0;
+        re.lastIndex = 0;
+        if(!re.test(t)) return;
+        re.lastIndex = 0;
+        var frag = document.createDocumentFragment();
+        while((m = re.exec(t))){
+          if(m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+          var mk = document.createElement("mark");
+          mk.className = "lg-hit";
+          mk.textContent = m[0];
+          frag.appendChild(mk);
+          marks.push(mk);
+          last = m.index + m[0].length;
+        }
+        if(last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+      });
+      return marks;
+    }
+
+    function snippet(text, terms, re){
+      var lower = text.toLowerCase(), i = -1;
+      terms.forEach(function(t){ var k = lower.indexOf(t); if(k > -1 && (i < 0 || k < i)) i = k; });
+      if(i < 0) i = 0;
+      var start = Math.max(0, i - 40), end = Math.min(text.length, i + 100);
+      var s = text.slice(start, end), out = "", last = 0, m;
+      re.lastIndex = 0;
+      while((m = re.exec(s))){
+        out += escHtml(s.slice(last, m.index)) + "<mark>" + escHtml(m[0]) + "</mark>";
+        last = m.index + m[0].length;
+      }
+      return (start > 0 ? "…" : "") + out + escHtml(s.slice(last)) + (end < text.length ? "…" : "");
+    }
+
+    function filterNav(ids){
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var any = false;
+        g.querySelectorAll("a").forEach(function(a){
+          var show = !ids || !!ids[a.getAttribute("href").slice(1)];
+          if(a.classList.contains("nav-child")) a.classList.toggle("filtered-out", !show);
+          if(show) any = true;
+        });
+        g.classList.toggle("filtered-out", !any);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        a.classList.toggle("filtered-out", !!ids && !ids[a.getAttribute("href").slice(1)]);
+      });
+    }
+
+    function updateCount(nSections){
+      if(!hits.length){ searchCount.textContent = "No matches"; return; }
+      var pos = cur > -1 ? (cur + 1) + " / " + hits.length : hits.length + (hits.length === 1 ? " match" : " matches");
+      searchCount.textContent = pos + " · " + nSections + (nSections === 1 ? " section" : " sections");
+    }
+
+    var lastSectionCount = 0;
+    function run(){
+      var raw = navSearch.value.trim();
+      clearMarks();
+      hits = []; cur = -1;
+      searchRow.classList.toggle("has-query", !!raw);
+      if(raw.length < 2){
+        searchResults.classList.remove("show");
+        searchBar.classList.remove("show");
+        searchResults.innerHTML = "";
+        filterNav(null);
+        return;
+      }
+      var phrase = /^"(.+)"$/.exec(raw);
+      var terms = phrase ? [phrase[1].toLowerCase()] : raw.toLowerCase().split(/\s+/);
+      terms = terms.filter(function(t, i){ return t && terms.indexOf(t) === i; });
+      var re = new RegExp(terms.slice().sort(function(a, b){ return b.length - a.length; }).map(escRe).join("|"), "gi");
+      var matched = blocks.filter(function(b){
+        return terms.every(function(t){ return b.lower.indexOf(t) > -1; });
+      });
+
+      var ids = {}, groups = [], html = "", LIMIT = 60;
+      matched.forEach(function(b, bi){
+        var marks = markBlock(b.el, re);
+        if(marks.length) marks.forEach(function(m){ hits.push({m:m, el:b.el, b:bi}); });
+        else hits.push({m:null, el:b.el, b:bi});
+        var key = b.section ? b.section.id : "";
+        if(b.section) ids[b.section.id] = true;
+        if(!groups.length || groups[groups.length - 1].key !== key) groups.push({key:key, sec:b.section, items:[]});
+        groups[groups.length - 1].items.push(bi);
+      });
+
+      if(!matched.length){
+        html = '<div class="sr-empty">No matches for “' + escHtml(raw) + '”. Try fewer words.</div>';
+      } else {
+        var listed = 0;
+        groups.forEach(function(g){
+          if(listed >= LIMIT) return;
+          html += '<div class="sr-group"><div class="sr-section">' + escHtml(sectionLabel(g.sec)) + '</div>';
+          g.items.slice(0, 4).forEach(function(bi){
+            if(listed >= LIMIT) return;
+            html += '<button type="button" class="sr-item" role="option" data-b="' + bi + '">' +
+                    snippet(matched[bi].text, terms, re) + '</button>';
+            listed++;
+          });
+          if(g.items.length > 4) html += '<div class="sr-more">+' + (g.items.length - 4) + ' more in this section (use ↓ to step through)</div>';
+          html += '</div>';
+        });
+        if(matched.length > listed) html += '<div class="sr-more">Showing ' + listed + ' of ' + matched.length + ' blocks — add a word to narrow it.</div>';
+      }
+      searchResults.innerHTML = html;
+      searchResults.classList.add("show");
+      searchBar.classList.add("show");
+      lastSectionCount = Object.keys(ids).length || (matched.length ? 1 : 0);
+      filterNav(ids);
+      updateCount(lastSectionCount);
+    }
+
+    function go(i, closeMobile){
+      if(!hits.length) return;
+      cur = (i + hits.length) % hits.length;
+      contentRoot.querySelectorAll("mark.lg-hit-current").forEach(function(m){ m.classList.remove("lg-hit-current"); });
+      var prev = contentRoot.querySelector(".lg-block-current");
+      if(prev) prev.classList.remove("lg-block-current");
+      var h = hits[cur];
+      if(h.m) h.m.classList.add("lg-hit-current");
+      h.el.classList.add("lg-block-current");
+      (h.m || h.el).scrollIntoView({behavior:"smooth", block:"center"});
+      searchResults.querySelectorAll(".sr-item").forEach(function(it){
+        var on = +it.getAttribute("data-b") === h.b;
+        it.classList.toggle("current", on);
+        if(on) it.scrollIntoView({block:"nearest"});
+      });
+      updateCount(lastSectionCount);
+      if(closeMobile && window.innerWidth <= 1000) closeNav();
+    }
+
+    navSearch.addEventListener("input", function(){
+      clearTimeout(timer);
+      timer = setTimeout(run, 140);
+    });
+    navSearch.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        clearTimeout(timer);
+        if(!hits.length && navSearch.value.trim().length >= 2) run();
+        go(e.shiftKey ? cur - 1 : cur + 1, true);
+      } else if(e.key === "Escape"){
+        navSearch.value = "";
+        run();
+      }
+    });
+    searchResults.addEventListener("click", function(e){
+      var item = e.target.closest(".sr-item");
+      if(!item) return;
+      var b = +item.getAttribute("data-b");
+      for(var k = 0; k < hits.length; k++){ if(hits[k].b === b){ go(k, true); break; } }
+    });
+    document.getElementById("searchNext").addEventListener("click", function(){ go(cur + 1, false); });
+    document.getElementById("searchPrev").addEventListener("click", function(){ go(cur - 1, false); });
+    document.getElementById("searchClear").addEventListener("click", function(){
+      navSearch.value = "";
+      run();
+      navSearch.focus();
+    });
+    document.addEventListener("keydown", function(e){
+      var tag = (e.target.tagName || "").toLowerCase();
+      var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+      var slash = e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey;
+      var cmdK = (e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K");
+      if(!slash && !cmdK) return;
+      e.preventDefault();
+      if(window.innerWidth <= 1000){
+        document.getElementById("sidebar").classList.add("open");
+        document.getElementById("scrim").classList.add("show");
+      }
+      navSearch.focus();
+      navSearch.select();
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

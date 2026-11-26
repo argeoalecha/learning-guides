@@ -1,0 +1,2854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Excel Libraries Learning Guide — Beginner to Advanced</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+.search-row{position:relative}
+.search-row .nav-search{padding-right:2.4rem}
+.search-kbd{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:4px;padding:0 .3rem;background:var(--paper-2);
+  pointer-events:none;
+}
+.search-row.has-query .search-kbd{display:none}
+.search-bar{
+  display:none;align-items:center;gap:.35rem;margin-top:.45rem;
+  font-size:.72rem;color:var(--ink-soft);
+}
+.search-bar.show{display:flex}
+.search-count{flex:1;font-family:var(--mono)}
+.search-bar button{
+  border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);
+  border-radius:6px;font-size:.72rem;padding:.15rem .45rem;cursor:pointer;min-width:26px;min-height:24px;
+}
+.search-bar button:hover{background:var(--teal-wash)}
+.search-results{
+  display:none;margin:.5rem 0 .2rem;max-height:48vh;overflow-y:auto;
+  border:1px solid var(--line);border-radius:8px;background:var(--paper);
+}
+.search-results.show{display:block}
+.sr-group{border-top:1px solid var(--line-soft)}
+.sr-group:first-child{border-top:none}
+.sr-section{
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--teal);padding:.5rem .65rem .15rem;
+}
+.sr-item{
+  display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  font-family:var(--sans);font-size:.76rem;line-height:1.4;color:var(--ink);
+  padding:.35rem .65rem;
+}
+.sr-item:hover,.sr-item.current{background:var(--teal-wash)}
+.sr-item mark,.lg-hit{background:var(--amber-wash);color:inherit;border-radius:2px;padding:0 1px}
+.sr-more{font-size:.7rem;color:var(--ink-soft);padding:.1rem .65rem .45rem}
+.sr-empty{font-size:.78rem;color:var(--ink-soft);padding:.6rem .65rem}
+pre .lg-hit{background:#5c4a12;color:#fff4cf}
+.lg-hit.lg-hit-current{background:var(--coral);color:#fff;outline:2px solid var(--coral)}
+.lg-block-current{outline:2px dashed var(--teal);outline-offset:4px;border-radius:4px}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — expert guided learning">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">expert guided learning</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">Python Excel<br>Libraries Guide</div>
+      <div class="brand-sub">openpyxl · xlwings · pandas · calamine · XlsxWriter · polars</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <div class="search-row" id="searchRow">
+        <input type="search" id="navSearch" class="nav-search" placeholder="Search the guide…" aria-label="Search the whole guide" aria-controls="searchResults" autocomplete="off" spellcheck="false">
+        <span class="search-kbd" aria-hidden="true">/</span>
+      </div>
+      <div class="search-bar" id="searchBar">
+        <span class="search-count" id="searchCount" aria-live="polite"></span>
+        <button type="button" id="searchPrev" aria-label="Previous match">↑</button>
+        <button type="button" id="searchNext" aria-label="Next match">↓</button>
+        <button type="button" id="searchClear" aria-label="Clear search">✕</button>
+      </div>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+    </div>
+    <nav id="nav">
+<a href="#beginner-to-advanced" class="nav-top">Beginner to Advanced Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-foundations" class="nav-top nav-phase">Phase 1: Foundations</a>
+<div class="nav-children">
+<a href="#module-11-the-xlsx-format-and-the-library-landscape" class="nav-child">Module 1.1 — The .xlsx Format &amp; the Library Landscape</a>
+<a href="#module-12-choosing-the-right-library" class="nav-child">Module 1.2 — Choosing the Right Library</a>
+<a href="#module-13-setup-and-your-first-openpyxl-read" class="nav-child">Module 1.3 — Setup &amp; Your First openpyxl Read</a>
+<a href="#phase-1-capstone-workbook-inventory" class="nav-child">Phase 1 Capstone: The Workbook Inventory Tool</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-openpyxl-in-depth" class="nav-top nav-phase">Phase 2: openpyxl in Depth</a>
+<div class="nav-children">
+<a href="#module-21-writing-creating-and-restructuring-workbooks" class="nav-child">Module 2.1 — Writing, Creating &amp; Restructuring Workbooks</a>
+<a href="#module-22-styling-fonts-fills-borders-and-named-styles" class="nav-child">Module 2.2 — Styling: Fonts, Fills, Borders &amp; Named Styles</a>
+<a href="#module-23-number-formats-and-the-date-minefield" class="nav-child">Module 2.3 — Number Formats &amp; the Date Minefield</a>
+<a href="#module-24-formulas-and-the-cached-value-trap" class="nav-child">Module 2.4 — Formulas &amp; the Cached-Value Trap</a>
+<a href="#module-25-tables-conditional-formatting-and-data-validation" class="nav-child">Module 2.5 — Tables, Conditional Formatting &amp; Data Validation</a>
+<a href="#module-26-charts-images-and-print-layout" class="nav-child">Module 2.6 — Charts, Images &amp; Print Layout</a>
+<a href="#module-27-performance-read-only-and-write-only-modes" class="nav-child">Module 2.7 — Performance: read_only &amp; write_only Modes</a>
+<a href="#phase-2-capstone-branded-regional-report" class="nav-child">Phase 2 Capstone: The Branded Regional Report</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-dataframes-and-fast-readers" class="nav-top nav-phase">Phase 3: DataFrames &amp; Fast Readers</a>
+<div class="nav-children">
+<a href="#module-31-pandas-excel-io-end-to-end" class="nav-child">Module 3.1 — pandas Excel I/O End to End</a>
+<a href="#module-32-engines-and-performance-calamine" class="nav-child">Module 3.2 — Engines &amp; Performance: calamine</a>
+<a href="#module-33-polars-fastexcel-and-large-files" class="nav-child">Module 3.3 — polars, fastexcel &amp; Large Files</a>
+<a href="#module-34-xlsxwriter-formatted-reports-at-speed" class="nav-child">Module 3.4 — XlsxWriter: Formatted Reports at Speed</a>
+<a href="#phase-3-capstone-messy-import-pipeline" class="nav-child">Phase 3 Capstone: The Messy Import Pipeline</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-live-excel-and-automation" class="nav-top nav-phase">Phase 4: Live Excel &amp; Automation</a>
+<div class="nav-children">
+<a href="#module-41-xlwings-fundamentals" class="nav-child">Module 4.1 — xlwings Fundamentals</a>
+<a href="#module-42-xlwings-converters-dataframes-and-round-trips" class="nav-child">Module 4.2 — Converters, DataFrames &amp; Round-Trips</a>
+<a href="#module-43-xlwings-udfs-macros-and-runpython" class="nav-child">Module 4.3 — UDFs, Macros &amp; RunPython</a>
+<a href="#module-44-excel-native-python-lite-server-and-python-in-excel" class="nav-child">Module 4.4 — Excel-Native Python: Lite, Server &amp; PiE</a>
+<a href="#phase-4-capstone-live-dashboard" class="nav-child">Phase 4 Capstone: The Live Regional Dashboard</a>
+</div></div>
+
+<a href="#final-capstone-the-tindahub-reporting-system" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="python-excel-libraries-learning-guide">Python Excel Libraries Learning Guide</h1>
+<h2 id="beginner-to-advanced">Beginner to Advanced Track</h2>
+<h3>openpyxl · xlwings · pandas · python-calamine · XlsxWriter · polars</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="Python Excel Libraries" xmlns="http://www.w3.org/2000/svg">
+  <rect x="26" y="26" width="204" height="204" rx="20" fill="none" stroke="#075249" stroke-width="14"/>
+  <path d="M26 88 H230" stroke="#075249" stroke-width="13" stroke-linecap="round"/>
+  <path d="M92 88 V230" stroke="#075249" stroke-width="13" stroke-linecap="round"/>
+  <path d="M126 122 h34 a22 22 0 0 1 0 44 h-34 a22 22 0 0 0 0 44 h40" fill="none" stroke="#0d7a6e" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="150" cy="57" r="11" fill="#0d7a6e"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone uses the same realistic <strong>TindaHub Orders</strong> workbook — a Philippine sari-sari store distribution business, 5,000 orders across 6 regions. Grab it from <a href="../datasets/tindahub-orders/">datasets/tindahub-orders/</a>.</p>
+</blockquote>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially.</li>
+<li><strong>Some experience</strong> → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>.</li>
+</ol>
+<p>One install line covers most of this guide:</p>
+<pre><code class="language-bash">python -m pip install "openpyxl==3.1.5" "pandas==3.0.5" "XlsxWriter==3.2.9" \
+                      "python-calamine==0.8.2" "xlwings==0.36.14" "polars==1.43.2"</code></pre>
+<p>pandas 3.0 requires <strong>Python 3.11 or newer</strong>. If you are on 3.10, either upgrade Python or pin <code>pandas&lt;3</code> — the Excel API shown in Phase 3 is unchanged, only the default engine wording differs.</p>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3 id="quiz-file-formats-library-choice">A. File Formats &amp; Library Choice</h3>
+<ul>
+<li>[ ] I can explain why an <code>.xlsx</code> file is really a ZIP archive of XML parts</li>
+<li>[ ] I know why <code>xlrd</code> can no longer open <code>.xlsx</code> files</li>
+<li>[ ] I can name the right library for reading a 400 MB <code>.xlsb</code> file</li>
+<li>[ ] I can explain when pandas is the wrong tool for an Excel job</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.2</strong> | <strong>4 yes</strong> → Skip to <strong>Module 1.3</strong></p>
+
+<h3 id="quiz-openpyxl">B. openpyxl</h3>
+<ul>
+<li>[ ] I can loop a sheet with <code>iter_rows(values_only=True)</code> and know why that beats indexing</li>
+<li>[ ] I can apply a <code>NamedStyle</code> instead of restyling every cell individually</li>
+<li>[ ] I can explain what <code>data_only=True</code> returns for a formula openpyxl itself wrote</li>
+<li>[ ] I can add an Excel Table, a conditional-formatting rule, and a chart from Python</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.3</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Module 2.7</strong></p>
+
+<h3 id="quiz-dataframes-performance">C. DataFrames &amp; Performance</h3>
+<ul>
+<li>[ ] I always pass <code>engine=</code> explicitly to <code>pd.read_excel()</code> and can say why</li>
+<li>[ ] I can round-trip a multi-sheet workbook with <code>pd.ExcelWriter</code></li>
+<li>[ ] I know which engine reads <code>.xlsb</code> without a deprecated dependency</li>
+<li>[ ] I can stream a 500k-row sheet without loading it all into memory</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.2</strong> | <strong>4 yes</strong> → Skip to <strong>Module 3.4</strong></p>
+
+<h3 id="quiz-live-excel-automation">D. Live Excel &amp; Automation</h3>
+<ul>
+<li>[ ] I can drive an open Excel window from Python and read the user's current selection</li>
+<li>[ ] I can write a Python function that Excel calls as a worksheet formula</li>
+<li>[ ] I can explain the difference between xlwings, xlwings Lite, and xlwings Server</li>
+<li>[ ] I can say when Python in Excel is a better fit than any local library</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 4.3</strong> | <strong>4 yes</strong> → Skip to the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-the-xlsx-format-and-the-library-landscape"><td>1.1</td><td>The .xlsx Format &amp; the Library Landscape</td><td>Beginner</td><td>None</td><td>2h</td></tr>
+<tr data-href="#module-12-choosing-the-right-library"><td>1.2</td><td>Choosing the Right Library</td><td>Beginner</td><td>1.1</td><td>2h</td></tr>
+<tr data-href="#module-13-setup-and-your-first-openpyxl-read"><td>1.3</td><td>Setup &amp; Your First openpyxl Read</td><td>Beginner</td><td>1.1</td><td>3h</td></tr>
+<tr data-href="#module-21-writing-creating-and-restructuring-workbooks"><td>2.1</td><td>Writing, Creating &amp; Restructuring Workbooks</td><td>Beginner–Intermediate</td><td>1.3</td><td>4h</td></tr>
+<tr data-href="#module-22-styling-fonts-fills-borders-and-named-styles"><td>2.2</td><td>Styling: Fonts, Fills, Borders &amp; Named Styles</td><td>Beginner–Intermediate</td><td>2.1</td><td>3h</td></tr>
+<tr data-href="#module-23-number-formats-and-the-date-minefield"><td>2.3</td><td>Number Formats &amp; the Date Minefield</td><td>Intermediate</td><td>2.1</td><td>4h</td></tr>
+<tr data-href="#module-24-formulas-and-the-cached-value-trap"><td>2.4</td><td>Formulas &amp; the Cached-Value Trap</td><td>Intermediate</td><td>2.1</td><td>4h</td></tr>
+<tr data-href="#module-25-tables-conditional-formatting-and-data-validation"><td>2.5</td><td>Tables, Conditional Formatting &amp; Data Validation</td><td>Intermediate</td><td>2.2</td><td>4h</td></tr>
+<tr data-href="#module-26-charts-images-and-print-layout"><td>2.6</td><td>Charts, Images &amp; Print Layout</td><td>Intermediate</td><td>2.2</td><td>3h</td></tr>
+<tr data-href="#module-27-performance-read-only-and-write-only-modes"><td>2.7</td><td>Performance: read_only &amp; write_only Modes</td><td>Advanced</td><td>2.1</td><td>3h</td></tr>
+<tr data-href="#module-31-pandas-excel-io-end-to-end"><td>3.1</td><td>pandas Excel I/O End to End</td><td>Beginner–Intermediate</td><td>1.2</td><td>4h</td></tr>
+<tr data-href="#module-32-engines-and-performance-calamine"><td>3.2</td><td>Engines &amp; Performance: calamine</td><td>Intermediate</td><td>3.1</td><td>3h</td></tr>
+<tr data-href="#module-33-polars-fastexcel-and-large-files"><td>3.3</td><td>polars, fastexcel &amp; Large Files</td><td>Intermediate</td><td>3.2</td><td>3h</td></tr>
+<tr data-href="#module-34-xlsxwriter-formatted-reports-at-speed"><td>3.4</td><td>XlsxWriter: Formatted Reports at Speed</td><td>Intermediate</td><td>2.2, 3.1</td><td>3h</td></tr>
+<tr data-href="#module-41-xlwings-fundamentals"><td>4.1</td><td>xlwings Fundamentals: Driving a Live Excel</td><td>Intermediate</td><td>1.2</td><td>3h</td></tr>
+<tr data-href="#module-42-xlwings-converters-dataframes-and-round-trips"><td>4.2</td><td>xlwings Converters, DataFrames &amp; Round-Trips</td><td>Intermediate</td><td>4.1</td><td>4h</td></tr>
+<tr data-href="#module-43-xlwings-udfs-macros-and-runpython"><td>4.3</td><td>xlwings UDFs, Macros &amp; RunPython</td><td>Advanced</td><td>4.2</td><td>4h</td></tr>
+<tr data-href="#module-44-excel-native-python-lite-server-and-python-in-excel"><td>4.4</td><td>Excel-Native Python: Lite, Server &amp; Python in Excel</td><td>Advanced</td><td>4.1</td><td>3h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 2, 3, and 4 are <strong>parallel tracks</strong>, not a strict sequence. openpyxl (Phase 2), the DataFrame stack (Phase 3), and live-Excel automation (Phase 4) solve different problems and share only Phase 1 as a prerequisite. Pick the phase that matches the job in front of you — many working pipelines use all three in the same script.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+
+<h3 id="track-1-report-automation">Track 1 — Report Automation (the most common job)</h3>
+<p><code>1.1 → 1.3 → 2.1 → 2.2 → 2.3 → 2.5 → 2.6 → Phase 2 Capstone</code><br>
+You receive raw data and must ship a formatted, branded, print-ready workbook on a schedule. Target outcome: <strong>a scheduled script that replaces a recurring manual report</strong>.</p>
+
+<h3 id="track-2-data-pipeline-etl">Track 2 — Data Pipeline / ETL</h3>
+<p><code>1.1 → 1.2 → 3.1 → 3.2 → 3.3 → Phase 3 Capstone</code><br>
+Excel is an input format you must ingest, validate, and move into a database or warehouse. Target outcome: <strong>a reproducible ingest that rejects bad rows with an audit trail</strong>.</p>
+
+<h3 id="track-3-excel-power-user-to-python">Track 3 — Excel Power User → Python</h3>
+<p><code>1.1 → 1.2 → 4.1 → 4.2 → 4.3 → 4.4 → Phase 4 Capstone</code><br>
+You live in Excel, know VBA, and want Python behind your existing workbooks without rebuilding them. Target outcome: <strong>replacing a VBA macro with a Python function Excel calls directly</strong>.</p>
+
+<h3 id="track-4-performance-and-scale">Track 4 — Performance &amp; Scale</h3>
+<p><code>1.1 → 2.7 → 3.2 → 3.3 → 3.4 → Final Capstone</code><br>
+Your files are too big or too slow and the job keeps timing out. Target outcome: <strong>a measured 10x speedup with a benchmark to prove it</strong>.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — Foundations              (Weeks 1–2)
+Phase 2 — openpyxl in Depth        (Weeks 3–7)
+Phase 3 — DataFrames &amp; Fast Readers (Weeks 8–10)
+Phase 4 — Live Excel &amp; Automation  (Weeks 11–14)
+Final Capstone                     (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ── 1.2 ─┬──────────────── 3.1 ── 3.2 ── 3.3 ─┐
+            │                          └─ 3.4     │
+            ├─ 1.3 ── 2.1 ─┬─ 2.2 ─┬─ 2.5        ├─ Final Capstone
+            │              │       └─ 2.6        │
+            │              ├─ 2.3               │
+            │              ├─ 2.4               │
+            │              └─ 2.7 ──────────────┤
+            └──────────────── 4.1 ── 4.2 ── 4.3 ─┘
+                                  └─ 4.4</code></pre>
+<p>Only the <code>1.1 → 1.2</code> spine is mandatory. Everything downstream of it is a parallel branch you can enter directly.</p>
+
+<h2 id="phase-1-foundations">Phase 1: Foundations</h2>
+<h3 id="weeks-1-2">Weeks 1–2 | Goal: Understand what an Excel file actually is, and pick the right library on purpose rather than by habit.</h3>
+<hr />
+
+<h3 id="module-11-the-xlsx-format-and-the-library-landscape">Module 1.1 — The .xlsx Format &amp; the Library Landscape</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Unzip <code>TindaHub_Orders.xlsx</code> from the command line and name which XML part holds the cell values and which holds the shared strings.<br>
+<strong>Skip if:</strong> You can already explain why two libraries reading the same file return different types for the same cell.<br>
+<strong>Unlocks:</strong> 1.2, 1.3, 4.1</p>
+</blockquote>
+
+<h4>An .xlsx is a ZIP archive of XML</h4>
+<p>Since Excel 2007, the <code>.xlsx</code> format (OOXML) is a ZIP container. Rename a copy to <code>.zip</code>, unzip it, and you get a directory tree of XML. Every Python library in this guide is, underneath, either an XML parser or a wrapper around one. Knowing this is not trivia: it explains why writing a cell is cheap but recalculating a formula is impossible, why styles are stored once and referenced by index, and why a "corrupt file" error is usually a malformed XML part rather than anything mysterious.</p>
+<pre><code class="language-bash">cp TindaHub_Orders.xlsx /tmp/tinda.zip
+unzip -o -d /tmp/tinda /tmp/tinda.zip
+find /tmp/tinda -name '*.xml' | sort</code></pre>
+<p>You will see roughly this layout:</p>
+<pre><code>[Content_Types].xml          part-type manifest — Excel refuses the file if this is wrong
+_rels/.rels                  top-level relationships
+xl/workbook.xml              sheet names, defined names, workbook-level settings
+xl/worksheets/sheet1.xml     the actual cells of the first sheet
+xl/sharedStrings.xml         every distinct text value, stored once, referenced by index
+xl/styles.xml                fonts, fills, borders, number formats — referenced by index
+xl/charts/chart1.xml         chart definitions, when present</code></pre>
+<p>The shared-strings table is why text-heavy sheets compress so well, and why a library must resolve an integer index to a string on every read. That indirection is a real cost at scale, and it is one reason the Rust-based readers in Module 3.2 are so much faster.</p>
+
+<h4>Five formats, and they are not interchangeable</h4>
+<p>"Excel file" is ambiguous. The extension determines which libraries can even open it, so establish the format before choosing a tool.</p>
+<table>
+<tr><th>Format</th><th>What it is</th><th>Read with</th><th>Write with</th></tr>
+<tr><td><code>.xlsx</code></td><td>OOXML, ZIP of XML. The default since 2007.</td><td>openpyxl, calamine, pandas, polars</td><td>openpyxl, XlsxWriter, pandas</td></tr>
+<tr><td><code>.xlsm</code></td><td>Same as .xlsx but permitted to contain VBA macros.</td><td>openpyxl (<code>keep_vba=True</code>), calamine</td><td>openpyxl with <code>keep_vba=True</code></td></tr>
+<tr><td><code>.xlsb</code></td><td>Binary workbook. Much smaller and faster for huge sheets.</td><td>calamine (pyxlsb is unmaintained)</td><td>No pure-Python writer — use xlwings or Excel</td></tr>
+<tr><td><code>.xls</code></td><td>Legacy BIFF binary, pre-2007.</td><td>xlrd 2.0.2, calamine</td><td>Nothing current — convert first</td></tr>
+<tr><td><code>.ods</code></td><td>OpenDocument, from LibreOffice/Calc.</td><td>calamine, odfpy</td><td>odfpy</td></tr>
+</table>
+
+<blockquote class="callout"><p><strong>Disambiguation:</strong> <code>xlrd</code> is not a general Excel reader any more. Version 2.0 (2020) <strong>removed <code>.xlsx</code> support entirely</strong> and now handles only legacy <code>.xls</code>. Tutorials that say "use xlrd to read Excel" predate that change; following them produces <code>XLRDError: Excel xlsx file; not supported</code>. If you need <code>.xls</code> today, prefer <code>calamine</code> — it reads <code>.xls</code> too, and unlike xlrd it is actively developed.</p></blockquote>
+
+<h4>The maturity signal in a release date</h4>
+<p>Check when each library last shipped, because it tells you what kind of dependency you are taking on:</p>
+<table>
+<tr><th>Library</th><th>Version</th><th>Released</th><th>Read as</th></tr>
+<tr><td>openpyxl</td><td>3.1.5</td><td>June 2024</td><td>Mature and feature-complete, not abandoned</td></tr>
+<tr><td>XlsxWriter</td><td>3.2.9</td><td>Sept 2025</td><td>Steady, single-purpose, actively maintained</td></tr>
+<tr><td>xlwings</td><td>0.36.14</td><td>Aug 2026</td><td>Actively developed, fast-moving</td></tr>
+<tr><td>python-calamine</td><td>0.8.2</td><td>July 2026</td><td>Young, fast-moving, the current speed leader</td></tr>
+<tr><td>pyxlsb</td><td>1.0.10</td><td>Oct 2022</td><td>Effectively unmaintained — avoid for new work</td></tr>
+<tr><td>odfpy</td><td>1.4.1</td><td>Jan 2020</td><td>Dormant; fine for simple .ods, nothing more</td></tr>
+</table>
+<p>openpyxl's 2024 date is the one people misread. It is not a warning sign — the OOXML spec it implements is itself frozen, so a stable library is exactly what you want. Contrast that with <code>pyxlsb</code>, whose four-year silence <em>is</em> a warning sign, and which pandas has now deprecated as an engine.</p>
+
+<p><strong>Exercise 1.1 — Dissect the Workbook</strong></p>
+<p>Dataset: TindaHub Orders (<code>TindaHub_Orders.xlsx</code>)</p>
+<ol>
+<li>Copy the workbook to <code>/tmp</code>, rename it to <code>.zip</code>, and unzip it.</li>
+<li>List every XML part and record the file size of each. Which single part is the largest, and why?</li>
+<li>Open <code>xl/workbook.xml</code> and confirm the five sheet names match what Excel shows: <code>Orders</code>, <code>Products</code>, <code>Customers</code>, <code>RawContacts</code>, <code>MessyImport</code>.</li>
+<li>Search <code>xl/sharedStrings.xml</code> for <code>Noodles</code> and count how many times the string <code>Noodles &amp; Canned Goods</code> is physically stored. Explain the result.</li>
+<li>Find the <code>&lt;c&gt;</code> element for cell <code>B2</code> of the Orders sheet in <code>xl/worksheets/sheet1.xml</code>. It holds a number, not a date — write down that number and explain what it represents.</li>
+<li>Write a one-paragraph note stating which of the five formats in the table above you would request from a supplier sending you 2 million rows monthly, and why.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-choosing-the-right-library">Module 1.2 — Choosing the Right Library</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Given four scenarios — a 300 MB .xlsb ingest, a branded monthly PDF-ready report, a live dashboard the finance team edits while it runs, and a 12-line one-off summary — name the correct library for each and defend the choice in one sentence.<br>
+<strong>Skip if:</strong> You already choose deliberately between openpyxl, pandas, calamine, XlsxWriter, and xlwings rather than defaulting to one.<br>
+<strong>Unlocks:</strong> 1.3, 3.1, 4.1</p>
+</blockquote>
+
+<h4>The two questions that decide everything</h4>
+<p>Almost every Excel-library choice collapses to two questions, asked in this order:</p>
+<ol>
+<li><strong>Do you need Excel itself to be running?</strong> If the task requires live recalculation, a running PivotTable, an interactive user, or a format only Excel can produce (like a real <code>.xlsb</code> write), you need <strong>xlwings</strong> and an installed Excel. Everything else is a file-manipulation job that needs no Excel at all.</li>
+<li><strong>Do you care about cells, or about the table?</strong> If you care about <em>formatting, styles, charts, validation, comments</em> — the things that make a workbook a document — you want <strong>openpyxl</strong> or <strong>XlsxWriter</strong>. If you only care about the rectangle of values and want to compute on it, you want <strong>pandas</strong> or <strong>polars</strong>.</li>
+</ol>
+<p>Getting this backwards is the single most common and most expensive mistake in Python-Excel work. Reading a formatted template with pandas and writing it back does not "preserve most of it" — it silently discards every style, chart, and validation rule in the file, because pandas only ever held the values.</p>
+
+<h4>The decision table</h4>
+<table>
+<tr><th>If your job is…</th><th>Use</th><th>Because</th></tr>
+<tr><td>Read + write cells, styles, charts, validation in <code>.xlsx</code>/<code>.xlsm</code></td><td><strong>openpyxl</strong></td><td>The only mature library that both reads and writes the full document model</td></tr>
+<tr><td>Write a large, heavily formatted report from scratch, fast</td><td><strong>XlsxWriter</strong></td><td>Write-only by design, so it is faster and richer at writing than openpyxl</td></tr>
+<tr><td>Load a sheet into a DataFrame and compute</td><td><strong>pandas</strong></td><td>Values only, but the whole analysis toolkit comes with it</td></tr>
+<tr><td>Read very large files as fast as possible</td><td><strong>python-calamine</strong></td><td>Rust reader; handles xlsx/xlsm/xlsb/xls/ods with one API</td></tr>
+<tr><td>Same, but with a lazy/typed DataFrame</td><td><strong>polars</strong> + fastexcel</td><td>calamine underneath, Arrow-backed output</td></tr>
+<tr><td>Control a running Excel, or write <code>.xlsb</code></td><td><strong>xlwings</strong></td><td>Automates the real application, so anything Excel can do is available</td></tr>
+<tr><td>Ship Python to Excel users with no local install</td><td><strong>xlwings Lite</strong> or <strong>Python in Excel</strong></td><td>Runs in the browser sandbox or Microsoft's cloud — see Module 4.4</td></tr>
+</table>
+
+<h4>Combining them is normal, not a compromise</h4>
+<p>These libraries are not rivals; production code routinely uses two in one script. The standard pattern is <strong>read fast, compute in a DataFrame, write pretty</strong>:</p>
+<pre><code class="language-py">from pathlib import Path
+import pandas as pd
+from openpyxl import load_workbook
+from openpyxl.styles import Font
+
+SRC = Path("TindaHub_Orders.xlsx")
+
+# 1. Read values fast — calamine, no styles needed here
+orders = pd.read_excel(SRC, sheet_name="Orders", engine="calamine")
+
+# 2. Compute in pandas
+by_region = (orders.groupby("Region", as_index=False)["Amount"]
+                   .sum()
+                   .sort_values("Amount", ascending=False))
+
+# 3. Write, then reopen with openpyxl to format what pandas cannot
+out = Path("region_summary.xlsx")
+by_region.to_excel(out, sheet_name="ByRegion", index=False)
+
+wb = load_workbook(out)
+ws = wb["ByRegion"]
+for cell in ws[1]:
+    cell.font = Font(bold=True, color="FFFFFF")
+ws.column_dimensions["A"].width = 22
+ws.freeze_panes = "A2"
+wb.save(out)
+print(f"wrote {out} with {ws.max_row - 1} regions")</code></pre>
+<p>Note what step 3 buys you: pandas produced the numbers, but it has no vocabulary for a frozen header row or a bold white font. Reopening the file it just wrote is the cheapest way to get both.</p>
+
+<p><strong>Exercise 1.2 — Build Your Decision Record</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<p><em>Retrieval practice: before re-reading the decision table above, write down from memory which library you would pick for each of the six scenarios below. Then check yourself against the table — the ones you got wrong are the distinctions you have not yet internalized.</em></p>
+<ol>
+<li>Finance needs the Orders sheet summed by <code>Region</code>, pasted into an email. No file deliverable. Pick a library and justify it.</li>
+<li>Ops needs a monthly workbook with the TindaHub logo, a frozen header, currency-formatted <code>Amount</code>, and a bar chart. Pick a library.</li>
+<li>A supplier sends a 380 MB <code>.xlsb</code> nightly and you must load it into PostgreSQL. Pick a library.</li>
+<li>The sales manager wants a workbook where she edits a target in <code>B2</code> and sees Python-computed results refresh in place. Pick a library.</li>
+<li>You must add one conditional-formatting rule to an existing 40-sheet template without disturbing anything else. Pick a library, and name the library that would <em>destroy</em> the template.</li>
+<li>Write the six choices up as a short decision record: scenario, library, one-sentence rationale. Keep it — you will check it again at the Final Capstone.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-setup-and-your-first-openpyxl-read">Module 1.3 — Setup &amp; Your First openpyxl Read</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Load the Orders sheet and print the exact count of rows where <code>Amount</code> does not equal <code>Qty × UnitPrice</code>, using openpyxl only. The correct answer is 3.<br>
+<strong>Skip if:</strong> You can already navigate sheets, cells, and ranges with openpyxl and know when to use <code>values_only=True</code>.<br>
+<strong>Unlocks:</strong> 2.1 through 2.7</p>
+</blockquote>
+
+<h4>Install into a virtual environment, and pin</h4>
+<p>Pin your versions. Excel libraries change defaults between releases — pandas is actively changing which engine it reaches for — and an unpinned pipeline that worked in March can read dates differently in September.</p>
+<pre><code class="language-bash">python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+python -m pip install "openpyxl==3.1.5"
+python -c "import openpyxl; print(openpyxl.__version__)"</code></pre>
+<p>openpyxl pulls in exactly one dependency, <code>et-xmlfile</code> (2.0.0), which streams XML writes. If you plan to work with images in Module 2.6 you also need <code>Pillow</code>; openpyxl will raise <code>ImportError</code> only at the moment you try to insert one.</p>
+
+<h4>Workbook, worksheet, cell</h4>
+<p>openpyxl models the file exactly as Excel does: a <code>Workbook</code> holds <code>Worksheet</code> objects, which hold <code>Cell</code> objects. Two loading flags matter from the very first line, and both are covered in depth later — <code>data_only</code> in Module 2.4 and <code>read_only</code> in Module 2.7.</p>
+<pre><code class="language-py">from openpyxl import load_workbook
+
+wb = load_workbook("TindaHub_Orders.xlsx", data_only=True)
+
+print(wb.sheetnames)
+# ['Orders', 'Products', 'Customers', 'RawContacts', 'MessyImport']
+
+ws = wb["Orders"]
+print(ws.title, ws.dimensions, ws.max_row, ws.max_column)
+# Orders A1:Q5001 5001 17
+
+print(ws["A1"].value)                    # 'OrderID'
+print(ws.cell(row=2, column=2).value)    # 2026-01-01 00:00:00  (a real datetime)
+print(ws["A2"].value, ws["M2"].value)    # ORD-20260000 234</code></pre>
+<p><code>max_row</code> is 5001, not 5000 — row 1 is the header. That off-by-one is the most common source of a stray <code>None</code> row at the end of a loop.</p>
+<p>Two ways to address a cell, and they are interchangeable: <code>ws["M2"]</code> reads naturally when you know the letter, while <code>ws.cell(row=2, column=13)</code> is what you need inside a loop. Convert between them with the utils:</p>
+<pre><code class="language-py">from openpyxl.utils import get_column_letter, column_index_from_string
+
+print(get_column_letter(13))            # 'M'
+print(column_index_from_string("M"))    # 13</code></pre>
+
+<h4>Iterating properly: values_only is not optional at scale</h4>
+<p>Indexing cell by cell constructs a <code>Cell</code> object per access, each carrying style and format references you are not using. <code>iter_rows(values_only=True)</code> yields plain tuples instead and skips that construction entirely. On a 5,000-row sheet the difference is noticeable; on a 500,000-row sheet it is the difference between seconds and minutes.</p>
+<pre><code class="language-py">from openpyxl import load_workbook
+
+wb = load_workbook("TindaHub_Orders.xlsx", data_only=True)
+ws = wb["Orders"]
+
+# Build a name -&gt; position map from the header row, so column moves don't break the script
+header = next(ws.iter_rows(min_row=1, max_row=1, values_only=True))
+col = {name: i for i, name in enumerate(header)}
+
+mismatches = []
+for row in ws.iter_rows(min_row=2, values_only=True):
+    qty, price, amount = row[col["Qty"]], row[col["UnitPrice"]], row[col["Amount"]]
+    if amount != qty * price:
+        mismatches.append((row[col["OrderID"]], qty, price, amount, qty * price))
+
+print(f"{len(mismatches)} rows where Amount != Qty * UnitPrice")
+for m in mismatches:
+    print(m)
+# 3 rows where Amount != Qty * UnitPrice
+# ('ORD-20263901', ...)
+# ('ORD-20264520', ...)
+# ('ORD-20264637', ...)</code></pre>
+<p>Never hard-code <code>row[12]</code> for <code>Amount</code>. Building the <code>col</code> dictionary from the header costs one line and survives someone inserting a column — which, on a shared workbook, is a matter of when rather than if.</p>
+
+<p><strong>Exercise 1.3 — Audit the Orders Sheet</strong></p>
+<p>Dataset: TindaHub Orders (<code>Orders</code> sheet, 5,000 rows)</p>
+<ol>
+<li>Print every sheet name with its row and column count. Confirm <code>Orders</code> is 5001 × 17.</li>
+<li>Reproduce the mismatch audit above and confirm you get exactly <strong>3</strong> order IDs.</li>
+<li>Count duplicate <code>OrderID</code> values using <code>collections.Counter</code>. The seeded answer is <strong>8</strong>.</li>
+<li>Count rows where <code>DeliveredDate</code> is empty, then break that down by <code>Status</code>. Explain why the total is <strong>1,074</strong> and which statuses account for it.</li>
+<li>Print the distinct <code>Region</code> values (there are 6) and the distinct <code>Category</code> values (also 6).</li>
+<li>Check the Python type of <code>OrderDate</code> versus <code>ImportedDates</code> in row 2. One is a <code>datetime</code>, the other a <code>str</code> — record which, because Module 2.3 fixes it.</li>
+<li>Rewrite the audit twice, once indexing <code>ws.cell(...)</code> and once with <code>iter_rows(values_only=True)</code>, and time both with <code>time.perf_counter()</code>. Record the ratio.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-workbook-inventory">Phase 1 Capstone: The Workbook Inventory Tool</h3>
+<p><strong>Project: <code>tinda_inventory.py</code></strong></p>
+<p><strong>Dataset:</strong> TindaHub Orders</p>
+<p>Build a command-line tool that profiles any <code>.xlsx</code> handed to it and prints a structural report. This is the utility you will actually reach for whenever an unfamiliar workbook lands in your inbox.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Accept a file path as a command-line argument; exit with a clear message if the file is missing or is not a supported format.</li>
+<li>Print, per sheet: title, dimensions, row count, column count, and the header row.</li>
+<li>For each column, report the detected Python type of the first non-empty data value and the count of empty cells in that column.</li>
+<li>Flag any column whose values are stored as <code>str</code> but look like dates or numbers — the <code>ImportedDates</code> column must be flagged.</li>
+<li>Report the ZIP-part breakdown from Module 1.1: list each XML part and its uncompressed size, largest first.</li>
+<li>Emit a one-line recommendation per sheet — "use pandas", "use openpyxl", "use calamine" — based on row count and whether styling is present, applying your Module 1.2 decision table.</li>
+<li>Run it against all five TindaHub sheets and save the output as <code>inventory_report.txt</code>.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-openpyxl-in-depth">Phase 2: openpyxl in Depth</h2>
+<h3 id="weeks-3-7">Weeks 3–7 | Goal: Master the one library that both reads and writes the complete Excel document model — cells, styles, formats, formulas, tables, charts, and the performance modes that make it survive real files.</h3>
+<hr />
+
+<h3 id="module-21-writing-creating-and-restructuring-workbooks">Module 2.1 — Writing, Creating &amp; Restructuring Workbooks</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Create a workbook with three sheets, reorder them, copy one, delete another, set a frozen header and an autofilter, and save — all without opening Excel.<br>
+<strong>Skip if:</strong> You already use <code>append()</code>, <code>create_sheet()</code>, <code>move_sheet()</code>, and <code>freeze_panes</code> comfortably.<br>
+<strong>Unlocks:</strong> 2.2, 2.3, 2.4, 2.7</p>
+</blockquote>
+
+<h4>Creating from scratch versus editing in place</h4>
+<p>There are two distinct workflows and confusing them causes data loss. <code>Workbook()</code> creates a brand-new file in memory. <code>load_workbook()</code> opens an existing one, and <code>save()</code> then <strong>overwrites the original</strong> — openpyxl has no concept of "save a copy" unless you pass a different path.</p>
+<pre><code class="language-py">from openpyxl import Workbook
+
+wb = Workbook()          # comes with one sheet already, named 'Sheet'
+ws = wb.active
+ws.title = "Summary"
+
+ws.append(["Region", "Orders", "Amount"])       # append writes the next free row
+ws.append(["NCR", 1240, 1_875_400])
+ws.append(["CALABARZON", 980, 1_402_115])
+
+detail = wb.create_sheet("Detail")              # appended at the end
+audit  = wb.create_sheet("Audit", 0)            # inserted at position 0
+
+print(wb.sheetnames)     # ['Audit', 'Summary', 'Detail']
+wb.save("tindahub_report.xlsx")</code></pre>
+<p><code>append()</code> is the workhorse for writing tabular output: it tracks the current row for you, so you never manage a row counter. Pass a list for positional writes or a dict keyed by column letter for sparse ones.</p>
+
+<h4>Restructuring: move, copy, insert, delete</h4>
+<pre><code class="language-py">from openpyxl import Workbook
+
+wb = Workbook()
+ws = wb.active
+ws.title = "Summary"
+for r in [["Region", "Amount"], ["NCR", 1875400], ["Davao Region", 640230]]:
+    ws.append(r)
+
+wb.move_sheet("Summary", offset=-1)     # shift one position toward the front
+copy = wb.copy_worksheet(ws)            # duplicates values AND styles
+copy.title = "Summary (backup)"
+del wb["Sheet"] if "Sheet" in wb.sheetnames else None
+
+ws.insert_rows(1)                       # push everything down, e.g. for a title banner
+ws["A1"] = "TindaHub — Regional Summary"
+ws.insert_cols(3)                       # new blank column C
+ws.delete_cols(3)                       # and remove it again
+
+print(wb.sheetnames)</code></pre>
+<p>One caveat worth internalising: <code>insert_rows()</code> and <code>delete_rows()</code> move <em>cell values and styles</em>, but they do <strong>not</strong> rewrite formula references, conditional-formatting ranges, chart references, or data-validation ranges that point into the shifted area. Excel fixes those up for you; openpyxl does not. If your sheet has formulas and you need to insert rows, either insert before adding the formulas or rewrite the affected ranges yourself.</p>
+<p><code>copy_worksheet()</code> has a matching limitation — it copies within a workbook only. To move a sheet between workbooks you must read the values and write them into the target yourself.</p>
+
+<h4>Sheet-level presentation</h4>
+<p>These four settings turn a raw dump into something a colleague can actually use, and they cost one line each:</p>
+<pre><code class="language-py">ws.freeze_panes = "A2"                  # header row stays visible while scrolling
+ws.auto_filter.ref = "A1:C3"            # filter dropdowns on the header
+ws.column_dimensions["A"].width = 24    # width is in characters, not pixels
+ws.row_dimensions[1].height = 22        # height is in points
+ws.merge_cells("A1:C1")                 # banner across the top
+ws.sheet_view.showGridLines = False</code></pre>
+<p>Merged cells behave in a way that surprises people: only the <strong>top-left</strong> cell holds the value. Every other cell in the merge becomes a read-only <code>MergedCell</code>, and assigning to one raises <code>AttributeError</code>. Write your value first, then merge — or write to the anchor cell afterwards.</p>
+
+<p><strong>Exercise 2.1 — Build the Report Skeleton</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Read the Orders sheet and aggregate total <code>Amount</code> and order count per <code>Region</code> using a plain <code>dict</code> — no pandas.</li>
+<li>Create a new workbook with three sheets in this order: <code>Summary</code>, <code>ByRegion</code>, <code>Audit</code>.</li>
+<li>Write a merged title banner across <code>A1:C1</code> of <code>Summary</code> reading "TindaHub Orders — Jan–Jun 2026".</li>
+<li>Write the regional aggregation into <code>ByRegion</code> with a header row, sorted by amount descending.</li>
+<li>Write the 3 mismatched order IDs from Exercise 1.3 into <code>Audit</code>, one per row, with columns <code>OrderID, Qty, UnitPrice, Amount, Expected</code>.</li>
+<li>Apply <code>freeze_panes</code> and an autofilter to <code>ByRegion</code>, and set column A to width 24.</li>
+<li>Duplicate <code>ByRegion</code> as <code>ByRegion (backup)</code> and move it to the end. Save as <code>phase2_skeleton.xlsx</code> and open it in Excel to confirm all seven changes survived.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-styling-fonts-fills-borders-and-named-styles">Module 2.2 — Styling: Fonts, Fills, Borders &amp; Named Styles</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Define one <code>NamedStyle</code> for a header row, register it once, and apply it to 17 header cells without constructing 17 separate <code>Font</code> objects.<br>
+<strong>Skip if:</strong> You already know why <code>NamedStyle</code> beats per-cell styling and how style objects are shared in <code>styles.xml</code>.<br>
+<strong>Unlocks:</strong> 2.5, 2.6, 3.4</p>
+</blockquote>
+
+<h4>The four style objects</h4>
+<p>Every visual property of a cell comes from one of four immutable objects, assigned to the matching cell attribute. Because they are immutable, you cannot mutate a cell's font in place — <code>cell.font.bold = True</code> silently fails. You must assign a whole new object.</p>
+<pre><code class="language-py">from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
+
+cell = ws["A1"]
+cell.font = Font(name="Calibri", size=11, bold=True, color="FFFFFF")
+cell.fill = PatternFill(fill_type="solid", start_color="075249")
+
+thin = Side(style="thin", color="D0D7DE")
+cell.border = Border(left=thin, right=thin, top=thin, bottom=thin)
+
+cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)</code></pre>
+<p>Colours are <code>aRGB</code> hex strings without a leading <code>#</code> — <code>"075249"</code> or <code>"FF075249"</code>. Passing <code>"#075249"</code> is the most frequent styling bug and produces a file Excel reports as corrupt.</p>
+
+<h4>NamedStyle: define once, apply everywhere</h4>
+<p>Assigning individual style objects to hundreds of cells bloats <code>styles.xml</code> and makes a later restyle a find-and-replace exercise. A <code>NamedStyle</code> is registered on the workbook once and referenced by name — it is also a real Excel cell style, so users can apply it themselves from the ribbon.</p>
+<pre><code class="language-py">from openpyxl import Workbook
+from openpyxl.styles import NamedStyle, Font, PatternFill, Alignment, Border, Side
+
+wb = Workbook()
+ws = wb.active
+
+thin = Side(style="thin", color="D0D7DE")
+
+header = NamedStyle(name="tindahub_header")
+header.font = Font(bold=True, color="FFFFFF", size=11)
+header.fill = PatternFill(fill_type="solid", start_color="075249")
+header.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+header.border = Border(bottom=Side(style="medium", color="075249"))
+
+peso = NamedStyle(name="tindahub_peso")
+peso.number_format = '"\u20b1"#,##0.00'
+peso.alignment = Alignment(horizontal="right")
+peso.border = Border(left=thin, right=thin, top=thin, bottom=thin)
+
+wb.add_named_style(header)
+wb.add_named_style(peso)
+
+cols = ["OrderID", "Region", "Amount"]
+ws.append(cols)
+for c in ws[1]:
+    c.style = "tindahub_header"
+
+ws.append(["ORD-20260000", "CALABARZON", 234])
+ws["C2"].style = "tindahub_peso"
+
+wb.save("styled.xlsx")</code></pre>
+<p>Register a style name only once per workbook; calling <code>add_named_style</code> twice with the same name raises <code>ValueError</code>. Guard with <code>if "tindahub_header" not in wb.named_styles:</code> when your code might run against an existing file.</p>
+
+<h4>Styling rows and columns efficiently</h4>
+<p>There is no "style this whole column" call that applies to future rows — openpyxl styles cells, and a cell must exist. Iterate the range you actually wrote:</p>
+<pre><code class="language-py">from openpyxl.utils import get_column_letter
+
+# Header row
+for cell in ws[1]:
+    cell.style = "tindahub_header"
+
+# Currency column, data rows only
+for row in ws.iter_rows(min_row=2, min_col=3, max_col=3):
+    for cell in row:
+        cell.style = "tindahub_peso"
+
+# Auto-fit column widths from the longest rendered value
+for i, column_cells in enumerate(ws.columns, start=1):
+    longest = max((len(str(c.value)) for c in column_cells if c.value is not None), default=0)
+    ws.column_dimensions[get_column_letter(i)].width = min(longest + 3, 45)</code></pre>
+<p>Excel has no real auto-fit that a file-writing library can trigger — the width is stored in the file, and Excel only recalculates it if a human double-clicks the column border. The loop above is the standard approximation, and capping at 45 stops one long product name from producing an unusable column.</p>
+
+<p><strong>Exercise 2.2 — Brand the Report</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<p><em>Retrieval practice: write the four style object names and what each controls from memory before scrolling back. Getting <code>Side</code> versus <code>Border</code> straight is the point of the exercise.</em></p>
+<ol>
+<li>Take <code>phase2_skeleton.xlsx</code> from Exercise 2.1 and define two named styles: <code>tindahub_header</code> and <code>tindahub_peso</code>.</li>
+<li>Apply the header style to the header row of all three sheets.</li>
+<li>Apply the peso style to every <code>Amount</code> column, data rows only — the header must keep its own style.</li>
+<li>Add thin borders to the full data range of <code>ByRegion</code>.</li>
+<li>Auto-size every column using the loop above, capped at 45 characters.</li>
+<li>Merge and centre the <code>Summary</code> banner, set it to 16pt bold in <code>#075249</code>, and set the row height to 28.</li>
+<li>Deliberately set one cell's fill to <code>"#075249"</code> with the leading hash, save, and try to open the file in Excel. Record the error, then fix it — this is the bug you will otherwise hit in production.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-number-formats-and-the-date-minefield">Module 2.3 — Number Formats &amp; the Date Minefield</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Convert the <code>ImportedDates</code> text column (<code>dd/mm/yyyy</code> strings) into real Excel dates displayed as <code>yyyy-mm-dd</code>, and prove the result is a serial number rather than text.<br>
+<strong>Skip if:</strong> You can explain the 1900 epoch, why 1900 is treated as a leap year, and what <code>cell.is_date</code> actually checks.<br>
+<strong>Unlocks:</strong> 2.4, 3.1</p>
+</blockquote>
+
+<h4>A date in Excel is a number wearing a costume</h4>
+<p>Excel stores dates as days elapsed since <strong>1899-12-30</strong>, and formatting alone decides whether you see <code>45658</code> or <code>2026-01-01</code>. The value and its display are entirely separate, which is why a column can look like dates and still be text — and why sorting it puts <code>01/12/2026</code> before <code>02/01/2026</code>.</p>
+<p>openpyxl handles the conversion for you on read: a cell whose number format is a date format comes back as a Python <code>datetime</code>. The <code>Orders!B2</code> cell you found as a bare number in the XML in Module 1.1 arrives as <code>datetime(2026, 1, 1)</code>.</p>
+<pre><code class="language-py">from openpyxl import load_workbook
+
+wb = load_workbook("TindaHub_Orders.xlsx", data_only=True)
+ws = wb["Orders"]
+
+print(repr(ws["B2"].value), ws["B2"].number_format, ws["B2"].is_date)
+# datetime.datetime(2026, 1, 1, 0, 0) 'mm/dd/yyyy' True
+
+print(repr(ws["Q2"].value), ws["Q2"].number_format, ws["Q2"].is_date)
+# '01/01/2026' 'General' False   &lt;- ImportedDates is TEXT</code></pre>
+<p>Those two cells hold the same calendar day. One sorts, filters, and subtracts correctly; the other is a string that happens to contain digits. Finding this distinction is the first thing to do with any workbook you did not create.</p>
+
+<h4>Writing number formats</h4>
+<p>Set <code>cell.number_format</code> to an Excel format code. The codes are the same strings you would type into Excel's Format Cells dialog.</p>
+<pre><code class="language-py">from datetime import datetime
+
+ws["A1"] = datetime(2026, 1, 1)
+ws["A1"].number_format = "yyyy-mm-dd"          # unambiguous, sorts correctly
+
+ws["B1"] = 1234.5
+ws["B1"].number_format = "#,##0.00"            # 1,234.50
+
+ws["C1"] = 1234.5
+ws["C1"].number_format = '"\u20b1"#,##0.00'    # ₱1,234.50
+
+ws["D1"] = 0.1234
+ws["D1"].number_format = "0.0%"                # 12.3%
+
+ws["E1"] = -5000
+ws["E1"].number_format = '#,##0;[Red](#,##0)'  # (5,000) in red
+
+ws["F1"] = 45658
+ws["F1"].number_format = "General"             # stays 45658 — no costume</code></pre>
+<p>Always write <code>yyyy-mm-dd</code> for any date a machine or another country will read. The TindaHub workbook ships as <code>mm/dd/yyyy</code> precisely because that ambiguity is realistic: <code>03/04/2026</code> is March 4th to a US reader and April 3rd to a Philippine one, and nothing in the file resolves it.</p>
+
+<h4>Repairing a text-date column</h4>
+<p>This is the single most common Excel cleanup task. The fix has two halves, and doing only the first leaves you with dates that still sort as text.</p>
+<pre><code class="language-py">from datetime import datetime
+from openpyxl import load_workbook
+
+wb = load_workbook("TindaHub_Orders.xlsx")
+ws = wb["Orders"]
+
+header = next(ws.iter_rows(min_row=1, max_row=1, values_only=True))
+q = header.index("ImportedDates") + 1        # 1-based column number
+
+converted, failed = 0, []
+for r in range(2, ws.max_row + 1):
+    cell = ws.cell(row=r, column=q)
+    raw = cell.value
+    if isinstance(raw, str):
+        try:
+            cell.value = datetime.strptime(raw.strip(), "%d/%m/%Y")   # 1. real value
+            cell.number_format = "yyyy-mm-dd"                         # 2. real display
+            converted += 1
+        except ValueError:
+            failed.append((r, raw))
+
+print(f"converted {converted} cells, {len(failed)} failures")
+wb.save("orders_dates_fixed.xlsx")
+
+check = load_workbook("orders_dates_fixed.xlsx")["Orders"]
+print(repr(check.cell(row=2, column=q).value), check.cell(row=2, column=q).is_date)
+# datetime.datetime(2026, 1, 1, 0, 0) True</code></pre>
+<p>Note <code>"%d/%m/%Y"</code>, not <code>"%m/%d/%Y"</code>. The <code>ImportedDates</code> column is day-first, matching Philippine convention. Parsing it month-first does not raise an error for the first twelve days of any month — it silently produces the wrong date. That is why the verification read at the end matters: a conversion that "worked" is not the same as a conversion that is correct.</p>
+
+<p><strong>Exercise 2.3 — Fix Every Date in the Workbook</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Report, for all five sheets, every column whose first data value is a <code>str</code> that parses as a date. Confirm <code>ImportedDates</code> is caught.</li>
+<li>Convert <code>ImportedDates</code> to real datetimes with format <code>yyyy-mm-dd</code>, counting conversions and failures.</li>
+<li>Verify by reloading and asserting <code>is_date</code> is <code>True</code> and the value equals the matching <code>OrderDate</code> for the same row. Any row where they differ means you used the wrong format string.</li>
+<li>Deliberately re-run the conversion with <code>"%m/%d/%Y"</code> on a copy. Count how many rows now hold a different date than <code>OrderDate</code>, and explain why the count is not 5,000.</li>
+<li>Reformat <code>OrderDate</code> and <code>DeliveredDate</code> from <code>mm/dd/yyyy</code> to <code>yyyy-mm-dd</code> across the sheet.</li>
+<li>Add a computed <code>DaysToDeliver</code> column as an integer, leaving it blank where <code>DeliveredDate</code> is empty — there are 1,074 such rows.</li>
+<li>Format the <code>Amount</code> column as <code>₱#,##0.00</code> and <code>Qty</code> as <code>#,##0</code>, then save and confirm in Excel.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-formulas-and-the-cached-value-trap">Module 2.4 — Formulas &amp; the Cached-Value Trap</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Explain, with a reproduction, why a workbook openpyxl wrote returns <code>None</code> for every formula cell when reloaded with <code>data_only=True</code>.<br>
+<strong>Skip if:</strong> You can already state what <code>data_only</code> does on read AND what it destroys on save.<br>
+<strong>Unlocks:</strong> 2.5, Phase 2 Capstone</p>
+</blockquote>
+
+<h4>openpyxl writes formulas; it does not evaluate them</h4>
+<p>Writing a formula is just writing a string that begins with <code>=</code>. openpyxl has no calculation engine — it never computes a result, because doing so would mean reimplementing several hundred Excel functions plus the dependency graph.</p>
+<pre><code class="language-py">from openpyxl import Workbook, load_workbook
+
+wb = Workbook()
+ws = wb.active
+ws["A1"], ws["A2"] = 10, 32
+ws["A3"] = "=SUM(A1:A2)"
+wb.save("trap.xlsx")
+
+print(repr(load_workbook("trap.xlsx", data_only=False)["Sheet"]["A3"].value))
+# '=SUM(A1:A2)'   the formula text
+print(repr(load_workbook("trap.xlsx", data_only=True)["Sheet"]["A3"].value))
+# None            &lt;- there is no cached result to return</code></pre>
+<p>Every <code>.xlsx</code> stores two things per formula cell: the formula, and the <strong>cached result</strong> Excel computed the last time it recalculated. <code>data_only=True</code> asks for that cached result. When openpyxl wrote the file, no Excel ever ran, so no cache exists and you get <code>None</code>. Open the file in Excel once and save it, and the same read returns <code>42</code>.</p>
+
+<blockquote class="callout"><p><strong>Common mistake:</strong> loading with <code>data_only=True</code> and then saving <strong>permanently destroys every formula in the file</strong>. openpyxl only holds what it read — the cached values — so <code>save()</code> writes those numbers back in place of the formulas, and the workbook silently becomes a dead snapshot. Reproduce it once so you never do it by accident: load <code>trap.xlsx</code> with <code>data_only=True</code>, save it under a new name, reload with <code>data_only=False</code>, and observe that <code>A3</code> is no longer <code>=SUM(A1:A2)</code>. <strong>Rule: never save a workbook you opened with <code>data_only=True</code>.</strong> If you need both values and formulas, open the file twice into two variables.</p></blockquote>
+
+<h4>The two-workbook pattern</h4>
+<pre><code class="language-py">from openpyxl import load_workbook
+
+SRC = "TindaHub_Orders.xlsx"
+
+wb_values   = load_workbook(SRC, data_only=True)    # read only — never save this one
+wb_formulas = load_workbook(SRC, data_only=False)   # edit and save this one
+
+amount = wb_values["Orders"]["M2"].value            # the number
+formula = wb_formulas["Orders"]["M2"].value         # the formula, if any
+
+wb_formulas["Orders"]["R1"] = "Flag"
+wb_formulas.save("orders_flagged.xlsx")             # formulas preserved</code></pre>
+
+<h4>Writing useful formulas</h4>
+<p>Formulas are strings, so build them with f-strings. Two rules save real debugging time: openpyxl always writes in <strong>US locale</strong> with commas as argument separators regardless of your system settings, and sheet names containing spaces need single quotes.</p>
+<pre><code class="language-py">from openpyxl import Workbook
+
+wb = Workbook()
+ws = wb.active
+ws.title = "Audit"
+ws.append(["OrderID", "Qty", "UnitPrice", "Amount", "Expected", "Delta", "Status"])
+ws.append(["ORD-20263901", 12, 25, 295, None, None, None])
+
+last = ws.max_row
+for r in range(2, last + 1):
+    ws.cell(row=r, column=5).value = f"=B{r}*C{r}"
+    ws.cell(row=r, column=6).value = f"=D{r}-E{r}"
+    ws.cell(row=r, column=7).value = f'=IF(ABS(F{r})&lt;0.01,"OK","MISMATCH")'
+
+ws.cell(row=last + 2, column=4).value = f"=SUM(D2:D{last})"
+ws.cell(row=last + 2, column=5).value = f"=SUM(E2:E{last})"
+ws.cell(row=last + 2, column=7).value = f'=COUNTIF(G2:G{last},"MISMATCH")'
+
+wb.save("audit_formulas.xlsx")</code></pre>
+<p>The <code>&lt;</code> in that <code>IF</code> is a literal less-than inside the formula string. Excel takes the string exactly as written, so the comparison operators you need are plain Python characters — no escaping in the file itself.</p>
+<p>If your pipeline must read those computed values later, something has to recalculate them. Your options are: open and save once in Excel, drive a recalculation through <strong>xlwings</strong> (Module 4.1), or compute the values in Python and write numbers instead of formulas. Choose the third whenever the consumer is another program — formulas are for humans who will open the file.</p>
+
+<p><strong>Exercise 2.4 — The Formula Audit Sheet</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Reproduce the destruction: load <code>TindaHub_Orders.xlsx</code> with <code>data_only=True</code>, save as <code>destroyed.xlsx</code>, and diff the file sizes. Explain what changed.</li>
+<li>Build an <code>Audit</code> sheet listing all 5,000 orders with columns <code>OrderID, Qty, UnitPrice, Amount</code> written as values.</li>
+<li>Add <code>Expected</code>, <code>Delta</code>, and <code>Status</code> as live formulas, following the pattern above.</li>
+<li>Add a totals row with <code>SUM</code> over Amount and Expected, plus a <code>COUNTIF</code> of MISMATCH.</li>
+<li>Save, open in Excel, and confirm the <code>COUNTIF</code> reads <strong>3</strong> — matching your Module 1.3 result.</li>
+<li>Close Excel, reload with <code>data_only=True</code>, and read the <code>COUNTIF</code> cell. Explain why it now returns a number when it would have returned <code>None</code> before you opened it.</li>
+<li>Write a <code>safe_load()</code> helper that refuses to return a <code>data_only=True</code> workbook to any caller that later calls <code>save()</code> — raise a clear exception instead. Add a docstring explaining the trap to the next developer.</li>
+</ol>
+<hr />
+
+<h3 id="module-25-tables-conditional-formatting-and-data-validation">Module 2.5 — Tables, Conditional Formatting &amp; Data Validation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Turn the Orders range into a real Excel Table, highlight every row where <code>Status = "Cancelled"</code> with a formula rule, and add a dropdown restricting <code>PaymentMethod</code> to four values.<br>
+<strong>Skip if:</strong> You already use <code>Table</code>, <code>FormulaRule</code>, and <code>DataValidation</code> and know why table <code>displayName</code> must be unique.<br>
+<strong>Unlocks:</strong> 2.6, Phase 2 Capstone</p>
+</blockquote>
+
+<h4>Real Excel Tables</h4>
+<p>The TindaHub sheets ship as plain ranges. Converting a range to an Excel Table gives users banded rows, filter buttons, and structured references like <code>Orders[Amount]</code> that survive row insertion. The <code>displayName</code> must be unique in the workbook and follow Excel's identifier rules — no spaces, not starting with a digit.</p>
+<pre><code class="language-py">from openpyxl import load_workbook
+from openpyxl.worksheet.table import Table, TableStyleInfo
+from openpyxl.utils import get_column_letter
+
+wb = load_workbook("TindaHub_Orders.xlsx")
+ws = wb["Orders"]
+
+ref = f"A1:{get_column_letter(ws.max_column)}{ws.max_row}"   # 'A1:Q5001'
+table = Table(displayName="Orders_tbl", ref=ref)
+table.tableStyleInfo = TableStyleInfo(
+    name="TableStyleMedium9",
+    showRowStripes=True,
+    showColumnStripes=False,
+)
+ws.add_table(table)
+wb.save("orders_tabled.xlsx")</code></pre>
+<p>Two hard requirements: the range must include the header row, and every header must be <strong>non-empty and unique</strong>. A blank or duplicated header produces a file Excel offers to repair — and repairing drops the table.</p>
+
+<h4>Conditional formatting: three rule types</h4>
+<pre><code class="language-py">from openpyxl.styles import PatternFill, Font
+from openpyxl.formatting.rule import CellIsRule, ColorScaleRule, FormulaRule
+
+red  = PatternFill(fill_type="solid", start_color="FFC7CE")
+warn = PatternFill(fill_type="solid", start_color="FFEB9C")
+last = ws.max_row
+
+# 1. Value comparison — flag unusually large orders
+ws.conditional_formatting.add(
+    f"M2:M{last}",
+    CellIsRule(operator="greaterThan", formula=["5000"],
+               fill=warn, font=Font(bold=True)),
+)
+
+# 2. Colour scale — gradient across the Qty column
+ws.conditional_formatting.add(
+    f"K2:K{last}",
+    ColorScaleRule(start_type="min", start_color="FFFFFF",
+                   end_type="max",  end_color="075249"),
+)
+
+# 3. Formula rule — highlight the ENTIRE row when Status is Cancelled
+ws.conditional_formatting.add(
+    f"A2:Q{last}",
+    FormulaRule(formula=['$O2="Cancelled"'], fill=red),
+)</code></pre>
+<p>The formula rule is the one worth studying. <code>$O2</code> locks the column with <code>$</code> but leaves the row relative, so Excel evaluates it against column O of whichever row it is painting — which is what makes the whole row highlight. Write <code>$O$2</code> instead and every row is coloured according to row 2 alone. The formula must also be written relative to the <strong>top-left cell of the applied range</strong>, so a range starting at row 2 uses <code>O2</code>.</p>
+
+<h4>Data validation</h4>
+<pre><code class="language-py">from openpyxl.worksheet.datavalidation import DataValidation
+
+pay = DataValidation(
+    type="list",
+    formula1='"COD,GCash,Maya,Card"',
+    allow_blank=False,
+    showErrorMessage=True,
+    errorTitle="Invalid payment method",
+    error="Choose COD, GCash, Maya, or Card.",
+)
+ws.add_data_validation(pay)          # register on the sheet FIRST
+pay.add(f"N2:N{last}")               # then attach ranges
+
+qty = DataValidation(type="whole", operator="between", formula1=1, formula2=500,
+                     showErrorMessage=True, errorTitle="Quantity out of range",
+                     error="Qty must be between 1 and 500.")
+ws.add_data_validation(qty)
+qty.add(f"K2:K{last}")
+
+future = DataValidation(type="date", operator="lessThanOrEqual", formula1="=TODAY()",
+                        showErrorMessage=True, errorTitle="Future date",
+                        error="OrderDate cannot be in the future.")
+ws.add_data_validation(future)
+future.add(f"B2:B{last}")
+
+wb.save("orders_validated.xlsx")</code></pre>
+<p>The order matters: <code>add_data_validation()</code> before <code>.add(range)</code>, or the ranges attach to an object the worksheet never serialises and the rule silently vanishes. Note also that validation constrains <em>future typing</em> — it does not retroactively flag existing bad rows. The 12 future-dated rows in <code>MessyImport</code> stay exactly where they are; catching those is a job for the audit pass in Phase 3.</p>
+
+<p><strong>Exercise 2.5 — Make the Workbook Defend Itself</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Convert all five sheets to Excel Tables with unique display names. Handle <code>RawContacts</code>, whose headers need checking first.</li>
+<li>Add a colour-scale rule across <code>Amount</code> on the Orders table.</li>
+<li>Add a formula rule highlighting the entire row in red where <code>Status = "Cancelled"</code> — 614 rows should light up.</li>
+<li>Add a second formula rule in amber for <code>Status = "Returned"</code> — 420 rows. Confirm the two rules do not both fire on any row.</li>
+<li>Add a duplicate-detection rule on <code>OrderID</code> using <code>COUNTIF</code>; confirm it highlights the 8 known duplicates.</li>
+<li>Add the three validations above, plus a list validation on <code>Status</code> with the four real values.</li>
+<li>Open in Excel and type an invalid payment method to confirm the error dialog fires. Then paste an invalid value instead of typing it, and record what happens — the answer explains why validation is a usability feature, not a data-integrity guarantee.</li>
+</ol>
+<hr />
+
+<h3 id="module-26-charts-images-and-print-layout">Module 2.6 — Charts, Images &amp; Print Layout</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Add a bar chart of Amount by Region anchored at <code>H2</code>, with axis titles, and set the sheet to print landscape on one page wide with the header row repeating.<br>
+<strong>Skip if:</strong> You already build openpyxl charts with <code>Reference</code> and configure <code>page_setup</code>.<br>
+<strong>Unlocks:</strong> Phase 2 Capstone</p>
+</blockquote>
+
+<h4>Native charts stay live</h4>
+<p>openpyxl writes real Excel chart objects, not pictures. The chart keeps a reference to its source range, so when the underlying numbers change the chart updates — which is exactly what you want in a recurring report, and what you lose if you paste in a matplotlib PNG instead.</p>
+<pre><code class="language-py">from openpyxl import Workbook
+from openpyxl.chart import BarChart, LineChart, PieChart, Reference
+
+wb = Workbook()
+ws = wb.active
+ws.title = "ByRegion"
+ws.append(["Region", "Amount", "Orders"])
+for row in [
+    ("NCR", 1875400, 1240), ("CALABARZON", 1402115, 980),
+    ("Central Luzon", 1120880, 810), ("Central Visayas", 905340, 690),
+    ("Davao Region", 640230, 520), ("Western Visayas", 588910, 470),
+]:
+    ws.append(row)
+
+last = ws.max_row
+
+chart = BarChart()
+chart.type = "col"
+chart.style = 10
+chart.title = "TindaHub Amount by Region"
+chart.y_axis.title = "Amount (PHP)"
+chart.x_axis.title = "Region"
+
+data = Reference(ws, min_col=2, min_row=1, max_row=last)   # include header for the series name
+cats = Reference(ws, min_col=1, min_row=2, max_row=last)   # exclude header for categories
+chart.add_data(data, titles_from_data=True)
+chart.set_categories(cats)
+
+chart.width, chart.height = 20, 10        # centimetres
+ws.add_chart(chart, "E2")
+wb.save("chart_report.xlsx")</code></pre>
+<p>The asymmetry in those two <code>Reference</code> calls trips up nearly everyone: <code>data</code> starts at row 1 so <code>titles_from_data=True</code> can read the series name from the header, while <code>cats</code> starts at row 2 because a category list must contain only labels. Include the header in <code>cats</code> and your chart gains a phantom "Region" bar.</p>
+
+<h4>Images and print layout</h4>
+<pre><code class="language-py">from openpyxl.drawing.image import Image     # requires Pillow
+
+logo = Image("tindahub_logo.png")
+logo.width, logo.height = 160, 48            # pixels
+ws.add_image(logo, "A1")
+
+ws.page_setup.orientation = "landscape"
+ws.page_setup.fitToWidth = 1
+ws.page_setup.fitToHeight = 0                # 0 = as many pages tall as needed
+ws.sheet_properties.pageSetUpPr.fitToPage = True
+ws.print_title_rows = "1:1"                  # repeat the header on every printed page
+ws.print_area = f"A1:Q{ws.max_row}"
+ws.oddHeader.center.text = "TindaHub Orders — Jan–Jun 2026"
+ws.oddFooter.right.text = "Page &amp;P of &amp;N"</code></pre>
+<p><code>fitToWidth</code> alone does nothing unless you also set <code>sheet_properties.pageSetUpPr.fitToPage = True</code> — the flag lives in a different part of the file from the setting it governs. This is the most-reported openpyxl "print settings are ignored" issue, and it is a two-line fix.</p>
+
+<p><strong>Exercise 2.6 — The Visual Report</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Aggregate Amount by Region and by Category into two new sheets.</li>
+<li>Add a column bar chart for Amount by Region with both axis titles, anchored clear of the data.</li>
+<li>Add a pie chart of order counts by Category on the same sheet.</li>
+<li>Build a monthly line chart: aggregate Amount by month from <code>OrderDate</code> across Jan–Jun 2026 and plot the six points.</li>
+<li>Deliberately include the header row in <code>set_categories</code>, save, and inspect the chart. Record the artefact, then fix it.</li>
+<li>Configure landscape printing, fit-to-one-page-wide, repeating header row, and a centred page header — remembering the <code>fitToPage</code> flag.</li>
+<li>Use Excel's Print Preview to confirm the header repeats on page 2, then export to PDF.</li>
+</ol>
+<hr />
+
+<h3 id="module-27-performance-read-only-and-write-only-modes">Module 2.7 — Performance: read_only &amp; write_only Modes</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Stream all 5,000 Orders rows in <code>read_only</code> mode, measure peak memory against a normal load, and explain why <code>ws.max_row</code> can be unreliable in that mode.<br>
+<strong>Skip if:</strong> You already use <code>read_only</code>/<code>write_only</code> and know their restrictions.<br>
+<strong>Unlocks:</strong> 3.2, Final Capstone</p>
+</blockquote>
+
+<h4>Why the default mode is memory-hungry</h4>
+<p>A normal <code>load_workbook()</code> builds a Python <code>Cell</code> object for every populated cell, each holding value, style reference, format, and a parent pointer. For the 85,000 cells in the Orders sheet that is fine. For a 500,000-row × 30-column sheet it is 15 million objects, and the process is measured in gigabytes.</p>
+<pre><code class="language-py">import time, tracemalloc
+from openpyxl import load_workbook
+
+SRC = "TindaHub_Orders.xlsx"
+
+def total_amount(read_only: bool) -&gt; tuple[float, float, float]:
+    tracemalloc.start()
+    t0 = time.perf_counter()
+    wb = load_workbook(SRC, read_only=read_only, data_only=True)
+    ws = wb["Orders"]
+    header = next(ws.iter_rows(min_row=1, max_row=1, values_only=True))
+    m = header.index("Amount")
+    total = 0.0
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        if row[m] is not None:
+            total += row[m]
+    wb.close()
+    elapsed = time.perf_counter() - t0
+    _, peak = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
+    return total, elapsed, peak / 1_048_576
+
+for flag in (False, True):
+    total, secs, mb = total_amount(flag)
+    print(f"read_only={flag!s:&lt;5} total={total:,.0f}  {secs:.2f}s  peak {mb:.1f} MB")</code></pre>
+<p>Always call <code>wb.close()</code> in read-only mode. The workbook holds an open file handle to the underlying ZIP, and without an explicit close a long-running job leaks handles until it hits the OS limit.</p>
+
+<h4>What read_only takes away</h4>
+<p>Read-only mode returns lightweight cells and streams rows on demand. In exchange:</p>
+<ul>
+<li>Cells are read-only — assigning raises an error.</li>
+<li>Styles are not fully populated, so do not inspect fonts or fills.</li>
+<li><code>ws.max_row</code> and <code>ws.max_column</code> may be <code>None</code> or wrong, because they come from a dimension hint some writers omit or misreport. Call <code>ws.calculate_dimension()</code> if you truly need them, and accept the extra pass.</li>
+<li>You can iterate a sheet only <strong>once</strong> per load. A second pass needs a fresh <code>load_workbook</code>.</li>
+</ul>
+
+<h4>write_only for large outputs</h4>
+<p>The mirror image: rows are streamed straight to disk instead of being held in memory. You must use <code>append()</code> — there is no random cell access — and every sheet must come from <code>create_sheet()</code>.</p>
+<pre><code class="language-py">from openpyxl import Workbook
+from openpyxl.cell import WriteOnlyCell
+from openpyxl.styles import Font
+
+wb = Workbook(write_only=True)
+ws = wb.create_sheet("Export")
+
+header = []
+for name in ("OrderID", "Region", "Amount"):
+    c = WriteOnlyCell(ws, value=name)
+    c.font = Font(bold=True, color="FFFFFF")
+    header.append(c)
+ws.append(header)
+
+for i in range(200_000):
+    ws.append([f"ORD-{i:08d}", "NCR", i * 1.5])
+
+wb.save("big_export.xlsx")</code></pre>
+<p>Styling in write-only mode requires the <code>WriteOnlyCell</code> wrapper, since you never get a normal cell object to assign to. If your output needs heavy formatting <em>and</em> volume, XlsxWriter (Module 3.4) is usually the better tool — it was designed for exactly this and has a <code>constant_memory</code> mode of its own.</p>
+
+<p><strong>Exercise 2.7 — Measure, Then Optimise</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Run the benchmark above and record time and peak memory for both modes.</li>
+<li>Generate a 250,000-row synthetic workbook by repeating the Orders rows, and re-run both modes on it. Report the ratio.</li>
+<li>In read-only mode, print <code>ws.max_row</code> before iterating, then call <code>calculate_dimension()</code>. Note any disagreement.</li>
+<li>Try to iterate a read-only sheet twice in one load and record the exact failure.</li>
+<li>Write the 250k-row file with <code>write_only=True</code> and time it against a normal <code>Workbook()</code>. Watch memory on both.</li>
+<li>Add a bold white header to the write-only output using <code>WriteOnlyCell</code>.</li>
+<li>Write a short guidance note: at what row count does your machine make read-only worth the restrictions? Justify with your numbers, not a rule of thumb.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-branded-regional-report">Phase 2 Capstone: The Branded Regional Report</h3>
+<p><strong>Project: <code>tinda_report.py</code></strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (a) why <code>cell.font.bold = True</code> does nothing, (b) what <code>data_only=True</code> returns for a formula openpyxl wrote, and (c) why <code>fitToWidth</code> alone does not change the printout? If any draws a blank, re-read that module before starting.</p></blockquote>
+<p><strong>Dataset:</strong> TindaHub Orders</p>
+<p>Produce a single, polished, print-ready workbook from the raw data using openpyxl alone — no pandas. This is the deliverable that replaces a recurring manual report.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A <code>Cover</code> sheet with a merged, branded title banner, the generation timestamp, and the source row count.</li>
+<li>A <code>ByRegion</code> sheet: Amount, order count, and average order value per region, sorted descending, as a real Excel Table with the <code>tindahub_header</code> and <code>tindahub_peso</code> named styles.</li>
+<li>A <code>ByCategory</code> sheet with the same treatment plus a colour scale on Amount.</li>
+<li>A <code>Monthly</code> sheet with a line chart of Amount across Jan–Jun 2026, built from real dates.</li>
+<li>An <code>Audit</code> sheet listing the 3 amount mismatches and the 8 duplicate order IDs, with live formulas recomputing both counts.</li>
+<li>A <code>Data</code> sheet with all 5,000 orders, frozen header, autofilter, <code>yyyy-mm-dd</code> dates, ₱ formatting, and a formula rule reddening cancelled rows.</li>
+<li>Print setup on every sheet: landscape, fit to one page wide, repeating header, page header and footer.</li>
+<li>The whole thing produced by one <code>python tinda_report.py</code> run in under 30 seconds, with no manual steps.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-dataframes-and-fast-readers">Phase 3: DataFrames &amp; Fast Readers</h2>
+<h3 id="weeks-8-10">Weeks 8–10 | Goal: Move data in and out of Excel at speed when you care about the values, not the document — and know exactly which engine is doing the reading.</h3>
+<hr />
+
+<h3 id="module-31-pandas-excel-io-end-to-end">Module 3.1 — pandas Excel I/O End to End</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Read three TindaHub sheets in one pass with a single <code>ExcelFile</code> handle, and write a four-sheet workbook with frozen headers via <code>ExcelWriter</code>.<br>
+<strong>Skip if:</strong> You already use <code>ExcelFile</code>, <code>sheet_name=None</code>, <code>usecols</code>, <code>dtype</code>, and <code>ExcelWriter</code> fluently.<br>
+<strong>Unlocks:</strong> 3.2, 3.4</p>
+</blockquote>
+
+<h4>pandas does not read Excel — an engine does</h4>
+<p>Every <code>pd.read_excel()</code> call delegates to one of several engines: openpyxl, calamine, xlrd, pyxlsb, or odf. pandas parses whatever that engine hands back into a DataFrame. This matters because the engine determines speed, format support, and some type behaviour — and because <strong>the default engine is changing</strong>. As of pandas 3.x the docs state plainly that for xlsx/xlsm the default will move from openpyxl to calamine in a future version.</p>
+<p>The practical consequence: <strong>always pass <code>engine=</code> explicitly.</strong> A pipeline that relies on the default will change behaviour under you at some upgrade.</p>
+<pre><code class="language-py">import pandas as pd
+
+SRC = "TindaHub_Orders.xlsx"
+
+orders = pd.read_excel(SRC, sheet_name="Orders", engine="openpyxl")
+print(orders.shape)                 # (5000, 17)
+print(orders.dtypes["OrderDate"])   # datetime64[ns]
+print(orders.dtypes["ImportedDates"])  # object  &lt;- still text, as expected</code></pre>
+
+<h4>Reading efficiently</h4>
+<p>Reopening the file for each sheet re-parses the entire ZIP every time. <code>ExcelFile</code> opens it once:</p>
+<pre><code class="language-py">import pandas as pd
+
+with pd.ExcelFile("TindaHub_Orders.xlsx", engine="openpyxl") as xl:
+    print(xl.sheet_names)
+    # ['Orders', 'Products', 'Customers', 'RawContacts', 'MessyImport']
+    orders    = xl.parse("Orders")
+    products  = xl.parse("Products")
+    customers = xl.parse("Customers")
+
+# Or grab everything at once: sheet_name=None returns a dict of DataFrames
+sheets = pd.read_excel("TindaHub_Orders.xlsx", sheet_name=None, engine="openpyxl")
+print({k: v.shape for k, v in sheets.items()})
+# {'Orders': (5000, 17), 'Products': (26, 3), 'Customers': (200, 8),
+#  'RawContacts': (60, 2), 'MessyImport': (500, 12)}</code></pre>
+<p>Narrow the read when you can — <code>usecols</code> and <code>nrows</code> cut both time and memory:</p>
+<pre><code class="language-py">slim = pd.read_excel(
+    "TindaHub_Orders.xlsx",
+    sheet_name="Orders",
+    engine="openpyxl",
+    usecols=["OrderID", "OrderDate", "Region", "Amount", "Status"],
+    dtype={"OrderID": "string", "Region": "category", "Status": "category"},
+    parse_dates=["OrderDate"],
+)
+print(slim.memory_usage(deep=True).sum() / 1024, "KB")</code></pre>
+<p>Declaring <code>Region</code> and <code>Status</code> as <code>category</code> is not cosmetic — with only 6 and 4 distinct values across 5,000 rows, it collapses those columns from full string storage to a small integer code plus a lookup table.</p>
+
+<h4>Writing with ExcelWriter</h4>
+<pre><code class="language-py">import pandas as pd
+
+orders = pd.read_excel("TindaHub_Orders.xlsx", sheet_name="Orders", engine="openpyxl")
+
+by_region = (orders.groupby("Region", as_index=False)
+                   .agg(Orders=("OrderID", "count"),
+                        Amount=("Amount", "sum"),
+                        AvgOrder=("Amount", "mean"))
+                   .sort_values("Amount", ascending=False))
+
+by_category = (orders.groupby("Category", as_index=False)["Amount"]
+                     .sum().sort_values("Amount", ascending=False))
+
+with pd.ExcelWriter("pandas_report.xlsx",
+                    engine="openpyxl",
+                    datetime_format="yyyy-mm-dd",
+                    date_format="yyyy-mm-dd") as writer:
+    by_region.to_excel(writer, sheet_name="ByRegion", index=False, freeze_panes=(1, 0))
+    by_category.to_excel(writer, sheet_name="ByCategory", index=False, freeze_panes=(1, 0))
+    orders.to_excel(writer, sheet_name="Data", index=False, freeze_panes=(1, 0))
+
+print("wrote 3 sheets")</code></pre>
+<p>Use the context manager. Calling <code>writer.save()</code> yourself is removed in modern pandas, and forgetting to close leaves a truncated file.</p>
+<p>To append sheets to an existing workbook without destroying it, pass <code>mode="a"</code> with <code>if_sheet_exists="replace"</code> — but note this only works with <code>engine="openpyxl"</code>, because XlsxWriter cannot read an existing file:</p>
+<pre><code class="language-py">with pd.ExcelWriter("pandas_report.xlsx", engine="openpyxl",
+                    mode="a", if_sheet_exists="replace") as writer:
+    by_region.to_excel(writer, sheet_name="ByRegion", index=False)</code></pre>
+<p>Remember the ceiling from Module 1.2: <code>to_excel</code> writes values. Charts, conditional formatting, and named styles are not part of the DataFrame, so a workbook that needs them gets a second openpyxl pass — or gets written by XlsxWriter in Module 3.4.</p>
+
+<p><strong>Exercise 3.1 — The pandas Summary Pack</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Load all five sheets in a single <code>ExcelFile</code> context and print each shape. Confirm they match the counts above.</li>
+<li>Reproduce the Module 1.3 audit in one pandas expression and confirm 3 mismatched rows.</li>
+<li>Find the 8 duplicate <code>OrderID</code> values with <code>duplicated(keep=False)</code>.</li>
+<li>Build region, category, and month summaries with <code>groupby</code>, including count, sum, and mean.</li>
+<li>Join <code>Orders</code> to <code>Customers</code> on <code>CustomerID</code> and verify that the <code>Region</code> from each side matches on all 5,000 rows — the dataset guarantees zero mismatches, so any failure is a bug in your join.</li>
+<li>Write all summaries to a four-sheet workbook with frozen headers and <code>yyyy-mm-dd</code> dates.</li>
+<li>Reopen that file with openpyxl and apply the <code>tindahub_header</code> style, demonstrating the read-fast/write-pretty pattern end to end.</li>
+<li>Compare the <code>memory_usage(deep=True)</code> of the full Orders read versus the <code>usecols</code>+<code>category</code> read. Record the reduction.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-engines-and-performance-calamine">Module 3.2 — Engines &amp; Performance: calamine</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Benchmark the same sheet through openpyxl and calamine, report the speedup, and name the two engines pandas has deprecated.<br>
+<strong>Skip if:</strong> You already default to calamine for reads and know its trade-offs.<br>
+<strong>Unlocks:</strong> 3.3, Final Capstone</p>
+</blockquote>
+
+<h4>The engine table, and what is being retired</h4>
+<table>
+<tr><th>Engine</th><th>Formats</th><th>Status in pandas 3.x</th></tr>
+<tr><td><code>calamine</code></td><td>xlsx, xlsm, xlsb, xls, ods</td><td>Fastest; slated to become the xlsx/xlsm default</td></tr>
+<tr><td><code>openpyxl</code></td><td>xlsx, xlsm</td><td>Current default for xlsx/xlsm; the only engine that also writes styles</td></tr>
+<tr><td><code>xlrd</code></td><td>xls only</td><td><strong>Deprecated</strong> — use calamine</td></tr>
+<tr><td><code>pyxlsb</code></td><td>xlsb only</td><td><strong>Deprecated</strong> — use calamine</td></tr>
+<tr><td><code>odf</code></td><td>ods</td><td>Supported; calamine is faster</td></tr>
+</table>
+<p>One engine now covers every format, is faster than all of them, and is the only one under active development. That is why the deprecations landed together.</p>
+
+<h4>Benchmark it yourself</h4>
+<pre><code class="language-py">import time
+import pandas as pd
+
+SRC = "TindaHub_Orders.xlsx"
+
+def bench(engine: str, repeats: int = 3) -&gt; float:
+    best = float("inf")
+    for _ in range(repeats):
+        t0 = time.perf_counter()
+        df = pd.read_excel(SRC, sheet_name="Orders", engine=engine)
+        best = min(best, time.perf_counter() - t0)
+    assert df.shape == (5000, 17)
+    return best
+
+base = bench("openpyxl")
+for engine in ("openpyxl", "calamine"):
+    t = bench(engine)
+    print(f"{engine:&lt;10} {t:6.3f}s   {base / t:4.1f}x")</code></pre>
+<p>Take the <strong>minimum</strong> of several runs, not the mean. You are measuring the library, and the mean is dominated by whatever else your machine was doing. Expect calamine to land several times faster on a file this size; the gap widens with row count.</p>
+
+<h4>Where calamine differs</h4>
+<p>calamine is a reader only — there is no calamine writer, so writing stays with openpyxl or XlsxWriter. It also gives you no access to styles, charts, comments, or validation: it returns values, which is precisely why it is fast. And because it is a different parser, edge-case type inference can differ from openpyxl's, most visibly on cells that are ambiguously typed.</p>
+<pre><code class="language-py">import pandas as pd
+
+a = pd.read_excel("TindaHub_Orders.xlsx", sheet_name="MessyImport", engine="openpyxl")
+b = pd.read_excel("TindaHub_Orders.xlsx", sheet_name="MessyImport", engine="calamine")
+
+print(a.dtypes.to_dict() == b.dtypes.to_dict())
+for col in a.columns:
+    if a[col].dtype != b[col].dtype:
+        print(f"{col}: openpyxl={a[col].dtype}  calamine={b[col].dtype}")</code></pre>
+<p>Run this before swapping engines in an existing pipeline. The <code>MessyImport</code> sheet is deliberately adversarial — 76 of its 500 <code>Amount</code> values are stored as text — so it is exactly the kind of sheet where two parsers can legitimately disagree, and exactly the kind you must check rather than assume.</p>
+<p>You can also use calamine directly, without pandas, when you just want rows:</p>
+<pre><code class="language-py">from python_calamine import CalamineWorkbook
+
+wb = CalamineWorkbook.from_path("TindaHub_Orders.xlsx")
+print(wb.sheet_names)
+rows = wb.get_sheet_by_name("Orders").to_python()
+print(len(rows), rows[0][:4])</code></pre>
+
+<p><strong>Exercise 3.2 — Prove the Speedup</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<p><em>Retrieval practice: before running anything, write down which engine you would choose for .xlsb, for .xls, and for a styled .xlsx you must edit. Then confirm against the engine table.</em></p>
+<ol>
+<li>Benchmark openpyxl versus calamine on the Orders sheet, 5 repeats, reporting the minimum.</li>
+<li>Repeat on a 250,000-row synthetic file and plot or tabulate how the ratio changes with size.</li>
+<li>Run the dtype-comparison script on all five sheets and record every disagreement.</li>
+<li>For each disagreement, decide which engine is "right" for a downstream sum of <code>Amount</code>, and justify it.</li>
+<li>Read the sheet with <code>CalamineWorkbook</code> directly and compare timing against the pandas wrapper — quantify pandas' DataFrame-construction overhead.</li>
+<li>Write a <code>read_excel_fast()</code> helper that picks the engine from the file extension, falls back cleanly if calamine is missing, and always passes <code>engine=</code> explicitly.</li>
+<li>Add a docstring citing the pandas deprecations, so the next reader knows why the helper exists.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-polars-fastexcel-and-large-files">Module 3.3 — polars, fastexcel &amp; Large Files</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Read the Orders sheet into a polars DataFrame, aggregate by region, and write the result back to Excel with a formatted header.<br>
+<strong>Skip if:</strong> You already use polars for Excel I/O and know it delegates to fastexcel/calamine.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4>polars reads Excel through calamine</h4>
+<p><code>pl.read_excel()</code> uses <strong>fastexcel</strong>, which is a binding over the same Rust calamine library from Module 3.2. So you get calamine's speed plus an Arrow-backed, strictly-typed DataFrame.</p>
+<pre><code class="language-bash">python -m pip install "polars==1.43.2" "fastexcel==0.20.2"</code></pre>
+<pre><code class="language-py">import polars as pl
+
+orders = pl.read_excel(
+    "TindaHub_Orders.xlsx",
+    sheet_name="Orders",
+    engine="calamine",
+)
+print(orders.shape)          # (5000, 17)
+print(orders.schema["OrderDate"])
+
+by_region = (
+    orders.group_by("Region")
+          .agg(
+              pl.len().alias("Orders"),
+              pl.col("Amount").sum().alias("Amount"),
+              pl.col("Amount").mean().round(2).alias("AvgOrder"),
+          )
+          .sort("Amount", descending=True)
+)
+print(by_region)</code></pre>
+<p>polars is stricter about types than pandas. A column mixing numbers and text — like <code>MessyImport.Amount</code> — will not be silently coerced; you either get an explicit type or an error. That strictness is a feature for pipeline work: it surfaces the 76 bad values at read time instead of producing a wrong sum three steps later.</p>
+
+<h4>Writing from polars</h4>
+<p>polars ships <code>write_excel()</code>, which uses XlsxWriter underneath and exposes real formatting — more than pandas' <code>to_excel</code> offers out of the box.</p>
+<pre><code class="language-py">by_region.write_excel(
+    "polars_report.xlsx",
+    worksheet="ByRegion",
+    table_style="Table Style Medium 9",
+    autofit=True,
+    freeze_panes=(1, 0),
+    column_formats={"Amount": '"\u20b1"#,##0.00', "AvgOrder": '"\u20b1"#,##0.00'},
+    header_format={"bold": True, "bg_color": "#075249", "font_color": "#FFFFFF"},
+)</code></pre>
+<p>Note the leading <code>#</code> on colours here — <code>write_excel</code> passes them to XlsxWriter, whose convention is the opposite of openpyxl's. Mixing the two up is a genuinely common bug when you use both libraries in one project.</p>
+
+<h4>Strategies when the file is too big</h4>
+<p>Once a workbook stops fitting comfortably in memory, ranked by how much they help:</p>
+<ol>
+<li><strong>Stop using Excel as the interchange format.</strong> Convert once to Parquet or CSV and read that repeatedly. A one-time conversion beats re-parsing XML on every run, and Parquet keeps the types.</li>
+<li><strong>Read fewer columns.</strong> <code>usecols</code> in pandas, <code>columns=</code> in polars. Usually the biggest easy win.</li>
+<li><strong>Read in chunks by row range</strong> with fastexcel's row-limit options, processing and discarding each slice.</li>
+<li><strong>Stream with openpyxl <code>read_only</code></strong> (Module 2.7) when you need per-cell control rather than a DataFrame.</li>
+<li><strong>Ask for <code>.xlsb</code> or CSV from the source.</strong> The cheapest optimisation is the file you never had to parse.</li>
+</ol>
+<pre><code class="language-py">import polars as pl
+
+# One-time conversion; every later run reads the Parquet
+pl.read_excel("TindaHub_Orders.xlsx", sheet_name="Orders").write_parquet("orders.parquet")
+
+# Subsequent runs — lazy, and orders of magnitude faster
+lazy = pl.scan_parquet("orders.parquet")
+result = (lazy.filter(pl.col("Status") == "Delivered")
+              .group_by("Region")
+              .agg(pl.col("Amount").sum())
+              .sort("Amount", descending=True)
+              .collect())
+print(result)</code></pre>
+
+<p><strong>Exercise 3.3 — The polars Path</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Install polars and fastexcel, then read the Orders sheet and print the full schema.</li>
+<li>Reproduce the region and category summaries from Exercise 3.1 in polars and assert the totals match pandas to the peso.</li>
+<li>Read <code>MessyImport</code> in both pandas and polars. Record how each handles the 76 text-stored <code>Amount</code> values, and which behaviour you would rather have in a pipeline.</li>
+<li>Write the region summary with <code>write_excel()</code>, formatted table style, ₱ formats, autofit, and a teal header.</li>
+<li>Open the result and confirm the header colour is correct — if it is black, you used openpyxl's hash-free convention by mistake.</li>
+<li>Convert Orders to Parquet, then benchmark Excel-read versus Parquet-scan for the same aggregation. Report the ratio.</li>
+<li>Write a short note recommending when your team should switch from Excel to Parquet as the interchange format, backed by your measurements.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-xlsxwriter-formatted-reports-at-speed">Module 3.4 — XlsxWriter: Formatted Reports at Speed</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2, 3.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Write a formatted multi-sheet report with a chart and conditional formatting using XlsxWriter only, and explain why you cannot reopen it to make a small edit.<br>
+<strong>Skip if:</strong> You already know when XlsxWriter beats openpyxl and how <code>constant_memory</code> works.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+
+<h4>Write-only by design</h4>
+<p>XlsxWriter creates <code>.xlsx</code> files and <strong>cannot read them</strong>. That sounds like a limitation, and for editing it is disqualifying — but it is exactly what makes the library fast and lets it support formatting features openpyxl does not, like rich strings, sparklines, and a far more complete chart API. Choose it when you are generating a report from scratch, every time.</p>
+<pre><code class="language-py">import pandas as pd
+import xlsxwriter
+
+orders = pd.read_excel("TindaHub_Orders.xlsx", sheet_name="Orders", engine="calamine")
+by_region = (orders.groupby("Region", as_index=False)
+                   .agg(Orders=("OrderID", "count"), Amount=("Amount", "sum"))
+                   .sort_values("Amount", ascending=False))
+
+wb = xlsxwriter.Workbook("xlsxwriter_report.xlsx")
+ws = wb.add_worksheet("ByRegion")
+
+header_fmt = wb.add_format({
+    "bold": True, "font_color": "#FFFFFF", "bg_color": "#075249",
+    "border": 1, "align": "center", "valign": "vcenter",
+})
+peso_fmt = wb.add_format({"num_format": '"\u20b1"#,##0.00', "border": 1})
+int_fmt  = wb.add_format({"num_format": "#,##0", "border": 1})
+text_fmt = wb.add_format({"border": 1})
+
+for c, name in enumerate(by_region.columns):
+    ws.write(0, c, name, header_fmt)
+
+for r, row in enumerate(by_region.itertuples(index=False), start=1):
+    ws.write(r, 0, row.Region, text_fmt)
+    ws.write_number(r, 1, row.Orders, int_fmt)
+    ws.write_number(r, 2, row.Amount, peso_fmt)
+
+last = len(by_region)
+ws.freeze_panes(1, 0)
+ws.autofilter(0, 0, last, 2)
+ws.set_column("A:A", 22)
+ws.set_column("B:C", 16)
+
+ws.conditional_format(1, 2, last, 2, {
+    "type": "3_color_scale", "min_color": "#FFFFFF", "max_color": "#075249",
+})
+
+chart = wb.add_chart({"type": "column"})
+chart.add_series({
+    "name":       "Amount",
+    "categories": ["ByRegion", 1, 0, last, 0],
+    "values":     ["ByRegion", 1, 2, last, 2],
+    "fill":       {"color": "#0d7a6e"},
+})
+chart.set_title({"name": "TindaHub Amount by Region"})
+chart.set_y_axis({"name": "Amount (PHP)"})
+chart.set_size({"width": 640, "height": 380})
+ws.insert_chart("E2", chart)
+
+wb.close()      # close() is what actually writes the file
+print("wrote xlsxwriter_report.xlsx")</code></pre>
+<p>Three differences from openpyxl to keep straight: coordinates are <strong>zero-based</strong> <code>(row, col)</code> rather than <code>"A1"</code>; colours carry a leading <code>#</code>; and formats are workbook-level objects created with <code>add_format()</code> and reused, rather than per-cell style objects. Forgetting <code>wb.close()</code> produces a zero-byte file with no error.</p>
+
+<h4>Pairing it with pandas</h4>
+<p>You do not have to choose between DataFrame convenience and XlsxWriter power — <code>ExcelWriter</code> exposes the underlying objects:</p>
+<pre><code class="language-py">import pandas as pd
+
+with pd.ExcelWriter("hybrid.xlsx", engine="xlsxwriter") as writer:
+    by_region.to_excel(writer, sheet_name="ByRegion", index=False, startrow=1, header=False)
+
+    wb  = writer.book
+    ws  = writer.sheets["ByRegion"]
+    hdr = wb.add_format({"bold": True, "bg_color": "#075249", "font_color": "#FFFFFF", "border": 1})
+
+    for c, name in enumerate(by_region.columns):
+        ws.write(0, c, name, hdr)
+    ws.set_column("A:A", 22)
+    ws.freeze_panes(1, 0)</code></pre>
+<p>Writing with <code>header=False</code> and <code>startrow=1</code>, then writing the header yourself, is the standard trick — pandas' own header ignores your format.</p>
+
+<h4>constant_memory for very large writes</h4>
+<pre><code class="language-py">wb = xlsxwriter.Workbook("huge.xlsx", {"constant_memory": True})
+ws = wb.add_worksheet("Export")
+for r in range(1_000_000):
+    ws.write_row(r, 0, [f"ORD-{r:08d}", "NCR", r * 1.5])
+wb.close()</code></pre>
+<p>In this mode each row is flushed to disk as soon as the next one starts, so memory stays flat. The cost is that you must write <strong>strictly in row order</strong> and cannot revisit an earlier row — and features needing a second pass, such as <code>autofit()</code>, are unavailable.</p>
+
+<p><strong>Exercise 3.4 — Rebuild the Report in XlsxWriter</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Rebuild the Phase 2 Capstone <code>ByRegion</code> sheet with XlsxWriter: header format, ₱ formats, borders, freeze panes, autofilter.</li>
+<li>Add the 3-colour scale and a column chart with a teal fill.</li>
+<li>Add a <code>ByCategory</code> sheet and a <code>Data</code> sheet with all 5,000 rows and a date format.</li>
+<li>Time the full XlsxWriter build against your openpyxl Phase 2 Capstone. Report both numbers.</li>
+<li>Try to reopen <code>xlsxwriter_report.xlsx</code> with XlsxWriter and change one cell. Record the exact failure and write one sentence on what you would do instead.</li>
+<li>Rewrite the <code>Data</code> sheet using the hybrid pandas + XlsxWriter pattern.</li>
+<li>Generate a 1,000,000-row file with and without <code>constant_memory</code>, recording peak memory for each. Note which features you lost.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-messy-import-pipeline">Phase 3 Capstone: The Messy Import Pipeline</h3>
+<p><strong>Project: <code>tinda_ingest.py</code></strong></p>
+<p><strong>Dataset:</strong> TindaHub Orders — the <code>MessyImport</code> sheet plus the three monthly CSV extracts</p>
+<p>Build a validating ingest that turns deliberately dirty data into a clean table plus an auditable rejection report. Every defect below is seeded with a known count, so your pipeline is either right or wrong — no judgement calls.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Read <code>MessyImport</code> (500 rows) and detect all four seeded defect classes: <strong>15</strong> duplicate <code>OrderID</code>s, <strong>76</strong> text-stored <code>Amount</code> values, <strong>12</strong> future-dated <code>OrderDate</code>s, and <strong>106</strong> <code>Customer</code> values that are padded or upper-cased.</li>
+<li>Normalise the city-name variants — <code>"Quezon City"</code>/<code>"QC"</code>/<code>"quezon city"</code>, and the whitespace defects such as <code>" Manila"</code> and <code>"Cebu  City"</code> — into one canonical value each.</li>
+<li>Coerce text <code>Amount</code> values to numeric, recording every original value that fails.</li>
+<li>Append the three monthly CSVs (320 + 345 + 360 = <strong>1,025</strong> raw rows), filter out <code>Status = "Test"</code>, and remove within-file duplicates. Assert the result is exactly <strong>989</strong> rows and reconcile the 36-row gap in your log.</li>
+<li>Merge <code>Category</code> in from the <code>Products</code> sheet, since the monthly extracts do not carry it. Fail loudly on any product with no match.</li>
+<li>Emit <code>clean.xlsx</code> with a <code>Clean</code> sheet and a <code>Rejects</code> sheet, each rejected row carrying a reason code.</li>
+<li>Emit a <code>Summary</code> sheet: rows in, rows out, rejects per reason, and the reconciliation arithmetic.</li>
+<li>Make it idempotent — running twice on the same inputs produces byte-identical output — and assert every seeded count so the pipeline fails loudly if the data changes.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-live-excel-and-automation">Phase 4: Live Excel &amp; Automation</h2>
+<h3 id="weeks-11-14">Weeks 11–14 | Goal: Drive a running Excel from Python, let Excel call back into Python, and ship Python to Excel users who cannot install anything.</h3>
+<hr />
+
+<h3 id="module-41-xlwings-fundamentals">Module 4.1 — xlwings Fundamentals: Driving a Live Excel</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Open the TindaHub workbook in Excel from Python, read the user's current selection, write a value into it, force a recalculation, and close without saving.<br>
+<strong>Skip if:</strong> You already use the <code>App</code> / <code>Book</code> / <code>Sheet</code> / <code>Range</code> hierarchy confidently.<br>
+<strong>Unlocks:</strong> 4.2, 4.3, 4.4</p>
+</blockquote>
+
+<h4>A different category of tool</h4>
+<p>Every library so far manipulates a <em>file</em>. xlwings automates the <em>application</em> — it sends instructions to a running copy of Excel over COM on Windows or AppleScript on macOS. That single difference decides everything: Excel must be installed, it will not run on a Linux server, and in exchange you get access to literally everything Excel can do, including formula recalculation, PivotTables, and writing <code>.xlsb</code>.</p>
+<pre><code class="language-bash">python -m pip install "xlwings==0.36.14"</code></pre>
+<pre><code class="language-py">import xlwings as xw
+
+# visible=False runs Excel hidden; add_book=False stops it opening a blank workbook
+app = xw.App(visible=False, add_book=False)
+try:
+    book = app.books.open("TindaHub_Orders.xlsx")
+    sheet = book.sheets["Orders"]
+
+    print(sheet.range("A1").value)                   # 'OrderID'
+    print(sheet.range("A1:C1").value)                # ['OrderID', 'OrderDate', 'CustomerID']
+    print(sheet.range("A1").expand("down").last_cell.row)   # 5001
+
+    # used_range is Excel's own idea of the extent — no dimension-hint guessing
+    print(sheet.used_range.address)                  # '$A$1:$Q$5001'
+
+    sheet.range("S1").value = "Generated by Python"
+    book.save("TindaHub_live.xlsx")
+finally:
+    app.quit()          # ALWAYS quit, or you leak an invisible Excel process</code></pre>
+<p>That <code>try/finally</code> is not decoration. A hidden Excel process left running holds a file lock and is invisible in the dock or taskbar; do this a few times in a loop and you have a dozen zombie processes and a workbook nobody can open. Wrap every xlwings script this way.</p>
+
+<h4>Ranges, expansion, and the interactive session</h4>
+<pre><code class="language-py">import xlwings as xw
+
+book = xw.Book("TindaHub_Orders.xlsx")     # attaches to it if already open
+sheet = book.sheets["Orders"]
+
+rng = sheet.range("A1").expand()           # grows down and right to the block edge
+print(rng.shape)                           # (5001, 17)
+
+print(sheet.range("A1:Q1").value)          # header as a list
+print(sheet.range("M2:M11").value)         # ten amounts as a list
+
+sheet.range("A1").offset(1, 12).value = 999      # M2
+print(sheet.range("M2").value)
+
+selected = book.app.selection                    # whatever the user has highlighted
+print(selected.address, selected.value)</code></pre>
+<p>Reading the user's live selection has no equivalent in any file-based library, and it is the foundation of the interactive tools in Module 4.3.</p>
+
+<h4>Recalculation: the thing openpyxl cannot do</h4>
+<p>This closes the loop on the Module 2.4 trap. openpyxl writes formulas but never computes them; xlwings can make Excel compute them and hand back the numbers.</p>
+<pre><code class="language-py">import xlwings as xw
+
+app = xw.App(visible=False, add_book=False)
+try:
+    book = app.books.open("audit_formulas.xlsx")   # written by openpyxl in Module 2.4
+    sheet = book.sheets["Audit"]
+
+    print(sheet.range("G2").formula)   # '=IF(ABS(F2)&lt;0.01,"OK","MISMATCH")'
+    print(sheet.range("G2").value)     # 'OK'  — a real computed result
+
+    app.calculate()                    # force a full recalculation
+    book.save()                        # cached values are now stored in the file
+finally:
+    app.quit()</code></pre>
+<p>After that save, openpyxl's <code>data_only=True</code> returns real numbers for those cells, because a real Excel finally populated the cache. "Write with openpyxl, recalculate once with xlwings, then read with openpyxl" is a completely standard production pattern.</p>
+
+<p><strong>Exercise 4.1 — Drive Excel from Python</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Open the workbook hidden, print every sheet name and <code>used_range.address</code>, and quit cleanly with <code>try/finally</code>.</li>
+<li>Read the Orders header via <code>expand()</code> and confirm 17 columns and 5,001 rows.</li>
+<li>Write a timestamp into <code>S1</code> of every sheet and save to a new path.</li>
+<li>Open the workbook visibly, select a range by hand, and read <code>app.selection</code> from Python.</li>
+<li>Take <code>audit_formulas.xlsx</code> from Exercise 2.4, recalculate it with xlwings, save, then read the <code>COUNTIF</code> with openpyxl <code>data_only=True</code>. Confirm it now returns <strong>3</strong> instead of <code>None</code>.</li>
+<li>Deliberately omit the <code>finally: app.quit()</code>, run the script three times, and find the orphaned processes in Task Manager or Activity Monitor. Kill them, then restore the <code>finally</code>.</li>
+<li>Save a copy as <code>.xlsb</code> via xlwings and compare its size to the <code>.xlsx</code> — this is a format no pure-Python library can write.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-xlwings-converters-dataframes-and-round-trips">Module 4.2 — xlwings Converters, DataFrames &amp; Round-Trips</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Read the Orders sheet straight into a DataFrame with correct dtypes using <code>options()</code>, aggregate it, and write the result back to a new sheet without a stray index column.<br>
+<strong>Skip if:</strong> You already use <code>options(pd.DataFrame, index=False, header=True)</code> and understand converter defaults.<br>
+<strong>Unlocks:</strong> 4.3, Phase 4 Capstone</p>
+</blockquote>
+
+<h4>Converters bridge Excel ranges and Python types</h4>
+<p>By default a range returns nested lists. <code>options()</code> tells xlwings what you actually want, and handles the header row, the index, and the type conversion in one step.</p>
+<pre><code class="language-py">import xlwings as xw
+import pandas as pd
+
+book = xw.Book("TindaHub_Orders.xlsx")
+sheet = book.sheets["Orders"]
+
+df = (sheet.range("A1")
+           .expand()
+           .options(pd.DataFrame, index=False, header=True)
+           .value)
+
+print(df.shape)                  # (5000, 17)
+print(df.dtypes["OrderDate"])    # datetime64[ns]
+print(df.dtypes["Amount"])       # float64</code></pre>
+<p><code>index=False</code> is the one to remember. Leave it out and xlwings treats your first column — <code>OrderID</code> — as the DataFrame index, and every downstream <code>groupby</code> and <code>to_excel</code> behaves oddly in a way that takes a while to trace back.</p>
+<p>Other converters cover the common cases:</p>
+<pre><code class="language-py">sheet.range("M2:M11").options(ndim=1).value          # flat list, not nested
+sheet.range("M2").options(numbers=int).value          # int instead of float
+sheet.range("A1:Q1").options(empty="").value          # empty cells as "" not None
+sheet.range("B2").options(dates=str).value            # dates as strings
+sheet.range("A1").expand().options(transpose=True).value</code></pre>
+<p>The <code>numbers=int</code> converter earns its keep: Excel stores all numbers as floats, so <code>Qty</code> arrives as <code>18.0</code>. That is harmless until it lands in a filename or a database integer column.</p>
+
+<h4>Writing back, in place</h4>
+<pre><code class="language-py">import xlwings as xw
+import pandas as pd
+
+book = xw.Book("TindaHub_Orders.xlsx")
+orders = (book.sheets["Orders"].range("A1").expand()
+              .options(pd.DataFrame, index=False, header=True).value)
+
+by_region = (orders.groupby("Region", as_index=False)
+                   .agg(Orders=("OrderID", "count"), Amount=("Amount", "sum"))
+                   .sort_values("Amount", ascending=False))
+
+if "ByRegion" in [s.name for s in book.sheets]:
+    book.sheets["ByRegion"].delete()
+out = book.sheets.add("ByRegion", after=book.sheets["Orders"])
+
+out.range("A1").options(index=False).value = by_region
+out.range("A1:C1").api  # available for platform-specific formatting
+
+out.range("B2:B10").number_format = "#,##0"
+out.range("C2:C10").number_format = '\u20b1#,##0.00'
+out.autofit()
+book.save()</code></pre>
+<p>Writing a DataFrame is a single assignment — xlwings expands it across the range automatically. And unlike the pandas + openpyxl round-trip, this happens <strong>in the open workbook</strong>: the user watching their screen sees the new sheet appear. Nothing was rewritten from scratch, so charts, PivotTables, and macros elsewhere in the file are untouched.</p>
+
+<h4>Where xlwings costs you</h4>
+<p>Every read and write is a cross-process call, so chatty code is slow. One call moving 5,000 rows is fast; 5,000 calls moving one row each is unusably slow. Batch aggressively:</p>
+<pre><code class="language-py">import xlwings as xw
+
+sheet = xw.Book("TindaHub_Orders.xlsx").sheets["Orders"]
+
+# SLOW — 5,000 round-trips across the process boundary
+# for r in range(2, 5002):
+#     sheet.range(f"R{r}").value = sheet.range(f"K{r}").value * 2
+
+# FAST — two calls total
+qty = sheet.range("K2:K5001").options(ndim=1).value
+sheet.range("R2").options(transpose=True).value = [q * 2 for q in qty]</code></pre>
+<p>Also switch off screen updating and automatic calculation around bulk writes, and restore them in a <code>finally</code>:</p>
+<pre><code class="language-py">app = sheet.book.app
+app.screen_updating = False
+app.calculation = "manual"
+try:
+    ...   # bulk writes here
+finally:
+    app.calculation = "automatic"
+    app.screen_updating = True</code></pre>
+
+<p><strong>Exercise 4.2 — Two-Way Sync</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Read Orders into a DataFrame via converters and confirm shape (5000, 17) with a datetime <code>OrderDate</code>.</li>
+<li>Omit <code>index=False</code>, inspect the result, and write one sentence on what broke.</li>
+<li>Build region and category summaries and write both back as new sheets in the open workbook.</li>
+<li>Apply number formats and <code>autofit()</code> to the written ranges.</li>
+<li>Implement the slow per-cell loop and the fast batched version for a doubled-<code>Qty</code> column. Time both and report the ratio.</li>
+<li>Wrap the bulk write in the screen-updating and manual-calculation guard and measure the additional gain.</li>
+<li>Add a <code>Refresh</code> routine that deletes and rebuilds both summary sheets, so it is safe to run repeatedly, and confirm running it five times leaves exactly one copy of each.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-xlwings-udfs-macros-and-runpython">Module 4.3 — xlwings UDFs, Macros &amp; RunPython</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 4.2 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Expose a Python function as a worksheet formula the user types into a cell, and wire a workbook button that runs a Python routine.<br>
+<strong>Skip if:</strong> You have shipped a working UDF and understand the Windows-only constraint.<br>
+<strong>Unlocks:</strong> 4.4, Phase 4 Capstone</p>
+</blockquote>
+
+<h4>Excel calling Python, instead of the reverse</h4>
+<p>Everything so far has Python in charge. UDFs invert that: the user types <code>=TINDA_MARGIN(M2, 0.18)</code> into a cell and Excel calls your Python function. This is the feature that lets you retire VBA without retraining anyone — the spreadsheet still looks and behaves like a spreadsheet.</p>
+<p><strong>UDFs are Windows-only.</strong> They depend on the COM automation server, which does not exist on macOS. Mac users get <code>RunPython</code> and macros (below), or xlwings Lite (Module 4.4), which does support custom functions cross-platform.</p>
+<p>Scaffold a project, which creates a matched <code>.xlsm</code> and <code>.py</code> pair:</p>
+<pre><code class="language-bash">xlwings quickstart tindatools
+cd tindatools
+# Then in Excel: File &gt; Options &gt; Trust Center &gt; Trust Center Settings
+#   &gt; Macro Settings &gt; tick "Trust access to the VBA project object model"
+# In the xlwings ribbon tab, click "Import Functions" after any signature change.</code></pre>
+<pre><code class="language-py">"""tindatools.py — functions Excel can call directly."""
+import xlwings as xw
+import pandas as pd
+
+
+@xw.func
+def TINDA_MARGIN(amount, rate=0.18):
+    """Net amount after a commission rate."""
+    return float(amount) * (1 - float(rate))
+
+
+@xw.func
+@xw.arg("qty", numbers=int)
+def TINDA_LINE_CHECK(qty, unit_price, amount):
+    """Return OK or a signed delta — the Module 1.3 audit as a formula."""
+    expected = qty * float(unit_price)
+    delta = float(amount) - expected
+    return "OK" if abs(delta) &lt; 0.01 else f"MISMATCH {delta:+.2f}"
+
+
+@xw.func
+@xw.arg("orders", pd.DataFrame, index=False, header=True)
+@xw.ret(index=False, header=True)
+def TINDA_BY_REGION(orders):
+    """Array formula: pass a range, get a summary table back."""
+    return (orders.groupby("Region", as_index=False)
+                  .agg(Orders=("OrderID", "count"), Amount=("Amount", "sum"))
+                  .sort_values("Amount", ascending=False))
+
+
+@xw.func
+@xw.arg("region")
+def TINDA_REGION_TOTAL(region):
+    """Look up one region's total from the live Orders sheet."""
+    sheet = xw.Book.caller().sheets["Orders"]
+    df = sheet.range("A1").expand().options(pd.DataFrame, index=False, header=True).value
+    return float(df.loc[df["Region"] == region, "Amount"].sum())</code></pre>
+<p>In the workbook the user now types <code>=TINDA_BY_REGION(Orders!A1:Q5001)</code> and gets a spilled table. <code>xw.Book.caller()</code> is the key to context-aware functions — it returns the workbook that invoked the call, so the function works in any copy of the file without a hard-coded path.</p>
+
+<h4>RunPython and buttons: cross-platform automation</h4>
+<p>For actions rather than formulas — "rebuild the report", "refresh from the database" — use <code>RunPython</code> from VBA, which works on Windows <em>and</em> macOS.</p>
+<pre><code class="language-py">"""In tindatools.py — a routine, not a formula."""
+import xlwings as xw
+import pandas as pd
+
+
+def refresh_summary():
+    book = xw.Book.caller()
+    orders = (book.sheets["Orders"].range("A1").expand()
+                  .options(pd.DataFrame, index=False, header=True).value)
+
+    summary = (orders.groupby("Region", as_index=False)
+                     .agg(Orders=("OrderID", "count"), Amount=("Amount", "sum"))
+                     .sort_values("Amount", ascending=False))
+
+    names = [s.name for s in book.sheets]
+    if "ByRegion" in names:
+        book.sheets["ByRegion"].delete()
+    out = book.sheets.add("ByRegion", after=book.sheets["Orders"])
+    out.range("A1").options(index=False).value = summary
+    out.range("C2").expand("down").number_format = '\u20b1#,##0.00'
+    out.autofit()
+    book.app.status_bar = f"Refreshed {len(summary)} regions"
+
+
+if __name__ == "__main__":
+    xw.Book("tindatools.xlsm").set_mock_caller()
+    refresh_summary()</code></pre>
+<p>The VBA side is two lines, attached to a form button:</p>
+<pre><code class="language-vb">Sub RefreshSummary()
+    RunPython "import tindatools; tindatools.refresh_summary()"
+End Sub</code></pre>
+<p>That <code>set_mock_caller()</code> block is what makes the function testable. Without it, <code>xw.Book.caller()</code> only resolves when Excel invokes it, so you could not run or debug the routine from a terminal — you would be stuck debugging through Excel, which is exactly the VBA experience you are trying to escape.</p>
+
+<p><strong>Exercise 4.3 — Ship a Toolkit</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Run <code>xlwings quickstart tindatools</code>, enable VBA object-model trust, and confirm the ribbon appears.</li>
+<li>Implement <code>TINDA_MARGIN</code> and call it from a cell against real <code>Amount</code> values.</li>
+<li>Implement <code>TINDA_LINE_CHECK</code>, fill it down the Orders sheet, and confirm exactly <strong>3</strong> MISMATCH results.</li>
+<li>Implement <code>TINDA_BY_REGION</code> as an array formula and confirm it spills 6 rows.</li>
+<li>Implement <code>refresh_summary()</code> with <code>set_mock_caller()</code>, and run it from the terminal before wiring it to Excel.</li>
+<li>Add a form button that calls it via <code>RunPython</code>, and confirm the status-bar message appears.</li>
+<li>Change a UDF signature without re-importing functions, observe the failure, then fix it — this is the number-one xlwings support question and the fix is one ribbon click.</li>
+<li>Write a short README covering the trust setting, the import step, and the Windows-only UDF constraint, so a colleague can set it up unaided.</li>
+</ol>
+<hr />
+
+<h3 id="module-44-excel-native-python-lite-server-and-python-in-excel">Module 4.4 — Excel-Native Python: Lite, Server &amp; Python in Excel</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced · <strong>Prereqs:</strong> 4.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> For a 40-person finance team with locked-down laptops, no local Python, and Excel on the web, choose between xlwings Lite, xlwings Server, and Python in Excel — and defend the choice against the other two.<br>
+<strong>Skip if:</strong> You can already articulate the sandbox, licensing, and connectivity trade-offs of all three.<br>
+<strong>Unlocks:</strong> Phase 4 Capstone, Final Capstone</p>
+</blockquote>
+
+<h4>The deployment problem</h4>
+<p>Classic xlwings requires a local Python installation next to a local Excel. That is fine for you and impossible for most finance teams, where laptops are locked down and installing Python is a ticket nobody will approve. Three approaches now solve this, and they are genuinely different products.</p>
+
+<h4>xlwings Lite — Python in the browser sandbox</h4>
+<p>Distributed through the Office add-in store, free for personal and commercial use. Python runs <strong>inside Excel via Pyodide</strong>, a WebAssembly build of CPython. No installation, no server, no per-user cost, and it works on Windows, macOS, and Excel on the web. Custom functions work on all platforms — including the macOS UDF gap from Module 4.3.</p>
+<p>The sandbox is the trade-off, and it is a real one:</p>
+<ul>
+<li>No access to the local file system — you cannot read <code>C:\reports\input.xlsx</code>.</li>
+<li>Not every package builds for Pyodide; polars is currently unavailable, though pandas and NumPy work.</li>
+<li>No direct connection to a database server such as PostgreSQL; SQLite is supported.</li>
+<li>No built-in authentication.</li>
+</ul>
+<p>Start here unless one of those four is disqualifying. Because the API is the xlwings API, migrating to Server later is a small change rather than a rewrite.</p>
+
+<h4>xlwings Server — your Python, your infrastructure</h4>
+<p>Your code runs on a server you control; Excel talks to it over HTTPS via an add-in, Office Scripts, or VBA. No local Python either, and it additionally supports Google Sheets. Choose it when you hit a Lite limitation: real authentication, direct database access, unrestricted packages, heavy compute, or code that must stay on your infrastructure. The cost is that you now operate a service — availability, scaling, and latency become your problem.</p>
+
+<h4>Python in Excel — Microsoft's own, in the cloud</h4>
+<p>Generally available since <strong>September 2024</strong>, built with Anaconda. You type <code>=PY(...)</code> in a cell and write Python directly in the formula bar; the code executes in a Microsoft-hosted container, not on your machine.</p>
+<ul>
+<li><strong>Availability:</strong> Microsoft 365 Business and Enterprise. Windows from Version 2408 (Current Channel), Excel for Mac from 16.96, and Excel on the web.</li>
+<li><strong>Licensing:</strong> standard compute with automatic recalculation is included with a qualifying subscription; premium compute and manual or partial recalculation modes require the paid Python in Excel add-on.</li>
+<li><strong>Libraries:</strong> a curated Anaconda distribution — pandas, NumPy, Matplotlib, seaborn, scikit-learn and more. You cannot pip-install arbitrary packages.</li>
+<li><strong>Connectivity:</strong> the code runs in the cloud, so it cannot reach your local files or internal databases, and it does not work offline.</li>
+</ul>
+
+<h4>Choosing between them</h4>
+<table>
+<tr><th>Requirement</th><th>xlwings (classic)</th><th>xlwings Lite</th><th>xlwings Server</th><th>Python in Excel</th></tr>
+<tr><td>Local Python needed</td><td>Yes</td><td>No</td><td>No</td><td>No</td></tr>
+<tr><td>Works offline</td><td>Yes</td><td>Yes</td><td>No</td><td>No</td></tr>
+<tr><td>Reads local files</td><td>Yes</td><td>No</td><td>Via server</td><td>No</td></tr>
+<tr><td>Any PyPI package</td><td>Yes</td><td>Pyodide subset</td><td>Yes</td><td>Curated only</td></tr>
+<tr><td>Excel on the web</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Custom functions on macOS</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Cost</td><td>Free</td><td>Free</td><td>You host it</td><td>Subscription, add-on for premium</td></tr>
+</table>
+<p>Read the table by elimination rather than by score. "Must work offline" removes Server and Python in Excel outright. "Must query PostgreSQL directly" removes Lite and Python in Excel. "Cannot install anything on laptops" removes classic xlwings. Usually two constraints are enough to leave exactly one option standing.</p>
+
+<p><strong>Exercise 4.4 — Choose and Justify</strong></p>
+<p>Dataset: TindaHub Orders</p>
+<ol>
+<li>Install xlwings Lite from the Office add-in store and run a script that reads the Orders sheet into pandas and writes a region summary back.</li>
+<li>Try to read a file from your local disk inside Lite. Record the exact failure and connect it to the sandbox model.</li>
+<li>Try to <code>import polars</code> in Lite and record what happens.</li>
+<li>If you have a qualifying Microsoft 365 subscription, write a <code>=PY()</code> formula that computes Amount by Region from the Orders sheet, and note the recalculation behaviour.</li>
+<li>Build a written comparison for four scenarios: a locked-down 40-person finance team; a solo analyst on a personal laptop; a nightly server job with no Excel installed; a team on Google Sheets.</li>
+<li>For the nightly-server scenario, explain why the correct answer is <em>none of the four</em> — and name what you would use instead.</li>
+<li>Take your Module 4.3 <code>refresh_summary()</code> and list every change needed to run it under Lite. Which lines survive unchanged?</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-live-dashboard">Phase 4 Capstone: The Live Regional Dashboard</h3>
+<p><strong>Project: <code>tinda_dashboard.xlsm</code> + <code>tinda_dashboard.py</code></strong></p>
+<p><strong>Dataset:</strong> TindaHub Orders</p>
+<p>Build a workbook the sales manager operates entirely from Excel, with Python doing the work behind a button.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A <code>Controls</code> sheet with input cells for region filter, date range, and minimum order amount, each protected by data validation.</li>
+<li>A <strong>Refresh</strong> button wired through <code>RunPython</code> that reads the controls, filters the 5,000 orders, and rebuilds the outputs.</li>
+<li>A <code>Dashboard</code> sheet with the filtered summary, a chart, and ₱ number formats, rebuilt on every refresh without duplicating sheets.</li>
+<li>Three UDFs callable from any cell: <code>TINDA_REGION_TOTAL</code>, <code>TINDA_LINE_CHECK</code>, and <code>TINDA_BY_REGION</code>.</li>
+<li>A status-bar message reporting rows processed and elapsed time on each refresh.</li>
+<li>Bulk writes guarded by <code>screen_updating = False</code> and manual calculation, restored in a <code>finally</code>.</li>
+<li>A terminal-runnable entry point using <code>set_mock_caller()</code>, so the logic is testable without Excel.</li>
+<li>A README covering setup, the Windows-only UDF constraint, and what would change to ship it as xlwings Lite.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-the-tindahub-reporting-system">Final Capstone: The TindaHub Reporting System</h2>
+<p><strong>Project: <code>tindahub_reporting/</code></strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain (a) which library you would pick for each of the six scenarios in your Module 1.2 decision record, (b) why saving a <code>data_only=True</code> workbook is destructive, and (c) why calamine is fast? Compare your Module 1.2 decision record against what you would write now — the differences are what this guide taught you.</p></blockquote>
+<p>Integrates all four phases. Uses the TindaHub Orders dataset throughout.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>An <strong>ingest</strong> module that reads the workbook and the three monthly CSVs using calamine, validates against every seeded count (3 mismatches, 8 duplicate IDs, 15/76/12/106 in <code>MessyImport</code>, 1,025 raw → 989 clean), and writes rejects with reason codes.</li>
+<li>A <strong>transform</strong> module producing region, category, monthly, and customer summaries, implemented once in pandas and once in polars, with an assertion that the two agree to the peso.</li>
+<li>A <strong>report</strong> module generating the branded workbook with openpyxl: named styles, Excel Tables, conditional formatting, validation, native charts, and print setup.</li>
+<li>A second <strong>fast-report</strong> path using XlsxWriter, benchmarked against the openpyxl path, with a written recommendation on which to keep and why.</li>
+<li>An <strong>audit</strong> sheet of live formulas, recalculated once via xlwings so the cached values are populated, then verified by reading them back with openpyxl <code>data_only=True</code>.</li>
+<li>A <strong>dashboard</strong> workbook from the Phase 4 Capstone, refreshed by button, sharing the same transform module as the batch pipeline.</li>
+<li>A <strong>benchmark</strong> script comparing every read path (openpyxl, openpyxl read-only, pandas+openpyxl, pandas+calamine, polars, Parquet) in one table, with peak memory alongside elapsed time.</li>
+<li>A <strong>CLI</strong> — <code>python -m tindahub_reporting ingest|report|dashboard|benchmark</code> — with clear failure messages.</li>
+<li>Tests asserting every seeded count, so the pipeline fails loudly rather than silently producing a wrong report.</li>
+<li>A README with the architecture, the library choice per stage justified against your Module 1.2 decision record, and setup instructions a new colleague can follow unaided.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Python Excel Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Read .xlsx values fast</td><td><code>pd.read_excel(..., engine="calamine")</code></td><td>Always pass <code>engine=</code> — the default is changing</td></tr>
+<tr><td>Read .xlsb or .xls</td><td><code>engine="calamine"</code></td><td>xlrd and pyxlsb are deprecated in pandas</td></tr>
+<tr><td>Read styles, charts, validation</td><td><code>openpyxl.load_workbook()</code></td><td>Only library exposing the full document model</td></tr>
+<tr><td>Read a huge sheet with low memory</td><td><code>load_workbook(read_only=True)</code></td><td>Single pass only; call <code>wb.close()</code></td></tr>
+<tr><td>Read the formula, not the result</td><td><code>load_workbook(data_only=False)</code></td><td>Default; safe to edit and save</td></tr>
+<tr><td>Read the cached result</td><td><code>load_workbook(data_only=True)</code></td><td><strong>Never save this workbook</strong></td></tr>
+<tr><td>Edit one cell in a big template</td><td>openpyxl load → edit → save</td><td>pandas would discard all formatting</td></tr>
+<tr><td>Write a formatted report from scratch</td><td>XlsxWriter</td><td>Faster and richer than openpyxl at writing</td></tr>
+<tr><td>Write 1M+ rows</td><td><code>Workbook(..., {"constant_memory": True})</code></td><td>Strict row order; no autofit</td></tr>
+<tr><td>Write a DataFrame with formatting</td><td><code>pl.DataFrame.write_excel()</code></td><td>XlsxWriter underneath; colours take a leading <code>#</code></td></tr>
+<tr><td>Multi-sheet DataFrame output</td><td><code>pd.ExcelWriter</code> as a context manager</td><td><code>mode="a"</code> needs <code>engine="openpyxl"</code></td></tr>
+<tr><td>Apply one style to many cells</td><td><code>NamedStyle</code> + <code>cell.style = "name"</code></td><td>Register once per workbook</td></tr>
+<tr><td>Highlight a whole row by condition</td><td><code>FormulaRule(formula=['$O2="Cancelled"'])</code></td><td>Lock the column, not the row</td></tr>
+<tr><td>Recalculate formulas</td><td><code>xw.App().calculate()</code></td><td>The only way — no pure-Python library computes</td></tr>
+<tr><td>Write .xlsb</td><td>xlwings</td><td>No pure-Python writer exists</td></tr>
+<tr><td>Let Excel call Python</td><td><code>@xw.func</code> UDF</td><td>Windows only; use Lite for cross-platform</td></tr>
+<tr><td>Ship to users without Python</td><td>xlwings Lite or Python in Excel</td><td>Lite is free; PiE needs a qualifying M365 plan</td></tr>
+<tr><td>Convert column number to letter</td><td><code>get_column_letter(13)</code> → <code>'M'</code></td><td>From <code>openpyxl.utils</code></td></tr>
+<tr><td>Stop re-parsing Excel every run</td><td>Convert once to Parquet</td><td>Biggest single speedup available</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-file-format">File Format &amp; Structure</h3>
+<dl class="glossary">
+<dt>OOXML</dt>
+<dd>The Office Open XML standard behind <code>.xlsx</code> — a ZIP container holding XML parts for the workbook, each worksheet, shared strings, and styles.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Excel format", "the new format" — both are ambiguous now that four Excel formats are in active use.</dd>
+
+<dt>Shared strings table</dt>
+<dd>The <code>xl/sharedStrings.xml</code> part storing each distinct text value once; cells reference it by integer index rather than repeating the text.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "string pool", "string cache" — accurate as analogies but not what the spec or any error message calls it.</dd>
+
+<dt>Serial date</dt>
+<dd>Excel's numeric representation of a date: days elapsed since 1899-12-30, with the display governed entirely by the cell's number format.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "date value", "timestamp" — both blur the distinction between the stored number and the rendered text.</dd>
+
+<dt>Number format</dt>
+<dd>A per-cell format code such as <code>yyyy-mm-dd</code> or <code>#,##0.00</code> that controls only how a stored value is displayed, never what is stored.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "cell format", "formatting" — those also cover fonts, fills, and borders, which are separate objects.</dd>
+
+<dt>Cached value</dt>
+<dd>The result Excel computed for a formula cell at its last recalculation, stored in the file alongside the formula text.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "computed value", "the answer" — they hide the fact that it can be stale, absent, or destroyed on save.</dd>
+</dl>
+
+<h3 id="glossary-library-concepts">Library Concepts</h3>
+<dl class="glossary">
+<dt>Engine</dt>
+<dd>The library pandas or polars delegates to for actually parsing an Excel file — <code>openpyxl</code>, <code>calamine</code>, <code>xlrd</code>, <code>pyxlsb</code>, or <code>odf</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "backend", "driver" — "backend" collides with pandas' plotting and storage backends.</dd>
+
+<dt>read_only mode</dt>
+<dd>An openpyxl load mode that streams rows on demand with lightweight cells, trading away writes, full style access, and repeat iteration.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "lazy loading", "streaming mode" — descriptive but not the parameter name you must actually type.</dd>
+
+<dt>write_only mode</dt>
+<dd>An openpyxl workbook mode that flushes appended rows straight to disk, forbidding random cell access and requiring <code>WriteOnlyCell</code> for styling.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "append mode" — that suggests adding to an existing file, which this cannot do.</dd>
+
+<dt>NamedStyle</dt>
+<dd>A reusable, workbook-registered bundle of font, fill, border, alignment, and number format, applied by name and visible to users as an Excel cell style.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "style template", "theme" — a theme is a separate workbook-wide colour and font scheme.</dd>
+
+<dt>Converter</dt>
+<dd>An xlwings <code>options()</code> setting that controls how a range is translated between Excel values and Python types, such as <code>pd.DataFrame</code> or <code>ndim=1</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "parser", "adapter" — neither appears in the xlwings API you will be searching.</dd>
+
+<dt>Structured reference</dt>
+<dd>A formula reference addressing an Excel Table by name and column, such as <code>Orders[Amount]</code>, which stays correct as rows are added.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "named range" — a named range is a separate feature pointing at a fixed address.</dd>
+</dl>
+
+<h3 id="glossary-automation">Automation &amp; Deployment</h3>
+<dl class="glossary">
+<dt>UDF (User-Defined Function)</dt>
+<dd>A Python function exposed to Excel as a worksheet formula the user types into a cell, decorated with <code>@xw.func</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "custom function" when discussing classic xlwings — that is the xlwings Lite and Office.js term, and the platform support differs.</dd>
+
+<dt>RunPython</dt>
+<dd>The VBA call that executes a Python function from inside a workbook, typically bound to a button; works on Windows and macOS.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "macro" — a macro is the VBA wrapper, not the Python it invokes.</dd>
+
+<dt>Pyodide</dt>
+<dd>The WebAssembly build of CPython that runs Python inside the browser sandbox, and the runtime underneath xlwings Lite.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "WASM Python", "browser Python" — informal names that will not match documentation.</dd>
+
+<dt>Python in Excel</dt>
+<dd>Microsoft's built-in <code>=PY()</code> feature, developed with Anaconda, executing a curated Python distribution in a Microsoft-hosted cloud container.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "Excel Python", "native Python" — both get confused with xlwings Lite, which also needs no local install but runs locally in the browser sandbox.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td><em>Python for Excel: A Modern Environment for Automation and Data Analysis</em>, 2nd ed. (2026) — Felix Zumstein, O'Reilly</td><td>The definitive book on this subject, by the author of xlwings. The 2nd edition adds chapters on Python in Excel and xlwings Lite plus an appendix on Copilot in Excel — directly matching Module 4.4.</td></tr>
+<tr><td><em>Automate the Boring Stuff with Python</em>, 3rd ed. (2025) — Al Sweigart, No Starch Press</td><td>The gentlest on-ramp if Python itself is new. Its Excel chapter uses openpyxl and pairs with Phase 1. Also free to read online.</td></tr>
+<tr><td><em>Python for Data Analysis</em>, 3rd ed. (2022) — Wes McKinney, O'Reilly</td><td>By pandas' creator; the reference for the DataFrame work in Phase 3. Free online.</td></tr>
+<tr><td><em>Effective pandas 2</em> (2024) — Matt Harrison</td><td>Idiomatic, chainable pandas. Sharpens the transform code in Phase 3 and the Final Capstone.</td></tr>
+<tr><td><em>Python Polars: The Definitive Guide</em> (2025) — Jeroen Janssens &amp; Thijs Nieuwdorp, O'Reilly</td><td>The polars reference for Module 3.3, including the Excel and Parquet I/O paths.</td></tr>
+</table>
+
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td><a href="https://openpyxl.readthedocs.io/">openpyxl documentation</a></td><td>openpyxl</td><td>Primary source for Phase 2. The "Simple usage" and "Performance" pages are the highest-value reads.</td></tr>
+<tr><td><a href="https://xlsxwriter.readthedocs.io/">XlsxWriter documentation</a></td><td>XlsxWriter</td><td>Unusually good docs with a large worked-example gallery — start there for Module 3.4.</td></tr>
+<tr><td><a href="https://docs.xlwings.org/">xlwings documentation</a></td><td>xlwings</td><td>Covers classic, Lite, and Server. Check the version selector; Lite and Server have their own doc sites.</td></tr>
+<tr><td><a href="https://pandas.pydata.org/docs/reference/api/pandas.read_excel.html">pandas read_excel API</a></td><td>pandas engines</td><td>The authority on engine defaults and deprecations — re-read it on every pandas upgrade.</td></tr>
+<tr><td><a href="https://docs.pola.rs/api/python/stable/reference/api/polars.read_excel.html">polars read_excel / write_excel</a></td><td>polars</td><td>Documents the fastexcel path and the <code>write_excel</code> formatting options used in Module 3.3.</td></tr>
+<tr><td><a href="https://support.microsoft.com/en-us/office/python-in-excel-availability-781383e6-86b9-4156-84fb-93e786f7cab0">Python in Excel availability</a></td><td>Python in Excel</td><td>Microsoft's own channel, version, and licensing matrix. The authority for the Module 4.4 comparison.</td></tr>
+<tr><td><a href="https://lite.xlwings.org/">xlwings Lite documentation</a></td><td>xlwings Lite</td><td>Includes the current sandbox limitations list — check it before committing to Lite.</td></tr>
+<tr><td><a href="https://github.com/fzumstein/python-for-excel">python-for-excel companion repo</a></td><td>Everything</td><td>Runnable notebooks and sample workbooks from the Zumstein book.</td></tr>
+</table>
+
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td><a href="../datasets/tindahub-orders/">TindaHub Orders</a> — <code>TindaHub_Orders.xlsx</code> + 3 monthly CSVs</td><td>The benchmark dataset for every exercise and capstone in this guide. Seeded ground truth makes every audit answer verifiable.</td></tr>
+<tr><td><a href="../excel/excel_learning_guide.html">Excel Learning Guide</a></td><td>Same dataset, taught in Excel itself. Work the two together to see each task done both ways.</td></tr>
+<tr><td><a href="../python/python_learning_guide.html">Python Learning Guide</a></td><td>Language fundamentals if Phase 1 feels steep.</td></tr>
+<tr><td><a href="../postgresql-metabase/postgresql-metabase_learning_guide.html">PostgreSQL &amp; Metabase Guide</a></td><td>Where the Phase 3 ingest output goes next — same TindaHub business, normalised schema.</td></tr>
+<tr><td>DB Browser for SQLite / DBeaver</td><td>Inspecting pipeline output when Excel is no longer the right destination.</td></tr>
+</table>
+
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>r/excel</td><td>Reddit</td><td>Very high traffic and fast answers; increasingly Python-aware. Best for "how would Excel people solve this" framing.</td></tr>
+<tr><td>r/learnpython</td><td>Reddit</td><td>Patient, beginner-friendly debugging help. Good for Phase 1 and 2 blockers.</td></tr>
+<tr><td>xlwings GitHub Discussions</td><td>GitHub</td><td>The maintainer answers directly. The right venue for UDF, Lite, and Server questions.</td></tr>
+<tr><td>Stack Overflow <code>[openpyxl]</code>, <code>[xlsxwriter]</code></td><td>Stack Overflow</td><td>XlsxWriter's author has answered there for years — search before asking; it is usually already covered.</td></tr>
+<tr><td>Python Discord — <code>#data-science</code></td><td>Discord</td><td>Real-time help on pandas and polars questions from Phase 3.</td></tr>
+<tr><td>Posit / pydata local meetups</td><td>In person</td><td>Where you test whether your pipeline design survives contact with other practitioners.</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
+
+<h4>Phase 1 — Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — The .xlsx Format &amp; the Library Landscape</li>
+<li>[ ] Exercise 1.1 — Dissect the Workbook</li>
+<li>[ ] Module 1.2 — Choosing the Right Library</li>
+<li>[ ] Exercise 1.2 — Build Your Decision Record</li>
+<li>[ ] Module 1.3 — Setup &amp; Your First openpyxl Read</li>
+<li>[ ] Exercise 1.3 — Audit the Orders Sheet</li>
+<li>[ ] Capstone 1 — The Workbook Inventory Tool</li>
+</ul>
+
+<h4>Phase 2 — openpyxl in Depth</h4>
+<ul>
+<li>[ ] Module 2.1 — Writing, Creating &amp; Restructuring Workbooks</li>
+<li>[ ] Exercise 2.1 — Build the Report Skeleton</li>
+<li>[ ] Module 2.2 — Styling: Fonts, Fills, Borders &amp; Named Styles</li>
+<li>[ ] Exercise 2.2 — Brand the Report</li>
+<li>[ ] Module 2.3 — Number Formats &amp; the Date Minefield</li>
+<li>[ ] Exercise 2.3 — Fix Every Date in the Workbook</li>
+<li>[ ] Module 2.4 — Formulas &amp; the Cached-Value Trap</li>
+<li>[ ] Exercise 2.4 — The Formula Audit Sheet</li>
+<li>[ ] Module 2.5 — Tables, Conditional Formatting &amp; Data Validation</li>
+<li>[ ] Exercise 2.5 — Make the Workbook Defend Itself</li>
+<li>[ ] Module 2.6 — Charts, Images &amp; Print Layout</li>
+<li>[ ] Exercise 2.6 — The Visual Report</li>
+<li>[ ] Module 2.7 — Performance: read_only &amp; write_only Modes</li>
+<li>[ ] Exercise 2.7 — Measure, Then Optimise</li>
+<li>[ ] Capstone 2 — The Branded Regional Report</li>
+</ul>
+
+<h4>Phase 3 — DataFrames &amp; Fast Readers</h4>
+<ul>
+<li>[ ] Module 3.1 — pandas Excel I/O End to End</li>
+<li>[ ] Exercise 3.1 — The pandas Summary Pack</li>
+<li>[ ] Module 3.2 — Engines &amp; Performance: calamine</li>
+<li>[ ] Exercise 3.2 — Prove the Speedup</li>
+<li>[ ] Module 3.3 — polars, fastexcel &amp; Large Files</li>
+<li>[ ] Exercise 3.3 — The polars Path</li>
+<li>[ ] Module 3.4 — XlsxWriter: Formatted Reports at Speed</li>
+<li>[ ] Exercise 3.4 — Rebuild the Report in XlsxWriter</li>
+<li>[ ] Capstone 3 — The Messy Import Pipeline</li>
+</ul>
+
+<h4>Phase 4 — Live Excel &amp; Automation</h4>
+<ul>
+<li>[ ] Module 4.1 — xlwings Fundamentals: Driving a Live Excel</li>
+<li>[ ] Exercise 4.1 — Drive Excel from Python</li>
+<li>[ ] Module 4.2 — xlwings Converters, DataFrames &amp; Round-Trips</li>
+<li>[ ] Exercise 4.2 — Two-Way Sync</li>
+<li>[ ] Module 4.3 — xlwings UDFs, Macros &amp; RunPython</li>
+<li>[ ] Exercise 4.3 — Ship a Toolkit</li>
+<li>[ ] Module 4.4 — Excel-Native Python: Lite, Server &amp; Python in Excel</li>
+<li>[ ] Exercise 4.4 — Choose and Justify</li>
+<li>[ ] Capstone 4 — The Live Regional Dashboard</li>
+</ul>
+
+<h4>Outcomes</h4>
+<ul>
+<li>[ ] Replaced one recurring manual Excel report with a scheduled script</li>
+<li>[ ] Measured and documented a 10x read speedup on a real file</li>
+<li>[ ] Shipped a Python function an Excel user calls without knowing it is Python</li>
+<li>[ ] Final Capstone project complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 — Python Excel Libraries Track: Beginner to Advanced</em><br>
+<em>Non-linear modular design · Placement quiz · 18 modules · ~14 weeks part-time · hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-08-12</em></p>
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               vb:"VBA",vba:"VBA",/* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Full-text guide search ────────────────────────────────
+  // Indexes every block of the guide body, lists matching snippets grouped
+  // by section, highlights hits in the page, and filters the nav to the
+  // sections that contain them. Multiple words = all must appear in the
+  // same block; wrap in "quotes" for an exact phrase.
+  var navSearch = document.getElementById("navSearch");
+  var contentRoot = document.querySelector(".content");
+  if(navSearch && contentRoot){
+    var BLOCK_SEL = "h1,h2,h3,h4,p,li,tr,dt,dd,pre";
+    var searchRow = document.getElementById("searchRow"),
+        searchBar = document.getElementById("searchBar"),
+        searchCount = document.getElementById("searchCount"),
+        searchResults = document.getElementById("searchResults");
+    var navById = {};
+    document.querySelectorAll("#nav a").forEach(function(a){
+      navById[a.getAttribute("href").slice(1)] = a;
+    });
+
+    var blocks = [], section = null;
+    contentRoot.querySelectorAll(BLOCK_SEL).forEach(function(el){
+      if(/^H[1-4]$/.test(el.tagName) && el.id && navById[el.id]) section = el;
+      if(el.classList.contains("quiz-score")) return;
+      var outer = el.parentElement && el.parentElement.closest(BLOCK_SEL);
+      if(outer && contentRoot.contains(outer)) return;
+      var text = el.textContent.replace(/\s+/g, " ").trim();
+      if(text) blocks.push({el:el, text:text, lower:text.toLowerCase(), section:section});
+    });
+
+    var hits = [], cur = -1, timer = null;
+    function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+    function sectionLabel(sec){ return sec && navById[sec.id] ? navById[sec.id].textContent : "Introduction"; }
+
+    function clearMarks(){
+      contentRoot.querySelectorAll("mark.lg-hit").forEach(function(m){
+        var p = m.parentNode;
+        p.replaceChild(document.createTextNode(m.textContent), m);
+        p.normalize();
+      });
+      var b = contentRoot.querySelector(".lg-block-current");
+      if(b) b.classList.remove("lg-block-current");
+    }
+
+    function markBlock(el, re){
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+      while((n = walker.nextNode())) nodes.push(n);
+      var marks = [];
+      nodes.forEach(function(node){
+        var t = node.nodeValue, m, last = 0;
+        re.lastIndex = 0;
+        if(!re.test(t)) return;
+        re.lastIndex = 0;
+        var frag = document.createDocumentFragment();
+        while((m = re.exec(t))){
+          if(m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+          var mk = document.createElement("mark");
+          mk.className = "lg-hit";
+          mk.textContent = m[0];
+          frag.appendChild(mk);
+          marks.push(mk);
+          last = m.index + m[0].length;
+        }
+        if(last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+      });
+      return marks;
+    }
+
+    function snippet(text, terms, re){
+      var lower = text.toLowerCase(), i = -1;
+      terms.forEach(function(t){ var k = lower.indexOf(t); if(k > -1 && (i < 0 || k < i)) i = k; });
+      if(i < 0) i = 0;
+      var start = Math.max(0, i - 40), end = Math.min(text.length, i + 100);
+      var s = text.slice(start, end), out = "", last = 0, m;
+      re.lastIndex = 0;
+      while((m = re.exec(s))){
+        out += escHtml(s.slice(last, m.index)) + "<mark>" + escHtml(m[0]) + "</mark>";
+        last = m.index + m[0].length;
+      }
+      return (start > 0 ? "…" : "") + out + escHtml(s.slice(last)) + (end < text.length ? "…" : "");
+    }
+
+    function filterNav(ids){
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var any = false;
+        g.querySelectorAll("a").forEach(function(a){
+          var show = !ids || !!ids[a.getAttribute("href").slice(1)];
+          if(a.classList.contains("nav-child")) a.classList.toggle("filtered-out", !show);
+          if(show) any = true;
+        });
+        g.classList.toggle("filtered-out", !any);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        a.classList.toggle("filtered-out", !!ids && !ids[a.getAttribute("href").slice(1)]);
+      });
+    }
+
+    function updateCount(nSections){
+      if(!hits.length){ searchCount.textContent = "No matches"; return; }
+      var pos = cur > -1 ? (cur + 1) + " / " + hits.length : hits.length + (hits.length === 1 ? " match" : " matches");
+      searchCount.textContent = pos + " · " + nSections + (nSections === 1 ? " section" : " sections");
+    }
+
+    var lastSectionCount = 0;
+    function run(){
+      var raw = navSearch.value.trim();
+      clearMarks();
+      hits = []; cur = -1;
+      searchRow.classList.toggle("has-query", !!raw);
+      if(raw.length < 2){
+        searchResults.classList.remove("show");
+        searchBar.classList.remove("show");
+        searchResults.innerHTML = "";
+        filterNav(null);
+        return;
+      }
+      var phrase = /^"(.+)"$/.exec(raw);
+      var terms = phrase ? [phrase[1].toLowerCase()] : raw.toLowerCase().split(/\s+/);
+      terms = terms.filter(function(t, i){ return t && terms.indexOf(t) === i; });
+      var re = new RegExp(terms.slice().sort(function(a, b){ return b.length - a.length; }).map(escRe).join("|"), "gi");
+      var matched = blocks.filter(function(b){
+        return terms.every(function(t){ return b.lower.indexOf(t) > -1; });
+      });
+
+      var ids = {}, groups = [], html = "", LIMIT = 60;
+      matched.forEach(function(b, bi){
+        var marks = markBlock(b.el, re);
+        if(marks.length) marks.forEach(function(m){ hits.push({m:m, el:b.el, b:bi}); });
+        else hits.push({m:null, el:b.el, b:bi});
+        var key = b.section ? b.section.id : "";
+        if(b.section) ids[b.section.id] = true;
+        if(!groups.length || groups[groups.length - 1].key !== key) groups.push({key:key, sec:b.section, items:[]});
+        groups[groups.length - 1].items.push(bi);
+      });
+
+      if(!matched.length){
+        html = '<div class="sr-empty">No matches for “' + escHtml(raw) + '”. Try fewer words.</div>';
+      } else {
+        var listed = 0;
+        groups.forEach(function(g){
+          if(listed >= LIMIT) return;
+          html += '<div class="sr-group"><div class="sr-section">' + escHtml(sectionLabel(g.sec)) + '</div>';
+          g.items.slice(0, 4).forEach(function(bi){
+            if(listed >= LIMIT) return;
+            html += '<button type="button" class="sr-item" role="option" data-b="' + bi + '">' +
+                    snippet(matched[bi].text, terms, re) + '</button>';
+            listed++;
+          });
+          if(g.items.length > 4) html += '<div class="sr-more">+' + (g.items.length - 4) + ' more in this section (use ↓ to step through)</div>';
+          html += '</div>';
+        });
+        if(matched.length > listed) html += '<div class="sr-more">Showing ' + listed + ' of ' + matched.length + ' blocks — add a word to narrow it.</div>';
+      }
+      searchResults.innerHTML = html;
+      searchResults.classList.add("show");
+      searchBar.classList.add("show");
+      lastSectionCount = Object.keys(ids).length || (matched.length ? 1 : 0);
+      filterNav(ids);
+      updateCount(lastSectionCount);
+    }
+
+    function go(i, closeMobile){
+      if(!hits.length) return;
+      cur = (i + hits.length) % hits.length;
+      contentRoot.querySelectorAll("mark.lg-hit-current").forEach(function(m){ m.classList.remove("lg-hit-current"); });
+      var prev = contentRoot.querySelector(".lg-block-current");
+      if(prev) prev.classList.remove("lg-block-current");
+      var h = hits[cur];
+      if(h.m) h.m.classList.add("lg-hit-current");
+      h.el.classList.add("lg-block-current");
+      (h.m || h.el).scrollIntoView({behavior:"smooth", block:"center"});
+      searchResults.querySelectorAll(".sr-item").forEach(function(it){
+        var on = +it.getAttribute("data-b") === h.b;
+        it.classList.toggle("current", on);
+        if(on) it.scrollIntoView({block:"nearest"});
+      });
+      updateCount(lastSectionCount);
+      if(closeMobile && window.innerWidth <= 1000) closeNav();
+    }
+
+    navSearch.addEventListener("input", function(){
+      clearTimeout(timer);
+      timer = setTimeout(run, 140);
+    });
+    navSearch.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        clearTimeout(timer);
+        if(!hits.length && navSearch.value.trim().length >= 2) run();
+        go(e.shiftKey ? cur - 1 : cur + 1, true);
+      } else if(e.key === "Escape"){
+        navSearch.value = "";
+        run();
+      }
+    });
+    searchResults.addEventListener("click", function(e){
+      var item = e.target.closest(".sr-item");
+      if(!item) return;
+      var b = +item.getAttribute("data-b");
+      for(var k = 0; k < hits.length; k++){ if(hits[k].b === b){ go(k, true); break; } }
+    });
+    document.getElementById("searchNext").addEventListener("click", function(){ go(cur + 1, false); });
+    document.getElementById("searchPrev").addEventListener("click", function(){ go(cur - 1, false); });
+    document.getElementById("searchClear").addEventListener("click", function(){
+      navSearch.value = "";
+      run();
+      navSearch.focus();
+    });
+    document.addEventListener("keydown", function(e){
+      var tag = (e.target.tagName || "").toLowerCase();
+      var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+      var slash = e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey;
+      var cmdK = (e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K");
+      if(!slash && !cmdK) return;
+      e.preventDefault();
+      if(window.innerWidth <= 1000){
+        document.getElementById("sidebar").classList.add("open");
+        document.getElementById("scrim").classList.add("show");
+      }
+      navSearch.focus();
+      navSearch.select();
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

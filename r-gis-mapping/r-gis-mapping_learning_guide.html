@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>R GIS &amp; Mapping Learning Guide — sf, ggplot2/geom_sf, leaflet &amp; mapview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+.search-row{position:relative}
+.search-row .nav-search{padding-right:2.4rem}
+.search-kbd{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:4px;padding:0 .3rem;background:var(--paper-2);
+  pointer-events:none;
+}
+.search-row.has-query .search-kbd{display:none}
+.search-bar{
+  display:none;align-items:center;gap:.35rem;margin-top:.45rem;
+  font-size:.72rem;color:var(--ink-soft);
+}
+.search-bar.show{display:flex}
+.search-count{flex:1;font-family:var(--mono)}
+.search-bar button{
+  border:1px solid var(--line);background:var(--paper);color:var(--teal-deep);
+  border-radius:6px;font-size:.72rem;padding:.15rem .45rem;cursor:pointer;min-width:26px;min-height:24px;
+}
+.search-bar button:hover{background:var(--teal-wash)}
+.search-results{
+  display:none;margin:.5rem 0 .2rem;max-height:48vh;overflow-y:auto;
+  border:1px solid var(--line);border-radius:8px;background:var(--paper);
+}
+.search-results.show{display:block}
+.sr-group{border-top:1px solid var(--line-soft)}
+.sr-group:first-child{border-top:none}
+.sr-section{
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--teal);padding:.5rem .65rem .15rem;
+}
+.sr-item{
+  display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  font-family:var(--sans);font-size:.76rem;line-height:1.4;color:var(--ink);
+  padding:.35rem .65rem;
+}
+.sr-item:hover,.sr-item.current{background:var(--teal-wash)}
+.sr-item mark,.lg-hit{background:var(--amber-wash);color:inherit;border-radius:2px;padding:0 1px}
+.sr-more{font-size:.7rem;color:var(--ink-soft);padding:.1rem .65rem .45rem}
+.sr-empty{font-size:.78rem;color:var(--ink-soft);padding:.6rem .65rem}
+pre .lg-hit{background:#5c4a12;color:#fff4cf}
+.lg-hit.lg-hit-current{background:var(--coral);color:#fff;outline:2px solid var(--coral)}
+.lg-block-current{outline:2px dashed var(--teal);outline-offset:4px;border-radius:4px}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — expert guided learning">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">expert guided learning</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">R GIS<br>&amp; Mapping Guide</div>
+      <div class="brand-sub">sf · ggplot2/geom_sf · leaflet · mapview</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <div class="search-row" id="searchRow">
+        <input type="search" id="navSearch" class="nav-search" placeholder="Search the guide…" aria-label="Search the whole guide" aria-controls="searchResults" autocomplete="off" spellcheck="false">
+        <span class="search-kbd" aria-hidden="true">/</span>
+      </div>
+      <div class="search-bar" id="searchBar">
+        <span class="search-count" id="searchCount" aria-live="polite"></span>
+        <button type="button" id="searchPrev" aria-label="Previous match">↑</button>
+        <button type="button" id="searchNext" aria-label="Next match">↓</button>
+        <button type="button" id="searchClear" aria-label="Clear search">✕</button>
+      </div>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+    </div>
+    <nav id="nav">
+<a href="#applied-spatial-data-science-track" class="nav-top">Applied Spatial Data Science Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+
+<div class="nav-group">
+<a href="#phase-1-sf-foundations" class="nav-top nav-phase">Phase 1: sf Foundations</a>
+<div class="nav-children">
+<a href="#module-11-simple-feature-geometries-sfg-sfc-sf-objects" class="nav-child">Module 1.1 — sfg, sfc &amp; sf Objects</a>
+<a href="#module-12-coordinate-reference-systems-st_transform" class="nav-child">Module 1.2 — CRS &amp; st_transform</a>
+<a href="#module-13-spatial-predicates-joins-st_join" class="nav-child">Module 1.3 — Spatial Predicates &amp; st_join</a>
+<a href="#module-14-geometric-operations-buffers-unions-measurements" class="nav-child">Module 1.4 — Geometric Operations</a>
+<a href="#phase-1-capstone-tindahub-hub-coverage-model" class="nav-child">Phase 1 Capstone: Hub Coverage Model</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-2-ggplot2-geom_sf-cartography" class="nav-top nav-phase">Phase 2: ggplot2 + geom_sf Cartography</a>
+<div class="nav-children">
+<a href="#module-21-geom_sf-fundamentals-aesthetic-mapping" class="nav-child">Module 2.1 — geom_sf Fundamentals</a>
+<a href="#module-22-choropleth-maps-color-scales" class="nav-child">Module 2.2 — Choropleth Maps &amp; Color Scales</a>
+<a href="#module-23-combining-layers-labels-basemaps" class="nav-child">Module 2.3 — Layers, Labels &amp; Basemaps</a>
+<a href="#module-24-faceted-maps-publication-ready-output" class="nav-child">Module 2.4 — Faceted Maps &amp; Publication Output</a>
+<a href="#phase-2-capstone-tindahub-print-ready-atlas" class="nav-child">Phase 2 Capstone: Print-Ready Atlas</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-3-leaflet-interactive-maps" class="nav-top nav-phase">Phase 3: leaflet Interactive Maps</a>
+<div class="nav-children">
+<a href="#module-31-leaflet-fundamentals-markers-popups-tiles" class="nav-child">Module 3.1 — leaflet Fundamentals</a>
+<a href="#module-32-adding-sf-layers-choropleths-with-leaflet" class="nav-child">Module 3.2 — sf Layers &amp; Choropleths</a>
+<a href="#module-33-layers-control-clusters-legends" class="nav-child">Module 3.3 — Layers Control, Clusters &amp; Legends</a>
+<a href="#module-34-shiny-integration-reactive-maps" class="nav-child">Module 3.4 — Shiny Integration &amp; Reactive Maps</a>
+<a href="#phase-3-capstone-tindahub-interactive-operations-dashboard" class="nav-child">Phase 3 Capstone: Operations Dashboard</a>
+</div></div>
+
+<div class="nav-group">
+<a href="#phase-4-mapview-integration" class="nav-top nav-phase">Phase 4: mapview &amp; Integration</a>
+<div class="nav-children">
+<a href="#module-41-mapview-instant-interactive-exploration" class="nav-child">Module 4.1 — mapview: Instant Exploration</a>
+<a href="#module-42-combining-sf-mapview-leaflet-in-a-workflow" class="nav-child">Module 4.2 — Combining sf + mapview + leaflet</a>
+<a href="#module-43-choosing-the-right-tool-sf-vs-geom_sf-vs-leaflet-vs-mapview" class="nav-child">Module 4.3 — Choosing the Right Tool</a>
+</div></div>
+
+<a href="#final-capstone-tindahub-spatial-analytics-toolkit" class="nav-top">Final Capstone: TindaHub Spatial Analytics Toolkit</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="r-gis-mapping-learning-guide">R GIS &amp; Mapping Learning Guide</h1>
+<h2 id="applied-spatial-data-science-track">Applied Spatial Data Science Track</h2>
+<h3>sf &middot; ggplot2/geom_sf &middot; leaflet &middot; mapview</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="R GIS and Mapping" xmlns="http://www.w3.org/2000/svg">
+<circle cx="112" cy="128" r="84" fill="#075249"/>
+<path d="M112 44 A84 84 0 0 1 112 212" fill="none" stroke="#0d7a6e" stroke-width="7"/>
+<path d="M28 128 A84 34 0 0 0 196 128" fill="none" stroke="#0d7a6e" stroke-width="7"/>
+<path d="M28 128 A84 34 0 0 1 196 128" fill="none" stroke="#0d7a6e" stroke-width="7"/>
+<line x1="112" y1="44" x2="112" y2="212" stroke="#0d7a6e" stroke-width="7"/>
+<path d="M214 96 C214 68 192 46 165 46 C138 46 116 68 116 96 C116 132 165 190 165 190 C165 190 214 132 214 96 Z" fill="#0d7a6e"/>
+<circle cx="165" cy="96" r="19" fill="#075249"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide &mdash; you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone maps the same realistic <strong>TindaHub</strong> scenario &mdash; the same 17-city Philippine sari-sari-store distribution network used in this workspace's Python GIS guide, so every map you build in R represents a real, consistent business geography rather than toy coordinates.</p>
+</blockquote>
+<p><strong>Scope note:</strong> this guide assumes you already know R fundamentals and basic <code>ggplot2</code> (<code>aes()</code>, geoms, themes, <code>facet_wrap</code>) &mdash; covered in the <a href="../r-markdown-in-rstudio/r-markdown-in-rstudio_learning_guide.html">R Markdown in RStudio guide</a>'s Module 2.3, which this guide does not repeat. That guide's Module 3.4 (htmlwidgets &amp; the Shiny runtime) also uses <code>leaflet</code> once as a generic example of an htmlwidget; this guide is the actual deep dive into <code>leaflet</code> for mapping specifically, plus three packages that guide never touches at all: <strong>sf</strong> (the modern spatial-data foundation everything else in this guide sits on), <strong>mapview</strong> (one-line interactive exploration), and <code>geom_sf</code> (the spatial extension of the <code>ggplot2</code> you already know). If you've only ever seen R spatial work done with <code>sp</code>, <code>rgdal</code>, or <code>rgeos</code>, be aware those packages were retired from CRAN in October 2023 &mdash; this guide teaches only their modern replacement, <code>sf</code>, which is the current standard the entire R-spatial ecosystem (including <code>terra</code> for raster data, out of this guide's vector-focused scope) has converged on.</p>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner to spatial data in R</strong> &mdash; Start at Module 1.1 and go sequentially through all four phases.</li>
+<li><strong>Some sf/leaflet experience</strong> &mdash; Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting one package</strong> &mdash; Jump via the <strong>Module Index</strong> or pick a <strong>Learning Track</strong> (sf-only, geom_sf-only, leaflet-only, or Applied).</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz &mdash; Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3>sf</h3>
+<ul>
+<li>[ ] I can create an <code>sf</code> object from a data frame with lon/lat columns and explain what the geometry list-column actually is.</li>
+<li>[ ] I know the difference between a geographic and a projected CRS, and can reproject an <code>sf</code> object with <code>st_transform()</code>.</li>
+<li>[ ] I can perform a spatial join with <code>st_join()</code>, choosing the join predicate deliberately.</li>
+<li>[ ] I can compute a real-world buffer distance or area, understanding why the CRS matters for the result to be meaningful.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 1.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 1.3</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Phase 2</strong></p>
+
+<h3>ggplot2 + geom_sf</h3>
+<ul>
+<li>[ ] I can plot an <code>sf</code> object with <code>geom_sf()</code> and color it by a data column.</li>
+<li>[ ] I can control a map's projection and extent at plot time with <code>coord_sf()</code>, without pre-transforming the data.</li>
+<li>[ ] I can combine multiple <code>geom_sf()</code> layers (e.g., points over polygons) in one plot.</li>
+<li>[ ] I can produce a faceted small-multiples map with <code>facet_wrap()</code> on spatial data.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 2.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 2.3</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Phase 3</strong></p>
+
+<h3>leaflet &amp; mapview</h3>
+<ul>
+<li>[ ] I can build a <code>leaflet()</code> map with markers, popups, and a chosen tile provider.</li>
+<li>[ ] I can add an <code>sf</code> object directly to a leaflet map with <code>addPolygons()</code>/<code>addCircleMarkers()</code>, with a color palette function.</li>
+<li>[ ] I can create an instant interactive map of an <code>sf</code> object with a single <code>mapview()</code> call.</li>
+<li>[ ] I know when to reach for <code>mapview</code> (fast exploration) versus <code>leaflet</code> (full control, Shiny integration) for a given task.</li>
+</ul>
+<p><strong>0&ndash;1 yes</strong> &rarr; Start <strong>Module 3.1</strong> | <strong>2&ndash;3 yes</strong> &rarr; Start <strong>Module 4.1</strong> | <strong>4 yes</strong> &rarr; Skip to <strong>Module 4.3</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-simple-feature-geometries-sfg-sfc-sf-objects"><td>1.1</td><td>Simple Feature Geometries: sfg, sfc &amp; sf Objects</td><td>Beginner&ndash;Intermediate</td><td>R + tidyverse basics</td><td>2h</td></tr>
+<tr data-href="#module-12-coordinate-reference-systems-st_transform"><td>1.2</td><td>Coordinate Reference Systems &amp; st_transform</td><td>Intermediate</td><td>1.1</td><td>2.5h</td></tr>
+<tr data-href="#module-13-spatial-predicates-joins-st_join"><td>1.3</td><td>Spatial Predicates, Joins &amp; st_join</td><td>Intermediate</td><td>1.1</td><td>2.5h</td></tr>
+<tr data-href="#module-14-geometric-operations-buffers-unions-measurements"><td>1.4</td><td>Geometric Operations: Buffers, Unions &amp; Measurements</td><td>Intermediate</td><td>1.2</td><td>2.5h</td></tr>
+<tr data-href="#module-21-geom_sf-fundamentals-aesthetic-mapping"><td>2.1</td><td>geom_sf Fundamentals &amp; Aesthetic Mapping</td><td>Beginner&ndash;Intermediate</td><td>1.1, ggplot2 basics</td><td>2.5h</td></tr>
+<tr data-href="#module-22-choropleth-maps-color-scales"><td>2.2</td><td>Choropleth Maps &amp; Color Scales</td><td>Intermediate</td><td>2.1</td><td>2.5h</td></tr>
+<tr data-href="#module-23-combining-layers-labels-basemaps"><td>2.3</td><td>Combining Layers, Labels &amp; Basemaps</td><td>Intermediate</td><td>2.1</td><td>2.5h</td></tr>
+<tr data-href="#module-24-faceted-maps-publication-ready-output"><td>2.4</td><td>Faceted Maps &amp; Publication-Ready Output</td><td>Intermediate</td><td>2.2</td><td>2h</td></tr>
+<tr data-href="#module-31-leaflet-fundamentals-markers-popups-tiles"><td>3.1</td><td>leaflet Fundamentals: Markers, Popups &amp; Tiles</td><td>Beginner&ndash;Intermediate</td><td>None</td><td>2h</td></tr>
+<tr data-href="#module-32-adding-sf-layers-choropleths-with-leaflet"><td>3.2</td><td>Adding sf Layers &amp; Choropleths with leaflet</td><td>Intermediate</td><td>3.1, 1.1</td><td>2.5h</td></tr>
+<tr data-href="#module-33-layers-control-clusters-legends"><td>3.3</td><td>Layers Control, Clusters &amp; Legends</td><td>Intermediate</td><td>3.2</td><td>2h</td></tr>
+<tr data-href="#module-34-shiny-integration-reactive-maps"><td>3.4</td><td>Shiny Integration &amp; Reactive Maps</td><td>Advanced</td><td>3.3</td><td>2.5h</td></tr>
+<tr data-href="#module-41-mapview-instant-interactive-exploration"><td>4.1</td><td>mapview: Instant Interactive Exploration</td><td>Beginner&ndash;Intermediate</td><td>1.1</td><td>1.5h</td></tr>
+<tr data-href="#module-42-combining-sf-mapview-leaflet-in-a-workflow"><td>4.2</td><td>Combining sf + mapview + leaflet in a Workflow</td><td>Intermediate</td><td>4.1, 3.2</td><td>2h</td></tr>
+<tr data-href="#module-43-choosing-the-right-tool-sf-vs-geom_sf-vs-leaflet-vs-mapview"><td>4.3</td><td>Choosing the Right Tool</td><td>Intermediate</td><td>Phases 1&ndash;3</td><td>1.5h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 2 and 3 both build directly on Phase 1's <code>sf</code> objects, so Module 1.1 is a genuine prerequisite for nearly everything else &mdash; unlike some other tool guides in this workspace, there isn't a fully independent track that skips <code>sf</code> entirely, because <code>ggplot2</code>, <code>leaflet</code>, and <code>mapview</code> all consume <code>sf</code> objects as their native input in this guide. Phase 4's <code>mapview</code> modules need only Module 1.1 to get started, with Module 4.2 additionally assuming Module 3.2.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+
+<h3 id="track-1-sf-fast-track">Track 1 &mdash; sf Fast Track (spatial data foundations)</h3>
+<p><code>1.1 &rarr; 1.2 &rarr; 1.3 &rarr; 1.4 &rarr; Phase 1 Capstone</code><br>
+Target outcome: <strong>comfortable representing, reprojecting, joining, and measuring spatial data as ordinary data frames</strong>.</p>
+
+<h3 id="track-2-geom_sf-for-static-cartography">Track 2 &mdash; geom_sf for Static Cartography</h3>
+<p><code>1.1 &rarr; 2.1 &rarr; 2.2 &rarr; 2.3 &rarr; 2.4 &rarr; Phase 2 Capstone</code><br>
+Target outcome: <strong>publication-ready static maps and faceted small-multiples, in the same grammar-of-graphics workflow as any other ggplot2 chart</strong>.</p>
+
+<h3 id="track-3-leaflet-for-interactive-web-maps">Track 3 &mdash; leaflet for Interactive Web Maps</h3>
+<p><code>1.1 &rarr; 3.1 &rarr; 3.2 &rarr; 3.3 &rarr; 3.4 &rarr; Phase 3 Capstone</code><br>
+Target outcome: <strong>full-control interactive maps, including reactive Shiny-embedded maps</strong>.</p>
+
+<h3 id="track-4-applied-spatial-analytics">Track 4 &mdash; Applied Spatial Analytics</h3>
+<p><code>1.1 &rarr; 1.2 &rarr; 1.3 &rarr; 4.1 &rarr; 3.2 &rarr; 4.2 &rarr; 4.3 &rarr; Final Capstone</code><br>
+Target outcome: <strong>choosing correctly among all four tools for a real spatial analysis, from first exploration to a polished deliverable</strong>.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<pre><code>Phase 1 — sf Foundations                (Weeks 1–2)
+Phase 2 — ggplot2 + geom_sf Cartography  (Weeks 2–4)
+Phase 3 — leaflet Interactive Maps       (Weeks 3–5)
+Phase 4 — mapview &amp; Integration          (Weeks 5–6)
+Final Capstone                           (Ongoing)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ─ 1.2 ─┬─ 1.3 ─ 1.4 ──────────────┐
+           ├─ 2.1 ─ 2.2 ─ 2.3 ─ 2.4   ├─ 4.3 ─ Final Capstone
+           └─ 3.1 ─ 3.2 ─ 3.3 ─ 3.4   │
+                    4.1 ─ 4.2 ────────┘</code></pre>
+
+<h2 id="phase-1-sf-foundations">Phase 1: sf Foundations</h2>
+<h3 id="weeks-1-2">Weeks 1&ndash;2 | Goal: represent, reproject, join, and measure spatial data as ordinary R data frames</h3>
+<hr />
+
+<h3 id="module-11-simple-feature-geometries-sfg-sfc-sf-objects">Module 1.1 &mdash; Simple Feature Geometries: sfg, sfc &amp; sf Objects</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> R and tidyverse basics (data frames, pipes, <code>dplyr</code>) &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Build an <code>sf</code> object from a data frame with lon/lat columns using <code>st_as_sf()</code>, and explain what the geometry list-column actually stores.<br>
+<strong>Skip if:</strong> You already default to <code>sf</code> for spatial data and understand the sfg/sfc/sf hierarchy.<br>
+<strong>Unlocks:</strong> Module 1.2, Module 2.1, Module 3.2, Module 4.1</p>
+</blockquote>
+
+<h4>Three layers: sfg, sfc, sf</h4>
+<p><strong>sf</strong> (Simple Features for R) represents spatial data across three nested layers. An <strong>sfg</strong> (simple feature geometry) is a single geometry &mdash; one point, one line, one polygon &mdash; created with functions like <code>st_point()</code>. An <strong>sfc</strong> (simple feature geometry column/list) is a vector of <code>sfg</code> objects sharing one CRS, created with <code>st_sfc()</code>. An <strong>sf object</strong> is an ordinary data frame (or tibble) with one column that <em>is</em> an <code>sfc</code> &mdash; conventionally named <code>geometry</code>. This is the single most important thing to understand about <code>sf</code>: it doesn't introduce a separate spatial-table class the way some other ecosystems do; a spatial dataset in R is just a data frame with one special list-column, so every <code>dplyr</code> verb (<code>filter()</code>, <code>mutate()</code>, <code>group_by()</code>, <code>summarise()</code>) works on it directly, no special spatial-aware syntax required for non-geometric operations.</p>
+<pre><code class="language-r">library(sf)
+
+manila_pt <- st_point(c(120.9842, 14.5995))   # an sfg — a single geometry, x then y (lon, lat)
+print(st_as_text(manila_pt))                   # "POINT (120.9842 14.5995)" — Well-Known Text
+
+geom_column <- st_sfc(manila_pt, crs = 4326)   # an sfc — a geometry list, with a CRS attached
+print(st_crs(geom_column)$input)               # "EPSG:4326"
+
+cities_df <- data.frame(city = "Manila", pop = 1780000)
+cities_sf <- st_sf(cities_df, geometry = geom_column)   # an sf object — a data frame + geometry column
+print(class(cities_sf))                        # "sf" "data.frame" — it really is both
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> passing (latitude, longitude) instead of (longitude, latitude) to <code>st_point()</code> or <code>st_as_sf(coords = ...)</code>. Like most geometry libraries, <code>sf</code> orders coordinates as <strong>(x, y)</strong> &mdash; geographic x is longitude, y is latitude. Swap them and every point silently lands in the wrong place with no error raised.</p></blockquote>
+
+<h4>The common shortcut: st_as_sf() from an existing data frame</h4>
+<p>Building geometries one <code>st_point()</code> call at a time is rarely how you actually start &mdash; more often you already have a data frame with lon/lat columns and want to convert the whole thing at once. <code>st_as_sf(df, coords = c("lon_col", "lat_col"), crs = 4326)</code> does exactly that, vectorized, in one call.</p>
+<pre><code class="language-r">library(sf)
+library(readr)
+
+city_coords <- read_csv("../python-gis-mapping/tindahub_city_coords.csv")
+cities_sf <- st_as_sf(city_coords, coords = c("Lon", "Lat"), crs = 4326, remove = FALSE)
+# remove = FALSE keeps the original Lon/Lat columns alongside the new geometry column
+print(cities_sf)
+</code></pre>
+
+<p><strong>Exercise 1.1 &mdash; Build TindaHub's City sf Object</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code> (this workspace's Python GIS guide bundles it &mdash; City, Province, Region, Lat, Lon for the 17 cities appearing in TindaHub Orders; reference it directly via <code>../python-gis-mapping/tindahub_city_coords.csv</code>, or copy it alongside this guide if you prefer a self-contained folder)</p>
+<ol>
+<li>Read <code>tindahub_city_coords.csv</code> with <code>readr::read_csv()</code> and convert it to an <code>sf</code> object with <code>st_as_sf()</code>, CRS <code>4326</code>.</li>
+<li>Confirm with <code>class()</code> that the result is both <code>"sf"</code> and <code>"data.frame"</code>, and use ordinary <code>dplyr::filter()</code> to subset to just the 4 NCR cities (Makati, Manila, Pasig, Quezon City) &mdash; no special spatial syntax needed for this step.</li>
+<li>Print the <code>st_as_text()</code> WKT representation of the Manila and Davao City geometries.</li>
+<li>Use <code>st_bbox()</code> on the full 17-city <code>sf</code> object to get its bounding box, and explain in one sentence what each of the four returned values represents.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-coordinate-reference-systems-st_transform">Module 1.2 &mdash; Coordinate Reference Systems &amp; st_transform</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Explain the difference between a geographic and a projected CRS, reproject an <code>sf</code> object with <code>st_transform()</code>, and compute a real-world distance in kilometers.<br>
+<strong>Skip if:</strong> CRS concepts and <code>st_transform()</code> are already comfortable.<br>
+<strong>Unlocks:</strong> Module 1.3, Module 1.4, Module 2.2</p>
+</blockquote>
+
+<h4>Geographic vs. projected CRS</h4>
+<p>A <strong>geographic CRS</strong> (like <code>EPSG:4326</code>/WGS84) expresses positions as angles on a sphere/ellipsoid &mdash; degrees of latitude and longitude, what GPS coordinates natively come in. A <strong>projected CRS</strong> flattens that sphere onto a 2D plane, expressing positions in linear units (usually meters) &mdash; the form that makes area, distance, and buffer calculations behave the way intuition expects. Every distance or area computed directly on <code>EPSG:4326</code> data is in <em>degrees</em>, not meters &mdash; technically well-defined, but not a real-world distance.</p>
+
+<h4>EPSG codes and st_transform</h4>
+<p><code>st_transform(x, crs)</code> reprojects an <code>sf</code> object to a new CRS, identified by its <strong>EPSG code</strong>. <code>EPSG:32651</code> (UTM Zone 51N) covers most of the Philippines with good local accuracy for area/distance work; <code>EPSG:3857</code> (Web Mercator) is what most web-map tile providers use for display but distorts area badly at higher latitudes, making it a poor choice for actual measurement.</p>
+<pre><code class="language-r">library(sf)
+
+manila <- st_sfc(st_point(c(120.9842, 14.5995)), crs = 4326)
+cebu <- st_sfc(st_point(c(123.8854, 10.3157)), crs = 4326)
+
+print(st_distance(manila, cebu))          # a value in degrees — not meaningful on its own
+
+manila_utm <- st_transform(manila, 32651)
+cebu_utm <- st_transform(cebu, 32651)
+distance_km <- as.numeric(st_distance(manila_utm, cebu_utm)) / 1000
+print(distance_km)                         # a real, trustworthy distance in kilometers
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> calling <code>st_buffer()</code>, <code>st_distance()</code>, or <code>st_area()</code> on an <code>sf</code> object still in <code>EPSG:4326</code> and treating the result as meters or square meters. <code>sf</code> will compute <em>something</em> either way (recent <code>sf</code> versions even do geodesic/spherical distance calculations on unprojected data by default via the underlying <code>s2</code> library, which is more defensible than a naive degree-based calculation would be) &mdash; but for buffering, and for full control over which projection's distortions you're accepting, an explicit <code>st_transform()</code> to an appropriate projected CRS first remains the deliberate, predictable choice.</p></blockquote>
+
+<p><strong>Exercise 1.2 &mdash; Real Distances Between TindaHub Cities</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code> (via the <code>sf</code> object from Exercise 1.1)</p>
+<ol>
+<li>Reproject the 17-city <code>sf</code> object to <code>EPSG:32651</code> with <code>st_transform()</code>.</li>
+<li>Pick 3 candidate hub cities (e.g., Manila, Cebu City, Davao City) and compute the real pairwise distances in kilometers between them using the projected coordinates.</li>
+<li>Compute <code>st_distance()</code> between the same 3 cities <em>without</em> reprojecting first (still in <code>EPSG:4326</code>), and compare the returned units and values against your projected result &mdash; note in 1&ndash;2 sentences what <code>sf</code>'s default (<code>s2</code>-based) unprojected distance calculation actually represents.</li>
+<li>Buffer one hub city by a real 10 km radius using the projected version, and report the buffer polygon's area in km&sup2;.</li>
+</ol>
+<hr />
+
+<h3 id="module-13-spatial-predicates-joins-st_join">Module 1.3 &mdash; Spatial Predicates, Joins &amp; st_join</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Test a spatial predicate between two geometries, perform a spatial join with <code>st_join()</code> choosing the join predicate deliberately, and explain how it differs from a normal <code>dplyr::left_join()</code>.<br>
+<strong>Skip if:</strong> Spatial predicates and <code>st_join()</code> are already comfortable, including boundary-exact edge cases.<br>
+<strong>Unlocks:</strong> Module 1.4, Module 2.3, Module 3.2</p>
+</blockquote>
+
+<h4>Core spatial predicates</h4>
+<p><code>st_intersects(a, b)</code> is true if the geometries share any point at all (including just touching at an edge); <code>st_contains(a, b)</code> is true if <code>b</code> is entirely inside <code>a</code> with no boundary touching; <code>st_within(a, b)</code> is the mirror of <code>st_contains</code>; <code>st_touches(a, b)</code> is true only if they share a boundary point but no interior points. A point sitting exactly on a polygon's edge satisfies <code>st_intersects</code> but not <code>st_contains</code> &mdash; the same boundary-exact distinction that matters for any real "is this order inside my delivery zone" business rule.</p>
+<pre><code class="language-r">library(sf)
+
+zone <- st_sfc(st_polygon(list(rbind(
+  c(120.95, 14.55), c(121.05, 14.55), c(121.05, 14.65), c(120.95, 14.65), c(120.95, 14.55)
+))), crs = 4326)
+inside_pt <- st_sfc(st_point(c(121.00, 14.60)), crs = 4326)
+edge_pt <- st_sfc(st_point(c(120.95, 14.60)), crs = 4326)      # exactly on the zone's left edge
+
+print(st_contains(zone, inside_pt, sparse = FALSE))    # TRUE
+print(st_contains(zone, edge_pt, sparse = FALSE))       # FALSE — boundary doesn't count as "contained"
+print(st_intersects(zone, edge_pt, sparse = FALSE))     # TRUE — touching the boundary is enough
+</code></pre>
+<p><code>sparse = FALSE</code> returns a plain logical matrix; the default <code>sparse = TRUE</code> returns a more memory-efficient sparse list representation, which matters once you're testing many-against-many geometries rather than one pair.</p>
+
+<h4>st_join: joining by location, not by key</h4>
+<p><code>st_join(x, y, join = st_within)</code> (or any other predicate function) attaches <code>y</code>'s attribute columns onto <code>x</code> wherever the chosen spatial predicate is true &mdash; no shared key column required at all, unlike a normal <code>dplyr::left_join()</code>, which matches on column values. The default join predicate, if you don't specify one, is <code>st_intersects</code> &mdash; worth stating explicitly in code rather than relying on the default, since the boundary-edge-case behavior differs from <code>st_within</code>/<code>st_contains</code> in exactly the way Module 1.2's callout warned about.</p>
+<pre><code class="language-r">library(sf)
+library(dplyr)
+
+# points_sf: cities; zones_sf: candidate hub coverage polygons with a hub_name column
+assigned <- st_join(points_sf, zones_sf, join = st_within, left = TRUE)
+# left = TRUE keeps every point even if it matches no zone (hub_name becomes NA for those)
+</code></pre>
+
+<p><strong>Exercise 1.3 &mdash; Assign TindaHub Cities to Delivery Zones</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code></p>
+<ol>
+<li>Build two candidate hub-coverage polygons (rough rectangles or buffered points around 2 hub cities of your choosing) as an <code>sf</code> object with a <code>hub_name</code> column.</li>
+<li>Use <code>st_join()</code> with <code>join = st_within</code> and <code>left = TRUE</code> to assign every one of the 17 TindaHub cities to a hub (or <code>NA</code> if unassigned).</li>
+<li>Re-run the same join with <code>join = st_intersects</code> instead, and report any city whose assignment changes between the two predicates.</li>
+<li>Explain in 2&ndash;3 sentences why <code>left = TRUE</code> matters here specifically &mdash; what would <code>left = FALSE</code> silently do to your 17-city dataset that would make it harder to spot unassigned cities?</li>
+</ol>
+<hr />
+
+<h3 id="module-14-geometric-operations-buffers-unions-measurements">Module 1.4 &mdash; Geometric Operations: Buffers, Unions &amp; Measurements</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 1.2 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Compute a buffer, a union of overlapping polygons, and their intersection, all on projected data, and interpret each in a real coverage-area scenario.<br>
+<strong>Skip if:</strong> These operations are already familiar, with real (not degree-based) units.<br>
+<strong>Unlocks:</strong> Module 2.3, Module 4.2, Phase 1 Capstone</p>
+</blockquote>
+
+<h4>st_buffer, st_union, st_intersection, st_difference</h4>
+<p><code>st_buffer(x, dist)</code> grows a geometry outward by <code>dist</code> in its own CRS's units (meters, once projected); <code>st_union()</code> combines geometries into one (either unioning a whole column into a single merged shape, or unioning two specific geometries together); <code>st_intersection(a, b)</code> returns only the overlapping area between two geometries; <code>st_difference(a, b)</code> returns <code>a</code> with <code>b</code>'s area removed.</p>
+<pre><code class="language-r">library(sf)
+library(dplyr)
+
+hub_a <- st_buffer(st_transform(manila_sf, 32651), dist = 100000)   # 100 km, in meters, on projected data
+hub_b <- st_buffer(st_transform(cebu_sf, 32651), dist = 100000)
+
+overlap <- st_intersection(hub_a, hub_b)      # area served by both hubs
+combined <- st_union(hub_a, hub_b)             # total footprint served by either hub
+exclusive_a <- st_difference(hub_a, hub_b)     # area only hub_a covers
+</code></pre>
+
+<h4>st_area, st_length, st_distance</h4>
+<p>These three measurement functions all return values with explicit units attached (an R <code>units</code> object, e.g. <code>"m^2"</code> or <code>"km"</code>) when run on projected data &mdash; <code>as.numeric()</code> strips the units back to a plain number once you're confident which unit it's actually in, but keeping the units-aware object around during analysis is worth it specifically because it makes an accidental unprojected-data mistake (Module 1.2's caution) visible immediately: a suspiciously tiny "distance" reported in raw degree-equivalent units stands out much more than a bare number would.</p>
+
+<p><strong>Exercise 1.4 &mdash; TindaHub Hub Coverage Overlaps</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code></p>
+<ol>
+<li>Reproject the 17-city <code>sf</code> object to <code>EPSG:32651</code>, then buffer 3 candidate hub cities by a real 120 km radius each.</li>
+<li>Compute the pairwise <code>st_intersection()</code> between each pair of hub buffers, and report (using <code>st_area()</code>) the overlap area in km&sup2; for any pair that overlaps at all.</li>
+<li>Use <code>st_union()</code> to compute the total combined coverage footprint of all 3 hubs, and report its total area.</li>
+<li>For each of the 17 cities, compute its distance (in km, via projected <code>st_distance()</code>) to the nearest of the 3 hub cities, and identify which city is furthest from any hub.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-tindahub-hub-coverage-model">Phase 1 Capstone: TindaHub Hub Coverage Model</h3>
+<p><strong>Project: A pure-sf coverage and zone-assignment model for TindaHub's delivery hubs</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain the difference between <code>st_contains</code> and <code>st_intersects</code>, why reprojecting matters before buffering, and what <code>st_join()</code>'s default predicate is? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> <code>tindahub_city_coords.csv</code></p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Buffered, real-unit (projected) coverage polygons for at least 4 candidate hub cities.</li>
+<li>A computed overlap analysis (pairwise <code>st_intersection</code>) identifying redundant hub coverage.</li>
+<li>An <code>st_join()</code>-based assignment of every one of the 17 TindaHub cities to its nearest hub zone, with a documented, deliberate predicate choice.</li>
+<li>A <code>st_union()</code>'d total coverage footprint and its area in km&sup2;.</li>
+<li>A short written note (3&ndash;5 sentences) on which decisions here would need to change before treating the results as authoritative for a real delivery-planning decision.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-ggplot2-geom_sf-cartography">Phase 2: ggplot2 + geom_sf Cartography</h2>
+<h3 id="weeks-2-4">Weeks 2&ndash;4 | Goal: produce publication-ready static maps using the same grammar-of-graphics workflow as any ggplot2 chart</h3>
+<hr />
+
+<h3 id="module-21-geom_sf-fundamentals-aesthetic-mapping">Module 2.1 &mdash; geom_sf Fundamentals &amp; Aesthetic Mapping</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> Module 1.1, basic <code>ggplot2</code> (<code>aes()</code>, geoms, themes) &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Plot an <code>sf</code> object with <code>geom_sf()</code>, map a data column to <code>fill</code> or <code>color</code>, and control the plot's projection and extent with <code>coord_sf()</code>.<br>
+<strong>Skip if:</strong> <code>geom_sf()</code> and <code>coord_sf()</code> are already routine.<br>
+<strong>Unlocks:</strong> Module 2.2, Module 2.3</p>
+</blockquote>
+
+<h4>geom_sf: one geom for points, lines, and polygons</h4>
+<p><code>geom_sf()</code> is unusual among <code>ggplot2</code> geoms in that it automatically draws the right shape &mdash; points, lines, or polygons &mdash; based purely on what kind of geometry is in the <code>sf</code> object's geometry column, with no separate <code>geom_point()</code>/<code>geom_polygon()</code> choice required. This is the same <code>aes()</code>-based grammar you already know from any other <code>ggplot2</code> chart; the only genuinely new piece is that the geometry column itself supplies the x/y positions, so you don't write <code>aes(x = ..., y = ...)</code> for it the way you would for an ordinary scatterplot.</p>
+<pre><code class="language-r">library(ggplot2)
+library(sf)
+
+ggplot(cities_sf) +
+  geom_sf(aes(color = Province), size = 3) +
+  theme_minimal() +
+  labs(title = "TindaHub City Network")
+</code></pre>
+
+<h4>coord_sf: reprojecting and cropping at plot time</h4>
+<p><code>coord_sf()</code> is where <code>geom_sf()</code>'s real power over a purely manual workflow shows up: it can reproject the plotted data to a different CRS <em>at draw time</em>, without you calling <code>st_transform()</code> on the underlying data first &mdash; and it automatically keeps geographic aspect ratio correct (a degree of longitude and a degree of latitude aren't the same real-world distance, and <code>coord_sf()</code> accounts for that by default, unlike plain <code>coord_cartesian()</code>). <code>xlim</code>/<code>ylim</code> arguments to <code>coord_sf()</code> crop the visible extent without subsetting the underlying data.</p>
+<pre><code class="language-r">ggplot(cities_sf) +
+  geom_sf() +
+  coord_sf(crs = st_crs(32651)) +             # reproject for display only — data itself is untouched
+  theme_minimal()
+
+ggplot(cities_sf) +
+  geom_sf() +
+  coord_sf(xlim = c(120.5, 121.5), ylim = c(14.3, 14.8)) +   # crop to Metro Manila, no data subsetting
+  theme_minimal()
+</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> manually filtering or cropping an <code>sf</code> object's rows to "zoom in," when <code>coord_sf(xlim=, ylim=)</code> achieves the same visual result without discarding data &mdash; useful because the same underlying <code>sf</code> object can then be reused for a wide shot and a zoomed-in inset without keeping two separate filtered copies.</p></blockquote>
+
+<p><strong>Exercise 2.1 &mdash; A First TindaHub Map</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code></p>
+<ol>
+<li>Build a <code>geom_sf()</code> plot of all 17 TindaHub cities, colored by <code>Region</code>.</li>
+<li>Add a <code>size</code> aesthetic mapped to a numeric column you compute (e.g., total order count per city, joined in from <code>tindahub_orders.csv</code> via ordinary <code>dplyr</code> &mdash; the geometry column doesn't interfere with a normal join on <code>City</code>).</li>
+<li>Reproduce the same map using <code>coord_sf(crs = st_crs(32651))</code> and compare the visual shape/spacing of points against the default (unprojected) version.</li>
+<li>Use <code>coord_sf(xlim=, ylim=)</code> to crop the map to just the Visayas region's cities, without filtering the underlying <code>sf</code> object.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-choropleth-maps-color-scales">Module 2.2 &mdash; Choropleth Maps &amp; Color Scales</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 2.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Build a choropleth with <code>geom_sf(aes(fill=...))</code>, choose an appropriate continuous or binned color scale, and explain why the default polygon linewidth in current <code>ggplot2</code> matters for a dense choropleth.<br>
+<strong>Skip if:</strong> Choropleth construction and color-scale choice are already deliberate, not default.<br>
+<strong>Unlocks:</strong> Module 2.3, Phase 2 Capstone</p>
+</blockquote>
+
+<h4>Mapping fill to a numeric column</h4>
+<p>A <strong>choropleth</strong> maps a numeric or categorical data column to each polygon's <code>fill</code> color. <code>ggplot2</code> 4.0's viridis-family scales (<code>scale_fill_viridis_c()</code> for continuous, <code>scale_fill_viridis_b()</code> for binned) are a strong default: perceptually uniform and colorblind-safe, unlike an arbitrary red-to-green gradient that can misrepresent the data's actual structure to a meaningful fraction of viewers.</p>
+<pre><code class="language-r">library(ggplot2)
+library(sf)
+
+ggplot(province_summary_sf) +
+  geom_sf(aes(fill = total_revenue), color = "white", linewidth = 0.2) +
+  scale_fill_viridis_c(option = "mako", labels = scales::label_currency(prefix = "₱")) +
+  theme_minimal() +
+  labs(title = "TindaHub Revenue by Province", fill = "Revenue")
+</code></pre>
+<p>As of <code>ggplot2</code> 4.0, <code>geom_sf()</code>'s default polygon outline <code>linewidth</code> is <code>0.2</code> (thinner than earlier <code>ggplot2</code> versions defaulted to) &mdash; worth knowing if you're following an older tutorial's exact linewidth values, or if a map you're porting from an older <code>ggplot2</code> looks visually different after upgrading without any code change.</p>
+
+<h4>Continuous vs. binned scales</h4>
+<p>A continuous scale (<code>scale_fill_viridis_c</code>) shows a smooth gradient legend, appropriate when the underlying value is genuinely continuous and precise comparison matters. A binned scale (<code>scale_fill_viridis_b</code>, or manually with <code>scale_fill_stepsn</code>) groups values into discrete bins, which is often easier for a map reader to compare across regions at a glance &mdash; the trade-off is losing fine-grained precision in exchange for readability, a real design decision rather than a default to leave unexamined.</p>
+
+<p><strong>Exercise 2.2 &mdash; TindaHub Provincial Revenue Choropleth</strong></p>
+<p>Dataset: TindaHub Orders (<code>../datasets/tindahub-orders/tindahub_orders.csv</code>), <code>tindahub_city_coords.csv</code></p>
+<ol>
+<li>Aggregate total revenue by <code>Province</code> from the TindaHub Orders CSV using ordinary <code>dplyr</code>.</li>
+<li>Build a simplified province-level <code>sf</code> object by taking the convex hull (<code>st_convex_hull()</code> on a unioned point set per province) of each province's city points &mdash; explicitly note in your write-up that this is a rough stand-in for a real province boundary, not authoritative data.</li>
+<li>Join the revenue totals in and build a choropleth with <code>scale_fill_viridis_c()</code>, a currency-formatted legend, and a linewidth matching current <code>ggplot2</code> 4.0 defaults.</li>
+<li>Rebuild the same map with a binned scale instead, and note in 1&ndash;2 sentences which version you find easier to read at a glance, and why.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-combining-layers-labels-basemaps">Module 2.3 &mdash; Combining Layers, Labels &amp; Basemaps</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 2.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Combine a point <code>geom_sf()</code> layer over a polygon <code>geom_sf()</code> layer, add text labels with <code>geom_sf_text()</code>, and add a scale bar and north arrow with <code>ggspatial</code>.<br>
+<strong>Skip if:</strong> Multi-layer spatial plots and cartographic annotations are already routine.<br>
+<strong>Unlocks:</strong> Module 2.4, Module 4.2</p>
+</blockquote>
+
+<h4>Layering multiple geom_sf() calls</h4>
+<p>Just like any other <code>ggplot2</code> plot, multiple <code>geom_sf()</code> layers stack in the order they're added &mdash; a polygon layer first, then a point layer on top, produces points drawn over the filled regions. Each layer can reference a <em>different</em> <code>sf</code> object (passed via its own <code>data =</code> argument), which is how a province choropleth and a city-points overlay combine in one plot.</p>
+<pre><code class="language-r">ggplot() +
+  geom_sf(data = province_summary_sf, aes(fill = total_revenue), color = "white", linewidth = 0.2) +
+  geom_sf(data = cities_sf, color = "#ff6b47", size = 2) +
+  geom_sf_text(data = cities_sf, aes(label = City), size = 2.5, nudge_y = 0.05) +
+  scale_fill_viridis_c() +
+  theme_minimal()
+</code></pre>
+
+<h4>ggspatial: scale bars, north arrows, and tile basemaps</h4>
+<p>The <code>ggspatial</code> package adds cartographic conventions <code>ggplot2</code> doesn't include natively: <code>annotation_scale()</code> for a scale bar, <code>annotation_north_arrow()</code> for a north arrow, and <code>annotation_map_tile()</code> for pulling in an OpenStreetMap-style tile basemap underneath a <code>geom_sf()</code> layer &mdash; the <code>ggplot2</code>-ecosystem equivalent of Python's <code>contextily</code>.</p>
+<pre><code class="language-r">library(ggspatial)
+
+ggplot(cities_sf) +
+  annotation_map_tile(type = "cartolight", zoomin = 0) +
+  geom_sf(color = "#ff6b47", size = 3) +
+  annotation_scale(location = "bl") +
+  annotation_north_arrow(location = "tr", style = north_arrow_minimal()) +
+  theme_minimal()
+</code></pre>
+
+<p><strong>Exercise 2.3 &mdash; A Fully Annotated TindaHub Map</strong></p>
+<p>Dataset: builds on Exercise 2.2's choropleth and city points</p>
+<ol>
+<li>Combine the province choropleth and city points into one plot, with city labels via <code>geom_sf_text()</code> for at least the 3 largest-revenue cities (use <code>nudge_y</code>/<code>nudge_x</code> to avoid label-on-point overlap).</li>
+<li>Add a scale bar and north arrow with <code>ggspatial</code>.</li>
+<li>Build a second version using <code>annotation_map_tile()</code> as a real-world basemap underneath the city points (drop the province choropleth for this version, since a fill layer and a tile basemap don't combine cleanly).</li>
+<li>Write 1&ndash;2 sentences on which of the two final maps (choropleth+labels vs. tile-basemap+points) would be more appropriate for a printed executive summary versus an exploratory working document.</li>
+</ol>
+<hr />
+
+<h3 id="module-24-faceted-maps-publication-ready-output">Module 2.4 &mdash; Faceted Maps &amp; Publication-Ready Output</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 2.2 &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Build a faceted small-multiples map with <code>facet_wrap()</code> on spatial data, and export it at a fixed size/resolution suitable for print with <code>ggsave()</code>.<br>
+<strong>Skip if:</strong> Faceted spatial plots and print-ready export are already routine.<br>
+<strong>Unlocks:</strong> Phase 2 Capstone</p>
+</blockquote>
+
+<h4>facet_wrap on spatial data: small multiples</h4>
+<p><code>facet_wrap()</code> works on <code>sf</code>-backed plots exactly as it does on any other <code>ggplot2</code> chart &mdash; splitting the data by a categorical column into a grid of small, identically-scaled maps. This is a genuinely powerful pattern for comparison (revenue per province, one small map per month) that would require significant manual layout work in a purely interactive-map tool.</p>
+<pre><code class="language-r">ggplot(monthly_province_summary_sf) +
+  geom_sf(aes(fill = revenue), color = "white", linewidth = 0.15) +
+  scale_fill_viridis_c() +
+  facet_wrap(~ month) +
+  theme_minimal(base_size = 9) +
+  theme(axis.text = element_blank())
+</code></pre>
+<p><code>coord_sf()</code>'s aspect-ratio handling (Module 2.1) applies per-facet automatically, which is what keeps every small map in the grid proportioned correctly rather than stretched to fill its panel &mdash; a detail that would need manual correction in most other faceting or small-multiples tools.</p>
+
+<h4>Exporting for print</h4>
+<p><code>ggsave()</code> exports any <code>ggplot2</code> plot (spatial or not) to a file, with explicit <code>width</code>/<code>height</code>/<code>dpi</code> control. For maps specifically, fixing the aspect ratio explicitly (rather than relying on a default device size) matters more than for most chart types, since a stretched map visibly distorts real-world shapes in a way a stretched bar chart doesn't.</p>
+<pre><code class="language-r">ggsave("tindahub_provincial_revenue.png", width = 8, height = 10, dpi = 300)
+</code></pre>
+
+<p><strong>Exercise 2.4 &mdash; Faceted Monthly TindaHub Maps</strong></p>
+<p>Dataset: TindaHub Orders CSV, province-level <code>sf</code> object from Exercise 2.2</p>
+<ol>
+<li>Aggregate revenue by province <em>and</em> month (Jan&ndash;Jun 2026) from the Orders CSV.</li>
+<li>Join this into the province <code>sf</code> object (one row per province-month combination) and build a faceted choropleth with one small map per month via <code>facet_wrap(~ month)</code>.</li>
+<li>Export the faceted map to a PNG at 300 DPI, sized appropriately for a printed page (choose and justify a specific width/height).</li>
+<li>Write 1&ndash;2 sentences on one advantage the faceted static version has over an equivalent single interactive map with a month filter/slider (Phase 3&ndash;4 will build that interactive version) &mdash; and one advantage the interactive version would have instead.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-tindahub-print-ready-atlas">Phase 2 Capstone: TindaHub Print-Ready Atlas</h3>
+<p><strong>Project: A small, publication-ready set of static TindaHub maps built entirely with ggplot2 + geom_sf</strong></p>
+<p><strong>Dataset:</strong> TindaHub Orders CSV, <code>tindahub_city_coords.csv</code></p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A provincial revenue choropleth with a deliberately chosen (and justified) color scale.</li>
+<li>A combined layer map (choropleth + labeled city points) with scale bar and north arrow via <code>ggspatial</code>.</li>
+<li>A faceted small-multiples map showing revenue by province across at least 3 time periods.</li>
+<li>All three exported as print-quality PNGs (300 DPI, explicit sizing) via <code>ggsave()</code>.</li>
+<li>A short written note (3&ndash;5 sentences) on which cartographic choices (color scale, linewidth, label placement) you'd revisit if this atlas were going in front of an external client versus staying internal.</li>
+</ol>
+<hr />
+
+<h2 id="phase-3-leaflet-interactive-maps">Phase 3: leaflet Interactive Maps</h2>
+<h3 id="weeks-3-5">Weeks 3&ndash;5 | Goal: build full-control interactive maps, including ones embedded in a reactive Shiny app</h3>
+<hr />
+
+<h3 id="module-31-leaflet-fundamentals-markers-popups-tiles">Module 3.1 &mdash; leaflet Fundamentals: Markers, Popups &amp; Tiles</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> None &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Build a <code>leaflet()</code> map with markers, popups, and a chosen tile provider, using the pipe-based layering syntax.<br>
+<strong>Skip if:</strong> Basic leaflet maps and markers are already routine.<br>
+<strong>Unlocks:</strong> Module 3.2, Module 3.3</p>
+</blockquote>
+
+<h4>leaflet(): a Leaflet.js map, built with pipes</h4>
+<p>The R <code>leaflet</code> package is a wrapper around <strong>Leaflet.js</strong>, the same JavaScript library Python's Folium wraps &mdash; the R version's distinctive style is building a map by piping (<code>%&gt;%</code> or native <code>|&gt;</code>) a sequence of <code>add*()</code> functions onto an initial <code>leaflet()</code> call, each one adding a layer or setting.</p>
+<pre><code class="language-r">library(leaflet)
+
+leaflet() %>%
+  addTiles() %>%                                     # default OpenStreetMap tiles
+  setView(lng = 121.0, lat = 12.5, zoom = 6) %>%
+  addMarkers(
+    lng = 120.9842, lat = 14.5995,
+    popup = "Manila Hub — 1,204 orders this month",
+    label = "Manila Hub"
+  )
+</code></pre>
+<p><code>popup</code> opens on click and stays open until dismissed; <code>label</code> shows on hover and disappears immediately &mdash; the same popup/tooltip distinction as any web-mapping library, just under R's own argument names.</p>
+
+<h4>Tile providers</h4>
+<p><code>addProviderTiles()</code> swaps the default OpenStreetMap tiles for any of dozens of alternative providers (<code>providers$CartoDB.Positron</code> for a clean, low-contrast base good for data-heavy overlays, among many others), without needing a raw tile URL template for the common cases.</p>
+<pre><code class="language-r">leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = 121.0, lat = 12.5, zoom = 6)
+</code></pre>
+
+<p><strong>Exercise 3.1 &mdash; Map TindaHub's City Network in leaflet</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code>, TindaHub Orders CSV</p>
+<ol>
+<li>Aggregate total revenue and order count by city from the TindaHub Orders CSV.</li>
+<li>Build a <code>leaflet()</code> map centered on the Philippines, with one marker per city, each with a popup showing that city's revenue and order count.</li>
+<li>Rebuild the same map using <code>providers$CartoDB.Positron</code> tiles instead of the default, and compare readability against the default OpenStreetMap tiles.</li>
+<li>Save the map to a standalone HTML file using <code>htmlwidgets::saveWidget()</code> and confirm it opens correctly in a browser with no R session running.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-adding-sf-layers-choropleths-with-leaflet">Module 3.2 &mdash; Adding sf Layers &amp; Choropleths with leaflet</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 3.1, Module 1.1 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Add an <code>sf</code> object directly to a leaflet map with <code>addPolygons()</code>, using a color palette function to build an interactive choropleth.<br>
+<strong>Skip if:</strong> This is already a comfortable workflow.<br>
+<strong>Unlocks:</strong> Module 3.3, Module 4.2</p>
+</blockquote>
+
+<h4>leaflet understands sf objects natively</h4>
+<p>This is one of the more convenient details in the R spatial ecosystem specifically: <code>leaflet</code>'s <code>add*()</code> functions (<code>addPolygons()</code>, <code>addCircleMarkers()</code>, <code>addPolylines()</code>) accept an <code>sf</code> object directly via <code>data =</code>, with no manual conversion to GeoJSON or a plain coordinate list required &mdash; a meaningfully smoother handoff from Phase 1's <code>sf</code> work than some other ecosystems' web-mapping libraries require.</p>
+<pre><code class="language-r">library(leaflet)
+library(sf)
+
+leaflet(cities_sf) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(radius = 6, color = "#ff6b47", popup = ~City)
+</code></pre>
+
+<h4>Color palette functions for choropleths</h4>
+<p><code>colorNumeric()</code>, <code>colorBin()</code>, and <code>colorQuantile()</code> each build a palette <em>function</em> (not a fixed vector of colors) from a data range &mdash; you call the returned function on your data column, both to color the polygons and to build a matching legend, which keeps the fill colors and the legend guaranteed consistent.</p>
+<pre><code class="language-r">pal <- colorNumeric(palette = "YlGnBu", domain = province_summary_sf$total_revenue)
+
+leaflet(province_summary_sf) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(
+    fillColor = ~pal(total_revenue),
+    fillOpacity = 0.7,
+    color = "white",
+    weight = 1,
+    popup = ~paste0(Province, ": ₱", format(total_revenue, big.mark = ","))
+  ) %>%
+  addLegend(pal = pal, values = ~total_revenue, title = "Revenue", position = "bottomright")
+</code></pre>
+
+<p><strong>Exercise 3.2 &mdash; Interactive TindaHub Revenue Choropleth</strong></p>
+<p>Dataset: builds on Phase 2's province <code>sf</code> object and revenue aggregation</p>
+<ol>
+<li>Reuse (or rebuild) the convex-hull-approximated province <code>sf</code> object with joined revenue totals from Phase 2.</li>
+<li>Build a <code>colorNumeric()</code> (or <code>colorBin()</code>) palette and an interactive choropleth with <code>addPolygons()</code>, popups showing each province's revenue, and a matching <code>addLegend()</code>.</li>
+<li>Add the 17 city points as <code>addCircleMarkers()</code> on top of the choropleth, in a visually distinct color.</li>
+<li>Compare this interactive version against Phase 2's static choropleth of the same data, and note in 1&ndash;2 sentences one piece of information a viewer can get from the interactive version that the static one can't provide.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-layers-control-clusters-legends">Module 3.3 &mdash; Layers Control, Clusters &amp; Legends</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 3.2 &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Group map layers with <code>group =</code>, add a toggle with <code>addLayersControl()</code>, and cluster hundreds of markers with <code>clusterOptions</code>.<br>
+<strong>Skip if:</strong> Both are already comfortable.<br>
+<strong>Unlocks:</strong> Module 3.4, Phase 3 Capstone</p>
+</blockquote>
+
+<h4>Toggleable layers via group</h4>
+<p>Unlike some web-mapping libraries that require a separate explicit layer-group object, <code>leaflet</code> in R associates any layer with a toggle group simply by passing a <code>group = "some name"</code> argument to the <code>add*()</code> call that creates it &mdash; <code>addLayersControl(overlayGroups = c(...))</code> then builds the actual toggle UI referencing those same group names.</p>
+<pre><code class="language-r">leaflet(orders_sf) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(data = filter(orders_sf, Status == "Delivered"), color = "#0d7a6e", group = "Delivered") %>%
+  addCircleMarkers(data = filter(orders_sf, Status == "Cancelled"), color = "#ff6b47", group = "Cancelled") %>%
+  addLayersControl(overlayGroups = c("Delivered", "Cancelled"), options = layersControlOptions(collapsed = FALSE))
+</code></pre>
+
+<h4>Clustering markers at scale</h4>
+<p>Plotting one marker per order across thousands of rows produces an unreadable wall of overlapping pins. <code>clusterOptions = markerClusterOptions()</code>, passed to <code>addCircleMarkers()</code> or <code>addMarkers()</code>, groups nearby markers into a single numbered cluster icon that expands as the viewer zooms in.</p>
+<pre><code class="language-r">leaflet(orders_sf) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(clusterOptions = markerClusterOptions(), popup = ~as.character(OrderID))
+</code></pre>
+
+<p><strong>Exercise 3.3 &mdash; Clustered, Layered TindaHub Order Map</strong></p>
+<p>Dataset: TindaHub Orders CSV, joined to <code>tindahub_city_coords.csv</code> on <code>City</code></p>
+<ol>
+<li>Join every order to its city's coordinates (all orders in the same city share that city's point &mdash; note this simplification in your write-up), producing an <code>sf</code> object of all orders.</li>
+<li>Build clustered marker layers, one <code>group</code> for <code>Delivered</code> orders and a separate <code>group</code> for <code>Cancelled</code> orders.</li>
+<li>Add <code>addLayersControl()</code> so a viewer can toggle Delivered vs. Cancelled independently, and confirm both cluster layers work correctly when toggled.</li>
+<li>Zoom into the rendered map and confirm clusters expand into individual markers as expected.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-shiny-integration-reactive-maps">Module 3.4 &mdash; Shiny Integration &amp; Reactive Maps</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Advanced &middot; <strong>Prereqs:</strong> Module 3.3 &middot; <strong>Time:</strong> ~2.5h<br>
+<strong>Skip-check (test-out):</strong> Embed a leaflet map in a Shiny app with <code>leafletOutput()</code>/<code>renderLeaflet()</code>, and update it in response to user input using <code>leafletProxy()</code> instead of a full re-render.<br>
+<strong>Skip if:</strong> Shiny-embedded, reactively-updating leaflet maps are already familiar.<br>
+<strong>Unlocks:</strong> Phase 3 Capstone</p>
+</blockquote>
+
+<h4>Embedding a map in Shiny</h4>
+<p><code>leafletOutput("map_id")</code> in the UI and <code>renderLeaflet({ ... })</code> in the server are the standard Shiny output/render pair for any htmlwidget, leaflet included &mdash; the same pattern covered generically in the R Markdown guide's Module 3.4, applied here specifically to a map.</p>
+<pre><code class="language-r">library(shiny)
+library(leaflet)
+
+ui <- fluidPage(
+  selectInput("region_filter", "Region", choices = c("All", unique(cities_sf$Region))),
+  leafletOutput("map")
+)
+
+server <- function(input, output, session) {
+  output$map <- renderLeaflet({
+    leaflet(cities_sf) %>% addProviderTiles(providers$CartoDB.Positron) %>% addCircleMarkers()
+  })
+}
+</code></pre>
+
+<h4>leafletProxy: updating without a full redraw</h4>
+<p>Re-running the entire <code>renderLeaflet({ ... })</code> block on every user input change rebuilds the whole map from scratch &mdash; including resetting the current pan/zoom position, which is a jarring user experience for something like a dropdown filter that should just update the visible markers in place. <code>leafletProxy("map_id")</code> lets you issue incremental updates (clear and re-add specific layers) against the already-rendered map, preserving view state.</p>
+<pre><code class="language-r">server <- function(input, output, session) {
+  output$map <- renderLeaflet({
+    leaflet(cities_sf) %>% addProviderTiles(providers$CartoDB.Positron)
+  })
+
+  observeEvent(input$region_filter, {
+    filtered <- if (input$region_filter == "All") cities_sf else filter(cities_sf, Region == input$region_filter)
+    leafletProxy("map", data = filtered) %>%
+      clearMarkers() %>%
+      addCircleMarkers(popup = ~City)
+    # note: no leaflet(...) / setView() call here — the existing map's pan/zoom state is preserved
+  })
+}
+</code></pre>
+
+<p><strong>Exercise 3.4 &mdash; A Reactive TindaHub Region Filter</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code></p>
+<ol>
+<li>Build a minimal Shiny app with a region <code>selectInput</code> and a leaflet map showing all 17 TindaHub cities.</li>
+<li>Implement the filter using a full <code>renderLeaflet()</code> re-render first, and manually zoom/pan the map before changing the filter &mdash; observe and note what happens to your view position.</li>
+<li>Rewrite the same filter using <code>leafletProxy()</code> with <code>clearMarkers()</code> and re-adding only the filtered markers, and confirm your pan/zoom position is now preserved across filter changes.</li>
+<li>Write 1&ndash;2 sentences on why this distinction would matter more on a map with many candidate filters a user might toggle repeatedly, versus a one-time initial load.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-tindahub-interactive-operations-dashboard">Phase 3 Capstone: TindaHub Interactive Operations Dashboard</h3>
+<p><strong>Project: A Shiny-embedded, reactively-updating leaflet dashboard for TindaHub operations</strong></p>
+<p><strong>Dataset:</strong> TindaHub Orders CSV, <code>tindahub_city_coords.csv</code></p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A Shiny app with a leaflet map showing clustered order markers, with a toggleable Delivered/Cancelled layer control.</li>
+<li>A choropleth layer (province revenue) combinable with the marker layer via <code>addLayersControl()</code>.</li>
+<li>At least one reactive filter (region, date range, or status) implemented with <code>leafletProxy()</code> rather than a full re-render, with pan/zoom state confirmed to persist across filter changes.</li>
+<li>A standalone (non-Shiny) exported HTML version of the same map, built separately via <code>htmlwidgets::saveWidget()</code>, for sharing with someone who can't run the Shiny app.</li>
+<li>A short written note (3&ndash;5 sentences) on which parts of this dashboard genuinely needed Shiny's reactivity versus which could have been a static <code>mapview()</code> or plain <code>leaflet()</code> export instead.</li>
+</ol>
+<hr />
+
+<h2 id="phase-4-mapview-integration">Phase 4: mapview &amp; Integration</h2>
+<h3 id="weeks-5-6">Weeks 5&ndash;6 | Goal: use mapview for fast exploration, combine it with leaflet for control, and choose the right tool deliberately</h3>
+<hr />
+
+<h3 id="module-41-mapview-instant-interactive-exploration">Module 4.1 &mdash; mapview: Instant Interactive Exploration</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner&ndash;Intermediate &middot; <strong>Prereqs:</strong> Module 1.1 &middot; <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Produce an instant interactive map of an <code>sf</code> object with a single <code>mapview()</code> call, colored by a data column via <code>zcol</code>, and explain what <code>mapview</code> automatically configures that a hand-built <code>leaflet</code> map wouldn't by default.<br>
+<strong>Skip if:</strong> <code>mapview</code> is already a familiar part of your exploratory workflow.<br>
+<strong>Unlocks:</strong> Module 4.2, Module 4.3</p>
+</blockquote>
+
+<h4>One line, a fully interactive map</h4>
+<p><code>mapview(sf_object)</code> produces a complete interactive map &mdash; tile basemap, popups showing every attribute column, a working layer control, appropriate default styling &mdash; from a single function call on any <code>sf</code> object, with no manual palette or popup configuration required. This makes it the natural first thing to reach for the moment you have a new <code>sf</code> object and want to actually <em>look</em> at it, rather than the tool for building a final, polished, custom-styled deliverable (that's <code>leaflet</code>'s job, Phase 3).</p>
+<pre><code class="language-r">library(mapview)
+library(sf)
+
+mapview(cities_sf)                                  # instant interactive map, sensible defaults throughout
+mapview(cities_sf, zcol = "Region")                  # colored by a column, in one added argument
+mapview(province_summary_sf, zcol = "total_revenue") # an instant choropleth, no manual palette needed
+</code></pre>
+
+<h4>mapview vs. leaflet: convenience-first vs. control-first</h4>
+<p>Both packages ultimately render Leaflet.js maps, but they optimize for opposite ends of a trade-off: <code>mapview</code> optimizes for speed of getting <em>something</em> useful on screen, auto-detecting reasonable defaults for popups, colors, and legends from whatever <code>sf</code> object you hand it; <code>leaflet</code> requires you to specify each of those explicitly, in exchange for full control over exactly how the final map looks and behaves. Neither is strictly "better" &mdash; <code>mapview</code> for the first look at data during analysis, <code>leaflet</code> once you know exactly what the final, shareable map needs to show.</p>
+
+<p><strong>Exercise 4.1 &mdash; Exploring TindaHub with mapview</strong></p>
+<p>Dataset: <code>tindahub_city_coords.csv</code>, the province <code>sf</code> object from Phase 2</p>
+<ol>
+<li>Create an instant <code>mapview()</code> of the 17-city <code>sf</code> object, then a second version colored by <code>Region</code> via <code>zcol</code>.</li>
+<li>Create a <code>mapview()</code> of the province <code>sf</code> object colored by revenue, and compare (visually, and in effort required) against the equivalent leaflet choropleth you built in Module 3.2.</li>
+<li>Combine two <code>sf</code> objects (cities and provinces) in one <code>mapview()</code> call using <code>+</code> (<code>mapview(a) + mapview(b)</code>), and confirm both layers appear with an automatic layer control.</li>
+<li>Write 1&ndash;2 sentences on how much R code each approach (Module 3.2's <code>leaflet</code> choropleth vs. this exercise's <code>mapview</code> choropleth) took, and what you gave up in exchange for <code>mapview</code>'s brevity.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-combining-sf-mapview-leaflet-in-a-workflow">Module 4.2 &mdash; Combining sf + mapview + leaflet in a Workflow</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> Module 4.1, Module 3.2 &middot; <strong>Time:</strong> ~2h<br>
+<strong>Skip-check (test-out):</strong> Extract the underlying leaflet htmlwidget from a <code>mapview</code> object with <code>@map</code> and further customize it with leaflet functions, explaining why this workflow is useful.<br>
+<strong>Skip if:</strong> This start-fast-then-customize pattern is already familiar.<br>
+<strong>Unlocks:</strong> Module 4.3, Final Capstone</p>
+</blockquote>
+
+<h4>mapview objects contain a real leaflet map underneath</h4>
+<p>A <code>mapview</code> object isn't a separate, closed rendering system &mdash; its <code>@map</code> slot holds the actual underlying <code>leaflet</code> htmlwidget <code>mapview</code> built to produce the display. This means a genuinely useful workflow is: start with <code>mapview()</code> for the fast, auto-configured first look, then pull out <code>@map</code> and keep customizing with ordinary <code>leaflet</code> pipe syntax once you know what specific adjustments the final version needs &mdash; getting <code>mapview</code>'s speed for the first 80% and <code>leaflet</code>'s control for the last 20%, rather than starting a hand-built <code>leaflet</code> map completely from scratch.</p>
+<pre><code class="language-r">library(mapview)
+library(leaflet)
+
+mv <- mapview(province_summary_sf, zcol = "total_revenue")
+m <- mv@map                                    # the underlying leaflet htmlwidget
+
+m %>%
+  addScaleBar(position = "bottomleft") %>%     # keep adding ordinary leaflet layers/controls
+  setView(lng = 121.0, lat = 12.5, zoom = 6)
+</code></pre>
+
+<h4>Exporting from mapview</h4>
+<p><code>mapshot2()</code> (the current export function in recent <code>mapview</code> versions, superseding the older <code>mapshot()</code>) saves a <code>mapview</code> map to a standalone HTML file or a static image, the same export need Phase 3's <code>htmlwidgets::saveWidget()</code> covers for plain <code>leaflet</code> objects &mdash; since a <code>mapview</code> object ultimately <em>is</em> a leaflet htmlwidget under the hood, <code>htmlwidgets::saveWidget(mv@map, "file.html")</code> works identically as a direct alternative.</p>
+
+<p><strong>Exercise 4.2 &mdash; Start Fast, Finish Custom</strong></p>
+<p>Dataset: the province <code>sf</code> object and city points from earlier phases</p>
+<ol>
+<li>Build a <code>mapview()</code> of the province revenue choropleth as your starting point.</li>
+<li>Extract <code>@map</code> and add a scale bar, a fixed initial <code>setView()</code>, and the 17 city points as an additional <code>addCircleMarkers()</code> layer &mdash; all via ordinary <code>leaflet</code> functions chained onto the extracted map.</li>
+<li>Export the final combined map to a standalone HTML file.</li>
+<li>Write 2&ndash;3 sentences comparing the total effort of this "start with mapview, finish with leaflet" workflow against building the same final map entirely from scratch with <code>leaflet()</code> alone (Module 3.2's approach).</li>
+</ol>
+<hr />
+
+<h3 id="module-43-choosing-the-right-tool-sf-vs-geom_sf-vs-leaflet-vs-mapview">Module 4.3 &mdash; Choosing the Right Tool: sf vs geom_sf vs leaflet vs mapview</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate &middot; <strong>Prereqs:</strong> at least one module from each of Phases 1&ndash;3 &middot; <strong>Time:</strong> ~1.5h<br>
+<strong>Skip-check (test-out):</strong> Given four short problem descriptions, correctly name the right tool for each in under a minute, and justify each choice in one sentence.<br>
+<strong>Skip if:</strong> The decision table below is already intuitive to you.<br>
+<strong>Unlocks:</strong> Final Capstone</p>
+</blockquote>
+
+<h4>A decision framework</h4>
+<table>
+<tr><th>Question</th><th>Tool</th><th>Why</th></tr>
+<tr><td>Need to represent, reproject, join, or measure spatial data at all?</td><td><code>sf</code></td><td>The foundation every other tool in this guide consumes as input.</td></tr>
+<tr><td>Need a polished, print-ready, or reproducible-report map?</td><td><code>ggplot2</code> + <code>geom_sf</code></td><td>Same grammar-of-graphics workflow as any other chart; faceting and print export built in.</td></tr>
+<tr><td>Need to compare small multiples across a category (month, region)?</td><td><code>ggplot2</code> + <code>facet_wrap()</code></td><td>Automatic, consistently-scaled small-multiples layout.</td></tr>
+<tr><td>Need the very first interactive look at a new <code>sf</code> object?</td><td><code>mapview</code></td><td>One line, sensible defaults, no palette/popup configuration needed.</td></tr>
+<tr><td>Need a fully custom, precisely-styled interactive map for external sharing?</td><td><code>leaflet</code></td><td>Full control over palettes, popups, layers, and legends.</td></tr>
+<tr><td>Need a map embedded in a Shiny app that updates on user input?</td><td><code>leaflet</code> + <code>leafletProxy()</code></td><td>Incremental updates preserve pan/zoom state; a full re-render doesn't.</td></tr>
+<tr><td>Want mapview's speed but need a few specific custom touches?</td><td><code>mapview</code>, then extract <code>@map</code> and finish with <code>leaflet</code></td><td>Combines both tools' strengths rather than forcing an all-or-nothing choice.</td></tr>
+</table>
+
+<h4>The throughline: sf first, then presentation-layer choice</h4>
+<p>Every tool in Phases 2&ndash;4 consumes <code>sf</code> objects as its native input &mdash; the real decision this guide builds toward isn't "which spatial package," it's "given correctly-built <code>sf</code> data, which presentation layer fits this specific deliverable." A static choropleth for a PDF report, a faceted comparison across time periods, a first exploratory look at new data, and a polished client-facing interactive dashboard are four different jobs with four different right answers, even when they're all ultimately visualizing the exact same underlying spatial data.</p>
+
+<p><strong>Exercise 4.3 &mdash; Tool Selection Drill</strong></p>
+<p>Dataset: none required</p>
+<ol>
+<li>For each of the following, name the single best-fit tool and justify it in one sentence: (a) a quick sanity check that a newly-built <code>sf</code> object's geometries look correct; (b) a PDF appendix showing revenue-by-province for each of the last 6 months, one small map per month; (c) a Shiny app where a manager filters orders by date range and the map updates without resetting their current zoom; (d) a one-off interactive map to email a colleague, with no ongoing maintenance expected; (e) a report chapter's single hero map, with a scale bar, north arrow, and print-quality export.</li>
+<li>For one of the above, implement the actual short solution (or a sketch) to confirm your choice was workable, not just plausible.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-tindahub-spatial-analytics-toolkit">Final Capstone: TindaHub Spatial Analytics Toolkit</h2>
+<p><strong>Project: A single R project combining sf, geom_sf, leaflet, and mapview for TindaHub's location-based decisions</strong></p>
+<p>Integrates all four phases. Uses the TindaHub Orders CSV and the bundled city-coordinate dataset throughout.</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>An <code>R/tindahub_geo.R</code> (or a small package) with clearly separated functions: an <code>sf</code>-based geometry/coverage layer (Phase 1), a <code>geom_sf</code>-based static reporting layer (Phase 2), a <code>leaflet</code>-based interactive/Shiny layer (Phase 3), and <code>mapview</code>-based exploratory helpers (Phase 4).</li>
+<li>A hub coverage and zone-assignment analysis using real, projected (not degree-based) distances and areas throughout.</li>
+<li>A print-ready static atlas (at least 2 maps) exported at 300 DPI.</li>
+<li>A Shiny app with at least one <code>leafletProxy()</code>-based reactive filter, confirmed to preserve pan/zoom state.</li>
+<li>Documentation (in code comments or a short README) of every approximation made (convex-hull province boundaries, single-point-per-city order locations) and what real data source would replace each before production use.</li>
+<li>A "tool choice log" &mdash; one sentence per major deliverable explaining, using Module 4.3's framework, why that specific package was the right choice.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: R GIS &amp; Mapping Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Function</th><th>Notes</th></tr>
+<tr><td>Build an sf object from lon/lat columns</td><td><code>st_as_sf(df, coords = c("lon","lat"), crs = 4326)</code></td><td>Vectorized — avoid a loop of individual <code>st_point()</code> calls.</td></tr>
+<tr><td>Test a spatial relationship</td><td><code>st_intersects()</code>, <code>st_contains()</code>, <code>st_within()</code>, <code>st_touches()</code></td><td>Boundary-exact cases differ between predicates — choose deliberately.</td></tr>
+<tr><td>Reproject to a metric CRS</td><td><code>st_transform(x, 32651)</code> (or your local UTM zone)</td><td>Required before a fully deliberate real distance/area/buffer calculation.</td></tr>
+<tr><td>Join by location, not a shared key</td><td><code>st_join(x, y, join = ...)</code></td><td>Default join predicate is <code>st_intersects</code> if unspecified — state it explicitly.</td></tr>
+<tr><td>Grow a shape outward</td><td><code>st_buffer(x, dist)</code></td><td><code>dist</code> is in the CRS's own units — meters, once projected.</td></tr>
+<tr><td>Combine geometries into one</td><td><code>st_union()</code></td><td>Also collapses a whole geometry column into a single merged shape.</td></tr>
+<tr><td>Plot spatial data with ggplot2</td><td><code>geom_sf()</code></td><td>Draws points/lines/polygons automatically based on geometry type.</td></tr>
+<tr><td>Reproject or crop at plot time only</td><td><code>coord_sf(crs = ..., xlim = ..., ylim = ...)</code></td><td>Doesn't modify the underlying data — reusable for multiple views.</td></tr>
+<tr><td>Colorblind-safe choropleth scale</td><td><code>scale_fill_viridis_c()</code> / <code>_b()</code></td><td>Continuous vs. binned is a real readability trade-off, not a default.</td></tr>
+<tr><td>Add a scale bar / north arrow / tile basemap</td><td><code>ggspatial::annotation_scale/_north_arrow/_map_tile</code></td><td>The ggplot2-ecosystem equivalent of Python's contextily.</td></tr>
+<tr><td>Small-multiples spatial comparison</td><td><code>facet_wrap(~ category)</code></td><td>Aspect ratio stays correct per-facet automatically via <code>coord_sf()</code>.</td></tr>
+<tr><td>Interactive map with markers</td><td><code>leaflet() %&gt;% addTiles() %&gt;% addMarkers()</code></td><td>Accepts <code>sf</code> objects directly via <code>data =</code> — no manual GeoJSON conversion.</td></tr>
+<tr><td>Interactive choropleth</td><td><code>colorNumeric()</code>/<code>colorBin()</code> + <code>addPolygons()</code> + <code>addLegend()</code></td><td>Build the palette function once, reuse for both fill and legend.</td></tr>
+<tr><td>Update a Shiny-embedded map without resetting the view</td><td><code>leafletProxy()</code></td><td>Use instead of a full <code>renderLeaflet()</code> re-render on reactive input changes.</td></tr>
+<tr><td>Instant interactive map, sensible defaults</td><td><code>mapview(sf_object, zcol = "column")</code></td><td>Start here for exploration; extract <code>@map</code> to finish with leaflet for full control.</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-sf-spatial-data">sf &amp; Spatial Data</h3>
+<dl class="glossary">
+<dt>sfg (simple feature geometry)</dt>
+<dd>A single geometry object (one point, line, or polygon), created with functions like <code>st_point()</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "geometry" alone when precision matters &mdash; use it to mean the concept generally, but <code>sfg</code> specifically refers to <code>sf</code>'s single-geometry object type.</dd>
+<dt>sfc (simple feature geometry column)</dt>
+<dd>A vector of <code>sfg</code> objects sharing one CRS, created with <code>st_sfc()</code>; the type of an <code>sf</code> object's geometry column.</dd>
+<dd class="avoid"><strong>Avoid:</strong> confusing an <code>sfc</code> with the full <code>sf</code> object &mdash; an <code>sfc</code> has no other data columns attached; it's just the geometry list plus CRS.</dd>
+<dt>sf object</dt>
+<dd>An ordinary data frame (or tibble) with one column that is an <code>sfc</code>, conventionally named <code>geometry</code> &mdash; a spatial dataset that is simultaneously a normal, <code>dplyr</code>-compatible data frame.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "spatial data frame" as a substitute term in code or documentation &mdash; the actual class name and community term is "sf object."</dd>
+<dt>CRS (Coordinate Reference System)</dt>
+<dd>The specific system, including its unit of measurement and reference surface, that gives a geometry's coordinates real-world meaning.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "projection" as a strict synonym &mdash; a geographic CRS (like WGS84) isn't a projection at all; "projected CRS" is the narrower term for CRSes that flatten the earth onto a plane.</dd>
+<dt>Spatial join (st_join)</dt>
+<dd>A join between two <code>sf</code> objects based on the spatial relationship between their geometries, rather than a matching key column.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "merge" or plain <code>left_join()</code> as a substitute &mdash; those match on column values and have no concept of spatial relationship.</dd>
+</dl>
+
+<h3 id="glossary-geom_sf-cartography">geom_sf &amp; Cartography</h3>
+<dl class="glossary">
+<dt>Choropleth</dt>
+<dd>A map where regions are shaded according to a data value associated with each region.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "heat map" as a synonym &mdash; a heat map typically shades continuous density from point data, not discrete regions from a joined attribute.</dd>
+<dt>coord_sf</dt>
+<dd>The <code>ggplot2</code> coordinate system for <code>geom_sf()</code> plots, controlling display-time projection, extent cropping, and correct geographic aspect ratio &mdash; without modifying the underlying data.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming <code>coord_sf(crs=...)</code> permanently reprojects your <code>sf</code> object &mdash; it only affects that plot's rendering; the underlying data's CRS is unchanged.</dd>
+<dt>Small multiples (faceted map)</dt>
+<dd>A grid of identically-scaled small maps, one per category value, produced with <code>facet_wrap()</code> on spatial data.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "subplots" as a casual substitute &mdash; small multiples specifically implies consistent scale and layout across every panel, which manually-arranged subplots don't guarantee.</dd>
+</dl>
+
+<h3 id="glossary-leaflet-mapview">leaflet &amp; mapview</h3>
+<dl class="glossary">
+<dt>Leaflet.js</dt>
+<dd>The JavaScript mapping library both the R <code>leaflet</code> package and <code>mapview</code> generate code for underneath.</dd>
+<dd class="avoid"><strong>Avoid:</strong> describing R's <code>leaflet</code> package as a rendering engine in its own right &mdash; it's an R interface generating Leaflet.js-compatible output, not a separate rendering system.</dd>
+<dt>Palette function (colorNumeric/colorBin/colorQuantile)</dt>
+<dd>An R function, built from a data range, that maps a data value to a color &mdash; used for both a layer's fill color and its matching legend.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "color vector" as a substitute &mdash; these return a <em>function</em> to call on data, not a fixed, pre-computed list of colors.</dd>
+<dt>leafletProxy</dt>
+<dd>A reference to an already-rendered leaflet map inside a Shiny server, used to issue incremental layer updates without a full re-render.</dd>
+<dd class="avoid"><strong>Avoid:</strong> assuming any change to reactive input requires re-running the whole <code>renderLeaflet()</code> block &mdash; that approach resets pan/zoom state unnecessarily.</dd>
+<dt>mapview</dt>
+<dd>A package producing an instantly-configured interactive map from an <code>sf</code> object in one function call, whose result internally wraps a real <code>leaflet</code> htmlwidget accessible via <code>@map</code>.</dd>
+<dd class="avoid"><strong>Avoid:</strong> treating <code>mapview</code> and <code>leaflet</code> as fully separate, non-interoperable tools &mdash; a <code>mapview</code> object's underlying map can be extracted and further customized with ordinary <code>leaflet</code> functions.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>Spatial Data Science: With Applications in R (2023, open access) &mdash; Edzer Pebesma &amp; Roger Bivand</td><td>Written by <code>sf</code>'s own author; the closest single book to this guide's exact scope, and kept current online as the R-spatial ecosystem evolves.</td></tr>
+<tr><td>Geocomputation with R, 2nd ed. (2025 revision, open access) &mdash; Lovelace, Nowosad &amp; Muenchow</td><td>Broader spatial data science in R, including <code>sf</code>, <code>terra</code>, and mapping with both <code>ggplot2</code> and <code>leaflet</code>/<code>tmap</code>; free online, actively maintained.</td></tr>
+</table>
+
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td><a href="https://r-spatial.github.io/sf/">sf Official Documentation</a></td><td>sf objects, CRS, predicates, joins, operations</td><td>The package vignettes ("Simple Features for R", "Manipulating Simple Feature Geometries") directly parallel this guide's Phase 1.</td></tr>
+<tr><td><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">ggplot2: geom_sf Reference</a></td><td>geom_sf, coord_sf</td><td>Check here after any <code>ggplot2</code> upgrade for default-value changes (e.g., the 4.0 linewidth default noted in Module 2.2).</td></tr>
+<tr><td><a href="https://paleolimbot.github.io/ggspatial/">ggspatial Documentation</a></td><td>Scale bars, north arrows, tile basemaps for ggplot2</td><td>Covers <code>annotation_map_tile()</code>'s provider options beyond Module 2.3's example.</td></tr>
+<tr><td><a href="https://rstudio.github.io/leaflet/">leaflet (R) Official Documentation</a></td><td>Markers, polygons, choropleths, Shiny integration</td><td>The "Show/Hide Layers" and "Shiny" articles map directly to this guide's Phase 3.</td></tr>
+<tr><td><a href="https://r-spatial.github.io/mapview/">mapview Official Documentation</a></td><td>Instant interactive maps, layer combination</td><td>The "Basics" and "Advanced Controls" articles cover Phase 4 in more depth.</td></tr>
+<tr><td><a href="https://r-spatial.org/">r-spatial.org</a></td><td>R-spatial ecosystem news, migration guides</td><td>The authoritative source for ecosystem-wide changes, including the 2023 rgdal/rgeos/maptools retirement this guide's scope note references.</td></tr>
+</table>
+
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td>TindaHub Orders &amp; Customers (<code>datasets/tindahub-orders/</code>, this workspace)</td><td>The benchmark tabular dataset used throughout this guide.</td></tr>
+<tr><td><code>tindahub_city_coords.csv</code> (this workspace's Python GIS guide)</td><td>City-level lat/lon lookup for the 17 TindaHub cities, reused here so both guides map the same real geography.</td></tr>
+<tr><td>rnaturalearth</td><td>Quick real-world country/region boundary polygons for practice, independent of TindaHub's own approximated province shapes.</td></tr>
+<tr><td>ggspatial</td><td>Scale bars, north arrows, and tile basemaps for static <code>geom_sf</code> maps (Module 2.3).</td></tr>
+<tr><td>htmlwidgets</td><td><code>saveWidget()</code> for exporting standalone HTML from either <code>leaflet</code> or <code>mapview</code> maps.</td></tr>
+</table>
+
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>r-spatial GitHub Discussions</td><td>GitHub Discussions (r-spatial org repos: sf, mapview, stars)</td><td>Direct access to the maintainers behind <code>sf</code> and <code>mapview</code> for design and edge-case questions.</td></tr>
+<tr><td>RStudio/Posit Community</td><td>community.rstudio.com (Posit Community)</td><td>Broad R ecosystem help, including <code>leaflet</code>/Shiny integration questions.</td></tr>
+<tr><td>GIS Stack Exchange</td><td>gis.stackexchange.com</td><td>The highest-reputation Q&amp;A site for GIS concepts generally, including R-tagged questions.</td></tr>
+<tr><td>r/rstats</td><td>Reddit</td><td>Broader R practitioner community for workflow and package-comparison questions beyond pure mechanics.</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them &mdash; this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads &mdash; use "Reset progress" in the sidebar to clear it.</p></blockquote>
+
+<h4>Phase 1 &mdash; sf Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 &mdash; Simple Feature Geometries: sfg, sfc &amp; sf Objects</li>
+<li>[ ] Exercise 1.1 &mdash; Build TindaHub's City sf Object</li>
+<li>[ ] Module 1.2 &mdash; Coordinate Reference Systems &amp; st_transform</li>
+<li>[ ] Exercise 1.2 &mdash; Real Distances Between TindaHub Cities</li>
+<li>[ ] Module 1.3 &mdash; Spatial Predicates, Joins &amp; st_join</li>
+<li>[ ] Exercise 1.3 &mdash; Assign TindaHub Cities to Delivery Zones</li>
+<li>[ ] Module 1.4 &mdash; Geometric Operations: Buffers, Unions &amp; Measurements</li>
+<li>[ ] Exercise 1.4 &mdash; TindaHub Hub Coverage Overlaps</li>
+<li>[ ] Capstone 1 &mdash; TindaHub Hub Coverage Model</li>
+</ul>
+
+<h4>Phase 2 &mdash; ggplot2 + geom_sf Cartography</h4>
+<ul>
+<li>[ ] Module 2.1 &mdash; geom_sf Fundamentals &amp; Aesthetic Mapping</li>
+<li>[ ] Exercise 2.1 &mdash; A First TindaHub Map</li>
+<li>[ ] Module 2.2 &mdash; Choropleth Maps &amp; Color Scales</li>
+<li>[ ] Exercise 2.2 &mdash; TindaHub Provincial Revenue Choropleth</li>
+<li>[ ] Module 2.3 &mdash; Combining Layers, Labels &amp; Basemaps</li>
+<li>[ ] Exercise 2.3 &mdash; A Fully Annotated TindaHub Map</li>
+<li>[ ] Module 2.4 &mdash; Faceted Maps &amp; Publication-Ready Output</li>
+<li>[ ] Exercise 2.4 &mdash; Faceted Monthly TindaHub Maps</li>
+<li>[ ] Capstone 2 &mdash; TindaHub Print-Ready Atlas</li>
+</ul>
+
+<h4>Phase 3 &mdash; leaflet Interactive Maps</h4>
+<ul>
+<li>[ ] Module 3.1 &mdash; leaflet Fundamentals: Markers, Popups &amp; Tiles</li>
+<li>[ ] Exercise 3.1 &mdash; Map TindaHub's City Network in leaflet</li>
+<li>[ ] Module 3.2 &mdash; Adding sf Layers &amp; Choropleths with leaflet</li>
+<li>[ ] Exercise 3.2 &mdash; Interactive TindaHub Revenue Choropleth</li>
+<li>[ ] Module 3.3 &mdash; Layers Control, Clusters &amp; Legends</li>
+<li>[ ] Exercise 3.3 &mdash; Clustered, Layered TindaHub Order Map</li>
+<li>[ ] Module 3.4 &mdash; Shiny Integration &amp; Reactive Maps</li>
+<li>[ ] Exercise 3.4 &mdash; A Reactive TindaHub Region Filter</li>
+<li>[ ] Capstone 3 &mdash; TindaHub Interactive Operations Dashboard</li>
+</ul>
+
+<h4>Phase 4 &mdash; mapview &amp; Integration</h4>
+<ul>
+<li>[ ] Module 4.1 &mdash; mapview: Instant Interactive Exploration</li>
+<li>[ ] Exercise 4.1 &mdash; Exploring TindaHub with mapview</li>
+<li>[ ] Module 4.2 &mdash; Combining sf + mapview + leaflet in a Workflow</li>
+<li>[ ] Exercise 4.2 &mdash; Start Fast, Finish Custom</li>
+<li>[ ] Module 4.3 &mdash; Choosing the Right Tool</li>
+<li>[ ] Exercise 4.3 &mdash; Tool Selection Drill</li>
+</ul>
+
+<h4>Final Outcome</h4>
+<ul>
+<li>[ ] Final Capstone &mdash; TindaHub Spatial Analytics Toolkit complete</li>
+</ul>
+
+<p><em>Guide Version 1.0 &mdash; R GIS &amp; Mapping Track: Applied Spatial Data Science</em><br>
+<em>Non-linear modular design &middot; Placement quiz &middot; 15 modules &middot; ~6 weeks part-time &middot; hayah-ai</em><br>
+<em>Tool versions and resources verified as of 2026-08-02 (sf 1.1-2, ggplot2 4.0.3, leaflet 2.2.3, mapview 2.11.4, R 4.6.1 recommended baseline; rgdal/rgeos/maptools noted as retired since October 2023)</em></p>
+
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Full-text guide search ────────────────────────────────
+  // Indexes every block of the guide body, lists matching snippets grouped
+  // by section, highlights hits in the page, and filters the nav to the
+  // sections that contain them. Multiple words = all must appear in the
+  // same block; wrap in "quotes" for an exact phrase.
+  var navSearch = document.getElementById("navSearch");
+  var contentRoot = document.querySelector(".content");
+  if(navSearch && contentRoot){
+    var BLOCK_SEL = "h1,h2,h3,h4,p,li,tr,dt,dd,pre";
+    var searchRow = document.getElementById("searchRow"),
+        searchBar = document.getElementById("searchBar"),
+        searchCount = document.getElementById("searchCount"),
+        searchResults = document.getElementById("searchResults");
+    var navById = {};
+    document.querySelectorAll("#nav a").forEach(function(a){
+      navById[a.getAttribute("href").slice(1)] = a;
+    });
+
+    var blocks = [], section = null;
+    contentRoot.querySelectorAll(BLOCK_SEL).forEach(function(el){
+      if(/^H[1-4]$/.test(el.tagName) && el.id && navById[el.id]) section = el;
+      if(el.classList.contains("quiz-score")) return;
+      var outer = el.parentElement && el.parentElement.closest(BLOCK_SEL);
+      if(outer && contentRoot.contains(outer)) return;
+      var text = el.textContent.replace(/\s+/g, " ").trim();
+      if(text) blocks.push({el:el, text:text, lower:text.toLowerCase(), section:section});
+    });
+
+    var hits = [], cur = -1, timer = null;
+    function escHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+    function sectionLabel(sec){ return sec && navById[sec.id] ? navById[sec.id].textContent : "Introduction"; }
+
+    function clearMarks(){
+      contentRoot.querySelectorAll("mark.lg-hit").forEach(function(m){
+        var p = m.parentNode;
+        p.replaceChild(document.createTextNode(m.textContent), m);
+        p.normalize();
+      });
+      var b = contentRoot.querySelector(".lg-block-current");
+      if(b) b.classList.remove("lg-block-current");
+    }
+
+    function markBlock(el, re){
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+      while((n = walker.nextNode())) nodes.push(n);
+      var marks = [];
+      nodes.forEach(function(node){
+        var t = node.nodeValue, m, last = 0;
+        re.lastIndex = 0;
+        if(!re.test(t)) return;
+        re.lastIndex = 0;
+        var frag = document.createDocumentFragment();
+        while((m = re.exec(t))){
+          if(m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+          var mk = document.createElement("mark");
+          mk.className = "lg-hit";
+          mk.textContent = m[0];
+          frag.appendChild(mk);
+          marks.push(mk);
+          last = m.index + m[0].length;
+        }
+        if(last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+      });
+      return marks;
+    }
+
+    function snippet(text, terms, re){
+      var lower = text.toLowerCase(), i = -1;
+      terms.forEach(function(t){ var k = lower.indexOf(t); if(k > -1 && (i < 0 || k < i)) i = k; });
+      if(i < 0) i = 0;
+      var start = Math.max(0, i - 40), end = Math.min(text.length, i + 100);
+      var s = text.slice(start, end), out = "", last = 0, m;
+      re.lastIndex = 0;
+      while((m = re.exec(s))){
+        out += escHtml(s.slice(last, m.index)) + "<mark>" + escHtml(m[0]) + "</mark>";
+        last = m.index + m[0].length;
+      }
+      return (start > 0 ? "…" : "") + out + escHtml(s.slice(last)) + (end < text.length ? "…" : "");
+    }
+
+    function filterNav(ids){
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var any = false;
+        g.querySelectorAll("a").forEach(function(a){
+          var show = !ids || !!ids[a.getAttribute("href").slice(1)];
+          if(a.classList.contains("nav-child")) a.classList.toggle("filtered-out", !show);
+          if(show) any = true;
+        });
+        g.classList.toggle("filtered-out", !any);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        a.classList.toggle("filtered-out", !!ids && !ids[a.getAttribute("href").slice(1)]);
+      });
+    }
+
+    function updateCount(nSections){
+      if(!hits.length){ searchCount.textContent = "No matches"; return; }
+      var pos = cur > -1 ? (cur + 1) + " / " + hits.length : hits.length + (hits.length === 1 ? " match" : " matches");
+      searchCount.textContent = pos + " · " + nSections + (nSections === 1 ? " section" : " sections");
+    }
+
+    var lastSectionCount = 0;
+    function run(){
+      var raw = navSearch.value.trim();
+      clearMarks();
+      hits = []; cur = -1;
+      searchRow.classList.toggle("has-query", !!raw);
+      if(raw.length < 2){
+        searchResults.classList.remove("show");
+        searchBar.classList.remove("show");
+        searchResults.innerHTML = "";
+        filterNav(null);
+        return;
+      }
+      var phrase = /^"(.+)"$/.exec(raw);
+      var terms = phrase ? [phrase[1].toLowerCase()] : raw.toLowerCase().split(/\s+/);
+      terms = terms.filter(function(t, i){ return t && terms.indexOf(t) === i; });
+      var re = new RegExp(terms.slice().sort(function(a, b){ return b.length - a.length; }).map(escRe).join("|"), "gi");
+      var matched = blocks.filter(function(b){
+        return terms.every(function(t){ return b.lower.indexOf(t) > -1; });
+      });
+
+      var ids = {}, groups = [], html = "", LIMIT = 60;
+      matched.forEach(function(b, bi){
+        var marks = markBlock(b.el, re);
+        if(marks.length) marks.forEach(function(m){ hits.push({m:m, el:b.el, b:bi}); });
+        else hits.push({m:null, el:b.el, b:bi});
+        var key = b.section ? b.section.id : "";
+        if(b.section) ids[b.section.id] = true;
+        if(!groups.length || groups[groups.length - 1].key !== key) groups.push({key:key, sec:b.section, items:[]});
+        groups[groups.length - 1].items.push(bi);
+      });
+
+      if(!matched.length){
+        html = '<div class="sr-empty">No matches for “' + escHtml(raw) + '”. Try fewer words.</div>';
+      } else {
+        var listed = 0;
+        groups.forEach(function(g){
+          if(listed >= LIMIT) return;
+          html += '<div class="sr-group"><div class="sr-section">' + escHtml(sectionLabel(g.sec)) + '</div>';
+          g.items.slice(0, 4).forEach(function(bi){
+            if(listed >= LIMIT) return;
+            html += '<button type="button" class="sr-item" role="option" data-b="' + bi + '">' +
+                    snippet(matched[bi].text, terms, re) + '</button>';
+            listed++;
+          });
+          if(g.items.length > 4) html += '<div class="sr-more">+' + (g.items.length - 4) + ' more in this section (use ↓ to step through)</div>';
+          html += '</div>';
+        });
+        if(matched.length > listed) html += '<div class="sr-more">Showing ' + listed + ' of ' + matched.length + ' blocks — add a word to narrow it.</div>';
+      }
+      searchResults.innerHTML = html;
+      searchResults.classList.add("show");
+      searchBar.classList.add("show");
+      lastSectionCount = Object.keys(ids).length || (matched.length ? 1 : 0);
+      filterNav(ids);
+      updateCount(lastSectionCount);
+    }
+
+    function go(i, closeMobile){
+      if(!hits.length) return;
+      cur = (i + hits.length) % hits.length;
+      contentRoot.querySelectorAll("mark.lg-hit-current").forEach(function(m){ m.classList.remove("lg-hit-current"); });
+      var prev = contentRoot.querySelector(".lg-block-current");
+      if(prev) prev.classList.remove("lg-block-current");
+      var h = hits[cur];
+      if(h.m) h.m.classList.add("lg-hit-current");
+      h.el.classList.add("lg-block-current");
+      (h.m || h.el).scrollIntoView({behavior:"smooth", block:"center"});
+      searchResults.querySelectorAll(".sr-item").forEach(function(it){
+        var on = +it.getAttribute("data-b") === h.b;
+        it.classList.toggle("current", on);
+        if(on) it.scrollIntoView({block:"nearest"});
+      });
+      updateCount(lastSectionCount);
+      if(closeMobile && window.innerWidth <= 1000) closeNav();
+    }
+
+    navSearch.addEventListener("input", function(){
+      clearTimeout(timer);
+      timer = setTimeout(run, 140);
+    });
+    navSearch.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        clearTimeout(timer);
+        if(!hits.length && navSearch.value.trim().length >= 2) run();
+        go(e.shiftKey ? cur - 1 : cur + 1, true);
+      } else if(e.key === "Escape"){
+        navSearch.value = "";
+        run();
+      }
+    });
+    searchResults.addEventListener("click", function(e){
+      var item = e.target.closest(".sr-item");
+      if(!item) return;
+      var b = +item.getAttribute("data-b");
+      for(var k = 0; k < hits.length; k++){ if(hits[k].b === b){ go(k, true); break; } }
+    });
+    document.getElementById("searchNext").addEventListener("click", function(){ go(cur + 1, false); });
+    document.getElementById("searchPrev").addEventListener("click", function(){ go(cur - 1, false); });
+    document.getElementById("searchClear").addEventListener("click", function(){
+      navSearch.value = "";
+      run();
+      navSearch.focus();
+    });
+    document.addEventListener("keydown", function(e){
+      var tag = (e.target.tagName || "").toLowerCase();
+      var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+      var slash = e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey;
+      var cmdK = (e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K");
+      if(!slash && !cmdK) return;
+      e.preventDefault();
+      if(window.innerWidth <= 1000){
+        document.getElementById("sidebar").classList.add("open");
+        document.getElementById("scrim").classList.add("show");
+      }
+      navSearch.focus();
+      navSearch.select();
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>
