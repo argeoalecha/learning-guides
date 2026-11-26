@@ -1,6 +1,6 @@
 # TindaHub
 
-Used by: **[PostgreSQL & Metabase guide](../../postgresql-metabase/postgresql-metabase_learning_guide.html)** (Module 1.2 onward)
+Used by: **[PostgreSQL & Metabase guide](../../postgresql-metabase/postgresql-metabase_learning_guide.html)** (Module 1.2 onward), **[Python Database Libraries guide](../../python-database-libraries/python-database-libraries_learning_guide.html)** (every module and capstone, against the same local Postgres)
 
 A Philippine online marketplace schema (COD, peso-priced) — six normalized tables covering categories, customers, products, orders, order items, and payments.
 

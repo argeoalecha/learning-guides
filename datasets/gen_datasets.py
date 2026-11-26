@@ -85,8 +85,8 @@ for i in range(n):
     margin_rate = {"Furniture": 0.05, "Office Supplies": 0.22, "Technology": 0.12}[category]
     profit = round(sales * (margin_rate + rng.uniform(-0.15, 0.15)), 2)
     rows.append({
-        "Order ID": order_id, "Order Date": order_date.strftime("%Y-%m-%d"),
-        "Ship Date": ship_date.strftime("%Y-%m-%d"), "Ship Mode": rng.choice(ship_modes),
+        "Order ID": order_id, "Order Date": order_date,
+        "Ship Date": ship_date, "Ship Mode": rng.choice(ship_modes),
         "Customer ID": customer_id, "Customer Name": customer_name, "Segment": segment,
         "Country": "United States", "City": city, "State": state,
         "Postal Code": int(rng.integers(10000, 99999)), "Region": region,
@@ -96,15 +96,40 @@ for i in range(n):
     })
 
 superstore = pd.DataFrame(rows)
-superstore.to_csv(f"{BASE}/superstore-sales/superstore_sales.csv", index=False)
+
+# Date columns stay real datetimes in `superstore` so the .xlsx gets true Excel
+# serial dates (PivotTable date grouping and Timeline slicers require them).
+# CSVs get ISO text — Excel and Power Query parse "yyyy-mm-dd" on import.
+DATE_FMT = "%Y-%m-%d"
+# Date cells ship as REAL Excel dates but displayed in the ambiguous US-style
+# mm/dd/yyyy. Deliberate: the guide's Module 1.4 exercise is "format OrderDate as
+# yyyy-mm-dd and confirm sorting is now unambiguous" — shipping them pre-formatted
+# in ISO would rob that exercise, the same reason sheets ship as plain ranges
+# rather than pre-built Tables. The underlying values are true serial dates, so
+# date grouping, Timeline slicers, EOMONTH and NETWORKDAYS.INTL all work.
+XL_DATE_FMT = "mm/dd/yyyy"
+
+
+def _apply_date_format(workbook, fmt=XL_DATE_FMT):
+    """Give real date cells an explicit display format instead of openpyxl's
+    default 'YYYY-MM-DD HH:MM:SS' (which leaks a meaningless 00:00:00 time)."""
+    for ws in workbook.worksheets:
+        for row in ws.iter_rows(min_row=2):
+            for cell in row:
+                if cell.data_type == "d":
+                    cell.number_format = fmt
+superstore_csv = superstore.copy()
+for _c in ("Order Date", "Ship Date"):
+    superstore_csv[_c] = superstore_csv[_c].dt.strftime(DATE_FMT)
+superstore_csv.to_csv(f"{BASE}/superstore-sales/superstore_sales.csv", index=False)
 
 # Star-schema version for Power Pivot / DAX exercises
-fact_sales = superstore[["Order ID", "Order Date", "Customer ID", "Product ID", "Sales", "Quantity", "Discount", "Profit"]].copy()
+fact_sales = superstore_csv[["Order ID", "Order Date", "Customer ID", "Product ID", "Sales", "Quantity", "Discount", "Profit"]].copy()
 fact_sales.insert(0, "Sales Key", range(1, len(fact_sales) + 1))
 
-dim_product = superstore[["Product ID", "Product Name", "Category", "Sub-Category"]].drop_duplicates(subset=["Product ID"]).reset_index(drop=True)
-dim_customer = superstore[["Customer ID", "Customer Name", "Segment"]].drop_duplicates(subset=["Customer ID"]).reset_index(drop=True)
-dim_region = superstore[["Region", "State", "City", "Country"]].drop_duplicates().reset_index(drop=True)
+dim_product = superstore_csv[["Product ID", "Product Name", "Category", "Sub-Category"]].drop_duplicates(subset=["Product ID"]).reset_index(drop=True)
+dim_customer = superstore_csv[["Customer ID", "Customer Name", "Segment"]].drop_duplicates(subset=["Customer ID"]).reset_index(drop=True)
+dim_region = superstore_csv[["Region", "State", "City", "Country"]].drop_duplicates().reset_index(drop=True)
 dim_region.insert(0, "Region Key", range(1, len(dim_region) + 1))
 
 date_min, date_max = pd.to_datetime(superstore["Order Date"]).min(), pd.to_datetime(superstore["Order Date"]).max()
@@ -123,8 +148,11 @@ dim_region.to_csv(f"{BASE}/superstore-sales/dim_Region.csv", index=False)
 dim_date.to_csv(f"{BASE}/superstore-sales/dim_Date.csv", index=False)
 
 # Also ship an .xlsx workbook: single flat sheet (matches "Dataset: Superstore Sales (Excel)")
-with pd.ExcelWriter(f"{BASE}/superstore-sales/Superstore_Sales.xlsx", engine="openpyxl") as xw:
+# Written from the datetime-typed frame so date columns are real Excel dates.
+with pd.ExcelWriter(f"{BASE}/superstore-sales/Superstore_Sales.xlsx", engine="openpyxl",
+                    date_format=XL_DATE_FMT, datetime_format=XL_DATE_FMT) as xw:
     superstore.to_excel(xw, sheet_name="Orders", index=False)
+    _apply_date_format(xw.book)
 
 print("superstore-sales:", superstore.shape)
 
@@ -508,19 +536,25 @@ th_last = ["Santos", "Reyes", "Cruz", "Bautista", "Ocampo", "Garcia", "Mendoza",
             "Flores", "Ramos", "Villanueva", "Castillo", "Aquino", "Del Rosario", "Pascual"]
 
 # --- Customers master (200) ---
+# Names are drawn WITHOUT replacement so all 200 are unique. Orders reference a
+# customer by name as well as CustomerID, and the guide's Module 2.1 exercise looks
+# up a customer's city from this sheet — duplicate names would make that lookup
+# ambiguous and return another customer's city.
 n_cust_th = 200
+_name_pool = [f"{f} {l}" for f in th_first for l in th_last]   # 20 x 15 = 300 combos
+assert len(_name_pool) >= n_cust_th, "name pool too small for unique customer names"
+_unique_names = list(rng.choice(_name_pool, size=n_cust_th, replace=False))
 cust_rows = []
 for i in range(n_cust_th):
     region = rng.choice(th_regions)
     province, city = ph_locations[region][rng.integers(0, len(ph_locations[region]))]
     barangay = rng.choice(barangay_pool)
-    name = f"{rng.choice(th_first)} {rng.choice(th_last)}"
     mobile = f"09{rng.integers(100000000, 999999999)}"
     join_date = pd.Timestamp("2024-01-01") + timedelta(days=int(rng.integers(0, 700)))
     cust_rows.append({
-        "CustomerID": f"CUST-{1000+i}", "Name": name, "Mobile": mobile,
+        "CustomerID": f"CUST-{1000+i}", "Name": _unique_names[i], "Mobile": mobile,
         "Barangay": barangay, "City": city, "Province": province, "Region": region,
-        "JoinDate": join_date.strftime("%Y-%m-%d"),
+        "JoinDate": join_date,
     })
 th_customers = pd.DataFrame(cust_rows)
 
@@ -549,7 +583,8 @@ for i in range(n_orders_th):
     else:
         delivered_date = None
     order_rows.append({
-        "OrderID": order_ids[i], "OrderDate": order_date, "Customer": cust["Name"],
+        "OrderID": order_ids[i], "OrderDate": order_date,
+        "CustomerID": cust["CustomerID"], "Customer": cust["Name"],
         "Barangay": cust["Barangay"], "City": cust["City"], "Province": cust["Province"],
         "Region": cust["Region"], "Product": product, "Category": category, "Qty": qty,
         "UnitPrice": unit_price, "Amount": amount,
@@ -570,19 +605,28 @@ for k, idx in enumerate(dup_targets):
     th_orders.loc[len(th_orders) - 1 - k, "OrderID"] = th_orders.loc[idx, "OrderID"]
 
 # ImportedDates: same calendar date as OrderDate, seeded as TEXT (dd/mm/yyyy, PH-common
-# ambiguous format) so the whole column needs conversion in Module 2.2's exercise
+# ambiguous format) so the whole column needs conversion in Module 2.2's exercise.
+# This is the ONLY intentionally-text date column — OrderDate/DeliveredDate stay real
+# dates, which is what makes the exercise's before/after contrast work at all.
 th_orders["ImportedDates"] = th_orders["OrderDate"].dt.strftime("%d/%m/%Y")
 
-th_orders["OrderDate"] = th_orders["OrderDate"].dt.strftime("%Y-%m-%d")
-th_orders["DeliveredDate"] = th_orders["DeliveredDate"].apply(
-    lambda d: d.strftime("%Y-%m-%d") if pd.notna(d) else ""
-)
-th_orders = th_orders[["OrderID", "OrderDate", "Customer", "Barangay", "City", "Province",
-                        "Region", "Product", "Category", "Qty", "UnitPrice", "Amount",
-                        "PaymentMethod", "Status", "DeliveredDate", "ImportedDates"]]
+th_orders["DeliveredDate"] = pd.to_datetime(th_orders["DeliveredDate"])
+th_orders = th_orders[["OrderID", "OrderDate", "CustomerID", "Customer", "Barangay", "City",
+                        "Province", "Region", "Product", "Category", "Qty", "UnitPrice",
+                        "Amount", "PaymentMethod", "Status", "DeliveredDate", "ImportedDates"]]
 
-th_orders.to_csv(f"{BASE}/tindahub-orders/tindahub_orders.csv", index=False)
-th_customers.to_csv(f"{BASE}/tindahub-orders/tindahub_customers.csv", index=False)
+# CSV copies carry ISO text dates (Excel/Power Query parse these on import); the
+# .xlsx below is written from the datetime-typed frames so Excel gets real serial
+# dates — required for PivotTable date grouping, Timeline slicers, EOMONTH and
+# NETWORKDAYS.INTL, and date-bounded SUMIFS.
+th_orders_csv = th_orders.copy()
+th_orders_csv["OrderDate"] = th_orders_csv["OrderDate"].dt.strftime(DATE_FMT)
+th_orders_csv["DeliveredDate"] = th_orders_csv["DeliveredDate"].dt.strftime(DATE_FMT).fillna("")
+th_customers_csv = th_customers.copy()
+th_customers_csv["JoinDate"] = th_customers_csv["JoinDate"].dt.strftime(DATE_FMT)
+
+th_orders_csv.to_csv(f"{BASE}/tindahub-orders/tindahub_orders.csv", index=False)
+th_customers_csv.to_csv(f"{BASE}/tindahub-orders/tindahub_customers.csv", index=False)
 th_products_df.to_csv(f"{BASE}/tindahub-orders/tindahub_products.csv", index=False)
 
 # --- RawContacts (60 rows, jammed + messy, for TEXTSPLIT/REGEXTEST practice) ---
@@ -634,7 +678,7 @@ for i in range(n_messy):
     amount_val = str(amount) if rng.uniform() < 0.15 else amount  # text-number defect
     mobile = f"09{rng.integers(100000000, 999999999)}" if rng.uniform() < 0.85 else "091234"
     messy_rows.append({
-        "OrderID": f"ORD-{20260000+i}", "OrderDate": order_date.strftime("%Y-%m-%d"),
+        "OrderID": f"ORD-{20260000+i}", "OrderDate": order_date,
         "Customer": customer_name, "City": city, "Region": cust["Region"],
         "Product": product, "Qty": qty, "UnitPrice": unit_price, "Amount": amount_val,
         "Mobile": mobile,
@@ -646,7 +690,13 @@ th_messy = pd.DataFrame(messy_rows)
 dup_rows_idx = rng.choice(th_messy.index[:-15], size=15, replace=False)
 for k, idx in enumerate(dup_rows_idx):
     th_messy.loc[len(th_messy) - 1 - k, "OrderID"] = th_messy.loc[idx, "OrderID"]
-th_messy.to_csv(f"{BASE}/tindahub-orders/tindahub_messy_import.csv", index=False)
+# OrderDate stays a real date here: Module 4.1's "no future orders" Data Validation
+# rule and the =OrderDate>TODAY() audit both need real dates to catch the seeded
+# future rows. The seeded defects on this sheet are text-numbers, padding, city
+# variants and duplicate IDs — not date typing.
+th_messy_csv = th_messy.copy()
+th_messy_csv["OrderDate"] = th_messy_csv["OrderDate"].dt.strftime(DATE_FMT)
+th_messy_csv.to_csv(f"{BASE}/tindahub-orders/tindahub_messy_import.csv", index=False)
 
 # --- Monthly raw CSV extracts (Apr/May/Jun 2026) for the Power Query capstone ---
 # No Category column (learners merge it in from Products); dd/mm/yyyy text dates
@@ -684,12 +734,14 @@ for month, n_month in [("2026-04", 320), ("2026-05", 345), ("2026-06", 360)]:
 
 # --- Ship a single .xlsx workbook: every sheet a plain range (learners build the
 #     Tables, formulas, and formatting themselves per the guide's exercises) ---
-with pd.ExcelWriter(f"{BASE}/tindahub-orders/TindaHub_Orders.xlsx", engine="openpyxl") as xw:
+with pd.ExcelWriter(f"{BASE}/tindahub-orders/TindaHub_Orders.xlsx", engine="openpyxl",
+                    date_format=XL_DATE_FMT, datetime_format=XL_DATE_FMT) as xw:
     th_orders.to_excel(xw, sheet_name="Orders", index=False)
     th_products_df.to_excel(xw, sheet_name="Products", index=False)
     th_customers.to_excel(xw, sheet_name="Customers", index=False)
     th_raw_contacts.to_excel(xw, sheet_name="RawContacts", index=False)
     th_messy.to_excel(xw, sheet_name="MessyImport", index=False)
+    _apply_date_format(xw.book)
 
 print("tindahub_orders:", th_orders.shape)
 print("tindahub_customers:", th_customers.shape)

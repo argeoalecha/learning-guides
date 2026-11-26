@@ -6,14 +6,15 @@ One folder for every benchmark dataset/project/scenario referenced across the `l
 
 | Folder | Used by | Contents |
 |---|---|---|
-| [`superstore-sales/`](superstore-sales/) | [Data Analyst](../data-analyst/da_learning_guide_v3_merged.html) | Flat CSV + `.xlsx` + star-schema (fact/dim) CSVs — 2,000 orders |
-| [`inventory/`](inventory/) | [Data Analyst](../data-analyst/da_learning_guide_v3_merged.html) | Stock levels, reorder points, receipts log, suppliers — joins to `superstore-sales` on Product ID |
+| [`superstore-sales/`](superstore-sales/) | [Data Analyst](../data-analyst/da_learning_guide.html), [R Markdown in RStudio](../r-markdown-in-rstudio/r-markdown-in-rstudio_learning_guide.html), [Jupyter Notebook](../jupyter-notebook/jupyter-notebook_learning_guide.html) | Flat CSV + `.xlsx` + star-schema (fact/dim) CSVs — 2,000 orders |
+| [`inventory/`](inventory/) | [Data Analyst](../data-analyst/da_learning_guide.html) | Stock levels, reorder points, receipts log, suppliers — joins to `superstore-sales` on Product ID |
 | [`shopsphere/`](shopsphere/) | [Data Science & ML](../data-science-ml/data-science-ml_learning_guide.html) | Customer churn table (6,000 rows) + reviews table (4,000 rows) |
 | [`ecommerce-orders/`](ecommerce-orders/) | [Pydantic](../pydantic/pydantic_learning_guide.html) | 1,500 orders, ~23% deliberately invalid for validation exercises |
 | [`shopflow/`](shopflow/) | [Statistics with Python](../statistics-with-python/statistics-with-python_learning_guide.html) | 80,400-row PH e-commerce transaction log, seeded with nulls/duplicates/skew |
-| [`tindahub/`](tindahub/) | [PostgreSQL & Metabase](../postgresql-metabase/postgresql-metabase_learning_guide.html) | `schema.sql` + `seed.sql` — 6-table normalized marketplace schema |
-| [`tindahub-orders/`](tindahub-orders/) | [Excel](../excel/excel_learning_guide.html) | Flat 5,000-order register + Products/Customers masters + 2 messy sheets + 3 monthly CSVs — same fictional business as `tindahub/`, flattened for Tables/lookups/PivotTables instead of joins |
+| [`tindahub/`](tindahub/) | [PostgreSQL & Metabase](../postgresql-metabase/postgresql-metabase_learning_guide.html), [Python Database Libraries](../python-database-libraries/python-database-libraries_learning_guide.html) | `schema.sql` + `seed.sql` — 6-table normalized marketplace schema |
+| [`tindahub-orders/`](tindahub-orders/) | [Excel](../excel/excel_learning_guide.html), [Python Excel Libraries](../python-excel-libraries/python-excel-libraries_learning_guide.html), [Python Scientific Computing](../python-scientific-computing/python-scientific-computing_learning_guide.html), [Python GIS & Mapping](../python-gis-mapping/python-gis-mapping_learning_guide.html), [R GIS & Mapping](../r-gis-mapping/r-gis-mapping_learning_guide.html) | Flat 5,000-order register + Products/Customers masters + 2 messy sheets + 3 monthly CSVs — same fictional business as `tindahub/`, flattened for Tables/lookups/PivotTables instead of joins |
 | [`pagila/`](pagila/) | [SQL Mastery](../sql-mastery/sql-mastery_learning_guide.html) | `pagila-schema.sql` + `pagila-data.sql` — the standard PostgreSQL DVD-rental sample database (15-table normalized schema), trimmed from the upstream [devrimgunduz/pagila](https://github.com/devrimgunduz/pagila) clone (no Docker/pgAdmin files, no nested `.git`) |
+| [`campusgrid/`](campusgrid/) | [Industrial Communication Protocols](../industrial-communication-protocols/industrial-communication-protocols_learning_guide.html) | Fictional campus power-monitoring plant: CG-PM3 `register_map.yaml`, `campusgrid_sim.py` (serves 4 meters over Modbus TCP or RTU, with fault injection), and `sample_frames.txt` (Modbus, J1939, IEC 104, DNP3, HART, M-Bus frames with computed checksums) |
 
 Regenerate the six synthetic CSV datasets (superstore-sales, shopsphere, ecommerce-orders, shopflow, inventory, tindahub-orders) with:
 
@@ -29,7 +30,7 @@ These guides teach *building* a project, not analyzing a pre-made one — so the
 
 | Folder | Used by | What it is |
 |---|---|---|
-| [`devtoolkit/`](devtoolkit/) | [Claude Code](../claude-code/claude-code_learning_guide.html) | TypeScript + Express REST API |
+| [`devtoolkit/`](devtoolkit/) | [Claude Code](../claude-code/claude-code_learning_guide.html), [OpenAI Codex](../openai-codex/openai-codex_learning_guide.html) | TypeScript + Express REST API |
 | [`taskflow/`](taskflow/) | [Claude Ecosystem Mastery](../claude-ecosystem-mastery/claude-ecosystem-mastery_learning_guide.html) | Next.js + Supabase task manager |
 | [`skillbot/`](skillbot/) | [Claude Design](../claude-design/claude-design_learning_guide.html) | Python AI tutoring agent (Claude API) |
 | [`shopfast/`](shopfast/) | [DevOps/SRE](../devops-sre/devops-sre_learning_guide.html) | Containerized Flask + Postgres + Redis platform |

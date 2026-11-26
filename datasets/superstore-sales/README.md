@@ -1,6 +1,6 @@
 # Superstore Sales
 
-Used by: **[Data Analyst guide](../../data-analyst/da_learning_guide_v3_merged.html)** (Modules 1.1–2.4)
+Used by: **[Data Analyst guide](../../data-analyst/da_learning_guide.html)** (Modules 1.1–2.4), **[R Markdown in RStudio guide](../../r-markdown-in-rstudio/r-markdown-in-rstudio_learning_guide.html)** (all modules and capstones), **[Jupyter Notebook guide](../../jupyter-notebook/jupyter-notebook_learning_guide.html)** (all modules and capstones)
 
 Synthetic dataset in the style of the well-known "Sample Superstore" retail dataset. 2,000 orders across 3 years, mirroring the row-shape and column names of the public Kaggle version so any external Superstore tutorial content still lines up.
 
@@ -9,7 +9,7 @@ Synthetic dataset in the style of the well-known "Sample Superstore" retail data
 | File | Use |
 |---|---|
 | `superstore_sales.csv` | Flat single-table version — Excel modules (1.1–1.2): PivotTables, formulas, structured Tables |
-| `Superstore_Sales.xlsx` | Same data pre-loaded into an `.xlsx` workbook (`Orders` sheet) — open directly in Excel |
+| `Superstore_Sales.xlsx` | Same data pre-loaded into an `.xlsx` workbook (`Orders` sheet) — open directly in Excel. `Order Date` / `Ship Date` are real Excel dates (displayed `mm/dd/yyyy`), so PivotTable date grouping and Timeline slicers work |
 | `fact_Sales.csv` | Fact table for the star-schema exercises (Power Pivot / DAX, Module 2.2+) |
 | `dim_Product.csv` | Product dimension (Product ID, Name, Category, Sub-Category) |
 | `dim_Customer.csv` | Customer dimension (Customer ID, Name, Segment) |

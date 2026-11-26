@@ -1,0 +1,27 @@
+# CampusGrid CG-PM3 power meter: fictional register map for learning.
+# Holding registers (function 03), 0-based protocol addresses.
+# 32-bit values are big-endian with the HIGH word first ("ABCD" order).
+meter_model: CG-PM3
+word_order: big
+registers:
+  - {tag: v_l1n,      address: 0,  type: float32, unit: V}
+  - {tag: v_l2n,      address: 2,  type: float32, unit: V}
+  - {tag: v_l3n,      address: 4,  type: float32, unit: V}
+  - {tag: i_l1,       address: 6,  type: float32, unit: A}
+  - {tag: i_l2,       address: 8,  type: float32, unit: A}
+  - {tag: i_l3,       address: 10, type: float32, unit: A}
+  - {tag: p_l1,       address: 12, type: float32, unit: kW}
+  - {tag: p_l2,       address: 14, type: float32, unit: kW}
+  - {tag: p_l3,       address: 16, type: float32, unit: kW}
+  - {tag: p_total,    address: 18, type: float32, unit: kW}
+  - {tag: pf,         address: 20, type: float32, unit: ""}
+  - {tag: freq,       address: 22, type: uint16,  scale: 0.01, unit: Hz}
+  - {tag: status,     address: 23, type: uint16,  bits: {ce: 0, of: 1, sde: 2}}
+  - {tag: kwh_import, address: 24, type: uint32,  scale: 0.1,  unit: kWh}
+  - {tag: ct_primary, address: 26, type: uint16,  unit: A}
+block: {start: 0, count: 27}
+devices:
+  - {id: MTR-A1, building: A, transport: rtu, device_id: 1}
+  - {id: MTR-A2, building: A, transport: rtu, device_id: 2}
+  - {id: MTR-B1, building: B, transport: tcp, device_id: 3}
+  - {id: MTR-B2, building: B, transport: tcp, device_id: 4}

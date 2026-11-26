@@ -1,0 +1,43 @@
+# CampusGrid sample frames for the decode labs (hex, space-separated).
+# Every checksum below was computed, not typed. Lines starting with # are comments.
+
+[modbus_rtu]
+# Read 27 holding registers from MTR-A1 (device 1), address 0
+01 03 00 00 00 1B 05 C1
+# Classic example: device 1, function 03, start 0x006B, quantity 3
+01 03 00 6B 00 03 74 17
+# Response from device 1: 2 registers = 0x4348 0x0000 (float32 200.0)
+01 03 04 43 48 00 00 6F A1
+# Exception response: device 1, function 03 + 0x80, exception 02 (illegal data address)
+01 83 02 C0 F1
+# Corrupted: same request with one CRC bit flipped (your decoder must reject it)
+01 03 00 00 00 1B 05 C0
+
+[modbus_tcp]
+# MBAP (transaction 0x0001, protocol 0, length 6, unit 3) + PDU: read 27 registers from MTR-B1
+00 01 00 00 00 06 03 03 00 00 00 1B
+
+[j1939_candump]
+# candump -L format: (timestamp) interface ID#DATA from GEN-1 (source address 0x00)
+(1763510400.000000) can0 0CF00400#FFFFFFE02EFFFFFF
+(1763510400.100000) can0 18FEEE00#7DFFFFFFFFFFFFFF
+(1763510401.000000) can0 18FECA00#04FF6E000001FFFF
+
+[iec104]
+# STARTDT act / STARTDT con (U-frames)
+68 04 07 00 00 00
+68 04 0B 00 00 00
+# I-frame: type 13 (M_ME_NC_1 short float), COT 3 (spontaneous), CA 1, IOA 1001, value 230.0, QDS 0
+68 12 00 00 00 00 0D 01 03 00 01 00 E9 03 00 00 00 66 43 00
+
+[dnp3_link]
+# Link header only: reset link states, master 1024 (0x0400) -> outstation 1, addresses and CRC low byte first
+05 64 05 C0 01 00 00 04 E9 21
+
+[hart]
+# Short-frame Command 0 request from the primary master to polling address 0 (5-byte preamble)
+FF FF FF FF FF 02 80 00 00 82
+
+[mbus]
+# RSP_UD long frame: C=08, A=01, CI=72, 12-byte fixed header, one record: DIF 04 VIF 03 (energy, Wh) = 123456 Wh
+68 15 15 68 08 01 72 78 56 34 12 A7 32 01 02 2A 00 00 00 04 03 40 E2 01 00 BF 16

@@ -1,6 +1,8 @@
 # DevToolkit
 
-Used by: **[Claude Code guide](../../claude-code/claude-code_learning_guide.html)**, **[Claude Ecosystem Mastery guide](../../claude-ecosystem-mastery/claude-ecosystem-mastery_learning_guide.html)**
+Used by: **[Claude Code guide](../../claude-code/claude-code_learning_guide.html)**, **[Claude Ecosystem Mastery guide](../../claude-ecosystem-mastery/claude-ecosystem-mastery_learning_guide.html)**, **[OpenAI Codex guide](../../openai-codex/openai-codex_learning_guide.html)**
+
+The OpenAI Codex guide builds the same DevToolkit spec from scratch with Codex instead of Claude Code (same stack and conventions), so the two guides can be compared agent-to-agent.
 
 **Not a downloadable dataset.** DevToolkit is a scaffolded application the learner builds and extends *with* Claude Code across both guides — the exercise is the act of building it, so no starter code is provided here. This file is a spec so both guides stay consistent about what it is.
 
