@@ -17,6 +17,7 @@ This document describes the end-to-end process for generating the interactive HT
 | FastAPI | `fastapi/fastapi_learning_guide.html` | ShopPH (spec only) |
 | GTM Strategy & Automation | `gtm-strategy-automation/gtm-strategy-automation_learning_guide.html` | SaasFlow (scenario brief) |
 | Hormozi 100M Sales | `hormozi-100m-sales/hormozi-100m-sales_learning_guide.html` | FitForge (scenario brief) |
+| IT Networking: Zero to CCNA | `it-networking/it-networking_learning_guide.html` | TindaHub Network (spec only) |
 | PostgreSQL & Metabase | `postgresql-metabase/postgresql-metabase_learning_guide.html` | TindaHub (real data — schema.sql/seed.sql) |
 | Pydantic | `pydantic/pydantic_learning_guide.html` | E-commerce Orders (real data) |
 | Python | `python/python_learning_guide.html` | BookCart (spec only) |

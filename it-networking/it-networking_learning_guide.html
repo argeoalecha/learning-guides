@@ -1,0 +1,2445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT Networking Learning Guide — Zero to CCNA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+:root{
+  --ink:#11201c;
+  --ink-soft:#3a4d47;
+  --paper:#f6f4ee;
+  --paper-2:#fffdf8;
+  --line:#d9d4c7;
+  --line-soft:#e7e2d6;
+  --teal:#0d7a6e;
+  --teal-deep:#075249;
+  --teal-wash:#e3efea;
+  --coral:#e0613a;
+  --coral-wash:#fbe9e0;
+  --amber:#caa23a;
+  --amber-wash:#f6eccc;
+  --code-bg:#0f1f1b;
+  --code-ink:#d7e6df;
+  --shadow:0 1px 2px rgba(17,32,28,.06),0 8px 24px rgba(17,32,28,.05);
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* ── Skip link (WCAG 2.4.1 Bypass Blocks) ──────────────────
+   Sighted keyboard/screen-reader users can skip the sidebar nav
+   entirely instead of tabbing through every module link first. */
+.skip-link{
+  position:absolute;top:-3rem;left:0;z-index:100;
+  background:var(--teal-deep);color:#fff;padding:.6rem 1.1rem;
+  border-radius:0 0 8px 0;text-decoration:none;
+  font-family:var(--mono);font-size:.8rem;transition:top .2s;
+}
+.skip-link:focus{top:0}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);
+  padding:0;
+}
+.main{min-width:0;padding:0 0 8rem}
+.content{max-width:860px;margin:0 auto;padding:3.5rem 3rem 0}
+
+/* ── Sidebar brand ──────────────────────────────────────── */
+.brand{
+  padding:1.6rem 1.4rem 1.3rem;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper-2);z-index:5;
+}
+.brand-kicker{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+}
+.brand-title{
+  font-family:var(--serif);font-size:1.32rem;line-height:1.15;
+  margin:.45rem 0 .2rem;font-weight:600;letter-spacing:-.01em;
+}
+.brand-sub{font-size:.74rem;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.02em}
+
+/* ── Hayah-AI logo strip ────────────────────────────────── */
+.hayah-logo-wrap{
+  padding:1.1rem 1.4rem .9rem;
+  background:#0a3d3a;
+  border-bottom:1px solid #07302e;
+  display:flex;
+  justify-content:center;
+}
+.hayah-logo-wrap svg{display:block;width:100%;height:auto;max-width:220px}
+
+/* ── Sidebar progress meter ─────────────────────────────── */
+.progress-wrap{padding:.9rem 1.4rem;border-bottom:1px solid var(--line-soft)}
+.progress-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;
+}
+.progress-label b{color:var(--teal-deep);font-size:.78rem}
+.progress-bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal-deep));
+  border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.progress-reset{
+  margin-top:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:0;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;
+}
+.progress-reset:hover{color:var(--coral)}
+
+/* ── Sidebar nav ────────────────────────────────────────── */
+nav{padding:.7rem .7rem 3rem}
+.nav-group{margin-bottom:.1rem}
+.nav-top{
+  display:block;padding:.4rem .7rem;border-radius:7px;
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;
+  line-height:1.3;transition:background .15s,color .15s;
+}
+.nav-top:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-phase{
+  font-weight:600;color:var(--ink);font-family:var(--sans);
+  letter-spacing:-.005em;margin-top:.3rem;
+}
+.nav-phase::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:2px;
+  background:var(--teal);margin-right:.55rem;vertical-align:middle;opacity:.8;
+}
+.nav-children{
+  margin:.1rem 0 .35rem .55rem;padding-left:.7rem;
+  border-left:1px solid var(--line-soft);
+}
+.nav-child{
+  display:block;padding:.26rem .6rem;border-radius:6px;
+  color:var(--ink-soft);text-decoration:none;font-size:.78rem;line-height:1.3;
+  transition:background .15s,color .15s;
+}
+.nav-child:hover{background:var(--teal-wash);color:var(--teal-deep)}
+.nav-child.active,.nav-top.active{
+  background:var(--teal-wash);color:var(--teal-deep);font-weight:600;
+}
+
+/* ── Mobile nav toggle ──────────────────────────────────── */
+.menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:50;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:8px;
+  width:44px;height:44px;font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow);
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.content h1{
+  font-family:var(--serif);font-size:2.5rem;line-height:1.08;font-weight:600;
+  letter-spacing:-.02em;margin:.2rem 0 .3rem;
+}
+.content h1+h2{border:none;margin-top:0;padding-top:0;color:var(--teal-deep);
+  font-size:1.15rem;font-weight:600;font-family:var(--sans)}
+.content h1+h2+h3{color:var(--ink-soft);font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.04em;font-weight:500;margin-top:.2rem;text-transform:none;border:none;padding:0}
+.content h2{
+  font-family:var(--serif);font-size:1.85rem;font-weight:600;letter-spacing:-.015em;
+  margin:3.2rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  scroll-margin-top:1.5rem;
+}
+.content h3{
+  font-size:1.28rem;font-weight:650;margin:2.4rem 0 .6rem;letter-spacing:-.01em;
+  scroll-margin-top:1.5rem;color:var(--ink);
+}
+.content h3[id^="module"]{
+  color:var(--teal-deep);
+  padding-left:.85rem;border-left:3px solid var(--teal);
+}
+.content h4{
+  font-family:var(--mono);font-size:.92rem;font-weight:600;letter-spacing:.01em;
+  margin:1.8rem 0 .5rem;color:var(--ink-soft);scroll-margin-top:1.5rem;
+}
+.content p{margin:.7rem 0}
+.content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px;text-decoration-color:var(--line)}
+.content a:hover{text-decoration-color:var(--teal)}
+.content strong{font-weight:650;color:var(--ink)}
+.content em{font-style:italic}
+.content hr{border:none;border-top:1px solid var(--line-soft);margin:2.4rem 0}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.3rem 0}
+.content li::marker{color:var(--teal)}
+
+/* ── Hero subject mark ──────────────────────────────────── */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.hero-text{min-width:0}
+.hero-mark{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hero-mark svg{width:84px;height:84px;display:block}
+@media(max-width:1000px){
+  .hero{gap:1rem}
+  .hero-mark svg{width:48px;height:48px}
+}
+
+/* ── Blockquote: module metadata ────────────────────────── */
+blockquote.module-meta{
+  margin:.9rem 0 1.6rem;padding:.9rem 1.1rem;
+  background:var(--teal-wash);border:1px solid #cbe3db;
+  border-left:3px solid var(--teal);border-radius:0 9px 9px 0;
+  font-size:.86rem;line-height:1.55;
+}
+blockquote.module-meta p{margin:.2rem 0}
+blockquote.module-meta strong{color:var(--teal-deep)}
+
+/* ── Blockquote: general callout ────────────────────────── */
+blockquote.callout{
+  margin:1.3rem 0;padding:.9rem 1.1rem;
+  background:var(--amber-wash);border:1px solid #ecdcb0;
+  border-left:3px solid var(--amber);border-radius:0 9px 9px 0;
+  font-size:.9rem;
+}
+blockquote.callout p{margin:.25rem 0}
+blockquote.callout strong{color:#8a6d1d}
+.content blockquote:not(.module-meta):not(.callout){
+  margin:1.3rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--line);
+  color:var(--ink-soft);background:var(--paper-2);border-radius:0 8px 8px 0;
+}
+
+/* ── Code ───────────────────────────────────────────────── */
+code{
+  font-family:var(--mono);font-size:.82em;
+  background:var(--teal-wash);color:var(--teal-deep);
+  padding:.12em .42em;border-radius:5px;border:1px solid #d3e7e0;
+}
+pre{
+  background:var(--code-bg);border:1px solid #1d342e;border-radius:11px;
+  padding:1.05rem 1.2rem;overflow-x:auto;margin:1.1rem 0;
+  box-shadow:var(--shadow);position:relative;
+}
+pre code{
+  background:none;border:none;color:var(--code-ink);padding:0;font-size:.82rem;
+  line-height:1.6;
+}
+pre::before{
+  content:attr(data-lang);position:absolute;top:.5rem;right:.8rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#5a7d73;
+}
+
+/* ── Artifact card: scripts / frameworks / templates / worksheets ──────
+   Lighter, on-brand alternative to the dark code terminal — for
+   non-code artifacts (business / non-technical guides). Author with:
+   <pre class="artifact" data-kind="SCRIPT"><code>...</code></pre>            */
+pre.artifact{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--teal);border-radius:0 11px 11px 0;
+}
+pre.artifact code{color:var(--ink)}
+pre.artifact::before{content:attr(data-kind);color:var(--teal-deep)}
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--line);
+  box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.84rem;background:var(--paper-2)}
+th{
+  background:var(--teal-deep);color:#eef6f3;font-weight:600;text-align:left;
+  padding:.6rem .8rem;font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+td{padding:.55rem .8rem;border-top:1px solid var(--line-soft);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f2}
+td code{font-size:.78em;white-space:nowrap}
+
+/* ── Interactive module index ───────────────────────────── */
+.module-index-table tr[data-href]{cursor:pointer}
+.module-index-table tr[data-href]:hover td{background:var(--teal-wash);color:var(--teal-deep)}
+.module-index-table td:first-child{
+  font-family:var(--mono);font-weight:700;color:var(--teal-deep);font-size:.82rem;
+}
+.module-index-table tr[data-href] td:first-child{
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line);
+}
+.module-index-table tr[data-href]:hover td:first-child{text-decoration-color:var(--teal)}
+
+/* ── Checklist enhancement ──────────────────────────────── *
+ * Checkbox + text are wrapped in one <label class="task-label">
+ * by the JS below, so the whole line is the click target — not
+ * just the 16px box. Meets WCAG 2.2 SC 2.5.8 (24x24 target size)
+ * via the label's hit area rather than the visual checkbox size. */
+.content li label.task-label{
+  display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;
+  padding:.2rem 0;margin:-.2rem 0;
+}
+.content li label.task-label input[type=checkbox]{
+  margin:.2rem 0 0;flex-shrink:0;accent-color:var(--teal);
+  width:16px;height:16px;cursor:pointer;
+}
+
+/* ── Placement quiz: live score badge ──────────────────────
+   Injected by JS after each quiz <ul> — no authoring required. */
+.quiz-score{
+  display:inline-block;font-family:var(--mono);font-size:.76rem;
+  color:var(--teal-deep);background:var(--teal-wash);
+  padding:.3rem .75rem;border-radius:99px;margin:.2rem 0 1rem;
+}
+
+/* ── Sidebar module search/filter ──────────────────────────── */
+.nav-search-wrap{padding:.75rem 1.1rem .25rem}
+.nav-search{
+  width:100%;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:8px;font-family:var(--sans);font-size:.8rem;
+  background:var(--paper);color:var(--ink);
+}
+.nav-search:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.nav-child.filtered-out,.nav-top.filtered-out,.nav-group.filtered-out{display:none}
+
+/* ── Print (offline / PDF study copy) ──────────────────────── */
+@media print{
+  .menu-btn,.scrim,.sidebar,.totop,.skip-link{display:none}
+  .shell{display:block}
+  .content{max-width:100%;padding:0;margin:0}
+  a{color:inherit;text-decoration:underline}
+  pre,blockquote,table{break-inside:avoid}
+  h2,h3{break-after:avoid}
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.content em:last-child{color:var(--ink-soft)}
+
+/* ── Back to top ────────────────────────────────────────── */
+.totop{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:40;
+  background:var(--teal-deep);color:#fff;border:none;border-radius:10px;
+  width:46px;height:46px;font-size:1.1rem;cursor:pointer;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:block}
+  .sidebar{
+    position:fixed;left:0;top:0;width:300px;z-index:45;
+    transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 40px rgba(17,32,28,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:4.5rem 1.4rem 0}
+  .content h1{font-size:2rem}
+  .content h2{font-size:1.5rem}
+  .scrim{position:fixed;inset:0;background:rgba(17,32,28,.4);z-index:44;
+    opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+}
+@media (min-width:1001px){.scrim{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+/* ── Glossary definition list ────────────────────────────── */
+dl.glossary{margin:.5rem 0 1.6rem;padding:0}
+dl.glossary dt{
+  font-weight:650;color:var(--teal-deep);margin:1.2rem 0 .2rem;
+  font-size:.93rem;padding-left:.75rem;border-left:2px solid var(--teal);
+  scroll-margin-top:1.5rem;
+}
+dl.glossary dd{
+  margin:0 0 .2rem 1.75rem;line-height:1.65;font-size:.88rem;color:var(--ink);
+}
+dl.glossary .avoid{
+  font-size:.78rem;font-family:var(--mono);color:var(--ink-soft);
+  letter-spacing:.01em;margin-top:.05rem;
+}
+dl.glossary .avoid strong{color:var(--coral);font-weight:600}
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="hayah-logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 96" role="img" aria-label="hayah-ai — expert guided learning">
+        <path d="M 12 52 A 28 28 0 0 1 52 12" fill="none" stroke="#faf7f5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="52" cy="12" r="6" fill="#ff6b47"/>
+        <text x="68" y="48" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#faf7f5" letter-spacing="-1.2">hayah<tspan fill="#e8f4f1">-</tspan><tspan fill="#ff6b47" font-style="italic">ai</tspan></text>
+        <text x="0" y="84" font-family="Inter, Helvetica Neue, sans-serif" font-size="15" font-weight="300" fill="#e8f4f1" textLength="230" lengthAdjust="spacing">expert guided learning</text>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-kicker">Self-Paced · Non-Linear</div>
+      <div class="brand-title">IT Networking<br>Learning Guide</div>
+      <div class="brand-sub">Cisco IOS · Packet Tracer · Wireshark · Ansible · Python</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Module progress</span><b id="progPct">0%</b></div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <button class="progress-reset" id="progReset">Reset progress</button>
+    </div>
+    <div class="nav-search-wrap">
+      <input type="search" id="navSearch" class="nav-search" placeholder="Filter modules…" aria-label="Filter navigation">
+    </div>
+    <nav id="nav">
+<a href="#zero-to-ccna-track" class="nav-top">Zero to CCNA Track</a>
+<a href="#quick-start" class="nav-top">Quick Start</a>
+<a href="#placement-quiz" class="nav-top">Placement Quiz</a>
+<a href="#module-index" class="nav-top">Module Index</a>
+<a href="#learning-tracks" class="nav-top">Learning Tracks</a>
+<a href="#roadmap-overview" class="nav-top">Roadmap Overview</a>
+<a href="#lab-environment" class="nav-top">Lab Environment</a>
+<a href="#certification-path" class="nav-top">Certification Path &amp; Exam Sprint</a>
+<div class="nav-group">
+<a href="#phase-1-foundations" class="nav-top nav-phase">Phase 1: Foundations</a>
+<div class="nav-children">
+<a href="#module-11-osi-tcp-ip-and-encapsulation" class="nav-child">Module 1.1 — OSI, TCP/IP and Encapsulation</a>
+<a href="#module-12-addressing-binary-and-physical-layer" class="nav-child">Module 1.2 — Addressing, Binary and Physical Layer</a>
+<a href="#phase-1-capstone-first-ping-explained" class="nav-child">Phase 1 Capstone: First Ping Explained</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-2-lan-and-switching" class="nav-top nav-phase">Phase 2: LAN and Switching</a>
+<div class="nav-children">
+<a href="#module-21-ethernet-and-switch-operation" class="nav-child">Module 2.1 — Ethernet and Switch Operation</a>
+<a href="#module-22-vlans-and-802-1q-trunks" class="nav-child">Module 2.2 — VLANs and 802.1Q Trunks</a>
+<a href="#module-23-spanning-tree-etherchannel-and-neighbor-discovery" class="nav-child">Module 2.3 — Spanning Tree, EtherChannel and Neighbor Discovery</a>
+<a href="#phase-2-capstone-hq-campus-layer-2" class="nav-child">Phase 2 Capstone: HQ Campus Layer 2</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-3-ip-addressing-and-routing" class="nav-top nav-phase">Phase 3: IP Addressing and Routing</a>
+<div class="nav-children">
+<a href="#module-31-ipv4-subnetting-and-vlsm" class="nav-child">Module 3.1 — IPv4 Subnetting and VLSM</a>
+<a href="#module-32-ipv6-addressing" class="nav-child">Module 3.2 — IPv6 Addressing</a>
+<a href="#module-33-static-routing-and-inter-vlan-routing" class="nav-child">Module 3.3 — Static Routing and Inter-VLAN Routing</a>
+<a href="#module-34-ospf-and-first-hop-redundancy" class="nav-child">Module 3.4 — OSPF and First-Hop Redundancy</a>
+<a href="#phase-3-capstone-two-site-routed-network" class="nav-child">Phase 3 Capstone: Two-Site Routed Network</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-4-wan-and-internet-edge" class="nav-top nav-phase">Phase 4: WAN and Internet Edge</a>
+<div class="nav-children">
+<a href="#module-41-wan-sd-wan-cloud-and-virtualization" class="nav-child">Module 4.1 — WAN, SD-WAN, Cloud and Virtualization</a>
+<a href="#module-42-nat-and-pat" class="nav-child">Module 4.2 — NAT and PAT</a>
+<a href="#module-43-ipsec-vpns-gre-and-bgp-basics" class="nav-child">Module 4.3 — IPsec VPNs, GRE and BGP Basics</a>
+<a href="#phase-4-capstone-internet-edge" class="nav-child">Phase 4 Capstone: Internet Edge</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-5-services-and-security" class="nav-top nav-phase">Phase 5: Services and Security</a>
+<div class="nav-children">
+<a href="#module-51-dhcp-dns-and-wireless" class="nav-child">Module 5.1 — DHCP, DNS and Wireless</a>
+<a href="#module-52-access-control-lists" class="nav-child">Module 5.2 — Access Control Lists</a>
+<a href="#module-53-layer-2-security-and-device-access" class="nav-child">Module 5.3 — Layer 2 Security and Device Access</a>
+<a href="#phase-5-capstone-secured-campus" class="nav-child">Phase 5 Capstone: Secured Campus</a>
+</div></div>
+<div class="nav-group">
+<a href="#phase-6-automation-and-operations" class="nav-top nav-phase">Phase 6: Automation and Operations</a>
+<div class="nav-children">
+<a href="#module-61-monitoring-and-management-approaches" class="nav-child">Module 6.1 — Monitoring and Management Approaches</a>
+<a href="#module-62-ansible-python-and-ai-operations" class="nav-child">Module 6.2 — Ansible, Python and AI Operations</a>
+<a href="#phase-6-capstone-automated-backups" class="nav-child">Phase 6 Capstone: Automated Backups</a>
+</div></div>
+<a href="#final-capstone-tindahub-three-site-network" class="nav-top">Final Capstone</a>
+<a href="#quick-reference" class="nav-top">Quick Reference</a>
+<a href="#glossary" class="nav-top">Glossary</a>
+<a href="#resources" class="nav-top">Resources &amp; Communities</a>
+<a href="#progress-tracker" class="nav-top">Progress Tracker</a>
+
+    </nav>
+  </aside>
+
+  <main class="main">
+    <article class="content" id="content">
+<div class="hero">
+<div class="hero-text">
+<h1 id="it-networking-learning-guide">IT Networking Learning Guide</h1>
+<h2 id="zero-to-ccna-track">Zero to CCNA Track</h2>
+<h3>Cisco IOS · Packet Tracer · Wireshark · OSPF · Ansible · Python</h3>
+</div>
+<div class="hero-mark">
+<svg viewBox="0 0 256 256" role="img" aria-label="IT Networking" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="#0d7a6e" stroke-width="10" stroke-linecap="round">
+    <line x1="128" y1="70" x2="128" y2="128"/>
+    <line x1="128" y1="128" x2="58" y2="186"/>
+    <line x1="128" y1="128" x2="198" y2="186"/>
+    <line x1="58" y1="186" x2="198" y2="186"/>
+  </g>
+  <rect x="88" y="28" width="80" height="48" rx="10" fill="#075249"/>
+  <circle cx="108" cy="52" r="6" fill="#e8f4f1"/>
+  <circle cx="128" cy="52" r="6" fill="#e8f4f1"/>
+  <circle cx="148" cy="52" r="6" fill="#e8f4f1"/>
+  <circle cx="128" cy="128" r="16" fill="#0d7a6e"/>
+  <rect x="22" y="166" width="72" height="44" rx="9" fill="#075249"/>
+  <rect x="162" y="166" width="72" height="44" rx="9" fill="#075249"/>
+  <rect x="36" y="180" width="44" height="6" rx="3" fill="#e8f4f1"/>
+  <rect x="176" y="180" width="44" height="6" rx="3" fill="#e8f4f1"/>
+</svg>
+</div>
+</div>
+<blockquote class="callout">
+<p><strong>How to use this guide — you do NOT have to start at Module 1.1</strong><br>
+This guide is built to be <strong>non-linear</strong>. Each module is self-contained with its own prerequisites, skip-check, and outcomes. Use the <strong>Placement Quiz</strong> below to find your entry point, or jump straight to any module using the <strong>Module Index</strong>. Every exercise and capstone builds one slice of the same realistic <strong>TindaHub Network</strong>: a Makati HQ campus, a Cebu fulfilment warehouse and an ISP edge for a Philippine COD marketplace. The full IP plan, VLANs and device names are in <a href="../datasets/tindahub-network/README.md"><code>datasets/tindahub-network/</code></a>.</p>
+</blockquote>
+<p>The target is <strong>CCNA 200-301 v2.0</strong>, which becomes the live exam on <strong>3 February 2027</strong> (v1.1 can be taken only through 2 February 2027). The default pace is 14 weeks at 8–10 hours a week, starting Monday 30 November 2026 and finishing with the exam by about 13 March 2027. The assumed learner has strong engineering fundamentals (binary, signals, layered systems) but no Cisco CLI experience. Stretch or compress the weeks to fit.</p>
+<p><strong>The loop for every topic:</strong></p>
+<ol>
+<li><strong>Learn:</strong> one chapter or video block, with notes in your own words.</li>
+<li><strong>Lab:</strong> rebuild it in a simulator from a blank config, no copy-paste.</li>
+<li><strong>Break and fix:</strong> introduce one fault (wrong VLAN, duplex mismatch, bad mask) and troubleshoot it using only <code>show</code> commands.</li>
+<li><strong>Recall:</strong> five minutes of flashcards and subnetting drills the next day.</li>
+</ol>
+<p>Troubleshooting is the main skill v2.0 tests, so step 3 is not optional: a lab you have never broken is a lab you only half understand.</p>
+
+<h2 id="quick-start">Quick Start: Three Ways to Use This Guide</h2>
+<ol>
+<li><strong>Complete beginner</strong> → Start at Module 1.1 and go sequentially, one phase at a time.</li>
+<li><strong>Some experience</strong> (help desk, home lab, a networking course) → Take the <strong>Placement Quiz</strong> (next section) to find your entry point.</li>
+<li><strong>Targeting a specific skill</strong> (OSPF, ACLs, automation) → Jump via the <strong>Module Index</strong> or <strong>Learning Tracks</strong>.</li>
+</ol>
+
+<h2 id="placement-quiz">Placement Quiz — Find Your Starting Point</h2>
+<p>Answer honestly. Score 1 point per "yes." Your <strong>lowest-scoring</strong> area is where you should start.</p>
+
+<h3>Foundations</h3>
+<ul>
+<li>[ ] I can name the seven OSI layers and the unit (frame, packet, segment) at layers 2, 3 and 4.</li>
+<li>[ ] I can convert 11000000.10101000 to decimal and 172 to binary without a calculator.</li>
+<li>[ ] I can explain what ARP does and why a PC needs it before its first ping.</li>
+<li>[ ] I can find the Ethernet, IP and TCP headers of one packet in a Wireshark capture.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 1.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 1.2</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 2</strong></p>
+
+<h3>Switching</h3>
+<ul>
+<li>[ ] I can explain what a switch does with a frame for a MAC address it has not learned.</li>
+<li>[ ] I can create a VLAN, put an access port in it and bring up an 802.1Q trunk from the CLI.</li>
+<li>[ ] I can predict which switch becomes the STP root bridge and why.</li>
+<li>[ ] I can build an LACP EtherChannel and diagnose a mode mismatch.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 2.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 2.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 3</strong></p>
+
+<h3>Addressing and Routing</h3>
+<ul>
+<li>[ ] I can give the subnet, broadcast and host range of 172.16.77.130/27 in under 60 seconds.</li>
+<li>[ ] I can abbreviate 2001:0db8:0000:0000:0010:0000:0000:0001 correctly.</li>
+<li>[ ] I can read <code>show ip route</code> and say which route wins for a given destination and why.</li>
+<li>[ ] I can bring up single-area OSPF between two routers and fix a neighbor stuck in INIT or EXSTART.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 3.1</strong> | <strong>2–3 yes</strong> → Start <strong>Module 3.3</strong> | <strong>4 yes</strong> → Skip to <strong>Phase 4</strong></p>
+
+<h3>Edge, Services, Security and Automation</h3>
+<ul>
+<li>[ ] I can configure PAT and explain inside local vs inside global addresses.</li>
+<li>[ ] I can write an extended ACL and say where to apply it and in which direction.</li>
+<li>[ ] I can explain the DHCP DORA exchange and why a relay (<code>ip helper-address</code>) is needed.</li>
+<li>[ ] I can run an Ansible playbook or Python script that collects output from several devices.</li>
+</ul>
+<p><strong>0–1 yes</strong> → Start <strong>Module 4.2</strong> | <strong>2–3 yes</strong> → Start <strong>Module 5.2</strong> | <strong>4 yes</strong> → Go to <strong>Phase 6</strong> and the <strong>Final Capstone</strong></p>
+
+<blockquote class="callout"><p><strong>Rule of thumb:</strong> If you can complete a module's exercise without studying it, skip the module. The exercise <em>is</em> the test-out.</p></blockquote>
+
+<h2 id="module-index">Module Index (Jump Anywhere)</h2>
+<p style="font-size:.82rem;color:var(--ink-soft);margin:.2rem 0 .9rem">Click any row to jump to that module.</p>
+<table class="module-index-table">
+<thead>
+<tr><th>Module</th><th>Topic</th><th>Level</th><th>Prereqs</th><th>Time</th></tr>
+</thead>
+<tbody>
+<tr data-href="#module-11-osi-tcp-ip-and-encapsulation"><td>1.1</td><td>OSI, TCP/IP and Encapsulation</td><td>Beginner</td><td>None</td><td>4h</td></tr>
+<tr data-href="#module-12-addressing-binary-and-physical-layer"><td>1.2</td><td>Addressing, Binary and Physical Layer</td><td>Beginner</td><td>1.1</td><td>5h</td></tr>
+<tr data-href="#module-21-ethernet-and-switch-operation"><td>2.1</td><td>Ethernet and Switch Operation</td><td>Beginner</td><td>1.2</td><td>9h</td></tr>
+<tr data-href="#module-22-vlans-and-802-1q-trunks"><td>2.2</td><td>VLANs and 802.1Q Trunks</td><td>Beginner–Intermediate</td><td>2.1</td><td>9h</td></tr>
+<tr data-href="#module-23-spanning-tree-etherchannel-and-neighbor-discovery"><td>2.3</td><td>Spanning Tree, EtherChannel and Neighbor Discovery</td><td>Intermediate</td><td>2.2</td><td>9h</td></tr>
+<tr data-href="#module-31-ipv4-subnetting-and-vlsm"><td>3.1</td><td>IPv4 Subnetting and VLSM</td><td>Beginner–Intermediate</td><td>1.2</td><td>6h</td></tr>
+<tr data-href="#module-32-ipv6-addressing"><td>3.2</td><td>IPv6 Addressing</td><td>Beginner–Intermediate</td><td>3.1</td><td>3h</td></tr>
+<tr data-href="#module-33-static-routing-and-inter-vlan-routing"><td>3.3</td><td>Static Routing and Inter-VLAN Routing</td><td>Intermediate</td><td>2.2, 3.1</td><td>9h</td></tr>
+<tr data-href="#module-34-ospf-and-first-hop-redundancy"><td>3.4</td><td>OSPF and First-Hop Redundancy</td><td>Intermediate</td><td>3.3</td><td>9h</td></tr>
+<tr data-href="#module-41-wan-sd-wan-cloud-and-virtualization"><td>4.1</td><td>WAN, SD-WAN, Cloud and Virtualization</td><td>Beginner–Intermediate</td><td>3.3</td><td>4h</td></tr>
+<tr data-href="#module-42-nat-and-pat"><td>4.2</td><td>NAT and PAT</td><td>Intermediate</td><td>3.3</td><td>6h</td></tr>
+<tr data-href="#module-43-ipsec-vpns-gre-and-bgp-basics"><td>4.3</td><td>IPsec VPNs, GRE and BGP Basics</td><td>Intermediate</td><td>3.4, 4.2</td><td>8h</td></tr>
+<tr data-href="#module-51-dhcp-dns-and-wireless"><td>5.1</td><td>DHCP, DNS and Wireless</td><td>Beginner–Intermediate</td><td>3.3</td><td>9h</td></tr>
+<tr data-href="#module-52-access-control-lists"><td>5.2</td><td>Access Control Lists</td><td>Intermediate</td><td>3.3</td><td>4h</td></tr>
+<tr data-href="#module-53-layer-2-security-and-device-access"><td>5.3</td><td>Layer 2 Security and Device Access</td><td>Intermediate</td><td>2.2, 5.1</td><td>5h</td></tr>
+<tr data-href="#module-61-monitoring-and-management-approaches"><td>6.1</td><td>Monitoring and Management Approaches</td><td>Beginner–Intermediate</td><td>2.1</td><td>3h</td></tr>
+<tr data-href="#module-62-ansible-python-and-ai-operations"><td>6.2</td><td>Ansible, Python and AI Operations</td><td>Intermediate</td><td>6.1</td><td>6h</td></tr>
+</tbody>
+</table>
+<blockquote class="callout"><p><strong>Note:</strong> Phases 1–3 are a strict chain (switching before routing). After Phase 3, Phases 4, 5 and 6 are largely independent: 4.2, 5.1, 5.2 and 6.1 each need only Module 3.3, so a learner targeting a help-desk or automation role can take them in any order.</p></blockquote>
+
+<h2 id="learning-tracks">Learning Tracks (Curated Paths)</h2>
+<p>Pick a track based on your goal. Each is a valid subset.</p>
+<h3 id="track-1-full-ccna-the-14-week-plan">Track 1 — Full CCNA (the 14-week plan)</h3>
+<p><code>1.1 → 1.2 → 2.1 → 2.2 → 2.3 → 3.1 → 3.2 → 3.3 → 3.4 → 4.1 → 4.2 → 4.3 → 5.1 → 5.2 → 5.3 → 6.1 → 6.2 → Final Capstone → Exam Sprint</code><br>
+Target cert/outcome: <strong>Cisco CCNA (200-301 v2.0)</strong></p>
+<h3 id="track-2-engineer-fast-track-test-out-heavy">Track 2 — Engineer Fast-Track (test-out heavy)</h3>
+<p><code>Placement Quiz → skip-checks for 1.1–1.2 → 2.2 → 2.3 → 3.1 (drills only) → 3.4 → 4.2 → 5.2 → 5.3 → 6.2 → Final Capstone</code><br>
+Target cert/outcome: <strong>CCNA in about 8–10 weeks</strong> for engineers who already know layered models and binary</p>
+<h3 id="track-3-it-support-and-help-desk">Track 3 — IT Support and Help Desk</h3>
+<p><code>1.1 → 1.2 → 2.1 → 2.2 → 3.1 → 3.3 → 5.1 → 5.2 → Phase 5 Capstone</code><br>
+Target cert/outcome: <strong>Desktop / NOC Tier 1 role</strong>; a solid base before sitting the full CCNA</p>
+<h3 id="track-4-network-automation">Track 4 — Network Automation</h3>
+<p><code>1.1 → 2.1 → 2.2 → 3.3 → 3.4 → 6.1 → 6.2 → Phase 6 Capstone</code><br>
+Target cert/outcome: <strong>CCNA, then CCNA Automation (200-901) or CCNP Automation</strong> (the former DevNet certifications, renamed on 3 February 2026)</p>
+<h3 id="track-5-industrial-and-ot-networking-add-on">Track 5 — Industrial and OT Networking (add-on)</h3>
+<p><code>Full Track 1 → two extra weeks: Modbus TCP, PROFINET, EtherNet/IP, DNP3, IEC 61850 · RSTP/MRP/PRP/HSR rings · Purdue model and IEC 62443 zones and conduits · PTP time sync</code><br>
+Target cert/outcome: <strong>Power and process-automation networks</strong>. Phase 2 and 3 skills carry over directly: these networks are still Ethernet, VLANs and routing, with stricter uptime and security rules.</p>
+
+<h2 id="roadmap-overview">Roadmap Overview</h2>
+<p>You learn bottom-up in six phases, each ending in a lab you can rebuild from a blank config, then spend the last two weeks on exam practice. Each phase leans on the one before it: switching before routing, routing before services, services before automation.</p>
+<pre><code>Phase 1 — Foundations                 (Week 1)
+Phase 2 — LAN and Switching           (Weeks 2–4)    exam domain 2.0 · 25%
+Phase 3 — IP Addressing and Routing   (Weeks 5–7)    exam domain 3.0 · 20%
+Phase 4 — WAN and Internet Edge       (Weeks 8–9)    parts of 1.0 and 4.0
+Phase 5 — Services and Security       (Weeks 10–11)  exam domain 4.0 · 20%
+Phase 6 — Automation and Operations   (Week 12)      exam domain 5.0 · 10%
+Exam Sprint                           (Weeks 13–14)  timed mocks, weak domains
+Final Capstone                        (alongside Weeks 12–14)</code></pre>
+<p><strong>Dependency map:</strong></p>
+<pre><code>1.1 ── 1.2 ─┬─ 2.1 ── 2.2 ── 2.3 ──────────────────────────────┐
+            │          │                                         │
+            └─ 3.1 ── 3.2                                        │
+                │      │                                         │
+                └──────┴── 3.3 ─┬─ 3.4 ─┬─ 4.3 ─────────────────┤
+                                │       │                        │
+                                ├─ 4.1  │                        ├─ Final Capstone
+                                ├─ 4.2 ─┘                        │
+                                ├─ 5.1 ── 5.3 ───────────────────┤
+                                ├─ 5.2 ──────────────────────────┤
+                                └─ 6.1 ── 6.2 ───────────────────┘</code></pre>
+
+<p><strong>14-week study plan</strong> (from Monday 30 November 2026). Budget about 9 hours a week: 3 learning, 4 in labs, 1 on subnetting and binary drills, 1 on flashcards and review. Weeks 4 and 5 straddle Christmas and New Year, so lighten the reading and keep the daily drills.</p>
+<table>
+<tr><th>Week</th><th>Week of</th><th>Phase</th><th>Focus</th><th>Checkpoint</th></tr>
+<tr><td>1</td><td>30 Nov</td><td>1</td><td>OSI and TCP/IP, encapsulation, binary</td><td>Annotated Wireshark capture; 20 binary drills a day</td></tr>
+<tr><td>2</td><td>7 Dec</td><td>2</td><td>Ethernet and switch basics</td><td>Switch from blank: SSH, descriptions, read the MAC table</td></tr>
+<tr><td>3</td><td>14 Dec</td><td>2</td><td>VLANs and trunks</td><td>Two-VLAN lab with a trunk</td></tr>
+<tr><td>4</td><td>21 Dec</td><td>2</td><td>STP, EtherChannel, CDP and LLDP</td><td>Phase 2 exit check</td></tr>
+<tr><td>5</td><td>28 Dec</td><td>3</td><td>IPv4, IPv6, VLSM</td><td>VLSM plan on paper; subnetting in under 60 seconds</td></tr>
+<tr><td>6</td><td>4 Jan</td><td>3</td><td>Static routes, inter-VLAN routing</td><td>Router-on-a-stick and SVI labs</td></tr>
+<tr><td>7</td><td>11 Jan</td><td>3</td><td>OSPF, HSRP and VRRP</td><td>Phase 3 exit check; first practice quiz on domains 1–3</td></tr>
+<tr><td>8</td><td>18 Jan</td><td>4</td><td>WAN concepts, NAT and PAT</td><td>PAT lab</td></tr>
+<tr><td>9</td><td>25 Jan</td><td>4</td><td>IPsec, GRE, BGP basics, SD-WAN, virtualization</td><td>Phase 4 exit check</td></tr>
+<tr><td>10</td><td>1 Feb</td><td>5</td><td>DHCP, DNS, wireless</td><td>DHCP relay lab</td></tr>
+<tr><td>11</td><td>8 Feb</td><td>5</td><td>ACLs, Layer 2 security, AAA</td><td>Phase 5 exit check</td></tr>
+<tr><td>12</td><td>15 Feb</td><td>6</td><td>SNMP, syslog, Ansible, Python, AI in operations</td><td>Playbook and script done; book the exam</td></tr>
+<tr><td>13</td><td>22 Feb</td><td>Sprint</td><td>First full timed mock exam; fix weak domains</td><td>Review every wrong answer in a lab</td></tr>
+<tr><td>14</td><td>1 Mar</td><td>Sprint</td><td>Two more mocks, troubleshooting labs, subnetting</td><td>Sit the exam by about 13 March</td></tr>
+</table>
+<p>The weeks, hours and lab designs are this guide's own suggestions, not Cisco's.</p>
+
+<h2 id="lab-environment">Lab Environment and Toolkit</h2>
+<p>Start with Packet Tracer and Wireshark, both free, and add an emulator running real IOS images once you reach routing protocols. Packet Tracer simulates IOS rather than running it, so a few commands and behaviors differ from real gear; that matters most for OSPF details, IPsec and automation, which is why the emulators join in Phase 3.</p>
+<table>
+<tr><th>Tool</th><th>Use it for</th><th>Notes</th></tr>
+<tr><td>Cisco Packet Tracer 9.0.x</td><td>Phases 1–5: switching, VLANs, routing, NAT, ACLs, DHCP</td><td>Free with a Cisco Networking Academy (netacad.com) account; download only from NetAcad, never from "pre-activated" mirror sites</td></tr>
+<tr><td>Cisco Modeling Labs (CML)</td><td>Larger topologies on real IOS XE / IOSv images</td><td>Cisco's licensed emulator; the Free tier caps the number of running nodes, so build TindaHub one site at a time or use a paid tier</td></tr>
+<tr><td>GNS3 or EVE-NG</td><td>Multi-vendor labs and real device images</td><td>You must supply images you are licensed to use</td></tr>
+<tr><td>Wireshark</td><td>Seeing every header, handshake and ARP exchange</td><td>Free; use it from week 1</td></tr>
+<tr><td>Python 3 with Netmiko 4.x, and Ansible (ansible-core 2.16+ with the <code>cisco.ios</code> 11.x collection)</td><td>Phase 6 automation</td><td>Free and open source</td></tr>
+<tr><td>Git</td><td>Storing every lab as a text config</td><td>Rebuild from the saved file, not from memory</td></tr>
+<tr><td>Anki or similar</td><td>Flashcards for ports, protocols, commands and administrative distances</td><td>Five minutes a day</td></tr>
+<tr><td>Used Catalyst switch and ISR router</td><td>Optional real-hardware feel, console cable included</td><td>Worth it only after week 6</td></tr>
+</table>
+<blockquote class="callout"><p><strong>Lab discipline:</strong> save each lab as a text config in Git, rebuild it from blank the next day, then inject one fault and fix it using only <code>show</code> commands. Configs live in a repo laid out like this:</p></blockquote>
+<pre><code class="language-bash">mkdir -p tindahub-lab/{hq,branch,isp,ansible,scripts,faults}
+cd tindahub-lab
+git init
+printf '%s\n' "# TindaHub Network lab" "Spec: datasets/tindahub-network/README.md" &gt; README.md
+git add README.md
+git commit -m "chore: start TindaHub lab repo"</code></pre>
+
+<h2 id="certification-path">Certification Path and Exam Sprint</h2>
+<p>Take <strong>CCNA 200-301 v2.0</strong> (official title: <em>Implementing and Administering Cisco Solutions (200-301 CCNA) v2.0</em>). Cisco published the v2.0 topics on 20 May 2026; v2.0 becomes the live exam on 3 February 2027 and v1.1 is available only through 2 February 2027, so a plan starting this week lands on v2.0. Same exam code, same certification. The exam runs 120 minutes and costs USD 300. Cisco says to re-check the official blueprint for minor, unannounced changes before you book.</p>
+<table>
+<tr><th>Domain</th><th>Weight</th><th>Covered in</th></tr>
+<tr><td>1.0 Network Infrastructure and Connectivity</td><td>25%</td><td>Phases 1, 3, 4 (virtualization) and 5 (DHCP, wireless)</td></tr>
+<tr><td>2.0 Switching and Network Access</td><td>25%</td><td>Phase 2</td></tr>
+<tr><td>3.0 IP Routing</td><td>20%</td><td>Phase 3</td></tr>
+<tr><td>4.0 Network Services and Security</td><td>20%</td><td>Phases 4 (NAT, IPsec) and 5</td></tr>
+<tr><td>5.0 AI, and Network Operations and Management</td><td>10%</td><td>Phase 6</td></tr>
+</table>
+<p><strong>What changed from v1.1.</strong> Topics drop from 53 to 29 and domains from six to five, and troubleshooting becomes the main skill tested. <strong>Added:</strong> DNS record types, TACACS+ and RADIUS, SFTP and SCP, storm control, RA guard, packet capture, infrastructure as code, OSPFv3, HSRP and VRRP, agentic AI. <strong>Dropped from the list:</strong> QoS, NTP, TFTP and FTP, REST APIs, JSON, Terraform, WLC GUI setup and TCP vs UDP. Books and courses written for v1.1 still cover most of the material; fill the gaps from the added list. This guide still teaches TCP/UDP, NTP and REST/JSON briefly, because every networking job uses them even though the exam no longer names them.</p>
+<p><strong>Exam Sprint (weeks 13–14).</strong> Week 13: one full 120-minute timed mock; for every wrong answer, rebuild the scenario in the lab before moving on. Week 14: two more mocks, a daily 20-minute troubleshooting lab (a partner or a script injects one TindaHub fault), and subnetting drills. Book the exam in week 12 so the date is fixed.</p>
+<p><strong>After CCNA:</strong> CCNP Enterprise (one core exam plus one concentration exam) to stay on Cisco routing and switching, or a security, data-center or automation specialization.</p>
+<hr />
+<h2 id="phase-1-foundations">Phase 1: Foundations</h2>
+<h3 id="week-1">Week 1 | Goal: build the mental model everything else hangs on — layers, encapsulation, addressing at each layer, and binary</h3>
+<hr />
+
+<h3 id="module-11-osi-tcp-ip-and-encapsulation">Module 1.1 — OSI, TCP/IP and Encapsulation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> None · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Without notes, explain layer by layer what a switch reads and what a router reads when a PC opens a web page on another subnet.<br>
+<strong>Skip if:</strong> You can map the seven OSI layers to the four TCP/IP layers and name the PDU at each.<br>
+<strong>Unlocks:</strong> 1.2, and every later module</p>
+</blockquote>
+
+<h4>The two models and why both still matter</h4>
+<p>OSI has seven layers: Physical, Data Link, Network, Transport, Session, Presentation, Application. TCP/IP collapses them into four: Link (OSI 1–2), Internet (3), Transport (4) and Application (5–7). Engineers speak OSI numbers ("it's a Layer 2 problem") but the internet runs TCP/IP, so you need both. Getting the layer wrong sends you to the wrong device: a Layer 2 fault is fixed on a switch, a Layer 3 fault on a router or host config, and an hour spent on the wrong box is the most common troubleshooting waste.</p>
+<table>
+<tr><th>OSI layer</th><th>TCP/IP layer</th><th>PDU</th><th>Address</th><th>Device that reads it</th></tr>
+<tr><td>7–5 Application, Presentation, Session</td><td>Application</td><td>Data</td><td>—</td><td>Hosts, proxies</td></tr>
+<tr><td>4 Transport</td><td>Transport</td><td>Segment (TCP) / datagram (UDP)</td><td>Port</td><td>Firewalls, hosts</td></tr>
+<tr><td>3 Network</td><td>Internet</td><td>Packet</td><td>IP address</td><td>Router, L3 switch</td></tr>
+<tr><td>2 Data Link</td><td>Link</td><td>Frame</td><td>MAC address</td><td>Switch</td></tr>
+<tr><td>1 Physical</td><td>Link</td><td>Bits</td><td>—</td><td>Cable, transceiver, hub</td></tr>
+</table>
+
+<h4>Encapsulation: down the stack and back up</h4>
+<p>The sender wraps data in a TCP header, then an IP header, then an Ethernet header and trailer (FCS). Each hop strips only what it needs: a switch reads the destination MAC and forwards the frame unchanged; a router removes the Ethernet header, reads the destination IP, decrements TTL, and builds a <em>new</em> frame with new MAC addresses for the next link. The IP addresses stay end to end; the MAC addresses change at every router. That single fact explains ARP, default gateways and most "can ping the gateway but not the server" tickets.</p>
+
+<h4>TCP and UDP</h4>
+<p>TCP opens with a three-way handshake (SYN, SYN-ACK, ACK), numbers every byte and retransmits losses: reliable but slower to start. UDP just sends. DNS queries and voice use UDP because a late voice sample is useless and a lost DNS query is cheaper to resend than to set up a session for. Well-known ports to memorise: 20/21 FTP, 22 SSH/SFTP/SCP, 23 Telnet, 25 SMTP, 53 DNS, 67/68 DHCP, 69 TFTP, 80 HTTP, 123 NTP, 161/162 SNMP, 443 HTTPS, 514 syslog, 49 TACACS+, 1812/1813 RADIUS. TCP vs UDP left the v2.0 topic list, but it comes up in every job and every firewall rule you will ever write.</p>
+<p>Capture it in Wireshark on your own laptop. These display filters isolate each layer:</p>
+<pre><code class="language-bash"># Wireshark display filters (type into the filter bar)
+arp                                   # Layer 2/3 address resolution
+icmp                                  # your ping
+tcp.flags.syn == 1 &amp;&amp; tcp.flags.ack == 0   # the first packet of every TCP handshake
+dns                                   # UDP 53 queries and responses
+http || tls.handshake.type == 1       # web request (TLS ClientHello for HTTPS)
+
+# Generate the traffic from a terminal while capturing
+ping -c 4 1.1.1.1
+curl -sI https://www.netacad.com | head -n 1</code></pre>
+
+<p><strong>Exercise 1.1 — Annotate one TindaHub web request</strong></p>
+<p>Dataset: TindaHub Network — HQ staff PC in VLAN 10 opening the internal order portal (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Redraw the OSI and TCP/IP models side by side from memory, with the PDU and address type at each layer.</li>
+<li>On your own machine, capture one <code>ping</code> and one HTTPS request in Wireshark; save the capture as <code>tindahub-lab/faults/week1.pcapng</code>.</li>
+<li>For one TCP SYN packet, write down every header field Wireshark shows for Ethernet, IPv4 and TCP, and which layer each belongs to.</li>
+<li>Sketch the path a staff PC (10.20.0.50) takes to reach <code>SRV-WEB</code> (10.20.1.210): which devices it crosses and which header each one reads.</li>
+<li>For that path, state which addresses change at <code>HQ-DSW1</code> and which stay the same.</li>
+<li>Write two sentences on why the portal uses TCP while DNS lookups for <code>portal.tindahub.ph.internal</code> use UDP.</li>
+</ol>
+<hr />
+
+<h3 id="module-12-addressing-binary-and-physical-layer">Module 1.2 — Addressing, Binary and Physical Layer</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> Convert 10.20.1.193 to binary, then explain from an <code>arp -a</code> output which MAC belongs to your default gateway — in under five minutes.<br>
+<strong>Skip if:</strong> You convert binary/hex by hand, know MAC vs IP vs port, and can spot a duplex mismatch from interface counters.<br>
+<strong>Unlocks:</strong> 2.1, 3.1</p>
+</blockquote>
+
+<h4>Three addresses, three jobs</h4>
+<p>A MAC address (48 bits, e.g. <code>0050.7966.6801</code>) identifies a NIC on one link; the first 24 bits are the vendor OUI. An IP address identifies a host across networks. A port identifies an application on a host. ARP glues Layers 2 and 3: a host that wants to reach an IP on its own subnet broadcasts "who has 10.20.0.1?", and the owner replies with its MAC. If the target is on another subnet, the host ARPs for its <em>default gateway</em> instead. A wrong mask on a PC makes it ARP for off-subnet hosts directly, and no one answers — so the ping fails even though cabling and the switch are fine.</p>
+<pre><code class="language-bash"># Windows
+arp -a
+ipconfig /all
+# macOS / Linux
+arp -an
+ip neigh show            # Linux
+# Clear and watch ARP repopulate (admin/root)
+sudo arp -d -a           # macOS
+sudo ip neigh flush all  # Linux
+ping -c 1 10.20.0.1</code></pre>
+
+<h4>Binary, hex and decimal by hand</h4>
+<p>Subnetting is binary arithmetic, and the exam gives you no calculator. Learn the eight bit values of an octet — 128 64 32 16 8 4 2 1 — and the powers of two up to 1,024. Hex groups 4 bits per digit (A=10 … F=15), which is how MAC and IPv6 addresses are written.</p>
+<pre class="artifact" data-kind="WORKSHEET"><code>Octet bit values:   128  64  32  16   8   4   2   1
+
+193 = 128 + 64 + 1               = 1 1 0 0 0 0 0 1
+224 = 128 + 64 + 32              = 1 1 1 0 0 0 0 0   (mask octet of a /27)
+172 = 128 + 32 + 8 + 4           = 1 0 1 0 1 1 0 0
+ 20 = 16 + 4                     = 0 0 0 1 0 1 0 0
+
+10.20.1.193 = 00001010.00010100.00000001.11000001
+
+Hex: 0xC1 = 1100 0001 = 193      0x14 = 0001 0100 = 20
+Powers of 2: 2 4 8 16 32 64 128 256 512 1024
+
+Daily drill (20 a day, timed): convert 5 decimal to binary, 5 binary to
+decimal, 5 hex to decimal, 5 decimal to hex. Target: under 10 s each.</code></pre>
+
+<h4>Cabling, interfaces and network types</h4>
+<p>Copper UTP (Cat 6/6A) reaches 100 m; multimode fiber reaches hundreds of metres inside a building; single-mode fiber reaches kilometres between buildings. Straight-through cables join unlike devices, crossover joins like devices, though Auto-MDIX on modern ports makes this mostly historical. A duplex mismatch (one side full, one half) is the classic silent fault: the link is up, pings mostly work, and throughput collapses. You spot it in counters, not in ping results:</p>
+<pre><code class="language-ios">HQ-ASW1# show interfaces g1/0/5
+GigabitEthernet1/0/5 is up, line protocol is up (connected)
+  Half-duplex, 100Mb/s, media type is 10/100/1000BaseTX
+     1834 input errors, 1203 CRC, 0 frame
+     412 late collision, 2290 collisions
+HQ-ASW1# show interfaces status | include Gi1/0/5
+Gi1/0/5   STAFF-PC-05   connected    10   a-half  a-100 10/100/1000BaseTX</code></pre>
+<p>Late collisions on a full-duplex network always mean a duplex mismatch. Network types to distinguish: LAN, WAN, WLAN, SOHO; a <strong>three-tier campus</strong> (access, distribution, core), a <strong>collapsed core</strong> (distribution and core merged — TindaHub HQ's <code>HQ-DSW1</code>/<code>HQ-DSW2</code>), and a <strong>spine-leaf</strong> data center where every leaf connects to every spine.</p>
+
+<p><strong>Exercise 1.2 — Address and cable the TindaHub HQ floor</strong></p>
+<p>Dataset: TindaHub Network — HQ VLAN and address plan (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Convert every gateway in the HQ VLAN table (10.20.0.1, 10.20.1.1, .129, .193, .225) to binary.</li>
+<li>Run <code>arp -a</code> on your own machine, identify your gateway's MAC, and look up its OUI vendor.</li>
+<li>In Packet Tracer, connect a PC to a switch, force the PC to half duplex and the switch port to full, generate traffic, and record the counters from <code>show interfaces</code>.</li>
+<li>Choose the cable/media for: PC to <code>HQ-ASW1</code>; <code>HQ-ASW1</code> to <code>HQ-DSW1</code> (40 m riser); HQ to a second building 2 km away.</li>
+<li>Classify TindaHub HQ as three-tier, collapsed-core or spine-leaf and justify it in two sentences.</li>
+<li>Do 20 binary/hex drills, timed, and log your average.</li>
+</ol>
+<hr />
+
+<h3 id="phase-1-capstone-first-ping-explained">Phase 1 Capstone: First Ping Explained</h3>
+<p><strong>Project: The very first ping on a cold network</strong></p>
+<p><strong>Dataset:</strong> TindaHub Network — two PCs in HQ VLAN 10 (10.20.0.50 and 10.20.0.51) on <code>HQ-ASW1</code></p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A Packet Tracer file with two PCs and one switch, addressed from the VLAN 10 plan.</li>
+<li>Simulation-mode screenshots of the ARP request, ARP reply, ICMP echo and echo reply.</li>
+<li>A one-page write-up: what each device reads and changes, layer by layer, with the MAC table and ARP cache before and after.</li>
+<li>The same explanation for a ping from 10.20.0.50 to <code>SRV-WEB</code> (10.20.1.210): what changes because it is off-subnet.</li>
+<li>An annotated Wireshark capture of your own machine's ARP exchange and TCP handshake.</li>
+<li>Exit check, spoken aloud without notes: what happens when a PC pings a neighbor on its own subnet for the first time.</li>
+</ol>
+<hr />
+
+<h2 id="phase-2-lan-and-switching">Phase 2: LAN and Switching</h2>
+<h3 id="weeks-2-4">Weeks 2–4 | Goal: forward, segment and protect the campus LAN — exam domain 2.0 (25%) and the base for every later phase</h3>
+<hr />
+
+<h3 id="module-21-ethernet-and-switch-operation">Module 2.1 — Ethernet and Switch Operation</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~9h<br>
+<strong>Skip-check (test-out):</strong> From a blank switch, set hostname, SSH v2 with a local user, a banner and interface descriptions, then explain three entries in <code>show mac address-table</code> — in 15 minutes.<br>
+<strong>Skip if:</strong> You can describe learning, flooding, forwarding and filtering and do first-time switch setup from memory.<br>
+<strong>Unlocks:</strong> 2.2, 6.1</p>
+</blockquote>
+
+<h4>How a switch forwards</h4>
+<p>An Ethernet frame carries destination MAC, source MAC, EtherType (0x0800 IPv4, 0x86DD IPv6, 0x8100 802.1Q tag), payload and FCS. A switch <strong>learns</strong> the source MAC against the ingress port, then for the destination it <strong>forwards</strong> out one port if known, <strong>floods</strong> out all ports in the VLAN if unknown (or broadcast), and <strong>filters</strong> (drops) if the destination is on the ingress port. Each switch port is its own collision domain, and full duplex removed collisions entirely; the whole VLAN is one broadcast domain. If you remember only one thing: an unknown unicast is flooded, which is why a MAC table that keeps flushing (see STP in 2.3) makes the whole LAN slow.</p>
+
+<h4>First-time setup that every later lab assumes</h4>
+<p>Telnet sends passwords in clear text, so every TindaHub device is SSH-only from day one; retrofitting security later is how real networks end up half-hardened.</p>
+<pre><code class="language-ios">enable
+configure terminal
+hostname HQ-ASW1
+no ip domain-lookup
+ip domain-name tindahub.ph.internal
+enable algorithm-type scrypt secret Th!s-Is-A-Lab-0nly
+username netadmin privilege 15 algorithm-type scrypt secret Th!s-Is-A-Lab-0nly
+banner motd ^Authorized TindaHub staff only. Activity is logged.^
+crypto key generate rsa modulus 2048
+ip ssh version 2
+line console 0
+ login local
+ logging synchronous
+line vty 0 15
+ login local
+ transport input ssh
+ exec-timeout 10 0
+interface vlan 99
+ ip address 10.20.1.228 255.255.255.240
+ no shutdown
+ip default-gateway 10.20.1.225
+interface g1/0/5
+ description STAFF-PC-05
+interface range g1/0/20 - 23
+ description UNUSED
+ shutdown
+end
+copy running-config startup-config</code></pre>
+<p>Packet Tracer accepts <code>enable secret</code> and <code>username … secret</code> but may not support <code>algorithm-type scrypt</code>; drop that keyword there, and keep it on real IOS XE.</p>
+
+<h4>Reading the switch</h4>
+<pre><code class="language-ios">HQ-ASW1# show mac address-table dynamic
+          Mac Address Table
+-------------------------------------------
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+  10    0050.7966.6801    DYNAMIC     Gi1/0/5
+  10    0050.7966.6802    DYNAMIC     Gi1/0/6
+  99    5254.0012.a001    DYNAMIC     Gi1/0/24
+HQ-ASW1# show interfaces status
+HQ-ASW1# show running-config | section line vty
+HQ-ASW1# show ip ssh</code></pre>
+
+<p><strong>Exercise 2.1 — Bring up HQ-ASW1 from blank</strong></p>
+<p>Dataset: TindaHub Network — <code>HQ-ASW1</code>, management VLAN 99 (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Erase the switch (<code>write erase</code>, <code>reload</code>) and type the full setup above from memory, checking only after you finish.</li>
+<li>SSH to 10.20.1.228 from a PC in VLAN 99 and confirm Telnet is refused.</li>
+<li>Connect three PCs, ping between them, and record the MAC table before and after.</li>
+<li>Clear the table (<code>clear mac address-table dynamic</code>) and capture the flooding of the next unknown unicast in simulation mode.</li>
+<li>Save the config as <code>hq/HQ-ASW1.cfg</code> in your lab repo and commit it.</li>
+<li>Fault: set a wrong <code>ip default-gateway</code>, then find it using only <code>show</code> commands from a remote PC's perspective.</li>
+</ol>
+<hr />
+
+<h3 id="module-22-vlans-and-802-1q-trunks">Module 2.2 — VLANs and 802.1Q Trunks</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~9h<br>
+<strong>Skip-check (test-out):</strong> Build two switches with VLANs 10, 30 and 99, an 802.1Q trunk with an unused native VLAN and an allowed list, and prove VLAN 10 cannot reach VLAN 30.<br>
+<strong>Skip if:</strong> You can explain native VLAN, allowed lists, voice VLANs and why DTP is turned off.<br>
+<strong>Unlocks:</strong> 2.3, 3.3, 5.3</p>
+</blockquote>
+
+<h4>Why VLANs</h4>
+<p>A VLAN is a separate broadcast domain on shared switches. TindaHub separates staff, guest Wi-Fi, voice, servers and management so a guest laptop's broadcast never reaches a server and a single ACL can police traffic between them. Without VLANs, the only segmentation is more physical switches.</p>
+
+<h4>Access, trunk, native and voice</h4>
+<p>An access port carries one VLAN untagged. A trunk carries many, inserting a 4-byte 802.1Q tag (12-bit VLAN ID, so 1–4094). Frames in the <strong>native VLAN</strong> cross the trunk untagged; a native mismatch between two switches silently merges two VLANs, so TindaHub uses VLAN 999, which carries no hosts. <strong>Turn DTP off</strong> (<code>switchport nonegotiate</code>) because a port left in <code>dynamic auto</code> lets an attacker's laptop negotiate a trunk and see every VLAN. A <strong>voice VLAN</strong> lets one access port carry a PC untagged and an IP phone tagged.</p>
+<pre><code class="language-ios">vlan 10
+ name STAFF
+vlan 20
+ name SERVERS
+vlan 30
+ name GUEST
+vlan 40
+ name VOICE
+vlan 99
+ name MGMT
+vlan 999
+ name NATIVE-UNUSED
+!
+interface range g1/0/1 - 16
+ switchport mode access
+ switchport access vlan 10
+ switchport voice vlan 40
+ switchport nonegotiate
+ spanning-tree portfast
+!
+interface g1/0/24
+ description UPLINK-HQ-DSW1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,40,99
+ switchport nonegotiate</code></pre>
+<p><code>switchport trunk encapsulation dot1q</code> exists only on platforms that also support ISL; on switches that only do 802.1Q the command is rejected — skip it there.</p>
+
+<h4>Verify</h4>
+<pre><code class="language-ios">HQ-ASW1# show vlan brief
+HQ-ASW1# show interfaces trunk
+Port        Mode         Encapsulation  Status        Native vlan
+Gi1/0/24    on           802.1q         trunking      999
+Port        Vlans allowed on trunk
+Gi1/0/24    10,20,30,40,99
+Port        Vlans in spanning tree forwarding state and not pruned
+Gi1/0/24    10,20,30,40,99
+HQ-ASW1# show interfaces g1/0/5 switchport</code></pre>
+<blockquote class="callout"><p><strong>Common mistake:</strong> "The trunk is up, so the VLAN works." A trunk can be up while a VLAN is missing from its allowed list, missing from the VLAN database on the far switch, or blocked by STP. Read all three blocks of <code>show interfaces trunk</code>: allowed, active, and forwarding.</p></blockquote>
+
+<p><strong>Exercise 2.2 — Segment HQ with VLANs and a trunk</strong></p>
+<p>Dataset: TindaHub Network — <code>HQ-ASW1</code>, <code>HQ-ASW2</code>, HQ VLAN table (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Create all six HQ VLANs on both access switches and trunk them together (stand-in for the distribution layer until 2.3).</li>
+<li>Put two PCs in VLAN 10 and two in VLAN 30 across both switches; prove same-VLAN pings work and cross-VLAN pings fail.</li>
+<li>Add an IP phone on a voice VLAN port and confirm with <code>show interfaces switchport</code>.</li>
+<li>Fault 1: remove VLAN 30 from the allowed list on one side and diagnose from the outputs.</li>
+<li>Fault 2: set native VLAN 1 on one side only; read the CDP native-mismatch log message.</li>
+<li>Commit both configs to <code>hq/</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-23-spanning-tree-etherchannel-and-neighbor-discovery">Module 2.3 — Spanning Tree, EtherChannel and Neighbor Discovery</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2 · <strong>Time:</strong> ~9h<br>
+<strong>Skip-check (test-out):</strong> For a four-switch topology with given bridge IDs, predict the root bridge and every port role, then confirm in a simulator.<br>
+<strong>Skip if:</strong> You can explain root election, port roles, Rapid PVST+, PortFast/BPDU guard and LACP modes without notes.<br>
+<strong>Unlocks:</strong> 3.3, Phase 2 Capstone</p>
+</blockquote>
+
+<h4>Why loops are fatal at Layer 2</h4>
+<p>Ethernet frames have no TTL. With two paths between switches, one broadcast circulates forever, multiplies into a <strong>broadcast storm</strong>, and the MAC table flaps as the same source MAC arrives on different ports. The network goes from fine to unusable in seconds. Spanning Tree blocks redundant links until they are needed.</p>
+
+<h4>Root election and port roles</h4>
+<ol>
+<li>Lowest <strong>bridge ID</strong> (priority + VLAN ID, then MAC) becomes <strong>root bridge</strong>. Default priority 32768, so with defaults the oldest switch (lowest MAC) wins — never leave this to chance.</li>
+<li>Every non-root switch picks one <strong>root port</strong>: lowest cost to root (1 Gbps = 4, 10 Gbps = 2 in short-mode costs), then lowest neighbor bridge ID, then lowest port ID.</li>
+<li>Each segment gets one <strong>designated port</strong>; everything else becomes <strong>alternate</strong> (blocking), ready to take over.</li>
+</ol>
+<p>Rapid PVST+ (802.1w per VLAN) converges in about a second instead of 30–50. Protect edges with <strong>PortFast</strong> plus <strong>BPDU guard</strong> (err-disables a port that receives a BPDU, e.g. someone plugs in a home switch), <strong>root guard</strong> on ports that must never lead to the root, and <strong>loop guard</strong> against unidirectional links.</p>
+<pre><code class="language-ios">! HQ-DSW1: root for 10,20,99, backup for 30,40
+spanning-tree mode rapid-pvst
+spanning-tree vlan 10,20,99 root primary
+spanning-tree vlan 30,40 root secondary
+!
+! HQ-DSW2: the mirror image
+spanning-tree mode rapid-pvst
+spanning-tree vlan 30,40 root primary
+spanning-tree vlan 10,20,99 root secondary
+!
+! HQ-ASW1 access ports
+spanning-tree mode rapid-pvst
+spanning-tree portfast default
+spanning-tree portfast bpduguard default
+interface g1/0/24
+ spanning-tree guard loop</code></pre>
+
+<h4>EtherChannel (LACP)</h4>
+<p>EtherChannel bundles parallel links into one logical port, so STP sees one link and you get both links' bandwidth instead of one blocked. LACP (802.3ad) modes: <code>active</code> initiates, <code>passive</code> only responds — active/active or active/passive forms a bundle, passive/passive never does. Member ports must match speed, duplex, VLAN and trunk settings or they are suspended.</p>
+<pre><code class="language-ios">! HQ-DSW1 and HQ-DSW2, identical
+interface range g1/0/1 - 2
+ description PO1-TO-PEER-DSW
+ channel-group 1 mode active
+interface port-channel 1
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,40,99
+ switchport nonegotiate
+!
+HQ-DSW1# show etherchannel summary
+Flags:  D - down   P - bundled in port-channel   s - suspended
+        S - Layer2  U - in use
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+----------------------
+1      Po1(SU)         LACP      Gi1/0/1(P)  Gi1/0/2(P)
+HQ-DSW1# show spanning-tree vlan 10
+HQ-DSW1# show cdp neighbors
+HQ-DSW1# show lldp neighbors</code></pre>
+<p><strong>CDP</strong> (Cisco-only, on by default) and <strong>LLDP</strong> (IEEE 802.1AB, multi-vendor, <code>lldp run</code> to enable) tell you what is plugged into each port — the fastest way to verify a cabling diagram. Disable both on internet-facing and guest ports, since they leak model and IOS version to anyone listening.</p>
+<p><em>Retrieval practice: before running <code>show spanning-tree</code>, write down which port on <code>HQ-ASW1</code> you expect to be root port and which alternate for VLAN 10 and for VLAN 30. Then check. A wrong prediction is the most useful thing this lab can give you.</em></p>
+
+<p><strong>Exercise 2.3 — Redundant HQ distribution</strong></p>
+<p>Dataset: TindaHub Network — <code>HQ-DSW1</code>, <code>HQ-DSW2</code>, <code>HQ-ASW1</code>, <code>HQ-ASW2</code> (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Cable each access switch to both distribution switches and the two DSWs together with two links.</li>
+<li>Leave STP at defaults, record which switch won root and why (show the bridge IDs).</li>
+<li>Apply the root primary/secondary split above and record the port-role changes for VLAN 10 and VLAN 30.</li>
+<li>Build <code>Port-channel1</code> with LACP; then set one side to <code>passive</code> and the other to <code>passive</code> and record what breaks.</li>
+<li>Plug a rogue switch into an access port and watch BPDU guard err-disable it; recover the port.</li>
+<li>Use <code>show cdp neighbors</code> and <code>show lldp neighbors</code> to generate a port map and compare it to your diagram.</li>
+</ol>
+<hr />
+
+<h3 id="phase-2-capstone-hq-campus-layer-2">Phase 2 Capstone: HQ Campus Layer 2</h3>
+<p><strong>Project: The TindaHub HQ switched campus, from blank, against the clock</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain what a switch does with an unknown unicast, why a native-VLAN mismatch is dangerous, and how the root port is chosen? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> TindaHub Network — all four HQ switches, VLANs 10/20/30/40/99/999</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Exit check: from blank configs, two switches with three VLANs, a trunk, Rapid PVST+ with a deliberate root and an LACP bundle in under 20 minutes.</li>
+<li>Then the full four-switch HQ layer 2: all VLANs, trunks with native 999 and allowed lists, DTP off everywhere.</li>
+<li>Rapid PVST+ load-split exactly as in the dataset spec, with a <code>show spanning-tree</code> excerpt proving it.</li>
+<li><code>Port-channel1</code> between the DSWs, LACP active/active.</li>
+<li>PortFast + BPDU guard on every access port; unused ports shut and described <code>UNUSED</code>.</li>
+<li>A topology diagram with port numbers, generated from CDP/LLDP and checked against cabling.</li>
+<li>All four configs committed to Git, plus a fault log of two injected faults and how you found each.</li>
+</ol>
+<hr />
+<h2 id="phase-3-ip-addressing-and-routing">Phase 3: IP Addressing and Routing</h2>
+<h3 id="weeks-5-7">Weeks 5–7 | Goal: subnet fast and read a routing table cold — they decide most of the exam and most real troubleshooting</h3>
+<hr />
+
+<h3 id="module-31-ipv4-subnetting-and-vlsm">Module 3.1 — IPv4 Subnetting and VLSM</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 1.2 · <strong>Time:</strong> ~6h plus a daily 10-minute drill<br>
+<strong>Skip-check (test-out):</strong> Carve 10.20.0.0/22 into subnets for 200, 100, 60, 25 and 10 hosts on paper in 10 minutes, with network, broadcast and host range for each.<br>
+<strong>Skip if:</strong> Any "which subnet, broadcast and host range" question takes you under 60 seconds.<br>
+<strong>Unlocks:</strong> 3.2, 3.3, 5.2</p>
+</blockquote>
+
+<h4>The essentials</h4>
+<p>RFC 1918 private ranges: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. Also know 127.0.0.0/8 (loopback), 169.254.0.0/16 (APIPA — a host that shows this got no DHCP answer), and 100.64.0.0/10 (carrier-grade NAT, common on Philippine mobile and fibre ISPs). A prefix length (/27) counts the network bits; hosts per subnet = 2<sup>host bits</sup> − 2 (network and broadcast). The exceptions are /31 point-to-point links (2 usable, RFC 3021) and /32 host routes.</p>
+
+<h4>The magic-number method</h4>
+<p>Find the "interesting" octet (where the mask is neither 255 nor 0). Magic number = 256 − mask value in that octet = the block size. Subnets start at multiples of the block size. You will use this hundreds of times; speed comes only from repetition, which is why the drill is daily rather than weekly.</p>
+<pre class="artifact" data-kind="WORKSHEET"><code>Question: 172.16.77.130/27 — subnet, broadcast, host range?
+
+/27 = 255.255.255.224          interesting octet = 4th
+Magic number = 256 - 224 = 32  subnets: .0 .32 .64 .96 .128 .160 .192 .224
+130 falls in the .128 block
+
+Network    172.16.77.128
+First host 172.16.77.129
+Last host  172.16.77.158
+Broadcast  172.16.77.159       (next subnet .160 minus 1)
+Hosts      2^5 - 2 = 30
+
+Prefix cheat row (4th octet):
+/24 256  /25 128  /26 64  /27 32  /28 16  /29 8  /30 4  /31 2  /32 1
+Mask:  0    128     192     224     240     248   252   254   255</code></pre>
+
+<h4>VLSM: the TindaHub HQ plan</h4>
+<p>Variable-length subnet masking gives each VLAN only the space it needs. Always allocate <strong>largest first</strong>: each block then starts on its own boundary and nothing overlaps. Allocating smallest first leaves gaps that a large subnet cannot fit into, and the overlap usually surfaces months later as an intermittent routing fault.</p>
+<pre class="artifact" data-kind="WORKSHEET"><code>Block: 10.20.0.0/22  (10.20.0.0 - 10.20.3.255, 1,024 addresses)
+
+Need   Prefix  Block  Subnet            Hosts  Range                         Broadcast
+200    /24     256    10.20.0.0/24      254    10.20.0.1   - 10.20.0.254     10.20.0.255   STAFF   (VLAN 10)
+100    /25     128    10.20.1.0/25      126    10.20.1.1   - 10.20.1.126     10.20.1.127   GUEST   (VLAN 30)
+ 60    /26      64    10.20.1.128/26     62    10.20.1.129 - 10.20.1.190     10.20.1.191   VOICE   (VLAN 40)
+ 25    /27      32    10.20.1.192/27     30    10.20.1.193 - 10.20.1.222     10.20.1.223   SERVERS (VLAN 20)
+ 10    /28      16    10.20.1.224/28     14    10.20.1.225 - 10.20.1.238     10.20.1.239   MGMT    (VLAN 99)
+
+Free:  10.20.1.240/28, 10.20.2.0/23
+Summary advertised to the branch: 10.20.0.0/22 (one route instead of five)</code></pre>
+<p><strong>Summarization</strong> finds the common leading bits of contiguous subnets: 10.20.0.0/24 through 10.20.3.0/24 share the first 22 bits, so a single 10.20.0.0/22 covers them. Fewer routes means smaller tables and less churn when one VLAN flaps.</p>
+
+<p><strong>Exercise 3.1 — Plan TindaHub's addressing</strong></p>
+<p>Dataset: TindaHub Network — HQ and branch VLAN requirements (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Reproduce the HQ VLSM table on paper without looking, then compare it to the dataset README.</li>
+<li>Plan the branch 10.30.0.0/24: 100 warehouse staff, 50 scanners, 10 management devices. Check against the spec.</li>
+<li>Give the subnet, broadcast and host range for 10.20.1.200/27, 10.30.0.150/26 and 10.255.1.5/30.</li>
+<li>Write the single summary route the branch should learn for all of HQ and prove it covers every HQ VLAN.</li>
+<li>Build an IP plan spreadsheet (one row per subnet: VLAN, name, prefix, gateway, DHCP range) — it is a Final Capstone deliverable.</li>
+<li>Do ten timed subnetting problems; log the time of each until every one is under 60 seconds.</li>
+</ol>
+<hr />
+
+<h3 id="module-32-ipv6-addressing">Module 3.2 — IPv6 Addressing</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 3.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Abbreviate and classify ten mixed IPv6 addresses (global unicast, link-local, unique local, multicast) in five minutes.<br>
+<strong>Skip if:</strong> You know the two abbreviation rules, the address types by prefix, SLAAC and EUI-64.<br>
+<strong>Unlocks:</strong> 3.4 (OSPFv3), 5.3 (RA guard)</p>
+</blockquote>
+
+<h4>Notation and the two abbreviation rules</h4>
+<p>128 bits in eight 16-bit hex groups. Rule 1: drop leading zeros in each group. Rule 2: replace <em>one</em> run of consecutive all-zero groups with <code>::</code> (the longest run; leftmost if tied). Using <code>::</code> twice is invalid because the address becomes ambiguous.</p>
+<pre class="artifact" data-kind="WORKSHEET"><code>2001:0db8:0020:0010:0000:0000:0000:0001
+Rule 1 -> 2001:db8:20:10:0:0:0:1
+Rule 2 -> 2001:db8:20:10::1          (TindaHub HQ VLAN 10, host ::1)
+
+Address types by prefix
+2000::/3     Global unicast (public)       TindaHub uses 2001:db8::/32 (documentation)
+FE80::/10    Link-local (every interface, never routed; OSPFv3 and RA use it)
+FC00::/7     Unique local (FD00::/8 in practice; private, like RFC 1918)
+FF00::/8     Multicast  (FF02::1 all nodes, FF02::2 all routers, FF02::5 OSPFv3)
+::1/128      Loopback     ::/128 unspecified
+
+EUI-64 from MAC 0050.7966.6801
+split       0050.79 | 66.6801
+insert FFFE 0050.79FF.FE66.6801
+flip bit 7  00 -> 02
+interface ID 0250:79ff:fe66:6801</code></pre>
+<p>The <strong>/64 norm</strong>: every LAN gets a /64 because SLAAC needs a 64-bit interface ID. With <strong>SLAAC</strong>, a host learns the prefix from a router advertisement and builds its own address (EUI-64 or, on modern operating systems, a random privacy ID). <strong>Dual stack</strong> runs IPv4 and IPv6 side by side — TindaHub's approach.</p>
+<pre><code class="language-ios">ipv6 unicast-routing
+interface vlan 10
+ ipv6 address 2001:db8:20:10::2/64
+ ipv6 address fe80::2 link-local
+HQ-DSW1# show ipv6 interface brief
+Vlan10                 [up/up]
+    FE80::2
+    2001:DB8:20:10::2</code></pre>
+
+<p><strong>Exercise 3.2 — Dual-stack the HQ VLANs</strong></p>
+<p>Dataset: TindaHub Network — IPv6 plan 2001:db8:20::/48 and 2001:db8:30::/48 (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Write the /64 for every HQ and branch VLAN using the "VLAN n = :n::/64" rule.</li>
+<li>Fully expand, then fully abbreviate, <code>2001:db8:20:99::1</code> and <code>fe80::250:79ff:fe66:6801</code>.</li>
+<li>Compute the EUI-64 interface ID for MAC <code>5254.0012.a001</code>.</li>
+<li>In the simulator, enable IPv6 on <code>HQ-DSW1</code> VLAN 10 and let a PC get a SLAAC address; record it.</li>
+<li>Classify ten addresses from a <code>show ipv6 interface</code> output by type.</li>
+</ol>
+<hr />
+
+<h3 id="module-33-static-routing-and-inter-vlan-routing">Module 3.3 — Static Routing and Inter-VLAN Routing</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2, 3.1 · <strong>Time:</strong> ~9h<br>
+<strong>Skip-check (test-out):</strong> Given a <code>show ip route</code> output and five destinations, say which route each uses and why; then build router-on-a-stick for two VLANs from blank.<br>
+<strong>Skip if:</strong> You know longest-prefix match, AD vs metric, floating statics, subinterfaces and SVIs.<br>
+<strong>Unlocks:</strong> 3.4, 4.1, 4.2, 5.1, 5.2</p>
+</blockquote>
+
+<h4>How a router picks a route</h4>
+<ol>
+<li><strong>Longest prefix match</strong> wins first, always: a /27 beats a /24 beats a /0 default, regardless of source.</li>
+<li>Among routes to the <em>same</em> prefix from different sources, lowest <strong>administrative distance</strong> wins: connected 0, static 1, eBGP 20, EIGRP 90, OSPF 110, RIP 120, iBGP 200.</li>
+<li>Within one protocol, lowest <strong>metric</strong> wins (OSPF cost).</li>
+</ol>
+<p>Misordering these is the classic exam trap: an OSPF /24 does not beat a static /16 for a host inside the /24 because of AD — it wins because it is longer. AD only breaks ties between identical prefixes.</p>
+<pre><code class="language-ios">HQ-R1# show ip route
+Gateway of last resort is 203.0.113.1 to network 0.0.0.0
+S*    0.0.0.0/0 [1/0] via 203.0.113.1
+      10.0.0.0/8 is variably subnetted, 12 subnets, 5 masks
+O        10.20.0.0/24 [110/2] via 10.255.1.2, 00:14:02, GigabitEthernet0/1
+                      [110/2] via 10.255.1.6, 00:14:02, GigabitEthernet0/2
+O        10.20.1.192/27 [110/2] via 10.255.1.2, 00:14:02, GigabitEthernet0/1
+O        10.30.0.0/25 [110/2] via 10.255.0.2, 00:12:40, GigabitEthernet0/3
+C        10.255.0.0/30 is directly connected, GigabitEthernet0/3
+L        10.255.0.1/32 is directly connected, GigabitEthernet0/3</code></pre>
+<p>Read it as: code, prefix, [AD/metric], next hop, age, exit interface. Two equal-cost next hops for 10.20.0.0/24 means OSPF load-shares across both distribution switches.</p>
+
+<h4>Static routes: default, network, host and floating</h4>
+<pre><code class="language-ios">! HQ-R1
+ip route 0.0.0.0 0.0.0.0 203.0.113.1                      ! default to ISP
+ip route 10.30.0.0 255.255.255.0 10.255.0.2               ! network route to branch
+ip route 10.30.0.242 255.255.255.255 10.255.0.2           ! host route to BR-SW1
+ip route 10.30.0.0 255.255.255.0 172.16.0.2 250           ! floating backup via GRE (AD 250)
+ipv6 route ::/0 2001:db8:ffff:1::2
+HQ-R1# show ip route static
+HQ-R1# traceroute 10.30.0.10 source g0/1</code></pre>
+<p>The floating route stays out of the table until the primary disappears; give it an AD higher than whatever it backs up (higher than OSPF's 110 once OSPF runs).</p>
+
+<h4>Inter-VLAN routing: router-on-a-stick and SVIs</h4>
+<p>Hosts in different VLANs need a Layer 3 device. The branch uses <strong>router-on-a-stick</strong>: one trunk to <code>BR-R1</code> with one 802.1Q subinterface per VLAN. HQ uses <strong>SVIs</strong> on the Layer 3 distribution switches, which route in hardware at line rate — the reason campuses outgrew router-on-a-stick.</p>
+<pre><code class="language-ios">! BR-R1 router-on-a-stick
+interface g0/1
+ no shutdown
+interface g0/1.10
+ encapsulation dot1Q 10
+ ip address 10.30.0.1 255.255.255.128
+interface g0/1.50
+ encapsulation dot1Q 50
+ ip address 10.30.0.129 255.255.255.192
+interface g0/1.99
+ encapsulation dot1Q 99
+ ip address 10.30.0.241 255.255.255.240
+!
+! HQ-DSW1 SVIs and routed uplink
+ip routing
+interface vlan 10
+ ip address 10.20.0.2 255.255.255.0
+interface vlan 20
+ ip address 10.20.1.194 255.255.255.224
+interface g1/0/24
+ no switchport
+ ip address 10.255.1.2 255.255.255.252</code></pre>
+
+<p><strong>Exercise 3.3 — Route the branch and HQ</strong></p>
+<p>Dataset: TindaHub Network — <code>BR-R1</code>, <code>BR-SW1</code>, <code>HQ-DSW1</code>, <code>HQ-R1</code> (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Build router-on-a-stick at the branch for VLANs 10, 50 and 99 and prove inter-VLAN pings.</li>
+<li>Build SVIs for all HQ VLANs on <code>HQ-DSW1</code> with <code>ip routing</code> and a routed uplink to <code>HQ-R1</code>.</li>
+<li>Connect HQ and branch with static routes only (no OSPF yet) and ping 10.20.0.50 → 10.30.0.10.</li>
+<li>Add the floating static via 172.16.0.2 (treat the tunnel as a placeholder interface for now) and confirm it is absent from the table.</li>
+<li>Fault: put VLAN 50's subinterface on <code>dot1Q 5</code>; find it from a scanner's failed DHCP-less ping and <code>show vlans</code> on the router.</li>
+<li>For five destinations, predict the route chosen on <code>HQ-R1</code>, then verify with <code>show ip route &lt;address&gt;</code>.</li>
+</ol>
+<hr />
+
+<h3 id="module-34-ospf-and-first-hop-redundancy">Module 3.4 — OSPF and First-Hop Redundancy</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.3 · <strong>Time:</strong> ~9h<br>
+<strong>Skip-check (test-out):</strong> Bring up single-area OSPFv2 between three routers, fix a neighbor stuck in EXSTART, and fail an HSRP active gateway without dropping more than a few pings.<br>
+<strong>Skip if:</strong> You can explain neighbor states, DR/BDR election, cost, passive interfaces and HSRP preemption.<br>
+<strong>Unlocks:</strong> 4.3, Phase 3 Capstone</p>
+</blockquote>
+
+<h4>Single-area OSPFv2</h4>
+<p>OSPF is a link-state protocol: every router in area 0 floods link-state advertisements, builds the same map and runs Dijkstra's SPF to find lowest-cost paths. <strong>Cost</strong> = reference bandwidth ÷ interface bandwidth. The default reference (100 Mbps) makes 1, 10 and 100 Gbps links all cost 1, so OSPF cannot tell them apart — set <code>auto-cost reference-bandwidth 100000</code> on every router, identically, or paths become asymmetric. <strong>Router ID</strong>: manually set, else highest loopback IP, else highest active interface IP.</p>
+<p><strong>Neighbor states:</strong> Down → Init → 2-Way → ExStart → Exchange → Loading → Full. On broadcast segments a <strong>DR</strong> and <strong>BDR</strong> are elected (highest priority, then highest RID; priority 0 never becomes DR) and other routers stay at 2-Way with each other — that is normal, not a fault. Point-to-point links skip the election, so set <code>ip ospf network point-to-point</code> on router-to-router Ethernet links for faster convergence.</p>
+<pre><code class="language-ios">! HQ-R1
+router ospf 1
+ router-id 1.1.1.1
+ auto-cost reference-bandwidth 100000
+ passive-interface default
+ no passive-interface g0/1
+ no passive-interface g0/2
+ no passive-interface g0/3
+ default-information originate
+interface range g0/1 - 3
+ ip ospf 1 area 0
+ ip ospf network point-to-point
+!
+! HQ-DSW1
+router ospf 1
+ router-id 3.3.3.3
+ auto-cost reference-bandwidth 100000
+ passive-interface default
+ no passive-interface g1/0/24
+ network 10.20.0.0 0.0.3.255 area 0
+interface g1/0/24
+ ip ospf 1 area 0
+ ip ospf network point-to-point
+!
+! OSPFv3 for IPv6 (same pattern)
+ipv6 router ospf 1
+ router-id 1.1.1.1
+interface g0/3
+ ipv6 ospf 1 area 0</code></pre>
+<p><code>passive-interface default</code> stops OSPF hellos on user VLANs — anyone on a staff port could otherwise form an adjacency and inject routes.</p>
+
+<h4>Troubleshooting a stuck neighbor</h4>
+<table>
+<tr><th>Symptom</th><th>Likely cause</th><th>Check</th></tr>
+<tr><td>No neighbor at all</td><td>Passive interface, different area, ACL blocking 224.0.0.5, different subnet/mask</td><td><code>show ip ospf interface brief</code></td></tr>
+<tr><td>Stuck in INIT</td><td>Hellos received one way only (ACL, unidirectional link)</td><td><code>show ip ospf neighbor</code> on both sides</td></tr>
+<tr><td>Stuck in EXSTART/EXCHANGE</td><td>MTU mismatch</td><td><code>show interfaces | include MTU</code></td></tr>
+<tr><td>Flapping</td><td>Hello/dead timers differ, duplicate router ID</td><td><code>show ip ospf interface g0/3</code></td></tr>
+<tr><td>Full but route missing</td><td>Network not advertised, or passive by mistake for a transit link</td><td><code>show ip ospf database</code>, <code>show ip protocols</code></td></tr>
+</table>
+
+<h4>HSRP and VRRP</h4>
+<p>Hosts have one default gateway. If that switch dies, the whole VLAN is cut off — unless two switches share a <strong>virtual IP</strong>. In <strong>HSRP</strong> (Cisco) one router is <em>active</em> and one <em>standby</em>; highest priority (default 100) wins, and <strong>preempt</strong> lets a recovered higher-priority router take the role back. <strong>VRRP</strong> (open standard, RFC 9568 for v3) works the same way with master/backup naming and preemption on by default. TindaHub splits active roles across the two DSWs, matching the STP root split, so traffic takes the shortest path and both switches carry load.</p>
+<pre><code class="language-ios">! HQ-DSW1 — active for VLAN 10
+interface vlan 10
+ standby version 2
+ standby 10 ip 10.20.0.1
+ standby 10 priority 110
+ standby 10 preempt
+!
+! HQ-DSW2 — standby for VLAN 10
+interface vlan 10
+ ip address 10.20.0.3 255.255.255.0
+ standby version 2
+ standby 10 ip 10.20.0.1
+ standby 10 preempt
+!
+HQ-DSW1# show standby brief
+Interface   Grp  Pri P State   Active          Standby         Virtual IP
+Vl10        10   110 P Active  local           10.20.0.3       10.20.0.1</code></pre>
+<blockquote class="callout"><p><strong>Disambiguation:</strong> EIGRP and RIP are not in the v2.0 topic list. Know one fact each — EIGRP is Cisco's advanced distance-vector protocol (AD 90), RIP uses hop count with a 15-hop limit (AD 120) — and spend the time on OSPF instead.</p></blockquote>
+
+<p><strong>Exercise 3.4 — OSPF across TindaHub with a redundant HQ gateway</strong></p>
+<p>Dataset: TindaHub Network — <code>HQ-R1</code>, <code>HQ-DSW1</code>, <code>HQ-DSW2</code>, <code>BR-R1</code> (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Replace Exercise 3.3's statics between HQ and branch with OSPFv2 area 0 using the router IDs in the spec.</li>
+<li>Confirm every adjacency reaches FULL and that <code>HQ-R1</code> shows two equal-cost paths to 10.20.0.0/24.</li>
+<li>Add OSPFv3 on the HQ–branch link and confirm IPv6 routes appear.</li>
+<li>Configure HSRPv2 on all five HQ SVIs with the active split from the spec.</li>
+<li>Run a continuous ping from a VLAN 10 PC to <code>BR-R1</code>, shut <code>HQ-DSW1</code>'s SVI, and count the lost pings.</li>
+<li>Fault: set MTU 1400 on one end of the HQ–branch link; diagnose the EXSTART state from outputs only.</li>
+</ol>
+<hr />
+
+<h3 id="phase-3-capstone-two-site-routed-network">Phase 3 Capstone: Two-Site Routed Network</h3>
+<p><strong>Project: TindaHub HQ and Cebu warehouse, fully routed</strong></p>
+<p><strong>Dataset:</strong> TindaHub Network — HQ campus from the Phase 2 Capstone plus <code>HQ-R1</code>, <code>BR-R1</code>, <code>BR-SW1</code></p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Exit check, part 1: carve the /22 into the five HQ subnets on paper in 10 minutes.</li>
+<li>Exit check, part 2: build it with inter-VLAN routing (SVIs at HQ, router-on-a-stick at the branch).</li>
+<li>OSPFv2 area 0 between both sites with reference bandwidth 100000 and passive user VLANs.</li>
+<li>HSRP gateways on every HQ VLAN, active roles split per the spec.</li>
+<li>End-to-end pings from every VLAN at HQ to every VLAN at the branch, saved as output.</li>
+<li>A floating static backup route that appears when you shut the primary WAN link.</li>
+<li>Configs committed; first practice quiz on exam domains 1–3 taken and scored.</li>
+</ol>
+<hr />
+<h2 id="phase-4-wan-and-internet-edge">Phase 4: WAN and Internet Edge</h2>
+<h3 id="weeks-8-9">Weeks 8–9 | Goal: understand WAN options and configure the two edge technologies every site needs — NAT and VPN tunnels</h3>
+<hr />
+
+<h3 id="module-41-wan-sd-wan-cloud-and-virtualization">Module 4.1 — WAN, SD-WAN, Cloud and Virtualization</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 3.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> For TindaHub's Cebu branch, recommend a primary and a backup WAN link and justify both, then explain how an MPLS L3VPN differs from an SD-WAN overlay.<br>
+<strong>Skip if:</strong> You can define demarc, CPE, CE/PE/P routers, SD-WAN controllers, hypervisor types and virtual switches.<br>
+<strong>Unlocks:</strong> 4.3</p>
+</blockquote>
+
+<h4>WAN link types</h4>
+<p>The CCNA touches WAN only lightly while real jobs go deep, so learn the vocabulary precisely. <strong>Leased line</strong>: a dedicated point-to-point circuit, predictable but expensive. <strong>Metro Ethernet</strong>: the provider delivers an Ethernet handoff between sites (TindaHub's HQ–Cebu private WAN). <strong>Broadband</strong>: DSL, cable and fibre (in the Philippines, mostly GPON fibre-to-the-home and business fibre). <strong>Cellular</strong> (4G/5G) and <strong>satellite</strong> (including low-earth-orbit services) work as backup or for sites fibre does not reach. The <strong>demarcation point</strong> is where the provider's responsibility ends; <strong>CPE</strong> is the equipment on your side; the <strong>SLA</strong> sets uptime, latency and repair time — and is what you escalate against.</p>
+
+<h4>Provider WANs, SD-WAN and cloud</h4>
+<p>In an <strong>MPLS Layer 3 VPN</strong>, your <strong>CE</strong> router peers with the provider's <strong>PE</strong>; the provider's core <strong>P</strong> routers label-switch your traffic and the provider routes between your sites for you. <strong>SD-WAN</strong> builds an encrypted overlay across several transports (fibre, broadband, LTE) with policy set centrally by a controller — for example "voice prefers the lowest-latency link". Connections <strong>into a cloud provider</strong> use either a site-to-site VPN over the internet or a dedicated private link (AWS Direct Connect, Azure ExpressRoute, Google Cloud Interconnect).</p>
+
+<h4>Virtualization (v2.0 topic 1.2)</h4>
+<p>A <strong>Type 1 hypervisor</strong> (ESXi, KVM, Hyper-V) runs on bare metal; a <strong>Type 2</strong> (VirtualBox, VMware Workstation) runs on a host OS. VMs each carry a full OS; <strong>containers</strong> share the host kernel and start in seconds. A <strong>virtual switch</strong> connects VMs to each other and to the physical NIC, with VLAN tagging just like a physical switch — which is why your Phase 2 skills apply inside every server.</p>
+<pre class="artifact" data-kind="FRAMEWORK"><code>WAN selection worksheet — TindaHub Cebu warehouse
+
+Requirement                         Weight  Metro-E  Business fibre  5G   LEO satellite
+Uptime SLA (warehouse ships daily)    5       5          3           3        3
+Latency to HQ for order portal        4       5          4           3        3
+Monthly cost                          3       2          5           4        3
+Diverse path from primary             4       1          3           5        5
+Install lead time                     2       2          4           5        4
+
+Weighted score (sum of weight x score)
+Metro-E        5x5 + 4x5 + 3x2 + 4x1 + 2x2 = 59
+Business fibre 5x3 + 4x4 + 3x5 + 4x3 + 2x4 = 66
+5G             5x3 + 4x3 + 3x4 + 4x5 + 2x5 = 69
+LEO satellite  5x3 + 4x3 + 3x3 + 4x5 + 2x4 = 64
+
+Decision rule: primary = highest uptime + latency subtotal (Metro-E 45);
+backup = highest "diverse path" among the rest (5G and LEO tie at 20;
+5G wins the tie on total score, 69). Re-score yearly.</code></pre>
+
+<p><strong>Exercise 4.1 — TindaHub WAN brief</strong></p>
+<p>Dataset: TindaHub Network — HQ, Cebu branch and ISP sites (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Draw both sites, the private WAN and the internet links, marking demarc and CPE at each.</li>
+<li>Re-score the worksheet above with your own weights and state your primary and backup choice for Cebu.</li>
+<li>Explain in five sentences how the same two sites would look on an MPLS L3VPN: which routers are CE, PE and P.</li>
+<li>Describe an SD-WAN policy that sends order-portal traffic over the private WAN and guest traffic straight to the internet.</li>
+<li>List where virtualization already appears in your lab (Packet Tracer, CML, GNS3) and whether each is Type 1 or Type 2.</li>
+</ol>
+<hr />
+
+<h3 id="module-42-nat-and-pat">Module 4.2 — NAT and PAT</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.3 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Configure PAT on a router from blank, generate traffic, and explain every column of one <code>show ip nat translations</code> entry.<br>
+<strong>Skip if:</strong> You can name the four NAT address types and configure static NAT, dynamic NAT and PAT overload.<br>
+<strong>Unlocks:</strong> 4.3, Phase 4 Capstone</p>
+</blockquote>
+
+<h4>The four address names</h4>
+<p><strong>Inside local</strong>: the private address of your host (10.20.0.50). <strong>Inside global</strong>: what the internet sees for that host (203.0.113.2). <strong>Outside global</strong>: the real address of the remote server. <strong>Outside local</strong>: how the remote server appears from inside — the same as outside global unless you also translate the destination. "Local" means as seen from inside; "global" means as seen from outside. Mixing them up is the single most common NAT exam error.</p>
+<p><strong>Static NAT</strong> maps one inside address to one global address permanently (for a server that must be reachable). <strong>Dynamic NAT</strong> draws from a pool of public addresses. <strong>PAT</strong> (overload) puts thousands of inside hosts behind one public IP by tracking source ports — how every home router and TindaHub's HQ work.</p>
+<pre><code class="language-ios">! HQ-R1
+interface g0/0
+ description ISP-UPLINK
+ ip address 203.0.113.2 255.255.255.252
+ ip nat outside
+interface range g0/1 - 2
+ ip nat inside
+!
+access-list 1 permit 10.20.0.0 0.0.3.255
+ip nat inside source list 1 interface g0/0 overload
+!
+! Static port forward: internet HTTPS to the order portal
+ip nat inside source static tcp 10.20.1.210 443 interface g0/0 443
+!
+HQ-R1# show ip nat translations
+Pro  Inside global       Inside local        Outside local       Outside global
+tcp  203.0.113.2:443     10.20.1.210:443     ---                 ---
+icmp 203.0.113.2:4       10.20.0.50:4        192.0.2.8:4         192.0.2.8:4
+tcp  203.0.113.2:51234   10.20.0.50:51234    192.0.2.8:443       192.0.2.8:443
+HQ-R1# show ip nat statistics
+HQ-R1# clear ip nat translation *</code></pre>
+<p>If PAT "does nothing", check three things in order: inside/outside on the right interfaces, the ACL actually matches the source subnet, and a route to the internet exists. Translation happens after routing on inside-to-outside traffic, so no default route means no translation.</p>
+
+<p><strong>Exercise 4.2 — Put TindaHub HQ on the internet</strong></p>
+<p>Dataset: TindaHub Network — <code>HQ-R1</code>, <code>ISP-R1</code>, test target 192.0.2.8 (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Build <code>ISP-R1</code> with its two customer links and Loopback0 192.0.2.8/32; it needs no routes back to 10.0.0.0/8.</li>
+<li>Configure the default route and PAT on <code>HQ-R1</code>; ping 192.0.2.8 from VLAN 10 and VLAN 30 PCs.</li>
+<li>Capture <code>show ip nat translations</code> and label inside local, inside global, outside local and outside global for each entry.</li>
+<li>Add the static port forward for <code>SRV-WEB</code> and test it from a PC attached to <code>ISP-R1</code>.</li>
+<li>Fault: remove <code>ip nat inside</code> from <code>g0/2</code>; work out from the tables why only some HQ traffic still reaches the internet.</li>
+<li>Repeat PAT on <code>BR-R1</code> for the branch.</li>
+</ol>
+<hr />
+
+<h3 id="module-43-ipsec-vpns-gre-and-bgp-basics">Module 4.3 — IPsec VPNs, GRE and BGP Basics</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.4, 4.2 · <strong>Time:</strong> ~8h<br>
+<strong>Skip-check (test-out):</strong> Describe how an IKEv2 site-to-site VPN comes up step by step, then build a GRE tunnel between two routers across a simulated internet and route over it.<br>
+<strong>Skip if:</strong> You can contrast site-to-site and remote-access VPNs, ESP and AH, tunnel and transport mode, and eBGP and iBGP.<br>
+<strong>Unlocks:</strong> Phase 4 Capstone</p>
+</blockquote>
+
+<h4>IPsec: describe it precisely</h4>
+<p>A <strong>site-to-site</strong> VPN joins two networks through their gateways; <strong>remote access</strong> joins one user's device (an IPsec or TLS VPN client). IPsec gives confidentiality, integrity and authentication. <strong>ESP</strong> encrypts and authenticates (used almost everywhere); <strong>AH</strong> only authenticates and breaks through NAT, so it is rarely deployed. <strong>Tunnel mode</strong> wraps the whole original packet in a new IP header (gateway to gateway); <strong>transport mode</strong> protects only the payload (host to host, or GRE over IPsec).</p>
+<pre class="artifact" data-kind="FRAMEWORK"><code>How an IKEv2 site-to-site tunnel comes up (HQ-R1 to BR-R1)
+
+1. Interesting traffic   10.20.0.50 sends to 10.30.0.10; it matches the crypto policy
+2. IKE_SA_INIT           Peers agree on encryption, integrity, DH group; exchange
+                         Diffie-Hellman values -> shared secret, the IKE SA exists
+3. IKE_AUTH              Peers authenticate (pre-shared key or certificates) and
+                         create the first child (IPsec) SA for the traffic selectors
+4. Data transfer         ESP in tunnel mode: new outer IP header 203.0.113.2 ->
+                         198.51.100.2, original packet encrypted inside
+5. Rekey                 Child SAs and the IKE SA rekey before their lifetimes expire
+
+Verify on real IOS XE: show crypto ikev2 sa, show crypto ipsec sa
+Fault map: stuck at step 2 = proposal/DH mismatch; step 3 = wrong key or identity;
+           SA up but no traffic = traffic selectors (crypto ACL) do not mirror</code></pre>
+
+<h4>GRE for routing over a tunnel</h4>
+<p>GRE wraps any packet — including OSPF multicast — in a new IP header, so two sites can run a routing protocol across the internet. It provides no encryption, which is why production networks run GRE inside IPsec. TindaHub uses a GRE tunnel as the backup path between HQ and Cebu.</p>
+<pre><code class="language-ios">! HQ-R1
+interface Tunnel0
+ description GRE-TO-BR-R1
+ ip address 172.16.0.1 255.255.255.252
+ tunnel source g0/0
+ tunnel destination 198.51.100.2
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+!
+! BR-R1
+interface Tunnel0
+ description GRE-TO-HQ-R1
+ ip address 172.16.0.2 255.255.255.252
+ tunnel source g0/0
+ tunnel destination 203.0.113.2
+ ip mtu 1400
+ ip tcp adjust-mss 1360
+!
+HQ-R1# show interfaces tunnel 0 | include line protocol|Tunnel source
+HQ-R1# ping 172.16.0.2</code></pre>
+<p>A tunnel whose destination is reachable <em>only</em> through the tunnel itself flaps endlessly ("recursive routing"). Keep the tunnel destination reachable via the ISP default route, never via a route learned over the tunnel.</p>
+
+<h4>BGP basics (beyond CCNA)</h4>
+<p>BGP is the internet's routing protocol: a <strong>path-vector</strong> protocol between <strong>autonomous systems</strong>. <strong>eBGP</strong> runs between ASes (AD 20), <strong>iBGP</strong> within one (AD 200). ISPs and multihomed sites use it because it chooses paths by policy (AS path, local preference), not by lowest cost. One simple peering is enough at this stage:</p>
+<pre><code class="language-ios">! HQ-R1 (TindaHub AS 65020) to ISP-R1 (AS 64500)
+router bgp 65020
+ bgp router-id 1.1.1.1
+ neighbor 203.0.113.1 remote-as 64500
+ address-family ipv4 unicast
+  neighbor 203.0.113.1 activate
+  network 203.0.113.0 mask 255.255.255.252
+!
+! ISP-R1
+router bgp 64500
+ bgp router-id 9.9.9.9
+ neighbor 203.0.113.2 remote-as 65020
+ address-family ipv4 unicast
+  neighbor 203.0.113.2 activate
+  network 192.0.2.8 mask 255.255.255.255
+!
+HQ-R1# show ip bgp summary
+HQ-R1# show ip bgp</code></pre>
+<p>A real site advertises its own public prefix, not the link subnet; the link is used here because it is the only public space TindaHub has in the lab.</p>
+
+<p><strong>Exercise 4.3 — Backup path between HQ and Cebu</strong></p>
+<p>Dataset: TindaHub Network — <code>HQ-R1</code>, <code>BR-R1</code>, <code>ISP-R1</code>, GRE 172.16.0.0/30 (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Build <code>Tunnel0</code> on both routers and ping across it.</li>
+<li>Re-enable the floating static from Exercise 3.3 (AD 250, via 172.16.0.2) and confirm it stays hidden while OSPF is up.</li>
+<li>Shut the Metro-E link, confirm the floating route installs, and trace 10.20.0.50 → 10.30.0.10 over the tunnel.</li>
+<li>Write the IKEv2 bring-up sequence for this tunnel from memory and compare it to the framework card.</li>
+<li>Bring up the eBGP peering to <code>ISP-R1</code> and read <code>show ip bgp summary</code>.</li>
+<li>Fault: point the tunnel destination at an address learned only via OSPF over the tunnel; record the flapping log messages.</li>
+</ol>
+<hr />
+
+<h3 id="phase-4-capstone-internet-edge">Phase 4 Capstone: Internet Edge</h3>
+<p><strong>Project: Two TindaHub sites joined through an ISP</strong></p>
+<p><strong>Dataset:</strong> TindaHub Network — the Phase 3 network plus <code>ISP-R1</code></p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>A diagram of both sites joined through <code>ISP-R1</code>, with demarc, CPE and every link subnet labelled.</li>
+<li>PAT at both edges and the static port forward to <code>SRV-WEB</code>.</li>
+<li>A GRE tunnel between the sites carrying the floating backup route, tested by failing the Metro-E link.</li>
+<li>An explanation of every NAT table entry one VLAN 10 packet creates on its way to 192.0.2.8 and back.</li>
+<li>A one-page IPsec design note: how this GRE tunnel would be protected with IKEv2 and ESP, and what you would verify.</li>
+<li>One eBGP peering lab with <code>show ip bgp</code> output.</li>
+<li>Configs committed and a fault log of two injected edge faults.</li>
+</ol>
+<hr />
+
+<h2 id="phase-5-services-and-security">Phase 5: Services and Security</h2>
+<h3 id="weeks-10-11">Weeks 10–11 | Goal: run the services every client depends on, then lock the network down — 20% of the exam plus the DHCP and wireless topics in domain 1.0</h3>
+<hr />
+
+<h3 id="module-51-dhcp-dns-and-wireless">Module 5.1 — DHCP, DNS and Wireless</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 3.3 · <strong>Time:</strong> ~9h<br>
+<strong>Skip-check (test-out):</strong> Configure a router DHCP pool with exclusions and a relay on another subnet, explain DORA from a capture, and name the DNS record type for six lookups.<br>
+<strong>Skip if:</strong> You know DORA, relays, DNS record types, the three Wi-Fi bands and WPA2 vs WPA3.<br>
+<strong>Unlocks:</strong> 5.3, Phase 5 Capstone</p>
+</blockquote>
+
+<h4>DHCPv4 and relays</h4>
+<p>A client with no address broadcasts <strong>Discover</strong>; the server answers with an <strong>Offer</strong>; the client broadcasts a <strong>Request</strong>; the server confirms with an <strong>Ack</strong> (DORA). Broadcasts stop at routers, so a server on another subnet hears nothing — unless the gateway relays the request as unicast with <code>ip helper-address</code>. A client stuck on 169.254.x.x almost always means a missing or wrong relay, not a broken server.</p>
+<pre><code class="language-ios">! BR-R1 as DHCP server for the branch
+ip dhcp excluded-address 10.30.0.1 10.30.0.10
+ip dhcp excluded-address 10.30.0.129 10.30.0.138
+ip dhcp pool WH-STAFF
+ network 10.30.0.0 255.255.255.128
+ default-router 10.30.0.1
+ dns-server 10.20.1.201
+ domain-name tindahub.ph.internal
+ lease 1
+ip dhcp pool SCANNERS
+ network 10.30.0.128 255.255.255.192
+ default-router 10.30.0.129
+ dns-server 10.20.1.201
+ lease 0 8
+!
+! HQ-DSW1 and HQ-DSW2: relay to SRV-DHCP on every client SVI
+interface vlan 10
+ ip helper-address 10.20.1.200
+interface vlan 30
+ ip helper-address 10.20.1.200
+interface vlan 40
+ ip helper-address 10.20.1.200
+!
+BR-R1# show ip dhcp binding
+BR-R1# show ip dhcp pool
+BR-R1# show ip dhcp conflict</code></pre>
+
+<h4>DNS</h4>
+<p>A stub resolver asks a recursive server, which walks root → TLD → authoritative servers and caches the answer for its TTL. Record types: <strong>A</strong> (name to IPv4), <strong>AAAA</strong> (name to IPv6), <strong>CNAME</strong> (alias to another name), <strong>MX</strong> (mail server for a domain), <strong>NS</strong> (authoritative name servers for a zone), <strong>PTR</strong> (IP back to name, used in logs and reverse lookups).</p>
+<pre><code class="language-bash">nslookup portal.tindahub.ph.internal 10.20.1.201
+dig @10.20.1.201 portal.tindahub.ph.internal A +short
+dig @10.20.1.201 -x 10.20.1.210 +short          # PTR
+dig netacad.com MX +short
+dig netacad.com NS +short
+ipconfig /flushdns                               # Windows client cache
+sudo dscacheutil -flushcache                     # macOS client cache
+resolvectl query portal.tindahub.ph.internal     # Linux (systemd-resolved)</code></pre>
+
+<h4>Wireless fundamentals</h4>
+<p>Wi-Fi uses three bands. <strong>2.4 GHz</strong> reaches furthest but has only three non-overlapping 20 MHz channels (1, 6, 11) and competes with Bluetooth and microwaves. <strong>5 GHz</strong> has many more channels and less interference. <strong>6 GHz</strong> (Wi-Fi 6E and Wi-Fi 7) is the cleanest but shortest-range and requires WPA3. The <strong>SSID</strong> is the network name; the <strong>BSSID</strong> is the radio's MAC for that SSID. <strong>WPA3</strong> replaces WPA2's pre-shared-key handshake with SAE, which resists offline password guessing. <strong>Autonomous APs</strong> are configured one by one; <strong>lightweight APs</strong> tunnel to a <strong>wireless LAN controller</strong> (CAPWAP) that manages them centrally, as at TindaHub HQ.</p>
+<pre class="artifact" data-kind="CHECKLIST"><code>Wireless client "can't connect / slow" triage — any OS
+
+1. Associated?      Windows: netsh wlan show interfaces    (SSID, BSSID, signal %, channel)
+                    macOS:   system_profiler SPAirPortDataType
+                    Linux:   iw dev wlan0 link
+2. Signal ok?       Below about -70 dBm or 40%: move closer, check AP placement / band
+3. Got an address?  Windows: ipconfig /all   macOS/Linux: ip addr  (169.254.x.x = DHCP failed)
+4. Right VLAN?      Staff SSID -> 10.20.0.x, guest SSID -> 10.20.1.x (first 128)
+5. Gateway reply?   ping 10.20.0.1  (staff)  /  ping 10.20.1.1  (guest)
+6. DNS works?       nslookup portal.tindahub.ph.internal
+7. Path?            Windows: tracert 192.0.2.8   macOS/Linux: traceroute 192.0.2.8
+8. Interference?    2.4 GHz on a channel other than 1/6/11, or many BSSIDs on one channel</code></pre>
+
+<p><strong>Exercise 5.1 — Addresses and names for every TindaHub client</strong></p>
+<p>Dataset: TindaHub Network — <code>SRV-DHCP</code>, <code>SRV-DNS</code>, <code>BR-R1</code>, HQ SVIs, HQ wireless plan (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Configure <code>SRV-DHCP</code> (a Packet Tracer server) with scopes for HQ VLANs 10, 30 and 40, excluding the first 10 addresses; give the guest scope a public DNS server, not 10.20.1.201.</li>
+<li>Add <code>ip helper-address</code> on both DSWs and confirm clients in each VLAN lease the right address.</li>
+<li>Build the branch pools on <code>BR-R1</code> and check <code>show ip dhcp binding</code>.</li>
+<li>In simulation mode, capture DORA with a relay and note the source and destination IP of each of the four messages.</li>
+<li>Create A, CNAME and PTR records for the portal on <code>SRV-DNS</code> and test each with <code>nslookup</code>.</li>
+<li>Add a WLC and two lightweight APs at HQ with the two SSIDs from the spec; connect a laptop to each and run the triage checklist.</li>
+</ol>
+<hr />
+
+<h3 id="module-52-access-control-lists">Module 5.2 — Access Control Lists</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 3.3 · <strong>Time:</strong> ~4h<br>
+<strong>Skip-check (test-out):</strong> Write a named extended ACL that keeps the guest VLAN off every internal subnet but allows DHCP and internet, apply it in the right place and direction, and prove it with one passing and one failing test.<br>
+<strong>Skip if:</strong> You can write wildcard masks quickly and know the implicit deny and the placement rules.<br>
+<strong>Unlocks:</strong> 5.3, Phase 5 Capstone</p>
+</blockquote>
+
+<h4>How an ACL is read</h4>
+<p>Entries are checked top to bottom and the first match wins; nothing after it is evaluated. Every ACL ends in an invisible <strong>implicit deny any</strong>, so an ACL with only deny lines blocks everything. <strong>Standard</strong> ACLs (1–99, 1300–1999) match the source address only; <strong>extended</strong> ACLs (100–199, 2000–2699) match protocol, source, destination and ports. <strong>Named</strong> ACLs can be edited line by line by sequence number, so use them for anything beyond a lab.</p>
+<p><strong>Wildcard masks</strong> are inverted subnet masks: 0 = must match, 1 = ignore. For a subnet, wildcard = 255.255.255.255 − mask: /25 → 0.0.0.127, /22 → 0.0.3.255. <code>host 10.20.1.202</code> = wildcard 0.0.0.0; <code>any</code> = 0.0.0.0 255.255.255.255.</p>
+<p><strong>Placement:</strong> standard ACLs go <em>near the destination</em> (they cannot see where traffic is going, so placing them near the source blocks too much); extended ACLs go <em>near the source</em>, so unwanted traffic is dropped before it crosses the network.</p>
+<pre><code class="language-ios">! Guest VLAN 30 (10.20.1.0/25): internet yes, internal never
+ip access-list extended GUEST-IN
+ 10 permit udp any eq bootpc any eq bootps
+ 15 permit icmp 10.20.1.0 0.0.0.127 host 10.20.1.1 echo
+ 20 deny ip 10.20.1.0 0.0.0.127 10.0.0.0 0.255.255.255 log
+ 30 deny ip 10.20.1.0 0.0.0.127 172.16.0.0 0.15.255.255
+ 40 permit ip 10.20.1.0 0.0.0.127 any
+!
+! Applied inbound on both HSRP peers, closest to the guest source
+interface vlan 30
+ ip access-group GUEST-IN in
+!
+! Standard ACL protecting the management plane (near the destination: the VTY lines)
+ip access-list standard VTY-MGMT
+ 10 permit 10.20.1.224 0.0.0.15
+ 20 permit host 10.20.1.202
+ 30 deny any log
+line vty 0 15
+ access-class VTY-MGMT in
+!
+HQ-DSW1# show access-lists GUEST-IN
+Extended IP access list GUEST-IN
+    10 permit udp any eq bootpc any eq bootps (14 matches)
+    15 permit icmp 10.20.1.0 0.0.0.127 host 10.20.1.1 echo (6 matches)
+    20 deny ip 10.20.1.0 0.0.0.127 10.0.0.0 0.255.255.255 log (37 matches)
+    30 deny ip 10.20.1.0 0.0.0.127 172.16.0.0 0.15.255.255
+    40 permit ip 10.20.1.0 0.0.0.127 any (912 matches)
+HQ-DSW1# show ip interface vlan 30 | include access list</code></pre>
+<p>Line 10 exists because a DHCP Discover is sourced from 0.0.0.0, not from the guest subnet; without it, line 40 would never match and guests would never get an address. Line 15 keeps the gateway pingable for the wireless triage checklist; inbound ACLs also filter traffic addressed to the switch itself.</p>
+
+<p><strong>Exercise 5.2 — Fence off the guest VLAN</strong></p>
+<p>Dataset: TindaHub Network — guest VLAN 30 policy, management VLAN 99 (<code>datasets/tindahub-network/</code>)</p>
+<p><em>Retrieval practice: write <code>GUEST-IN</code> from memory on paper first, including the wildcard masks, before looking at the example above. Compare line by line; every difference is something to drill.</em></p>
+<ol>
+<li>Apply <code>GUEST-IN</code> on both DSWs; prove a guest laptop can ping 192.0.2.8 but not 10.20.1.210 or 10.30.0.1.</li>
+<li>Remove line 10 and show that new guests fall back to 169.254.x.x; restore it.</li>
+<li>Apply <code>VTY-MGMT</code> on every device; prove SSH from a staff PC fails and from VLAN 99 succeeds.</li>
+<li>Write an extended ACL that lets only <code>SRV-SYSLOG</code> (10.20.1.202) reach the switches with SNMP (UDP 161) and decide where it goes.</li>
+<li>Convert these to wildcard masks without notes: /22, /26, /28, /30, and the whole 172.16.0.0/12.</li>
+<li>Use the match counters to show which line dropped a test packet.</li>
+</ol>
+<hr />
+
+<h3 id="module-53-layer-2-security-and-device-access">Module 5.3 — Layer 2 Security and Device Access</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 2.2, 5.1 · <strong>Time:</strong> ~5h<br>
+<strong>Skip-check (test-out):</strong> On an access switch, enable port security, DHCP snooping and dynamic ARP inspection, then demonstrate a rogue DHCP server being blocked and an SSH login authenticated by TACACS+ with local fallback.<br>
+<strong>Skip if:</strong> You can match each Layer 2 attack to its control and explain TACACS+ vs RADIUS.<br>
+<strong>Unlocks:</strong> Phase 5 Capstone, 6.2</p>
+</blockquote>
+
+<h4>Attacks and their controls</h4>
+<table>
+<tr><th>Attack</th><th>What it looks like</th><th>Control</th></tr>
+<tr><td>MAC flooding</td><td>Thousands of fake source MACs fill the table; the switch floods everything like a hub</td><td>Port security (maximum MACs)</td></tr>
+<tr><td>Rogue DHCP</td><td>A laptop or home router hands out itself as gateway; clients' traffic goes through it</td><td>DHCP snooping (only trusted ports may send Offers)</td></tr>
+<tr><td>ARP spoofing</td><td>Gratuitous ARP claiming the gateway's IP; man-in-the-middle</td><td>Dynamic ARP inspection (checks ARP against the snooping binding table)</td></tr>
+<tr><td>Broadcast storm</td><td>Loop or misbehaving NIC saturates the VLAN</td><td>Storm control (rate-limit broadcast/multicast per port)</td></tr>
+<tr><td>Rogue IPv6 router</td><td>Fake router advertisements become every host's IPv6 gateway</td><td>RA guard</td></tr>
+</table>
+<pre><code class="language-ios">! HQ-ASW1 access ports
+interface range g1/0/1 - 16
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ storm-control broadcast level 5.00
+ storm-control action trap
+ ipv6 nd raguard attach-policy HOST-PORTS
+!
+ipv6 nd raguard policy HOST-PORTS
+ device-role host
+!
+ip dhcp snooping
+ip dhcp snooping vlan 10,30,40
+no ip dhcp snooping information option
+ip arp inspection vlan 10,30,40
+interface g1/0/24
+ description UPLINK-HQ-DSW1
+ ip dhcp snooping trust
+ ip arp inspection trust
+!
+HQ-ASW1# show port-security interface g1/0/5
+HQ-ASW1# show ip dhcp snooping binding
+HQ-ASW1# show ip arp inspection statistics vlan 10</code></pre>
+<p>DAI depends on the DHCP snooping binding table; enable snooping first, or DAI drops every ARP from every client and the VLAN goes dark. Statically addressed hosts need an ARP ACL entry for the same reason.</p>
+
+<h4>Device access and AAA</h4>
+<p>Local users are the fallback; central AAA is the default because one revoked account then locks a leaver out of every device at once. <strong>TACACS+</strong> (Cisco-originated, TCP 49) encrypts the whole payload and separates authentication, authorization and accounting — the choice for administering network devices command by command. <strong>RADIUS</strong> (open standard, UDP 1812/1813) encrypts only the password and combines authentication with authorization — the choice for network access (802.1X, VPN, Wi-Fi). Move files with <strong>SCP</strong> or <strong>SFTP</strong>, never TFTP or FTP, which send everything in clear text.</p>
+<pre><code class="language-ios">aaa new-model
+tacacs server TH-TACACS
+ address ipv4 10.20.1.202
+ key Lab-Only-Shared-Key
+aaa group server tacacs+ TH-AAA
+ server name TH-TACACS
+aaa authentication login default group TH-AAA local
+aaa authorization exec default group TH-AAA local if-authenticated
+aaa accounting commands 15 default start-stop group TH-AAA
+ip scp server enable
+!
+! Back up a config over SCP
+HQ-ASW1# copy running-config scp://netadmin@10.20.1.202/backups/HQ-ASW1.cfg
+HQ-ASW1# show ip ssh
+HQ-ASW1# show aaa servers</code></pre>
+
+<p><strong>Exercise 5.3 — Harden the HQ access layer</strong></p>
+<p>Dataset: TindaHub Network — <code>HQ-ASW1</code>, <code>HQ-ASW2</code>, security policy section (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Apply port security to every access port and trigger a violation with a third device; read the counters.</li>
+<li>Enable DHCP snooping, attach a rogue DHCP server to an access port, and prove clients still get addresses from <code>SRV-DHCP</code>.</li>
+<li>Enable DAI and show a spoofed ARP being dropped in <code>show ip arp inspection statistics</code>.</li>
+<li>Configure storm control and RA guard on access ports.</li>
+<li>Point AAA at the TACACS+ server on 10.20.1.202, then stop the server and prove the local <code>netadmin</code> fallback works.</li>
+<li>Back up every switch config to 10.20.1.202 over SCP.</li>
+</ol>
+<hr />
+
+<h3 id="phase-5-capstone-secured-campus">Phase 5 Capstone: Secured Campus</h3>
+<p><strong>Project: TindaHub HQ, serviced and locked down</strong></p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain why a DHCP relay is needed, where an extended ACL belongs, and why DAI depends on DHCP snooping? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Dataset:</strong> TindaHub Network — HQ campus and branch from Phase 4, plus <code>SRV-DHCP</code>, <code>SRV-DNS</code>, <code>SRV-SYSLOG</code></p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>DHCP per VLAN through a relay at HQ and from <code>BR-R1</code> at the branch, with exclusions.</li>
+<li>Internal DNS with A, CNAME and PTR records for the portal.</li>
+<li>The <code>GUEST-IN</code> ACL keeping guests away from servers, applied on both HSRP peers.</li>
+<li>Port security, DHCP snooping, DAI, storm control and RA guard on every access port.</li>
+<li>SSH-only management with a VTY ACL and TACACS+ with local fallback.</li>
+<li>Proof of each control by a failing test: blocked guest ping, rogue DHCP ignored, spoofed ARP dropped, Telnet refused, staff-PC SSH denied.</li>
+<li>Configs committed and a one-page control matrix (control, where applied, test, result).</li>
+</ol>
+<hr />
+<h2 id="phase-6-automation-and-operations">Phase 6: Automation and Operations</h2>
+<h3 id="week-12">Week 12 | Goal: move from typing on one device to managing many — only 10% of the exam, but where the job market is heading</h3>
+<hr />
+
+<h3 id="module-61-monitoring-and-management-approaches">Module 6.1 — Monitoring and Management Approaches</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Beginner–Intermediate · <strong>Prereqs:</strong> 2.1 · <strong>Time:</strong> ~3h<br>
+<strong>Skip-check (test-out):</strong> Enable SNMPv3 authPriv and remote syslog on a router, poll it from a Linux host, and name all eight syslog severity levels in order.<br>
+<strong>Skip if:</strong> You can compare CLI, cloud-managed, controller-based and IaC management and configure SNMPv3 and syslog.<br>
+<strong>Unlocks:</strong> 6.2</p>
+</blockquote>
+
+<h4>Four ways to manage a network</h4>
+<p><strong>Device-based CLI</strong>: one box at a time, the way Phases 1–5 worked — precise, but slow and error-prone at scale. <strong>Cloud-managed</strong> (e.g. Meraki): the vendor's cloud dashboard configures every device. <strong>Controller-based</strong> (e.g. Catalyst Center): a controller talks to devices over <strong>southbound</strong> APIs and protocols (NETCONF, RESTCONF, CLI over SSH) and exposes <strong>northbound</strong> APIs (REST) to your tools. <strong>Automation-based / infrastructure as code</strong>: the intended config lives as text in Git, and tools such as Ansible push it, so every change is reviewed, repeatable and reversible. The difference matters at 2 a.m.: rolling back a Git commit is faster and safer than remembering what someone typed on 40 switches.</p>
+
+<h4>SNMP, syslog and time</h4>
+<p><strong>SNMP</strong>: a <strong>manager</strong> polls <strong>agents</strong> on devices for values identified by <strong>OIDs</strong> in a <strong>MIB</strong> (UDP 161); agents send unsolicited <strong>traps</strong> or acknowledged <strong>informs</strong> (UDP 162). v2c authenticates with a clear-text community string, so <strong>v3</strong> with authPriv (authentication plus encryption) replaces it. <strong>Syslog</strong> sends log messages (UDP 514) with a facility and a severity from 0 to 7. <strong>NTP</strong> left the v2.0 list, but set it on every lab device anyway: logs from devices whose clocks disagree cannot be correlated, and correlation is the whole point of central logging.</p>
+<table>
+<tr><th>Level</th><th>Keyword</th><th>Example</th></tr>
+<tr><td>0</td><td>emergencies</td><td>System unusable</td></tr>
+<tr><td>1</td><td>alerts</td><td>Immediate action needed (e.g. temperature critical)</td></tr>
+<tr><td>2</td><td>critical</td><td>Hardware failure</td></tr>
+<tr><td>3</td><td>errors</td><td>Interface error, err-disabled port</td></tr>
+<tr><td>4</td><td>warnings</td><td>Native VLAN mismatch</td></tr>
+<tr><td>5</td><td>notifications</td><td>Interface up/down, OSPF adjacency change</td></tr>
+<tr><td>6</td><td>informational</td><td>ACL log hit, config change</td></tr>
+<tr><td>7</td><td>debugging</td><td>Output of <code>debug</code> commands</td></tr>
+</table>
+<p>A <code>logging trap</code> level sends that level <em>and everything more severe</em> (lower numbers).</p>
+<pre><code class="language-ios">! Every TindaHub device
+clock timezone PHT 8 0
+ntp server 10.255.1.1
+service timestamps log datetime msec localtime show-timezone
+logging host 10.20.1.202
+logging trap informational
+logging source-interface vlan 99
+!
+snmp-server group TH-RO v3 priv
+snmp-server user nms TH-RO v3 auth sha Lab-Auth-Pass1 priv aes 128 Lab-Priv-Pass1
+snmp-server host 10.20.1.202 version 3 priv nms
+snmp-server enable traps
+!
+HQ-ASW1# show logging | include Logging to|Trap
+HQ-ASW1# show ntp associations
+HQ-ASW1# show snmp user</code></pre>
+<pre><code class="language-bash"># From SRV-SYSLOG (Linux, net-snmp tools installed)
+snmpwalk -v3 -l authPriv -u nms -a SHA -A Lab-Auth-Pass1 -x AES -X Lab-Priv-Pass1 \
+  10.20.1.228 1.3.6.1.2.1.1          # system group: name, uptime, description
+snmpget -v3 -l authPriv -u nms -a SHA -A Lab-Auth-Pass1 -x AES -X Lab-Priv-Pass1 \
+  10.20.1.228 1.3.6.1.2.1.2.2.1.8.5  # ifOperStatus of ifIndex 5
+sudo tail -f /var/log/syslog | grep -E 'LINK|OSPF|SEC'</code></pre>
+
+<p><strong>Exercise 6.1 — Central visibility for TindaHub</strong></p>
+<p>Dataset: TindaHub Network — <code>SRV-SYSLOG</code> 10.20.1.202, all devices (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Write a one-paragraph comparison of how adding VLAN 60 to every HQ switch would be done under each of the four management approaches.</li>
+<li>Configure NTP, syslog and SNMPv3 on every device; confirm clocks agree within a second.</li>
+<li>Poll <code>sysUpTime</code> and one interface's status from <code>SRV-SYSLOG</code>.</li>
+<li>Shut and re-enable an access port; find both messages in the syslog stream and note their severity.</li>
+<li>Trigger a port-security violation and an OSPF adjacency drop; read the two log lines and classify them by severity.</li>
+</ol>
+<hr />
+
+<h3 id="module-62-ansible-python-and-ai-operations">Module 6.2 — Ansible, Python and AI Operations</h3>
+<blockquote class="module-meta">
+<p><strong>Level:</strong> Intermediate · <strong>Prereqs:</strong> 6.1 · <strong>Time:</strong> ~6h<br>
+<strong>Skip-check (test-out):</strong> Run one Ansible playbook that backs up three device configs and sets their syslog server, plus one Python script that reports interface status across devices.<br>
+<strong>Skip if:</strong> You already automate network devices with Ansible or Netmiko; spend the week on the Cisco-specific modules instead of language basics.<br>
+<strong>Unlocks:</strong> Phase 6 Capstone, Final Capstone</p>
+</blockquote>
+<p>Packet Tracer devices cannot be reached by SSH from your real laptop, so run this module in Cisco Modeling Labs, GNS3 or EVE-NG with a bridged management network, or against real hardware.</p>
+
+<h4>Ansible: agentless, over SSH</h4>
+<p>Ansible needs nothing installed on the devices: it connects over SSH, runs modules from the <code>cisco.ios</code> collection (11.x, on ansible-core 2.16+), and reports what changed. An <strong>inventory</strong> lists devices and connection settings; a <strong>playbook</strong> lists tasks in YAML. Keep passwords in Ansible Vault, never in the inventory, because the inventory goes into Git.</p>
+<pre><code class="language-bash">python3 -m venv .venv &amp;&amp; source .venv/bin/activate
+pip install ansible-core ansible-pylibssh netmiko
+ansible-galaxy collection install cisco.ios ansible.netcommon
+ansible-vault create ansible/vault.yml      # add: vault_netadmin_password: "Th!s-Is-A-Lab-0nly"
+ansible-playbook -i ansible/inventory.yml ansible/backup_and_syslog.yml --ask-vault-pass</code></pre>
+<pre><code class="language-yaml"># ansible/inventory.yml
+all:
+  children:
+    tindahub_ios:
+      hosts:
+        HQ-ASW1: { ansible_host: 10.20.1.228 }
+        HQ-DSW1: { ansible_host: 10.20.1.226 }
+        BR-R1:   { ansible_host: 10.30.0.241 }
+      vars:
+        ansible_connection: ansible.netcommon.network_cli
+        ansible_network_os: cisco.ios.ios
+        ansible_user: netadmin
+        ansible_password: "{{ vault_netadmin_password }}"
+        ansible_become: true
+        ansible_become_method: enable
+        ansible_become_password: "{{ vault_netadmin_password }}"</code></pre>
+<pre><code class="language-yaml"># ansible/backup_and_syslog.yml
+- name: Back up configs and set the syslog server
+  hosts: tindahub_ios
+  gather_facts: false
+  vars_files:
+    - vault.yml
+  tasks:
+    - name: Save the running config to ./backups
+      cisco.ios.ios_config:
+        backup: true
+        backup_options:
+          dir_path: "{{ playbook_dir }}/../backups"
+          filename: "{{ inventory_hostname }}.cfg"
+
+    - name: Point logging at SRV-SYSLOG
+      cisco.ios.ios_config:
+        lines:
+          - logging host 10.20.1.202
+          - logging trap informational
+        save_when: modified
+
+    - name: Confirm the logging host is present
+      cisco.ios.ios_command:
+        commands: show running-config | include logging host
+      register: logging_check
+
+    - name: Fail if logging is missing
+      ansible.builtin.assert:
+        that: "'10.20.1.202' in logging_check.stdout[0]"</code></pre>
+<p>Run the playbook twice: the second run should report <code>changed=0</code> for the logging task. That <strong>idempotence</strong> is what makes infrastructure as code safe to re-run.</p>
+
+<h4>Python with Netmiko</h4>
+<p>Netmiko (4.x) handles SSH prompts, paging and enable mode for hundreds of platforms, so a script can treat a switch like a function call. REST, JSON, RESTCONF and NETCONF are not named in v2.0, but they underpin controller-based automation, and JSON/YAML are the formats every tool here reads.</p>
+<pre><code class="language-python">import csv
+import getpass
+import sys
+
+from netmiko import ConnectHandler
+from netmiko.exceptions import NetmikoAuthenticationException, NetmikoTimeoutException
+
+DEVICES = {
+    "HQ-ASW1": "10.20.1.228",
+    "HQ-DSW1": "10.20.1.226",
+    "HQ-DSW2": "10.20.1.227",
+    "BR-R1": "10.30.0.241",
+}
+
+
+def parse_ip_int_brief(text):
+    rows = []
+    for line in text.splitlines():
+        parts = line.split()
+        if len(parts) &lt; 6 or parts[0] == "Interface":
+            continue
+        rows.append({
+            "interface": parts[0],
+            "ip": parts[1],
+            "status": " ".join(parts[4:-1]),
+            "protocol": parts[-1],
+        })
+    return rows
+
+
+def main():
+    password = getpass.getpass("netadmin password: ")
+    problems = 0
+    with open("interface_status.csv", "w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=["device", "interface", "ip", "status", "protocol"])
+        writer.writeheader()
+        for name, host in DEVICES.items():
+            try:
+                with ConnectHandler(device_type="cisco_ios", host=host,
+                                    username="netadmin", password=password) as conn:
+                    output = conn.send_command("show ip interface brief")
+            except (NetmikoAuthenticationException, NetmikoTimeoutException) as exc:
+                print(f"{name}: unreachable ({exc.__class__.__name__})", file=sys.stderr)
+                problems += 1
+                continue
+            for row in parse_ip_int_brief(output):
+                writer.writerow({"device": name, **row})
+                if row["status"] == "up" and row["protocol"] != "up":
+                    print(f"{name} {row['interface']}: up/down - check the far end")
+                    problems += 1
+    print(f"Wrote interface_status.csv, {problems} problem(s) found")
+    return 1 if problems else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())</code></pre>
+
+<h4>AI in network operations</h4>
+<p>v2.0 adds <strong>agentic AI</strong>: systems that monitor telemetry, diagnose a fault and take an action (open a ticket, suggest or push a change) within limits a human set. Your job is to give such a system the right data, a clear output format and firm boundaries. A prompt is a data-handling decision: device configs contain password hashes, SNMP keys and TACACS+ secrets, and anything pasted into an external AI service leaves your control. Classify the data first, mask secrets and customer details, then prompt.</p>
+<pre><code class="language-bash"># Mask secrets before any log or config leaves the network
+sed -E \
+  -e 's/(secret|password|key)( [0-9]+)? [^ ]+/\1 &lt;MASKED&gt;/g' \
+  -e 's/(snmp-server user [^ ]+ [^ ]+ v3 auth sha) [^ ]+ (priv aes 128) [^ ]+/\1 &lt;MASKED&gt; \2 &lt;MASKED&gt;/' \
+  backups/HQ-ASW1.cfg &gt; shareable/HQ-ASW1.masked.cfg
+grep -nE 'secret|password|key' shareable/HQ-ASW1.masked.cfg</code></pre>
+<pre class="artifact" data-kind="TEMPLATE"><code>Prompt: summarize a TindaHub syslog excerpt
+
+Persona:        You are a senior network operations engineer on the TindaHub NOC.
+Data class:     Internal operational logs. Credentials and customer data have been
+                masked; do not ask for or guess them.
+Context:        Sites HQ (Makati, 10.20.0.0/22) and Branch (Cebu, 10.30.0.0/24).
+                OSPF area 0, HSRP on HQ SVIs, PAT at both edges.
+Instructions:   1. Group the events by device and by time window.
+                2. Identify the single most likely root cause and the evidence for it.
+                3. List the show commands I should run next, in order.
+                4. Do not recommend any config change without stating its risk.
+Output format:  Markdown table (time, device, severity, event), then
+                "Root cause:", "Evidence:", "Next commands:" sections.
+Input:          [paste the masked syslog lines here]</code></pre>
+
+<p><strong>Exercise 6.2 — Automate the TindaHub fleet</strong></p>
+<p>Dataset: TindaHub Network — <code>HQ-ASW1</code>, <code>HQ-DSW1</code>, <code>HQ-DSW2</code>, <code>BR-R1</code> in CML/GNS3 (<code>datasets/tindahub-network/</code>)</p>
+<ol>
+<li>Create the inventory and vault; run the playbook and confirm three backups land in <code>backups/</code>.</li>
+<li>Run it a second time and show the logging task reports no change.</li>
+<li>Make one change by CLI on one device and one change by playbook on all three; compare the time and the audit trail.</li>
+<li>Run the Netmiko script; shut one interface on <code>BR-R1</code> and confirm the report flags it.</li>
+<li>Mask a config backup with the <code>sed</code> filter and prove with <code>grep</code> no secret survives.</li>
+<li>Use the prompt template on a masked syslog excerpt from Exercise 6.1 and judge whether the root cause it names is correct.</li>
+<li>Commit the inventory, playbook, script and masked examples (not the vault password) to <code>ansible/</code> and <code>scripts/</code>.</li>
+</ol>
+<hr />
+
+<h3 id="phase-6-capstone-automated-backups">Phase 6 Capstone: Automated Backups</h3>
+<p><strong>Project: TindaHub operations toolkit</strong></p>
+<p><strong>Dataset:</strong> TindaHub Network — every device, <code>SRV-SYSLOG</code> as the Ansible control node</p>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>Exit check: one Ansible playbook that backs up three device configs and sets the syslog server, plus one Python script that reports interface status.</li>
+<li>The playbook extended to every TindaHub device, idempotent on a second run.</li>
+<li>NTP, syslog and SNMPv3 on every device, with clocks in agreement.</li>
+<li>A <code>README.md</code> in your lab repo explaining how to run each tool.</li>
+<li>A masked log excerpt and the AI summary it produced, with your verdict on its accuracy.</li>
+<li>All automation code committed with no secrets in Git history.</li>
+</ol>
+<hr />
+
+<h2 id="final-capstone-tindahub-three-site-network">Final Capstone: TindaHub Three-Site Network</h2>
+<p><strong>Project: The complete TindaHub Network in a simulator</strong></p>
+<p>Integrates all tracks. Uses the TindaHub Network benchmark from every phase. Finish it before booking the exam.</p>
+<blockquote class="callout"><p><strong>Self-check before starting:</strong> Without looking back, can you explain longest-prefix match versus administrative distance, the four NAT address names, and the order in which you would troubleshoot a host that cannot reach the internet? If any draws a blank, re-read that module before attempting the deliverables.</p></blockquote>
+<p><strong>Deliverables:</strong></p>
+<ol>
+<li>HQ campus: three or more VLANs, two distribution switches, Rapid PVST+ with a deliberate root, an LACP uplink and HSRP gateways.</li>
+<li>Branch site: router-on-a-stick, DHCP served by <code>BR-R1</code>, and OSPF back to HQ.</li>
+<li>ISP edge: a default route and PAT at both sites, plus a GRE tunnel between the sites carrying a floating backup route.</li>
+<li>Security: an ACL keeping the guest VLAN off the server subnet, port security on access ports, DHCP snooping and DAI, and SSH-only management.</li>
+<li>Operations: an Ansible playbook that backs up every config and sets syslog; NTP and SNMPv3 everywhere.</li>
+<li>An IP plan spreadsheet covering every subnet, gateway and DHCP range (IPv4 and IPv6).</li>
+<li>A topology diagram with every interface and subnet labelled.</li>
+<li>All configs in Git, rebuildable from blank.</li>
+<li>A one-page log of five injected faults (for example native VLAN mismatch, OSPF MTU mismatch, missing <code>ip nat inside</code>, wrong helper address, ACL in the wrong direction) with how you found each using only <code>show</code> commands.</li>
+</ol>
+<hr />
+
+<h2 id="quick-reference">Quick Reference: Networking Tool-Task Matrix</h2>
+<table>
+<tr><th>Task</th><th>Tool / Command</th><th>Notes</th></tr>
+<tr><td>See what is plugged in where</td><td><code>show cdp neighbors</code>, <code>show lldp neighbors</code></td><td>Verify cabling before anything else</td></tr>
+<tr><td>Interface up/down and errors</td><td><code>show ip interface brief</code>, <code>show interfaces</code></td><td>CRC and late collisions point to Layer 1 / duplex</td></tr>
+<tr><td>Find a host's switch port</td><td><code>show mac address-table address &lt;mac&gt;</code></td><td>Follow it switch to switch via CDP</td></tr>
+<tr><td>VLAN membership and trunks</td><td><code>show vlan brief</code>, <code>show interfaces trunk</code></td><td>Check allowed, active and forwarding lists</td></tr>
+<tr><td>STP root and port roles</td><td><code>show spanning-tree vlan &lt;id&gt;</code></td><td>"This bridge is the root" on the expected switch</td></tr>
+<tr><td>EtherChannel health</td><td><code>show etherchannel summary</code></td><td>(SU) and (P) on every member is healthy</td></tr>
+<tr><td>Which route wins</td><td><code>show ip route &lt;address&gt;</code></td><td>Longest prefix, then AD, then metric</td></tr>
+<tr><td>OSPF adjacency</td><td><code>show ip ospf neighbor</code>, <code>show ip ospf interface brief</code></td><td>FULL (or 2-WAY between DROTHERs) is normal</td></tr>
+<tr><td>Gateway redundancy</td><td><code>show standby brief</code></td><td>Active role should match the STP root</td></tr>
+<tr><td>NAT translations</td><td><code>show ip nat translations</code>, <code>show ip nat statistics</code></td><td>No entries: check inside/outside and the ACL</td></tr>
+<tr><td>DHCP leases</td><td><code>show ip dhcp binding</code>, <code>ip helper-address</code></td><td>169.254.x.x on a client means no DHCP reply</td></tr>
+<tr><td>ACL hits</td><td><code>show access-lists</code></td><td>Match counters show which line acted</td></tr>
+<tr><td>Layer 2 security state</td><td><code>show port-security</code>, <code>show ip dhcp snooping binding</code></td><td>DAI relies on the snooping table</td></tr>
+<tr><td>Packet-level proof</td><td>Wireshark, Packet Tracer simulation mode</td><td>Packet capture is a named v2.0 topic</td></tr>
+<tr><td>Fleet backups and changes</td><td>Ansible <code>cisco.ios.ios_config</code>, Netmiko</td><td>Idempotent, reviewed in Git</td></tr>
+</table>
+
+<h2 id="glossary">Glossary</h2>
+<p>Canonical terms for this guide. Definitions state what a term <em>is</em>, not how to use it. Each <strong style="color:var(--coral)">Avoid</strong> line lists synonyms that cause confusion.</p>
+
+<h3 id="glossary-layer-2-and-switching">Layer 2 and Switching</h3>
+<dl class="glossary">
+<dt>Frame</dt>
+<dd>The Layer 2 unit: an Ethernet header with MAC addresses, a payload and a trailing FCS.</dd>
+<dd class="avoid"><strong>Avoid:</strong> packet — that is the Layer 3 unit inside the frame.</dd>
+<dt>Broadcast domain</dt>
+<dd>The set of devices that receive each other's broadcast frames; one VLAN is one broadcast domain.</dd>
+<dd class="avoid"><strong>Avoid:</strong> collision domain — each switch port is its own collision domain.</dd>
+<dt>VLAN</dt>
+<dd>A logically separate broadcast domain on shared switch hardware, identified by a 12-bit ID.</dd>
+<dd class="avoid"><strong>Avoid:</strong> subnet — a VLAN usually maps to one subnet, but one is Layer 2 and the other Layer 3.</dd>
+<dt>Trunk</dt>
+<dd>A switch link carrying frames for several VLANs, distinguished by 802.1Q tags.</dd>
+<dd class="avoid"><strong>Avoid:</strong> EtherChannel / port-channel — that is link bundling, which may or may not be a trunk.</dd>
+<dt>Native VLAN</dt>
+<dd>The one VLAN whose frames cross an 802.1Q trunk untagged.</dd>
+<dd class="avoid"><strong>Avoid:</strong> default VLAN — VLAN 1 is the default, and the native VLAN need not be VLAN 1.</dd>
+<dt>Root bridge</dt>
+<dd>The switch with the lowest bridge ID, which every other switch computes its STP paths toward.</dd>
+<dd class="avoid"><strong>Avoid:</strong> root port — that is the port on a non-root switch facing the root.</dd>
+<dt>EtherChannel</dt>
+<dd>A bundle of parallel physical links treated as one logical interface, negotiated by LACP or set statically.</dd>
+<dd class="avoid"><strong>Avoid:</strong> trunk, bond — use bond only for the Linux equivalent.</dd>
+<dt>SVI</dt>
+<dd>A switch virtual interface: a routed Layer 3 interface for a VLAN on a multilayer switch.</dd>
+<dd class="avoid"><strong>Avoid:</strong> subinterface — that is the router-on-a-stick equivalent on a router port.</dd>
+</dl>
+
+<h3 id="glossary-addressing-and-routing">Addressing and Routing</h3>
+<dl class="glossary">
+<dt>Prefix length</dt>
+<dd>The number of leading network bits in an address, written /n.</dd>
+<dd class="avoid"><strong>Avoid:</strong> "CIDR" as a noun for the number — CIDR is the classless addressing scheme itself.</dd>
+<dt>Wildcard mask</dt>
+<dd>An inverted mask used by ACLs and OSPF network statements, where 0 bits must match and 1 bits are ignored.</dd>
+<dd class="avoid"><strong>Avoid:</strong> subnet mask, inverse mask (acceptable but less precise).</dd>
+<dt>Administrative distance</dt>
+<dd>A per-source trust value that decides between routes to the identical prefix learned from different sources.</dd>
+<dd class="avoid"><strong>Avoid:</strong> metric — the metric compares routes within one protocol.</dd>
+<dt>Longest-prefix match</dt>
+<dd>The rule that the most specific matching route is used, before AD or metric are considered.</dd>
+<dd class="avoid"><strong>Avoid:</strong> best route — too vague to troubleshoot with.</dd>
+<dt>Floating static route</dt>
+<dd>A static route configured with a higher AD than the primary route so it installs only when the primary is lost.</dd>
+<dd class="avoid"><strong>Avoid:</strong> backup route without the AD detail.</dd>
+<dt>Router ID</dt>
+<dd>The 32-bit dotted-decimal identifier that names a router inside OSPF or BGP.</dd>
+<dd class="avoid"><strong>Avoid:</strong> loopback address — often the same value, but not the same thing.</dd>
+<dt>Adjacency</dt>
+<dd>An OSPF neighbor relationship that has reached FULL and exchanged link-state databases.</dd>
+<dd class="avoid"><strong>Avoid:</strong> neighbor — two routers can be neighbors at 2-WAY without being adjacent.</dd>
+<dt>Virtual IP</dt>
+<dd>The shared gateway address that an HSRP or VRRP group answers for, configured as the hosts' default gateway.</dd>
+<dd class="avoid"><strong>Avoid:</strong> floating IP — a cloud term for a movable public address.</dd>
+</dl>
+
+<h3 id="glossary-edge-services-and-security">Edge, Services and Security</h3>
+<dl class="glossary">
+<dt>Inside local</dt>
+<dd>The address of an inside host as seen from inside the network, usually private.</dd>
+<dd class="avoid"><strong>Avoid:</strong> private IP as a NAT term — "inside local" is exact.</dd>
+<dt>Inside global</dt>
+<dd>The address that represents an inside host to the outside world after translation.</dd>
+<dd class="avoid"><strong>Avoid:</strong> public IP — outside global addresses are also public.</dd>
+<dt>PAT</dt>
+<dd>Port address translation: many inside hosts share one inside global address, distinguished by port.</dd>
+<dd class="avoid"><strong>Avoid:</strong> port forwarding — that is static NAT for one inbound service.</dd>
+<dt>Tunnel</dt>
+<dd>An encapsulation that carries packets inside another IP header between two endpoints, such as GRE.</dd>
+<dd class="avoid"><strong>Avoid:</strong> VPN — a VPN adds encryption; a bare GRE tunnel has none.</dd>
+<dt>DHCP relay</dt>
+<dd>A gateway function that forwards client DHCP broadcasts as unicast to a server on another subnet.</dd>
+<dd class="avoid"><strong>Avoid:</strong> DHCP proxy, DHCP forwarder.</dd>
+<dt>Implicit deny</dt>
+<dd>The invisible final ACL entry that drops anything not matched by an earlier line.</dd>
+<dd class="avoid"><strong>Avoid:</strong> default deny policy — that describes the design, not the ACL mechanism.</dd>
+<dt>AAA</dt>
+<dd>Authentication, authorization and accounting: who you are, what you may do, and the record of what you did.</dd>
+<dd class="avoid"><strong>Avoid:</strong> using it to mean only login.</dd>
+<dt>BSSID</dt>
+<dd>The MAC address of an access point's radio for one SSID.</dd>
+<dd class="avoid"><strong>Avoid:</strong> SSID — that is the human-readable network name.</dd>
+</dl>
+
+<h3 id="glossary-automation-and-operations">Automation and Operations</h3>
+<dl class="glossary">
+<dt>Infrastructure as code</dt>
+<dd>Managing network configuration as version-controlled text that tools apply to devices.</dd>
+<dd class="avoid"><strong>Avoid:</strong> scripting — a script is one possible tool, not the practice.</dd>
+<dt>Idempotent</dt>
+<dd>A property of an operation that produces the same end state no matter how many times it runs.</dd>
+<dd class="avoid"><strong>Avoid:</strong> repeatable — a repeatable script can still change things each run.</dd>
+<dt>Northbound API</dt>
+<dd>The interface a controller exposes upward to applications and automation tools.</dd>
+<dd class="avoid"><strong>Avoid:</strong> southbound API — the controller's interface down to devices.</dd>
+<dt>Playbook</dt>
+<dd>An Ansible YAML file listing plays and tasks to run against inventory hosts.</dd>
+<dd class="avoid"><strong>Avoid:</strong> runbook — a human procedure document.</dd>
+<dt>OID</dt>
+<dd>An object identifier: the dotted numeric name of one SNMP-managed value in a MIB.</dd>
+<dd class="avoid"><strong>Avoid:</strong> MIB — the MIB is the collection; the OID is one entry.</dd>
+<dt>Severity level</dt>
+<dd>A syslog message's urgency from 0 (emergencies) to 7 (debugging).</dd>
+<dd class="avoid"><strong>Avoid:</strong> priority — in syslog, priority combines facility and severity.</dd>
+<dt>Agentic AI</dt>
+<dd>An AI system that observes, decides and takes actions toward a goal within boundaries set by people.</dd>
+<dd class="avoid"><strong>Avoid:</strong> chatbot — a chatbot only answers; an agent acts.</dd>
+</dl>
+
+<h2 id="resources">Learning Resources &amp; Communities</h2>
+<p>Pick one primary text, one video course and one practice-exam set, and check each is updated for v2.0 before you commit.</p>
+<h3 id="books">Books</h3>
+<table>
+<tr><th>Title</th><th>Focus</th></tr>
+<tr><td>CCNA 200-301 Official Cert Guide Library, 2nd ed. (Cisco Press; Vol. 1 2024, Vol. 2 2025) — Odom, Gooley, Hucaby</td><td>The primary text. Written for v1.1; read the v2.0 added topics separately</td></tr>
+<tr><td>CCNA 200-301 Official Cert Guide, Volume 1, 3rd ed. (Cisco Press, listed for late December 2026, © 2027) — Odom</td><td>The next edition. Confirm its v2.0 coverage and the Volume 2 date with the publisher before buying</td></tr>
+<tr><td>Network Programmability and Automation, 2nd ed. (O'Reilly, 2023)</td><td>Phase 6 and beyond: Python, Ansible, APIs, YANG, Git for network engineers</td></tr>
+<tr><td>Practical Packet Analysis, 3rd ed. (No Starch Press, 2017) — Chris Sanders</td><td>Wireshark from first capture to protocol-level troubleshooting; the fundamentals have not changed</td></tr>
+</table>
+<h3 id="online-resources">Online Resources</h3>
+<table>
+<tr><th>Resource</th><th>Topic</th><th>Notes</th></tr>
+<tr><td>Cisco Learning Network — CCNA 200-301 v2.0 exam topics</td><td>Official blueprint</td><td>Re-check for minor, unannounced changes before booking</td></tr>
+<tr><td>Cisco Networking Academy (netacad.com)</td><td>Packet Tracer 9.0.x download, free intro courses</td><td>The only safe source for Packet Tracer</td></tr>
+<tr><td>Jeremy's IT Lab (YouTube)</td><td>Free full CCNA video course with labs and flashcards</td><td>Confirm v2.0 coverage of the added topics</td></tr>
+<tr><td>Flackbox</td><td>Low-cost CCNA course and lab guides</td><td>Confirm v2.0 coverage</td></tr>
+<tr><td>Boson ExSim-Max for CCNA</td><td>Practice exams with detailed explanations</td><td>Quizzes from week 7, timed mocks in weeks 13–14</td></tr>
+<tr><td>certskills.com (Wendell Odom's blog)</td><td>v2.0 blueprint deep dives and study advice from the OCG author</td><td>Good for what changed from v1.1</td></tr>
+<tr><td>Ansible docs — <code>cisco.ios</code> collection</td><td>Module reference for Phase 6</td><td>Note the <code>ios_config</code> <code>src</code> Jinja deprecation; prefer <code>lines</code> or <code>content</code></td></tr>
+<tr><td>Netmiko on GitHub (ktbyers/netmiko)</td><td>Python SSH library for network devices</td><td>Release notes list supported platforms</td></tr>
+<tr><td>subnettingpractice.com</td><td>Unlimited timed subnetting drills</td><td>The daily 10-problem drill</td></tr>
+</table>
+<h3 id="datasets-and-tools">Datasets &amp; Tools</h3>
+<table>
+<tr><th>Item</th><th>Primary Use</th></tr>
+<tr><td><a href="../datasets/tindahub-network/README.md">TindaHub Network spec</a> (<code>datasets/tindahub-network/</code>)</td><td>The benchmark: sites, VLANs, IP plan, routing and security policy for every exercise</td></tr>
+<tr><td>Cisco Packet Tracer 9.0.x</td><td>Phases 1–5 labs</td></tr>
+<tr><td>Cisco Modeling Labs, GNS3 or EVE-NG</td><td>Real IOS images; required for Phase 6 automation</td></tr>
+<tr><td>Wireshark</td><td>Packet capture and protocol analysis from week 1</td></tr>
+<tr><td>Ansible (ansible-core 2.16+, <code>cisco.ios</code> 11.x) and Python 3 with Netmiko 4.x</td><td>Automation</td></tr>
+<tr><td>Git and Anki</td><td>Configs as code; daily flashcards</td></tr>
+</table>
+<h3 id="communities">Communities</h3>
+<table>
+<tr><th>Community</th><th>Platform</th><th>Best for</th></tr>
+<tr><td>r/ccna</td><td>Reddit</td><td>Study plans, exam-day reports, v2.0 transition questions</td></tr>
+<tr><td>r/networking</td><td>Reddit</td><td>How real networks are run; career questions once you are certified</td></tr>
+<tr><td>Cisco Learning Network Community</td><td>Cisco forums</td><td>Official exam-policy answers and study groups</td></tr>
+<tr><td>Network to Code Slack</td><td>Slack</td><td>Network automation: Ansible, Python, Nautobot channels</td></tr>
+<tr><td>Packet Pushers</td><td>Podcasts and community</td><td>Industry context: SD-WAN, cloud networking, automation trends</td></tr>
+<tr><td>PhNOG (Philippine Network Operators Group)</td><td>Mailing list and conferences</td><td>Local ISP and enterprise engineers; Philippine peering and IXP context</td></tr>
+</table>
+
+<h2 id="progress-tracker">Progress Tracker</h2>
+<blockquote class="module-meta"><p>Check items off as you finish them — this checklist drives the <strong>Module progress</strong> meter in the sidebar. Progress is saved automatically in this browser and persists across reloads — use "Reset progress" in the sidebar to clear it.</p></blockquote>
+<h4>Phase 1 — Foundations</h4>
+<ul>
+<li>[ ] Module 1.1 — OSI, TCP/IP and Encapsulation</li>
+<li>[ ] Exercise 1.1 — Annotate one TindaHub web request</li>
+<li>[ ] Module 1.2 — Addressing, Binary and Physical Layer</li>
+<li>[ ] Exercise 1.2 — Address and cable the HQ floor</li>
+<li>[ ] Capstone 1 — First Ping Explained</li>
+</ul>
+<h4>Phase 2 — LAN and Switching</h4>
+<ul>
+<li>[ ] Module 2.1 — Ethernet and Switch Operation</li>
+<li>[ ] Exercise 2.1 — Bring up HQ-ASW1 from blank</li>
+<li>[ ] Module 2.2 — VLANs and 802.1Q Trunks</li>
+<li>[ ] Exercise 2.2 — Segment HQ with VLANs and a trunk</li>
+<li>[ ] Module 2.3 — Spanning Tree, EtherChannel and Neighbor Discovery</li>
+<li>[ ] Exercise 2.3 — Redundant HQ distribution</li>
+<li>[ ] Capstone 2 — HQ Campus Layer 2</li>
+</ul>
+<h4>Phase 3 — IP Addressing and Routing</h4>
+<ul>
+<li>[ ] Module 3.1 — IPv4 Subnetting and VLSM</li>
+<li>[ ] Exercise 3.1 — Plan TindaHub's addressing</li>
+<li>[ ] Module 3.2 — IPv6 Addressing</li>
+<li>[ ] Exercise 3.2 — Dual-stack the HQ VLANs</li>
+<li>[ ] Module 3.3 — Static Routing and Inter-VLAN Routing</li>
+<li>[ ] Exercise 3.3 — Route the branch and HQ</li>
+<li>[ ] Module 3.4 — OSPF and First-Hop Redundancy</li>
+<li>[ ] Exercise 3.4 — OSPF with a redundant HQ gateway</li>
+<li>[ ] Capstone 3 — Two-Site Routed Network</li>
+</ul>
+<h4>Phase 4 — WAN and Internet Edge</h4>
+<ul>
+<li>[ ] Module 4.1 — WAN, SD-WAN, Cloud and Virtualization</li>
+<li>[ ] Exercise 4.1 — TindaHub WAN brief</li>
+<li>[ ] Module 4.2 — NAT and PAT</li>
+<li>[ ] Exercise 4.2 — Put TindaHub HQ on the internet</li>
+<li>[ ] Module 4.3 — IPsec VPNs, GRE and BGP Basics</li>
+<li>[ ] Exercise 4.3 — Backup path between HQ and Cebu</li>
+<li>[ ] Capstone 4 — Internet Edge</li>
+</ul>
+<h4>Phase 5 — Services and Security</h4>
+<ul>
+<li>[ ] Module 5.1 — DHCP, DNS and Wireless</li>
+<li>[ ] Exercise 5.1 — Addresses and names for every client</li>
+<li>[ ] Module 5.2 — Access Control Lists</li>
+<li>[ ] Exercise 5.2 — Fence off the guest VLAN</li>
+<li>[ ] Module 5.3 — Layer 2 Security and Device Access</li>
+<li>[ ] Exercise 5.3 — Harden the HQ access layer</li>
+<li>[ ] Capstone 5 — Secured Campus</li>
+</ul>
+<h4>Phase 6 — Automation and Operations</h4>
+<ul>
+<li>[ ] Module 6.1 — Monitoring and Management Approaches</li>
+<li>[ ] Exercise 6.1 — Central visibility for TindaHub</li>
+<li>[ ] Module 6.2 — Ansible, Python and AI Operations</li>
+<li>[ ] Exercise 6.2 — Automate the TindaHub fleet</li>
+<li>[ ] Capstone 6 — Automated Backups</li>
+</ul>
+<h4>Self-Assessment (tick only when you can do it from blank, without notes)</h4>
+<ul>
+<li>[ ] Subnet any IPv4 block and answer "which subnet, broadcast and host range" in under 60 seconds</li>
+<li>[ ] Abbreviate and classify any IPv6 address</li>
+<li>[ ] Explain what a switch does with a frame for a MAC address it has not learned</li>
+<li>[ ] Configure VLANs, trunks and an LACP bundle, and diagnose a trunk mismatch</li>
+<li>[ ] Predict the STP root bridge and port roles for a four-switch topology</li>
+<li>[ ] Read a routing table and say which route wins and why</li>
+<li>[ ] Bring up single-area OSPF and debug a stuck neighbor</li>
+<li>[ ] Configure PAT and explain each translation entry</li>
+<li>[ ] Write an extended ACL and place it correctly</li>
+<li>[ ] Describe how an IPsec site-to-site VPN is established</li>
+<li>[ ] Run an Ansible playbook against three devices</li>
+</ul>
+<h4>Certifications / Outcomes</h4>
+<ul>
+<li>[ ] Three full timed mock exams passed (Exam Sprint)</li>
+<li>[ ] Cisco CCNA (200-301 v2.0)</li>
+<li>[ ] Final Capstone — TindaHub Three-Site Network complete</li>
+<li>[ ] Optional: two-week industrial and OT networking add-on (Track 5)</li>
+</ul>
+
+<p><em>Guide Version 1.0 — IT Networking Track: Zero to CCNA</em><br>
+<em>Non-linear modular design · Placement quiz · 17 modules · ~14 weeks part-time · hayah-ai</em><br>
+<em>Adapted from the "IT Networking Learning Guide: Zero to CCNA" study plan (2026-11-26). Tool versions, exam dates and resources verified as of 2026-11-26</em></p>
+
+    </article>
+  </main>
+</div>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  // ── Tag code blocks with language label ──────────────────
+  document.querySelectorAll("pre > code").forEach(function(code){
+    var cls = code.className || "";
+    var m = cls.match(/language-(\w+)/);
+    var lang = m ? m[1] : "";
+    var map = {py:"python",js:"javascript",sql:"sql",dax:"dax",m:"M / Power Query",
+               excel:"excel",bash:"shell",md:"markdown",markdown:"markdown",
+               python:"python",javascript:"javascript",r:"R",typescript:"typescript",
+               ts:"typescript",css:"css",html:"html",json:"json",yaml:"yaml",
+               ios:"cisco ios",
+               /* EXTEND_LANG_MAP */};
+    if(lang){ code.parentElement.setAttribute("data-lang", map[lang]||lang); }
+  });
+
+  // ── Wrap tables for horizontal scroll ────────────────────
+  document.querySelectorAll(".content table").forEach(function(t){
+    if(t.parentElement.classList.contains("table-scroll")) return;
+    var w=document.createElement("div");w.className="table-scroll";
+    t.parentElement.insertBefore(w,t);w.appendChild(t);
+  });
+
+  // ── Convert markdown task-list "[ ]" text into checkboxes ─
+  // Checkbox + remaining text are wrapped in one <label> so the whole
+  // line is clickable (WCAG 2.5.8 target size), not just the 16px box.
+  document.querySelectorAll(".content li").forEach(function(li){
+    var first = li.childNodes[0];
+    if(first && first.nodeType===3){
+      var t=first.nodeValue;
+      var mm=t.match(/^\s*\[( |x|X)\]\s?/);
+      if(mm){
+        var checked = mm[1].toLowerCase()==="x";
+        first.nodeValue = t.replace(/^\s*\[( |x|X)\]\s?/,"");
+        var cb=document.createElement("input");
+        cb.type="checkbox"; cb.checked=checked; cb.className="task-cb";
+        var label=document.createElement("label");
+        label.className="task-label";
+        while(li.firstChild){ label.appendChild(li.firstChild); }
+        label.insertBefore(cb, label.firstChild);
+        li.appendChild(label);
+      }
+    }
+  });
+
+  // ── Progress tracking (persisted per-guide via localStorage) ──
+  // These are downloaded standalone files opened via file://, not sandboxed
+  // claude.ai artifacts — localStorage works and survives reloads/re-opens.
+  // Namespaced by document.title so multiple guides in the same browser
+  // don't collide (some browsers share a single origin across file:// URLs).
+  var LS_KEY = "lg-progress:" + (document.title || location.pathname);
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
+    catch(e){ return {}; } // storage disabled/unavailable — degrade to session-only
+  }
+  function saveProgress(map){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(map)); }catch(e){}
+  }
+
+  // The sidebar meter reflects ONLY the Progress Tracker checklist (real module
+  // completion), not the Placement Quiz self-assessment. Placement-quiz boxes
+  // stay interactive (and persist) but are excluded from the meter count.
+  var allCb = Array.prototype.slice.call(document.querySelectorAll(".task-cb"));
+  allCb.forEach(function(c,i){ c.dataset.lgIdx = i; }); // stable per-guide key
+  var savedMap = loadProgress();
+  allCb.forEach(function(c){
+    if(Object.prototype.hasOwnProperty.call(savedMap, c.dataset.lgIdx)){
+      c.checked = !!savedMap[c.dataset.lgIdx];
+    }
+  });
+
+  var ptHeading = document.getElementById("progress-tracker");
+  var countedCb = ptHeading
+    ? allCb.filter(function(c){
+        return !!(ptHeading.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_FOLLOWING);
+      })
+    : allCb; // fallback: if no tracker section, count everything
+
+  function updateProgress(){
+    var total = countedCb.length;
+    var done = countedCb.filter(function(c){return c.checked}).length;
+    var pct = total? Math.round(done/total*100):0;
+    document.getElementById("progFill").style.width = pct+"%";
+    document.getElementById("progPct").textContent = pct+"%";
+  }
+  allCb.forEach(function(c){
+    c.addEventListener("change",function(){
+      var map = loadProgress();
+      map[c.dataset.lgIdx] = c.checked;
+      saveProgress(map);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById("progReset").addEventListener("click",function(){
+    var map = loadProgress();
+    countedCb.forEach(function(c){ c.checked=false; map[c.dataset.lgIdx]=false; });
+    saveProgress(map);
+    updateProgress();
+  });
+
+  // ── Placement Quiz: live score badge per section ──────────
+  // Purely additive DOM scan — no special authoring markup required.
+  // Scans every sibling between #placement-quiz and the next <h2>,
+  // and drops a live "Your score: X / N" badge after each quiz <ul>.
+  var pq = document.getElementById("placement-quiz");
+  if(pq){
+    var sib = pq.nextElementSibling;
+    while(sib && sib.tagName !== "H2"){
+      if(sib.tagName === "UL"){
+        (function(ul){
+          var boxes = Array.prototype.slice.call(ul.querySelectorAll('input[type=checkbox]'));
+          if(!boxes.length) return;
+          var badge = document.createElement("p");
+          badge.className = "quiz-score";
+          ul.insertAdjacentElement("afterend", badge);
+          function refresh(){
+            var done = boxes.filter(function(b){return b.checked}).length;
+            badge.textContent = "Your score: " + done + " / " + boxes.length;
+          }
+          boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+          refresh();
+        })(sib);
+      }
+      sib = sib.nextElementSibling;
+    }
+  }
+
+  // ── Sidebar module search/filter ──────────────────────────
+  var navSearch = document.getElementById("navSearch");
+  if(navSearch){
+    navSearch.addEventListener("input",function(){
+      var q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".nav-group").forEach(function(g){
+        var top = g.querySelector(".nav-top");
+        var anyMatch = !q || (top && top.textContent.toLowerCase().indexOf(q)>-1);
+        g.querySelectorAll(".nav-child").forEach(function(c){
+          var match = !q || c.textContent.toLowerCase().indexOf(q)>-1;
+          c.classList.toggle("filtered-out", !match);
+          if(match) anyMatch = true;
+        });
+        g.classList.toggle("filtered-out", !anyMatch);
+      });
+      document.querySelectorAll("#nav > a.nav-top").forEach(function(a){
+        var match = !q || a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle("filtered-out", !match);
+      });
+    });
+  }
+
+  // ── Scrollspy: highlight active nav item ─────────────────
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var linkById = {};
+  navLinks.forEach(function(a){
+    var id=a.getAttribute("href").slice(1); linkById[id]=a;
+  });
+  var targets = navLinks.map(function(a){
+    return document.getElementById(a.getAttribute("href").slice(1));
+  }).filter(Boolean);
+
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove("active")});
+        var id=e.target.id;
+        if(linkById[id]) linkById[id].classList.add("active");
+      }
+    });
+  },{rootMargin:"-10% 0px -80% 0px",threshold:0});
+  targets.forEach(function(t){spy.observe(t)});
+
+  // ── Mobile nav ───────────────────────────────────────────
+  var sb=document.getElementById("sidebar"),
+      scrim=document.getElementById("scrim"),
+      mb=document.getElementById("menuBtn");
+  function closeNav(){sb.classList.remove("open");scrim.classList.remove("show")}
+  mb.addEventListener("click",function(){
+    sb.classList.toggle("open");scrim.classList.toggle("show");
+  });
+  scrim.addEventListener("click",closeNav);
+  document.querySelectorAll("#nav a").forEach(function(a){
+    a.addEventListener("click",function(){ if(window.innerWidth<=1000) closeNav(); });
+  });
+
+  // ── Interactive module index (click a row to jump) ───────
+  document.querySelectorAll(".module-index-table tr[data-href]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var id=this.getAttribute("data-href").slice(1);
+      var target=document.getElementById(id);
+      if(target){target.scrollIntoView({behavior:"smooth",block:"start"});}
+    });
+  });
+
+  // ── Back to top ──────────────────────────────────────────
+  var tt=document.getElementById("toTop");
+  window.addEventListener("scroll",function(){
+    if(window.scrollY>600) tt.classList.add("show"); else tt.classList.remove("show");
+  },{passive:true});
+  tt.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});
+})();
+</script>
+</body>
+</html>

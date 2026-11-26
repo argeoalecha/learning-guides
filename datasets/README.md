@@ -39,6 +39,7 @@ These guides teach *building* a project, not analyzing a pre-made one — so the
 | [`rotabrain-blades/`](rotabrain-blades/) | [Terminal, Git & GitHub](../terminal-git/terminal-git-github_learning_guide.html) | Next.js app (used as a git/terminal practice repo) |
 | [`saasflow/`](saasflow/) | [GTM Strategy & Automation](../gtm-strategy-automation/gtm-strategy-automation_learning_guide.html) | B2B SaaS scenario, $8,400 ACV (no data files) |
 | [`fitforge/`](fitforge/) | [Hormozi 100M Sales](../hormozi-100m-sales/hormozi-100m-sales_learning_guide.html) | $3,000 fitness-offer scenario (no data files) |
+| [`tindahub-network/`](tindahub-network/) | [IT Networking: Zero to CCNA](../it-networking/it-networking_learning_guide.html) | Three-site Cisco network spec for TindaHub (HQ Makati, Cebu warehouse, ISP): VLANs, IP plan, routing and security policy |
 
 ## Conventions
 
